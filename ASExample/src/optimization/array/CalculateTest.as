@@ -36,6 +36,21 @@ package optimization.array
 				point.x+=Math.random();
 			}
 			end();
+			
+			appendText("Copy");
+			
+			start("test 3");
+			var arr0:Array=new Array();
+			for(i=0;i<n;i++)
+			{
+				arr0[i]=arr[i];
+			}
+			end();
+			
+			start("test 4");
+			var arr1:Array=new Array();
+			arr1=arr.concat();
+			end();
 
 		}
 		
