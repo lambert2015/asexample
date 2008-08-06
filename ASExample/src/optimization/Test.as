@@ -13,7 +13,7 @@ package optimization
 		{
 			textField=new TextField();
 			textField.width=400;
-			textField.textColor=0xff0000;
+			textField.textColor=0x000000;
 			textField.multiline=true;
 			addChild(textField);
 		}
