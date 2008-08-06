@@ -15,7 +15,7 @@ package optimization.math
 			
 			start("int:");
 			
-			var angle:Number=Math.random();
+			var angle:Number=1.68;
 			var out:Number;
 			start("sin:");
 			for(var j:int=0;j<n;j++)

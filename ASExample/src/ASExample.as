@@ -1,13 +1,13 @@
 package {
 	import flash.display.Sprite;
 	
-	import optimization.array.ArrayTest;
+	import optimization.keywords.StaticTest;
 
 	public class ASExample extends Sprite
 	{
 		public function ASExample()
 		{
-			this.addChild(new ArrayTest());
+			this.addChild(new StaticTest());
 		}
 	}
 }
