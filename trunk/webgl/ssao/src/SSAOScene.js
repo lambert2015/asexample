@@ -1,169 +1,169 @@
-/// <summary>
-/// Nutty Software Open WebGL Framework
-/// 
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+// <summary>
+// Nutty Software Open WebGL Framework
+// 
+// Copyright (C) 2012 Nathaniel Meyer
+// Nutty Software, http://www.nutty.ca
+// All Rights Reserved.
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+//     1. The above copyright notice and this permission notice shall be included in all
+//        copies or substantial portions of the Software.
+//     2. Redistributions in binary or minimized form must reproduce the above copyright
+//        notice and this list of conditions in the documentation and/or other materials
+//        provided with the distribution.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </summary>
 
 
-/// <summary>
-/// This scene demonstrates the screen space ambient occlusion algorithm (SSAO). The algorithm
-/// is divided into several steps.
-///
-/// 1. Render the scene with normal transform and lighting to a colour buffer (texture).
-///
-/// 2. Render the geometry's 3d view-space positions to an RGBA floating point buffer.
-///	   The alpha channel will include the linear depth value, which is used to determine the
-///	   sampling radius in the SSAO shader.
-///
-/// 3. Render the geometry's 3d view-space normal vectors to an RGB floating point buffer.
-///	   Since WebGL (or OpenGL ES 2.0) does not support multiple colour attachments to an FBO,
-///	   this process must require another render pass.
-///
-/// 4. Pass the position buffer, normal buffer, and normalmap texture to the SSAO shader.
-///	   The result is stored into a floating point luminance texture.
-///
-/// 5. Subtract the AO map from the colour buffer to produce the final image.
-/// </summary>
+// <summary>
+// This scene demonstrates the screen space ambient occlusion algorithm (SSAO). The algorithm
+// is divided into several steps.
+//
+// 1. Render the scene with normal transform and lighting to a colour buffer (texture).
+//
+// 2. Render the geometry's 3d view-space positions to an RGBA floating point buffer.
+//	   The alpha channel will include the linear depth value, which is used to determine the
+//	   sampling radius in the SSAO shader.
+//
+// 3. Render the geometry's 3d view-space normal vectors to an RGB floating point buffer.
+//	   Since WebGL (or OpenGL ES 2.0) does not support multiple colour attachments to an FBO,
+//	   this process must require another render pass.
+//
+// 4. Pass the position buffer, normal buffer, and normalmap texture to the SSAO shader.
+//	   The result is stored into a floating point luminance texture.
+//
+// 5. Subtract the AO map from the colour buffer to produce the final image.
+// </summary>
 
 
-/// <summary>
-/// Constructor.
-/// </summary>
+// <summary>
+// Constructor.
+// </summary>
 function SSAOScene ()
 {
-	/// <summary>
-	/// Setup inherited members.
-	/// </summary>
+	// <summary>
+	// Setup inherited members.
+	// </summary>
 	BaseScene.call(this);
 	
 	
-	/// <summary>
-	/// This framebuffer object stores the rendered scene to an RGB texture. It will be
-	/// blended with the AO map calculated later.
-	/// </summary>
+	// <summary>
+	// This framebuffer object stores the rendered scene to an RGB texture. It will be
+	// blended with the AO map calculated later.
+	// </summary>
 	this.mFboColour = null;
 	this.mFboColourColourBuffer = null;
 	this.mFboColourDepthBuffer = null;
 	
 	
-	/// <summary>
-	/// This framebuffer object stores the view space position (vertices) to texture.
-	/// It uses an RGBA floating point texture to store the results. The alpha channel
-	/// stores the linear depth values, which is used to compute the AO sampling radius.
-	/// </summary>
+	// <summary>
+	// This framebuffer object stores the view space position (vertices) to texture.
+	// It uses an RGBA floating point texture to store the results. The alpha channel
+	// stores the linear depth values, which is used to compute the AO sampling radius.
+	// </summary>
 	this.mFboDeferredPosition = null;
 	this.mFboDeferredPositionColourBuffer = null;
 	this.mFboDeferredPositionDepthBuffer = null;
 	
 	
-	/// <summary>
-	/// This framebuffer object stores the view space normal vectors to texture.
-	/// It uses an RGB floating point texture to store the results.
-	/// </summary>
+	// <summary>
+	// This framebuffer object stores the view space normal vectors to texture.
+	// It uses an RGB floating point texture to store the results.
+	// </summary>
 	this.mFboDeferredNormals = null;
 	this.mFboDeferredNormalsColourBuffer = null;
 	this.mFboDeferredNormalsDepthBuffer = null;
 	
 	
-	/// <summary>
-	/// This framebuffer object stores the calculated ambient occlusion values.
-	/// It uses a luminance floating point texture to store the results.
-	/// </summary>
+	// <summary>
+	// This framebuffer object stores the calculated ambient occlusion values.
+	// It uses a luminance floating point texture to store the results.
+	// </summary>
 	this.mFboSSAO = null;
 	this.mFboSSAOColourBuffer = null;
 	
 	
-	/// <summary>
-	/// Gets or sets the dimensions of the FBO, which may or may not be the same size
-	/// as the window.
-	/// </summary>
+	// <summary>
+	// Gets or sets the dimensions of the FBO, which may or may not be the same size
+	// as the window.
+	// </summary>
 	this.mFboDimension = null;
 	
 	
-	/// <summary>
-	/// The basic shader renders the scene using standard transform and lighting.
-	/// </summary>
+	// <summary>
+	// The basic shader renders the scene using standard transform and lighting.
+	// </summary>
 	this.mBasicShader = null;
 	
 	
-	/// <summary>
-	/// The deferred shader output's geometry data to a floating point texture for
-	/// later processing.
-	/// </summary>
+	// <summary>
+	// The deferred shader output's geometry data to a floating point texture for
+	// later processing.
+	// </summary>
 	this.mDeferredPositionShader = null;
 	this.mDeferredNormalsShader = null;
 	
 	
-	/// <summary>
-	/// Shader for calculating the ambient occlusion values.
-	/// </summary>
+	// <summary>
+	// Shader for calculating the ambient occlusion values.
+	// </summary>
 	this.mSSAOShader = null;
 	
 	
-	/// <summary>
-	/// Shader for blending and rendering the scene and AO map textures.
-	/// </summary>
+	// <summary>
+	// Shader for blending and rendering the scene and AO map textures.
+	// </summary>
 	this.mSSAOBlendShader = null;
 	
 	
-	/// <summary>
-	/// Shader for correcting the brightness, contrast, and gamma prior to output.
-	/// </summary>
+	// <summary>
+	// Shader for correcting the brightness, contrast, and gamma prior to output.
+	// </summary>
 	this.mBrightnessShader = null;
 	
 	
-	/// <summary>
-	/// Surface (rectangle) to perform post-processing effects.
-	/// It is designed to fit the size of the viewport.
-	/// </summary>
+	// <summary>
+	// Surface (rectangle) to perform post-processing effects.
+	// It is designed to fit the size of the viewport.
+	// </summary>
 	this.mSurface = null;
 	
 	
-	/// <summary>
-	/// Stores the textures used by this scene.
-	/// </summary>
+	// <summary>
+	// Stores the textures used by this scene.
+	// </summary>
 	this.mTexture = new Array();
 	
 	
-	/// <summary>
-	/// Stores a reference to the canvas DOM element, which is used to reset the viewport
-	/// back to its original size after rendering to the FBO, which uses a different
-	/// dimension.
-	/// </summary>
+	// <summary>
+	// Stores a reference to the canvas DOM element, which is used to reset the viewport
+	// back to its original size after rendering to the FBO, which uses a different
+	// dimension.
+	// </summary>
 	this.mCanvas = null;
 	
 	
-	/// <summary>
-	/// Gets or sets whether SSAO is rendered or not.
-	/// </summary>
+	// <summary>
+	// Gets or sets whether SSAO is rendered or not.
+	// </summary>
 	this.mEnableSSAO = true;
 	
 	
-	/// <summary>
-	/// Mouse controls for camera position and zoom.
-	/// </summary>
+	// <summary>
+	// Mouse controls for camera position and zoom.
+	// </summary>
 	this.mMouseDown = false;
 	this.mMouseStartPos = new Point();
 	this.mCameraRot = 0.0;
@@ -174,9 +174,9 @@ function SSAOScene ()
 	this.mCameraTargetPos = new Point(0.0, 0.4, 0.0);
 	
 	
-	/// <summary>
-	/// UI members.
-	/// </summary>
+	// <summary>
+	// UI members.
+	// </summary>
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	this.mControls = null;
@@ -186,16 +186,16 @@ function SSAOScene ()
 }
 
 
-/// <summary>
-/// Prototypal Inheritance.
-/// </summary>
+// <summary>
+// Prototypal Inheritance.
+// </summary>
 SSAOScene.prototype = new BaseScene();
 SSAOScene.prototype.constructor = SSAOScene;
 
 
-/// <summary>
-/// Called when the mouse button is pressed.
-/// </summary>
+// <summary>
+// Called when the mouse button is pressed.
+// </summary>
 SSAOScene.prototype.OnMouseDown = function (key)
 {
 	// Record the current mouse position
@@ -208,10 +208,10 @@ SSAOScene.prototype.OnMouseDown = function (key)
 }
 
 
-/// <summary>
-/// Called when there is mouse movement. Apply rotation and zoom
-/// only when the mouse button is held down.
-/// </summary>
+// <summary>
+// Called when there is mouse movement. Apply rotation and zoom
+// only when the mouse button is held down.
+// </summary>
 SSAOScene.prototype.OnMouseMove = function (key)
 {
 	// Process mouse movement only when the mouse button is held down
@@ -243,9 +243,9 @@ SSAOScene.prototype.OnMouseMove = function (key)
 }
 
 
-/// <summary>
-/// Called when the mouse button is released.
-/// </summary>
+// <summary>
+// Called when the mouse button is released.
+// </summary>
 SSAOScene.prototype.OnMouseUp = function (key)
 {
 	var owner = this.Owner;
@@ -253,9 +253,9 @@ SSAOScene.prototype.OnMouseUp = function (key)
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 SSAOScene.prototype.Start = function ()
 {
 	// Setup members and default values
@@ -419,9 +419,9 @@ SSAOScene.prototype.Start = function ()
 }
 
 
-/// <summary>
-/// Method called when the occluder bias slider has changed.
-/// </summary>
+// <summary>
+// Method called when the occluder bias slider has changed.
+// </summary>
 SSAOScene.prototype.OnOccluderBiasValueChanged = function (event, ui)
 {
 	event.data.owner.mSSAOShader.OccluderBias = ui.value;
@@ -429,9 +429,9 @@ SSAOScene.prototype.OnOccluderBiasValueChanged = function (event, ui)
 }
 
 
-/// <summary>
-/// Method called when the sampling radius slider has changed.
-/// </summary>
+// <summary>
+// Method called when the sampling radius slider has changed.
+// </summary>
 SSAOScene.prototype.OnSamplingRadiusValueChanged = function (event, ui)
 {
 	event.data.owner.mSSAOShader.SamplingRadius = ui.value;
@@ -439,9 +439,9 @@ SSAOScene.prototype.OnSamplingRadiusValueChanged = function (event, ui)
 }
 
 
-/// <summary>
-/// Method called when the constant attenuation slider has changed.
-/// </summary>
+// <summary>
+// Method called when the constant attenuation slider has changed.
+// </summary>
 SSAOScene.prototype.OnConstantAttenuationValueChanged = function (event, ui)
 {
 	event.data.owner.mSSAOShader.Attenuation.x = ui.value;
@@ -449,9 +449,9 @@ SSAOScene.prototype.OnConstantAttenuationValueChanged = function (event, ui)
 }
 
 
-/// <summary>
-/// Method called when the linear attenuation slider has changed.
-/// </summary>
+// <summary>
+// Method called when the linear attenuation slider has changed.
+// </summary>
 SSAOScene.prototype.OnLinearAttenuationValueChanged = function (event, ui)
 {
 	event.data.owner.mSSAOShader.Attenuation.y = ui.value;
@@ -459,18 +459,18 @@ SSAOScene.prototype.OnLinearAttenuationValueChanged = function (event, ui)
 }
 
 
-/// <summary>
-/// Method called when the view mode combo box has changed.
-/// </summary>
+// <summary>
+// Method called when the view mode combo box has changed.
+// </summary>
 SSAOScene.prototype.OnEnableSSAOClicked = function (event)
 {
 	event.data.mEnableSSAO = event.currentTarget.checked;
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 SSAOScene.prototype.Update = function ()
 {
 	BaseScene.prototype.Update.call(this);
@@ -582,9 +582,9 @@ SSAOScene.prototype.Update = function ()
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 SSAOScene.prototype.End = function ()
 {
 	BaseScene.prototype.End.call(this);
@@ -635,12 +635,12 @@ SSAOScene.prototype.End = function ()
 }
 
 
-/// <summary>
-/// This method will update the displayed loading progress.
-/// </summary>
-/// <param name="increment">
-/// Set to true to increment the resource counter by one. Normally hanadled by BaseScene.
-/// </param>
+// <summary>
+// This method will update the displayed loading progress.
+// </summary>
+// <param name="increment">
+// Set to true to increment the resource counter by one. Normally hanadled by BaseScene.
+// </param>
 SSAOScene.prototype.UpdateProgress = function (increment)
 {
 	if ( increment != null )
@@ -651,9 +651,9 @@ SSAOScene.prototype.UpdateProgress = function (increment)
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 SSAOScene.prototype.OnItemLoaded = function (sender, response)
 {
 	BaseScene.prototype.OnItemLoaded.call(this, sender, response);
@@ -661,11 +661,11 @@ SSAOScene.prototype.OnItemLoaded = function (sender, response)
 }
 
 
-/// <summary>
-/// This method is called to compile a bunch of shaders. The browser will be
-/// blocked while the GPU compiles, so we need to give the browser a chance
-/// to refresh its view and take user input while this happens (good ui practice).
-/// </summary>
+// <summary>
+// This method is called to compile a bunch of shaders. The browser will be
+// blocked while the GPU compiles, so we need to give the browser a chance
+// to refresh its view and take user input while this happens (good ui practice).
+// </summary>
 SSAOScene.prototype.CompileShaders = function (index, list)
 {
 	var shaderItem = list[index];
@@ -708,11 +708,11 @@ SSAOScene.prototype.CompileShaders = function (index, list)
 }
 
 
-/// <summary>
-/// This method is called to load a bunch of shaders. The browser will be
-/// blocked while the GPU loads, so we need to give the browser a chance
-/// to refresh its view and take user input while this happens (good ui practice).
-/// </summary>
+// <summary>
+// This method is called to load a bunch of shaders. The browser will be
+// blocked while the GPU loads, so we need to give the browser a chance
+// to refresh its view and take user input while this happens (good ui practice).
+// </summary>
 SSAOScene.prototype.LoadShaders = function (index, blendModes)
 {
 	if ( index == 0 )
@@ -831,9 +831,9 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 SSAOScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders

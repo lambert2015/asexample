@@ -1,198 +1,198 @@
-/// <summary>
-/// Nutty Software Open WebGL Framework
-/// 
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+// <summary>
+// Nutty Software Open WebGL Framework
+// 
+// Copyright (C) 2012 Nathaniel Meyer
+// Nutty Software, http://www.nutty.ca
+// All Rights Reserved.
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+//     1. The above copyright notice and this permission notice shall be included in all
+//        copies or substantial portions of the Software.
+//     2. Redistributions in binary or minimized form must reproduce the above copyright
+//        notice and this list of conditions in the documentation and/or other materials
+//        provided with the distribution.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// </summary>
 
 
-/// <summary>
-/// This scene demonstrates how to render shadow maps. The process is as follows.
-/// 1. Render the depth map from the light's point of view. A depth map is a texture
-///    that stores the distance between the light source and the vertices.
-///
-///	1a. If you have a directional light source, you render a single depth map.
-/// 1b. If you have a point light source, you render all 6 depth maps to a cubemap.
-///
-/// 2. Choose a shadow map filtering algorithm.
-///	2a. Percentage Closer Filtering (PCF) will perform its filter in the shadow map shader.
-///     This is similar to a convolution filter whereby you check neighbouring pixels. It's
-///     not that fast, but simple to implement and understand.
-/// 2b. Variance Shadow Maps (VSM) and Exponential Shadow Maps (ESM) can take advantage of
-///     faster filtering algorithms. First perform a seperable blur on the shadow map and
-///     optionally generate mipmaps. The shadow map shader will use a special formula for
-///     processing the depth map.
-///
-/// 3. Next, render the scene as normal from the camera. In the shadow map shader, perform all
-///    lighting calculations as you normally would. As a final step, calculate how much shadow
-///    a fragment receives by comparing its vertex-to-light distance value with the one recorded
-///    in the depth map. If the value is >, then the fragment is in shadow; otherwise it is not.
-///    Remember, in depth comparison smaller values are closer to the source, so we want to
-///    check if the fragment is in front (less than) or behind (greater than) the recorded value
-///    in the depth map.
-/// </summary>
+// <summary>
+// This scene demonstrates how to render shadow maps. The process is as follows.
+// 1. Render the depth map from the light's point of view. A depth map is a texture
+//    that stores the distance between the light source and the vertices.
+//
+//	1a. If you have a directional light source, you render a single depth map.
+// 1b. If you have a point light source, you render all 6 depth maps to a cubemap.
+//
+// 2. Choose a shadow map filtering algorithm.
+//	2a. Percentage Closer Filtering (PCF) will perform its filter in the shadow map shader.
+//     This is similar to a convolution filter whereby you check neighbouring pixels. It's
+//     not that fast, but simple to implement and understand.
+// 2b. Variance Shadow Maps (VSM) and Exponential Shadow Maps (ESM) can take advantage of
+//     faster filtering algorithms. First perform a seperable blur on the shadow map and
+//     optionally generate mipmaps. The shadow map shader will use a special formula for
+//     processing the depth map.
+//
+// 3. Next, render the scene as normal from the camera. In the shadow map shader, perform all
+//    lighting calculations as you normally would. As a final step, calculate how much shadow
+//    a fragment receives by comparing its vertex-to-light distance value with the one recorded
+//    in the depth map. If the value is >, then the fragment is in shadow; otherwise it is not.
+//    Remember, in depth comparison smaller values are closer to the source, so we want to
+//    check if the fragment is in front (less than) or behind (greater than) the recorded value
+//    in the depth map.
+// </summary>
 
 
-/// <summary>
-/// Constructor.
-/// </summary>
+// <summary>
+// Constructor.
+// </summary>
 function ShadowMapScene ()
 {
-	/// <summary>
-	/// Setup inherited members.
-	/// </summary>
+	// <summary>
+	// Setup inherited members.
+	// </summary>
 	BaseScene.call(this);
 	
 	
-	/// <summary>
-	/// Point light source.
-	/// </summary>
+	// <summary>
+	// Point light source.
+	// </summary>
 	this.mPointLight = null;
 	
 	
-	/// <summary>
-	/// Directional light source. Always points towards the origin.
-	/// </summary>
+	// <summary>
+	// Directional light source. Always points towards the origin.
+	// </summary>
 	this.mDirectionalLight = null;
 	
 	
-	/// <summary>
-	/// Gets or sets the current light position for either the point light or
-	/// the directional light.
-	/// </summary>
+	// <summary>
+	// Gets or sets the current light position for either the point light or
+	// the directional light.
+	// </summary>
 	this.mLightPosition = new Point();
 	
 	
-	/// <summary>
-	/// Gets or sets the current angle of the light source, in radians. Used for
-	/// animating the light source around in a circle.
-	/// </summary>
+	// <summary>
+	// Gets or sets the current angle of the light source, in radians. Used for
+	// animating the light source around in a circle.
+	// </summary>
 	this.mAnimLightPosition;
 	
 	
-	/// <summary>
-	/// Stores the inverse view matrix.
-	/// </summary>
+	// <summary>
+	// Stores the inverse view matrix.
+	// </summary>
 	this.mInvViewMatrix = null;
 	
 	
-	/// <summary>
-	/// Projection matrix used by the light sources. Typically a 90' perspective
-	/// frustum with 1.0 aspect ratio.
-	/// </summary>
+	// <summary>
+	// Projection matrix used by the light sources. Typically a 90' perspective
+	// frustum with 1.0 aspect ratio.
+	// </summary>
 	this.mLightProjection = null;
 	
 	
-	/// <summary>
-	/// Point light view array of matrices. This is used for rendering the scene
-	/// from the light's point of view. There are 6 view matrices in all, one
-	/// for each face of the cube.
-	/// </summary>
+	// <summary>
+	// Point light view array of matrices. This is used for rendering the scene
+	// from the light's point of view. There are 6 view matrices in all, one
+	// for each face of the cube.
+	// </summary>
 	this.mPointLightViewMatrix = null;
 	
 	
-	/// <summary>
-	/// The framebuffer object to store the depth map. This will be fed into the
-	/// shadow map shader.
-	/// </summary>
+	// <summary>
+	// The framebuffer object to store the depth map. This will be fed into the
+	// shadow map shader.
+	// </summary>
 	this.mFboDepth = null;
 	
 	
-	/// <summary>
-	/// The framebuffer object for performing the first pass [horizontal] blur using the
-	/// seperable blur algorithm. On the second pass, the final bluring will be stored back
-	/// into the mFboDepth object.
-	/// </summary>
+	// <summary>
+	// The framebuffer object for performing the first pass [horizontal] blur using the
+	// seperable blur algorithm. On the second pass, the final bluring will be stored back
+	// into the mFboDepth object.
+	// </summary>
 	this.mFboBlur = null;
 	
 	
-	/// <summary>
-	/// Framebuffer objects.
-	/// </summary>
+	// <summary>
+	// Framebuffer objects.
+	// </summary>
 	this.mFboDepthColourBuffer = null;
 	this.mFboDepthDepthBuffer = null;
 	this.mFboBlurColourBuffer = null;
 
 	
-	/// <summary>
-	/// Gets or sets the dimensions of the FBO, or in other words the size of the shadow map.
-	/// </summary>
+	// <summary>
+	// Gets or sets the dimensions of the FBO, or in other words the size of the shadow map.
+	// </summary>
 	this.mFboDimension = null;
 	
 	
-	/// <summary>
-	/// The depth shader is responsible for rendering the depth values. The scene will be
-	/// rendered from the light's point of view. For point lights, this will be iterated
-	/// six times, one for each face of the cube.
-	/// </summary>
+	// <summary>
+	// The depth shader is responsible for rendering the depth values. The scene will be
+	// rendered from the light's point of view. For point lights, this will be iterated
+	// six times, one for each face of the cube.
+	// </summary>
 	this.mDepthShader = null;
 	
 	
-	/// <summary>
-	/// The shader uses gaussian to blur a texture. It uses the seperable blur algorithm, which
-	/// divides blurring into two passes. The first pass will render a horizontal blur. The second
-	/// pass will render the vertical blur. This is much faster than using a traditional convolution
-	/// filter algorithm.
-	/// </summary>
+	// <summary>
+	// The shader uses gaussian to blur a texture. It uses the seperable blur algorithm, which
+	// divides blurring into two passes. The first pass will render a horizontal blur. The second
+	// pass will render the vertical blur. This is much faster than using a traditional convolution
+	// filter algorithm.
+	// </summary>
 	this.mGaussianBlurShader = null;
 	this.mGaussianBlurCubeShader = null;
 	
 	
-	/// <summary>
-	/// The shadowmap shader is identical to the basic lighting shader except that
-	/// it performs an additional check to determine if the pixel is inside a shadow.
-	/// </summary>
+	// <summary>
+	// The shadowmap shader is identical to the basic lighting shader except that
+	// it performs an additional check to determine if the pixel is inside a shadow.
+	// </summary>
 	this.mShadowMapShader = null;
 	this.mShadowMapCubeShader = null;
 	
 	
-	/// <summary>
-	/// This shader renders a simple texture to the screen. It is used for displaying
-	/// the depth map.
-	/// </summary>
+	// <summary>
+	// This shader renders a simple texture to the screen. It is used for displaying
+	// the depth map.
+	// </summary>
 	this.mDepthRenderShader = null;
 	this.mDepthRenderCubeShader = null;
 	
 	
-	/// <summary>
-	/// Surface (rectangle) containing a texture to manipulate or view. Used for blurring or
-	/// showing the depth map.
-	/// </summary>
+	// <summary>
+	// Surface (rectangle) containing a texture to manipulate or view. Used for blurring or
+	// showing the depth map.
+	// </summary>
 	this.mSurface = null;
 	
 	
-	/// <summary>
-	/// Stores a reference to the canvas DOM element, which is used to reset the viewport
-	/// back to its original size after rendering to the FBO, which uses a different
-	/// dimension.
-	/// </summary>
+	// <summary>
+	// Stores a reference to the canvas DOM element, which is used to reset the viewport
+	// back to its original size after rendering to the FBO, which uses a different
+	// dimension.
+	// </summary>
 	this.mCanvas = null;
 	
 	
-	/// <summary>
-	/// UI members.
-	/// </summary>
+	// <summary>
+	// UI members.
+	// </summary>
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	this.mCboxResolution = null;
@@ -208,16 +208,16 @@ function ShadowMapScene ()
 }
 
 
-/// <summary>
-/// Prototypal Inheritance.
-/// </summary>
+// <summary>
+// Prototypal Inheritance.
+// </summary>
 ShadowMapScene.prototype = new BaseScene();
 ShadowMapScene.prototype.constructor = ShadowMapScene;
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 ShadowMapScene.prototype.Start = function ()
 {
 	// Setup members and default values
@@ -359,9 +359,9 @@ ShadowMapScene.prototype.Start = function ()
 }
 
 
-/// <summary>
-/// Method called when the depth map resolution combo box value has changed.
-/// </summary>
+// <summary>
+// Method called when the depth map resolution combo box value has changed.
+// </summary>
 ShadowMapScene.prototype.OnResolutionValueChanged = function (event)
 {
 	// Extract resolution
@@ -380,9 +380,9 @@ ShadowMapScene.prototype.OnResolutionValueChanged = function (event)
 }
 
 
-/// <summary>
-/// Method called when the blur depth map combo box value has changed.
-/// </summary>
+// <summary>
+// Method called when the blur depth map combo box value has changed.
+// </summary>
 ShadowMapScene.prototype.OnBlurDepthMapValueChanged = function (event)
 {
 	if ( this.mCboxBlurDepthMap.selectedIndex == 0 )
@@ -399,9 +399,9 @@ ShadowMapScene.prototype.OnBlurDepthMapValueChanged = function (event)
 }
 
 
-/// <summary>
-/// Method called when the shadow map filter combo box value has changed.
-/// </summary>
+// <summary>
+// Method called when the shadow map filter combo box value has changed.
+// </summary>
 ShadowMapScene.prototype.OnShadowMapFilterValueChanged = function (event)
 {
 	this.mDepthShader.FilterType = this.mCboxFilter.selectedIndex;
@@ -412,18 +412,18 @@ ShadowMapScene.prototype.OnShadowMapFilterValueChanged = function (event)
 }
 
 
-/// <summary>
-/// Method called when the view state combo box value has changed.
-/// </summary>
+// <summary>
+// Method called when the view state combo box value has changed.
+// </summary>
 ShadowMapScene.prototype.OnViewStateValueChanged = function (event)
 {
 	this.mViewState = this.mCboxViewState.selectedIndex;
 }
 
 
-/// <summary>
-/// Method called when the light source has changed.
-/// </summary>
+// <summary>
+// Method called when the light source has changed.
+// </summary>
 ShadowMapScene.prototype.OnDirectionalLightSourceClicked = function (event)
 {	
 	this.mIsPointLightActive = false;
@@ -450,9 +450,9 @@ ShadowMapScene.prototype.OnDirectionalLightSourceClicked = function (event)
 }
 
 
-/// <summary>
-/// Method called when the light source has changed.
-/// </summary>
+// <summary>
+// Method called when the light source has changed.
+// </summary>
 ShadowMapScene.prototype.OnPointLightSourceClicked = function (event)
 {
 	this.mIsPointLightActive = true;
@@ -479,9 +479,9 @@ ShadowMapScene.prototype.OnPointLightSourceClicked = function (event)
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 ShadowMapScene.prototype.Update = function ()
 {
 	BaseScene.prototype.Update.call(this);
@@ -672,9 +672,9 @@ ShadowMapScene.prototype.Update = function ()
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 ShadowMapScene.prototype.End = function ()
 {
 	BaseScene.prototype.End.call(this);
@@ -715,11 +715,11 @@ ShadowMapScene.prototype.End = function ()
 }
 
 
-/// <summary>
-/// This method is called when an item for the scene has downloaded. it
-/// will increment the resource counter and dispatch an OnLoadComplete
-/// event once all items have been downloaded.
-/// </summary>
+// <summary>
+// This method is called when an item for the scene has downloaded. it
+// will increment the resource counter and dispatch an OnLoadComplete
+// event once all items have been downloaded.
+// </summary>
 ShadowMapScene.prototype.OnItemLoaded = function (sender, response)
 {
 	BaseScene.prototype.OnItemLoaded.call(this, sender, response);
@@ -729,11 +729,11 @@ ShadowMapScene.prototype.OnItemLoaded = function (sender, response)
 }
 
 
-/// <summary>
-/// This method is called to compile a bunch of shaders. The browser will be
-/// blocked while the GPU compiles, so we need to give the browser a chance
-/// to refresh its view and take user input while this happens (good ui practice).
-/// </summary>
+// <summary>
+// This method is called to compile a bunch of shaders. The browser will be
+// blocked while the GPU compiles, so we need to give the browser a chance
+// to refresh its view and take user input while this happens (good ui practice).
+// </summary>
 ShadowMapScene.prototype.CompileShaders = function (index, list)
 {
 	var shaderItem = list[index];
@@ -777,11 +777,11 @@ ShadowMapScene.prototype.CompileShaders = function (index, list)
 }
 
 
-/// <summary>
-/// This method is called to load a bunch of shaders. The browser will be
-/// blocked while the GPU loads, so we need to give the browser a chance
-/// to refresh its view and take user input while this happens (good ui practice).
-/// </summary>
+// <summary>
+// This method is called to load a bunch of shaders. The browser will be
+// blocked while the GPU loads, so we need to give the browser a chance
+// to refresh its view and take user input while this happens (good ui practice).
+// </summary>
 ShadowMapScene.prototype.LoadShaders = function (index)
 {
 	if ( index == 0 )
@@ -900,9 +900,9 @@ ShadowMapScene.prototype.LoadShaders = function (index)
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 ShadowMapScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders
