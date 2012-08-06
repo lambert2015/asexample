@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Gamma Correction Shader</title>
+		
+		<!-- Stylesheet -->
+		<link type="text/css" href="../libs/jquery/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />	
+		<link type="text/css" href="style.css" rel="stylesheet" type="text/css" />
+		<link type="text/css" href="app_style.css" rel="stylesheet" type="text/css" />
+		
+		<!-- JQuery Includes -->
+		<script type="text/javascript" src="../libs/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../libs/jquery/jquery-ui-1.8.17.custom.min.js"></script>
+		
+		<!-- Nutty Software Open WebGL Framework Includes -->
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Entity.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Light.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Material.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/PolygonMesh.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cylinder.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Rectangle.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Sphere.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/SamplerState.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/Texture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLFrameBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShaderProgram.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture2D.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTextureCube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLVertexBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpRequest.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpResponse.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Matrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Point.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Quaternion.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/ViewMatrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceManager.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceItem.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/BaseShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/ImageShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Scene/BaseScene.js"></script>
+		
+		<!-- App Includes -->
+		<script type="text/javascript" src="src/BasicShader.js"></script>
+		<script type="text/javascript" src="src/BrightnessShader.js"></script>
+		<script type="text/javascript" src="src/GammaCorrectionScene.js"></script>
+		<script type="text/javascript" src="src/GammaCorrectionSceneGen.js"></script>
+		<script type="text/javascript" src="src/MainApp.js"></script>
+		
+		<!-- Initialize Scene -->
+		<script type="text/javascript">
+			CurrentScene = new GammaCorrectionScene();
+		</script>
+	</head>
+
+	<body onload="AppLoad();" onunload="AppStop();">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">WebGL Demo</a></li>
+			</ul>
+			<div id="tabs-1">
+				<div id="DivStart">
+					<br />
+					<button id="BtnStartWebGL" onclick="AppStart();">Start WebGL Demo</button>
+					<br />
+					<p id="DivNoWebGL">Sorry, it appears you don't have support for WebGL.</p>
+					<br />
+					
+					<p>In order to run this demo, you must meet the following requirements.</p>
+					<ul class="UlList">
+						<li>You are running the latest version of Mozilla Firefox, Google Chrome, or Safari.</li>
+						<li>You have a WebGL compatible video card with the latest drivers.</li>
+						<li>Your video card is not blacklisted. You can check the current blacklist on <a href="http://www.khronos.org/webgl/wiki/BlacklistsAndWhitelists">Khronos</a>.</li>
+					</ul>
+					<p>Some browsers may require additional configuration in order to get WebGL to run. If you are having problems running this demo, visit the following sites.</p>
+					<ul class="UlList">
+						<li><a href="https://wiki.mozilla.org/Blocklisting/Blocked_Graphics_Drivers#How_to_force-enable_blocked_graphics_features">Firefox: How to force-enable blocked graphics features</a>.</li>
+						<li><a href="http://www.borfast.com/blog/how-enable-webgl-google-chrome-linux-blacklisted-graphics-card">Chrome: How to enable WebGL with a blacklisted graphics card.</a></li>
+						<li><a href="https://discussions.apple.com/thread/3300585?start=0&tstart=0">Safari: How to enable WebGL</a>.</li>
+					</ul>
+				</div>
+			
+				<div id="WebGLDemo">
+					<!-- WebGL Canvas -->
+					<canvas id="Canvas" width="650" height="487">
+					</canvas>
+					
+					<!-- Loading Progress -->
+					<div id="DivLoading">
+						<span>Loading </span><span id="TxtLoadingProgress"></span><span>%</span>
+					</div>
+					
+					<!-- Controls -->
+					<div id="DivControls">
+						<!-- Object Ambient -->
+						<div>
+							<h4>Ambient Colour</h4>
+							<div id="OARedSlider" class="RedSlider"><div id="OARedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="OAGreenSlider" class="GreenSlider"><div id="OAGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="OABlueSlider" class="BlueSlider"><div id="OABlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Object Diffuse -->
+						<div>
+							<h4>Diffuse Colour</h4>
+							<div id="ODRedSlider" class="RedSlider"><div id="ODRedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="ODGreenSlider" class="GreenSlider"><div id="ODGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="ODBlueSlider" class="BlueSlider"><div id="ODBlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Light Intensity -->
+						<div>
+							<h4>Intensity</h4>
+							<div id="IntensityValueSlider" class="Slider"><div id="IntensityValueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+					
+						<!-- Gamma -->
+						<div>
+							<h4>Gamma</h4>
+							<input type="checkbox" id="BtnEnableGamma" checked="checked" /> Enable</input><br />
+							<div id="GammaSlider" class="Slider"><div class="SliderTextValue" id="GammaSliderTxt"></div></div>
+						</div>
+						
+						<!-- Brightness -->
+						<div>
+							<h4>Brightness</h4>
+							<div id="BrightnessValueSlider" class="Slider"><div id="BrightnessValueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Contrast -->
+						<div>
+							<h4>Contrast</h4>
+							<div id="ContrastValueSlider" class="Slider"><div id="ContrastValueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Scenes -->
+						<div>
+							<h4>Steps</h4>
+							<select id="CboxScenes">
+								<option selected="selected">1. Basic</option>
+								<option>2. Textures 1</option>
+								<option>3. Textures 2</option>
+								<option>4. Textures 3</option>
+								<option>5. Calibration</option>
+							</select>
+						</div>
+						<br />
+					</div>
+					
+					<!-- Text: Scene 1 (Plain Sphere) -->
+					<div id="DivScene1Text" class="DivSceneText">
+						<p>When you render graphics in linear space, the resulting image you see is actually darker than it should be. This is because your monitor is applying a gamma to the pixels. To account for this, you must apply the inverse gamma to the pixel before sending it to the monitor. The result you see is the correct brightness.</p>
+					</div>
+					
+					<div id="DivScene2Text" class="DivSceneText">
+						<p>The left side shows a gamma corrected render and the right side shows a gamma uncorrected render. The correctly rendered image is actually the one on the right side. Why? Because textures are usually already gamma corrected. The image on the left shows the texture being gamma corrected twice, causing it to be brighter than it should be.</p>
+					</div>
+					
+					<div id="DivScene3Text" class="DivSceneText">
+						<p>When you use gamma corrected textures with linear lighting and gamma corrected fragments, you end up with an incorrect result. The texture is gamma corrected twice, causing the final render to appear brighter than it should be.</p>
+					</div>
+					
+					<div id="DivScene4Text" class="DivSceneText">
+						<p>To render the correct result, you must uncorrect the texture by applying a gamma on it. You could do this as a pre-process to save on performance from runtime conversions. The linearized texture can then be used throughout your renderer. In your final fragment shader, you apply the inverse gamma to the pixel to produce the correct illumination.</p>
+					</div>
+					
+					<div id="DivScene5Text" class="DivSceneText">
+						<p>To calibrate the perceived gamma, adjust the brightness and contrast controls such that the gradients below fall within an acceptable range. You should only just barely notice a difference between each of the black and white gradient blocks. This test works best when running in fullscreen with a completely dark background.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

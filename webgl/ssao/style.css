@@ -1,0 +1,121 @@
+body
+{
+	color: #303030;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	margin: 0px;
+}
+
+img
+{
+	border: 0px;
+	vertical-align: top;
+}
+
+p
+{
+	margin: 0px;
+}
+
+pre.prettyprint
+{
+	overflow: auto;
+}
+
+h1, h2, h3, h4
+{
+	color: #21557B;
+	font-weight: bold;
+	margin-bottom: 7px;
+}
+
+h2, h3
+{
+	margin-top: 30px;
+}
+
+h4
+{
+	font-size: 1.0em;
+	margin-top: 14px;
+}
+
+#tabs
+{
+	display: none;
+	width: 800px;
+}
+
+#tabs-1
+{
+	height: 487px;
+}
+
+#DivStart
+{
+}
+
+#BtnStartWebGL
+{
+	margin-bottom: 10px;
+}
+
+#DivNoWebGL
+{
+	color: #FF0000;
+	display: none;
+}
+
+#DivLoading
+{
+	bottom: 50%;
+	font-size: 1.2em;
+	left: 50%;
+	margin-left: -75px;
+	position: absolute;
+	right: 50%;
+	text-align: center;
+	top: 50%;
+	width: 150px;
+}
+
+.UlList
+{
+	list-style-type: decimal;
+	line-height: 2em;
+}
+
+#WebGLDemo
+{
+	display: none;
+}
+
+#Canvas
+{
+	left: 138px;
+	position: relative;
+}
+
+#DivControls
+{
+	left: 10px;
+	position: absolute;
+	top: 40px;
+}
+
+.Slider, .RedSlider, .GreenSlider, .BlueSlider
+{
+	margin-bottom: 10px;
+	width: 90px;
+}
+
+.SliderTextValue
+{
+	left: 100px;
+	position: relative;
+	top: -10px;
+}
+
+.RedSlider .ui-slider-range { background: #ff0000; }
+.GreenSlider .ui-slider-range { background: #00ff00; }
+.BlueSlider .ui-slider-range { background: #0000ff; }
