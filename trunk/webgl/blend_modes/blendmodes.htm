@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Blend Modes</title>
+		
+		<!-- Stylesheet -->
+		<link type="text/css" href="../libs/jquery/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />	
+		<link type="text/css" href="style.css" rel="stylesheet" type="text/css" />
+		<link type="text/css" href="app.css" rel="stylesheet" type="text/css" />
+		
+		<!-- JQuery Includes -->
+		<script type="text/javascript" src="../libs/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../libs/jquery/jquery-ui-1.8.17.custom.min.js"></script>
+		
+		<!-- Nutty Software Open WebGL Framework Includes -->
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Entity.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Light.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Material.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/PolygonMesh.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cylinder.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Rectangle.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Sphere.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/SamplerState.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/Texture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLFrameBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShaderProgram.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture2D.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTextureCube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLVertexBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpRequest.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpResponse.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Matrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Point.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Quaternion.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/RandomGenerator.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/ViewMatrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceManager.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceItem.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/BaseShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/ImageShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Scene/BaseScene.js"></script>
+		
+		<!-- App Includes -->
+		<script type="text/javascript" src="src/BlendScene.js"></script>
+		<script type="text/javascript" src="src/BlendShader.js"></script>
+		<script type="text/javascript" src="src/MainApp.js"></script>
+		
+		<!-- Initialize Scene -->
+		<script type="text/javascript">
+			CurrentScene = new BlendScene();
+		</script>
+	</head>
+
+	<body onload="AppLoad();" onunload="AppStop();">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">WebGL Demo</a></li>
+			</ul>
+			<div id="tabs-1">
+				<div id="DivStart">
+					<br />
+					<button id="BtnStartWebGL" onclick="AppStart();">Start WebGL Demo</button>
+					<br />
+					<p id="DivNoWebGL">Sorry, it appears you don't have support for WebGL.</p>
+					<br />
+					
+					<p>In order to run this demo, you must meet the following requirements.</p>
+					<ul class="UlList">
+						<li>You are running the latest version of Mozilla Firefox, Google Chrome, or Safari.</li>
+						<li>You have a WebGL compatible video card with the latest drivers.</li>
+						<li>Your video card is not blacklisted. You can check the current blacklist on <a href="http://www.khronos.org/webgl/wiki/BlacklistsAndWhitelists">Khronos</a>.</li>
+					</ul>
+					<p>Some browsers may require additional configuration in order to get WebGL to run. If you are having problems running this demo, visit the following sites.</p>
+					<ul class="UlList">
+						<li><a href="https://wiki.mozilla.org/Blocklisting/Blocked_Graphics_Drivers#How_to_force-enable_blocked_graphics_features">Firefox: How to force-enable blocked graphics features</a>.</li>
+						<li><a href="http://www.borfast.com/blog/how-enable-webgl-google-chrome-linux-blacklisted-graphics-card">Chrome: How to enable WebGL with a blacklisted graphics card.</a></li>
+						<li><a href="https://discussions.apple.com/thread/3300585?start=0&tstart=0">Safari: How to enable WebGL</a>.</li>
+					</ul>
+				</div>
+			
+				<div id="WebGLDemo">
+					<!-- WebGL Canvas -->
+					<canvas id="Canvas" width="650" height="487">
+					</canvas>
+					
+					<!-- Loading Progress -->
+					<div id="DivLoading">
+						<span>Loading </span><span id="TxtLoadingProgress"></span><span>%</span>
+					</div>
+					
+					<!-- Controls -->
+					<div id="DivControls">
+						<div>
+							<h4>Source Texture</h4>
+							<select id="CBoxSource" autocomplete="off">
+								<option>Colour</option>
+								<option selected="selected">RCMP</option>
+								<option>Face</option>
+							</select>
+						</div>
+						<div id="DivSrcColour">
+							<h4>Source Colour</h4>
+							<div id="SrcRedSlider" class="RedSlider"><div id="SrcRedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="SrcGreenSlider" class="GreenSlider"><div id="SrcGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="SrcBlueSlider" class="BlueSlider"><div id="SrcBlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						<br />
+						<div>
+							<h4>Dest Texture</h4>
+							<select id="CBoxDestination" autocomplete="off">
+								<option>Colour</option>
+								<option selected="selected">RCMP</option>
+								<option>Face</option>
+							</select>
+						</div>
+						<div id="DivDstColour">
+							<h4>Dest Colour</h4>
+							<div id="DstRedSlider" class="RedSlider"><div id="DstRedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="DstGreenSlider" class="GreenSlider"><div id="DstGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="DstBlueSlider" class="BlueSlider"><div id="DstBlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						<br />
+						<div>
+							<h4>Blend Op</h4>
+							<select id="CBoxBlendMode" autocomplete="off">
+								<option>Add</option>
+								<option>Subtract</option>
+								<option>Multiply</option>
+								<option>Darken</option>
+								<option>Colour Burn</option>
+								<option>Linear Burn</option>
+								<option>Lighten</option>
+								<option>Screen</option>
+								<option>Colour Dodge</option>
+								<option>Linear Dodge</option>
+								<option>Overlay</option>
+								<option>Soft Light</option>
+								<option>Hard Light</option>
+								<option>Vivid Light</option>
+								<option>Linear Light</option>
+								<option>Pin Light</option>
+								<option>Difference</option>
+								<option>Exclusion</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

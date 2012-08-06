@@ -1,0 +1,12 @@
+.DivBlock, .TextBlock
+{
+	display: inline-block;
+	width: 128px;
+	vertical-align: top;
+}
+
+.TextBlock
+{
+	margin-left: 20px;
+	width: 600px;
+}

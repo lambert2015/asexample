@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Basic Lighting Shader</title>
+		
+		<!-- Stylesheet -->
+		<link type="text/css" href="../libs/jquery/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />	
+		<link type="text/css" href="style.css" rel="stylesheet" type="text/css" />
+		
+		<!-- JQuery Includes -->
+		<script type="text/javascript" src="../libs/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../libs/jquery/jquery-ui-1.8.17.custom.min.js"></script>
+		
+		<!-- Nutty Software Open WebGL Framework Includes -->
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Entity.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Light.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Material.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/PolygonMesh.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cylinder.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Rectangle.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Sphere.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/SamplerState.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/Texture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLFrameBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShaderProgram.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture2D.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTextureCube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLVertexBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpRequest.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpResponse.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Matrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Point.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Quaternion.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/ViewMatrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceManager.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceItem.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/BaseShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/ImageShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Scene/BaseScene.js"></script>
+		
+		<!-- App Includes -->
+		<script type="text/javascript" src="src/BasicShader.js"></script>
+		<script type="text/javascript" src="src/BasicLightingScene.js"></script>
+		<script type="text/javascript" src="src/MainApp.js"></script>
+		
+		<!-- Initialize Scene -->
+		<script type="text/javascript">
+			CurrentScene = new BasicLightingScene();
+		</script>
+	</head>
+
+	<body onload="AppLoad();" onunload="AppStop();">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">WebGL Demo</a></li>
+			</ul>
+			<div id="tabs-1">
+				<div id="DivStart">
+					<br />
+					<button id="BtnStartWebGL" onclick="AppStart();">Start WebGL Demo</button>
+					<br />
+					<p id="DivNoWebGL">Sorry, it appears you don't have support for WebGL.</p>
+					<br />
+					
+					<p>In order to run this demo, you must meet the following requirements.</p>
+					<ul class="UlList">
+						<li>You are running the latest version of Mozilla Firefox, Google Chrome, or Safari.</li>
+						<li>You have a WebGL compatible video card with the latest drivers.</li>
+						<li>Your video card is not blacklisted. You can check the current blacklist on <a href="http://www.khronos.org/webgl/wiki/BlacklistsAndWhitelists">Khronos</a>.</li>
+					</ul>
+					<p>Some browsers may require additional configuration in order to get WebGL to run. If you are having problems running this demo, visit the following sites.</p>
+					<ul class="UlList">
+						<li><a href="https://wiki.mozilla.org/Blocklisting/Blocked_Graphics_Drivers#How_to_force-enable_blocked_graphics_features">Firefox: How to force-enable blocked graphics features</a>.</li>
+						<li><a href="http://www.borfast.com/blog/how-enable-webgl-google-chrome-linux-blacklisted-graphics-card">Chrome: How to enable WebGL with a blacklisted graphics card.</a></li>
+						<li><a href="https://discussions.apple.com/thread/3300585?start=0&tstart=0">Safari: How to enable WebGL</a>.</li>
+					</ul>
+				</div>
+			
+				<div id="WebGLDemo">
+					<!-- WebGL Canvas -->
+					<canvas id="Canvas" width="650" height="487">
+					</canvas>
+					
+					<!-- Controls -->
+					<div id="DivControls">
+						<!-- Object Ambient -->
+						<div>
+							<h4>Ambient Colour</h4>
+							<div id="OARedSlider" class="RedSlider"><div id="OARedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="OAGreenSlider" class="GreenSlider"><div id="OAGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="OABlueSlider" class="BlueSlider"><div id="OABlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Object Diffuse -->
+						<div>
+							<h4>Diffuse Colour</h4>
+							<div id="ODRedSlider" class="RedSlider"><div id="ODRedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="ODGreenSlider" class="GreenSlider"><div id="ODGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="ODBlueSlider" class="BlueSlider"><div id="ODBlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Object Specular -->
+						<div>
+							<h4>Specular Colour</h4>
+							<div id="OSRedSlider" class="RedSlider"><div id="OSRedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="OSGreenSlider" class="GreenSlider"><div id="OSGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="OSBlueSlider" class="BlueSlider"><div id="OSBlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Object Shininess -->
+						<div>
+							<h4>Shininess</h4>
+							<div id="OSValueSlider" class="Slider"><div id="OSValueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Light Colour -->
+						<div>
+							<h4>Light Colour</h4>
+							<div id="LCRedSlider" class="RedSlider"><div id="LCRedSliderTxt" class="SliderTextValue"></div></div>
+							<div id="LCGreenSlider" class="GreenSlider"><div id="LCGreenSliderTxt" class="SliderTextValue"></div></div>
+							<div id="LCBlueSlider" class="BlueSlider"><div id="LCBlueSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Light Attenuation -->
+						<div>
+							<h4>Attenuation</h4>
+							<div id="LAConstantSlider" class="Slider"><div id="LAConstantSliderTxt" class="SliderTextValue"></div></div>
+							<div id="LALinearSlider" class="Slider"><div id="LALinearSliderTxt" class="SliderTextValue"></div></div>
+							<div id="LAQuadraticSlider" class="Slider"><div id="LAQuadraticSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						
+						<!-- Other Options -->
+						<div>
+							<h4>Shading Type</h4>
+							<input type="radio" id="BtnGouraudShading" name="shading" />Gouraud</input><br />
+							<input type="radio" id="BtnPhongShading" name="shading" checked="true" />Phong</input>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

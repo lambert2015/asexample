@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Screen Space Ambient Occlusion (SSAO)</title>
+		
+		<!-- Stylesheet -->
+		<link type="text/css" href="../libs/jquery/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />	
+		<link type="text/css" href="style.css" rel="stylesheet" type="text/css" />
+		<link type="text/css" href="app.css" rel="stylesheet" type="text/css" />
+		
+		<!-- JQuery Includes -->
+		<script type="text/javascript" src="../libs/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../libs/jquery/jquery-ui-1.8.17.custom.min.js"></script>
+		
+		<!-- Nutty Software Open WebGL Framework Includes -->
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Entity.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Light.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Material.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/PolygonMesh.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cylinder.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Rectangle.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Sphere.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/SamplerState.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/Texture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLFrameBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShaderProgram.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture2D.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTextureCube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLVertexBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpRequest.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpResponse.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Matrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Point.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Quaternion.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/ViewMatrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceManager.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceItem.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/BaseShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/ImageShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Scene/BaseScene.js"></script>
+		
+		<!-- App Includes -->
+		<script type="text/javascript" src="src/BasicShader.js"></script>
+		<script type="text/javascript" src="src/BrightnessShader.js"></script>
+		<script type="text/javascript" src="src/DeferredShader.js"></script>
+		<script type="text/javascript" src="src/SSAOScene.js"></script>
+		<script type="text/javascript" src="src/SSAOSceneGen.js"></script>
+		<script type="text/javascript" src="src/SSAOShader.js"></script>
+		<script type="text/javascript" src="src/MainApp.js"></script>
+		
+		<!-- Initialize Scene -->
+		<script type="text/javascript">
+			CurrentScene = new SSAOScene();
+		</script>
+	</head>
+
+	<body onload="AppLoad();" onunload="AppStop();">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">WebGL Demo</a></li>
+			</ul>
+			<div id="tabs-1">
+				<div id="DivStart">
+					<br />
+					<button id="BtnStartWebGL" onclick="AppStart();">Start WebGL Demo</button>
+					<br />
+					<p id="DivNoWebGL">Sorry, it appears you don't have support for WebGL.</p>
+					<br />
+					
+					<div id="DivNoFlaotTextureSupport">
+						<p>This WebGL demo requires the <a href="http://www.khronos.org/registry/webgl/extensions/OES_texture_float/">OES_texture_float</a> extension to work, which your system does not support. Please ensure you are using the latest video card drivers and browser version to run this demo. If your system is up-to-date, then it is possible your video card does not support this feature.</p>
+						<br />
+					</div>
+					
+					<p>In order to run this demo, you must meet the following requirements.</p>
+					<ul class="UlList">
+						<li>You are running the latest version of Mozilla Firefox, Google Chrome, or Safari.</li>
+						<li>You have a WebGL compatible video card with the latest drivers.</li>
+						<li>Your video card is not blacklisted. You can check the current blacklist on <a href="http://www.khronos.org/webgl/wiki/BlacklistsAndWhitelists">Khronos</a>.</li>
+					</ul>
+					<p>Some browsers may require additional configuration in order to get WebGL to run. If you are having problems running this demo, visit the following sites.</p>
+					<ul class="UlList">
+						<li><a href="https://wiki.mozilla.org/Blocklisting/Blocked_Graphics_Drivers#How_to_force-enable_blocked_graphics_features">Firefox: How to force-enable blocked graphics features</a>.</li>
+						<li><a href="http://www.borfast.com/blog/how-enable-webgl-google-chrome-linux-blacklisted-graphics-card">Chrome: How to enable WebGL with a blacklisted graphics card.</a></li>
+						<li><a href="https://discussions.apple.com/thread/3300585?start=0&tstart=0">Safari: How to enable WebGL</a>.</li>
+					</ul>
+				</div>
+			
+				<div id="WebGLDemo">
+					<!-- WebGL Canvas -->
+					<canvas id="Canvas" width="650" height="487">
+					</canvas>
+					
+					<!-- Loading Progress -->
+					<div id="DivLoading">
+						<span>Loading </span><span id="TxtLoadingProgress"></span><span>%</span>
+					</div>
+					
+					<!-- Controls -->
+					<div id="DivControls">
+						<div>
+							<h4>Rot. and Zoom</h4>
+							<p>Use mouse.</p>
+						
+							<h4>View Options</h4>
+							<input id="BtnEnableSSAO" type="checkbox" checked="checked" autocomplete="off" /> <span>Enable SSAO</span>
+							
+							<!-- AO Occluder Bias -->
+							<div>
+								<h4>Occluder Bias</h4>
+								<div id="OccluderBiasSlider" class="Slider"><div id="OccluderBiasSliderTxt" class="SliderTextValue"></div></div>
+							</div>
+							
+							<!-- AO Sampling Radius -->
+							<div>
+								<h4>Samp. Radius</h4>
+								<div id="SamplingRadiusSlider" class="Slider"><div id="SamplingRadiusSliderTxt" class="SliderTextValue"></div></div>
+							</div>
+							
+							<!-- AO Attenuation -->
+							<div>
+								<h4>Attenuation</h4>
+								<div id="AttConstantSlider" class="Slider"><div id="AttConstantSliderTxt" class="SliderTextValue"></div></div>
+								<div id="AttLinearSlider" class="Slider"><div id="AttLinearSliderTxt" class="SliderTextValue"></div></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

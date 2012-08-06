@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Refraction Shader</title>
+		
+		<!-- Stylesheet -->
+		<link type="text/css" href="../libs/jquery/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />	
+		<link type="text/css" href="style.css" rel="stylesheet" type="text/css" />
+		
+		<!-- JQuery Includes -->
+		<script type="text/javascript" src="../libs/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../libs/jquery/jquery-ui-1.8.17.custom.min.js"></script>
+		
+		<!-- Nutty Software Open WebGL Framework Includes -->
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Entity.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Light.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Entity/Material.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/PolygonMesh.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Cylinder.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Rectangle.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Geometry/Sphere.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/SamplerState.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Render/Texture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLFrameBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLShaderProgram.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTexture2D.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLTextureCube.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/GL/GLVertexBufferObject.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpRequest.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Http/HttpResponse.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Matrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Point.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/Quaternion.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Math/ViewMatrix.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceManager.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Resource/ResourceItem.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/BaseShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Shader/ImageShader.js"></script>
+		<script type="text/javascript" src="../libs/ca/nutty/Scene/BaseScene.js"></script>
+		
+		<!-- App Includes -->
+		<script type="text/javascript" src="src/BasicShader.js"></script>
+		<script type="text/javascript" src="src/BrightnessShader.js"></script>
+		<script type="text/javascript" src="src/RefractionScene.js"></script>
+		<script type="text/javascript" src="src/RefractionSceneGen.js"></script>
+		<script type="text/javascript" src="src/MainApp.js"></script>
+		<script type="text/javascript" src="src/RefractionShader.js"></script>
+		<script type="text/javascript" src="src/PixelTagShader.js"></script>
+		<script type="text/javascript" src="src/SkyboxShader.js"></script>
+		
+		<!-- Initialize Scene -->
+		<script type="text/javascript">
+			CurrentScene = new RefractionScene();
+		</script>
+	</head>
+
+	<body onload="AppLoad();" onunload="AppStop();">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">WebGL Demo</a></li>
+			</ul>
+			<div id="tabs-1">
+				<div id="DivStart">
+					<br />
+					<button id="BtnStartWebGL" onclick="AppStart();">Start WebGL Demo</button>
+					<br />
+					<p id="DivNoWebGL">Sorry, it appears you don't have support for WebGL.</p>
+					<br />
+					
+					<p>In order to run this demo, you must meet the following requirements.</p>
+					<ul class="UlList">
+						<li>You are running the latest version of Mozilla Firefox, Google Chrome, or Safari.</li>
+						<li>You have a WebGL compatible video card with the latest drivers.</li>
+						<li>Your video card is not blacklisted. You can check the current blacklist on <a href="http://www.khronos.org/webgl/wiki/BlacklistsAndWhitelists">Khronos</a>.</li>
+					</ul>
+					<p>Some browsers may require additional configuration in order to get WebGL to run. If you are having problems running this demo, visit the following sites.</p>
+					<ul class="UlList">
+						<li><a href="https://wiki.mozilla.org/Blocklisting/Blocked_Graphics_Drivers#How_to_force-enable_blocked_graphics_features">Firefox: How to force-enable blocked graphics features</a>.</li>
+						<li><a href="http://www.borfast.com/blog/how-enable-webgl-google-chrome-linux-blacklisted-graphics-card">Chrome: How to enable WebGL with a blacklisted graphics card.</a></li>
+						<li><a href="https://discussions.apple.com/thread/3300585?start=0&tstart=0">Safari: How to enable WebGL</a>.</li>
+					</ul>
+				</div>
+			
+				<div id="WebGLDemo">
+					<!-- WebGL Canvas -->
+					<canvas id="Canvas" width="650" height="487">
+					</canvas>
+					
+					<!-- Loading Progress -->
+					<div id="DivLoading">
+						<span>Loading </span><span id="TxtLoadingProgress"></span><span>%</span>
+					</div>
+					
+					<!-- Controls -->
+					<div id="DivControls">
+						<div>
+							<h4>Rot. and Zoom</h4>
+							<p>Use mouse.</p>
+						</div>
+						<div>
+							<h4>Amplitude</h4>
+							<div id="AmplitudeSlider" class="Slider"><div id="AmplitudeSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						<div>
+							<h4>Frequency</h4>
+							<div id="FrequencySlider" class="Slider"><div id="FrequencySliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						<div>
+							<h4>Period</h4>
+							<div id="PeriodSlider" class="Slider"><div id="PeriodSliderTxt" class="SliderTextValue"></div></div>
+						</div>
+						<div>
+							<h4>Presets</h4>
+							<select id="CBoxPreset" autocomplete="off">
+								<option>Heat Haze</option>
+								<option>747 Jet</option>
+								<option>Military Jet</option>
+								<option>Water</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
