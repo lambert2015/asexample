@@ -1,69 +1,40 @@
-/// <summary>
-/// Nutty Software Open WebGL Framework
-/// 
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+// <summary>
+// Matrices are column-major order.
+// </summary>
 
 
-/// <summary>
-/// Matrices are column-major order.
-/// </summary>
-
-
-/// <summary>
-/// Constructor.
-/// </summary>
+// <summary>
+// Constructor.
+// </summary>
 function Matrix ()
 {
-	/// <summary>
-	/// An arbitrary sized matrix.
-	/// </summary>
+	// <summary>
+	// An arbitrary sized matrix.
+	// </summary>
 	this.MMatrix = [];
 	
 
-	/// <summary>
-	/// Stores the number of rows.
-	/// </summary>
+	// <summary>
+	// Stores the number of rows.
+	// </summary>
 	this.mNumRows = 4;
 
 
-	/// <summary>
-	/// Stores the number of columns.
-	/// </summary>
+	// <summary>
+	// Stores the number of columns.
+	// </summary>
 	this.mNumColumns = 4;
 
 
-	/// <summary>
-	/// Stores the euler angles of this matrix.
-	/// </summary>
+	// <summary>
+	// Stores the euler angles of this matrix.
+	// </summary>
 	this.mRotation = new Point();
 	
 
-	/// <summary>
-	/// Stores the (x, y, z) scale values.
-	/// </summary>
+	// <summary>
+	// Stores the (x, y, z) scale values.
+	// </summary>
 	this.mScale = new Point(1, 1, 1, 1);
 	
 	
@@ -72,9 +43,9 @@ function Matrix ()
 }
 
 
-/// <summary>
-/// Add two matrices.
-/// </summary>
+// <summary>
+// Add two matrices.
+// </summary>
 Matrix.prototype.Add = function (matrix)
 {
 	// Add
@@ -86,9 +57,9 @@ Matrix.prototype.Add = function (matrix)
 }
 
 
-/// <summary>
-/// Subtract two matrices.
-/// </summary>
+// <summary>
+// Subtract two matrices.
+// </summary>
 Matrix.prototype.Subtract = function (matrix)
 {
 	// Subtract
@@ -100,9 +71,9 @@ Matrix.prototype.Subtract = function (matrix)
 }
 
 
-/// <summary>
-/// Multiply two matrices.
-/// </summary>
+// <summary>
+// Multiply two matrices.
+// </summary>
 Matrix.prototype.Multiply = function (matrix)
 {
 	// Multiply
@@ -131,9 +102,9 @@ Matrix.prototype.Multiply = function (matrix)
 }
 
 
-/// <summary>
-/// Transpose a matrix.
-/// </summary>
+// <summary>
+// Transpose a matrix.
+// </summary>
 Matrix.prototype.Transpose = function (matrix)
 {
 	// Transpose
@@ -149,9 +120,9 @@ Matrix.prototype.Transpose = function (matrix)
 }
 
 
-/// <summary>
-/// Invert a 4x4 matrix quickly.
-/// </summary>
+// <summary>
+// Invert a 4x4 matrix quickly.
+// </summary>
 Matrix.prototype.Inverse = function ()
 {
 	var matrix = new Matrix(4, 4);
@@ -197,23 +168,23 @@ function SWAP_ROWS (a, b)
 }
 
 
-/// <summary>
-/// Invert a 4x4 matrix properly.
-///
-/// Mesa 3-D graphics library
-/// Code contributed by Jacques Leroy <jle@star.be>
-/// Copyright (C) 1999-2005  Brian Paul   All Rights Reserved.
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a
-/// copy of this software and associated documentation files (the "Software"),
-/// to deal in the Software without restriction, including without limitation
-/// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the
-/// Software is furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included
-/// in all copies or substantial portions of the Software.
-/// </summary>
+// <summary>
+// Invert a 4x4 matrix properly.
+//
+// Mesa 3-D graphics library
+// Code contributed by Jacques Leroy <jle@star.be>
+// Copyright (C) 1999-2005  Brian Paul   All Rights Reserved.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+// </summary>
 Matrix.prototype.SlowInverse = function ()
 {
 	// Code contributed by Jacques Leroy <jle@star.be>
@@ -347,12 +318,12 @@ Matrix.prototype.SlowInverse = function ()
 }
 
 
-/// <summary>
-/// Points the matrix to look at the specified target.
-/// </summary>
-/// <param name="eye">Position of the matrix.</param>
-/// <param name="target">Target to look at.</param>
-/// <param name="up">Up-vector.</param>
+// <summary>
+// Points the matrix to look at the specified target.
+// </summary>
+// <param name="eye">Position of the matrix.</param>
+// <param name="target">Target to look at.</param>
+// <param name="up">Up-vector.</param>
 Matrix.prototype.PointAt = function (eye, target, up)
 {
 	// Up (Y-axis)
@@ -395,12 +366,12 @@ Matrix.prototype.PointAt = function (eye, target, up)
 }
 
 
-/// <summary>
-/// Translate this matrix by the specified values.
-/// </summary>
-/// <param name="x">X-axis translation.</param>
-/// <param name="y">Y-axis translation.</param>
-/// <param name="z">Z-axis translation.</param>
+// <summary>
+// Translate this matrix by the specified values.
+// </summary>
+// <param name="x">X-axis translation.</param>
+// <param name="y">Y-axis translation.</param>
+// <param name="z">Z-axis translation.</param>
 Matrix.prototype.Translate = function (x, y, z)
 {
 	this.MMatrix[12] = x;
@@ -409,12 +380,12 @@ Matrix.prototype.Translate = function (x, y, z)
 }
 
 
-/// <summary>
-/// Rotate this matrix by the specified values.
-/// </summary>
-/// <param name="x">X-axis rotation.</param>
-/// <param name="y">Y-axis rotation.</param>
-/// <param name="z">Z-axis rotation.</param>
+// <summary>
+// Rotate this matrix by the specified values.
+// </summary>
+// <param name="x">X-axis rotation.</param>
+// <param name="y">Y-axis rotation.</param>
+// <param name="z">Z-axis rotation.</param>
 Matrix.prototype.Rotate = function (x, y, z)
 {
 	this.mRotation.SetPoint(x, y, z);
@@ -425,21 +396,21 @@ Matrix.prototype.Rotate = function (x, y, z)
 }
 
 
-/// <summary>
-/// Scale this matrix by the specified values.
-/// </summary>
-/// <param name="x">X-axis scale.</param>
-/// <param name="y">Y-axis scale.</param>
-/// <param name="z">Z-axis scale.</param>
+// <summary>
+// Scale this matrix by the specified values.
+// </summary>
+// <param name="x">X-axis scale.</param>
+// <param name="y">Y-axis scale.</param>
+// <param name="z">Z-axis scale.</param>
 Matrix.prototype.Scale = function (x, y, z)
 {
 	this.mScale.SetPoint(x, y, z, 1);
 }
 
 
-/// <summary>
-/// Set the identity matrix.
-/// </summary>
+// <summary>
+// Set the identity matrix.
+// </summary>
 Matrix.prototype.SetIdentity = function ()
 {
 	// Set diagonal to 1.0 and the rest to 0.0
@@ -456,24 +427,24 @@ Matrix.prototype.SetIdentity = function ()
 }
 
 
-/// <summary>
-/// Returns the value at the specified row x column.
-/// </summary>
-/// <param name="row">Row'th index to retrieve.</param>
-/// <param name="column">Column'th index to retrieve.</param>
-/// <returns>The value at Row x Column.</returns>
+// <summary>
+// Returns the value at the specified row x column.
+// </summary>
+// <param name="row">Row'th index to retrieve.</param>
+// <param name="column">Column'th index to retrieve.</param>
+// <returns>The value at Row x Column.</returns>
 Matrix.prototype.GetValue = function (row, column)
 {
 	return this.MMatrix[row * this.mNumColumns + column];
 }
 
 
-/// <summary>
-/// Sets a value at the specified row x column.
-/// </summary>
-/// <param name="row">Row'th index to set.</param>
-/// <param name="column">Column'th index to set.</param>
-/// <param name="value">Value to set at Row x Column.</param>
+// <summary>
+// Sets a value at the specified row x column.
+// </summary>
+// <param name="row">Row'th index to set.</param>
+// <param name="column">Column'th index to set.</param>
+// <param name="value">Value to set at Row x Column.</param>
 Matrix.prototype.SetValue = function (row, column, value)
 {
 	this.MMatrix[row * this.mNumColumns + column] = value;

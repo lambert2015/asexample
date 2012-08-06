@@ -1,62 +1,33 @@
-/// <summary>
-/// Nutty Software Open WebGL Framework
-/// 
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+// <summary>
+// This class represents a single GL shader program. A program consists
+// of exactly one vertex shader and one fragment shader. This class should
+// be inherited by specific shader programs that will use the methods of
+// this class to supply attributes and variables to the shaders.
+// </summary>
 
 
-/// <summary>
-/// This class represents a single GL shader program. A program consists
-/// of exactly one vertex shader and one fragment shader. This class should
-/// be inherited by specific shader programs that will use the methods of
-/// this class to supply attributes and variables to the shaders.
-/// </summary>
-
-
-/// <summary>
-/// Constructor.
-/// <summary>
+// <summary>
+// Constructor.
+// <summary>
 function GLShaderProgram ()
 {
-	/// <summary>
-	/// Name to identify this shader.
-	/// </summary>
+	// <summary>
+	// Name to identify this shader.
+	// </summary>
 	this.Name = null;
 	
 	
-	/// <summary>
-	/// Stores a reference to the shader program.
-	/// </summary>
+	// <summary>
+	// Stores a reference to the shader program.
+	// </summary>
 	this.Program = null;
 }
 
 
-/// <summary>
-/// Creates a new program. Programs contains one or many shaders.
-/// </summary>
-/// <returns>ID of the created shader program.</returns>
+// <summary>
+// Creates a new program. Programs contains one or many shaders.
+// </summary>
+// <returns>ID of the created shader program.</returns>
 GLShaderProgram.prototype.Create = function ()
 {
 	this.Release();
@@ -65,19 +36,19 @@ GLShaderProgram.prototype.Create = function ()
 }
 
 
-/// <summary>
-/// Loads the program onto the video card.
-/// </summary>
+// <summary>
+// Loads the program onto the video card.
+// </summary>
 GLShaderProgram.prototype.Load = function ()
 {
 	gl.useProgram(this.Program);
 }
 
 
-/// <summary>
-/// Removes the speicifed program.
-/// </summary>
-/// <param name="programID">ID of the program to remove.</param>
+// <summary>
+// Removes the speicifed program.
+// </summary>
+// <param name="programID">ID of the program to remove.</param>
 GLShaderProgram.prototype.Release = function ()
 {
 	gl.deleteProgram(this.Program);
@@ -85,10 +56,10 @@ GLShaderProgram.prototype.Release = function ()
 }
 
 
-/// <summary>
-/// Adds the specified a shader to the program.
-/// </summary>
-/// <param name="shader">Shader to attach to the program.</param>
+// <summary>
+// Adds the specified a shader to the program.
+// </summary>
+// <param name="shader">Shader to attach to the program.</param>
 GLShaderProgram.prototype.AddShader = function (shader)
 {
 	// Attach the shader
@@ -96,20 +67,20 @@ GLShaderProgram.prototype.AddShader = function (shader)
 }
 
 
-/// <summary>
-/// Removes the speicifed shader from the specified program.
-/// </summary>
-/// <param name="shader">Shader to remove.</param>
+// <summary>
+// Removes the speicifed shader from the specified program.
+// </summary>
+// <param name="shader">Shader to remove.</param>
 GLShaderProgram.prototype.RemoveShader = function (shader)
 {
 	gl.detachShader(this.Program, shader.Shader);
 }
 
 
-/// <summary>
-/// Once all shaders have been added, link the program.
-/// </summary>
-/// <returns>True if the shaders linked to the program sucessfully, otherwise false.</returns>
+// <summary>
+// Once all shaders have been added, link the program.
+// </summary>
+// <returns>True if the shaders linked to the program sucessfully, otherwise false.</returns>
 GLShaderProgram.prototype.Link = function ()
 {
 	gl.linkProgram(this.Program);
@@ -117,10 +88,10 @@ GLShaderProgram.prototype.Link = function ()
 }
 
 
-/// <summary>
-/// Finds and returns the index of the attribute.
-/// </summary>
-/// <param name="name">Name of the variable to be retrieve.</param>
+// <summary>
+// Finds and returns the index of the attribute.
+// </summary>
+// <param name="name">Name of the variable to be retrieve.</param>
 GLShaderProgram.prototype.GetAttribute = function (name)
 {
 	// Create the variable
@@ -128,10 +99,10 @@ GLShaderProgram.prototype.GetAttribute = function (name)
 }
 
 
-/// <summary>
-/// Finds and returns the index of the variable.
-/// </summary>
-/// <param name="name">Name of the variable to be retrieve.</param>
+// <summary>
+// Finds and returns the index of the variable.
+// </summary>
+// <param name="name">Name of the variable to be retrieve.</param>
 GLShaderProgram.prototype.GetVariable = function (name)
 {
 	// Create the variable
@@ -139,12 +110,12 @@ GLShaderProgram.prototype.GetVariable = function (name)
 }
 
 
-/// <summary>
-/// Assigns a uniform variable to the program.
-/// </summary>
-/// <param name="name">Name of the variable referenced in the shader program.</param>
-/// <param name="data">Data to set.</param>
-/// <param name="size">Size of the data. Valid range is between 1 - 4.</param>
+// <summary>
+// Assigns a uniform variable to the program.
+// </summary>
+// <param name="name">Name of the variable referenced in the shader program.</param>
+// <param name="data">Data to set.</param>
+// <param name="size">Size of the data. Valid range is between 1 - 4.</param>
 GLShaderProgram.prototype.SetVariableIntByName = function (name, x, y, z, w)
 {
 	// Create the variable
@@ -165,12 +136,12 @@ GLShaderProgram.prototype.SetVariableInt = function (variable, x, y, z, w)
 }
 
 
-/// <summary>
-/// Assigns a uniform variable to the program.
-/// </summary>
-/// <param name="name">Name of the variable referenced in the shader program.</param>
-/// <param name="data">Data to set.</param>
-/// <param name="size">Size of the data. Valid range is between 1 - 4.</param>
+// <summary>
+// Assigns a uniform variable to the program.
+// </summary>
+// <param name="name">Name of the variable referenced in the shader program.</param>
+// <param name="data">Data to set.</param>
+// <param name="size">Size of the data. Valid range is between 1 - 4.</param>
 GLShaderProgram.prototype.SetVariableByName = function (name, x, y, z, w)
 {
 	// Create the variable
@@ -192,12 +163,12 @@ GLShaderProgram.prototype.SetVariable = function (variable, x, y, z, w)
 }
 
 
-/// <summary>
-/// Assigns a uniform matrix to the program.
-/// </summary>
-/// <param name="name">Name of the matrix referenced in the shader program.</param>
-/// <param name="matrix">Matrix data.</param>
-/// <param name="size">Size of the matrix. Valid range is between 2 - 4 (2x2 - 4x4).</param>
+// <summary>
+// Assigns a uniform matrix to the program.
+// </summary>
+// <param name="name">Name of the matrix referenced in the shader program.</param>
+// <param name="matrix">Matrix data.</param>
+// <param name="size">Size of the matrix. Valid range is between 2 - 4 (2x2 - 4x4).</param>
 GLShaderProgram.prototype.SetMatrixByName = function (name, matrix, size)
 {
 	// Create the variable
@@ -216,9 +187,9 @@ GLShaderProgram.prototype.SetMatrix = function (variable, matrix, size)
 }
 
 
-/// <summary>
-/// Retrieves debugging information.
-/// </summary>
+// <summary>
+// Retrieves debugging information.
+// </summary>
 GLShaderProgram.prototype.GetLog = function ()
 {
 	return gl.getProgramInfoLog(this.Program);

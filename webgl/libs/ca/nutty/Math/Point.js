@@ -1,40 +1,11 @@
-/// <summary>
-/// Nutty Software Open WebGL Framework
-/// 
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+// <summary>
+// Point / vector object.
+// </summary>
 
 
-/// <summary>
-/// Point / vector object.
-/// </summary>
-
-
-/// <summary>
-/// Provides a point data type, containing (X, Y, Z, W) values.
-/// </summary>
+// <summary>
+// Provides a point data type, containing (X, Y, Z, W) values.
+// </summary>
 function Point (x, y, z, w)
 {
 	//
@@ -48,9 +19,9 @@ function Point (x, y, z, w)
 }
 
 
-/// <summary>
-/// Sum of points.
-/// </summary>
+// <summary>
+// Sum of points.
+// </summary>
 Point.prototype.Add = function (point)
 {
 	return new Point(this.x + point.x,
@@ -68,9 +39,9 @@ Point.prototype.AddScalar = function (value)
 }
 
 
-/// <summary>
-/// Negative.
-/// </summary>
+// <summary>
+// Negative.
+// </summary>
 Point.prototype.Negative = function ()
 {
 	return new Point(-this.x,
@@ -80,9 +51,9 @@ Point.prototype.Negative = function ()
 }
 
 
-/// <summary>
-/// Difference of points.
-/// </summary>
+// <summary>
+// Difference of points.
+// </summary>
 Point.prototype.Subtract = function (point)
 {
 	return new Point(this.x - point.x,
@@ -100,9 +71,9 @@ Point.prototype.SubtractScalar = function (value)
 }
 
 
-/// <summary>
-/// Multiplication of points.
-/// </summary>
+// <summary>
+// Multiplication of points.
+// </summary>
 Point.prototype.Multiply = function (point)
 {
 	return new Point(this.x * point.x,
@@ -120,9 +91,9 @@ Point.prototype.MultiplyScalar = function (value)
 }
 
 
-/// <summary>
-/// Division of points.
-/// </summary>
+// <summary>
+// Division of points.
+// </summary>
 Point.prototype.Divide = function (point)
 {
 	return new Point(this.x / point.x,
@@ -140,9 +111,9 @@ Point.prototype.DivideScalar = function (value)
 }
 
 
-/// <summary>
-/// Absolute value of point.
-/// </summary>
+// <summary>
+// Absolute value of point.
+// </summary>
 Point.prototype.Absolute = function ()
 {
 	return new Point(this.x < 0 ? -this.x : this.x,
@@ -152,9 +123,9 @@ Point.prototype.Absolute = function ()
 }
 
 
-/// <summary>
-/// Clamp.
-/// </summary>
+// <summary>
+// Clamp.
+// </summary>
 Point.prototype.Clamp = function (min, max)
 {
 	return new Point(this.x < min ? min : this.x > max ? max : this.x,
@@ -164,9 +135,9 @@ Point.prototype.Clamp = function (min, max)
 }
 
 
-/// <summary>
-/// Cross product of points.
-/// </summary>
+// <summary>
+// Cross product of points.
+// </summary>
 Point.prototype.Cross = function (point)
 {
 	return new Point(this.y * point.z - this.z * point.y,
@@ -175,9 +146,9 @@ Point.prototype.Cross = function (point)
 }
 
 
-/// <summary>
-/// Distance between two points.
-/// </summary>
+// <summary>
+// Distance between two points.
+// </summary>
 Point.prototype.Distance = function (point)
 {
 	return Math.sqrt(((this.x - point.x) * (this.x - point.x)) +
@@ -186,12 +157,12 @@ Point.prototype.Distance = function (point)
 }
 
 
-/// <summary>
-/// Dot product between two points.
-/// If dot < 0, vectors are greater than 90 degrees apart (facing each other, or away)
-/// If dot > 0, vectors are within 90 degrees of each other (facing in similar direction)
-/// If dot = 0, vectors are orthogonal (perpindicular)
-/// </summary>
+// <summary>
+// Dot product between two points.
+// If dot < 0, vectors are greater than 90 degrees apart (facing each other, or away)
+// If dot > 0, vectors are within 90 degrees of each other (facing in similar direction)
+// If dot = 0, vectors are orthogonal (perpindicular)
+// </summary>
 Point.prototype.Dot = function (point)
 {
 	return ((this.x * point.x) +
@@ -200,9 +171,9 @@ Point.prototype.Dot = function (point)
 }
 
 
-/// <summary>
-/// Magnitude of this point.
-/// </summary>
+// <summary>
+// Magnitude of this point.
+// </summary>
 Point.prototype.Magnitude = function ()
 {
 	return Math.sqrt((this.x * this.x) +
@@ -212,9 +183,9 @@ Point.prototype.Magnitude = function ()
 }
 
 
-/// <summary>
-/// Normalize point.
-/// </summary>
+// <summary>
+// Normalize point.
+// </summary>
 Point.prototype.Normalize = function ()
 {
 	var unit = this.Magnitude();
@@ -230,9 +201,9 @@ Point.prototype.Normalize = function ()
 }
 
 
-/// <summary>
-/// Set point.
-/// </summary>
+// <summary>
+// Set point.
+// </summary>
 Point.prototype.SetPoint = function (x, y, z, w)
 {
 	this.x = x ? x : 0;

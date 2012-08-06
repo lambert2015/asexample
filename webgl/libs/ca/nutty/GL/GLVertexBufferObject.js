@@ -1,101 +1,72 @@
-/// <summary>
-/// Nutty Software Open WebGL Framework
-/// 
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+// <summary>
+// This class provides high-level access to GL vertex buffer objects. It is a
+// container for a single mesh object.
+// </summary>
 
 
-/// <summary>
-/// This class provides high-level access to GL vertex buffer objects. It is a
-/// container for a single mesh object.
-/// </summary>
-
-
-/// <summary>
-/// Constructor.
-/// <summary>
+// <summary>
+// Constructor.
+// <summary>
 function GLVertexBufferObject ()
 {
-	/// <summary>
-	/// Identifier assigned to the vertex object.
-	/// <summary>
+	// <summary>
+	// Identifier assigned to the vertex object.
+	// <summary>
 	this.VertexBuffer = null;
 
 
-	/// <summary>
-	/// Identifier assigned to the vertex uv object.
-	/// <summary>
+	// <summary>
+	// Identifier assigned to the vertex uv object.
+	// <summary>
 	this.UvBuffer = null;
 
 
-	/// <summary>
-	/// Identifier assigned to the vertex normal object.
-	/// <summary>
+	// <summary>
+	// Identifier assigned to the vertex normal object.
+	// <summary>
 	this.NormalBuffer = null;
 	
 	
-	/// <summary>
-	/// Identifier assigned to the vertex colour object.
-	/// <summary>
+	// <summary>
+	// Identifier assigned to the vertex colour object.
+	// <summary>
 	this.ColourBuffer = null;
 	
 	
-	/// <summary>
-	/// Identifier assigned to the vertex bone object.
-	/// <summary>
+	// <summary>
+	// Identifier assigned to the vertex bone object.
+	// <summary>
 	this.BoneBuffer = null;
 
 
-	/// <summary>
-	/// Identifier assigned to the vertex bone weight object.
-	/// <summary>
+	// <summary>
+	// Identifier assigned to the vertex bone weight object.
+	// <summary>
 	this.BoneWeightBuffer = null;
 
 
-	/// <summary>
-	/// Identifier assigned to the index object.
-	/// <summary>
+	// <summary>
+	// Identifier assigned to the index object.
+	// <summary>
 	this.IndexBuffer = null;
 	
 	
-	/// <summary>
-	/// Stores the buffer type.
-	/// <summary>
+	// <summary>
+	// Stores the buffer type.
+	// <summary>
 	this.Type;
 
 
-	/// <summary>
-	/// Reference to the polygon mesh assigned to this VBO.
-	/// <summary>
+	// <summary>
+	// Reference to the polygon mesh assigned to this VBO.
+	// <summary>
 	this.Mesh = null;
 }
 
 
-/// <summary>
-/// Possible vertex buffer object types.
-/// <summary>
+// <summary>
+// Possible vertex buffer object types.
+// <summary>
 GLVertexBufferObject.BufferType =
 {
 	Static : 0,
@@ -103,12 +74,12 @@ GLVertexBufferObject.BufferType =
 };
 
 
-/// <summary>
-/// Create a new VBO.
-/// <summary>
-/// <param name="mesh">Mesh to create a VBO for.</param>
-/// <param name="type">The type of vertex buffer object to create.</param>
-/// <returns>True if the VBO was created successfully.</returns>
+// <summary>
+// Create a new VBO.
+// <summary>
+// <param name="mesh">Mesh to create a VBO for.</param>
+// <param name="type">The type of vertex buffer object to create.</param>
+// <returns>True if the VBO was created successfully.</returns>
 GLVertexBufferObject.prototype.Create = function (mesh, type)
 {
 	// Cleanup
@@ -222,9 +193,9 @@ GLVertexBufferObject.prototype.Create = function (mesh, type)
 }
 
 
-/// <summary>
-/// Removes the VBO from memory.
-/// <summary>
+// <summary>
+// Removes the VBO from memory.
+// <summary>
 GLVertexBufferObject.prototype.Release = function ()
 {
 	// Clenaup
@@ -268,9 +239,9 @@ GLVertexBufferObject.prototype.Release = function ()
 }
 
 
-/// <summary>
-/// Updates the vertex buffer with new vertex data.
-/// <summary>
+// <summary>
+// Updates the vertex buffer with new vertex data.
+// <summary>
 GLVertexBufferObject.prototype.UpdateVertexBuffer = function ()
 {
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexBuffer);
@@ -279,9 +250,9 @@ GLVertexBufferObject.prototype.UpdateVertexBuffer = function ()
 }
 
 
-/// <summary>
-/// Updates the normal buffer with new normal data.
-/// <summary>
+// <summary>
+// Updates the normal buffer with new normal data.
+// <summary>
 GLVertexBufferObject.prototype.UpdateNormalBuffer = function ()
 {
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.NormalBuffer);
@@ -290,9 +261,9 @@ GLVertexBufferObject.prototype.UpdateNormalBuffer = function ()
 }
 
 
-/// <summary>
-/// Updates the vertex colour buffer with new colour data.
-/// <summary>
+// <summary>
+// Updates the vertex colour buffer with new colour data.
+// <summary>
 GLVertexBufferObject.prototype.UpdateColourBuffer = function ()
 {
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.ColourBuffer);
@@ -301,9 +272,9 @@ GLVertexBufferObject.prototype.UpdateColourBuffer = function ()
 }
 
 
-/// <summary>
-/// Updates the vertex colour buffer with new colour data.
-/// <summary>
+// <summary>
+// Updates the vertex colour buffer with new colour data.
+// <summary>
 GLVertexBufferObject.prototype.UpdateBoneBuffer = function ()
 {
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.BoneBuffer);
@@ -316,9 +287,9 @@ GLVertexBufferObject.prototype.UpdateBoneBuffer = function ()
 }
 
 
-/// <summary>
-/// Updates the index buffer with new index data.
-/// <summary>
+// <summary>
+// Updates the index buffer with new index data.
+// <summary>
 GLVertexBufferObject.prototype.UpdateIndex = function ()
 {
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.IndexBuffer);

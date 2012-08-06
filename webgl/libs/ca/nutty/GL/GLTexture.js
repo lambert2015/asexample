@@ -1,85 +1,56 @@
-/// <summary>
-/// Nutty Software Open WebGL Framework
-/// 
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+// <summary>
+// Manages OpenGL textures.
+// <summary>
 
 
-/// <summary>
-/// Manages OpenGL textures.
-/// <summary>
-
-
-/// <summary>
-/// Constructor.
-/// <summary>
+// <summary>
+// Constructor.
+// <summary>
 function GLTexture ()
 {
-	/// <summary>
-	/// Setup inherited members.
-	/// </summary>
+	// <summary>
+	// Setup inherited members.
+	// </summary>
 	Texture.call(this);
 	
 	
-	/// <summary>
-	/// Gets or sets the type of this texture.
-	/// <summary>
+	// <summary>
+	// Gets or sets the type of this texture.
+	// <summary>
 	this.mTextureType;
 
 
-	/// <summary>
-	/// Stores the texture.
-	/// <summary>
+	// <summary>
+	// Stores the texture.
+	// <summary>
 	this.Texture = null;
 	
 	
-	/// <summary>
-	/// Gets or sets the sampler state for this texture.
-	/// <summary>
+	// <summary>
+	// Gets or sets the sampler state for this texture.
+	// <summary>
 	this.mSampler = null;
 
 
-	/// <summary>
-	/// Gets or sets GL friendly texture format.
-	/// <summary>
+	// <summary>
+	// Gets or sets GL friendly texture format.
+	// <summary>
 	this.mGlInternalFormat = 0;
 	this.mGlFormat = 0;
 	this.mGlType = 0;
 }
 
 
-/// <summary>
-/// Prototypal Inheritance.
-/// </summary>
+// <summary>
+// Prototypal Inheritance.
+// </summary>
 GLTexture.prototype = new Texture();
 GLTexture.prototype.constructor = GLTexture;
 
 
-/// <summary>
-/// Enumeration of the possible texture types.
-/// <summary>
+// <summary>
+// Enumeration of the possible texture types.
+// <summary>
 GLTexture.TextureType =
 {
 	Texture2D : 0x0DE1,
@@ -87,13 +58,13 @@ GLTexture.TextureType =
 };
 
 
-/// <summary>
-/// Create a new blank texture.
-/// <summary>
-/// <param name="width">Width of the texture, in pixels.</param>
-/// <param name="height">Height of the texture, in pixels.</param>
-/// <param name="format">Format of the texture.</param>
-/// <param name="sampler">Sampler state of the texture.</param>
+// <summary>
+// Create a new blank texture.
+// <summary>
+// <param name="width">Width of the texture, in pixels.</param>
+// <param name="height">Height of the texture, in pixels.</param>
+// <param name="format">Format of the texture.</param>
+// <param name="sampler">Sampler state of the texture.</param>
 GLTexture.prototype.Create = function (width, height, format, sampler)
 {
 	// Cleanup
@@ -246,9 +217,9 @@ GLTexture.prototype.Create = function (width, height, format, sampler)
 }
 
 
-/// <summary>
-/// Creates a set of mipmaps for this texture.
-/// <summary>
+// <summary>
+// Creates a set of mipmaps for this texture.
+// <summary>
 GLTexture.prototype.CreateMipmaps = function ()
 {
 	gl.bindTexture(this.mTextureType, this.Texture);
@@ -256,9 +227,9 @@ GLTexture.prototype.CreateMipmaps = function ()
 }
 
 
-/// <summary>
-/// Free up any used resources.
-/// </summary>
+// <summary>
+// Free up any used resources.
+// </summary>
 GLTexture.prototype.Release = function ()
 {
 	if ( this.Texture != null )
@@ -276,39 +247,39 @@ GLTexture.prototype.Release = function ()
 }
 
 
-/// <summary>
-/// Binds the texture for use.
-/// </summary>
+// <summary>
+// Binds the texture for use.
+// </summary>
 GLTexture.prototype.Bind = function ()
 {
 	gl.bindTexture(this.mTextureType, this.Texture);
 }
 
 
-/// <summary>
-/// Returns the texture type.
-/// <summary>
-/// <returns>The texture type.</returns>
+// <summary>
+// Returns the texture type.
+// <summary>
+// <returns>The texture type.</returns>
 GLTexture.prototype.GetTextureType = function ()
 {
 	return this.mTextureType;
 }
 
 
-/// <summary>
-/// Returns the texture id used by this object.
-/// <summary>
-/// <returns>The texture id used by this object.</returns>
+// <summary>
+// Returns the texture id used by this object.
+// <summary>
+// <returns>The texture id used by this object.</returns>
 GLTexture.prototype.GetTextureId = function ()
 {
 	return this.Texture;
 }
 
 
-/// <summary>
-/// Returns the sampler state of the texture.
-/// <summary>
-/// <returns>The sampler state of the texture.</returns>
+// <summary>
+// Returns the sampler state of the texture.
+// <summary>
+// <returns>The sampler state of the texture.</returns>
 GLTexture.prototype.GetSamplerState = function ()
 {
 	return this.mSampler;

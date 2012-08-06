@@ -1,42 +1,42 @@
-/// <summary>
-/// This scene demonstrates the basic lighting shader.
-/// </summary>
+// <summary>
+// This scene demonstrates the basic lighting shader.
+// </summary>
 
 
-/// <summary>
-/// Constructor.
-/// </summary>
+// <summary>
+// Constructor.
+// </summary>
 function BasicLightingScene ()
 {
-	/// <summary>
-	/// Setup inherited members.
-	/// </summary>
+	// <summary>
+	// Setup inherited members.
+	// </summary>
 	BaseScene.call(this);
 	
 	
-	/// <summary>
-	/// Basic shader program.
-	/// </summary>
+	// <summary>
+	// Basic shader program.
+	// </summary>
 	this.mBasicShader = null;
 	
 	
-	/// <summary>
-	/// Light sources.
-	/// </summary>
+	// <summary>
+	// Light sources.
+	// </summary>
 	this.mLight = null;
 }
 
 
-/// <summary>
-/// Prototypal Inheritance.
-/// </summary>
+// <summary>
+// Prototypal Inheritance.
+// </summary>
 BasicLightingScene.prototype = new BaseScene();
 BasicLightingScene.prototype.constructor = BasicLightingScene;
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 BasicLightingScene.prototype.Start = function ()
 {
 	// Prepare resources to download
@@ -446,9 +446,9 @@ BasicLightingScene.prototype.OnBtnPhongShadingClicked = function (event)
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 BasicLightingScene.prototype.Update = function ()
 {
 	BaseScene.prototype.Update.call(this);
@@ -466,9 +466,9 @@ BasicLightingScene.prototype.Update = function ()
 }
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 BasicLightingScene.prototype.End = function ()
 {
 	BaseScene.prototype.End.call(this);
@@ -483,9 +483,9 @@ BasicLightingScene.prototype.End = function ()
 
 
 
-/// <summary>
-/// Implementation.
-/// </summary>
+// <summary>
+// Implementation.
+// </summary>
 BasicLightingScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders
