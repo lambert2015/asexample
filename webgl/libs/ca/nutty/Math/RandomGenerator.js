@@ -1,22 +1,22 @@
-// <summary>
+
 // RNG using XOR.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function RandomGenerator ()
 {
-	// <summary>
+	
 	// Seed to be used in generator.
-	// </summary>
+	
 	this.mSeed = 0;
 	
 	
-	// <summary>
+	
 	// Seed used by the XOR algorithm.
-	// </summary>
+	
 	this.mXorSeed = [0, 0, 0, 0];
 	
 	
@@ -25,9 +25,9 @@ function RandomGenerator ()
 }
 
 
-// <summary>
+
 // Abstract method to be implemented.
-// </summary>
+
 // <param name="seedValue">Seed value to use in generator.</param>
 RandomGenerator.prototype.Seed = function (seedValue)
 {
@@ -45,9 +45,9 @@ RandomGenerator.prototype.Seed = function (seedValue)
 }
 
 
-// <summary>
+
 // The seed value used by this random number generator.
-// </summary>
+
 // <returns>The seed value used by this random number generator.</returns>
 RandomGenerator.prototype.GetSeed = function ()
 {
@@ -55,9 +55,9 @@ RandomGenerator.prototype.GetSeed = function ()
 }
 
 
-// <summary>
+
 // Generates a random int between [0, 2^32].
-// </summary>
+
 // <returns>A random int between [0, 2^32].</returns>
 RandomGenerator.prototype.GenerateRandom = function ()
 {
@@ -71,9 +71,9 @@ RandomGenerator.prototype.GenerateRandom = function ()
 }
 
 
-// <summary>
+
 // Generates a random int between [min, max].
-// </summary>
+
 // <param name="min">Lower range of the random number.</param>
 // <param name="max">Upper range of the random number.</param>
 // <returns>A random int between [min, max].</returns>
@@ -88,9 +88,9 @@ RandomGenerator.prototype.Random = function (min, max)
 }
 
 
-// <summary>
+
 // Generates a random floating point value between [min, max].
-// </summary>
+
 // <param name="min">Minimum floating point value.</param>
 // <param name="max">Maximum floating point value.</param>
 // <returns>A random probability between [min, max]</returns>

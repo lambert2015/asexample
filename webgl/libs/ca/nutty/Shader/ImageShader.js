@@ -1,22 +1,22 @@
-// <summary>
+
 // Image shader renderer (base shader for image processing).
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function ImageShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseShader.call(this);
 	
 
-	// <summary>
+	
 	// Image Fragment Variables.
-	// </summary>
+	
 	this.mProjectionId;
 	this.mViewId;
 	this.mModelId;
@@ -27,47 +27,47 @@ function ImageShader ()
 	this.mColourId;
 	
 	
-	// <summary>
+	
 	// Array of texture samples
-	// </summary>
+	
 	this.mSampleId;
 	
 	
-	// <summary>
+	
 	// Projection matrix.
-	// </summary>
+	
 	this.Projection;
 
 
-	// <summary>
+	
 	// View matrix.
-	// </summary>
+	
 	this.View;
 	
 	
-	// <summary>
+	
 	// Stores the size of the image.
-	// </summary>
+	
 	this.mImageSize = new Point();
 	
 	
-	// <summary>
+	
 	// Stores the size of one texel.
-	// </summary>
+	
 	this.mTexelSize = new Point();
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 ImageShader.prototype = new BaseShader();
 ImageShader.prototype.constructor = ImageShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 ImageShader.prototype.Init = function ()
 {
 	BaseShader.prototype.Init.call(this);
@@ -99,9 +99,9 @@ ImageShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 ImageShader.prototype.Enable = function ()
 {
 	BaseShader.prototype.Enable.call(this);
@@ -115,9 +115,9 @@ ImageShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Sets the size of the image.
-// </summary>
+
 ImageShader.prototype.SetSize = function (width, height)
 {
 	this.mImageSize.x = width;
@@ -128,9 +128,9 @@ ImageShader.prototype.SetSize = function (width, height)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 ImageShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices

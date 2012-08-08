@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,31 +24,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // Shader for blending the DOF blur with the rendered scene. It uses the same
 // fragment properties as the DofBlur shader in order to reproduce the blur
 // calculations and determine how much to blend the blurred texture into the
 // rendered scene texture.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function DofImageShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	DofBlurShader.call(this);
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 DofImageShader.prototype = new DofBlurShader();
 DofImageShader.prototype.constructor = DofImageShader;

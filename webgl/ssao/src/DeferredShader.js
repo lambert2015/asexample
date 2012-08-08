@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,30 +24,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // The deferred shader outputs geometry data to a texture, which can later be used
 // in a post-processing shader to perform some sort of computation on the data. The
 // texture storing the geometry data should be of a floating point type.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function DeferredShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mProjectionId;
 	this.mViewId;
 	this.mModelId;
@@ -55,36 +55,36 @@ function DeferredShader ()
 	this.mLinearDepthId;
 
 
-	// <summary>
+	
 	// Projection matrix.
-	// </summary>
+	
 	this.Projection;
 
 
-	// <summary>
+	
 	// View matrix.
-	// </summary>
+	
 	this.View;
 	
 	
-	// <summary>
+	
 	// Gets or sets the (Far - Near) clip value used for calculating linear depth.
 	// This applies only to storing positional data. RGBA = XYZD (depth).
-	// </summary>
+	
 	this.LinearDepth = 0.0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 DeferredShader.prototype = new BaseShader();
 DeferredShader.prototype.constructor = DeferredShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DeferredShader.prototype.Init = function ()
 {
 	BaseShader.prototype.Init.call(this);
@@ -100,9 +100,9 @@ DeferredShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DeferredShader.prototype.Enable = function ()
 {
 	BaseShader.prototype.Enable.call(this);
@@ -112,9 +112,9 @@ DeferredShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DeferredShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Matrices

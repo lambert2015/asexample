@@ -1,19 +1,19 @@
-// <summary>
+
 // This class created a cylinder mesh.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="numPoint">Number of points to create for this shape.</param>
 // <param name="radius">Radius of the cylinder.</param>
 // <param name="height">Height of the cylinder.</param>
 function Cylinder (numPoint, radius, height)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	PolygonMesh.call(this);
 	
 	
@@ -81,8 +81,8 @@ function Cylinder (numPoint, radius, height)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 Cylinder.prototype = new PolygonMesh();
 Cylinder.prototype.constructor = Cylinder;

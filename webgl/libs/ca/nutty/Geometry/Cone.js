@@ -1,19 +1,19 @@
-// <summary>
+
 // This class creates a cone mesh.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="numPoint">Number of points to create for this shape.</param>
 // <param name="radius">Radius of the circle.</param>
 // <param name="height">Height of the cone.</param>
 function Cone (numPoint, radius, height)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	PolygonMesh.call(this);
 	
 	
@@ -49,8 +49,8 @@ function Cone (numPoint, radius, height)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 Cone.prototype = new PolygonMesh();
 Cone.prototype.constructor = Cone;

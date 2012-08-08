@@ -1,16 +1,16 @@
-// <summary>
+
 // Represents a 2D grid of texels.
-// <summary>
 
 
-// <summary>
+
+
 // Constructor.
-// <summary>
+
 function GLTexture2D ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	GLTexture.call(this);
 	
 	
@@ -19,16 +19,16 @@ function GLTexture2D ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 GLTexture2D.prototype = new GLTexture();
 GLTexture2D.prototype.constructor = GLTexture2D;
 
 
-// <summary>
+
 // Creates a new texture with texel data assigned.
-// <summary>
+
 // <param name="width">Width of the texture, in pixels.</param>
 // <param name="height">Height of the texture, in pixels.</param>
 // <param name="format">Format of the texture.</param>
@@ -54,9 +54,9 @@ GLTexture2D.prototype.Create = function (width, height, format, sampler, image)
 }
 
 
-// <summary>
+
 // Copy image data to the texture.
-// <summary>
+
 // <param name="image">Image data.</param>
 GLTexture2D.prototype.Copy = function (image)
 {
@@ -64,9 +64,9 @@ GLTexture2D.prototype.Copy = function (image)
 }
 
 
-// <summary>
+
 // Copy image data to the texture.
-// <summary>
+
 // <param name="x">X-coordinate in texture to start copy at.</param>
 // <param name="y">Y-coordinate in texture to start copy at.</param>
 // <param name="width">Width of image to copy.</param>

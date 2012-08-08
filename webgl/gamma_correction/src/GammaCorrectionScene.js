@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,103 +24,103 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This scene demonstrates how to correct the gamma for a render. Your monitor applies a
 // gamma curve to images displayed on the screen, but renderers operate in linear space.
 // You must apply the inverse gamma to the rendered image before it is sent to the monitor.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function GammaCorrectionScene ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseScene.call(this);
 	
 	
-	// <summary>
+	
 	// Stores the current inverse view matrix.
-	// </summary>
+	
 	this.mInvViewMatrix = null;
 	
 	
-	// <summary>
+	
 	// The framebuffer object to store the colour buffer (ie: the result of the rendered scene).
 	// This will be fed into the gamma correction shader.
-	// </summary>
+	
 	this.mFboColour = null;
 	
 	
-	// <summary>
+	
 	// Framebuffer objects.
-	// </summary>
+	
 	this.mFboColourColourBuffer = null;
 	this.mFboColourDepthBuffer = null;
 
 	
-	// <summary>
+	
 	// Gets or sets the dimensions of the FBO, which may or may not be the same size
 	// as the window.
-	// </summary>
+	
 	this.mFboDimension = null;
 	
 	
-	// <summary>
+	
 	// Stores a list of shaders loaded and compiled by this scene.
-	// </summary>
+	
 	this.mShader = null;
 	
 	
-	// <summary>
+	
 	// The basic shader is responsible for rendering the scene as normal. It will produce
 	// the colour texture used in the gamma / brightness stage.
-	// </summary>
+	
 	this.mBasicShader = null;
 	
 	
-	// <summary>
+	
 	// Shader for rendering 2D images onto the screen. Used in the texture compare scene.
-	// </summary>
+	
 	this.mImageShader = null;
 	
 	
-	// <summary>
+	
 	// Shader for altering the frame's brightness and contrast values.
-	// </summary>
+	
 	this.mBrightnessShader = null;
 	
 	
-	// <summary>
+	
 	// Surface (rectangle) containing a texture to manipulate or view. Used during
 	// the gamma correction process. It is designed to fit the size of the viewport.
-	// </summary>
+	
 	this.mSurface = null;
 	
 	
-	// <summary>
+	
 	// Textures.
-	// </summary>
+	
 	this.mTexture = new Array();
 	
 	
-	// <summary>
+	
 	// Stores a reference to the canvas DOM element, which is used to reset the viewport
 	// back to its original size after rendering to the FBO, which uses a different
 	// dimension.
-	// </summary>
+	
 	this.mCanvas = null;
 	
 	
-	// <summary>
+	
 	// UI members.
-	// </summary>
+	
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	
@@ -163,16 +163,16 @@ function GammaCorrectionScene ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 GammaCorrectionScene.prototype = new BaseScene();
 GammaCorrectionScene.prototype.constructor = GammaCorrectionScene;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 GammaCorrectionScene.prototype.Start = function ()
 {
 	// Setup members and default values
@@ -424,9 +424,9 @@ GammaCorrectionScene.prototype.Start = function ()
 }
 
 
-// <summary>
+
 // Method called when the red component ambient slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnAmbientRedValueChanged = function (event, ui)
 {
 	event.data.mEntity[0].ObjectMaterial.Ambient.x = ui.value;
@@ -434,9 +434,9 @@ GammaCorrectionScene.prototype.OnAmbientRedValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the green component ambient slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnAmbientGreenValueChanged = function (event, ui)
 {
 	event.data.mEntity[0].ObjectMaterial.Ambient.y = ui.value;
@@ -444,9 +444,9 @@ GammaCorrectionScene.prototype.OnAmbientGreenValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the blue component ambient slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnAmbientBlueValueChanged = function (event, ui)
 {
 	event.data.mEntity[0].ObjectMaterial.Ambient.z = ui.value;
@@ -454,9 +454,9 @@ GammaCorrectionScene.prototype.OnAmbientBlueValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the red component diffuse slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnDiffuseRedValueChanged = function (event, ui)
 {
 	event.data.mEntity[0].ObjectMaterial.Diffuse.x = ui.value;
@@ -464,9 +464,9 @@ GammaCorrectionScene.prototype.OnDiffuseRedValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the green component diffuse slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnDiffuseGreenValueChanged = function (event, ui)
 {
 	event.data.mEntity[0].ObjectMaterial.Diffuse.y = ui.value;
@@ -474,9 +474,9 @@ GammaCorrectionScene.prototype.OnDiffuseGreenValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the blue component diffuse slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnDiffuseBlueValueChanged = function (event, ui)
 {
 	event.data.mEntity[0].ObjectMaterial.Diffuse.z = ui.value;
@@ -484,9 +484,9 @@ GammaCorrectionScene.prototype.OnDiffuseBlueValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the shininess slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnIntensityValueChanged = function (event, ui)
 {
 	event.data.mBasicShader.LightObject[0].Colour.x = ui.value;
@@ -496,9 +496,9 @@ GammaCorrectionScene.prototype.OnIntensityValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the enable gamma checkbox has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnGammaEnabledChanged = function (event)
 {
 	event.data.mIsGammaEnabled = this.checked;
@@ -521,9 +521,9 @@ GammaCorrectionScene.prototype.OnGammaEnabledChanged = function (event)
 }
 
 
-// <summary>
+
 // Method called when the gamma slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnGammaValueChanged = function (event, ui)
 {
 	// Important! The gamma slider represents the monitor's gamma setting.
@@ -538,9 +538,9 @@ GammaCorrectionScene.prototype.OnGammaValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the brightness slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnBrightnessValueChanged = function (event, ui)
 {
 	event.data.mBrightnessShader.Brightness = ui.value;
@@ -548,9 +548,9 @@ GammaCorrectionScene.prototype.OnBrightnessValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the contrast slider has changed.
-// </summary>
+
 GammaCorrectionScene.prototype.OnContrastValueChanged = function (event, ui)
 {
 	event.data.mBrightnessShader.Contrast = ui.value;
@@ -558,9 +558,9 @@ GammaCorrectionScene.prototype.OnContrastValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the user selected a new scene / step.
-// </summary>
+
 GammaCorrectionScene.prototype.OnSceneChanged = function (event)
 {
 	event.data.mSceneIndex = event.target.selectedIndex;
@@ -611,9 +611,9 @@ GammaCorrectionScene.prototype.OnSceneChanged = function (event)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 GammaCorrectionScene.prototype.Update = function ()
 {
 	BaseScene.prototype.Update.call(this);
@@ -682,9 +682,9 @@ GammaCorrectionScene.prototype.Update = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 GammaCorrectionScene.prototype.End = function ()
 {
 	BaseScene.prototype.End.call(this);
@@ -718,11 +718,11 @@ GammaCorrectionScene.prototype.End = function ()
 }
 
 
-// <summary>
+
 // This method is called when an item for the scene has downloaded. it
 // will increment the resource counter and dispatch an OnLoadComplete
 // event once all items have been downloaded.
-// </summary>
+
 GammaCorrectionScene.prototype.OnItemLoaded = function (sender, response)
 {
 	BaseScene.prototype.OnItemLoaded.call(this, sender, response);
@@ -732,11 +732,11 @@ GammaCorrectionScene.prototype.OnItemLoaded = function (sender, response)
 }
 
 
-// <summary>
+
 // This method is called to compile a bunch of shaders. The browser will be
 // blocked while the GPU compiles, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 GammaCorrectionScene.prototype.CompileShaders = function (index, list)
 {
 	var shaderItem = list[index];
@@ -777,11 +777,11 @@ GammaCorrectionScene.prototype.CompileShaders = function (index, list)
 }
 
 
-// <summary>
+
 // This method is called to load a bunch of shaders. The browser will be
 // blocked while the GPU loads, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 GammaCorrectionScene.prototype.LoadShaders = function (index)
 {
 	if ( index == 0 )
@@ -847,9 +847,9 @@ GammaCorrectionScene.prototype.LoadShaders = function (index)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 GammaCorrectionScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders

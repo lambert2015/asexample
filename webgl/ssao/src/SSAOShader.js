@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,10 +24,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // SSAO is a post-processing shader that computes the amount of ambient occlusion at each
 // fragment. This shader requires 3 textures and outputs one luninance floating point texture.
 //
@@ -36,46 +36,46 @@
 // 3. A normalmap to be used when randomizing the kernel filter to produce noisier, but uniform results.
 //
 // The resulting output from this shader can be blended with the original rendered scene.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function SSAOShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	ImageShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mOccluderBiasId;
 	this.mSamplingRadiusId
 	this.mAttenuationId;
 
 
-	// <summary>
+	
 	// Attenuation amounts.
 	// x = constant
 	// y = linear
 	// z = quadratic (not used)
-	// </summary>
+	
 	this.Attenuation = new Point(1.0, 0.0, 0.0);
 	
 	
-	// <summary>
+	
 	// Occluder bias to minimize self-occlusion.
-	// <summary>
+	
 	this.OccluderBias = 0.05;
 	
 	
-	// <summary>
+	
 	// Specifies the size of the sampling radius.
-	// <summary>
+	
 	this.SamplingRadius = 20.0;
 	
 	
@@ -85,16 +85,16 @@ function SSAOShader ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 SSAOShader.prototype = new ImageShader();
 SSAOShader.prototype.constructor = SSAOShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 SSAOShader.prototype.Init = function ()
 {
 	ImageShader.prototype.Init.call(this);
@@ -106,9 +106,9 @@ SSAOShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 SSAOShader.prototype.Enable = function ()
 {
 	ImageShader.prototype.Enable.call(this);

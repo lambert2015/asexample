@@ -1,20 +1,20 @@
-// <summary>
+
 // This class creates a spherical mesh.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="numSegments">Number of horizontal segments to create.</param>
 // <param name="numRings">Number of vertical rings to create.</param>
 // <param name="radius">Radius of the sphere.</param>
 // <param name="cutoff">Amount of sphere to cutoff. 0.5 generates a hemisphere.</param>
 function Sphere (numSegments, numRings, radius, cutoff)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	PolygonMesh.call(this);
 	
 	
@@ -99,8 +99,8 @@ function Sphere (numSegments, numRings, radius, cutoff)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 Sphere.prototype = new PolygonMesh();
 Sphere.prototype.constructor = Sphere;

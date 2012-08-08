@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,10 +24,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This scene demonstrates how to render refraction.
 //
 // To render the effect, follow these steps.
@@ -35,110 +35,110 @@
 // 2. Render the scene to the FBO.
 // 3. Render the refracted surfaces to the alpha channel.
 // 4. In the refraction shader, refract only the pixels with their alpha channel set.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function RefractionScene ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseScene.call(this);
 	
 	
-	// <summary>
+	
 	// Stores the current inverse view matrix.
-	// </summary>
+	
 	this.mInvViewMatrix = null;
 	
 	
-	// <summary>
+	
 	// The framebuffer object to store the colour buffer (ie: the result of the rendered scene).
 	// This will be fed into the refraction shader.
-	// </summary>
+	
 	this.mFboColour = null;
 	this.mFboColourColourBuffer = null;
 	this.mFboColourDepthBuffer = null;
 	
 	
-	// <summary>
+	
 	// The framebuffer object to store the refraction results.
-	// </summary>
+	
 	this.mFboRefraction = null;
 	this.mFboRefractionColourBuffer = null;
 
 	
-	// <summary>
+	
 	// Gets or sets the dimensions of the FBO, which may or may not be the same size
 	// as the window.
-	// </summary>
+	
 	this.mFboDimension = null;
 	
 	
-	// <summary>
+	
 	// Stores a list of shaders loaded and compiled by this scene.
-	// </summary>
+	
 	this.mShader = null;
 	
 	
-	// <summary>
+	
 	// The basic shader is responsible for rendering the scene as normal.
-	// </summary>
+	
 	this.mBasicShader = null;
 	
 	
-	// <summary>
+	
 	// Shader for tagging pixels that will be affected by the refraction shader.
-	// </summary>
+	
 	this.mPixelTagShader = null;
 	
 	
-	// <summary>
+	
 	// Shader for refracting pixels.
-	// </summary>
+	
 	this.mRefractionShader = null;
 	
 	
-	// <summary>
+	
 	// Brightness shader for performing the final brightness, contrast, and gamma correction
 	// to the rendered image.
-	// </summary>
+	
 	this.mBrightnessShader = null;
 	
 	
-	// <summary>
+	
 	// Shader for rendering a cubemapped skybox
-	// </summary>
+	
 	this.mSkyboxShader = null;
 	
 	
-	// <summary>
+	
 	// Surface (rectangle) containing a texture to manipulate or view. Used during
 	// the gamma correction process. It is designed to fit the size of the viewport.
-	// </summary>
+	
 	this.mSurface = null;
 	
 	
-	// <summary>
+	
 	// Stores the textures used by this scene.
-	// </summary>
+	
 	this.mTexture = new Array();
 	
 	
-	// <summary>
+	
 	// Stores a reference to the canvas DOM element, which is used to reset the viewport
 	// back to its original size after rendering to the FBO, which may use a different
 	// dimension.
-	// </summary>
+	
 	this.mCanvas = null;
 	
 	
-	// <summary>
+	
 	// Mouse controls for camera position and zoom.
-	// </summary>
+	
 	this.mMouseDown = false;
 	this.mMouseStartPos = new Point();
 	this.mCameraRot = 0.0;
@@ -148,9 +148,9 @@ function RefractionScene ()
 	this.mCameraStartZoom = 0.0;
 	
 	
-	// <summary>
+	
 	// UI members.
-	// </summary>
+	
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	
@@ -167,16 +167,16 @@ function RefractionScene ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 RefractionScene.prototype = new BaseScene();
 RefractionScene.prototype.constructor = RefractionScene;
 
 
-// <summary>
+
 // Called when the mouse button is pressed.
-// </summary>
+
 RefractionScene.prototype.OnMouseDown = function (key)
 {
 	var owner = this.Owner;
@@ -188,10 +188,10 @@ RefractionScene.prototype.OnMouseDown = function (key)
 }
 
 
-// <summary>
+
 // Called when there is mouse movement. Apply rotation and zoom
 // only when the mouse button is held down.
-// </summary>
+
 RefractionScene.prototype.OnMouseMove = function (key)
 {
 	// Process mouse movement only when the mouse button is held down
@@ -223,9 +223,9 @@ RefractionScene.prototype.OnMouseMove = function (key)
 }
 
 
-// <summary>
+
 // Called when the mouse button is released.
-// </summary>
+
 RefractionScene.prototype.OnMouseUp = function (key)
 {
 	var owner = this.Owner;
@@ -233,9 +233,9 @@ RefractionScene.prototype.OnMouseUp = function (key)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 RefractionScene.prototype.Start = function ()
 {
 	// Setup members and default values
@@ -388,9 +388,9 @@ RefractionScene.prototype.Start = function ()
 }
 
 
-// <summary>
+
 // Method called when the amplitude slider has changed.
-// </summary>
+
 RefractionScene.prototype.OnAmplitudeChanged = function (event, ui)
 {
 	event.data.mRefractionShader.Amplitude = ui.value;
@@ -398,9 +398,9 @@ RefractionScene.prototype.OnAmplitudeChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the frequency slider has changed.
-// </summary>
+
 RefractionScene.prototype.OnFrequencyChanged = function (event, ui)
 {
 	event.data.mRefractionShader.Frequency = ui.value;
@@ -408,9 +408,9 @@ RefractionScene.prototype.OnFrequencyChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the period slider has changed.
-// </summary>
+
 RefractionScene.prototype.OnPeriodChanged = function (event, ui)
 {
 	event.data.mRefractionShader.Period = ui.value;
@@ -418,9 +418,9 @@ RefractionScene.prototype.OnPeriodChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the preset combo box has changed.
-// </summary>
+
 RefractionScene.prototype.OnPresetChanged = function (event)
 {
 	var selectedIndex = event.currentTarget.selectedIndex;
@@ -462,9 +462,9 @@ RefractionScene.prototype.OnPresetChanged = function (event)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 RefractionScene.prototype.Update = function ()
 {
 	BaseScene.prototype.Update.call(this);
@@ -538,9 +538,9 @@ RefractionScene.prototype.Update = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 RefractionScene.prototype.End = function ()
 {
 	BaseScene.prototype.End.call(this);
@@ -571,9 +571,9 @@ RefractionScene.prototype.End = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 RefractionScene.prototype.OnItemLoaded = function (sender, response)
 {
 	BaseScene.prototype.OnItemLoaded.call(this, sender, response);
@@ -583,11 +583,11 @@ RefractionScene.prototype.OnItemLoaded = function (sender, response)
 }
 
 
-// <summary>
+
 // This method is called to compile a bunch of shaders. The browser will be
 // blocked while the GPU compiles, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 RefractionScene.prototype.CompileShaders = function (index, list)
 {
 	var shaderItem = list[index];
@@ -628,11 +628,11 @@ RefractionScene.prototype.CompileShaders = function (index, list)
 }
 
 
-// <summary>
+
 // This method is called to load a bunch of shaders. The browser will be
 // blocked while the GPU loads, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 RefractionScene.prototype.LoadShaders = function (index)
 {
 	if ( index == 0 )
@@ -732,9 +732,9 @@ RefractionScene.prototype.LoadShaders = function (index)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 RefractionScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders

@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,52 +24,52 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This post-process shader adjusts the brightness and contrast of a texture.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function BrightnessShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	ImageShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mBrightnessId;
 	this.mContrastId;
 	this.mInvGammaId;
 	
 	
-	// <summary>
+	
 	// Gets or sets the brightness value to use.
 	// Valid range: -1 to 1
 	// Default is neutral brightness (0.0).
-	// </summary>
+	
 	this.Brightness = 0.0;
 	
 	
-	// <summary>
+	
 	// Gets or sets the contrast value to use.
 	// Valid range: -1 to 1
 	// Default is neural constrast (0.0).
-	// </summary>
+	
 	this.Contrast = 1.0;
 	
 	
-	// <summary>
+	
 	// Specifies the inverse gamma value to use.
-	// </summary>
+	
 	this.InvGamma = 1.0 / 2.2;
 	
 	
@@ -79,16 +79,16 @@ function BrightnessShader ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 BrightnessShader.prototype = new ImageShader();
 BrightnessShader.prototype.constructor = BrightnessShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BrightnessShader.prototype.Init = function ()
 {
 	ImageShader.prototype.Init.call(this);
@@ -100,9 +100,9 @@ BrightnessShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BrightnessShader.prototype.Enable = function ()
 {
 	ImageShader.prototype.Enable.call(this);
@@ -114,9 +114,9 @@ BrightnessShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 //BrightnessShader.prototype.Draw = function (entity, numPoints, numIndices)
 //{
 	// Forward

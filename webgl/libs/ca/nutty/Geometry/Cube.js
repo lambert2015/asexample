@@ -1,19 +1,19 @@
-// <summary>
+
 // This class creates a cube mesh.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="x">X-Axis extent of the cube.</param>
 // <param name="y">Y-Axis extent of the cube.</param>
 // <param name="z">Z-Axis extent of the cube.</param>
 function Cube (x, y, z)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	PolygonMesh.call();
 	
 	
@@ -75,8 +75,8 @@ function Cube (x, y, z)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 Cube.prototype = new PolygonMesh();
 Cube.prototype.constructor = Cube;

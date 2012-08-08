@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,28 +24,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // Shader for rendering a cubemapped skybox.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function SkyboxShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mProjectionId;
 	this.mViewId;
 	this.mModelId;
@@ -53,29 +53,29 @@ function SkyboxShader ()
 	this.mSampleId;		// Array of texture samples
 
 
-	// <summary>
+	
 	// Projection matrix.
-	// </summary>
+	
 	this.Projection;
 
 
-	// <summary>
+	
 	// View matrix.
-	// </summary>
+	
 	this.View;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 SkyboxShader.prototype = new BaseShader();
 SkyboxShader.prototype.constructor = SkyboxShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 SkyboxShader.prototype.Init = function ()
 {
 	BaseShader.prototype.Init.call(this);
@@ -103,9 +103,9 @@ SkyboxShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 SkyboxShader.prototype.Enable = function ()
 {
 	BaseShader.prototype.Enable.call(this);
@@ -118,9 +118,9 @@ SkyboxShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 SkyboxShader.prototype.Draw = function (entity, vbo, numPoints, numIndices)
 {
 	// Set matrices

@@ -1,63 +1,63 @@
-// <summary>
+
 // The BaseScene represents common logic shared between all scenes.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function BaseScene ()
 {
-	// <summary>
+	
 	// Array containing a list of resources used by this scene. They are usually
 	// downloaded from the server at runtime.
-	// </summary>
+	
 	this.mResource = new ResourceManager();
 	
 	
-	// <summary>
+	
 	// Counter to track how many of the resource items have downloaded.
-	// </summary>
+	
 	this.mResourceCount = 0;
 	
 	
-	// <summary>
+	
 	// Stores a list of renderable entities associated with this scene.
-	// </summary>
+	
 	this.mEntity = new Array();
 	
 	
-	// <summary>
+	
 	// Stores a list of shaders associated with this scene.
-	// </summary>
+	
 	this.mShader = new Array();
 	
 	
-	// <summary>
+	
 	// Perspective matrix to render 2d or 3d environments.
-	// </summary>
+	
 	this.mProjectionMatrix = null;
 	this.mOrthographicMatrix = null;
 	
 	
-	// <summary>
+	
 	// View matrix (ie: the camera).
-	// </summary>
+	
 	this.mViewMatrix = null;
 	
 	
-	// <summary>
+	
 	// Set to true when all resources have been loaded and it's safe to
 	// begin updating the scene.
-	// </summary>
+	
 	this.mLoadComplete = false;
 }
 
 
-// <summary>
+
 // This method is called when the scene is loading. Implementations
 // should override this method to perform custom startup logic.
-// </summary>
+
 BaseScene.prototype.Start = function ()
 {
 	// Setup members
@@ -100,10 +100,10 @@ BaseScene.prototype.Start = function ()
 }
 
 
-// <summary>
+
 // This method is called for each frame rendered in the application.
 // Derived scenes should implement this method to perform any rendering.
-// </summary>
+
 BaseScene.prototype.Update = function ()
 {
 	// Clear buffers
@@ -111,11 +111,11 @@ BaseScene.prototype.Update = function ()
 }
 
 
-// <summary>
+
 // This method is called when the scene is no longer needed.
 // Implementations should override this method to perform custom
 // shutdown logic.
-// </summary>
+
 BaseScene.prototype.End = function ()
 {
 	// Cleanup
@@ -129,11 +129,11 @@ BaseScene.prototype.End = function ()
 }
 
 
-// <summary>
+
 // This method is called when an item for the scene has downloaded. it
 // will increment the resource counter and dispatch an OnLoadComplete
 // event once all items have been downloaded.
-// </summary>
+
 BaseScene.prototype.OnItemLoaded = function (sender, response)
 {
 	++this.mResourceCount;
@@ -145,9 +145,9 @@ BaseScene.prototype.OnItemLoaded = function (sender, response)
 }
 
 
-// <summary>
+
 // This method is called when the image source has successfully loaded.
-// </summary>
+
 BaseScene.prototype.OnImageLoad = function ()
 {
 	this.State.Resource.Item = this;
@@ -155,9 +155,9 @@ BaseScene.prototype.OnImageLoad = function ()
 }
 
 
-// <summary>
+
 // This method is called when the image source failed to load.
-// </summary>
+
 BaseScene.prototype.OnImageError = function ()
 {
 	this.State.Resource.Item = null;
@@ -165,10 +165,10 @@ BaseScene.prototype.OnImageError = function ()
 }
 
 
-// <summary>
+
 // This method is called when a response has been received for a 
 // particular resource item.
-// </summary>
+
 BaseScene.prototype.OnHttpResponse = function (sender, response)
 {
 	response.State.Resource.Item = response.ResponseText;
@@ -176,11 +176,11 @@ BaseScene.prototype.OnHttpResponse = function (sender, response)
 }
 
 
-// <summary>
+
 // This method is called once all resources have loaded. The scene
 // should override this method and perform any load logic on the
 // resource items.
-// </summary>
+
 BaseScene.prototype.OnLoadComplete = function ()
 {
 	this.mLoadComplete = true;

@@ -1,33 +1,33 @@
-/// <summary>
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+
+// Copyright (C) 2012 Nathaniel Meyer
+// Nutty Software, http://www.nutty.ca
+// All Rights Reserved.
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+//     1. The above copyright notice and this permission notice shall be included in all
+//        copies or substantial portions of the Software.
+//     2. Redistributions in binary or minimized form must reproduce the above copyright
+//        notice and this list of conditions in the documentation and/or other materials
+//        provided with the distribution.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 
-/// <summary>
-/// Basic lighting fragment shader.
-/// </summary>
+
+
+// Basic lighting fragment shader.
+
 
 
 #ifdef GL_ES
@@ -35,9 +35,9 @@
 #endif
 
 
-/// <summary>
-/// Light source structure.
-/// <summary>
+
+// Light source structure.
+
 struct LightSource
 {
 	vec3 Position;
@@ -50,9 +50,9 @@ struct LightSource
 };
 
 
-/// <summary>
-/// Material source structure.
-/// <summary>
+
+// Material source structure.
+
 struct MaterialSource
 {
 	vec3 Ambient;
@@ -64,33 +64,33 @@ struct MaterialSource
 };
 
 
-/// <summary>
-/// Uniform variables.
-/// <summary>
+
+// Uniform variables.
+
 uniform int NumLight;
 uniform LightSource Light[4];
 uniform MaterialSource Material;
 uniform sampler2D Sample0;
 
-/// <summary>
-/// This gamma value is used for "uncorrecting" or "linearizing" a texture before
-/// mixing it with the fragment.
-/// <summary>
+
+// This gamma value is used for "uncorrecting" or "linearizing" a texture before
+// mixing it with the fragment.
+
 uniform float Gamma;
 
 
-/// <summary>
-/// Varying variables.
-/// <summary>
+
+// Varying variables.
+
 varying vec4 vWorldVertex;
 varying vec3 vWorldNormal;
 varying vec2 vUv;
 varying vec3 vViewVec;
 
 
-/// <summary>
-/// Fragment shader entry.
-/// <summary>
+
+// Fragment shader entry.
+
 void main ()
 {
 	// vWorldNormal is interpolated when passed into the fragment shader.

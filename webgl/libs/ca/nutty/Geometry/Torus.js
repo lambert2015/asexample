@@ -1,20 +1,20 @@
-// <summary>
+
 // This class creates a torus mesh.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="numSegments">Number of horizontal segments to create.</param>
 // <param name="numRings">Number of vertical rings to create.</param>
 // <param name="radius">Radius of the tube.</param>
 // <param name="distance">Distance from the centre of the torus to the centre of the tube.</param>
 function Torus (numSegments, numRings, radius, distance)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	PolygonMesh.call(this);
 	
 	
@@ -97,8 +97,8 @@ function Torus (numSegments, numRings, radius, distance)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 Torus.prototype = new PolygonMesh();
 Torus.prototype.constructor = Torus;

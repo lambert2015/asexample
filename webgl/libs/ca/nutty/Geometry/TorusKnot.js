@@ -1,11 +1,11 @@
-// <summary>
+
 // This class creates a torus knot mesh.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="p">P times around its axis of rotational symmetry.</param>
 // <param name="q">Q times around a circle in the interior of the torus.</param>
 // <param name="numSegments">Number of horizontal segments to create.</param>
@@ -14,9 +14,9 @@
 // <param name="distance">Distance from the centre of the torus to the centre of the tube.</param>
 function TorusKnot (p, q, numSegments, numRings, radius, distance)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	PolygonMesh.call(this);
 	
 	
@@ -99,8 +99,8 @@ function TorusKnot (p, q, numSegments, numRings, radius, distance)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 TorusKnot.prototype = new PolygonMesh();
 TorusKnot.prototype.constructor = TorusKnot;

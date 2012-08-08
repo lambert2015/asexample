@@ -1,33 +1,33 @@
-/// <summary>
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+
+// Copyright (C) 2012 Nathaniel Meyer
+// Nutty Software, http://www.nutty.ca
+// All Rights Reserved.
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+//     1. The above copyright notice and this permission notice shall be included in all
+//        copies or substantial portions of the Software.
+//     2. Redistributions in binary or minimized form must reproduce the above copyright
+//        notice and this list of conditions in the documentation and/or other materials
+//        provided with the distribution.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 
-/// <summary>
-/// Fragment shader for rendering the scene with shadows using a cubemap (point light).
-/// </summary>
+
+
+// Fragment shader for rendering the scene with shadows using a cubemap (point light).
+
 
 
 #ifdef GL_ES
@@ -35,18 +35,18 @@
 #endif
 
 
-/// <summary>
-/// Linear depth calculation.
-/// You could optionally upload this as a shader parameter.
-/// <summary>
+
+// Linear depth calculation.
+// You could optionally upload this as a shader parameter.
+
 const float Near = 1.0;
 const float Far = 30.0;
 const float LinearDepthConstant = 1.0 / (Far - Near);
 
 
-/// <summary>
-/// Light source structure.
-/// <summary>
+
+// Light source structure.
+
 struct LightSource
 {
 	int Type;
@@ -60,9 +60,9 @@ struct LightSource
 };
 
 
-/// <summary>
-/// Material source structure.
-/// <summary>
+
+// Material source structure.
+
 struct MaterialSource
 {
 	vec3 Ambient;
@@ -74,9 +74,9 @@ struct MaterialSource
 };
 
 
-/// <summary>
-/// Uniform variables.
-/// <summary>
+
+// Uniform variables.
+
 uniform int NumLight;
 uniform LightSource Light[4];
 uniform MaterialSource Material;
@@ -84,9 +84,9 @@ uniform samplerCube DepthMap;
 uniform int FilterType;
 
 
-/// <summary>
-/// Varying variables.
-/// <summary>
+
+// Varying variables.
+
 varying vec4 vWorldVertex;
 varying vec3 vWorldNormal;
 varying vec2 vUv;
@@ -94,9 +94,9 @@ varying vec3 vViewVec;
 varying vec4 vPosition;
 
 
-/// <summary>
-/// Unpack an RGBA pixel to floating point value.
-/// </summary>
+
+// Unpack an RGBA pixel to floating point value.
+
 float unpack (vec4 colour)
 {
 	const vec4 bitShifts = vec4(1.0,
@@ -107,24 +107,24 @@ float unpack (vec4 colour)
 }
 
 
-/// <summary>
-/// Unpack a vec2 to a floating point (used by VSM).
-/// </summary>
+
+// Unpack a vec2 to a floating point (used by VSM).
+
 float unpackHalf (vec2 colour)
 {
 	return colour.x + (colour.y / 255.0);
 }
 
 
-/// <summary>
-/// Calculate Chebychev's inequality.
-/// <summary>
-/// <param name="moments">
-/// moments.x = mean
-/// moments.y = mean^2
-/// </param>
-/// <param name="t">Current depth value.</param>
-/// <returns>The upper bound (0.0, 1.0), or rather the amount to shadow the current fragment colour.</param>
+
+// Calculate Chebychev's inequality.
+
+// <param name="moments">
+// moments.x = mean
+// moments.y = mean^2
+// </param>
+// <param name="t">Current depth value.</param>
+// <returns>The upper bound (0.0, 1.0), or rather the amount to shadow the current fragment colour.</param>
 float ChebychevInequality (vec2 moments, float t)
 {
 	// No shadow if depth of fragment is in front
@@ -143,20 +143,20 @@ float ChebychevInequality (vec2 moments, float t)
 }
 
 
-/// <summary>
-/// VSM can suffer from light bleeding when shadows overlap. This method
-/// tweaks the chebychev upper bound to eliminate the bleeding, but at the
-/// expense of creating a shadow with sharper, darker edges.
-/// <summary>
+
+// VSM can suffer from light bleeding when shadows overlap. This method
+// tweaks the chebychev upper bound to eliminate the bleeding, but at the
+// expense of creating a shadow with sharper, darker edges.
+
 float VsmFixLightBleed (float pMax, float amount)
 {
 	return clamp((pMax - amount) / (1.0 - amount), 0.0, 1.0);
 }
 
 
-/// <summary>
-/// Fragment shader entry.
-/// <summary>
+
+// Fragment shader entry.
+
 void main ()
 {
 	// vWorldNormal is interpolated when passed into the fragment shader.

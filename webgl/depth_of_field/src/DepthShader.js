@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,28 +24,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // Depth shader renders the depth values to an RGB texture.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function DepthShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mProjectionId;
 	this.mViewId;
 	this.mModelId;
@@ -55,37 +55,37 @@ function DepthShader ()
 	this.mFarId;
 
 
-	// <summary>
+	
 	// Projection matrix.
-	// </summary>
+	
 	this.Projection;
 
 
-	// <summary>
+	
 	// View matrix.
-	// </summary>
+	
 	this.View;
 	
 	
-	// <summary>
+	
 	// Gets or sets the near and far clipping planes, which determine
 	// how to compute the linear depth values.
-	// </summary>
+	
 	this.Near = 0.0;
 	this.Far = 0.0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 DepthShader.prototype = new BaseShader();
 DepthShader.prototype.constructor = DepthShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthShader.prototype.Init = function ()
 {
 	BaseShader.prototype.Init.call(this);
@@ -102,9 +102,9 @@ DepthShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthShader.prototype.Enable = function ()
 {
 	BaseShader.prototype.Enable.call(this);
@@ -115,9 +115,9 @@ DepthShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Matrices

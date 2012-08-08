@@ -1,40 +1,40 @@
-// <summary>
+
 // This class dispatches an http request to the specified http server
 // using AJAX. The recipient is responsible for handling the returned
 // response via the delegate assigned to this class.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="delegate">Delegate to handle the response.</param>
 function HttpRequest (delegate)
 {
-	// <summary>
+	
 	// Stores the HTTP request object.
-	// </summary>
+	
 	this.mHttp = null;
 	
 	
-	// <summary>
+	
 	// Delegate to callback when the HTTP response has been received.
-	// </summary>
+	
 	// <param name="sender">Reference to the HttpRequest object.</param>
 	// <param name="response">HttpResponse object.</param>
 	this.mDelegate = delegate;
 
 
-	// <summary>
+	
 	// Stores the Url of the request made.
-	// </summary>
+	
 	this.Url = null;
 }
 
 
-// <summary>
+
 // Supported HTTP request methods.
-// </summary>
+
 HttpRequest.Method =
 {
 	GET : "GET",
@@ -48,9 +48,9 @@ HttpRequest.Method =
 }
 
 
-// <summary>
+
 // Function called several times throughout the life of an HTTP request.
-// </summary>
+
 HttpRequest.prototype.OnHttpState = function ()
 {
 	// 0 = Unsent
@@ -74,9 +74,9 @@ HttpRequest.prototype.OnHttpState = function ()
 
 
 
-// <summary>
+
 // Submit a request to the server.
-// </summary>
+
 // <param name="type">GET or POST.</param>
 // <param name="url">Location of the request.</param>
 // <param name="data">Optional data for a POST request. Set to null if not used.</param>
@@ -105,9 +105,9 @@ HttpRequest.prototype.SendRequest = function (type, url, data, state, binary)
 }
 
 
-// <summary>
+
 // Cancel a current request.
-// </summary>
+
 HttpRequest.prototype.Cancel = function ()
 {
 	if ( this.mHttp != null )
@@ -118,9 +118,9 @@ HttpRequest.prototype.Cancel = function ()
 }
 
 
-// <summary>
+
 // Creates a request object. Different browsers have different HTTPRequest objects.
-// </summary>
+
 HttpRequest.CreateRequest = function ()
 {
 	try

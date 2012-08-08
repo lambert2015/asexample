@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,30 +24,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // The blur shader performs a box-blur on the target texture (aka: separable box filter).
 // It requires two passes. The first pass blurs the target along the horizontal axis. The
 // second pass blurs the target along the vertical axis.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function DofBlurShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	ImageShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mOrientationId;
 	this.mBlurAmountId;
 	this.mBlurCoefficientId;
@@ -57,7 +57,7 @@ function DofBlurShader ()
 	this.mPPMId;
 	
 	
-	// <summary>
+	
 	// Gets or sets the coefficient used during the blur process.
 	// This property helps to reduce the GPU cycles in order to calculate
 	// the blur diameter.
@@ -67,43 +67,43 @@ function DofBlurShader ()
 	// f = focal length
 	// ms = magnitude of subject in focus
 	// N is the fstop
-	// </summary>
+	
 	this.BlurCoefficient = 0;
 	
 	
-	// <summary>
+	
 	// Gets or sets camera properties used in the bluring process.
-	// </summary>
+	
 	this.FocalLength = 0.0;
 	this.FocusDistance = 0.0;
 	this.FStop = 0.0;
 	
 	
-	// <summary>
+	
 	// Gets or sets the near and far clipping planes.
-	// </summary>
+	
 	this.Near = 0.0;
 	this.Far = 0.0;
 	
 	
-	// <summary>
+	
 	// Gets or sets the pixels per millimetre. This is used to determine how many pixels to blur
 	// from the result returned in the DOF blur equation.
-	// </summary>
+	
 	this.mPPM = 0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 DofBlurShader.prototype = new ImageShader();
 DofBlurShader.prototype.constructor = DofBlurShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DofBlurShader.prototype.Init = function ()
 {
 	ImageShader.prototype.Init.call(this);
@@ -118,9 +118,9 @@ DofBlurShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Sets the size of the image.
-// </summary>
+
 DofBlurShader.prototype.SetSize = function (width, height)
 {
 	// Call base method
@@ -131,9 +131,9 @@ DofBlurShader.prototype.SetSize = function (width, height)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DofBlurShader.prototype.Enable = function ()
 {
 	ImageShader.prototype.Enable.call(this);
@@ -147,9 +147,9 @@ DofBlurShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DofBlurShader.prototype.Draw = function (entity, orientation, numPoints, numIndices)
 {
 	// Blur on the horizontal axis
@@ -158,10 +158,10 @@ DofBlurShader.prototype.Draw = function (entity, orientation, numPoints, numIndi
 }
 
 
-// <summary>
+
 // Calculates the blur coefficient with the specified camera properties.
 // Calculating this here saves some GPU cycles.
-// </summary>
+
 DofBlurShader.prototype.UpdateBlurCoefficient = function ()
 {
 	var ms = this.FocalLength / ((this.FocusDistance * 1000.0) - this.FocalLength);

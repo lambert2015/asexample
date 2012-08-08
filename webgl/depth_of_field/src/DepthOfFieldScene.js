@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,10 +24,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This scene demonstrates how to render a depth of field effect. The process is as follows.
 // 1. Render the scene to a texture.
 //
@@ -45,52 +45,52 @@
 // 4. After rendering the blurred texture, blend the colour texture in step 1 with the blurred texture
 //    produced in step 3. Pixels that are in focus will use the higher resolution texture whereas pixels
 //    not in focus will sample from the lower resolution and blurred texture.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function DepthOfFieldScene ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseScene.call(this);
 	
 	
-	// <summary>
+	
 	// Stores the current inverse view matrix.
-	// </summary>
+	
 	this.mInvViewMatrix = null;
 	
 	
-	// <summary>
+	
 	// The framebuffer object to store the colour buffer (ie: the result of the rendered scene).
 	// This will be fed into the blur shader.
-	// </summary>
+	
 	this.mFboColour = null;
 	
 	
-	// <summary>
+	
 	// The framebuffer object to store the depth map. This will be fed into the
 	// blur shader.
-	// </summary>
+	
 	this.mFboDepth = null;
 	
 	
-	// <summary>
+	
 	// The framebuffer object for performing the first pass [horizontal] blur using the
 	// separable blur algorithm. On the second pass, the final blurring will be stored
 	// into the mFboBlur2 colour target.
-	// </summary>
+	
 	this.mFboBlur = null;
 	this.mFboBlur2 = null;
 	
 	
-	// <summary>
+	
 	// Framebuffer objects.
-	// </summary>
+	
 	this.mFboColourColourBuffer = null;
 	this.mFboColourDepthBuffer = null;
 	
@@ -100,74 +100,74 @@ function DepthOfFieldScene ()
 	this.mFboBlurColourBuffer = null;
 
 	
-	// <summary>
+	
 	// Gets or sets the dimensions of the FBO, which may or may not be the same size
 	// as the window.
-	// </summary>
+	
 	this.mFboDimension = null;
 	this.mFboDimensionBlur = null;
 	
 	
-	// <summary>
+	
 	// The basic shader is responsible for rendering the scene as normal. It will produce
 	// the colour texture used in the blurring stage.
-	// </summary>
+	
 	this.mBasicShader = null;
 	
 	
-	// <summary>
+	
 	// The depth shader is responsible for rendering the depth values. It will produce the
 	// depth texture used in the blurring stage.
-	// </summary>
+	
 	this.mDepthShader = null;
 	
 	
-	// <summary>
+	
 	// The depth image shader is responsible for rendering the depth texture to screen. Useful for
 	// debugging or visualization purposes.
-	// </summary>
+	
 	this.mDepthImageShader = null;
 	
 	
-	// <summary>
+	
 	// The shader to blur a texture. It uses the separable blur algorithm, which divides blurring
 	// into two passes. The first pass will render a horizontal blur. The second pass will render
 	// the vertical blur. This is much faster than using a traditional convolution filter algorithm.
-	// </summary>
+	
 	this.mDofBlurShader = null;
 	
 	
-	// <summary>
+	
 	// The image shader will render the final post-processed texture to screen.
-	// </summary>
+	
 	this.mDofImageShader = null;
 	
 	
-	// <summary>
+	
 	// Surface (rectangle) containing a texture to manipulate or view. Used for blurring and showing
 	// the final DOF result. It is designed to fit the size of the viewport.
-	// </summary>
+	
 	this.mSurface = null;
 	
 	
-	// <summary>
+	
 	// Textures.
-	// </summary>
+	
 	this.mTexCheckerBoard = null;
 	this.mTexRuler = null;
 	
 	
-	// <summary>
+	
 	// Stores a reference to the canvas DOM element, which is used to reset the viewport
 	// back to its original size after rendering to the FBO, which uses a different
 	// dimension.
-	// </summary>
+	
 	this.mCanvas = null;
 	
 	
-	// <summary>
+	
 	// UI members.
-	// </summary>
+	
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	
@@ -186,16 +186,16 @@ function DepthOfFieldScene ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 DepthOfFieldScene.prototype = new BaseScene();
 DepthOfFieldScene.prototype.constructor = DepthOfFieldScene;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthOfFieldScene.prototype.Start = function ()
 {
 	// Setup members and default values
@@ -343,9 +343,9 @@ DepthOfFieldScene.prototype.Start = function ()
 }
 
 
-// <summary>
+
 // Method called when the focal length slider has changed.
-// </summary>
+
 DepthOfFieldScene.prototype.OnFocalLengthValueChanged = function (event, ui)
 {
 	event.data.owner.mDofBlurShader.FocalLength = ui.value;
@@ -358,9 +358,9 @@ DepthOfFieldScene.prototype.OnFocalLengthValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the focus distance slider has changed.
-// </summary>
+
 DepthOfFieldScene.prototype.OnFocusDistanceValueChanged = function (event, ui)
 {
 	event.data.owner.mDofBlurShader.FocusDistance = ui.value;
@@ -373,9 +373,9 @@ DepthOfFieldScene.prototype.OnFocusDistanceValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the f-stop slider has changed.
-// </summary>
+
 DepthOfFieldScene.prototype.OnFStopValueChanged = function (event, ui)
 {
 	event.data.owner.mDofBlurShader.FStop = ui.value;
@@ -388,18 +388,18 @@ DepthOfFieldScene.prototype.OnFStopValueChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the view state combo box value has changed.
-// </summary>
+
 DepthOfFieldScene.prototype.OnViewStateValueChanged = function (event)
 {
 	this.mViewState = this.mCboxViewState.selectedIndex;
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthOfFieldScene.prototype.Update = function ()
 {
 	BaseScene.prototype.Update.call(this);
@@ -487,9 +487,9 @@ DepthOfFieldScene.prototype.Update = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthOfFieldScene.prototype.End = function ()
 {
 	BaseScene.prototype.End.call(this);
@@ -539,11 +539,11 @@ DepthOfFieldScene.prototype.End = function ()
 }
 
 
-// <summary>
+
 // This method is called when an item for the scene has downloaded. it
 // will increment the resource counter and dispatch an OnLoadComplete
 // event once all items have been downloaded.
-// </summary>
+
 DepthOfFieldScene.prototype.OnItemLoaded = function (sender, response)
 {
 	BaseScene.prototype.OnItemLoaded.call(this, sender, response);
@@ -553,11 +553,11 @@ DepthOfFieldScene.prototype.OnItemLoaded = function (sender, response)
 }
 
 
-// <summary>
+
 // This method is called to compile a bunch of shaders. The browser will be
 // blocked while the GPU compiles, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 DepthOfFieldScene.prototype.CompileShaders = function (index, list)
 {
 	var shaderItem = list[index];
@@ -601,11 +601,11 @@ DepthOfFieldScene.prototype.CompileShaders = function (index, list)
 }
 
 
-// <summary>
+
 // This method is called to load a bunch of shaders. The browser will be
 // blocked while the GPU loads, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 DepthOfFieldScene.prototype.LoadShaders = function (index)
 {
 	if ( index == 0 )
@@ -721,9 +721,9 @@ DepthOfFieldScene.prototype.LoadShaders = function (index)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthOfFieldScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders

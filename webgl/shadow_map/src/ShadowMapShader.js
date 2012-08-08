@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,29 +24,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // The shadow map shader is a basic shader that also takes into account a depth map
 // rendered from the light's point of view to determine if a pixel is in shadow.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function ShadowMapShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BasicShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mLightSourceProjectionMatrixId;
 	this.mLightSourceViewMatrixId;
 	this.mDepthMapId;
@@ -54,45 +54,45 @@ function ShadowMapShader ()
 	this.mFilterTypeId;
 	
 
-	// <summary>
+	
 	// View matrix at the light source. This is used only if the light source
 	// is directional. Point light sources will calculate the 6 projection matrices
 	// in realtime and check the cubemap.
-	// </summary>
+	
 	this.LightSourceProjectionMatrix;
 	this.LightSourceViewMatrix;
 	
 	
-	// <summary>
+	
 	// Depth map texture to use. It may be 2D or cubemap. The shader will check the
 	// light source type and assume the correct depth map was passed in. That is,
 	// directional lights will use Texture2D and point lights will use TextureCube.
-	// </summary>
+	
 	this.DepthMap;
 	this.DepthCubeMap;
 	
 	
-	// <summary>
+	
 	// Specifies the type of shadow map filtering to perform.
 	// 0 = None
 	// 1 = PCM
 	// 2 = VSM
 	// 3 = ESM
-	// </summary>
+	
 	this.FilterType = 0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 ShadowMapShader.prototype = new BasicShader();
 ShadowMapShader.prototype.constructor = ShadowMapShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 ShadowMapShader.prototype.Init = function ()
 {
 	BasicShader.prototype.Init.call(this);
@@ -111,9 +111,9 @@ ShadowMapShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 ShadowMapShader.prototype.Enable = function ()
 {
 	BasicShader.prototype.Enable.call(this);
@@ -133,9 +133,9 @@ ShadowMapShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 ShadowMapShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Matrices

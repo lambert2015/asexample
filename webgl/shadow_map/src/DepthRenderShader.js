@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,53 +24,53 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This shader renders the depth map to the screen, letting you visualize how it looks.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function DepthRenderShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	ImageShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mFilterTypeId;
 	this.mSampleCubeId;
 	
 	
-	// <summary>
+	
 	// Specifies the type of shadow map filtering to perform.
 	// 0 = None
 	// 1 = PCM
 	// 2 = VSM
 	// 3 = ESM
-	// </summary>
+	
 	this.FilterType = 0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 DepthRenderShader.prototype = new ImageShader();
 DepthRenderShader.prototype.constructor = DepthRenderShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthRenderShader.prototype.Init = function ()
 {
 	ImageShader.prototype.Init.call(this);
@@ -80,9 +80,9 @@ DepthRenderShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 DepthRenderShader.prototype.Enable = function ()
 {
 	ImageShader.prototype.Enable.call(this);

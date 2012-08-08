@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,56 +24,56 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // FramebufferObject represents a single buffer that is used to store rendered images.
 // If a TextureObject is defined, the results will be written to the texture object.
 // Otherwise the results will be saved to a renderbuffer object with the TextureFormat.
 //
 // If a texture object is provided, the application is resonsible for creating
 // and releasing the texture resource.
-// <summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="type">Specifies the type of buffer object.</type>
 function FrameBufferObject (type)
 {
-	// <summary>
+	
 	// Gets or sets the type of buffer object.
-	// </summary>
+	
 	this.Type = (type != null) ? type : FrameBufferObject.BufferType.Colour;
 
 
-	// <summary>
+	
 	// Id of the render buffer or texture buffer. This is automatically set
 	// by the FBO.
-	// </summary>
+	
 	this.Id = null;
 
 
-	// <summary>
+	
 	// Gets or sets the render buffer format. This is only required if the
 	// texture object has not been set.
-	// </summary>
+	
 	this.RenderBufferFormat = Texture.Format.Rgba;
 	
 	
-	// <summary>
+	
 	// If set, the render buffer will output the results
 	// to this texture object instead of a render buffer.
-	// <summary>
+	
 	this.TextureObject = null;
 }
 
 
-// <summary>
+
 // Enumeration of the possible buffer types.
-// <summary>
+
 FrameBufferObject.BufferType = 
 {
 	Colour : 0,
@@ -82,56 +82,56 @@ FrameBufferObject.BufferType =
 };
 
 
-// <summary>
+
 // GLFrameBufferObject provides FBO access to render scenes off screen.
-// <summary>
 
 
-// <summary>
+
+
 // Constructor.
-// <summary>
+
 function GLFrameBufferObject ()
 {
-	// <summary>
+	
 	// Identifier assigned to the frame buffer.
-	// <summary>
+	
 	this.mFrameBufferID = null;
 
 
-	// <summary>
+	
 	// Pixel dimensions of the frame buffer width.
-	// <summary>
+	
 	this.mFrameWidth = null;
 
 
-	// <summary>
+	
 	// Pixel dimensions of the frame buffer height.
-	// <summary>
+	
 	this.mFrameHeight = null;
 
 
-	// <summary>
+	
 	// Colour buffer object.
-	// <summary>
+	
 	this.mColourBuffer = null;
 
 
-	// <summary>
+	
 	// Depth buffer object.
-	// <summary>
+	
 	this.mDepthBuffer = null;
 
 
-	// <summary>
+	
 	// Stencil buffer object.
-	// <summary>
+	
 	this.mStencilBuffer = null;
 }
 
 
-// <summary>
+
 // Create a new FBO rendering to a texture object.
-// <summary>
+
 // <param name="width">Width of the FBO, in pixels.</param>
 // <param name="height">Height of the FBO, in pixels.</param>
 // <returns>True if the FBO was created successfully.</returns>
@@ -150,9 +150,9 @@ GLFrameBufferObject.prototype.Create = function (width, height)
 }
 
 
-// <summary>
+
 // Attach a texture or render buffer object to the FBO.
-// <summary>
+
 // <param name="buffer">Buffer to attach to the FBO.</param>
 // <returns>True if the buffer was attached successfully.</returns>
 GLFrameBufferObject.prototype.AttachBuffer = function (buffer)
@@ -252,9 +252,9 @@ GLFrameBufferObject.prototype.AttachBuffer = function (buffer)
 }
 
 
-// <summary>
+
 // Resize an existing FBO.
-// <summary>
+
 // <param name="width">Width of the FBO, in pixels.</param>
 // <param name="height">Height of the FBO, in pixels.</param>
 GLFrameBufferObject.prototype.Resize = function (width, height)
@@ -276,9 +276,9 @@ GLFrameBufferObject.prototype.Resize = function (width, height)
 }
 
 
-// <summary>
+
 // Release resources used by the FBO.
-// <summary>
+
 GLFrameBufferObject.prototype.Release = function ()
 {
 	// Clear colour buffer
@@ -318,18 +318,18 @@ GLFrameBufferObject.prototype.Release = function ()
 }
 
 
-// <summary>
+
 // Enable FBO rendering.
-// <summary>
+
 GLFrameBufferObject.prototype.Enable = function ()
 {
 	gl.bindFramebuffer(gl.FRAMEBUFFER, this.mFrameBufferID);
 }
 
 
-// <summary>
+
 // Enable VBO with cubemap face to render to/from.
-// <summary>
+
 // <param name="face">Cubemap face to bind and render to/from.</param>
 GLFrameBufferObject.prototype.EnableCubemap = function (face)
 {
@@ -338,18 +338,18 @@ GLFrameBufferObject.prototype.EnableCubemap = function (face)
 }
 
 
-// <summary>
+
 // Disable FBO rendering.
-// <summary>
+
 GLFrameBufferObject.prototype.Disable = function ()
 {
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
 
 
-// <summary>
+
 // Returns the width of the FBO, in pixels.
-// <summary>
+
 // <returns>The width of the FBO, in pixels.</returns>
 GLFrameBufferObject.prototype.GetFrameWidth = function ()
 {
@@ -357,9 +357,9 @@ GLFrameBufferObject.prototype.GetFrameWidth = function ()
 }
 
 
-// <summary>
+
 // Returns the height of the FBO, in pixels.
-// <summary>
+
 // <returns>The height of the FBO, in pixels.</returns>
 GLFrameBufferObject.prototype.GetFrameHeight = function ()
 {

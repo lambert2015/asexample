@@ -1,56 +1,56 @@
-// <summary>
+
 // Manages OpenGL textures.
-// <summary>
 
 
-// <summary>
+
+
 // Constructor.
-// <summary>
+
 function GLTexture ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	Texture.call(this);
 	
 	
-	// <summary>
+	
 	// Gets or sets the type of this texture.
-	// <summary>
+	
 	this.mTextureType;
 
 
-	// <summary>
+	
 	// Stores the texture.
-	// <summary>
+	
 	this.Texture = null;
 	
 	
-	// <summary>
+	
 	// Gets or sets the sampler state for this texture.
-	// <summary>
+	
 	this.mSampler = null;
 
 
-	// <summary>
+	
 	// Gets or sets GL friendly texture format.
-	// <summary>
+	
 	this.mGlInternalFormat = 0;
 	this.mGlFormat = 0;
 	this.mGlType = 0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 GLTexture.prototype = new Texture();
 GLTexture.prototype.constructor = GLTexture;
 
 
-// <summary>
+
 // Enumeration of the possible texture types.
-// <summary>
+
 GLTexture.TextureType =
 {
 	Texture2D : 0x0DE1,
@@ -58,9 +58,9 @@ GLTexture.TextureType =
 };
 
 
-// <summary>
+
 // Create a new blank texture.
-// <summary>
+
 // <param name="width">Width of the texture, in pixels.</param>
 // <param name="height">Height of the texture, in pixels.</param>
 // <param name="format">Format of the texture.</param>
@@ -217,9 +217,9 @@ GLTexture.prototype.Create = function (width, height, format, sampler)
 }
 
 
-// <summary>
+
 // Creates a set of mipmaps for this texture.
-// <summary>
+
 GLTexture.prototype.CreateMipmaps = function ()
 {
 	gl.bindTexture(this.mTextureType, this.Texture);
@@ -227,9 +227,9 @@ GLTexture.prototype.CreateMipmaps = function ()
 }
 
 
-// <summary>
+
 // Free up any used resources.
-// </summary>
+
 GLTexture.prototype.Release = function ()
 {
 	if ( this.Texture != null )
@@ -247,18 +247,18 @@ GLTexture.prototype.Release = function ()
 }
 
 
-// <summary>
+
 // Binds the texture for use.
-// </summary>
+
 GLTexture.prototype.Bind = function ()
 {
 	gl.bindTexture(this.mTextureType, this.Texture);
 }
 
 
-// <summary>
+
 // Returns the texture type.
-// <summary>
+
 // <returns>The texture type.</returns>
 GLTexture.prototype.GetTextureType = function ()
 {
@@ -266,9 +266,9 @@ GLTexture.prototype.GetTextureType = function ()
 }
 
 
-// <summary>
+
 // Returns the texture id used by this object.
-// <summary>
+
 // <returns>The texture id used by this object.</returns>
 GLTexture.prototype.GetTextureId = function ()
 {
@@ -276,9 +276,9 @@ GLTexture.prototype.GetTextureId = function ()
 }
 
 
-// <summary>
+
 // Returns the sampler state of the texture.
-// <summary>
+
 // <returns>The sampler state of the texture.</returns>
 GLTexture.prototype.GetSamplerState = function ()
 {
