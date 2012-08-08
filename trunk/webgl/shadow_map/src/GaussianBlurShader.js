@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,58 +24,58 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // Gaussian blur shader performs a box-blur on the target texture (aka: seperable box filter).
 // It requires two passes. The first pass blurs the target along the horizontal axis. The
 // second pass blurs the target along the vertical axis.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function GaussianBlurShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	ImageShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mOrientationId;
 	this.mBlurAmountId;
 	this.mCubeFaceId;
 	
 	
-	// <summary>
+	
 	// Gets or sets the amount of bluring.
-	// </summary>
+	
 	this.BlurAmount = 0;
 	
 	
-	// <summary>
+	
 	// Gets or sets the face of the cube being blurred.
-	// </summary>
+	
 	this.CubeFace = 0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 GaussianBlurShader.prototype = new ImageShader();
 GaussianBlurShader.prototype.constructor = GaussianBlurShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 GaussianBlurShader.prototype.Init = function ()
 {
 	ImageShader.prototype.Init.call(this);
@@ -87,9 +87,9 @@ GaussianBlurShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 GaussianBlurShader.prototype.Enable = function ()
 {
 	ImageShader.prototype.Enable.call(this);
@@ -99,9 +99,9 @@ GaussianBlurShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 GaussianBlurShader.prototype.Draw = function (entity, orientation, numPoints, numIndices)
 {
 	// Blur on the horizontal axis

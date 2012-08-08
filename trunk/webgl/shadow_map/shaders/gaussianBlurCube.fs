@@ -1,39 +1,39 @@
-/// <summary>
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-///
-/// 2D Noise
-/// Author : Ian McEwan, Ashima Arts.
-///	Copyright (C) 2011 Ashima Arts. All rights reserved.
-/// Distributed under the MIT License.
-///	https://github.com/ashima/webgl-noise
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+
+// Copyright (C) 2012 Nathaniel Meyer
+// Nutty Software, http://www.nutty.ca
+// All Rights Reserved.
+//
+// 2D Noise
+// Author : Ian McEwan, Ashima Arts.
+//	Copyright (C) 2011 Ashima Arts. All rights reserved.
+// Distributed under the MIT License.
+//	https://github.com/ashima/webgl-noise
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+//     1. The above copyright notice and this permission notice shall be included in all
+//        copies or substantial portions of the Software.
+//     2. Redistributions in binary or minimized form must reproduce the above copyright
+//        notice and this list of conditions in the documentation and/or other materials
+//        provided with the distribution.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 
-/// <summary>
-/// Fragment shader for performing a seperable blur on the specified cubemap.
-/// </summary>
+
+
+// Fragment shader for performing a seperable blur on the specified cubemap.
+
 
 
 #ifdef GL_ES
@@ -41,9 +41,9 @@
 #endif
 
 
-/// <summary>
-/// Uniform variables.
-/// <summary>
+
+// Uniform variables.
+
 uniform vec2 TexelSize;
 uniform samplerCube Sample0;
 
@@ -52,27 +52,27 @@ uniform int Orientation;
 uniform int BlurAmount;
 
 
-/// <summary>
-/// Varying variables.
-/// <summary>
+
+// Varying variables.
+
 varying vec2 vUv;
 
 
-/// <summary>
-/// Gets the Gaussian value in the first dimension.
-/// </summary>
-/// <param name="x">Distance from origin on the x-axis.</param>
-/// <param name="deviation">Standard deviation.</param>
-/// <returns>The gaussian value on the x-axis.</returns>
+
+// Gets the Gaussian value in the first dimension.
+
+// <param name="x">Distance from origin on the x-axis.</param>
+// <param name="deviation">Standard deviation.</param>
+// <returns>The gaussian value on the x-axis.</returns>
 float Gaussian (float x, float deviation)
 {
 	return (1.0 / sqrt(2.0 * 3.141592 * deviation)) * exp(-((x * x) / (2.0 * deviation)));	
 }
 
 
-/// <summary>
-/// Fragment shader entry.
-/// <summary>
+
+// Fragment shader entry.
+
 void main ()
 {
 	float halfBlur = float(BlurAmount) * 0.5;

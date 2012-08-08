@@ -1,19 +1,19 @@
-// <summary>
+
 // ViewMatrix builds Matrix objects based on certain desired views.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function ViewMatrix ()
 {
 }
 
 
-// <summary>
+
 // Build a frustum matrix.
-// </summary>
+
 // <param name="left">Left coordinate of frustum.</param>
 // <param name="right">Right coordinate of frustum.</param>
 // <param name="bottom">Bottom coordinate of frustum.</param>
@@ -49,9 +49,9 @@ ViewMatrix.Frustum = function (left, right, bottom, top, near, far)
 }
 
 
-// <summary>
+
 // Build an orthographic matrix with centre at (0,0).
-// </summary>
+
 // <param name="width">Width of the frustum.</param>
 // <param name="height">Height of the frustum.</param>
 // <param name="near">Near distance of frustum.</param>
@@ -85,9 +85,9 @@ ViewMatrix.Orthographic = function (width, height, near, far)
 }
 
 
-// <summary>
+
 // Build an orthographic matrix.
-// </summary>
+
 // <param name="left">Left coordinate of frustum.</param>
 // <param name="right">Right coordinate of frustum.</param>
 // <param name="bottom">Bottom coordinate of frustum.</param>
@@ -123,9 +123,9 @@ ViewMatrix.OrthographicRect = function (left, right, bottom, top, near, far)
 }
 
 
-// <summary>
+
 // Build a perspective matrix.
-// </summary>
+
 // <param name="fovY">Angular pitch of frustum</param>
 // <param name="aspect">Aspext ratio of frustum</param>
 // <param name="near">Near distance of frustum</param>
@@ -147,9 +147,9 @@ ViewMatrix.Perspective = function (fovY, aspect, near, far)
 }
 
 
-// <summary>
+
 // Build a viewport matrix.
-// </summary>
+
 // <param name="width">Width of the viewport.</param>
 // <param name="height">Height of the viewport.</param>
 // <returns>A viewport matrix.</returns>

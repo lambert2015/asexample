@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,58 +24,58 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This post-process shader refracts pixels that have their alpha channel set to 0. To animate
 // the refraction, increase the RandomNumber value by some amount.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function RefractionShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	ImageShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mAmplitudeId;
 	this.mFrequencyId;
 	this.mPeriodId;
 	this.mRandomNumberId;
 		
 	
-	// <summary>
+	
 	// Gets or sets the size of refraction.
-	// </summary>
+	
 	this.Amplitude = 1.0;
 	
 	
-	// <summary>
+	
 	// Gets or sets the frequency of the refraction. Larger numbers produce
 	// more grain.
-	// </summary>
+	
 	this.Frequency = 256.0;
 	
 	
-	// <summary>
+	
 	// Gets or sets the relative speed (period).
-	// </summary>
+	
 	this.Period = 4.0;
 	
 	
-	// <summary>
+	
 	// Gets or sets the random number to supply into the shader. This can
 	// be used to animate the noise.
-	// </summary>
+	
 	this.RandomNumber = 0.0;
 	
 	
@@ -85,16 +85,16 @@ function RefractionShader ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 RefractionShader.prototype = new ImageShader();
 RefractionShader.prototype.constructor = RefractionShader;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 RefractionShader.prototype.Init = function ()
 {
 	ImageShader.prototype.Init.call(this);
@@ -107,9 +107,9 @@ RefractionShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 RefractionShader.prototype.Enable = function ()
 {
 	ImageShader.prototype.Enable.call(this);
@@ -122,9 +122,9 @@ RefractionShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 //RefractionShader.prototype.Draw = function (entity, numPoints, numIndices)
 //{
 	// Forward

@@ -1,37 +1,37 @@
-/// <summary>
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
+
+// Copyright (C) 2012 Nathaniel Meyer
+// Nutty Software, http://www.nutty.ca
+// All Rights Reserved.
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+//     1. The above copyright notice and this permission notice shall be included in all
+//        copies or substantial portions of the Software.
+//     2. Redistributions in binary or minimized form must reproduce the above copyright
+//        notice and this list of conditions in the documentation and/or other materials
+//        provided with the distribution.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 
-/// <summary>
-/// This fragment shader calculates the ambient occlusion contributions for each fragment.
-/// This shader requires:
-/// 1. View-space position buffer
-/// 2. View-space normal vector buffer
-/// 3. Normalmap to preturb the sampling kernel
-/// </summary>
+
+
+// This fragment shader calculates the ambient occlusion contributions for each fragment.
+// This shader requires:
+// 1. View-space position buffer
+// 2. View-space normal vector buffer
+// 3. Normalmap to preturb the sampling kernel
+
 
 
 #ifdef GL_ES
@@ -39,55 +39,55 @@
 #endif
 
 
-/// <summary>
-/// Texture samples used by this shader.
-/// <summary>
+
+// Texture samples used by this shader.
+
 uniform sampler2D Sample0;	// View space position data
 uniform sampler2D Sample1;	// View space normal vectors
 uniform sampler2D Sample2;	// Normalmap to randomize the sampling kernel
 uniform vec2 TexelSize;
 
 
-/// <summary>
-/// Occluder bias to minimize self-occlusion.
-/// <summary>
+
+// Occluder bias to minimize self-occlusion.
+
 uniform float OccluderBias;
 
 
-/// <summary>
-/// Specifies the size of the sampling radius.
-/// <summary>
+
+// Specifies the size of the sampling radius.
+
 uniform float SamplingRadius;
 
 
-/// <summary>
-/// Ambient occlusion attenuation values.
-/// These parameters control the amount of AO calculated based on distance
-/// to the occluders. You need to play with them to find the right balance.
-///
-/// .x = constant attenuation. This is useful for removing self occlusion. When
-///		 set to zero or a low value, you will start to notice edges or wireframes
-///		 being shown. Typically use a value between 1.0 and 3.0.
-///
-///	.y = linear attenuation. This provides a linear distance falloff.
-/// .z = quadratic attenuation. Smoother falloff, but is not used in this shader.
-/// <summary>
+
+// Ambient occlusion attenuation values.
+// These parameters control the amount of AO calculated based on distance
+// to the occluders. You need to play with them to find the right balance.
+//
+// .x = constant attenuation. This is useful for removing self occlusion. When
+//		 set to zero or a low value, you will start to notice edges or wireframes
+//		 being shown. Typically use a value between 1.0 and 3.0.
+//
+//	.y = linear attenuation. This provides a linear distance falloff.
+// .z = quadratic attenuation. Smoother falloff, but is not used in this shader.
+
 uniform vec2 Attenuation;
 
 
-/// <summary>
-/// Varying variables.
-/// <summary>
+
+// Varying variables.
+
 varying vec2 vUv;
 
 
-/// <summary>
-/// Sample the ambient occlusion at the following UV coordinate.
-/// <summary>
-/// <param name="srcPosition">3D position of the source pixel being tested.</param>
-/// <param name="srcNormal">Normal of the source pixel being tested.</param>
-/// <param name="uv">UV coordinate to sample/test for ambient occlusion.</param>
-/// <returns>Ambient occlusion amount.</returns>
+
+// Sample the ambient occlusion at the following UV coordinate.
+
+// <param name="srcPosition">3D position of the source pixel being tested.</param>
+// <param name="srcNormal">Normal of the source pixel being tested.</param>
+// <param name="uv">UV coordinate to sample/test for ambient occlusion.</param>
+// <returns>Ambient occlusion amount.</returns>
 float SamplePixels (vec3 srcPosition, vec3 srcNormal, vec2 uv)
 {
 	// Get the 3D position of the destination pixel
@@ -108,9 +108,9 @@ float SamplePixels (vec3 srcPosition, vec3 srcNormal, vec2 uv)
 }
 
 
-/// <summary>
-/// Fragment shader entry.
-/// <summary>
+
+// Fragment shader entry.
+
 void main ()
 {
 	// Get position and normal vector for this fragment

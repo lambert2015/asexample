@@ -1,96 +1,49 @@
-/// <summary>
-/// Copyright (C) 2012 Nathaniel Meyer
-/// Nutty Software, http://www.nutty.ca
-/// All Rights Reserved.
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of
-/// this software and associated documentation files (the "Software"), to deal in
-/// the Software without restriction, including without limitation the rights to
-/// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-/// of the Software, and to permit persons to whom the Software is furnished to do
-/// so, subject to the following conditions:
-///     1. The above copyright notice and this permission notice shall be included in all
-///        copies or substantial portions of the Software.
-///     2. Redistributions in binary or minimized form must reproduce the above copyright
-///        notice and this list of conditions in the documentation and/or other materials
-///        provided with the distribution.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
-/// </summary>
-
-
-/// <summary>
-/// Basic Lighting Fragment Shader.
-/// </summary>
-
+// Basic Lighting Fragment Shader.
 
 #ifdef GL_ES
 	precision highp float;
 #endif
 
-
-/// <summary>
-/// Light source structure.
-/// <summary>
+// Light source structure.
 struct LightSource
 {
-	vec3 Position;
-	vec3 Attenuation;
-	vec3 Direction;
-	vec3 Colour;
-	float OuterCutoff;
-	float InnerCutoff;
-	float Exponent;
+	vec3 position;
+	vec3 attenuation;
+	vec3 direction;
+	vec3 colour;
+	float outerCutoff;
+	float innerCutoff;
+	float exponent;
 };
 
-
-/// <summary>
-/// Material source structure.
-/// <summary>
+// Material source structure.
 struct MaterialSource
 {
-	vec3 Ambient;
-	vec4 Diffuse;
-	vec3 Specular;
-	float Shininess;
-	vec2 TextureOffset;
-	vec2 TextureScale;
+	vec3 ambient;
+	vec4 diffuse;
+	vec3 specular;
+	float shininess;
+	vec2 textureOffset;
+	vec2 textureScale;
 };
 
-
-/// <summary>
-/// Uniform variables.
-/// <summary>
+// Uniform variables.
 uniform int NumLight;
 uniform LightSource Light[4];
 uniform MaterialSource Material;
 
-/// <summary>
-/// Gets or sets whether vertex lighting (Gouraud Shading) or
-/// fragment lighting (Phong Shading) is used.
-/// <summary>
+// Gets or sets whether vertex lighting (Gouraud Shading) or
+// fragment lighting (Phong Shading) is used.
 uniform int ShadingType;
 
-
-/// <summary>
-/// Varying variables.
-/// <summary>
+// Varying variables.
 varying vec4 vWorldVertex;
 varying vec3 vWorldNormal;
 varying vec2 vUv;
 varying vec3 vViewVec;
 varying vec4 vColour;
 
-
-/// <summary>
-/// Fragment shader entry.
-/// <summary>
+// Fragment shader entry.
 void main ()
 {
 	if ( ShadingType == 1 )
@@ -99,40 +52,40 @@ void main ()
 		// We need to renormalize the vector so that it stays at unit length.
 		vec3 normal = normalize(vWorldNormal);
 	
-		vec3 colour = Material.Ambient;
+		vec3 colour = Material.ambient;
 		for (int i = 0; i < 4; ++i)
 		{
 			if ( i >= NumLight )
 				break;
 			
 			// Calculate diffuse term
-			vec3 lightVec = normalize(Light[i].Position - vWorldVertex.xyz);
+			vec3 lightVec = normalize(Light[i].position - vWorldVertex.xyz);
 			float l = dot(normal, lightVec);
 			if ( l > 0.0 )
 			{
 				// Calculate spotlight effect
 				float spotlight = 1.0;
-				if ( (Light[i].Direction.x != 0.0) || (Light[i].Direction.y != 0.0) || (Light[i].Direction.z != 0.0) )
+				if ( (Light[i].direction.x != 0.0) || (Light[i].direction.y != 0.0) || (Light[i].direction.z != 0.0) )
 				{
-					spotlight = max(-dot(lightVec, Light[i].Direction), 0.0);
-					float spotlightFade = clamp((Light[i].OuterCutoff - spotlight) / (Light[i].OuterCutoff - Light[i].InnerCutoff), 0.0, 1.0);
-					spotlight = pow(spotlight * spotlightFade, Light[i].Exponent);
+					spotlight = max(-dot(lightVec, Light[i].direction), 0.0);
+					float spotlightFade = clamp((Light[i].outerCutoff - spotlight) / (Light[i].outerCutoff - Light[i].innerCutoff), 0.0, 1.0);
+					spotlight = pow(spotlight * spotlightFade, Light[i].exponent);
 				}
 				
 				// Calculate specular term
 				vec3 r = -normalize(reflect(lightVec, normal));
-				float s = pow(max(dot(r, vViewVec), 0.0), Material.Shininess);
+				float s = pow(max(dot(r, vViewVec), 0.0), Material.shininess);
 				
 				// Calculate attenuation factor
-				float d = distance(vWorldVertex.xyz, Light[i].Position);
-				float a = 1.0 / (Light[i].Attenuation.x + (Light[i].Attenuation.y * d) + (Light[i].Attenuation.z * d * d));
+				float d = distance(vWorldVertex.xyz, Light[i].position);
+				float a = 1.0 / (Light[i].attenuation.x + (Light[i].attenuation.y * d) + (Light[i].attenuation.z * d * d));
 				
 				// Add to colour
-				colour += ((Material.Diffuse.xyz * l) + (Material.Specular * s)) * Light[i].Colour * a * spotlight;
+				colour += ((Material.diffuse.xyz * l) + (Material.specular * s)) * Light[i].colour * a * spotlight;
 			}
 		}
 		
-		gl_FragColor = clamp(vec4(colour, Material.Diffuse.w), 0.0, 1.0);
+		gl_FragColor = clamp(vec4(colour, Material.diffuse.w), 0.0, 1.0);
 	}
 	else
 	{

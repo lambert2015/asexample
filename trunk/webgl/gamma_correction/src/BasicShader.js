@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,29 +24,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This shader is the default or "basic" shader that passes lighting and
 // material parameters to the vertex and fragment shaders for rendering.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function BasicShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mProjectionId;
 	this.mViewId;
 	this.mModelId;
@@ -61,50 +61,50 @@ function BasicShader ()
 	this.mGammaId;
 
 
-	// <summary>
+	
 	// Projection matrix.
-	// </summary>
+	
 	this.Projection;
 
 
-	// <summary>
+	
 	// View matrix.
-	// </summary>
+	
 	this.View;
 	
 	
-	// <summary>
+	
 	// Shading type.
 	// 0 = Gouraud shading
 	// 1 = Phong shading
-	// </summary>
+	
 	this.ShadingType = 1;
 	
 	
-	// <summary>
+	
 	// Array of light objects.
-	// </summary>
+	
 	this.LightObject = new Array();
 	
 	
-	// <summary>
+	
 	// Gamma to apply to all textures used in the shader to "uncorrect" or
 	// "linearize" them.
-	// </summary>
+	
 	this.Gamma = 1.0;
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 BasicShader.prototype = new BaseShader();
 BasicShader.prototype.constructor = BasicShader;
 
 
-// <summary>
+
 // Light source structure.
-// </summary>
+
 BasicShader.LightSource = function ()
 {
 	this.TypeId;
@@ -118,9 +118,9 @@ BasicShader.LightSource = function ()
 }
 
 
-// <summary>
+
 // Material structure.
-// </summary>
+
 BasicShader.MaterialSource = function ()
 {
 	this.AmbientId;
@@ -132,9 +132,9 @@ BasicShader.MaterialSource = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BasicShader.prototype.Init = function ()
 {
 	BaseShader.prototype.Init.call(this);
@@ -209,9 +209,9 @@ BasicShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BasicShader.prototype.Enable = function ()
 {
 	BaseShader.prototype.Enable.call(this);
@@ -245,9 +245,9 @@ BasicShader.prototype.Enable = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BasicShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices

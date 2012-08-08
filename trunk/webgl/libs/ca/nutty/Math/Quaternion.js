@@ -1,21 +1,21 @@
-// <summary>
+
 // A Quaternion is a means of representing rotation in 4D space, it is
 // an extension to the complex numbering system.
 // 
 // Compared to Euler angles they are simpler to compose and avoid the
 // problem of gimbal lock. Compared to rotation matrices they are more
 // numerically stable and may be more efficient.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function Quaternion (x, y, z, w)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	Point.call(this, x, y, z, w);
 	
 	
@@ -30,16 +30,16 @@ function Quaternion (x, y, z, w)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 Quaternion.prototype = new Point();
 Quaternion.prototype.constructor = Quaternion;
 
 
-// <summary>
+
 // Rotate a quaternion using Euler angles.
-// </summary>
+
 // <param name="x">X-angle rotation.</param>
 // <param name="y">Y-angle rotation.</param>
 // <param name="z">Z-angle rotation.</param>
@@ -68,9 +68,9 @@ Quaternion.prototype.Rotate = function (x, y, z)
 }
 
 
-// <summary>
+
 // Spherical Linear Interpolation between two quaternions.
-// </summary>
+
 // <param name="quat">Quaternion to slerp to.</param>
 // <param name="t">Scalar value between 0.0 and 1.0.</param>
 // <returns>The interpolated quaternion.</returns>
@@ -102,9 +102,9 @@ Quaternion.prototype.Slerp = function (quat, t)
 }
 
 
-// <summary>
+
 // Convert a quaternion to a matrix.
-// </summary>
+
 // <param name="matrix">Reference to a 4x4 matrix.</param>
 Quaternion.prototype.ToMatrix = function (matrix)
 {

@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,29 +24,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This shader renders geometry to the alpha channel, which will be used by the refraction shader
 // to process tagged pixels. The fragment shader will tag pixels by setting their alpha value to 0.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function BlendShader ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	ImageShader.call(this);
 	
 	
-	// <summary>
+	
 	// Shader variables.
-	// </summary>
+	
 	this.mSrcColourId = null;
 	this.mDstColourId = null;
 	
@@ -57,30 +57,30 @@ function BlendShader ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 BlendShader.prototype = new ImageShader();
 BlendShader.prototype.constructor = BlendShader;
 
 
-// <summary>
+
 // Colour (tint) applied to the destination texture.
 // Variable is static so that the colour applies to all blend modes.
-// </summary>
+
 BlendShader.DstColour = new Point(1, 1, 1, 1);
 
 
-// <summary>
+
 // Colour (tint) applied to the source texture.
 // Variable is static so that the colour applies to all blend modes.
-// </summary>
+
 BlendShader.SrcColour = new Point(1, 1, 1, 1);
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BlendShader.prototype.Init = function ()
 {
 	ImageShader.prototype.Init.call(this);
@@ -91,9 +91,9 @@ BlendShader.prototype.Init = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BlendShader.prototype.Enable = function ()
 {
 	ImageShader.prototype.Enable.call(this);

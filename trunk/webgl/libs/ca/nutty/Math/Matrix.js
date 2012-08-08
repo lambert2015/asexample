@@ -1,40 +1,40 @@
-// <summary>
+
 // Matrices are column-major order.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function Matrix ()
 {
-	// <summary>
+	
 	// An arbitrary sized matrix.
-	// </summary>
+	
 	this.MMatrix = [];
 	
 
-	// <summary>
+	
 	// Stores the number of rows.
-	// </summary>
+	
 	this.mNumRows = 4;
 
 
-	// <summary>
+	
 	// Stores the number of columns.
-	// </summary>
+	
 	this.mNumColumns = 4;
 
 
-	// <summary>
+	
 	// Stores the euler angles of this matrix.
-	// </summary>
+	
 	this.mRotation = new Point();
 	
 
-	// <summary>
+	
 	// Stores the (x, y, z) scale values.
-	// </summary>
+	
 	this.mScale = new Point(1, 1, 1, 1);
 	
 	
@@ -43,9 +43,9 @@ function Matrix ()
 }
 
 
-// <summary>
+
 // Add two matrices.
-// </summary>
+
 Matrix.prototype.Add = function (matrix)
 {
 	// Add
@@ -57,9 +57,9 @@ Matrix.prototype.Add = function (matrix)
 }
 
 
-// <summary>
+
 // Subtract two matrices.
-// </summary>
+
 Matrix.prototype.Subtract = function (matrix)
 {
 	// Subtract
@@ -71,9 +71,9 @@ Matrix.prototype.Subtract = function (matrix)
 }
 
 
-// <summary>
+
 // Multiply two matrices.
-// </summary>
+
 Matrix.prototype.Multiply = function (matrix)
 {
 	// Multiply
@@ -102,9 +102,9 @@ Matrix.prototype.Multiply = function (matrix)
 }
 
 
-// <summary>
+
 // Transpose a matrix.
-// </summary>
+
 Matrix.prototype.Transpose = function (matrix)
 {
 	// Transpose
@@ -120,9 +120,9 @@ Matrix.prototype.Transpose = function (matrix)
 }
 
 
-// <summary>
+
 // Invert a 4x4 matrix quickly.
-// </summary>
+
 Matrix.prototype.Inverse = function ()
 {
 	var matrix = new Matrix(4, 4);
@@ -168,7 +168,7 @@ function SWAP_ROWS (a, b)
 }
 
 
-// <summary>
+
 // Invert a 4x4 matrix properly.
 //
 // Mesa 3-D graphics library
@@ -184,7 +184,7 @@ function SWAP_ROWS (a, b)
 // 
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
-// </summary>
+
 Matrix.prototype.SlowInverse = function ()
 {
 	// Code contributed by Jacques Leroy <jle@star.be>
@@ -318,9 +318,9 @@ Matrix.prototype.SlowInverse = function ()
 }
 
 
-// <summary>
+
 // Points the matrix to look at the specified target.
-// </summary>
+
 // <param name="eye">Position of the matrix.</param>
 // <param name="target">Target to look at.</param>
 // <param name="up">Up-vector.</param>
@@ -366,9 +366,9 @@ Matrix.prototype.PointAt = function (eye, target, up)
 }
 
 
-// <summary>
+
 // Translate this matrix by the specified values.
-// </summary>
+
 // <param name="x">X-axis translation.</param>
 // <param name="y">Y-axis translation.</param>
 // <param name="z">Z-axis translation.</param>
@@ -380,9 +380,9 @@ Matrix.prototype.Translate = function (x, y, z)
 }
 
 
-// <summary>
+
 // Rotate this matrix by the specified values.
-// </summary>
+
 // <param name="x">X-axis rotation.</param>
 // <param name="y">Y-axis rotation.</param>
 // <param name="z">Z-axis rotation.</param>
@@ -396,9 +396,9 @@ Matrix.prototype.Rotate = function (x, y, z)
 }
 
 
-// <summary>
+
 // Scale this matrix by the specified values.
-// </summary>
+
 // <param name="x">X-axis scale.</param>
 // <param name="y">Y-axis scale.</param>
 // <param name="z">Z-axis scale.</param>
@@ -408,9 +408,9 @@ Matrix.prototype.Scale = function (x, y, z)
 }
 
 
-// <summary>
+
 // Set the identity matrix.
-// </summary>
+
 Matrix.prototype.SetIdentity = function ()
 {
 	// Set diagonal to 1.0 and the rest to 0.0
@@ -427,9 +427,9 @@ Matrix.prototype.SetIdentity = function ()
 }
 
 
-// <summary>
+
 // Returns the value at the specified row x column.
-// </summary>
+
 // <param name="row">Row'th index to retrieve.</param>
 // <param name="column">Column'th index to retrieve.</param>
 // <returns>The value at Row x Column.</returns>
@@ -439,9 +439,9 @@ Matrix.prototype.GetValue = function (row, column)
 }
 
 
-// <summary>
+
 // Sets a value at the specified row x column.
-// </summary>
+
 // <param name="row">Row'th index to set.</param>
 // <param name="column">Column'th index to set.</param>
 // <param name="value">Value to set at Row x Column.</param>

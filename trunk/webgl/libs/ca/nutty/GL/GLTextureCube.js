@@ -1,22 +1,22 @@
-// <summary>
+
 // Represents a set of six 2D textures, one for each face of a cube.
-// <summary>
 
 
-// <summary>
+
+
 // Constructor.
-// <summary>
+
 function GLTextureCube ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	GLTexture.call(this);
 	
 	
-	// <summary>
+	
 	// Enumeration of a list of possible cube faces.
-	// <summary>
+	
 	this.CubeFace =
 	{
 		PositiveX : gl.TEXTURE_CUBE_MAP_POSITIVE_X,
@@ -33,16 +33,16 @@ function GLTextureCube ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 GLTextureCube.prototype = new GLTexture();
 GLTextureCube.prototype.constructor = GLTextureCube;
 
 
-// <summary>
+
 // Implementation.
-// <summary>
+
 GLTextureCube.prototype.Create = function (width, height, format, sampler)
 {
 	// Base
@@ -61,9 +61,9 @@ GLTextureCube.prototype.Create = function (width, height, format, sampler)
 }
 
 
-// <summary>
+
 // Copy image data to a face on the cubemap.
-// <summary>
+
 // <param name="face">Cueb face to copy image.</param>
 // <param name="image">Image data.</param>
 GLTextureCube.prototype.Copy = function (face, image)
@@ -72,9 +72,9 @@ GLTextureCube.prototype.Copy = function (face, image)
 }
 
 
-// <summary>
+
 // Copy image data to a face on the cubemap.
-// <summary>
+
 // <param name="face">Cueb face to copy image.</param>
 // <param name="x">X-coordinate in texture to start copy at.</param>
 // <param name="y">Y-coordinate in texture to start copy at.</param>

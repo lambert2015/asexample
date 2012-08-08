@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,25 +24,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This script is responsible for creating the scene entities for the demo.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 function RefractionSceneGen ()
 {
 }
 
 
-// <summary>
+
 // Function creates the VBO objects used in the scene.
-// </summary>
+
 RefractionSceneGen.Create = function ()
 {
 	// Array to store the list of entities in the scene.

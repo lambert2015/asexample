@@ -1,18 +1,18 @@
-// <summary>
+
 // This class creates a rectangular mesh.
-// </summary>
 
 
-// <summary>
+
+
 // Constructor.
-// </summary>
+
 // <param name="x">X-Axis extent of the rectangle.</param>
 // <param name="y">Y-Axis extent of the rectangle.</param>
 function Rectangle (x, y)
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	PolygonMesh.call();
 	
 	
@@ -45,8 +45,8 @@ function Rectangle (x, y)
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 Rectangle.prototype = new PolygonMesh();
 Rectangle.prototype.constructor = Rectangle;

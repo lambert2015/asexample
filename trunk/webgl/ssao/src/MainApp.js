@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,26 +24,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // The MainApp handles the application entry and exit points. It is used
 // to initialize and render the scenes.
-// </summary>
 
 
-// <summary>
+
+
 // Stores the active scene to be rendered.
 // This must be initially set by the index page.
-// </summary>
+
 var CurrentScene = null;
 
 
-// <summary>
+
 // Function called when the HTML page has loaded.
 // Initialize page.
-// </summary>
+
 AppLoad = function ()
 {
 	// Initialize UI
@@ -59,9 +59,9 @@ AppLoad = function ()
 }
 
 
-// <summary>
+
 // This method is called when the HTML page has loaded.
-// </summary>
+
 AppStart = function ()
 {
 	// Initialize WebGL
@@ -104,9 +104,9 @@ AppStart = function ()
 }
 
 
-// <summary>
+
 // This method is called when the HTML page is unloading.
-// </summary>
+
 AppStop = function ()
 {
 	// Cleanup
@@ -118,11 +118,11 @@ AppStop = function ()
 }
 
 
-// <summary>
+
 // This method is called when a new frame is to be rendered
 // in the browser. Typically, this function is called 60 times
 // per second.
-// </summary>
+
 AppRender = function ()
 {
 	if ( CurrentScene )

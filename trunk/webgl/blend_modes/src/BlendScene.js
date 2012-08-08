@@ -1,4 +1,4 @@
-// <summary>
+
 // Nutty Software Open WebGL Framework
 // 
 // Copyright (C) 2012 Nathaniel Meyer
@@ -24,62 +24,62 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// </summary>
 
 
-// <summary>
+
+
 // This scene demonstrates the various blending operations by manually calculating the
 // blending inside a shader. This is useful when you need to expand on OpenGL's minimal
 // set of blending operations.
-// </summary>
 
 
-// <summary>
+
+
 // Global variable that identifies the number of blending operations available.
-// </summary>
+
 var NUM_BLEND_MODES = 18;
 
 
-// <summary>
+
 // Constructor.
-// </summary>
+
 function BlendScene ()
 {
-	// <summary>
+	
 	// Setup inherited members.
-	// </summary>
+	
 	BaseScene.call(this);
 	
 	
-	// <summary>
+	
 	// Shaders for performing blend operations on two textures.
 	// [0] = Add, [1] = Subtract, [2] = Multiply, etc...
-	// </summary>
+	
 	this.mShader = null;
 	
 	
-	// <summary>
+	
 	// Surface (rectangle) containing the textures to blend. It is designed to
 	// fit the size of the viewport.
-	// </summary>
+	
 	this.mSurface = null;
 	
 	
-	// <summary>
+	
 	// Stores the textures used by this scene.
-	// </summary>
+	
 	this.mTexture = new Array();
 	
 	
-	// <summary>
+	
 	// Gets or sets the current blend mode. Set default to additive.
-	// </summary>
+	
 	this.mSelectedBlendMode = NUM_BLEND_MODES + 1;
 	
 	
-	// <summary>
+	
 	// UI members.
-	// </summary>
+	
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	
@@ -94,16 +94,16 @@ function BlendScene ()
 }
 
 
-// <summary>
+
 // Prototypal Inheritance.
-// </summary>
+
 BlendScene.prototype = new BaseScene();
 BlendScene.prototype.constructor = BlendScene;
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BlendScene.prototype.Start = function ()
 {
 	// Setup members and default values
@@ -186,9 +186,9 @@ BlendScene.prototype.Start = function ()
 }
 
 
-// <summary>
+
 // Methods called when the source colour slider values changed.
-// </summary>
+
 BlendScene.prototype.OnSrcRedSliderChanged = function (event, ui)
 {
 	BlendShader.SrcColour.x = ui.value;
@@ -208,9 +208,9 @@ BlendScene.prototype.OnSrcBlueSliderChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Methods called when the destination colour slider values changed.
-// </summary>
+
 BlendScene.prototype.OnDstRedSliderChanged = function (event, ui)
 {
 	BlendShader.DstColour.x = ui.value;
@@ -230,9 +230,9 @@ BlendScene.prototype.OnDstBlueSliderChanged = function (event, ui)
 }
 
 
-// <summary>
+
 // Method called when the source texture has changed.
-// </summary>
+
 BlendScene.prototype.OnSourceChanged = function (event)
 {
 	var selectedIndex = event.currentTarget.selectedIndex;
@@ -240,9 +240,9 @@ BlendScene.prototype.OnSourceChanged = function (event)
 }
 
 
-// <summary>
+
 // Method called when the destination texture has changed.
-// </summary>
+
 BlendScene.prototype.OnDestinationChanged = function (event)
 {
 	var selectedIndex = event.currentTarget.selectedIndex;
@@ -250,18 +250,18 @@ BlendScene.prototype.OnDestinationChanged = function (event)
 }
 
 
-// <summary>
+
 // Method called when the blend mode has changed.
-// </summary>
+
 BlendScene.prototype.OnBlendModeChanged = function (event)
 {
 	event.data.mSelectedBlendMode = event.currentTarget.selectedIndex + NUM_BLEND_MODES + 1;
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BlendScene.prototype.Update = function ()
 {
 	BaseScene.prototype.Update.call(this);
@@ -279,9 +279,9 @@ BlendScene.prototype.Update = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BlendScene.prototype.End = function ()
 {
 	BaseScene.prototype.End.call(this);
@@ -301,9 +301,9 @@ BlendScene.prototype.End = function ()
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BlendScene.prototype.OnItemLoaded = function (sender, response)
 {
 	BaseScene.prototype.OnItemLoaded.call(this, sender, response);
@@ -313,11 +313,11 @@ BlendScene.prototype.OnItemLoaded = function (sender, response)
 }
 
 
-// <summary>
+
 // This method is called to compile a bunch of shaders. The browser will be
 // blocked while the GPU compiles, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 BlendScene.prototype.CompileShaders = function (index, list, blendModes)
 {
 	var shaderItem = list[index];
@@ -364,11 +364,11 @@ BlendScene.prototype.CompileShaders = function (index, list, blendModes)
 }
 
 
-// <summary>
+
 // This method is called to load a bunch of shaders. The browser will be
 // blocked while the GPU loads, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
-// </summary>
+
 BlendScene.prototype.LoadShaders = function (index, blendModes)
 {
 	// Compile blend shaders
@@ -403,9 +403,9 @@ BlendScene.prototype.LoadShaders = function (index, blendModes)
 }
 
 
-// <summary>
+
 // Implementation.
-// </summary>
+
 BlendScene.prototype.OnLoadComplete = function ()
 {
 	// Recompile the blend.fs [uber] shader for each blend mode
