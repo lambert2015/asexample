@@ -1,35 +1,20 @@
-
 // RNG using XOR.
-
-
-
-
-// Constructor.
-
 function RandomGenerator ()
 {
 	
 	// Seed to be used in generator.
-	
 	this.mSeed = 0;
 	
-	
-	
 	// Seed used by the XOR algorithm.
-	
 	this.mXorSeed = [0, 0, 0, 0];
 	
-	
 	// Init
-	this.Seed(0);
+	this.seed(0);
 }
 
-
-
 // Abstract method to be implemented.
-
 // <param name="seedValue">Seed value to use in generator.</param>
-RandomGenerator.prototype.Seed = function (seedValue)
+RandomGenerator.prototype.seed = function (seedValue)
 {
 	this.mSeed = seedValue;
 	
@@ -44,22 +29,16 @@ RandomGenerator.prototype.Seed = function (seedValue)
 	}
 }
 
-
-
 // The seed value used by this random number generator.
-
 // <returns>The seed value used by this random number generator.</returns>
-RandomGenerator.prototype.GetSeed = function ()
+RandomGenerator.prototype.getSeed = function ()
 {
 	return this.mSeed;
 }
 
-
-
 // Generates a random int between [0, 2^32].
-
 // <returns>A random int between [0, 2^32].</returns>
-RandomGenerator.prototype.GenerateRandom = function ()
+RandomGenerator.prototype.generateRandom = function ()
 {
 	var t = this.mXorSeed[0] ^ (this.mXorSeed[0] << 11);
 	this.mXorSeed[0] = this.mXorSeed[1];
@@ -70,36 +49,30 @@ RandomGenerator.prototype.GenerateRandom = function ()
 	return this.mXorSeed[3];
 }
 
-
-
 // Generates a random int between [min, max].
-
 // <param name="min">Lower range of the random number.</param>
 // <param name="max">Upper range of the random number.</param>
 // <returns>A random int between [min, max].</returns>
-RandomGenerator.prototype.Random = function (min, max)
+RandomGenerator.prototype.random = function (min, max)
 {
 	if ( min == null )
 		min = Number.MIN_VALUE / 2;
 	if ( max == null )
 		max = Number.MAX_VALUE / 2;
 
-	return (((max - min) + 1) != 0) ? (min + (this.GenerateRandom() % ((max - min) + 1))) : min;
+	return (((max - min) + 1) != 0) ? (min + (this.generateRandom() % ((max - min) + 1))) : min;
 }
 
-
-
 // Generates a random floating point value between [min, max].
-
 // <param name="min">Minimum floating point value.</param>
 // <param name="max">Maximum floating point value.</param>
 // <returns>A random probability between [min, max]</returns>
-RandomGenerator.prototype.RandomFloat = function (min, max)
+RandomGenerator.prototype.randomFloat = function (min, max)
 {
 	if ( min == null )
 		min = 0.0;
 	if ( max == null )
 		max = 1.0;
 		
-	return min + (this.GenerateRandom() / 0x7fffffff) * (max - min);
+	return min + (this.generateRandom() / 0x7fffffff) * (max - min);
 }

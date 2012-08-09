@@ -13,30 +13,30 @@ function Entity (entity)
 	
 	// Material assigned to this object.
 	
-	this.ObjectMaterial = (entity != null) ? new Material(entity.ObjectMaterial) : new Material();
+	this.objectMaterial = (entity != null) ? new Material(entity.objectMaterial) : new Material();
 
 
 	
 	// Transformation matrix assigned to this object.
 	// (Translation, Rotation, and Scale)
 	
-	this.ObjectMatrix = new Matrix();
+	this.objectMatrix = new Matrix();
 	
 	
 	
 	// Reference to the object.
 	
-	this.ObjectEntity = (entity != null) ? entity.ObjectEntity : null;
+	this.objectEntity = (entity != null) ? entity.objectEntity : null;
 }
 
 
 
 // Creates a new entity using the specified object entity.
 
-Entity.Create = function (objectEntity)
+Entity.create = function (objectEntity)
 {
 	var entity = new Entity();
-	entity.ObjectEntity = objectEntity;
+	entity.objectEntity = objectEntity;
 	
 	return entity;
 }

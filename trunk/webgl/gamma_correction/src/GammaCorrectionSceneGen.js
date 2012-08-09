@@ -67,35 +67,35 @@ GammaCorrectionSceneGen.Create = function ()
 	
 	// Create a sphere entity
 	var sphereEntity = new Entity();
-	sphereEntity.ObjectEntity = sphereVbo;
-	sphereEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
-	sphereEntity.ObjectMatrix.Translate(0.0, -0.5, 0.0);
-	sphereEntity.ObjectMatrix.Rotate(90.0, 0.0, 0.0);
+	sphereEntity.objectEntity = sphereVbo;
+	sphereEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
+	sphereEntity.objectMatrix.Translate(0.0, -0.5, 0.0);
+	sphereEntity.objectMatrix.Rotate(90.0, 0.0, 0.0);
 	entity.push(sphereEntity);
 	
 	// Create a cube entity (room)
 	var cubeEntity = new Entity();
-	cubeEntity.ObjectEntity = cubeVbo;
+	cubeEntity.objectEntity = cubeVbo;
 	entity.push(cubeEntity);
 	
 	// Create rectangle entities (texture compare scene)
 	var rectEntity1 = new Entity();
-	rectEntity1.ObjectEntity = rectVbo;
-	rectEntity1.ObjectMatrix.Translate(0.0, -0.5, 0.5);
+	rectEntity1.objectEntity = rectVbo;
+	rectEntity1.objectMatrix.Translate(0.0, -0.5, 0.5);
 	entity.push(rectEntity1);
 	
 	// Create rectangle entities for calibration testing
 	var rectEntity2 = new Entity();
-	rectEntity2.ObjectEntity = rectVbo;
-	rectEntity2.ObjectMatrix.Translate(0.0, 0.4, 0.5);
-	rectEntity2.ObjectMatrix.Scale(1.0, 0.1, 1.0);
+	rectEntity2.objectEntity = rectVbo;
+	rectEntity2.objectMatrix.Translate(0.0, 0.4, 0.5);
+	rectEntity2.objectMatrix.Scale(1.0, 0.1, 1.0);
 	entity.push(rectEntity2);
 	
 	// Blacks Test
 	var rectEntity3 = new Entity();
-	rectEntity3.ObjectEntity = rectVbo;
-	rectEntity3.ObjectMatrix.Translate(0.0, 0.1, 0.5);
-	rectEntity3.ObjectMatrix.Scale(1.0, 0.1, 1.0);
+	rectEntity3.objectEntity = rectVbo;
+	rectEntity3.objectMatrix.Translate(0.0, 0.1, 0.5);
+	rectEntity3.objectMatrix.Scale(1.0, 0.1, 1.0);
 	entity.push(rectEntity3);
 	
 	return entity;

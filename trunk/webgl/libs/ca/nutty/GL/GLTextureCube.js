@@ -43,10 +43,10 @@ GLTextureCube.prototype.constructor = GLTextureCube;
 
 // Implementation.
 
-GLTextureCube.prototype.Create = function (width, height, format, sampler)
+GLTextureCube.prototype.create = function (width, height, format, sampler)
 {
 	// Base
-	GLTexture.prototype.Create.call(this, width, height, format, sampler);
+	GLTexture.prototype.create.call(this, width, height, format, sampler);
 
 	if ( this.Texture != null )
 	{
@@ -66,7 +66,7 @@ GLTextureCube.prototype.Create = function (width, height, format, sampler)
 
 // <param name="face">Cueb face to copy image.</param>
 // <param name="image">Image data.</param>
-GLTextureCube.prototype.Copy = function (face, image)
+GLTextureCube.prototype.copy = function (face, image)
 {
 	this.CopyTo(face, 0, 0, this.mWidth, this.mHeight, image);
 }
@@ -81,7 +81,7 @@ GLTextureCube.prototype.Copy = function (face, image)
 // <param name="width">Width of image to copy.</param>
 // <param name="height">Height of image to copy.</param>
 // <param name="image">Image data.</param>
-GLTextureCube.prototype.CopyTo = function (face, x, y, width, height, image)
+GLTextureCube.prototype.copyTo = function (face, x, y, width, height, image)
 {
 	// First bind the texture location
 	gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.Texture);

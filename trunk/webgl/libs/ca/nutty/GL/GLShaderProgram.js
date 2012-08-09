@@ -14,13 +14,13 @@ function GLShaderProgram ()
 	
 	// Name to identify this shader.
 	
-	this.Name = null;
+	this.name = null;
 	
 	
 	
 	// Stores a reference to the shader program.
 	
-	this.Program = null;
+	this.program = null;
 }
 
 
@@ -28,20 +28,20 @@ function GLShaderProgram ()
 // Creates a new program. Programs contains one or many shaders.
 
 // <returns>ID of the created shader program.</returns>
-GLShaderProgram.prototype.Create = function ()
+GLShaderProgram.prototype.create = function ()
 {
-	this.Release();
+	this.release();
 
-	this.Program = gl.createProgram();
+	this.program = gl.createProgram();
 }
 
 
 
 // Loads the program onto the video card.
 
-GLShaderProgram.prototype.Load = function ()
+GLShaderProgram.prototype.load = function ()
 {
-	gl.useProgram(this.Program);
+	gl.useProgram(this.program);
 }
 
 
@@ -49,10 +49,10 @@ GLShaderProgram.prototype.Load = function ()
 // Removes the speicifed program.
 
 // <param name="programID">ID of the program to remove.</param>
-GLShaderProgram.prototype.Release = function ()
+GLShaderProgram.prototype.release = function ()
 {
-	gl.deleteProgram(this.Program);
-	this.Program = null;
+	gl.deleteProgram(this.program);
+	this.program = null;
 }
 
 
@@ -60,10 +60,10 @@ GLShaderProgram.prototype.Release = function ()
 // Adds the specified a shader to the program.
 
 // <param name="shader">Shader to attach to the program.</param>
-GLShaderProgram.prototype.AddShader = function (shader)
+GLShaderProgram.prototype.addShader = function (shader)
 {
 	// Attach the shader
-	gl.attachShader(this.Program, shader.Shader);
+	gl.attachShader(this.program, shader.shader);
 }
 
 
@@ -71,9 +71,9 @@ GLShaderProgram.prototype.AddShader = function (shader)
 // Removes the speicifed shader from the specified program.
 
 // <param name="shader">Shader to remove.</param>
-GLShaderProgram.prototype.RemoveShader = function (shader)
+GLShaderProgram.prototype.removeShader = function (shader)
 {
-	gl.detachShader(this.Program, shader.Shader);
+	gl.detachShader(this.program, shader.shader);
 }
 
 
@@ -81,10 +81,10 @@ GLShaderProgram.prototype.RemoveShader = function (shader)
 // Once all shaders have been added, link the program.
 
 // <returns>True if the shaders linked to the program sucessfully, otherwise false.</returns>
-GLShaderProgram.prototype.Link = function ()
+GLShaderProgram.prototype.link = function ()
 {
-	gl.linkProgram(this.Program);
-	return gl.getProgramParameter(this.Program, gl.LINK_STATUS);
+	gl.linkProgram(this.program);
+	return gl.getProgramParameter(this.program, gl.LINK_STATUS);
 }
 
 
@@ -92,10 +92,10 @@ GLShaderProgram.prototype.Link = function ()
 // Finds and returns the index of the attribute.
 
 // <param name="name">Name of the variable to be retrieve.</param>
-GLShaderProgram.prototype.GetAttribute = function (name)
+GLShaderProgram.prototype.getAttribute = function (name)
 {
 	// Create the variable
-	return gl.getAttribLocation(this.Program, name);
+	return gl.getAttribLocation(this.program, name);
 }
 
 
@@ -103,10 +103,10 @@ GLShaderProgram.prototype.GetAttribute = function (name)
 // Finds and returns the index of the variable.
 
 // <param name="name">Name of the variable to be retrieve.</param>
-GLShaderProgram.prototype.GetVariable = function (name)
+GLShaderProgram.prototype.getVariable = function (name)
 {
 	// Create the variable
-	return gl.getUniformLocation(this.Program, name);
+	return gl.getUniformLocation(this.program, name);
 }
 
 
@@ -116,13 +116,13 @@ GLShaderProgram.prototype.GetVariable = function (name)
 // <param name="name">Name of the variable referenced in the shader program.</param>
 // <param name="data">Data to set.</param>
 // <param name="size">Size of the data. Valid range is between 1 - 4.</param>
-GLShaderProgram.prototype.SetVariableIntByName = function (name, x, y, z, w)
+GLShaderProgram.prototype.setVariableIntByName = function (name, x, y, z, w)
 {
 	// Create the variable
-	this.SetVariableInt(gl.getUniformLocation(this.Program, name), x, y, z, w);
+	this.setVariableInt(gl.getUniformLocation(this.program, name), x, y, z, w);
 }
 
-GLShaderProgram.prototype.SetVariableInt = function (variable, x, y, z, w)
+GLShaderProgram.prototype.setVariableInt = function (variable, x, y, z, w)
 {
 	// Assign the variable
 	if ( y == null )
@@ -142,14 +142,14 @@ GLShaderProgram.prototype.SetVariableInt = function (variable, x, y, z, w)
 // <param name="name">Name of the variable referenced in the shader program.</param>
 // <param name="data">Data to set.</param>
 // <param name="size">Size of the data. Valid range is between 1 - 4.</param>
-GLShaderProgram.prototype.SetVariableByName = function (name, x, y, z, w)
+GLShaderProgram.prototype.setVariableByName = function (name, x, y, z, w)
 {
 	// Create the variable
-	this.SetVariable(gl.getUniformLocation(this.Program, name), x, y, z, w);
+	this.setVariable(gl.getUniformLocation(this.program, name), x, y, z, w);
 }
 
-//GLShaderProgram.prototype.SetVariable = function (variable, data, size)
-GLShaderProgram.prototype.SetVariable = function (variable, x, y, z, w)
+//GLShaderProgram.prototype.setVariable = function (variable, data, size)
+GLShaderProgram.prototype.setVariable = function (variable, x, y, z, w)
 {
 	// Assign the variable
 	if ( y == null )
@@ -169,13 +169,13 @@ GLShaderProgram.prototype.SetVariable = function (variable, x, y, z, w)
 // <param name="name">Name of the matrix referenced in the shader program.</param>
 // <param name="matrix">Matrix data.</param>
 // <param name="size">Size of the matrix. Valid range is between 2 - 4 (2x2 - 4x4).</param>
-GLShaderProgram.prototype.SetMatrixByName = function (name, matrix, size)
+GLShaderProgram.prototype.setMatrixByName = function (name, matrix, size)
 {
 	// Create the variable
-	this.SetMatrix(gl.getUniformLocation(this.Program, name), matrix, size);
+	this.setMatrix(gl.getUniformLocation(this.program, name), matrix, size);
 }
 
-GLShaderProgram.prototype.SetMatrix = function (variable, matrix, size)
+GLShaderProgram.prototype.setMatrix = function (variable, matrix, size)
 {
 	// Assign the variable
 	if ( size == 2 )
@@ -190,7 +190,7 @@ GLShaderProgram.prototype.SetMatrix = function (variable, matrix, size)
 
 // Retrieves debugging information.
 
-GLShaderProgram.prototype.GetLog = function ()
+GLShaderProgram.prototype.getLog = function ()
 {
-	return gl.getProgramInfoLog(this.Program);
+	return gl.getProgramInfoLog(this.program);
 }

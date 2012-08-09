@@ -1,53 +1,47 @@
-
 // Contains sampler state, which determines how to sample texture data.
-
-
-
-
-// Constructor.
 
 function SamplerState (sampler)
 {
 	
 	// Gets or sets the texture-address mode for the u-coordinate.
 	
-	this.AddressU = (sampler != null) ? sampler.AddressU : SamplerState.TextureAddressMode.Repeat;
+	this.addressU = (sampler != null) ? sampler.addressU : SamplerState.TextureAddressMode.Repeat;
 
 
 	
 	// Gets or sets the texture-address mode for the v-coordinate.
 	
-	this.AddressV = (sampler != null) ? sampler.AddressV : SamplerState.TextureAddressMode.Repeat;
+	this.addressV = (sampler != null) ? sampler.addressV : SamplerState.TextureAddressMode.Repeat;
 
 
 	
 	// Gets or sets the texture-address mode for the w-coordinate.
 	
-	this.AddressW = (sampler != null) ? sampler.AddressW : SamplerState.TextureAddressMode.Repeat;
+	this.addressW = (sampler != null) ? sampler.addressW : SamplerState.TextureAddressMode.Repeat;
 
 
 	
 	// Gets or sets the type of filtering during sampling.
 	
-	this.Filter = (sampler != null) ? sampler.Filter : SamplerState.TextureFilter.Linear;
+	this.filter = (sampler != null) ? sampler.filter : SamplerState.TextureFilter.Linear;
 
 
 	
 	// Gets or sets whether the texture has mip maps.
 	
-	this.HasMipMap = (sampler != null) ? sampler.HasMipMap : false;
+	this.hasMipMap = (sampler != null) ? sampler.hasMipMap : false;
 
 	
 	
 	// Gets or sets the maximum anisotropy. The default value is 4.
 	
-	this.MaxAnisotropy = (sampler != null) ? sampler.MaxAnisotropy : 4;
+	this.maxAnisotropy = (sampler != null) ? sampler.maxAnisotropy : 4;
 
 
 	
 	// Gets or sets the level of detail (LOD) index of the largest map to use.
 	
-	this.MaxMipLevel = (sampler != null) ? sampler.MaxMipLevel : 0;
+	this.maxMipLevel = (sampler != null) ? sampler.maxMipLevel : 0;
 };
 
 

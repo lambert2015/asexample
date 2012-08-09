@@ -1,36 +1,18 @@
-
 // Texture is an abstract class that contains a specific graphics system
 // implementation of an image object.
-
-
-
-
-// Constructor.
-
 function Texture ()
 {
-	
 	// Width of this texture.
-	
 	this.mWidth = 0;
 
-
-	
 	// Height of this texture.
-	
 	this.mHeight = 0;
 	
-	
-	
 	// Format of this texture.
-	
 	this.mFormat = Texture.Rgba;
 }
 
-
-
 // Enumeration of the possible texture formats.
-
 Texture.Format =
 {
 	
@@ -114,44 +96,32 @@ Texture.Format =
 	Depth32 : 14
 };
 
-
-
 // Returns the width of the texture.
-
 // <returns>The width of the texture.</returns>
-Texture.prototype.GetWidth = function ()
+Texture.prototype.getWidth = function ()
 {
 	return this.mWidth;
 }
 
-
-
 // Returns the height of the texture.
-
 // <returns>The height of the texture.</returns>
-Texture.prototype.GetHeight = function ()
+Texture.prototype.getHeight = function ()
 {
 	return this.mHeight;
 }
 
-
-
 // Returns the format of the texture.
-
 // <returns>The format of the texture.</returns>
-Texture.prototype.GetFormat = function ()
+Texture.prototype.getFormat = function ()
 {
 	return this.mFormat;
 }
 
-
-
 // Returns the texture colour at the specified (u,v) coordinate.
-
 // <param name="u">U-coordinate of texture.</param>
 // <param name="v">V-coordinate of texture.</param>
 // <returns>The texture colour at the specified (u,v) coordinate.</returns>
-Texture.prototype.GetColour = function (u, v)
+Texture.prototype.getColour = function (u, v)
 {
 	return new Point();
 }

@@ -1,22 +1,11 @@
-
 // Image shader renderer (base shader for image processing).
-
-
-
-
-// Constructor.
-
 function ImageShader ()
 {
 	
 	// Setup inherited members.
-	
 	BaseShader.call(this);
 	
-
-	
 	// Image Fragment Variables.
-	
 	this.mProjectionId;
 	this.mViewId;
 	this.mModelId;
@@ -29,58 +18,48 @@ function ImageShader ()
 	
 	
 	// Array of texture samples
-	
 	this.mSampleId;
 	
 	
 	
 	// Projection matrix.
-	
-	this.Projection;
+	this.projection;
 
 
 	
 	// View matrix.
-	
-	this.View;
+	this.view;
 	
 	
 	
 	// Stores the size of the image.
-	
 	this.mImageSize = new Point();
 	
 	
 	
 	// Stores the size of one texel.
-	
 	this.mTexelSize = new Point();
 }
 
-
-
 // Prototypal Inheritance.
-
 ImageShader.prototype = new BaseShader();
 ImageShader.prototype.constructor = ImageShader;
 
 
-
 // Implementation.
-
-ImageShader.prototype.Init = function ()
+ImageShader.prototype.init = function ()
 {
-	BaseShader.prototype.Init.call(this);
+	BaseShader.prototype.init.call(this);
 
 	// Get shader variables
-	this.mProjectionId = this.GetVariable("ProjectionMatrix");
-	this.mViewId = this.GetVariable("ViewMatrix");
-	this.mModelId = this.GetVariable("ModelMatrix");
-	this.mModelScaleId = this.GetVariable("ModelScale");
+	this.mProjectionId = this.getVariable("ProjectionMatrix");
+	this.mViewId = this.getVariable("ViewMatrix");
+	this.mModelId = this.getVariable("ModelMatrix");
+	this.mModelScaleId = this.getVariable("ModelScale");
 	
-	this.mImageSizeId = this.GetVariable("ImageSize");
-	this.mTexelSizeId = this.GetVariable("TexelSize");
-	this.mColourId = this.GetVariable("Colour");
+	this.mImageSizeId = this.getVariable("ImageSize");
+	this.mTexelSizeId = this.getVariable("TexelSize");
+	this.mColourId = this.getVariable("Colour");
 	
 	// Get texture samples
 	this.mSampleId = new Array();
@@ -88,7 +67,7 @@ ImageShader.prototype.Init = function ()
 	index = 0;
 	do
 	{
-		sampleId = this.GetVariable("Sample" + index);
+		sampleId = this.getVariable("Sample" + index);
 		if ( sampleId != null )
 		{
 			this.mSampleId.push(sampleId);
@@ -102,15 +81,15 @@ ImageShader.prototype.Init = function ()
 
 // Implementation.
 
-ImageShader.prototype.Enable = function ()
+ImageShader.prototype.enable = function ()
 {
-	BaseShader.prototype.Enable.call(this);
+	BaseShader.prototype.enable.call(this);
 	
 	// Initialize samples
 	for (var i = 0; i < this.mSampleId.length; ++i)
 	{
 		if ( i < this.mSampleId.length )
-			this.SetVariableInt(this.mSampleId[i], i);
+			this.setVariableInt(this.mSampleId[i], i);
 	}
 }
 
@@ -118,7 +97,7 @@ ImageShader.prototype.Enable = function ()
 
 // Sets the size of the image.
 
-ImageShader.prototype.SetSize = function (width, height)
+ImageShader.prototype.setSize = function (width, height)
 {
 	this.mImageSize.x = width;
 	this.mImageSize.y = height;
@@ -131,32 +110,32 @@ ImageShader.prototype.SetSize = function (width, height)
 
 // Implementation.
 
-ImageShader.prototype.Draw = function (entity, numPoints, numIndices)
+ImageShader.prototype.draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices
-	this.SetMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.SetMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.SetMatrix(this.mModelId, entity.ObjectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.projection.MMatrix, 4);
+	this.setMatrix(this.mViewId, this.view.MMatrix, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
 	
-	var scale = entity.ObjectMatrix.GetScale();
-	this.SetVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
+	var scale = entity.objectMatrix.getScale();
+	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
 
 	// Set material
-	var material = entity.ObjectMaterial;
-	this.SetVariable(this.mImageSizeId, this.mImageSize.x, this.mImageSize.y);
-	this.SetVariable(this.mTexelSizeId, this.mTexelSize.x, this.mTexelSize.y);
-	this.SetVariable(this.mColourId, material.Diffuse.x, material.Diffuse.y, material.Diffuse.z, material.Alpha);
+	var material = entity.objectMaterial;
+	this.setVariable(this.mImageSizeId, this.mImageSize.x, this.mImageSize.y);
+	this.setVariable(this.mTexelSizeId, this.mTexelSize.x, this.mTexelSize.y);
+	this.setVariable(this.mColourId, material.diffuse.x, material.diffuse.y, material.diffuse.z, material.alpha);
 
 	// Set texture samples
-	if ( (material.Texture != null) && (material.Texture.length != null) && (material.Texture.length > 0) )
+	if ( (material.Texture != null) && (material.texture.length != null) && (material.texture.length > 0) )
 	{
-		for (var i = 0; (i < material.Texture.length) && (i < this.mSampleId.length); ++i)
+		for (var i = 0; (i < material.texture.length) && (i < this.mSampleId.length); ++i)
 		{
 			gl.activeTexture(gl.TEXTURE0 + i);
-			material.Texture[i].Bind();
+			material.texture[i].Bind();
 		}
 	}
 	
 	// Draw
-	BaseShader.prototype.Draw.call(this, entity.ObjectEntity, numPoints, numIndices);
+	BaseShader.prototype.draw.call(this, entity.objectEntity, numPoints, numIndices);
 }

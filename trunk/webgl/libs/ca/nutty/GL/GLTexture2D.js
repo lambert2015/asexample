@@ -34,10 +34,10 @@ GLTexture2D.prototype.constructor = GLTexture2D;
 // <param name="format">Format of the texture.</param>
 // <param name="sampler">Sampler state of the texture.</param>
 // <param name="image">Image data to assign.</param>
-GLTexture2D.prototype.Create = function (width, height, format, sampler, image)
+GLTexture2D.prototype.create = function (width, height, format, sampler, image)
 {
 	// Base
-	GLTexture.prototype.Create.call(this, width, height, format, sampler);
+	GLTexture.prototype.create.call(this, width, height, format, sampler);
 
 	if ( this.Texture != null )
 	{
@@ -48,7 +48,7 @@ GLTexture2D.prototype.Create = function (width, height, format, sampler, image)
 			gl.texImage2D(gl.TEXTURE_2D, 0, this.mGlInternalFormat, this.mGlFormat, this.mGlType, image);
 		
 		// Generate mipmaps
-		if ( sampler.HasMipMap )
+		if ( sampler.hasMipMap )
 			gl.generateMipmap(gl.TEXTURE_2D);
 	}
 }
@@ -58,7 +58,7 @@ GLTexture2D.prototype.Create = function (width, height, format, sampler, image)
 // Copy image data to the texture.
 
 // <param name="image">Image data.</param>
-GLTexture2D.prototype.Copy = function (image)
+GLTexture2D.prototype.copy = function (image)
 {
 	this.CopyTo(0, 0, this.mWidth, this.mHeight, image);
 }
@@ -72,7 +72,7 @@ GLTexture2D.prototype.Copy = function (image)
 // <param name="width">Width of image to copy.</param>
 // <param name="height">Height of image to copy.</param>
 // <param name="image">Image data.</param>
-GLTexture2D.prototype.CopyTo = function (x, y, width, height, image)
+GLTexture2D.prototype.copyTo = function (x, y, width, height, image)
 {
 	// First bind the texture location
 	gl.bindTexture(gl.TEXTURE_2D, this.Texture);

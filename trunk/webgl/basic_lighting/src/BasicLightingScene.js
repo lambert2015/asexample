@@ -37,24 +37,24 @@ BasicLightingScene.prototype.Start = function ()
 	
 	// Create a sphere entity
 	var sphereEntity = new Entity();
-	sphereEntity.ObjectEntity = sphereVbo;
-	sphereEntity.ObjectMaterial.Specular.SetPoint(0.8, 0.8, 0.8);
-	sphereEntity.ObjectMaterial.Shininess = 64;
+	sphereEntity.objectEntity = sphereVbo;
+	sphereEntity.objectMaterial.Specular.setPoint(0.8, 0.8, 0.8);
+	sphereEntity.objectMaterial.Shininess = 64;
 	this.mEntity.push(sphereEntity);
 	
 	// Create a cube entity
 	var cubeEntity = new Entity();
-	cubeEntity.ObjectEntity = cubeVbo;
+	cubeEntity.objectEntity = cubeVbo;
 	this.mEntity.push(cubeEntity);
 	
 	// Setup light source
 	this.mLight = new Light();
-	this.mLight.Position.SetPoint(2.0, 2.0, 3.0);
+	this.mLight.Position.setPoint(2.0, 2.0, 3.0);
 	this.mLight.Attenuation.z = 0.01;
 	
 	// Setup spotlight. Uncomment the next two lines to enable spotlight
-	//this.mLight.Direction = sphereEntity.ObjectMatrix.GetTranslation().Subtract(this.mLight.Position);
-	//this.mLight.Direction.Normalize();
+	//this.mLight.Direction = sphereEntity.objectMatrix.GetTranslation().Subtract(this.mLight.Position);
+	//this.mLight.Direction.normalize();
 	this.mLight.SetCutoff(3.0);
 	this.mLight.Exponent = 1.0;
 	
@@ -73,7 +73,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Ambient.x
+		value: sphereEntity.objectMaterial.Ambient.x
 	});
 	ambientRedSlider.on("slide", {owner : this}, this.AmbientRedValueChanged);
 	ambientRedSlider.on("slidechange", {owner : this}, this.AmbientRedValueChanged);
@@ -86,7 +86,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Ambient.y
+		value: sphereEntity.objectMaterial.Ambient.y
 	});
 	ambientGreenSlider.on("slide", {owner : this}, this.AmbientGreenValueChanged);
 	ambientGreenSlider.on("slidechange", {owner : this}, this.AmbientGreenValueChanged);
@@ -99,7 +99,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Ambient.z
+		value: sphereEntity.objectMaterial.Ambient.z
 	});
 	ambientBlueSlider.on("slide", {owner : this}, this.AmbientBlueValueChanged);
 	ambientBlueSlider.on("slidechange", {owner : this}, this.AmbientBlueValueChanged);
@@ -112,7 +112,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Diffuse.x
+		value: sphereEntity.objectMaterial.Diffuse.x
 	});
 	diffuseRedSlider.on("slide", {owner : this}, this.DiffuseRedValueChanged);
 	diffuseRedSlider.on("slidechange", {owner : this}, this.DiffuseRedValueChanged);
@@ -125,7 +125,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Diffuse.y
+		value: sphereEntity.objectMaterial.Diffuse.y
 	});
 	diffuseGreenSlider.on("slide", {owner : this}, this.DiffuseGreenValueChanged);
 	diffuseGreenSlider.on("slidechange", {owner : this}, this.DiffuseGreenValueChanged);
@@ -138,7 +138,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Diffuse.z
+		value: sphereEntity.objectMaterial.Diffuse.z
 	});
 	diffuseBlueSlider.on("slide", {owner : this}, this.DiffuseBlueValueChanged);
 	diffuseBlueSlider.on("slidechange", {owner : this}, this.DiffuseBlueValueChanged);
@@ -151,7 +151,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Specular.x
+		value: sphereEntity.objectMaterial.Specular.x
 	});
 	specularRedSlider.on("slide", {owner : this}, this.SpecularRedValueChanged);
 	specularRedSlider.on("slidechange", {owner : this}, this.SpecularRedValueChanged);
@@ -164,7 +164,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Specular.y
+		value: sphereEntity.objectMaterial.Specular.y
 	});
 	specularGreenSlider.on("slide", {owner : this}, this.SpecularGreenValueChanged);
 	specularGreenSlider.on("slidechange", {owner : this}, this.SpecularGreenValueChanged);
@@ -177,7 +177,7 @@ BasicLightingScene.prototype.Start = function ()
 		range: "min",
 		step: 0.01,
 		max: 1.0,
-		value: sphereEntity.ObjectMaterial.Specular.z
+		value: sphereEntity.objectMaterial.Specular.z
 	});
 	specularBlueSlider.on("slide", {owner : this}, this.SpecularBlueValueChanged);
 	specularBlueSlider.on("slidechange", {owner : this}, this.SpecularBlueValueChanged);
@@ -191,7 +191,7 @@ BasicLightingScene.prototype.Start = function ()
 		step: 0.1,
 		min: 1.0,
 		max: 100.0,
-		value: sphereEntity.ObjectMaterial.Shininess
+		value: sphereEntity.objectMaterial.Shininess
 	});
 	shininessSlider.on("slide", {owner : this}, this.ShininessValueChanged);
 	shininessSlider.on("slidechange", {owner : this}, this.ShininessValueChanged);
@@ -275,16 +275,16 @@ BasicLightingScene.prototype.Start = function ()
 	lightAttenuationQuadraticSlider.on("slide", {owner : this}, this.LightAttenuationQuadraticValueChanged);
 	lightAttenuationQuadraticSlider.on("slidechange", {owner : this}, this.LightAttenuationQuadraticValueChanged);
 	
-	$("#OARedSliderTxt").text(sphereEntity.ObjectMaterial.Ambient.x);
-	$("#OAGreenSliderTxt").text(sphereEntity.ObjectMaterial.Ambient.y);
-	$("#OABlueSliderTxt").text(sphereEntity.ObjectMaterial.Ambient.z);
-	$("#ODRedSliderTxt").text(sphereEntity.ObjectMaterial.Diffuse.x);
-	$("#ODGreenSliderTxt").text(sphereEntity.ObjectMaterial.Diffuse.y);
-	$("#ODBlueSliderTxt").text(sphereEntity.ObjectMaterial.Diffuse.z);
-	$("#OSRedSliderTxt").text(sphereEntity.ObjectMaterial.Specular.x);
-	$("#OSGreenSliderTxt").text(sphereEntity.ObjectMaterial.Specular.y);
-	$("#OSBlueSliderTxt").text(sphereEntity.ObjectMaterial.Specular.z);
-	$("#OSValueSliderTxt").text(sphereEntity.ObjectMaterial.Shininess);
+	$("#OARedSliderTxt").text(sphereEntity.objectMaterial.Ambient.x);
+	$("#OAGreenSliderTxt").text(sphereEntity.objectMaterial.Ambient.y);
+	$("#OABlueSliderTxt").text(sphereEntity.objectMaterial.Ambient.z);
+	$("#ODRedSliderTxt").text(sphereEntity.objectMaterial.Diffuse.x);
+	$("#ODGreenSliderTxt").text(sphereEntity.objectMaterial.Diffuse.y);
+	$("#ODBlueSliderTxt").text(sphereEntity.objectMaterial.Diffuse.z);
+	$("#OSRedSliderTxt").text(sphereEntity.objectMaterial.Specular.x);
+	$("#OSGreenSliderTxt").text(sphereEntity.objectMaterial.Specular.y);
+	$("#OSBlueSliderTxt").text(sphereEntity.objectMaterial.Specular.z);
+	$("#OSValueSliderTxt").text(sphereEntity.objectMaterial.Shininess);
 	$("#LCRedSliderTxt").text(this.mLight.Colour.x);
 	$("#LCGreenSliderTxt").text(this.mLight.Colour.y);
 	$("#LCBlueSliderTxt").text(this.mLight.Colour.z);
@@ -302,70 +302,70 @@ BasicLightingScene.prototype.Start = function ()
 
 BasicLightingScene.prototype.AmbientRedValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Ambient.x = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Ambient.x = ui.value;
 	$("#OARedSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.AmbientGreenValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Ambient.y = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Ambient.y = ui.value;
 	$("#OAGreenSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.AmbientBlueValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Ambient.z = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Ambient.z = ui.value;
 	$("#OABlueSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.DiffuseRedValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Diffuse.x = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Diffuse.x = ui.value;
 	$("#ODRedSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.DiffuseGreenValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Diffuse.y = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Diffuse.y = ui.value;
 	$("#ODGreenSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.DiffuseBlueValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Diffuse.z = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Diffuse.z = ui.value;
 	$("#ODBlueSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.SpecularRedValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Specular.x = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Specular.x = ui.value;
 	$("#OSRedSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.SpecularGreenValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Specular.y = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Specular.y = ui.value;
 	$("#OSGreenSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.SpecularBlueValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Specular.z = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Specular.z = ui.value;
 	$("#OSBlueSliderTxt").text(ui.value);
 }
 
 
 BasicLightingScene.prototype.ShininessValueChanged = function (event, ui)
 {
-	event.data.owner.mEntity[0].ObjectMaterial.Shininess = ui.value;
+	event.data.owner.mEntity[0].objectMaterial.Shininess = ui.value;
 	$("#OSValueSliderTxt").text(ui.value);
 }
 

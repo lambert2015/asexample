@@ -1,11 +1,4 @@
-
 // This class creates a torus mesh.
-
-
-
-
-// Constructor.
-
 // <param name="numSegments">Number of horizontal segments to create.</param>
 // <param name="numRings">Number of vertical rings to create.</param>
 // <param name="radius">Radius of the tube.</param>
@@ -14,12 +7,11 @@ function Torus (numSegments, numRings, radius, distance)
 {
 	
 	// Setup inherited members.
-	
 	PolygonMesh.call(this);
 	
 	
 	// One centre point + points along the circle
-	this.Create(numSegments * numRings, ((numSegments - 1) * 6) * (numRings - 1));
+	this.create(numSegments * numRings, ((numSegments - 1) * 6) * (numRings - 1));
 
 	// Range between 0 and 2PI
 	var u;
@@ -42,18 +34,18 @@ function Torus (numSegments, numRings, radius, distance)
 			var y = w * Math.sin(u);
 			var z = radius * Math.sin(v);
 
-			this.SetPoint(point, new Point(x, y, z));
-			this.SetUV(point, new Point(i / (numRings - 1.0), j / (numSegments - 1.0)));
+			this.setPoint(point, new Point(x, y, z));
+			this.setUV(point, new Point(i / (numRings - 1.0), j / (numSegments - 1.0)));
 			
 			if ( (i < (numRings - 1)) && (j < (numSegments - 1)) )
 			{
-				this.Index[index    ] = point;
-				this.Index[index + 1] = point + 1;
-				this.Index[index + 2] = point + 1 + numSegments;
+				this.indices[index    ] = point;
+				this.indices[index + 1] = point + 1;
+				this.indices[index + 2] = point + 1 + numSegments;
 
-				this.Index[index + 3] = point + 1 + numSegments;
-				this.Index[index + 4] = point + numSegments;
-				this.Index[index + 5] = point;
+				this.indices[index + 3] = point + 1 + numSegments;
+				this.indices[index + 4] = point + numSegments;
+				this.indices[index + 5] = point;
 				
 				index += 6;
 			}
@@ -72,13 +64,13 @@ function Torus (numSegments, numRings, radius, distance)
 		index = i * numSegments * 3;
 		index2 = index + (numSegments - 1) * 3;
 
-		this.Normal[index    ] = (this.Normal[index    ] + this.Normal[index2    ]) * 0.5;
-		this.Normal[index + 1] = (this.Normal[index + 1] + this.Normal[index2 + 1]) * 0.5;
-		this.Normal[index + 2] = (this.Normal[index + 2] + this.Normal[index2 + 2]) * 0.5;
+		this.normals[index    ] = (this.normals[index    ] + this.normals[index2    ]) * 0.5;
+		this.normals[index + 1] = (this.normals[index + 1] + this.normals[index2 + 1]) * 0.5;
+		this.normals[index + 2] = (this.normals[index + 2] + this.normals[index2 + 2]) * 0.5;
 
-		this.Normal[index2    ] = this.Normal[index];
-		this.Normal[index2 + 1] = this.Normal[index + 1];
-		this.Normal[index2 + 2] = this.Normal[index + 2];
+		this.normals[index2    ] = this.normals[index];
+		this.normals[index2 + 1] = this.normals[index + 1];
+		this.normals[index2 + 2] = this.normals[index + 2];
 	}
 
 	// Average normals along the seam
@@ -86,19 +78,16 @@ function Torus (numSegments, numRings, radius, distance)
 	for (var i = 0; i < numSegments; ++i)
 	{
 		index = i * 3;
-		this.Normal[index    ] = (this.Normal[index    ] + this.Normal[index + endIndex    ]) * 0.5;
-		this.Normal[index + 1] = (this.Normal[index + 1] + this.Normal[index + endIndex + 1]) * 0.5;
-		this.Normal[index + 2] = (this.Normal[index + 2] + this.Normal[index + endIndex + 2]) * 0.5;
+		this.normals[index    ] = (this.normals[index    ] + this.normals[index + endIndex    ]) * 0.5;
+		this.normals[index + 1] = (this.normals[index + 1] + this.normals[index + endIndex + 1]) * 0.5;
+		this.normals[index + 2] = (this.normals[index + 2] + this.normals[index + endIndex + 2]) * 0.5;
 
-		this.Normal[index + endIndex    ] = this.Normal[index];
-		this.Normal[index + endIndex + 1] = this.Normal[index + 1];
-		this.Normal[index + endIndex + 2] = this.Normal[index + 2];
+		this.normals[index + endIndex    ] = this.normals[index];
+		this.normals[index + endIndex + 1] = this.normals[index + 1];
+		this.normals[index + endIndex + 2] = this.normals[index + 2];
 	}
 }
 
-
-
 // Prototypal Inheritance.
-
 Torus.prototype = new PolygonMesh();
 Torus.prototype.constructor = Torus;

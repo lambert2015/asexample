@@ -1,52 +1,29 @@
-
 // Matrices are column-major order.
-
-
-
-
-// Constructor.
-
 function Matrix ()
 {
 	
 	// An arbitrary sized matrix.
-	
 	this.MMatrix = [];
 	
-
-	
 	// Stores the number of rows.
-	
 	this.mNumRows = 4;
 
 
-	
 	// Stores the number of columns.
-	
 	this.mNumColumns = 4;
 
-
-	
 	// Stores the euler angles of this matrix.
-	
 	this.mRotation = new Point();
 	
-
-	
 	// Stores the (x, y, z) scale values.
-	
 	this.mScale = new Point(1, 1, 1, 1);
 	
-	
 	// Create identity matrix
-	this.SetIdentity();
+	this.setIdentity();
 }
 
-
-
 // Add two matrices.
-
-Matrix.prototype.Add = function (matrix)
+Matrix.prototype.add = function (matrix)
 {
 	// Add
 	var newMatrix = new Matrix(this.mNumRows, this.mNumColumns);
@@ -56,29 +33,23 @@ Matrix.prototype.Add = function (matrix)
 	return newMatrix;
 }
 
-
-
 // Subtract two matrices.
-
-Matrix.prototype.Subtract = function (matrix)
+Matrix.prototype.subtract = function (matrix)
 {
 	// Subtract
 	var newMatrix = new Matrix(this.mNumRows, this.mNumColumns);
-	var size = newMatrix.GetSize();
+	var size = newMatrix.getSize();
 	for (var i = 0; i < size; ++i)
 		newMatrix.MMatrix[i] = this.MMatrix[i] - matrix2.MMatrix[i];
 	return newMatrix;
 }
 
-
-
 // Multiply two matrices.
-
-Matrix.prototype.Multiply = function (matrix)
+Matrix.prototype.multiply = function (matrix)
 {
 	// Multiply
 	var newMatrix = new Matrix(this.mNumRows, this.mNumColumns);
-	var size = newMatrix.GetSize();
+	var size = newMatrix.getSize();
 	for (var i = 0; i < size; ++i)
 		newMatrix.MMatrix[i] = 0;
 
@@ -105,7 +76,7 @@ Matrix.prototype.Multiply = function (matrix)
 
 // Transpose a matrix.
 
-Matrix.prototype.Transpose = function (matrix)
+Matrix.prototype.transpose = function (matrix)
 {
 	// Transpose
 	var transposeMatrix = new Matrix(this.mNumRows, this.mNumColumns);
@@ -113,7 +84,7 @@ Matrix.prototype.Transpose = function (matrix)
 	{
 		for (var j = 0; j < transposeMatrix.mNumColumns; ++j)
 		{
-			transposeMatrix.SetValue(i, j, matrix.MMatrix[i + j * transposeMatrix.mNumColumns]);
+			transposeMatrix.setValue(i, j, matrix.MMatrix[i + j * transposeMatrix.mNumColumns]);
 		}
 	}
 	return transposeMatrix;
@@ -123,7 +94,7 @@ Matrix.prototype.Transpose = function (matrix)
 
 // Invert a 4x4 matrix quickly.
 
-Matrix.prototype.Inverse = function ()
+Matrix.prototype.inverse = function ()
 {
 	var matrix = new Matrix(4, 4);
 
@@ -185,7 +156,7 @@ function SWAP_ROWS (a, b)
 // The above copyright notice and this permission notice shall be included
 // in all copies or substantial portions of the Software.
 
-Matrix.prototype.SlowInverse = function ()
+Matrix.prototype.slowInverse = function ()
 {
 	// Code contributed by Jacques Leroy <jle@star.be>
 	// Code lifted from Brian Paul's Mesa freeware OpenGL implementation.
@@ -324,7 +295,7 @@ Matrix.prototype.SlowInverse = function ()
 // <param name="eye">Position of the matrix.</param>
 // <param name="target">Target to look at.</param>
 // <param name="up">Up-vector.</param>
-Matrix.prototype.PointAt = function (eye, target, up)
+Matrix.prototype.pointAt = function (eye, target, up)
 {
 	// Up (Y-axis)
 	if ( up == null )
@@ -334,14 +305,14 @@ Matrix.prototype.PointAt = function (eye, target, up)
 	var forward = new Point(target.x - eye.x,
 							target.y - eye.y,
 							target.z - eye.z);
-	forward.Normalize();
+	forward.normalize();
 
 	// Side (X-axis) = forward x up
-	var left = forward.Cross(up);
-	left.Normalize();
+	var left = forward.cross(up);
+	left.normalize();
 
 	// Up = side x forward
-	up = left.Cross(forward);
+	up = left.cross(forward);
 
 	// Update matrix
 	this.MMatrix[0] = left.x;
@@ -372,7 +343,7 @@ Matrix.prototype.PointAt = function (eye, target, up)
 // <param name="x">X-axis translation.</param>
 // <param name="y">Y-axis translation.</param>
 // <param name="z">Z-axis translation.</param>
-Matrix.prototype.Translate = function (x, y, z)
+Matrix.prototype.translate = function (x, y, z)
 {
 	this.MMatrix[12] = x;
 	this.MMatrix[13] = y;
@@ -386,13 +357,13 @@ Matrix.prototype.Translate = function (x, y, z)
 // <param name="x">X-axis rotation.</param>
 // <param name="y">Y-axis rotation.</param>
 // <param name="z">Z-axis rotation.</param>
-Matrix.prototype.Rotate = function (x, y, z)
+Matrix.prototype.rotate = function (x, y, z)
 {
-	this.mRotation.SetPoint(x, y, z);
+	this.mRotation.setPoint(x, y, z);
 
 	var quat = new Quaternion();
-	quat.Rotate(x, y, z);
-	quat.ToMatrix(this.MMatrix);
+	quat.rotate(x, y, z);
+	quat.toMatrix(this.MMatrix);
 }
 
 
@@ -402,16 +373,16 @@ Matrix.prototype.Rotate = function (x, y, z)
 // <param name="x">X-axis scale.</param>
 // <param name="y">Y-axis scale.</param>
 // <param name="z">Z-axis scale.</param>
-Matrix.prototype.Scale = function (x, y, z)
+Matrix.prototype.scale = function (x, y, z)
 {
-	this.mScale.SetPoint(x, y, z, 1);
+	this.mScale.setPoint(x, y, z, 1);
 }
 
 
 
 // Set the identity matrix.
 
-Matrix.prototype.SetIdentity = function ()
+Matrix.prototype.setIdentity = function ()
 {
 	// Set diagonal to 1.0 and the rest to 0.0
 	for (var i = 0; i < this.mNumRows; ++i)
@@ -433,7 +404,7 @@ Matrix.prototype.SetIdentity = function ()
 // <param name="row">Row'th index to retrieve.</param>
 // <param name="column">Column'th index to retrieve.</param>
 // <returns>The value at Row x Column.</returns>
-Matrix.prototype.GetValue = function (row, column)
+Matrix.prototype.getValue = function (row, column)
 {
 	return this.MMatrix[row * this.mNumColumns + column];
 }
@@ -445,25 +416,25 @@ Matrix.prototype.GetValue = function (row, column)
 // <param name="row">Row'th index to set.</param>
 // <param name="column">Column'th index to set.</param>
 // <param name="value">Value to set at Row x Column.</param>
-Matrix.prototype.SetValue = function (row, column, value)
+Matrix.prototype.setValue = function (row, column, value)
 {
 	this.MMatrix[row * this.mNumColumns + column] = value;
 }
 
 
-Matrix.prototype.GetTranslation = function ()
+Matrix.prototype.getTranslation = function ()
 {
 	return new Point(this.MMatrix[12], this.MMatrix[13], this.MMatrix[14]);
 }
 
 
-Matrix.prototype.GetRotation = function ()
+Matrix.prototype.getRotation = function ()
 {
 	return this.mRotation;
 }
 
 
-Matrix.prototype.GetScale = function ()
+Matrix.prototype.getScale = function ()
 {
 	return this.mScale;
 }

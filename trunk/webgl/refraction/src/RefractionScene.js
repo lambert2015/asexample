@@ -278,9 +278,9 @@ RefractionScene.prototype.Start = function ()
 	var rectVbo = new GLVertexBufferObject();
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
-	this.mSurface.ObjectEntity = rectVbo;
-	this.mSurface.ObjectMaterial.Texture = new Array();
-	this.mSurface.ObjectMaterial.Texture.push(this.mFboColourColourBuffer.TextureObject);
+	this.mSurface.objectEntity = rectVbo;
+	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture.push(this.mFboColourColourBuffer.TextureObject);
 
 	
 	// Prepare resources to download
@@ -507,7 +507,7 @@ RefractionScene.prototype.Update = function ()
 		//
 		// Step 3: Refract pixels.
 		//
-		this.mSurface.ObjectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
+		this.mSurface.objectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
 		
 		// Increase the random number linearly to produce a smooth animation.
 		this.mRefractionShader.RandomNumber += 0.01;
@@ -518,7 +518,7 @@ RefractionScene.prototype.Update = function ()
 			this.mRefractionShader.Draw(this.mSurface);
 			this.mFboRefraction.Disable();
 		this.mRefractionShader.Disable();
-		this.mSurface.ObjectMaterial.Texture[0] = this.mFboRefractionColourBuffer.TextureObject;
+		this.mSurface.objectMaterial.Texture[0] = this.mFboRefractionColourBuffer.TextureObject;
 		
 		// Restore viewport
 		gl.viewport(0, 0, this.mCanvas.width, this.mCanvas.height);
@@ -560,7 +560,7 @@ RefractionScene.prototype.End = function ()
 	
 	// Release VBOs
 	if ( this.mSurface != null )
-		this.mSurface.ObjectEntity.Release();
+		this.mSurface.objectEntity.Release();
 		
 	// Release textures
 	if ( this.mTexture != null )
@@ -650,7 +650,7 @@ RefractionScene.prototype.LoadShaders = function (index)
 		
 		// Add light sources
 		var light1 = new Light();
-		light1.Position.SetPoint(0.0, 20.0, 0.0);
+		light1.Position.setPoint(0.0, 20.0, 0.0);
 		light1.Attenuation.x = 0.8;
 		this.mBasicShader.LightObject.push(light1);
 	}
@@ -794,15 +794,15 @@ RefractionScene.prototype.OnLoadComplete = function ()
 	for (var i = 0; i < this.mEntity.length; ++i)
 	{
 		// Assign blank texture by default
-		this.mEntity[i].ObjectMaterial.Texture = new Array();
-		this.mEntity[i].ObjectMaterial.Texture.push(this.mTexture[0]);
+		this.mEntity[i].objectMaterial.Texture = new Array();
+		this.mEntity[i].objectMaterial.Texture.push(this.mTexture[0]);
 	}
 	
 	// Assign skybox
-	this.mEntity[this.mEntity.length - 1].ObjectMaterial.Texture[0] = skyTexture;
+	this.mEntity[this.mEntity.length - 1].objectMaterial.Texture[0] = skyTexture;
 	
 	// Ground texture
-	this.mEntity[0].ObjectMaterial.Texture[0] = this.mTexture[1];
+	this.mEntity[0].objectMaterial.Texture[0] = this.mTexture[1];
 	
 	
 	// Setup camera matrices	

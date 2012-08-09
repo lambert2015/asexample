@@ -109,12 +109,12 @@ DofBlurShader.prototype.Init = function ()
 	ImageShader.prototype.Init.call(this);
 	
 	// Get variables
-	this.mOrientationId = this.GetVariable("Orientation");
-	this.mBlurCoefficientId = this.GetVariable("BlurCoefficient");
-	this.mFocusDistanceId = this.GetVariable("FocusDistance");
-	this.mNearId = this.GetVariable("Near");
-	this.mFarId = this.GetVariable("Far");
-	this.mPPMId = this.GetVariable("PPM");
+	this.mOrientationId = this.getVariable("Orientation");
+	this.mBlurCoefficientId = this.getVariable("BlurCoefficient");
+	this.mFocusDistanceId = this.getVariable("FocusDistance");
+	this.mNearId = this.getVariable("Near");
+	this.mFarId = this.getVariable("Far");
+	this.mPPMId = this.getVariable("PPM");
 }
 
 
@@ -139,11 +139,11 @@ DofBlurShader.prototype.Enable = function ()
 	ImageShader.prototype.Enable.call(this);
 	
 	// Set variables
-	this.SetVariable(this.mBlurCoefficientId, this.BlurCoefficient);
-	this.SetVariable(this.mFocusDistanceId, this.FocusDistance);
-	this.SetVariable(this.mNearId, this.Near);
-	this.SetVariable(this.mFarId, this.Far);
-	this.SetVariable(this.mPPMId, this.mPPM);
+	this.setVariable(this.mBlurCoefficientId, this.BlurCoefficient);
+	this.setVariable(this.mFocusDistanceId, this.FocusDistance);
+	this.setVariable(this.mNearId, this.Near);
+	this.setVariable(this.mFarId, this.Far);
+	this.setVariable(this.mPPMId, this.mPPM);
 }
 
 
@@ -153,7 +153,7 @@ DofBlurShader.prototype.Enable = function ()
 DofBlurShader.prototype.Draw = function (entity, orientation, numPoints, numIndices)
 {
 	// Blur on the horizontal axis
-	this.SetVariableInt(this.mOrientationId, orientation);
+	this.setVariableInt(this.mOrientationId, orientation);
 	ImageShader.prototype.Draw.call(this, entity, numPoints, numIndices);
 }
 

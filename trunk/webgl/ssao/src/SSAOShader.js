@@ -100,9 +100,9 @@ SSAOShader.prototype.Init = function ()
 	ImageShader.prototype.Init.call(this);
 	
 	// Get variables
-	this.mOccluderBiasId = this.GetVariable("OccluderBias");
-	this.mSamplingRadiusId = this.GetVariable("SamplingRadius");
-	this.mAttenuationId = this.GetVariable("Attenuation");
+	this.mOccluderBiasId = this.getVariable("OccluderBias");
+	this.mSamplingRadiusId = this.getVariable("SamplingRadius");
+	this.mAttenuationId = this.getVariable("Attenuation");
 }
 
 
@@ -114,7 +114,7 @@ SSAOShader.prototype.Enable = function ()
 	ImageShader.prototype.Enable.call(this);
 
 	// Set shader variables
-	this.SetVariable(this.mOccluderBiasId, this.OccluderBias);
-	this.SetVariable(this.mSamplingRadiusId, this.SamplingRadius);
-	this.SetVariable(this.mAttenuationId, this.Attenuation.x, this.Attenuation.y);
+	this.setVariable(this.mOccluderBiasId, this.OccluderBias);
+	this.setVariable(this.mSamplingRadiusId, this.SamplingRadius);
+	this.setVariable(this.mAttenuationId, this.Attenuation.x, this.Attenuation.y);
 }

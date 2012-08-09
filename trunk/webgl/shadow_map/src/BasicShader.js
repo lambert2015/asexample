@@ -131,36 +131,36 @@ BasicShader.prototype.Init = function ()
 	BaseShader.prototype.Init.call(this);
 
 	// Get matrices
-	this.mProjectionId = this.GetVariable("ProjectionMatrix");
-	this.mViewId = this.GetVariable("ViewMatrix");
-	this.mModelId = this.GetVariable("ModelMatrix");
-	this.mModelScaleId = this.GetVariable("ModelScale");
+	this.mProjectionId = this.getVariable("ProjectionMatrix");
+	this.mViewId = this.getVariable("ViewMatrix");
+	this.mModelId = this.getVariable("ModelMatrix");
+	this.mModelScaleId = this.getVariable("ModelScale");
 
 	
 	// Get Shading type
-	this.mShadingTypeId = this.GetVariable("ShadingType");
+	this.mShadingTypeId = this.getVariable("ShadingType");
 	
 	
 	// Get light sources
-	this.mNumLightId = this.GetVariable("NumLight");
+	this.mNumLightId = this.getVariable("NumLight");
 	
 	this.mLightId = new Array();
 	var lightPosId;
 	var index = 0;
 	do
 	{
-		lightPosId = this.GetVariable("Light[" + index + "].Position");
+		lightPosId = this.getVariable("Light[" + index + "].Position");
 		if ( lightPosId != null )
 		{
 			var light = new BasicShader.LightSource();
 			light.PositionId	= lightPosId;
-			light.TypeId		= this.GetVariable("Light[" + index + "].Type");
-			light.AttenuationId	= this.GetVariable("Light[" + index + "].Attenuation");
-			light.DirectionId	= this.GetVariable("Light[" + index + "].Direction");
-			light.ColourId		= this.GetVariable("Light[" + index + "].Colour");
-			light.OuterCutoffId	= this.GetVariable("Light[" + index + "].OuterCutoff");
-			light.InnerCutoffId	= this.GetVariable("Light[" + index + "].InnerCutoff");
-			light.ExponentId	= this.GetVariable("Light[" + index + "].Exponent");
+			light.TypeId		= this.getVariable("Light[" + index + "].Type");
+			light.AttenuationId	= this.getVariable("Light[" + index + "].Attenuation");
+			light.DirectionId	= this.getVariable("Light[" + index + "].Direction");
+			light.ColourId		= this.getVariable("Light[" + index + "].Colour");
+			light.OuterCutoffId	= this.getVariable("Light[" + index + "].OuterCutoff");
+			light.InnerCutoffId	= this.getVariable("Light[" + index + "].InnerCutoff");
+			light.ExponentId	= this.getVariable("Light[" + index + "].Exponent");
 			
 			this.mLightId.push(light);			
 			++index;
@@ -171,12 +171,12 @@ BasicShader.prototype.Init = function ()
 	
 	// Get material
 	this.mMaterialId = new BasicShader.MaterialSource();
-	this.mMaterialId.AmbientId			= this.GetVariable("Material.Ambient");
-	this.mMaterialId.DiffuseId			= this.GetVariable("Material.Diffuse");
-	this.mMaterialId.SpecularId			= this.GetVariable("Material.Specular");
-	this.mMaterialId.ShininessId		= this.GetVariable("Material.Shininess");
-	this.mMaterialId.TextureOffsetId	= this.GetVariable("Material.TextureOffset");
-	this.mMaterialId.TextureScaleId		= this.GetVariable("Material.TextureScale");
+	this.mMaterialId.AmbientId			= this.getVariable("Material.Ambient");
+	this.mMaterialId.DiffuseId			= this.getVariable("Material.Diffuse");
+	this.mMaterialId.SpecularId			= this.getVariable("Material.Specular");
+	this.mMaterialId.ShininessId		= this.getVariable("Material.Shininess");
+	this.mMaterialId.TextureOffsetId	= this.getVariable("Material.TextureOffset");
+	this.mMaterialId.TextureScaleId		= this.getVariable("Material.TextureScale");
 	
 	
 	// Get texture samples
@@ -185,7 +185,7 @@ BasicShader.prototype.Init = function ()
 	index = 0;
 	do
 	{
-		sampleId = this.GetVariable("Sample" + index);
+		sampleId = this.getVariable("Sample" + index);
 		if ( sampleId != null )
 		{
 			this.mSampleId.push(sampleId);
@@ -206,25 +206,25 @@ BasicShader.prototype.Enable = function ()
 	for (var i = 0; i < this.mSampleId.length; ++i)
 	{
 		if ( i < this.mSampleId.length )
-			this.SetVariableInt(this.mSampleId[i], i);
+			this.setVariableInt(this.mSampleId[i], i);
 	}
 	
 	// Set shading type
-	this.SetVariableInt(this.mShadingTypeId, this.ShadingType);
+	this.setVariableInt(this.mShadingTypeId, this.ShadingType);
 
 
 	// Set light sources
-	this.SetVariableInt(this.mNumLightId, this.LightObject.length);
+	this.setVariableInt(this.mNumLightId, this.LightObject.length);
 	for (var i = 0; (i < this.mLightId.length) && (i < this.LightObject.length); ++i)
 	{
-		this.SetVariableInt(this.mLightId[i].TypeId, this.LightObject[i].LightType);
-		this.SetVariable(this.mLightId[i].PositionId, this.LightObject[i].Position.x, this.LightObject[i].Position.y, this.LightObject[i].Position.z);
-		this.SetVariable(this.mLightId[i].AttenuationId, this.LightObject[i].Attenuation.x, this.LightObject[i].Attenuation.y, this.LightObject[i].Attenuation.z);
-		this.SetVariable(this.mLightId[i].DirectionId, this.LightObject[i].Direction.x, this.LightObject[i].Direction.y, this.LightObject[i].Direction.z);
-		this.SetVariable(this.mLightId[i].ColourId, this.LightObject[i].Colour.x, this.LightObject[i].Colour.y, this.LightObject[i].Colour.z);
-		this.SetVariable(this.mLightId[i].OuterCutoffId, this.LightObject[i].OuterCutoff);
-		this.SetVariable(this.mLightId[i].InnerCutoffId, this.LightObject[i].InnerCutoff);
-		this.SetVariable(this.mLightId[i].ExponentId, this.LightObject[i].Exponent);
+		this.setVariableInt(this.mLightId[i].TypeId, this.LightObject[i].LightType);
+		this.setVariable(this.mLightId[i].PositionId, this.LightObject[i].Position.x, this.LightObject[i].Position.y, this.LightObject[i].Position.z);
+		this.setVariable(this.mLightId[i].AttenuationId, this.LightObject[i].Attenuation.x, this.LightObject[i].Attenuation.y, this.LightObject[i].Attenuation.z);
+		this.setVariable(this.mLightId[i].DirectionId, this.LightObject[i].Direction.x, this.LightObject[i].Direction.y, this.LightObject[i].Direction.z);
+		this.setVariable(this.mLightId[i].ColourId, this.LightObject[i].Colour.x, this.LightObject[i].Colour.y, this.LightObject[i].Colour.z);
+		this.setVariable(this.mLightId[i].OuterCutoffId, this.LightObject[i].OuterCutoff);
+		this.setVariable(this.mLightId[i].InnerCutoffId, this.LightObject[i].InnerCutoff);
+		this.setVariable(this.mLightId[i].ExponentId, this.LightObject[i].Exponent);
 	}
 }
 
@@ -235,22 +235,22 @@ BasicShader.prototype.Enable = function ()
 BasicShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices
-	this.SetMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.SetMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.SetMatrix(this.mModelId, entity.ObjectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
+	this.setMatrix(this.mViewId, this.View.MMatrix, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
 	
-	var scale = entity.ObjectMatrix.GetScale();
-	this.SetVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
+	var scale = entity.objectMatrix.GetScale();
+	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
 	
 
 	// Set material
-	var material = entity.ObjectMaterial;
-	this.SetVariable(this.mMaterialId.AmbientId, material.Ambient.x, material.Ambient.y, material.Ambient.z);
-	this.SetVariable(this.mMaterialId.DiffuseId, material.Diffuse.x, material.Diffuse.y, material.Diffuse.z, material.Alpha);
-	this.SetVariable(this.mMaterialId.SpecularId, material.Specular.x, material.Specular.y, material.Specular.z);
-	this.SetVariable(this.mMaterialId.ShininessId, material.Shininess);
-	this.SetVariable(this.mMaterialId.TextureOffsetId, material.TextureOffset.x, material.TextureOffset.y);
-	this.SetVariable(this.mMaterialId.TextureScaleId, material.TextureScale.x, material.TextureScale.y);
+	var material = entity.objectMaterial;
+	this.setVariable(this.mMaterialId.AmbientId, material.Ambient.x, material.Ambient.y, material.Ambient.z);
+	this.setVariable(this.mMaterialId.DiffuseId, material.Diffuse.x, material.Diffuse.y, material.Diffuse.z, material.Alpha);
+	this.setVariable(this.mMaterialId.SpecularId, material.Specular.x, material.Specular.y, material.Specular.z);
+	this.setVariable(this.mMaterialId.ShininessId, material.Shininess);
+	this.setVariable(this.mMaterialId.TextureOffsetId, material.TextureOffset.x, material.TextureOffset.y);
+	this.setVariable(this.mMaterialId.TextureScaleId, material.TextureScale.x, material.TextureScale.y);
 	
 	
 	// Set texture samples
@@ -265,5 +265,5 @@ BasicShader.prototype.Draw = function (entity, numPoints, numIndices)
 
 
 	// Draw
-	BaseShader.prototype.Draw.call(this, entity.ObjectEntity, numPoints, numIndices);
+	BaseShader.prototype.Draw.call(this, entity.objectEntity, numPoints, numIndices);
 }

@@ -1,66 +1,59 @@
-
 // This class provides high-level access to GL vertex buffer objects. It is a
 // container for a single mesh object.
-
-
-
-
-// Constructor.
-
 function GLVertexBufferObject ()
 {
 	
 	// Identifier assigned to the vertex object.
 	
-	this.VertexBuffer = null;
+	this.vertexBuffer = null;
 
 
 	
 	// Identifier assigned to the vertex uv object.
 	
-	this.UvBuffer = null;
+	this.uvBuffer = null;
 
 
 	
 	// Identifier assigned to the vertex normal object.
 	
-	this.NormalBuffer = null;
+	this.normalBuffer = null;
 	
 	
 	
 	// Identifier assigned to the vertex colour object.
 	
-	this.ColourBuffer = null;
+	this.colourBuffer = null;
 	
 	
 	
 	// Identifier assigned to the vertex bone object.
 	
-	this.BoneBuffer = null;
+	this.boneBuffer = null;
 
 
 	
 	// Identifier assigned to the vertex bone weight object.
 	
-	this.BoneWeightBuffer = null;
+	this.boneWeightBuffer = null;
 
 
 	
 	// Identifier assigned to the index object.
 	
-	this.IndexBuffer = null;
+	this.indexBuffer = null;
 	
 	
 	
 	// Stores the buffer type.
 	
-	this.Type;
+	this.type;
 
 
 	
 	// Reference to the polygon mesh assigned to this VBO.
 	
-	this.Mesh = null;
+	this.mesh = null;
 }
 
 
@@ -80,113 +73,113 @@ GLVertexBufferObject.BufferType =
 // <param name="mesh">Mesh to create a VBO for.</param>
 // <param name="type">The type of vertex buffer object to create.</param>
 // <returns>True if the VBO was created successfully.</returns>
-GLVertexBufferObject.prototype.Create = function (mesh, type)
+GLVertexBufferObject.prototype.create = function (mesh, type)
 {
 	// Cleanup
-	this.Release();
+	this.release();
 	
 	
-	this.Mesh = mesh;
+	this.mesh = mesh;
 	if ( (type == null) || (type == GLVertexBufferObject.BufferType.Static) )
 		type = gl.STATIC_DRAW;
 	else
 		type = gl.DYNAMIC_DRAW;
-	this.Type = type;
+	this.type = type;
 		
 
 	// Create vertex buffer
-	this.VertexBuffer = gl.createBuffer();
-	if ( this.VertexBuffer == null )
+	this.vertexBuffer = gl.createBuffer();
+	if ( this.vertexBuffer == null )
 	{
-		this.Release();
+		this.release();
 		return false;
 	}
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexBuffer);
-	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.VertexPoint), type);
-	gl.bufferData(gl.ARRAY_BUFFER, mesh.VertexPoint, type);
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.vertexPoint), type);
+	gl.bufferData(gl.ARRAY_BUFFER, mesh.vertexPoint, type);
 
 	// Create uv buffer
-	if ( mesh.UV != null )
+	if ( mesh.uv != null )
 	{
-		this.UvBuffer = gl.createBuffer();
-		if ( this.UvBuffer == null )
+		this.uvBuffer = gl.createBuffer();
+		if ( this.uvBuffer == null )
 		{
-			this.Release();
+			this.release();
 			return false;
 		}
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.UvBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.uvBuffer);
 		//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.UV), type);
-		gl.bufferData(gl.ARRAY_BUFFER, mesh.UV, type);
+		gl.bufferData(gl.ARRAY_BUFFER, mesh.uv, type);
 	}
 
 	// Set normal buffer
-	if ( mesh.Normal != null )
+	if ( mesh.normal != null )
 	{
-		this.NormalBuffer = gl.createBuffer();
-		if ( this.NormalBuffer == null )
+		this.normalBuffer = gl.createBuffer();
+		if ( this.normalBuffer == null )
 		{
-			this.Release();
+			this.release();
 			return false;
 		}
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.NormalBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
 		//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.Normal), type);
-		gl.bufferData(gl.ARRAY_BUFFER, mesh.Normal, type);
+		gl.bufferData(gl.ARRAY_BUFFER, mesh.normal, type);
 	}
 	
 	// Set colour buffer
-	if ( mesh.Colour != null )
+	if ( mesh.colour != null )
 	{
-		this.ColourBuffer = gl.createBuffer();
-		if ( this.ColourBuffer == null )
+		this.colourBuffer = gl.createBuffer();
+		if ( this.colourBuffer == null )
 		{
-			this.Release();
+			this.release();
 			return false;
 		}
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.ColourBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.colourBuffer);
 		//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.Colour), type);
-		gl.bufferData(gl.ARRAY_BUFFER, mesh.Colour, type);
+		gl.bufferData(gl.ARRAY_BUFFER, mesh.colour, type);
 	}
 	
 	// Set bone buffer
-	if ( mesh.Bone != null )
+	if ( mesh.bone != null )
 	{
-		this.BoneBuffer = gl.createBuffer();
-		if ( this.BoneBuffer == null )
+		this.boneBuffer = gl.createBuffer();
+		if ( this.boneBuffer == null )
 		{
-			this.Release();
+			this.release();
 			return false;
 		}
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.BoneBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.boneBuffer);
 		//gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(mesh.Bone), type);
-		gl.bufferData(gl.ARRAY_BUFFER, mesh.Bone, type);
+		gl.bufferData(gl.ARRAY_BUFFER, mesh.bone, type);
 	}
 	
 	// Set bone weight buffer
-	if ( mesh.BoneWeight != null )
+	if ( mesh.boneWeight != null )
 	{
-		this.BoneWeightBuffer = gl.createBuffer();
-		if ( this.BoneWeightBuffer == null )
+		this.boneWeightBuffer = gl.createBuffer();
+		if ( this.boneWeightBuffer == null )
 		{
-			this.Release();
+			this.release();
 			return false;
 		}
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.BoneWeightBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.boneWeightBuffer);
 		//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.BoneWeight), type);
-		gl.bufferData(gl.ARRAY_BUFFER, mesh.BoneWeight, type);
+		gl.bufferData(gl.ARRAY_BUFFER, mesh.boneWeight, type);
 	}
 		
-	if ( mesh.Index != null )
+	if ( mesh.indices != null )
 	{
 		// Set index buffer
-		this.IndexBuffer = gl.createBuffer();
-		if ( this.IndexBuffer == null )
+		this.indexBuffer = gl.createBuffer();
+		if ( this.indexBuffer == null )
 		{
-			this.Release();
+			this.release();
 			return false;
 		}
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.IndexBuffer);
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
 		//gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(mesh.Index), type);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, mesh.Index, type);
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, mesh.indices, type);
 	}
 
 	return true;
@@ -196,102 +189,102 @@ GLVertexBufferObject.prototype.Create = function (mesh, type)
 
 // Removes the VBO from memory.
 
-GLVertexBufferObject.prototype.Release = function ()
+GLVertexBufferObject.prototype.release = function ()
 {
 	// Clenaup
-	if ( this.VertexBuffer != null )
+	if ( this.vertexBuffer != null )
 	{
-		gl.deleteBuffer(this.VertexBuffer);
-		this.VertexBuffer = null;
+		gl.deleteBuffer(this.vertexBuffer);
+		this.vertexBuffer = null;
 	}
-	if ( this.UvBuffer != null )
+	if ( this.uvBuffer != null )
 	{
-		gl.deleteBuffer(this.UvBuffer);
-		this.UvBuffer = null;
+		gl.deleteBuffer(this.uvBuffer);
+		this.uvBuffer = null;
 	}
-	if ( this.NormalBuffer != null )
+	if ( this.normalBuffer != null )
 	{
-		gl.deleteBuffer(this.NormalBuffer);
-		this.NormalBuffer = null;
+		gl.deleteBuffer(this.normalBuffer);
+		this.normalBuffer = null;
 	}
-	if ( this.ColourBuffer != null )
+	if ( this.colourBuffer != null )
 	{
-		gl.deleteBuffer(this.ColourBuffer);
-		this.ColourBuffer = null;
+		gl.deleteBuffer(this.colourBuffer);
+		this.colourBuffer = null;
 	}
-	if ( this.BoneBuffer != null )
+	if ( this.boneBuffer != null )
 	{
-		gl.deleteBuffer(this.BoneBuffer);
-		this.BoneBuffer = null;
+		gl.deleteBuffer(this.boneBuffer);
+		this.boneBuffer = null;
 	}
-	if ( this.BoneWeightBuffer != null )
+	if ( this.boneWeightBuffer != null )
 	{
-		gl.deleteBuffer(this.BoneWeightBuffer);
-		this.BoneWeightBuffer = null;
+		gl.deleteBuffer(this.boneWeightBuffer);
+		this.boneWeightBuffer = null;
 	}
-	if ( this.IndexBuffer != null )
+	if ( this.indexBuffer != null )
 	{
-		gl.deleteBuffer(this.IndexBuffer);
-		this.IndexBuffer = null;
+		gl.deleteBuffer(this.indexBuffer);
+		this.indexBuffer = null;
 	}
 
-	this.Mesh = null;
+	this.mesh = null;
 }
 
 
 
 // Updates the vertex buffer with new vertex data.
 
-GLVertexBufferObject.prototype.UpdateVertexBuffer = function ()
+GLVertexBufferObject.prototype.updateVertexBuffer = function ()
 {
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexBuffer);
-	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.Mesh.VertexPoint), this.Type);
-	gl.bufferData(gl.ARRAY_BUFFER, this.Mesh.VertexPoint, this.Type);
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.Mesh.vertexPoint), this.Type);
+	gl.bufferData(gl.ARRAY_BUFFER, this.mesh.vertexPoint, this.type);
 }
 
 
 
 // Updates the normal buffer with new normal data.
 
-GLVertexBufferObject.prototype.UpdateNormalBuffer = function ()
+GLVertexBufferObject.prototype.updateNormalBuffer = function ()
 {
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.NormalBuffer);
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
 	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.Mesh.Normal), this.Type);
-	gl.bufferData(gl.ARRAY_BUFFER, this.Mesh.Normal, this.Type);
+	gl.bufferData(gl.ARRAY_BUFFER, this.mesh.Normal, this.type);
 }
 
 
 
 // Updates the vertex colour buffer with new colour data.
 
-GLVertexBufferObject.prototype.UpdateColourBuffer = function ()
+GLVertexBufferObject.prototype.updateColourBuffer = function ()
 {
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.ColourBuffer);
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.colourBuffer);
 	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.Mesh.Colour), this.Type);
-	gl.bufferData(gl.ARRAY_BUFFER, this.Mesh.Colour, this.Type);
+	gl.bufferData(gl.ARRAY_BUFFER, this.mesh.colour, this.type);
 }
 
 
 
 // Updates the vertex colour buffer with new colour data.
 
-GLVertexBufferObject.prototype.UpdateBoneBuffer = function ()
+GLVertexBufferObject.prototype.updateBoneBuffer = function ()
 {
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.BoneBuffer);
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.boneBuffer);
 	//gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(this.Mesh.Bone), this.Type);
-	gl.bufferData(gl.ARRAY_BUFFER, this.Mesh.Bone, this.Type);
+	gl.bufferData(gl.ARRAY_BUFFER, this.mesh.Bone, this.type);
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, this.BoneWeightBuffer);
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.boneWeightBuffer);
 	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.Mesh.BoneWeight), this.Type);
-	gl.bufferData(gl.ARRAY_BUFFER, this.Mesh.BoneWeight, this.Type);
+	gl.bufferData(gl.ARRAY_BUFFER, this.mesh.boneWeight, this.type);
 }
 
 
 
 // Updates the index buffer with new index data.
 
-GLVertexBufferObject.prototype.UpdateIndex = function ()
+GLVertexBufferObject.prototype.updateIndex = function ()
 {
-	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.IndexBuffer);
-	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.Mesh.Index), this.Type);
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.mesh.indices), this.type);
 }
