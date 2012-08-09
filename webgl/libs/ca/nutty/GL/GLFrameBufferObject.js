@@ -1,33 +1,3 @@
-
-// Nutty Software Open WebGL Framework
-// 
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // FramebufferObject represents a single buffer that is used to store rendered images.
 // If a TextureObject is defined, the results will be written to the texture object.
 // Otherwise the results will be saved to a renderbuffer object with the TextureFormat.
@@ -35,39 +5,34 @@
 // If a texture object is provided, the application is resonsible for creating
 // and releasing the texture resource.
 
-
-
-
-// Constructor.
-
 // <param name="type">Specifies the type of buffer object.</type>
 function FrameBufferObject (type)
 {
 	
 	// Gets or sets the type of buffer object.
 	
-	this.Type = (type != null) ? type : FrameBufferObject.BufferType.Colour;
+	this.type = (type != null) ? type : FrameBufferObject.BufferType.Colour;
 
 
 	
 	// Id of the render buffer or texture buffer. This is automatically set
 	// by the FBO.
 	
-	this.Id = null;
+	this.id = null;
 
 
 	
 	// Gets or sets the render buffer format. This is only required if the
 	// texture object has not been set.
 	
-	this.RenderBufferFormat = Texture.Format.Rgba;
+	this.renderBufferFormat = Texture.Format.Rgba;
 	
 	
 	
 	// If set, the render buffer will output the results
 	// to this texture object instead of a render buffer.
 	
-	this.TextureObject = null;
+	this.textureObject = null;
 }
 
 
@@ -135,10 +100,10 @@ function GLFrameBufferObject ()
 // <param name="width">Width of the FBO, in pixels.</param>
 // <param name="height">Height of the FBO, in pixels.</param>
 // <returns>True if the FBO was created successfully.</returns>
-GLFrameBufferObject.prototype.Create = function (width, height)
+GLFrameBufferObject.prototype.create = function (width, height)
 {
 	// Cleanup
-	this.Release();
+	this.release();
 
 	// Set members
 	this.mFrameWidth = width;
@@ -155,7 +120,7 @@ GLFrameBufferObject.prototype.Create = function (width, height)
 
 // <param name="buffer">Buffer to attach to the FBO.</param>
 // <returns>True if the buffer was attached successfully.</returns>
-GLFrameBufferObject.prototype.AttachBuffer = function (buffer)
+GLFrameBufferObject.prototype.attachBuffer = function (buffer)
 {
 	if ( this.mFrameBufferID != null )
 	{
@@ -257,7 +222,7 @@ GLFrameBufferObject.prototype.AttachBuffer = function (buffer)
 
 // <param name="width">Width of the FBO, in pixels.</param>
 // <param name="height">Height of the FBO, in pixels.</param>
-GLFrameBufferObject.prototype.Resize = function (width, height)
+GLFrameBufferObject.prototype.resize = function (width, height)
 {
 	if ( this.mFrameBufferID != null )
 	{
@@ -279,7 +244,7 @@ GLFrameBufferObject.prototype.Resize = function (width, height)
 
 // Release resources used by the FBO.
 
-GLFrameBufferObject.prototype.Release = function ()
+GLFrameBufferObject.prototype.release = function ()
 {
 	// Clear colour buffer
 	if ( this.mColourBuffer != null )
@@ -321,7 +286,7 @@ GLFrameBufferObject.prototype.Release = function ()
 
 // Enable FBO rendering.
 
-GLFrameBufferObject.prototype.Enable = function ()
+GLFrameBufferObject.prototype.enable = function ()
 {
 	gl.bindFramebuffer(gl.FRAMEBUFFER, this.mFrameBufferID);
 }
@@ -331,7 +296,7 @@ GLFrameBufferObject.prototype.Enable = function ()
 // Enable VBO with cubemap face to render to/from.
 
 // <param name="face">Cubemap face to bind and render to/from.</param>
-GLFrameBufferObject.prototype.EnableCubemap = function (face)
+GLFrameBufferObject.prototype.enableCubemap = function (face)
 {
 	gl.bindFramebuffer(gl.FRAMEBUFFER, this.mFrameBufferID);
 	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, face, this.mColourBuffer.Id, 0);
@@ -341,7 +306,7 @@ GLFrameBufferObject.prototype.EnableCubemap = function (face)
 
 // Disable FBO rendering.
 
-GLFrameBufferObject.prototype.Disable = function ()
+GLFrameBufferObject.prototype.disable = function ()
 {
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
@@ -351,7 +316,7 @@ GLFrameBufferObject.prototype.Disable = function ()
 // Returns the width of the FBO, in pixels.
 
 // <returns>The width of the FBO, in pixels.</returns>
-GLFrameBufferObject.prototype.GetFrameWidth = function ()
+GLFrameBufferObject.prototype.getFrameWidth = function ()
 {
 	return this.mFrameWidth;
 }
@@ -361,7 +326,7 @@ GLFrameBufferObject.prototype.GetFrameWidth = function ()
 // Returns the height of the FBO, in pixels.
 
 // <returns>The height of the FBO, in pixels.</returns>
-GLFrameBufferObject.prototype.GetFrameHeight = function ()
+GLFrameBufferObject.prototype.getFrameHeight = function ()
 {
 	return this.mFrameHeight;
 }

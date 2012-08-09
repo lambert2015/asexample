@@ -12,7 +12,7 @@ function GLExtension ()
 	// Stores the company responsible for this GL implementation. This name does not change
 	// from release to release.
 	
-	this.Vendor = gl.getParameter(gl.VENDOR);
+	this.vendor = gl.getParameter(gl.VENDOR);
 }
 
 
@@ -21,7 +21,7 @@ function GLExtension ()
 
 // <param name="name">Name of the extension to enable.</param>
 // <returns>True if the extension was enabled successfully, otherwise false.</returns>
-GLExtension.prototype.EnableExtension = function (name)
+GLExtension.prototype.enableExtension = function (name)
 {
 	return (gl.getExtension(name) != null);
 }
@@ -31,7 +31,7 @@ GLExtension.prototype.EnableExtension = function (name)
 // Utility method for enabling floating point texture use.
 
 // <returns>True if the extension was enabled successfully, otherwise false.</returns>
-GLExtension.prototype.EnableFloatTexture = function ()
+GLExtension.prototype.enableFloatTexture = function ()
 {
 	return this.EnableExtension("OES_texture_float");
 }

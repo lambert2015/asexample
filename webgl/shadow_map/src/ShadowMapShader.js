@@ -98,16 +98,16 @@ ShadowMapShader.prototype.Init = function ()
 	BasicShader.prototype.Init.call(this);
 	
 	// Get texture samples
-	this.mDepthMapId = this.GetVariable("DepthMap");
-	this.mDepthCubeMapId = this.GetVariable("DepthCubeMap");
+	this.mDepthMapId = this.getVariable("DepthMap");
+	this.mDepthCubeMapId = this.getVariable("DepthCubeMap");
 	
 	// Get matrices
-	this.mLightSourceProjectionMatrixId = this.GetVariable("LightSourceProjectionMatrix");
-	this.mLightSourceViewMatrixId = this.GetVariable("LightSourceViewMatrix");
+	this.mLightSourceProjectionMatrixId = this.getVariable("LightSourceProjectionMatrix");
+	this.mLightSourceViewMatrixId = this.getVariable("LightSourceViewMatrix");
 	this.LightSourceViewMatrix = new Matrix(4, 4);
 	
 	// Get variables
-	this.mFilterTypeId = this.GetVariable("FilterType");
+	this.mFilterTypeId = this.getVariable("FilterType");
 }
 
 
@@ -119,10 +119,10 @@ ShadowMapShader.prototype.Enable = function ()
 	BasicShader.prototype.Enable.call(this);
 	
 	// Set light projection
-	this.SetMatrix(this.mLightSourceProjectionMatrixId, this.LightSourceProjectionMatrix.MMatrix, 4);
+	this.setMatrix(this.mLightSourceProjectionMatrixId, this.LightSourceProjectionMatrix.MMatrix, 4);
 	
 	// Set variables
-	this.SetVariableInt(this.mFilterTypeId, this.FilterType);
+	this.setVariableInt(this.mFilterTypeId, this.FilterType);
 	
 	// Set depth map sample
 	gl.activeTexture(gl.TEXTURE0);
@@ -139,7 +139,7 @@ ShadowMapShader.prototype.Enable = function ()
 ShadowMapShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Matrices
-	this.SetMatrix(this.mLightSourceViewMatrixId, this.LightSourceViewMatrix.MMatrix, 4);
+	this.setMatrix(this.mLightSourceViewMatrixId, this.LightSourceViewMatrix.MMatrix, 4);
 
 	// Draw
 	BasicShader.prototype.Draw.call(this, entity, numPoints, numIndices);

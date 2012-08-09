@@ -114,11 +114,11 @@ BlendScene.prototype.Start = function ()
 	var rectVbo = new GLVertexBufferObject();
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
-	this.mSurface.ObjectEntity = rectVbo;
-	this.mSurface.ObjectMatrix = new Matrix(4, 4);
-	this.mSurface.ObjectMaterial.Texture = new Array();
-	this.mSurface.ObjectMaterial.Texture.push(null);	// Destination texture
-	this.mSurface.ObjectMaterial.Texture.push(null);	// Source texture
+	this.mSurface.objectEntity = rectVbo;
+	this.mSurface.objectMatrix = new Matrix(4, 4);
+	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture.push(null);	// Destination texture
+	this.mSurface.objectMaterial.Texture.push(null);	// Source texture
 
 	
 	// Prepare resources to download
@@ -236,7 +236,7 @@ BlendScene.prototype.OnDstBlueSliderChanged = function (event, ui)
 BlendScene.prototype.OnSourceChanged = function (event)
 {
 	var selectedIndex = event.currentTarget.selectedIndex;
-	event.data.mSurface.ObjectMaterial.Texture[1] = event.data.mTexture[selectedIndex];
+	event.data.mSurface.objectMaterial.Texture[1] = event.data.mTexture[selectedIndex];
 }
 
 
@@ -246,7 +246,7 @@ BlendScene.prototype.OnSourceChanged = function (event)
 BlendScene.prototype.OnDestinationChanged = function (event)
 {
 	var selectedIndex = event.currentTarget.selectedIndex;
-	event.data.mSurface.ObjectMaterial.Texture[0] = event.data.mTexture[selectedIndex];
+	event.data.mSurface.objectMaterial.Texture[0] = event.data.mTexture[selectedIndex];
 }
 
 
@@ -290,7 +290,7 @@ BlendScene.prototype.End = function ()
 	
 	// Release VBOs
 	if ( this.mSurface != null )
-		this.mSurface.ObjectEntity.Release();
+		this.mSurface.objectEntity.Release();
 		
 	// Release textures
 	if ( this.mTexture != null )
@@ -441,8 +441,8 @@ BlendScene.prototype.OnLoadComplete = function ()
 	}
 	
 	// Assign textures
-	this.mSurface.ObjectMaterial.Texture[0] = this.mTexture[1];
-	this.mSurface.ObjectMaterial.Texture[1] = this.mTexture[1];
+	this.mSurface.objectMaterial.Texture[0] = this.mTexture[1];
+	this.mSurface.objectMaterial.Texture[1] = this.mTexture[1];
 
 	
 	// Compile shaders

@@ -86,8 +86,8 @@ BlendShader.prototype.Init = function ()
 	ImageShader.prototype.Init.call(this);
 	
 	// Get shader variables
-	this.mSrcColourId = this.GetVariable("SrcColour");
-	this.mDstColourId = this.GetVariable("DstColour");
+	this.mSrcColourId = this.getVariable("SrcColour");
+	this.mDstColourId = this.getVariable("DstColour");
 }
 
 
@@ -99,6 +99,6 @@ BlendShader.prototype.Enable = function ()
 	ImageShader.prototype.Enable.call(this);
 	
 	// Set colours
-	this.SetVariable(this.mDstColourId, BlendShader.DstColour.x, BlendShader.DstColour.y, BlendShader.DstColour.z, BlendShader.DstColour.w);
-	this.SetVariable(this.mSrcColourId, BlendShader.SrcColour.x, BlendShader.SrcColour.y, BlendShader.SrcColour.z, BlendShader.SrcColour.w);
+	this.setVariable(this.mDstColourId, BlendShader.DstColour.x, BlendShader.DstColour.y, BlendShader.DstColour.z, BlendShader.DstColour.w);
+	this.setVariable(this.mSrcColourId, BlendShader.SrcColour.x, BlendShader.SrcColour.y, BlendShader.SrcColour.z, BlendShader.SrcColour.w);
 }

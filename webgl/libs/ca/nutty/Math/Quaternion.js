@@ -1,21 +1,13 @@
-
 // A Quaternion is a means of representing rotation in 4D space, it is
 // an extension to the complex numbering system.
 // 
 // Compared to Euler angles they are simpler to compose and avoid the
 // problem of gimbal lock. Compared to rotation matrices they are more
 // numerically stable and may be more efficient.
-
-
-
-
-// Constructor.
-
 function Quaternion (x, y, z, w)
 {
 	
 	// Setup inherited members.
-	
 	Point.call(this, x, y, z, w);
 	
 	
@@ -43,7 +35,7 @@ Quaternion.prototype.constructor = Quaternion;
 // <param name="x">X-angle rotation.</param>
 // <param name="y">Y-angle rotation.</param>
 // <param name="z">Z-angle rotation.</param>
-Quaternion.prototype.Rotate = function (x, y, z)
+Quaternion.prototype.rotate = function (x, y, z)
 {
 	x = (x * this.PI180) * 0.5;
 	y = (y * this.PI180) * 0.5;
@@ -74,7 +66,7 @@ Quaternion.prototype.Rotate = function (x, y, z)
 // <param name="quat">Quaternion to slerp to.</param>
 // <param name="t">Scalar value between 0.0 and 1.0.</param>
 // <returns>The interpolated quaternion.</returns>
-Quaternion.prototype.Slerp = function (quat, t)
+Quaternion.prototype.slerp = function (quat, t)
 {
 	// Calculate the angle between both quaternions
 	var angle = Math.acos(this.Dot(quat));
@@ -98,7 +90,7 @@ Quaternion.prototype.Slerp = function (quat, t)
 	return (new Quaternion((s1 * this.x) + (s2 * quat.x),
 						   (s1 * this.y) + (s2 * quat.y),
 						   (s1 * this.z) + (s2 * quat.z),
-						   (s1 * this.w) + (s2 * quat.w))).Normalize();
+						   (s1 * this.w) + (s2 * quat.w))).normalize();
 }
 
 
@@ -106,7 +98,7 @@ Quaternion.prototype.Slerp = function (quat, t)
 // Convert a quaternion to a matrix.
 
 // <param name="matrix">Reference to a 4x4 matrix.</param>
-Quaternion.prototype.ToMatrix = function (matrix)
+Quaternion.prototype.toMatrix = function (matrix)
 {
 	var x2 = this.x * this.Sqrt2;
 	var y2 = this.y * this.Sqrt2;

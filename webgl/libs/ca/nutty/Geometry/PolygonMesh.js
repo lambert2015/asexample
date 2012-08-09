@@ -1,37 +1,20 @@
-
 // This class contains a collection of vertices, uvs, normals, and indices
 // that all defines the shape of a polyhedral object, constructed entirely
 // of triangles.
-
-
-
-
-// Constructor.
-
 function PolygonMesh ()
 {
 	
 	// Stores a list of points (vertices, (x,y,z)) for this polygon.
-	
-	this.VertexPoint = null;
+	this.vectices = null;
 
-
-	
 	// Stores the texture coordinate (u,v) for each vertex.
-	
-	this.UV = null;
+	this.uvs = null;
 
-
-	
 	// Stores a list of normal vectors (x,y,z) for each vertex.
-	
-	this.Normal = null;
-	
-	
+	this.normals = null;
 	
 	// Stores a list of indices associated with this mesh.
-	
-	this.Index = null;
+	this.indices = null;
 }
 
 
@@ -47,54 +30,54 @@ function PolygonMesh ()
 //	</param>
 PolygonMesh.prototype.Create = function (numPoint, numIndices)
 {
-	this.VertexPoint = new Float32Array(numPoint * 3);
-	this.UV = new Float32Array(numPoint * 2);
-	this.Normal = new Float32Array(numPoint * 3);
-	this.Index = new Uint16Array(numIndices);
+	this.vectices = new Float32Array(numPoint * 3);
+	this.uvs = new Float32Array(numPoint * 2);
+	this.normals = new Float32Array(numPoint * 3);
+	this.indices = new Uint16Array(numIndices);
 }
 
 
 
 // Calculates the normals for all polygons.
 
-PolygonMesh.prototype.CreateNormals = function ()
+PolygonMesh.prototype.createNormals = function ()
 {
 	var numPolygon = 0;
-	if ( this.Index != null )
-		numPolygon = this.Index.length;
+	if ( this.indices != null )
+		numPolygon = this.indices.length;
 	else
-		numPolygon = this.GetNumPoints() * 3;
+		numPolygon = this.getNumPoints() * 3;
 
 	// Zero normals
-	var numPoint = this.GetNumPoints() * 3;
+	var numPoint = this.getNumPoints() * 3;
 	for (var i = 0; i < numPoint; ++i)
-		this.Normal[i] = 0;
+		this.normals[i] = 0;
 
 	// Sum normals
 	for (var i = 0; i < numPolygon; i += 3)
 	{
-		var i1 = this.Index[i];
-		var i2 = this.Index[i + 1];
-		var i3 = this.Index[i + 2];
+		var i1 = this.indices[i];
+		var i2 = this.indices[i + 1];
+		var i3 = this.indices[i + 2];
 		
-		var p1 = this.GetPoint(i1);
-		var p2 = this.GetPoint(i2);
-		var p3 = this.GetPoint(i3);
+		var p1 = this.getPoint(i1);
+		var p2 = this.getPoint(i2);
+		var p3 = this.getPoint(i3);
 
-		var v1 = p1.Subtract(p2);
-		var v2 = p2.Subtract(p3);
-		var normal = v1.Cross(v2);
+		var v1 = p1.subtract(p2);
+		var v2 = p2.subtract(p3);
+		var normal = v1.cross(v2);
 
-		this.SetNormal(i1, this.GetNormal(i1).Add(normal));
-		this.SetNormal(i2, this.GetNormal(i2).Add(normal));
-		this.SetNormal(i3, this.GetNormal(i3).Add(normal));
+		this.setNormal(i1, this.getNormal(i1).add(normal));
+		this.setNormal(i2, this.getNormal(i2).add(normal));
+		this.setNormal(i3, this.getNormal(i3).add(normal));
 	}
 
-	// Normalize normals
+	// normalize normals
 	for (var i = 0; i < numPolygon; ++i)
 	{
-		var index = this.Index[i];
-		this.SetNormal(index, this.GetNormal(index).Normalize());
+		var index = this.indices[i];
+		this.setNormal(index, this.getNormal(index).normalize());
 	}
 }
 
@@ -102,18 +85,18 @@ PolygonMesh.prototype.CreateNormals = function ()
 
 // Returns the number of points in this polygon.
 
-PolygonMesh.prototype.GetNumPoints = function ()
+PolygonMesh.prototype.getNumPoints = function ()
 {
-	return (this.VertexPoint != null) ? this.VertexPoint.length / 3 : 0;
+	return (this.vertices != null) ? this.vertices.length / 3 : 0;
 }
 
 
 
 // Returns the number of indices in this mesh.
 
-PolygonMesh.prototype.GetNumIndices = function ()
+PolygonMesh.prototype.getNumIndices = function ()
 {
-	return (this.Index != null) ? this.Index.length : 0;
+	return (this.indices != null) ? this.indices.length : 0;
 }
 
 
@@ -122,11 +105,11 @@ PolygonMesh.prototype.GetNumIndices = function ()
 
 // <param name="index">Index in polygon to retrieve the point for.</param>
 // <returns>A reference to the point, otherwise null.</returns>
-PolygonMesh.prototype.GetPoint = function (index)
+PolygonMesh.prototype.getPoint = function (index)
 {
 	index *= 3;
-	if ( (index + 2) < this.VertexPoint.length )
-		return new Point(this.VertexPoint[index], this.VertexPoint[index + 1], this.VertexPoint[index + 2]);
+	if ( (index + 2) < this.vertices.length )
+		return new Point(this.vertices[index], this.vertices[index + 1], this.vertices[index + 2]);
 	return null;
 }
 
@@ -135,14 +118,14 @@ PolygonMesh.prototype.GetPoint = function (index)
 // Sets / updates the point at the specified index.
 
 // <param name="point">Point to set into the polygon.</param>
-PolygonMesh.prototype.SetPoint = function (index, point)
+PolygonMesh.prototype.setPoint = function (index, point)
 {
 	index *= 3;
-	if ( (index + 2) < this.VertexPoint.length )
+	if ( (index + 2) < this.vertices.length )
 	{
-		this.VertexPoint[index    ] = point.x;
-		this.VertexPoint[index + 1] = point.y;
-		this.VertexPoint[index + 2] = point.z;
+		this.vertices[index    ] = point.x;
+		this.vertices[index + 1] = point.y;
+		this.vertices[index + 2] = point.z;
 	}
 }
 
@@ -152,11 +135,11 @@ PolygonMesh.prototype.SetPoint = function (index, point)
 
 // <param name="index">Index in polygon to retrieve the uv for.</param>
 // <returns>A reference to the uv, otherwise null.</returns>
-PolygonMesh.prototype.GetUV = function (index)
+PolygonMesh.prototype.getUV = function (index)
 {
 	index *= 2;
-	if ( (index + 1) < this.UV.length )
-		return new Point(this.UV[index], this.UV[index + 1]);
+	if ( (index + 1) < this.uvs.length )
+		return new Point(this.uvs[index], this.uvs[index + 1]);
 	return null;
 }
 
@@ -165,13 +148,13 @@ PolygonMesh.prototype.GetUV = function (index)
 // Sets / updates the uv at the specified index.
 
 // <param name="uv">Texture coordinate for the point.</param>
-PolygonMesh.prototype.SetUV = function (index, uv)
+PolygonMesh.prototype.setUV = function (index, uv)
 {
 	index *= 2;
-	if ( (index + 1) < this.UV.length )
+	if ( (index + 1) < this.uvs.length )
 	{
-		this.UV[index    ] = uv.x;
-		this.UV[index + 1] = uv.y;
+		this.uvs[index    ] = uv.x;
+		this.uvs[index + 1] = uv.y;
 	}
 }
 
@@ -181,11 +164,11 @@ PolygonMesh.prototype.SetUV = function (index, uv)
 
 // <param name="index">Index in polygon to retrieve the normal for.</param>
 // <returns>A reference to the normal, otherwise null.</returns>
-PolygonMesh.prototype.GetNormal = function (index)
+PolygonMesh.prototype.getNormal = function (index)
 {
 	index *= 3;
-	if ( (index + 2) < this.Normal.length )
-		return new Point(this.Normal[index], this.Normal[index + 1], this.Normal[index + 2]);
+	if ( (index + 2) < this.normals.length )
+		return new Point(this.normals[index], this.normals[index + 1], this.normals[index + 2]);
 	return null;
 }
 
@@ -194,13 +177,13 @@ PolygonMesh.prototype.GetNormal = function (index)
 // Sets / updates the point at the specified index.
 
 // <param name="normal">Normal vector for the point.</param>
-PolygonMesh.prototype.SetNormal = function (index, normal)
+PolygonMesh.prototype.setNormal = function (index, normal)
 {
 	index *= 3;
-	if ( (index + 2) < this.Normal.length )
+	if ( (index + 2) < this.normals.length )
 	{
-		this.Normal[index    ] = normal.x;
-		this.Normal[index + 1] = normal.y;
-		this.Normal[index + 2] = normal.z;
+		this.normals[index    ] = normal.x;
+		this.normals[index + 1] = normal.y;
+		this.normals[index + 2] = normal.z;
 	}
 }

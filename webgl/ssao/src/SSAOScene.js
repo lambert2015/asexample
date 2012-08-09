@@ -325,12 +325,12 @@ SSAOScene.prototype.Start = function ()
 	var rectVbo = new GLVertexBufferObject();
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
-	this.mSurface.ObjectEntity = rectVbo;
-	this.mSurface.ObjectMatrix = new Matrix(4, 4);
-	this.mSurface.ObjectMaterial.Texture = new Array();
-	this.mSurface.ObjectMaterial.Texture.push(null);	// SSAO view space position data
-	this.mSurface.ObjectMaterial.Texture.push(null);	// SSAO view space normal vectors data
-	this.mSurface.ObjectMaterial.Texture.push(null);	// SSAO normalmap / randomizer
+	this.mSurface.objectEntity = rectVbo;
+	this.mSurface.objectMatrix = new Matrix(4, 4);
+	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture.push(null);	// SSAO view space position data
+	this.mSurface.objectMaterial.Texture.push(null);	// SSAO view space normal vectors data
+	this.mSurface.objectMaterial.Texture.push(null);	// SSAO normalmap / randomizer
 	
 	
 	// Construct the scene to be rendered
@@ -535,9 +535,9 @@ SSAOScene.prototype.Update = function ()
 		this.mSSAOShader.Enable();
 			this.mFboSSAO.Enable();
 				// Set textures
-				this.mSurface.ObjectMaterial.Texture[0] = this.mFboDeferredPositionColourBuffer.TextureObject;	// From step 2
-				this.mSurface.ObjectMaterial.Texture[1] = this.mFboDeferredNormalsColourBuffer.TextureObject;	// From step 3
-				this.mSurface.ObjectMaterial.Texture[2] = this.mTexture[0];										// normalmap.png
+				this.mSurface.objectMaterial.Texture[0] = this.mFboDeferredPositionColourBuffer.TextureObject;	// From step 2
+				this.mSurface.objectMaterial.Texture[1] = this.mFboDeferredNormalsColourBuffer.TextureObject;	// From step 3
+				this.mSurface.objectMaterial.Texture[2] = this.mTexture[0];										// normalmap.png
 				
 				// Render
 				this.mSSAOShader.Draw(this.mSurface);
@@ -558,8 +558,8 @@ SSAOScene.prototype.Update = function ()
 			//
 			this.mSSAOBlendShader.Enable();
 				// Set textures
-				this.mSurface.ObjectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
-				this.mSurface.ObjectMaterial.Texture[1] = this.mFboSSAOColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[1] = this.mFboSSAOColourBuffer.TextureObject;
 				
 				// Render
 				this.mSSAOBlendShader.Draw(this.mSurface);
@@ -572,7 +572,7 @@ SSAOScene.prototype.Update = function ()
 			//
 			this.mBrightnessShader.Enable();
 				// Set textures
-				this.mSurface.ObjectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
 				
 				// Render
 				this.mBrightnessShader.Draw(this.mSurface);
@@ -618,7 +618,7 @@ SSAOScene.prototype.End = function ()
 	
 	// Release VBOs
 	if ( this.mSurface != null )
-		this.mSurface.ObjectEntity.Release();
+		this.mSurface.objectEntity.Release();
 		
 	// Release textures
 	if ( this.mTexture != null )
@@ -780,7 +780,7 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 		// Setup parameters
 		this.mSSAOShader.OccluderBias = this.mControls[0].slider("value");
 		this.mSSAOShader.SamplingRadius = this.mControls[2].slider("value");
-		this.mSSAOShader.Attenuation.SetPoint(this.mControls[4].slider("value"),
+		this.mSSAOShader.Attenuation.setPoint(this.mControls[4].slider("value"),
 											  this.mControls[6].slider("value"));
 		
 		this.mShader.push(this.mSSAOShader);

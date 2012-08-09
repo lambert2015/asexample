@@ -90,13 +90,13 @@ DeferredShader.prototype.Init = function ()
 	BaseShader.prototype.Init.call(this);
 	
 	// Get matrices
-	this.mProjectionId = this.GetVariable("ProjectionMatrix");
-	this.mViewId = this.GetVariable("ViewMatrix");
-	this.mModelId = this.GetVariable("ModelMatrix");
-	this.mModelScaleId = this.GetVariable("ModelScale");
+	this.mProjectionId = this.getVariable("ProjectionMatrix");
+	this.mViewId = this.getVariable("ViewMatrix");
+	this.mModelId = this.getVariable("ModelMatrix");
+	this.mModelScaleId = this.getVariable("ModelScale");
 	
 	// Get variables
-	this.mLinearDepthId = this.GetVariable("LinearDepth");
+	this.mLinearDepthId = this.getVariable("LinearDepth");
 }
 
 
@@ -108,7 +108,7 @@ DeferredShader.prototype.Enable = function ()
 	BaseShader.prototype.Enable.call(this);
 
 	// Set variables
-	this.SetVariable(this.mLinearDepthId, this.LinearDepth);
+	this.setVariable(this.mLinearDepthId, this.LinearDepth);
 }
 
 
@@ -118,13 +118,13 @@ DeferredShader.prototype.Enable = function ()
 DeferredShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Matrices
-	this.SetMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.SetMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.SetMatrix(this.mModelId, entity.ObjectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
+	this.setMatrix(this.mViewId, this.View.MMatrix, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
 	
-	var scale = entity.ObjectMatrix.GetScale();
-	this.SetVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
+	var scale = entity.objectMatrix.GetScale();
+	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
 
 	// Draw
-	BaseShader.prototype.Draw.call(this, entity.ObjectEntity, numPoints, numIndices);
+	BaseShader.prototype.Draw.call(this, entity.objectEntity, numPoints, numIndices);
 }

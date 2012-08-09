@@ -85,11 +85,11 @@ SSAOSceneGen.Create = function ()
 			for (var x = 0; x < current; ++x)
 			{
 				var sphereEntity = new Entity();
-				sphereEntity.ObjectEntity = sphereVbo;
-				sphereEntity.ObjectMaterial.Ambient.SetPoint(0.4, 0.4, 0.4);
-				sphereEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
-				sphereEntity.ObjectMatrix.Translate(x * spread - halfCount, y * ySpread, z * spread - halfCount);
-				sphereEntity.ObjectMatrix.Scale(scale, scale, scale);
+				sphereEntity.objectEntity = sphereVbo;
+				sphereEntity.objectMaterial.Ambient.setPoint(0.4, 0.4, 0.4);
+				sphereEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
+				sphereEntity.objectMatrix.Translate(x * spread - halfCount, y * ySpread, z * spread - halfCount);
+				sphereEntity.objectMatrix.Scale(scale, scale, scale);
 				entity.push(sphereEntity);
 			}
 		}
@@ -101,25 +101,25 @@ SSAOSceneGen.Create = function ()
 	
 	// Create a cube entity (room)
 	var cubeEntity = new Entity();
-	cubeEntity.ObjectEntity = cubeVbo;
-	cubeEntity.ObjectMatrix.Translate(0.0, 1.7, 0.0);
-	cubeEntity.ObjectMatrix.Scale(4.0, 2.0, 4.0);
+	cubeEntity.objectEntity = cubeVbo;
+	cubeEntity.objectMatrix.Translate(0.0, 1.7, 0.0);
+	cubeEntity.objectMatrix.Scale(4.0, 2.0, 4.0);
 	entity.push(cubeEntity);
 	
 	// Create a torus knot entity
 	var torusKnotEntity = new Entity();
-	torusKnotEntity.ObjectEntity = torusKnotVbo;
-	torusKnotEntity.ObjectMatrix.Translate(0.0, 1.5, 1.5);
-	torusKnotEntity.ObjectMatrix.Scale(1.0, 1.0, 1.0);
-	torusKnotEntity.ObjectMaterial.Ambient.SetPoint(0.4, 0.4, 0.4);
+	torusKnotEntity.objectEntity = torusKnotVbo;
+	torusKnotEntity.objectMatrix.Translate(0.0, 1.5, 1.5);
+	torusKnotEntity.objectMatrix.Scale(1.0, 1.0, 1.0);
+	torusKnotEntity.objectMaterial.Ambient.setPoint(0.4, 0.4, 0.4);
 	entity.push(torusKnotEntity);
 	
 	// Create a torus knot entity
 	var torusKnotEntity2 = new Entity();
-	torusKnotEntity2.ObjectEntity = torusKnotVbo2;
-	torusKnotEntity2.ObjectMatrix.Translate(0.0, 1.5, -1.5);
-	torusKnotEntity2.ObjectMatrix.Scale(1.0, 1.0, 1.0);
-	torusKnotEntity2.ObjectMaterial.Ambient.SetPoint(0.4, 0.4, 0.4);
+	torusKnotEntity2.objectEntity = torusKnotVbo2;
+	torusKnotEntity2.objectMatrix.Translate(0.0, 1.5, -1.5);
+	torusKnotEntity2.objectMatrix.Scale(1.0, 1.0, 1.0);
+	torusKnotEntity2.objectMaterial.Ambient.setPoint(0.4, 0.4, 0.4);
 	entity.push(torusKnotEntity2);
 	
 	return entity;

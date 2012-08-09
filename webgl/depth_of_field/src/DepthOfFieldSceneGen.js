@@ -73,56 +73,56 @@ DepthOfFieldSceneGen.Create = function ()
 	
 	// Create entities
 	var rulerEntity = new Entity();
-	rulerEntity.ObjectEntity = rectVbo;
-	rulerEntity.ObjectMatrix.Translate(0.0, 2.9, 0.0);
-	rulerEntity.ObjectMatrix.Rotate(90.0, 90.0, 0.0);
-	rulerEntity.ObjectMatrix.Scale(10.0, -1.0, 1.0);
-	rulerEntity.ObjectMaterial.Ambient.SetPoint(0.2, 0.2, 0.2);
-	rulerEntity.ObjectMaterial.Diffuse.SetPoint(0.8, 0.8, 0.8);
-	rulerEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
+	rulerEntity.objectEntity = rectVbo;
+	rulerEntity.objectMatrix.Translate(0.0, 2.9, 0.0);
+	rulerEntity.objectMatrix.Rotate(90.0, 90.0, 0.0);
+	rulerEntity.objectMatrix.Scale(10.0, -1.0, 1.0);
+	rulerEntity.objectMaterial.Ambient.setPoint(0.2, 0.2, 0.2);
+	rulerEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
+	rulerEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
 	// Ruler texture is only 124 pixels high. Need to scale texture to fit rectangle.
 	// Note: ruler texture is larger than normal in order to support mipmapping.
-	rulerEntity.ObjectMaterial.TextureScale.y = 124.0 / 1024.0;
+	rulerEntity.objectMaterial.TextureScale.y = 124.0 / 1024.0;
 	entity.push(rulerEntity);
 	
 	var roomEntity = new Entity();
-	roomEntity.ObjectEntity = cubeVbo;
-	roomEntity.ObjectMatrix.Translate(0.0, 0.0, 0.0);
-	roomEntity.ObjectMaterial.Diffuse.SetPoint(0.8, 0.8, 0.8);
-	roomEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
+	roomEntity.objectEntity = cubeVbo;
+	roomEntity.objectMatrix.Translate(0.0, 0.0, 0.0);
+	roomEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
+	roomEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
 	entity.push(roomEntity);
 	
 	// DOF Objects
 	for (var x = 0; x < 7; ++x)
 	{
 		var entityInstance = new Entity();
-		entityInstance.ObjectEntity = cylinderVbo;
-		entityInstance.ObjectMatrix.Translate((x - 4.0) * 2, -2.0, (x - 4.5) * 2);
-		entityInstance.ObjectMatrix.Rotate(90.0, 0.0, 0.0);
+		entityInstance.objectEntity = cylinderVbo;
+		entityInstance.objectMatrix.Translate((x - 4.0) * 2, -2.0, (x - 4.5) * 2);
+		entityInstance.objectMatrix.Rotate(90.0, 0.0, 0.0);
 		if ( x % 3 == 0 )
-			entityInstance.ObjectMaterial.Diffuse.SetPoint(((x + 7.0) / 7.0), 0.5, 0.5);
+			entityInstance.objectMaterial.Diffuse.setPoint(((x + 7.0) / 7.0), 0.5, 0.5);
 		else if ( x % 3 == 1 )
-			entityInstance.ObjectMaterial.Diffuse.SetPoint(0.5, ((x + 7.0) / 7.0), 0.5);
+			entityInstance.objectMaterial.Diffuse.setPoint(0.5, ((x + 7.0) / 7.0), 0.5);
 		else
-			entityInstance.ObjectMaterial.Diffuse.SetPoint(0.5, 0.5, ((x + 7.0) / 7.0));
-		entityInstance.ObjectMaterial.Specular.SetPoint(0.1, 0.1, 0.1);
-		entityInstance.ObjectMaterial.Shininess = 6;
+			entityInstance.objectMaterial.Diffuse.setPoint(0.5, 0.5, ((x + 7.0) / 7.0));
+		entityInstance.objectMaterial.Specular.setPoint(0.1, 0.1, 0.1);
+		entityInstance.objectMaterial.Shininess = 6;
 		entity.push(entityInstance);
 	}
 	
 	// Create one more near the camera
 	var entityInstance = new Entity();
-	entityInstance.ObjectEntity = cylinderVbo;
-	entityInstance.ObjectMatrix.Translate(-2.0, -2.0, 7.0);
-	entityInstance.ObjectMatrix.Rotate(90.0, 0.0, 0.0);
+	entityInstance.objectEntity = cylinderVbo;
+	entityInstance.objectMatrix.Translate(-2.0, -2.0, 7.0);
+	entityInstance.objectMatrix.Rotate(90.0, 0.0, 0.0);
 	if ( x % 3 == 0 )
-		entityInstance.ObjectMaterial.Diffuse.SetPoint(((x + 7.0) / 7.0), 0.5, 0.5);
+		entityInstance.objectMaterial.Diffuse.setPoint(((x + 7.0) / 7.0), 0.5, 0.5);
 	else if ( x % 3 == 1 )
-		entityInstance.ObjectMaterial.Diffuse.SetPoint(0.5, ((x + 7.0) / 7.0), 0.5);
+		entityInstance.objectMaterial.Diffuse.setPoint(0.5, ((x + 7.0) / 7.0), 0.5);
 	else
-		entityInstance.ObjectMaterial.Diffuse.SetPoint(0.5, 0.5, ((x + 7.0) / 7.0));
-	entityInstance.ObjectMaterial.Specular.SetPoint(0.1, 0.1, 0.1);
-	entityInstance.ObjectMaterial.Shininess = 6;
+		entityInstance.objectMaterial.Diffuse.setPoint(0.5, 0.5, ((x + 7.0) / 7.0));
+	entityInstance.objectMaterial.Specular.setPoint(0.1, 0.1, 0.1);
+	entityInstance.objectMaterial.Shininess = 6;
 	entity.push(entityInstance);
 	
 	return entity;

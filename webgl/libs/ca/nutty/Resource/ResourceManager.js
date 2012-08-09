@@ -1,41 +1,26 @@
-
 // This class provides storage of ResourceItem objects.
-
-
-
-
-// Constructor.
-
 function ResourceManager ()
 {
-	
 	// Store a collection of ResourceItem objects.
-	
-	this.Item = new Array();
+	this.items = new Array();
 }
-
-
 
 // Add an item to the list.
-
 // <param name="item">Item to add.</param>
-ResourceManager.prototype.Add = function (item)
+ResourceManager.prototype.add = function (item)
 {
-	this.Item.push(item);
+	this.items.push(item);
 }
 
-
-
 // Finds the resource with the specified name.
-
 // <param name="name">Name of the resource item to find.</param>
 // <returns>Reference to the resource item if found, otherwise 0.</returns>
-ResourceManager.prototype.Find = function (name)
+ResourceManager.prototype.find = function (name)
 {
-	for (var i = 0; i < this.Item.length; ++i)
+	for (var i = 0; i < this.items.length; ++i)
 	{
-		if ( this.Item[i].Name == name )
-			return this.Item[i];
+		if ( this.items[i].name == name )
+			return this.items[i];
 	}
 	return null;
 }

@@ -3,7 +3,7 @@
 
 // Stores the active scene to be rendered.
 // This must be initially set by the index page.
-var CurrentScene = null;
+var currentScene = null;
 
 // Function called when the HTML page has loaded.
 // Initialize page.
@@ -26,12 +26,12 @@ AppStart = function ()
 		gl.viewport(0.0, 0.0, canvas.width, canvas.height);
 		
 		// Start main scene
-		if ( CurrentScene != null )
+		if ( currentScene != null )
 		{
 			$("#DivStart").hide();
 			$("#WebGLDemo").show();
 		
-			CurrentScene.Start();
+			currentScene.Start();
 
 			// Start renderer
 			AppRender();
@@ -49,10 +49,10 @@ AppStart = function ()
 AppStop = function ()
 {
 	// Cleanup
-	if ( CurrentScene )
+	if ( currentScene )
 	{
-		CurrentScene.End();
-		CurrentScene = null;
+		currentScene.End();
+		currentScene = null;
 	}
 }
 
@@ -61,10 +61,10 @@ AppStop = function ()
 // per second.
 AppRender = function ()
 {
-	if ( CurrentScene )
+	if ( currentScene )
 	{
 		// Render the current scene
-		CurrentScene.Update();
+		currentScene.Update();
 		
 		// HTML standards at its finest. Bind this function to the
 		// next frame cycle.

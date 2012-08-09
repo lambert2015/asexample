@@ -19,13 +19,13 @@ function GLShader ()
 	
 	// Name to identify this shader.
 	
-	this.Name = null;
+	this.name = null;
 	
 	
 	
 	// Stores a reference to the shader object.
 	
-	this.Shader = null;
+	this.shader = null;
 }
 
 
@@ -35,21 +35,21 @@ function GLShader ()
 // <param name="type">Type of shader to create.</param>
 // <param name="source">String containing the source code of the shader.</param>
 // <returns>True if the shader compiled successfully, otherwise false.</param>
-GLShader.prototype.Create = function (type, source)
+GLShader.prototype.create = function (type, source)
 {
-	this.Release();
+	this.release();
 
 	if ( type == this.ShaderType.Vertex )
-		this.Shader = gl.createShader(gl.VERTEX_SHADER);
+		this.shader = gl.createShader(gl.VERTEX_SHADER);
 	else
-		this.Shader = gl.createShader(gl.FRAGMENT_SHADER);
+		this.shader = gl.createShader(gl.FRAGMENT_SHADER);
 		
-	if ( this.Shader != null )
+	if ( this.shader != null )
 	{
-		gl.shaderSource(this.Shader, source);
-		gl.compileShader(this.Shader);
+		gl.shaderSource(this.shader, source);
+		gl.compileShader(this.shader);
 		
-		return gl.getShaderParameter(this.Shader, gl.COMPILE_STATUS);
+		return gl.getShaderParameter(this.shader, gl.COMPILE_STATUS);
 	}
 	
 	return false;
@@ -59,17 +59,17 @@ GLShader.prototype.Create = function (type, source)
 
 // Removes the shader.
 
-GLShader.prototype.Release = function ()
+GLShader.prototype.release = function ()
 {
-	gl.deleteShader(this.Shader);
-	this.Shader = null;
+	gl.deleteShader(this.shader);
+	this.shader = null;
 }
 
 
 
 // Retrieves debugging information.
 
-GLShader.prototype.GetLog = function ()
+GLShader.prototype.getLog = function ()
 {
-	return gl.getShaderInfoLog(this.Shader)
+	return gl.getShaderInfoLog(this.shader)
 }

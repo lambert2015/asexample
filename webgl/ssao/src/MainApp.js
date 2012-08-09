@@ -37,7 +37,7 @@
 // Stores the active scene to be rendered.
 // This must be initially set by the index page.
 
-var CurrentScene = null;
+var currentScene = null;
 
 
 
@@ -84,12 +84,12 @@ AppStart = function ()
 		}
 		
 		// Start main scene
-		if ( CurrentScene != null )
+		if ( currentScene != null )
 		{
 			$("#DivStart").hide();
 			$("#WebGLDemo").show();
 		
-			CurrentScene.Start();
+			currentScene.Start();
 
 			// Start renderer
 			AppRender();
@@ -110,10 +110,10 @@ AppStart = function ()
 AppStop = function ()
 {
 	// Cleanup
-	if ( CurrentScene )
+	if ( currentScene )
 	{
-		CurrentScene.End();
-		CurrentScene = null;
+		currentScene.End();
+		currentScene = null;
 	}
 }
 
@@ -125,10 +125,10 @@ AppStop = function ()
 
 AppRender = function ()
 {
-	if ( CurrentScene )
+	if ( currentScene )
 	{
 		// Render the current scene
-		CurrentScene.Update();
+		currentScene.Update();
 		
 		// HTML standards at its finest. Bind this function to the
 		// next frame cycle.

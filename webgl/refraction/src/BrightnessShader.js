@@ -94,9 +94,9 @@ BrightnessShader.prototype.Init = function ()
 	ImageShader.prototype.Init.call(this);
 
 	// Get variables
-	this.mBrightnessId = this.GetVariable("Brightness");
-	this.mContrastId = this.GetVariable("Contrast");
-	this.mInvGammaId = this.GetVariable("InvGamma");
+	this.mBrightnessId = this.getVariable("Brightness");
+	this.mContrastId = this.getVariable("Contrast");
+	this.mInvGammaId = this.getVariable("InvGamma");
 }
 
 
@@ -108,9 +108,9 @@ BrightnessShader.prototype.Enable = function ()
 	ImageShader.prototype.Enable.call(this);
 	
 	// Set values
-	this.SetVariable(this.mBrightnessId, this.Brightness);
-	this.SetVariable(this.mContrastId, this.Contrast);
-	this.SetVariable(this.mInvGammaId, this.InvGamma);
+	this.setVariable(this.mBrightnessId, this.Brightness);
+	this.setVariable(this.mContrastId, this.Contrast);
+	this.setVariable(this.mInvGammaId, this.InvGamma);
 }
 
 

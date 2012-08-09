@@ -81,9 +81,9 @@ GaussianBlurShader.prototype.Init = function ()
 	ImageShader.prototype.Init.call(this);
 	
 	// Get variables
-	this.mOrientationId = this.GetVariable("Orientation");
-	this.mBlurAmountId = this.GetVariable("BlurAmount");
-	this.mCubeFaceId = this.GetVariable("CubeFace");
+	this.mOrientationId = this.getVariable("Orientation");
+	this.mBlurAmountId = this.getVariable("BlurAmount");
+	this.mCubeFaceId = this.getVariable("CubeFace");
 }
 
 
@@ -95,7 +95,7 @@ GaussianBlurShader.prototype.Enable = function ()
 	ImageShader.prototype.Enable.call(this);
 	
 	// Set variables
-	this.SetVariableInt(this.mBlurAmountId, this.BlurAmount);
+	this.setVariableInt(this.mBlurAmountId, this.BlurAmount);
 }
 
 
@@ -105,7 +105,7 @@ GaussianBlurShader.prototype.Enable = function ()
 GaussianBlurShader.prototype.Draw = function (entity, orientation, numPoints, numIndices)
 {
 	// Blur on the horizontal axis
-	this.SetVariableInt(this.mOrientationId, orientation);
-	this.SetVariableInt(this.mCubeFaceId, this.CubeFace);
+	this.setVariableInt(this.mOrientationId, orientation);
+	this.setVariableInt(this.mCubeFaceId, this.CubeFace);
 	ImageShader.prototype.Draw.call(this, entity, numPoints, numIndices);
 }

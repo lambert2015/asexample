@@ -1,11 +1,5 @@
-
 // Point / vector object.
-
-
-
-
 // Provides a point data type, containing (X, Y, Z, W) values.
-
 function Point (x, y, z, w)
 {
 	//
@@ -22,7 +16,7 @@ function Point (x, y, z, w)
 
 // Sum of points.
 
-Point.prototype.Add = function (point)
+Point.prototype.add = function (point)
 {
 	return new Point(this.x + point.x,
 					 this.y + point.y,
@@ -30,7 +24,7 @@ Point.prototype.Add = function (point)
 					 this.w + point.w);
 }
 
-Point.prototype.AddScalar = function (value)
+Point.prototype.addScalar = function (value)
 {
 	return new Point(this.x + value,
 					 this.y + value,
@@ -42,7 +36,7 @@ Point.prototype.AddScalar = function (value)
 
 // Negative.
 
-Point.prototype.Negative = function ()
+Point.prototype.negative = function ()
 {
 	return new Point(-this.x,
 					 -this.y,
@@ -54,7 +48,7 @@ Point.prototype.Negative = function ()
 
 // Difference of points.
 
-Point.prototype.Subtract = function (point)
+Point.prototype.subtract = function (point)
 {
 	return new Point(this.x - point.x,
 					 this.y - point.y,
@@ -62,7 +56,7 @@ Point.prototype.Subtract = function (point)
 					 this.w - point.w);
 }
 
-Point.prototype.SubtractScalar = function (value)
+Point.prototype.subtractScalar = function (value)
 {
 	return new Point(this.x - value,
 					 this.y - value,
@@ -74,7 +68,7 @@ Point.prototype.SubtractScalar = function (value)
 
 // Multiplication of points.
 
-Point.prototype.Multiply = function (point)
+Point.prototype.multiply = function (point)
 {
 	return new Point(this.x * point.x,
 					 this.y * point.y,
@@ -82,7 +76,7 @@ Point.prototype.Multiply = function (point)
 					 this.w * point.w);
 }
 
-Point.prototype.MultiplyScalar = function (value)
+Point.prototype.multiplyScalar = function (value)
 {
 	return new Point(this.x * value,
 					 this.y * value,
@@ -94,7 +88,7 @@ Point.prototype.MultiplyScalar = function (value)
 
 // Division of points.
 
-Point.prototype.Divide = function (point)
+Point.prototype.divide = function (point)
 {
 	return new Point(this.x / point.x,
 					 this.y / point.y,
@@ -102,7 +96,7 @@ Point.prototype.Divide = function (point)
 					 this.w / point.w);
 }
 
-Point.prototype.DivideScalar = function (value)
+Point.prototype.divideScalar = function (value)
 {
 	return new Point(this.x / value,
 					 this.y / value,
@@ -114,7 +108,7 @@ Point.prototype.DivideScalar = function (value)
 
 // Absolute value of point.
 
-Point.prototype.Absolute = function ()
+Point.prototype.absolute = function ()
 {
 	return new Point(this.x < 0 ? -this.x : this.x,
 					 this.y < 0 ? -this.y : this.y,
@@ -126,7 +120,7 @@ Point.prototype.Absolute = function ()
 
 // Clamp.
 
-Point.prototype.Clamp = function (min, max)
+Point.prototype.clamp = function (min, max)
 {
 	return new Point(this.x < min ? min : this.x > max ? max : this.x,
 					 this.y < min ? min : this.y > max ? max : this.y,
@@ -136,9 +130,9 @@ Point.prototype.Clamp = function (min, max)
 
 
 
-// Cross product of points.
+// cross product of points.
 
-Point.prototype.Cross = function (point)
+Point.prototype.cross = function (point)
 {
 	return new Point(this.y * point.z - this.z * point.y,
 					 this.z * point.x - this.x * point.z,
@@ -149,7 +143,7 @@ Point.prototype.Cross = function (point)
 
 // Distance between two points.
 
-Point.prototype.Distance = function (point)
+Point.prototype.distance = function (point)
 {
 	return Math.sqrt(((this.x - point.x) * (this.x - point.x)) +
 					 ((this.y - point.y) * (this.y - point.y)) +
@@ -163,7 +157,7 @@ Point.prototype.Distance = function (point)
 // If dot > 0, vectors are within 90 degrees of each other (facing in similar direction)
 // If dot = 0, vectors are orthogonal (perpindicular)
 
-Point.prototype.Dot = function (point)
+Point.prototype.dot = function (point)
 {
 	return ((this.x * point.x) +
 			(this.y * point.y) +
@@ -174,7 +168,7 @@ Point.prototype.Dot = function (point)
 
 // Magnitude of this point.
 
-Point.prototype.Magnitude = function ()
+Point.prototype.magnitude = function ()
 {
 	return Math.sqrt((this.x * this.x) +
 					 (this.y * this.y) +
@@ -184,9 +178,9 @@ Point.prototype.Magnitude = function ()
 
 
 
-// Normalize point.
+// normalize point.
 
-Point.prototype.Normalize = function ()
+Point.prototype.normalize = function ()
 {
 	var unit = this.Magnitude();
 	if ( unit != 0.0 )
@@ -204,7 +198,7 @@ Point.prototype.Normalize = function ()
 
 // Set point.
 
-Point.prototype.SetPoint = function (x, y, z, w)
+Point.prototype.setPoint = function (x, y, z, w)
 {
 	this.x = x ? x : 0;
 	this.y = y ? y : 0;

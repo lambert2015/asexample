@@ -259,12 +259,12 @@ ShadowMapScene.prototype.Start = function ()
 	var rectVbo = new GLVertexBufferObject();
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
-	this.mSurface.ObjectEntity = rectVbo;
-	this.mSurface.ObjectMatrix.Translate(0.0, 0.0, 1.0);
-	this.mSurface.ObjectMaterial.Texture = new Array();
+	this.mSurface.objectEntity = rectVbo;
+	this.mSurface.objectMatrix.Translate(0.0, 0.0, 1.0);
+	this.mSurface.objectMaterial.Texture = new Array();
 	
 	// Create light sources
-	this.mLightPosition.SetPoint(0.0, 0.0, 0.0);
+	this.mLightPosition.setPoint(0.0, 0.0, 0.0);
 	this.mLightProjection = ViewMatrix.Perspective(90.0, 1.0, 1.0, 30.0);
 	this.mAnimLightPosition = 0.0;
 	
@@ -292,7 +292,7 @@ ShadowMapScene.prototype.Start = function ()
 	this.mDirectionalLight = new Light();
 	this.mDirectionalLight.LightType = Light.LightSourceType.Directional;
 	this.mDirectionalLight.Position = this.mLightPosition;
-	this.mDirectionalLight.Direction.SetPoint(0.0, -1.0, 0.0);
+	this.mDirectionalLight.Direction.setPoint(0.0, -1.0, 0.0);
 	this.mDirectionalLight.SetCutoff(45.0, 0.0);
 	
 	// Create the directional light view matrix. It will be animated at runtime.
@@ -495,13 +495,13 @@ ShadowMapScene.prototype.Update = function ()
 		if ( this.mCboxEnableAnimation.checked )
 		{
 			if ( !this.mIsPointLightActive )
-				this.mLightPosition.SetPoint(Math.sin(this.mAnimLightPosition) * 7.0, this.mLightPosition.y, Math.cos(this.mAnimLightPosition) * 7.0);
+				this.mLightPosition.setPoint(Math.sin(this.mAnimLightPosition) * 7.0, this.mLightPosition.y, Math.cos(this.mAnimLightPosition) * 7.0);
 			else
-				this.mLightPosition.SetPoint(Math.sin(this.mAnimLightPosition) * 3.0, this.mLightPosition.y, Math.cos(this.mAnimLightPosition) * 3.0);
+				this.mLightPosition.setPoint(Math.sin(this.mAnimLightPosition) * 3.0, this.mLightPosition.y, Math.cos(this.mAnimLightPosition) * 3.0);
 			this.mAnimLightPosition += 0.01;
 			
 			// Update directional light
-			this.mDirectionalLight.Direction = this.mLightPosition.Negative().Normalize();
+			this.mDirectionalLight.Direction = this.mLightPosition.Negative().normalize();
 			this.mDirectionalLight.Matrix.PointAt(this.mLightPosition,
 												  new Point());
 			this.mDirectionalLight.Matrix = this.mDirectionalLight.Matrix.Inverse();
@@ -561,14 +561,14 @@ ShadowMapScene.prototype.Update = function ()
 				
 				// Render horizontal blur
 				this.mFboBlur.Enable();
-					this.mSurface.ObjectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
+					this.mSurface.objectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
 					this.mGaussianBlurShader.Draw(this.mSurface, 0);
 				//this.mFboBlur.Disable();
 				
 				// Render vertical blur (back into depth map)
 				this.mFboDepth.Enable();
 					gl.clear(gl.DEPTH_BUFFER_BIT);
-					this.mSurface.ObjectMaterial.Texture[0] = this.mFboBlurColourBuffer.TextureObject;
+					this.mSurface.objectMaterial.Texture[0] = this.mFboBlurColourBuffer.TextureObject;
 					this.mGaussianBlurShader.Draw(this.mSurface, 1);
 				this.mFboDepth.Disable();
 				
@@ -585,14 +585,14 @@ ShadowMapScene.prototype.Update = function ()
 				
 					// Render horizontal blur
 					this.mFboBlur.EnableCubemap(gl.TEXTURE_CUBE_MAP_POSITIVE_X + f);
-						this.mSurface.ObjectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
+						this.mSurface.objectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
 						this.mGaussianBlurCubeShader.Draw(this.mSurface, 0);
 					//this.mFboBlur.Disable();
 					
 					// Render vertical blur (back into depth map)
 					this.mFboDepth.EnableCubemap(gl.TEXTURE_CUBE_MAP_POSITIVE_X + f);
 						gl.clear(gl.DEPTH_BUFFER_BIT);
-						this.mSurface.ObjectMaterial.Texture[0] = this.mFboBlurColourBuffer.TextureObject;
+						this.mSurface.objectMaterial.Texture[0] = this.mFboBlurColourBuffer.TextureObject;
 						this.mGaussianBlurCubeShader.Draw(this.mSurface, 1);
 					//this.mFboDepth.Disable();
 				}
@@ -651,7 +651,7 @@ ShadowMapScene.prototype.Update = function ()
 			// Optionally show the current depth map
 			// Need to chose between 2D depth map view or cubemap depth map view
 			//
-			this.mSurface.ObjectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
+			this.mSurface.objectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
 			
 			if ( !this.mIsPointLightActive )
 			{
@@ -693,7 +693,7 @@ ShadowMapScene.prototype.End = function ()
 		this.mFboBlur.Release();
 	
 	if ( this.mSurface != null )
-		this.mSurface.ObjectEntity.Release();
+		this.mSurface.objectEntity.Release();
 		
 	if ( this.mDepthShader )
 		this.mDepthShader.Release();

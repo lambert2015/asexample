@@ -13,33 +13,33 @@ function GLInfo ()
 	// Stores the company responsible for this GL implementation. This name does not change
 	// from release to release.
 	
-	this.Vendor = gl.getParameter(gl.VENDOR);
+	this.vendor = gl.getParameter(gl.VENDOR);
 
 
 	
 	// Returns the name of the renderer. This name is typically specific to a particular
 	// configuration of a hardware platform. It does not change from release to release.
 	
-	this.Renderer = gl.getParameter(gl.RENDERER);
+	this.renderer = gl.getParameter(gl.RENDERER);
 
 
 	
 	// Returns a version or release number.
 	
-	this.Version = gl.getParameter(gl.VERSION);
+	this.version = gl.getParameter(gl.VERSION);
 
 
 	
 	// Stores a list of extensions supported by this context.
 	
-	this.Extension = gl.getSupportedExtensions();
+	this.extension = gl.getSupportedExtensions();
 
 
 	
 	// The value gives a rough estimate of the largest cube-map texture that
 	// the GL can handle. The value must be at least 16.
 	
-	this.MaxCubeMapTextureSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);
+	this.maxCubeMapTextureSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);
 
 
 	
@@ -53,42 +53,42 @@ function GLInfo ()
 	// The maximum number of four-element floating-point, integer, or boolean vectors that can be held 
 	// in uniform variable storage for a fragment shader. The value must be at least 16.
 	
-	this.MaxFragmentUniformVectors = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
+	this.maxFragmentUniformVectors = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
 
 
 	
 	// The value indicates the largest renderbuffer width and height that the GL can handle.
 	// The value must be at least 1.
 	
-	this.MaxRenderbufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE);
+	this.maxRenderbufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE);
 
 
 	
 	// The maximum supported texture image units that can be used to access texture
 	// maps from the fragment shader. The value must be at least 2.
 	
-	this.MaxTextureImageUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
+	this.maxTextureImageUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
 
 
 	
 	// The value gives a rough estimate of the largest texture that
 	// the GL can handle. The value must be at least 64.
 	
-	this.MaxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+	this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
 
 
 	
 	// The maximum number of 4-component generic vertex attributes accessible to a vertex shader.
 	// The value must be at least 16.
 	
-	this.MaxVertexAttribs = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
+	this.maxVertexAttribs = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
 
 
 	
 	// The maximum supported texture image units that can be used to access texture maps from
 	// the vertex shader. The value may be 0.
 	
-	this.MaxVertexTextureImageUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
+	this.maxVertexTextureImageUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
 	
 	
 	
@@ -102,7 +102,7 @@ function GLInfo ()
 	// The maximum number of four-element floating-point, integer, or boolean vectors that can be held
 	// in uniform variable storage for a vertex shader. The value must be at least 128.
 	
-	this.MaxVertexUniformVectors = gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS);
+	this.maxVertexUniformVectors = gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS);
 
 
 	
@@ -110,19 +110,19 @@ function GLInfo ()
 	// vertex and fragment shaders. Varying variables declared as matrices or arrays will consume multiple
 	// interpolators. The value must be at least 8.
 	
-	this.MaxVertexVaryingVectors = gl.getParameter(gl.MAX_VARYING_VECTORS);
+	this.maxVertexVaryingVectors = gl.getParameter(gl.MAX_VARYING_VECTORS);
 
 
 	
 	// The maximum supported width and height of the viewport. These must be at least as large as
 	// the visible dimensions of the display being rendered to.
 	
-	this.MaxViewportDimension = gl.getParameter(gl.MAX_VIEWPORT_DIMS);
+	this.maxViewportDimension = gl.getParameter(gl.MAX_VIEWPORT_DIMS);
 
 
 	
 	// A single integer value indicating the number of available compressed texture formats.
 	// The minimum value is 0.
 	
-	this.NumCompressedTextureFormats = gl.getParameter(gl.NUM_COMPRESSED_TEXTURE_FORMATS);
+	this.numCompressedTextureFormats = gl.getParameter(gl.NUM_COMPRESSED_TEXTURE_FORMATS);
 }

@@ -23,7 +23,7 @@ function GLTexture ()
 	
 	// Stores the texture.
 	
-	this.Texture = null;
+	this.texture = null;
 	
 	
 	
@@ -65,10 +65,10 @@ GLTexture.TextureType =
 // <param name="height">Height of the texture, in pixels.</param>
 // <param name="format">Format of the texture.</param>
 // <param name="sampler">Sampler state of the texture.</param>
-GLTexture.prototype.Create = function (width, height, format, sampler)
+GLTexture.prototype.create = function (width, height, format, sampler)
 {
 	// Cleanup
-	this.Release();
+	this.release();
 
 	// Assign
 	this.mWidth = width;
@@ -77,8 +77,8 @@ GLTexture.prototype.Create = function (width, height, format, sampler)
 	this.mSampler = sampler;
 
 	// Generate texture
-	this.Texture = gl.createTexture();
-	if ( this.Texture != null )
+	this.texture = gl.createTexture();
+	if ( this.texture != null )
 	{
 		// First bind the texture location
 		gl.bindTexture(this.mTextureType, this.Texture);
@@ -91,48 +91,48 @@ GLTexture.prototype.Create = function (width, height, format, sampler)
 		gl.texParameteri(this.mTextureType, gl.TEXTURE_WRAP_T, (sampler.AddressV == SamplerState.TextureAddressMode.Clamp) ? gl.CLAMP_TO_EDGE : gl.REPEAT);
 
 		// Texture filter
-		if ( sampler.Filter & SamplerState.TextureFilter.Linear )
+		if ( sampler.filter & SamplerState.TextureFilter.Linear )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, sampler.HasMipMap ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
 		}
-		else if ( sampler.Filter & SamplerState.TextureFilter.Point )
+		else if ( sampler.filter & SamplerState.TextureFilter.Point )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, sampler.HasMipMap ? gl.NEAREST_MIPMAP_NEAREST : gl.NEAREST);
 		}
-		else if ( sampler.Filter & SamplerState.TextureFilter.LinearMipPoint )
+		else if ( sampler.filter & SamplerState.TextureFilter.LinearMipPoint )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
 		}
-		else if ( sampler.Filter & SamplerState.TextureFilter.PointMipLinear )
+		else if ( sampler.filter & SamplerState.TextureFilter.PointMipLinear )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
 		}
-		else if ( sampler.Filter & SamplerState.TextureFilter.MinLinearMagPointMipLinear )
+		else if ( sampler.filter & SamplerState.TextureFilter.MinLinearMagPointMipLinear )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
 		}
-		else if ( sampler.Filter & SamplerState.TextureFilter.MinLinearMagPointMipPoint )
+		else if ( sampler.filter & SamplerState.TextureFilter.MinLinearMagPointMipPoint )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
 		}
-		else if ( sampler.Filter & SamplerState.TextureFilter.MinPointMagLinearMipLinear )
+		else if ( sampler.filter & SamplerState.TextureFilter.MinPointMagLinearMipLinear )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
 		}
-		else if ( sampler.Filter & SamplerState.TextureFilter.MinPointMagLinearMipPoint )
+		else if ( sampler.filter & SamplerState.TextureFilter.MinPointMagLinearMipPoint )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST);
 		}
 
-		if ( sampler.Filter & SamplerState.TextureFilter.Anisotropic )
+		if ( sampler.filter & SamplerState.TextureFilter.Anisotropic )
 		{
 			gl.texParameterf(this.mTextureType, gl.TEXTURE_MAX_ANISOTROPY_EXT, sampler.MaxAnisotropy);
 		}
@@ -220,9 +220,9 @@ GLTexture.prototype.Create = function (width, height, format, sampler)
 
 // Creates a set of mipmaps for this texture.
 
-GLTexture.prototype.CreateMipmaps = function ()
+GLTexture.prototype.createMipmaps = function ()
 {
-	gl.bindTexture(this.mTextureType, this.Texture);
+	gl.bindTexture(this.mTextureType, this.texture);
 	gl.generateMipmap(this.mTextureType);
 }
 
@@ -230,11 +230,11 @@ GLTexture.prototype.CreateMipmaps = function ()
 
 // Free up any used resources.
 
-GLTexture.prototype.Release = function ()
+GLTexture.prototype.release = function ()
 {
-	if ( this.Texture != null )
+	if ( this.texture != null )
 	{
-		gl.deleteTexture(this.Texture);
+		gl.deleteTexture(this.texture);
 		
 		this.Texture = null;
 		this.mWidth = 0;
@@ -250,9 +250,9 @@ GLTexture.prototype.Release = function ()
 
 // Binds the texture for use.
 
-GLTexture.prototype.Bind = function ()
+GLTexture.prototype.bind = function ()
 {
-	gl.bindTexture(this.mTextureType, this.Texture);
+	gl.bindTexture(this.mTextureType, this.texture);
 }
 
 
@@ -260,7 +260,7 @@ GLTexture.prototype.Bind = function ()
 // Returns the texture type.
 
 // <returns>The texture type.</returns>
-GLTexture.prototype.GetTextureType = function ()
+GLTexture.prototype.getTextureType = function ()
 {
 	return this.mTextureType;
 }
@@ -270,9 +270,9 @@ GLTexture.prototype.GetTextureType = function ()
 // Returns the texture id used by this object.
 
 // <returns>The texture id used by this object.</returns>
-GLTexture.prototype.GetTextureId = function ()
+GLTexture.prototype.getTextureId = function ()
 {
-	return this.Texture;
+	return this.texture;
 }
 
 
@@ -280,7 +280,7 @@ GLTexture.prototype.GetTextureId = function ()
 // Returns the sampler state of the texture.
 
 // <returns>The sampler state of the texture.</returns>
-GLTexture.prototype.GetSamplerState = function ()
+GLTexture.prototype.getSamplerState = function ()
 {
 	return this.mSampler;
 }

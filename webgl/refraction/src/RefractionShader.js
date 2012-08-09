@@ -100,10 +100,10 @@ RefractionShader.prototype.Init = function ()
 	ImageShader.prototype.Init.call(this);
 
 	// Get variables
-	this.mAmplitudeId = this.GetVariable("Amplitude");
-	this.mFrequencyId = this.GetVariable("Frequency");
-	this.mPeriodId = this.GetVariable("Period");
-	this.mRandomNumberId = this.GetVariable("RandomNumber");
+	this.mAmplitudeId = this.getVariable("Amplitude");
+	this.mFrequencyId = this.getVariable("Frequency");
+	this.mPeriodId = this.getVariable("Period");
+	this.mRandomNumberId = this.getVariable("RandomNumber");
 }
 
 
@@ -115,10 +115,10 @@ RefractionShader.prototype.Enable = function ()
 	ImageShader.prototype.Enable.call(this);
 	
 	// Set values
-	this.SetVariable(this.mAmplitudeId, this.Amplitude);
-	this.SetVariable(this.mFrequencyId, this.Frequency);
-	this.SetVariable(this.mPeriodId, this.Period);
-	this.SetVariable(this.mRandomNumberId, this.RandomNumber);
+	this.setVariable(this.mAmplitudeId, this.Amplitude);
+	this.setVariable(this.mFrequencyId, this.Frequency);
+	this.setVariable(this.mPeriodId, this.Period);
+	this.setVariable(this.mRandomNumberId, this.RandomNumber);
 }
 
 

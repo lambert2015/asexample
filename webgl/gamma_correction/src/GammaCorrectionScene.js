@@ -206,9 +206,9 @@ GammaCorrectionScene.prototype.Start = function ()
 	var rectVbo = new GLVertexBufferObject();
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
-	this.mSurface.ObjectEntity = rectVbo;
-	this.mSurface.ObjectMaterial.Texture = new Array();
-	this.mSurface.ObjectMaterial.Texture.push(this.mFboColourColourBuffer.TextureObject);
+	this.mSurface.objectEntity = rectVbo;
+	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture.push(this.mFboColourColourBuffer.TextureObject);
 
 	
 	// Prepare resources to download
@@ -233,7 +233,7 @@ GammaCorrectionScene.prototype.Start = function ()
 	
 	
 	// Setup user interface
-	var material = this.mEntity[0].ObjectMaterial;
+	var material = this.mEntity[0].objectMaterial;
 	
 	this.mDivLoading = $("#DivLoading");
 	this.mTxtLoadingProgress = $("#TxtLoadingProgress");
@@ -429,7 +429,7 @@ GammaCorrectionScene.prototype.Start = function ()
 
 GammaCorrectionScene.prototype.OnAmbientRedValueChanged = function (event, ui)
 {
-	event.data.mEntity[0].ObjectMaterial.Ambient.x = ui.value;
+	event.data.mEntity[0].objectMaterial.Ambient.x = ui.value;
 	event.data.mAmbientRedSliderTxt.text(ui.value);
 }
 
@@ -439,7 +439,7 @@ GammaCorrectionScene.prototype.OnAmbientRedValueChanged = function (event, ui)
 
 GammaCorrectionScene.prototype.OnAmbientGreenValueChanged = function (event, ui)
 {
-	event.data.mEntity[0].ObjectMaterial.Ambient.y = ui.value;
+	event.data.mEntity[0].objectMaterial.Ambient.y = ui.value;
 	event.data.mAmbientGreenSliderTxt.text(ui.value);
 }
 
@@ -449,7 +449,7 @@ GammaCorrectionScene.prototype.OnAmbientGreenValueChanged = function (event, ui)
 
 GammaCorrectionScene.prototype.OnAmbientBlueValueChanged = function (event, ui)
 {
-	event.data.mEntity[0].ObjectMaterial.Ambient.z = ui.value;
+	event.data.mEntity[0].objectMaterial.Ambient.z = ui.value;
 	event.data.mAmbientBlueSliderTxt.text(ui.value);
 }
 
@@ -459,7 +459,7 @@ GammaCorrectionScene.prototype.OnAmbientBlueValueChanged = function (event, ui)
 
 GammaCorrectionScene.prototype.OnDiffuseRedValueChanged = function (event, ui)
 {
-	event.data.mEntity[0].ObjectMaterial.Diffuse.x = ui.value;
+	event.data.mEntity[0].objectMaterial.Diffuse.x = ui.value;
 	event.data.mDiffuseRedSliderTxt.text(ui.value);
 }
 
@@ -469,7 +469,7 @@ GammaCorrectionScene.prototype.OnDiffuseRedValueChanged = function (event, ui)
 
 GammaCorrectionScene.prototype.OnDiffuseGreenValueChanged = function (event, ui)
 {
-	event.data.mEntity[0].ObjectMaterial.Diffuse.y = ui.value;
+	event.data.mEntity[0].objectMaterial.Diffuse.y = ui.value;
 	event.data.mDiffuseGreenSliderTxt.text(ui.value);
 }
 
@@ -479,7 +479,7 @@ GammaCorrectionScene.prototype.OnDiffuseGreenValueChanged = function (event, ui)
 
 GammaCorrectionScene.prototype.OnDiffuseBlueValueChanged = function (event, ui)
 {
-	event.data.mEntity[0].ObjectMaterial.Diffuse.z = ui.value;
+	event.data.mEntity[0].objectMaterial.Diffuse.z = ui.value;
 	event.data.mDiffuseBlueSliderTxt.text(ui.value);
 }
 
@@ -584,7 +584,7 @@ GammaCorrectionScene.prototype.OnSceneChanged = function (event)
 	if ( event.data.mSceneIndex == 0 )
 	{
 		// Set the sphere to use the white texture
-		event.data.mEntity[0].ObjectMaterial.Texture[0] = event.data.mTexture[1];
+		event.data.mEntity[0].objectMaterial.Texture[0] = event.data.mTexture[1];
 	}
 	else
 	{
@@ -606,7 +606,7 @@ GammaCorrectionScene.prototype.OnSceneChanged = function (event)
 		}
 		
 		// Set the sphere to use the colour texture
-		event.data.mEntity[0].ObjectMaterial.Texture[0] = event.data.mTexture[0];
+		event.data.mEntity[0].objectMaterial.Texture[0] = event.data.mTexture[0];
 	}
 }
 
@@ -697,7 +697,7 @@ GammaCorrectionScene.prototype.End = function ()
 		this.mFboColourColourBuffer.TextureObject.Release();
 	
 	if ( this.mSurface != null )
-		this.mSurface.ObjectEntity.Release();
+		this.mSurface.objectEntity.Release();
 
 	// Release shader programs		
 	if ( this.mBasicShader != null )
@@ -798,7 +798,7 @@ GammaCorrectionScene.prototype.LoadShaders = function (index)
 		
 		// Add light sources
 		var light1 = new Light();
-		light1.Position.SetPoint(2.0, 2.0, 2.0);
+		light1.Position.setPoint(2.0, 2.0, 2.0);
 		light1.Attenuation.z = 0.01;
 		this.mBasicShader.LightObject.push(light1);
 	}
@@ -887,19 +887,19 @@ GammaCorrectionScene.prototype.OnLoadComplete = function ()
 	// Assign the default "white" texture to all objects (necessary to avoid problems in the basic fragment shader)
 	for (var i = 0; i < this.mEntity.length; ++i)
 	{
-		this.mEntity[i].ObjectMaterial.Texture = new Array();
-		this.mEntity[i].ObjectMaterial.Texture.push(this.mTexture[1]);
+		this.mEntity[i].objectMaterial.Texture = new Array();
+		this.mEntity[i].objectMaterial.Texture.push(this.mTexture[1]);
 	}
 	
 	// Brick
-	this.mEntity[2].ObjectMaterial.Texture[0] = this.mTexture[0];
+	this.mEntity[2].objectMaterial.Texture[0] = this.mTexture[0];
 	
 	// Checkerboard
-	this.mEntity[1].ObjectMaterial.Texture[0] = this.mTexture[2];
+	this.mEntity[1].objectMaterial.Texture[0] = this.mTexture[2];
 	
 	// Calibration
-	this.mEntity[3].ObjectMaterial.Texture[0] = this.mTexture[3];
-	this.mEntity[4].ObjectMaterial.Texture[0] = this.mTexture[4];
+	this.mEntity[3].objectMaterial.Texture[0] = this.mTexture[3];
+	this.mEntity[4].objectMaterial.Texture[0] = this.mTexture[4];
 	
 	
 	// Setup camera matrices

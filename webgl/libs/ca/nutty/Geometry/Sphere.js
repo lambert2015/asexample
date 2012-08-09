@@ -1,11 +1,4 @@
-
 // This class creates a spherical mesh.
-
-
-
-
-// Constructor.
-
 // <param name="numSegments">Number of horizontal segments to create.</param>
 // <param name="numRings">Number of vertical rings to create.</param>
 // <param name="radius">Radius of the sphere.</param>
@@ -14,7 +7,6 @@ function Sphere (numSegments, numRings, radius, cutoff)
 {
 	
 	// Setup inherited members.
-	
 	PolygonMesh.call(this);
 	
 	
@@ -22,7 +14,7 @@ function Sphere (numSegments, numRings, radius, cutoff)
 	var actualRings = (numRings * cutoff);
 
 	// One centre point + points along the circle
-	this.Create(numSegments * actualRings, ((numSegments - 1) * 6) * (actualRings - 1));
+	this.create(numSegments * actualRings, ((numSegments - 1) * 6) * (actualRings - 1));
 
 	// Points on shape
 	var index = 0;
@@ -39,22 +31,22 @@ function Sphere (numSegments, numRings, radius, cutoff)
 		{
 			var u = x / (numSegments - 1.0);
 			var xAngle = u * (2.0 * Math.PI);
-			this.SetPoint(point, new Point(Math.cos(xAngle) * r, Math.sin(xAngle) * r, yPos));
-			this.SetUV(point, new Point(u, v));
+			this.setPoint(point, new Point(Math.cos(xAngle) * r, Math.sin(xAngle) * r, yPos));
+			this.setUV(point, new Point(u, v));
 
 			// Set indices
 			if ( (y > 0) && (x < (numSegments - 1)) )
 			{
 				var p = point - numSegments;
 
-				this.Index[index * 3 + 0] = p;
-				this.Index[index * 3 + 1] = point;
-				this.Index[index * 3 + 2] = point + 1;
+				this.indices[index * 3 + 0] = p;
+				this.indices[index * 3 + 1] = point;
+				this.indices[index * 3 + 2] = point + 1;
 				++index;
 
-				this.Index[index * 3 + 0] = point + 1;
-				this.Index[index * 3 + 1] = p + 1;
-				this.Index[index * 3 + 2] = p;
+				this.indices[index * 3 + 0] = point + 1;
+				this.indices[index * 3 + 1] = p + 1;
+				this.indices[index * 3 + 2] = p;
 				++index;
 			}
 
@@ -63,22 +55,22 @@ function Sphere (numSegments, numRings, radius, cutoff)
 	}
 
 	// Set Normals
-	this.CreateNormals();
+	this.createNormals();
 
 	// Average normals along the polars
 	for (var x = 0; x < numSegments; ++x)
 	{
 		var index1 = x * 3;
-		this.Normal[index1 + 0] = 0.0;
-		this.Normal[index1 + 1] = 0.0;
-		this.Normal[index1 + 2] = 1.0;
+		this.normals[index1 + 0] = 0.0;
+		this.normals[index1 + 1] = 0.0;
+		this.normals[index1 + 2] = 1.0;
 
 		if ( actualRings == numRings )
 		{
-			index1 = (this.VertexPoint.length - 3) - index1;
-			this.Normal[index1 + 0] = 0.0;
-			this.Normal[index1 + 1] = 0.0;
-			this.Normal[index1 + 2] = -1.0;
+			index1 = (this.vertexPoint.length - 3) - index1;
+			this.normals[index1 + 0] = 0.0;
+			this.normals[index1 + 1] = 0.0;
+			this.normals[index1 + 2] = -1.0;
 		}
 	}
 
@@ -88,19 +80,16 @@ function Sphere (numSegments, numRings, radius, cutoff)
 		var index1 = (y * numSegments) * 3;
 		var index2 = index1 + ((numSegments - 1) * 3);
 
-		this.Normal[index1 + 0] = (this.Normal[index1 + 0] + this.Normal[index2 + 0]) * 0.5;
-		this.Normal[index1 + 1] = (this.Normal[index1 + 1] + this.Normal[index2 + 1]) * 0.5;
-		this.Normal[index1 + 2] = (this.Normal[index1 + 2] + this.Normal[index2 + 2]) * 0.5;
+		this.normals[index1 + 0] = (this.normals[index1 + 0] + this.normals[index2 + 0]) * 0.5;
+		this.normals[index1 + 1] = (this.normals[index1 + 1] + this.normals[index2 + 1]) * 0.5;
+		this.normals[index1 + 2] = (this.normals[index1 + 2] + this.normals[index2 + 2]) * 0.5;
 
-		this.Normal[index2 + 0] = this.Normal[index1 + 0];
-		this.Normal[index2 + 1] = this.Normal[index1 + 1];
-		this.Normal[index2 + 2] = this.Normal[index1 + 2];
+		this.normals[index2 + 0] = this.normals[index1 + 0];
+		this.normals[index2 + 1] = this.normals[index1 + 1];
+		this.normals[index2 + 2] = this.normals[index1 + 2];
 	}
 }
 
-
-
 // Prototypal Inheritance.
-
 Sphere.prototype = new PolygonMesh();
 Sphere.prototype.constructor = Sphere;

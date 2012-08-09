@@ -81,10 +81,10 @@ SkyboxShader.prototype.Init = function ()
 	BaseShader.prototype.Init.call(this);
 
 	// Get shader variables
-	this.mProjectionId = this.GetVariable("ProjectionMatrix");
-	this.mViewId = this.GetVariable("ViewMatrix");
-	this.mModelId = this.GetVariable("ModelMatrix");
-	this.mModelScaleId = this.GetVariable("ModelScale");
+	this.mProjectionId = this.getVariable("ProjectionMatrix");
+	this.mViewId = this.getVariable("ViewMatrix");
+	this.mModelId = this.getVariable("ModelMatrix");
+	this.mModelScaleId = this.getVariable("ModelScale");
 	
 	// Get texture samples
 	this.mSampleId = new Array();
@@ -92,7 +92,7 @@ SkyboxShader.prototype.Init = function ()
 	index = 0;
 	do
 	{
-		sampleId = this.GetVariable("Sample" + index);
+		sampleId = this.getVariable("Sample" + index);
 		if ( sampleId != null )
 		{
 			this.mSampleId.push(sampleId);
@@ -113,7 +113,7 @@ SkyboxShader.prototype.Enable = function ()
 	for (var i = 0; i < this.mSampleId.length; ++i)
 	{
 		if ( i < this.mSampleId.length )
-			this.SetVariableInt(this.mSampleId[i], i);
+			this.setVariableInt(this.mSampleId[i], i);
 	}
 }
 
@@ -124,16 +124,16 @@ SkyboxShader.prototype.Enable = function ()
 SkyboxShader.prototype.Draw = function (entity, vbo, numPoints, numIndices)
 {
 	// Set matrices
-	this.SetMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.SetMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.SetMatrix(this.mModelId, entity.ObjectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
+	this.setMatrix(this.mViewId, this.View.MMatrix, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
 	
-	var scale = entity.ObjectMatrix.GetScale();
-	this.SetVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
+	var scale = entity.objectMatrix.GetScale();
+	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
 	
 	
 	// Set texture samples
-	var material = entity.ObjectMaterial;
+	var material = entity.objectMaterial;
 	if ( (material.Texture != null) && (material.Texture.length != null) )
 	{
 		for (var i = 0; (i < material.Texture.length) && (i < this.mSampleId.length); ++i)
@@ -145,5 +145,5 @@ SkyboxShader.prototype.Draw = function (entity, vbo, numPoints, numIndices)
 	
 	
 	// Draw
-	BaseShader.prototype.Draw.call(this, entity.ObjectEntity, numPoints, numIndices);
+	BaseShader.prototype.Draw.call(this, entity.objectEntity, numPoints, numIndices);
 }

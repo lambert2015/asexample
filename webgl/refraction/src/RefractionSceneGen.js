@@ -63,14 +63,14 @@ RefractionSceneGen.Create = function ()
 	
 	// Create ground entity
 	var groundEntity = new Entity();
-	groundEntity.ObjectEntity = rectVbo;
-	groundEntity.ObjectMaterial.Ambient.SetPoint(0.2, 0.2, 0.2);
-	groundEntity.ObjectMaterial.Diffuse.SetPoint(0.8, 0.8, 0.8);
-	groundEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
-	groundEntity.ObjectMaterial.TextureScale.SetPoint(10.0, 10.0);
-	groundEntity.ObjectMatrix.Translate(0.0, -1.0, 0.0);
-	groundEntity.ObjectMatrix.Rotate(-90.0, 0.0, 0.0);
-	groundEntity.ObjectMatrix.Scale(50.0, 50.0, 1.0);
+	groundEntity.objectEntity = rectVbo;
+	groundEntity.objectMaterial.Ambient.setPoint(0.2, 0.2, 0.2);
+	groundEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
+	groundEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
+	groundEntity.objectMaterial.TextureScale.setPoint(10.0, 10.0);
+	groundEntity.objectMatrix.Translate(0.0, -1.0, 0.0);
+	groundEntity.objectMatrix.Rotate(-90.0, 0.0, 0.0);
+	groundEntity.objectMatrix.Scale(50.0, 50.0, 1.0);
 	entity.push(groundEntity);
 	
 	// Random spheres
@@ -79,35 +79,35 @@ RefractionSceneGen.Create = function ()
 	for (var i = 0; i < 10; ++i)
 	{
 		var propEntity = new Entity();
-		propEntity.ObjectEntity = sphereVbo;
-		propEntity.ObjectMaterial.Ambient.SetPoint(0.1, 0.1, 0.1);
-		propEntity.ObjectMaterial.Diffuse.SetPoint(0.8, 0.8, 0.8);
-		propEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
+		propEntity.objectEntity = sphereVbo;
+		propEntity.objectMaterial.Ambient.setPoint(0.1, 0.1, 0.1);
+		propEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
+		propEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
 		var scale = random.RandomFloat(0.25, 1.5);
 		if ( i == 0 )
 		{
-			propEntity.ObjectMatrix.Translate(0.0, 0.0, -2.0);
+			propEntity.objectMatrix.Translate(0.0, 0.0, -2.0);
 			scale = 1.0;
 		}
 		else
-			propEntity.ObjectMatrix.Translate(random.RandomFloat(-30.0, 30.0), (scale - 1.0), -2.0 - i * 3.0);
-		//propEntity.ObjectMatrix.Rotate(-90.0, 0.0, 0.0);
-		propEntity.ObjectMatrix.Scale(scale, scale, scale);
+			propEntity.objectMatrix.Translate(random.RandomFloat(-30.0, 30.0), (scale - 1.0), -2.0 - i * 3.0);
+		//propEntity.objectMatrix.Rotate(-90.0, 0.0, 0.0);
+		propEntity.objectMatrix.Scale(scale, scale, scale);
 		entity.push(propEntity);
 	}
 	
 	// Create heat entity that will show the heat haze (not actually drawn)
 	var heatEntity = new Entity();
-	heatEntity.ObjectEntity = rectVbo;
-	heatEntity.ObjectMatrix.Translate(0.0, 0.0, 0.0);
-	heatEntity.ObjectMatrix.Rotate(0.0, 0.0, 0.0);
-	heatEntity.ObjectMatrix.Scale(256.0, 2.0, 1.0);
+	heatEntity.objectEntity = rectVbo;
+	heatEntity.objectMatrix.Translate(0.0, 0.0, 0.0);
+	heatEntity.objectMatrix.Rotate(0.0, 0.0, 0.0);
+	heatEntity.objectMatrix.Scale(256.0, 2.0, 1.0);
 	entity.push(heatEntity);
 	
 	// Create skybox (will use cubemaps)
 	var skyboxEntity = new Entity();
-	skyboxEntity.ObjectEntity = cubeVbo;
-	skyboxEntity.ObjectMatrix.Scale(512.0, 512.0, 512.0);
+	skyboxEntity.objectEntity = cubeVbo;
+	skyboxEntity.objectMatrix.Scale(512.0, 512.0, 512.0);
 	entity.push(skyboxEntity);
 	
 	return entity;

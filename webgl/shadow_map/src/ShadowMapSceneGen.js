@@ -73,10 +73,10 @@ ShadowMapSceneGen.Create = function ()
 	
 	// Create entities
 	var roomEntity = new Entity();
-	roomEntity.ObjectEntity = cubeVbo;
-	roomEntity.ObjectMatrix.Translate(0.0, 0.0, 0.0);
-	roomEntity.ObjectMaterial.Diffuse.SetPoint(0.8, 0.8, 0.8);
-	roomEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
+	roomEntity.objectEntity = cubeVbo;
+	roomEntity.objectMatrix.Translate(0.0, 0.0, 0.0);
+	roomEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
+	roomEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
 	entity.push(roomEntity);
 	
 	// 4 column entities
@@ -85,33 +85,33 @@ ShadowMapSceneGen.Create = function ()
 		for (var z = -1; z <= 1; z += 2)
 		{
 			var columnEntity = new Entity();
-			columnEntity.ObjectEntity = cylinderVbo;
-			columnEntity.ObjectMatrix.Translate(x * 3.5, 0.0, z * 3.5);
-			columnEntity.ObjectMatrix.Rotate(90.0, 0.0, 0.0);
-			columnEntity.ObjectMaterial.Diffuse.SetPoint(0.6, 0.6, 0.6);
-			columnEntity.ObjectMaterial.Specular.SetPoint(0.1, 0.1, 0.1);
-			columnEntity.ObjectMaterial.Shininess = 6;
+			columnEntity.objectEntity = cylinderVbo;
+			columnEntity.objectMatrix.Translate(x * 3.5, 0.0, z * 3.5);
+			columnEntity.objectMatrix.Rotate(90.0, 0.0, 0.0);
+			columnEntity.objectMaterial.Diffuse.setPoint(0.6, 0.6, 0.6);
+			columnEntity.objectMaterial.Specular.setPoint(0.1, 0.1, 0.1);
+			columnEntity.objectMaterial.Shininess = 6;
 			entity.push(columnEntity);
 		}
 	}
 	
 	// Central stand
 	var cubeStandEntity = new Entity();
-	cubeStandEntity.ObjectEntity = cubeStandVbo;
-	cubeStandEntity.ObjectMatrix.Translate(0.0, -2.0, 0.0);
-	cubeStandEntity.ObjectMatrix.Scale(0.5, 1.0, 0.5);
-	cubeStandEntity.ObjectMaterial.Diffuse.SetPoint(0.8, 0.8, 0.8);
-	cubeStandEntity.ObjectMaterial.Specular.SetPoint(0.0, 0.0, 0.0);
+	cubeStandEntity.objectEntity = cubeStandVbo;
+	cubeStandEntity.objectMatrix.Translate(0.0, -2.0, 0.0);
+	cubeStandEntity.objectMatrix.Scale(0.5, 1.0, 0.5);
+	cubeStandEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
+	cubeStandEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
 	entity.push(cubeStandEntity);
 	
 	// Central marble
 	var sphereEntity = new Entity();
-	sphereEntity.ObjectEntity = sphereVbo;
-	sphereEntity.ObjectMatrix.Translate(0.0, -0.5, 0.0);
-	sphereEntity.ObjectMatrix.Scale(0.5, 0.5, 0.5);
-	sphereEntity.ObjectMaterial.Diffuse.SetPoint(0.8, 0.4, 0.4);
-	sphereEntity.ObjectMaterial.Specular.SetPoint(0.4, 0.4, 0.4);
-	sphereEntity.ObjectMaterial.Shininess = 32;
+	sphereEntity.objectEntity = sphereVbo;
+	sphereEntity.objectMatrix.Translate(0.0, -0.5, 0.0);
+	sphereEntity.objectMatrix.Scale(0.5, 0.5, 0.5);
+	sphereEntity.objectMaterial.Diffuse.setPoint(0.8, 0.4, 0.4);
+	sphereEntity.objectMaterial.Specular.setPoint(0.4, 0.4, 0.4);
+	sphereEntity.objectMaterial.Shininess = 32;
 	entity.push(sphereEntity);
 	
 	return entity;

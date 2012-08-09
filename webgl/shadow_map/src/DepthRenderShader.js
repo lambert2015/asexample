@@ -76,7 +76,7 @@ DepthRenderShader.prototype.Init = function ()
 	ImageShader.prototype.Init.call(this);
 
 	// Get variables
-	this.mFilterTypeId = this.GetVariable("FilterType");
+	this.mFilterTypeId = this.getVariable("FilterType");
 }
 
 
@@ -88,5 +88,5 @@ DepthRenderShader.prototype.Enable = function ()
 	ImageShader.prototype.Enable.call(this);
 	
 	// Set variables
-	this.SetVariableInt(this.mFilterTypeId, this.FilterType);
+	this.setVariableInt(this.mFilterTypeId, this.FilterType);
 }

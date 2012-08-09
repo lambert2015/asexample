@@ -258,12 +258,12 @@ DepthOfFieldScene.prototype.Start = function ()
 	var rectVbo = new GLVertexBufferObject();
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
-	this.mSurface.ObjectEntity = rectVbo;
-	this.mSurface.ObjectMatrix.Translate(0.0, 0.0, 1.0);
-	this.mSurface.ObjectMaterial.Texture = new Array();
-	this.mSurface.ObjectMaterial.Texture.push(null); // First texture = colour buffer, assigned later
-	this.mSurface.ObjectMaterial.Texture.push(null); // Second texture = depth buffer, assigned later
-	//this.mSurface.ObjectMaterial.Texture.push(null); // Third texture = blurred texture, assigned later
+	this.mSurface.objectEntity = rectVbo;
+	this.mSurface.objectMatrix.Translate(0.0, 0.0, 1.0);
+	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture.push(null); // First texture = colour buffer, assigned later
+	this.mSurface.objectMaterial.Texture.push(null); // Second texture = depth buffer, assigned later
+	//this.mSurface.objectMaterial.Texture.push(null); // Third texture = blurred texture, assigned later
 
 	// Prepare resources to download
 	// The basic shader is responsible for rendering the scene with lights, colours, and textures
@@ -444,8 +444,8 @@ DepthOfFieldScene.prototype.Update = function ()
 		
 			// Render horizontal blur
 			this.mFboBlur.Enable();
-				this.mSurface.ObjectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
-				this.mSurface.ObjectMaterial.Texture[1] = this.mFboDepthColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[1] = this.mFboDepthColourBuffer.TextureObject;
 				
 				this.mDofBlurShader.Draw(this.mSurface, 0);
 		
@@ -453,7 +453,7 @@ DepthOfFieldScene.prototype.Update = function ()
 			this.mFboBlur2.Enable();
 				gl.clear(gl.DEPTH_BUFFER_BIT);
 				
-				this.mSurface.ObjectMaterial.Texture[0] = this.mFboBlurColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[0] = this.mFboBlurColourBuffer.TextureObject;
 				this.mDofBlurShader.Draw(this.mSurface, 1);
 			this.mFboBlur2.Disable();
 		this.mDofBlurShader.Disable();
@@ -470,8 +470,8 @@ DepthOfFieldScene.prototype.Update = function ()
 		{
 			// Post-process final image
 			this.mDofImageShader.Enable();
-				this.mSurface.ObjectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
-				this.mSurface.ObjectMaterial.Texture[2] = this.mFboBlur2ColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[2] = this.mFboBlur2ColourBuffer.TextureObject;
 				this.mDofImageShader.Draw(this.mSurface);
 			this.mDofImageShader.Disable();
 		}
@@ -479,7 +479,7 @@ DepthOfFieldScene.prototype.Update = function ()
 		{
 			// Visualize depth map
 			this.mDepthImageShader.Enable();
-				this.mSurface.ObjectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.Texture[0] = this.mFboDepthColourBuffer.TextureObject;
 				this.mDepthImageShader.Draw(this.mSurface);
 			this.mDepthImageShader.Disable();
 		}
@@ -514,7 +514,7 @@ DepthOfFieldScene.prototype.End = function ()
 		this.mFboBlurColourBuffer.TextureObject.Release();
 	
 	if ( this.mSurface != null )
-		this.mSurface.ObjectEntity.Release();
+		this.mSurface.objectEntity.Release();
 		
 	if ( this.mBasicShader )
 		this.mBasicShader.Release();
@@ -746,8 +746,8 @@ DepthOfFieldScene.prototype.OnLoadComplete = function ()
 		this.mTexCheckerBoard = new GLTexture2D();
 		this.mTexCheckerBoard.Create(imgCheckerBoard.Item.width, imgCheckerBoard.Item.height, Texture.Format.Alpha8, sampler, imgCheckerBoard.Item);
 		
-		this.mEntity[1].ObjectMaterial.Texture = new Array();
-		this.mEntity[1].ObjectMaterial.Texture.push(this.mTexCheckerBoard);
+		this.mEntity[1].objectMaterial.Texture = new Array();
+		this.mEntity[1].objectMaterial.Texture.push(this.mTexCheckerBoard);
 	}
 	
 	var imgRuler = this.mResource.Find("ruler.png");
@@ -756,8 +756,8 @@ DepthOfFieldScene.prototype.OnLoadComplete = function ()
 		this.mTexRuler = new GLTexture2D();
 		this.mTexRuler.Create(imgRuler.Item.width, imgRuler.Item.height, Texture.Format.Alpha8, sampler, imgRuler.Item);
 		
-		this.mEntity[0].ObjectMaterial.Texture = new Array();
-		this.mEntity[0].ObjectMaterial.Texture.push(this.mTexRuler);
+		this.mEntity[0].objectMaterial.Texture = new Array();
+		this.mEntity[0].objectMaterial.Texture.push(this.mTexRuler);
 	}
 	
 	// Setup camera matrices
