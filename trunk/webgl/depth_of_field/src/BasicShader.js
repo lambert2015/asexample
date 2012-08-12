@@ -1,52 +1,12 @@
-
-// Nutty Software Open WebGL Framework
-// 
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // This shader is the default or "basic" shader that passes lighting and
 // material parameters to the vertex and fragment shaders for rendering.
-
-
-
-
-// Constructor.
-
 function BasicShader ()
 {
 	
 	// Setup inherited members.
-	
 	BaseShader.call(this);
 	
-	
-	
 	// Shader variables.
-	
 	this.mProjectionId;
 	this.mViewId;
 	this.mModelId;
@@ -57,110 +17,84 @@ function BasicShader ()
 	this.mLightId;		// Array of light sources
 	this.mMaterialId;
 	this.mSampleId;		// Array of texture samples
-
-
 	
 	// Projection matrix.
-	
-	this.Projection;
+	this.projection;
 
-
-	
 	// View matrix.
-	
-	this.View;
-	
-	
+	this.view;
 	
 	// Shading type.
 	// 0 = Gouraud shading
 	// 1 = Phong shading
-	
-	this.ShadingType = 1;
-	
-	
+	this.shadingType = 1;
 	
 	// Array of light objects.
-	
-	this.LightObject = new Array();
+	this.lightObject = [];
 }
 
-
-
 // Prototypal Inheritance.
-
 BasicShader.prototype = new BaseShader();
 BasicShader.prototype.constructor = BasicShader;
 
-
-
 // Light source structure.
-
 BasicShader.LightSource = function ()
 {
-	this.TypeId;
-	this.PositionId;
-	this.AttenuationId;
-	this.DirectionId;
-	this.ColourId;
-	this.OuterCutoffId;
-	this.InnerCutoffId;
-	this.ExponentId;
+	this.typeId;
+	this.positionId;
+	this.attenuationId;
+	this.directionId;
+	this.colourId;
+	this.outerCutoffId;
+	this.innerCutoffId;
+	this.exponentId;
 }
-
-
 
 // Material structure.
-
 BasicShader.MaterialSource = function ()
 {
-	this.AmbientId;
-	this.DiffuseId;
-	this.SpecularId;
-	this.ShininessId;
-	this.TextureOffsetId;
-	this.TextureScaleId;
+	this.ambientId;
+	this.diffuseId;
+	this.specularId;
+	this.shininessId;
+	this.textureOffsetId;
+	this.textureScaleId;
 }
 
-
-
 // Implementation.
-
-BasicShader.prototype.Init = function ()
+BasicShader.prototype.init = function ()
 {
-	BaseShader.prototype.Init.call(this);
+	BaseShader.prototype.init.call(this);
 
 	// Get matrices
-	this.mProjectionId = this.getVariable("ProjectionMatrix");
-	this.mViewId = this.getVariable("ViewMatrix");
-	this.mModelId = this.getVariable("ModelMatrix");
-	this.mModelScaleId = this.getVariable("ModelScale");
+	this.mProjectionId = this.getVariable("u_projectionMatrix");
+	this.mViewId = this.getVariable("u_viewMatrix");
+	this.mModelId = this.getVariable("u_modelMatrix");
+	this.mModelScaleId = this.getVariable("u_modelScale");
 
-	
 	// Get Shading type
-	this.mShadingTypeId = this.getVariable("ShadingType");
-	
+	this.mShadingTypeId = this.getVariable("u_shadingType");
 	
 	// Get light sources
-	this.mNumLightId = this.getVariable("NumLight");
+	this.mNumLightId = this.getVariable("u_numLight");
 	
-	this.mLightId = new Array();
+	this.mLightId = [];
 	var lightPosId;
 	var index = 0;
 	do
 	{
-		lightPosId = this.getVariable("Light[" + index + "].Position");
+		lightPosId = this.getVariable("u_lights[" + index + "].position");
 		if ( lightPosId != null )
 		{
 			var light = new BasicShader.LightSource();
-			light.PositionId	= lightPosId;
-			light.TypeId		= this.getVariable("Light[" + index + "].Type");
-			light.AttenuationId	= this.getVariable("Light[" + index + "].Attenuation");
-			light.DirectionId	= this.getVariable("Light[" + index + "].Direction");
-			light.ColourId		= this.getVariable("Light[" + index + "].Colour");
-			light.OuterCutoffId	= this.getVariable("Light[" + index + "].OuterCutoff");
-			light.InnerCutoffId	= this.getVariable("Light[" + index + "].InnerCutoff");
-			light.ExponentId	= this.getVariable("Light[" + index + "].Exponent");
+			light.positionId	= lightPosId;
+			light.TypeId		= this.getVariable("u_lights[" + index + "].type");
+			light.attenuationId	= this.getVariable("u_lights[" + index + "].attenuation");
+			light.directionId	= this.getVariable("u_lights[" + index + "].direction");
+			light.colourId		= this.getVariable("u_lights[" + index + "].colour");
+			light.outerCutoffId	= this.getVariable("u_lights[" + index + "].outerCutoff");
+			light.innerCutoffId	= this.getVariable("u_lights[" + index + "].innerCutoff");
+			light.exponentId	= this.getVariable("u_lights[" + index + "].exponent");
 			
 			this.mLightId.push(light);			
 			++index;
@@ -171,21 +105,21 @@ BasicShader.prototype.Init = function ()
 	
 	// Get material
 	this.mMaterialId = new BasicShader.MaterialSource();
-	this.mMaterialId.AmbientId			= this.getVariable("Material.Ambient");
-	this.mMaterialId.DiffuseId			= this.getVariable("Material.Diffuse");
-	this.mMaterialId.SpecularId			= this.getVariable("Material.Specular");
-	this.mMaterialId.ShininessId		= this.getVariable("Material.Shininess");
-	this.mMaterialId.TextureOffsetId	= this.getVariable("Material.TextureOffset");
-	this.mMaterialId.TextureScaleId		= this.getVariable("Material.TextureScale");
+	this.mMaterialId.ambientId			= this.getVariable("u_material.ambient");
+	this.mMaterialId.diffuseId			= this.getVariable("u_material.diffuse");
+	this.mMaterialId.specularId			= this.getVariable("u_material.specular");
+	this.mMaterialId.shininessId		= this.getVariable("u_material.shininess");
+	this.mMaterialId.textureOffsetId	= this.getVariable("u_material.textureOffset");
+	this.mMaterialId.textureScaleId		= this.getVariable("u_material.textureScale");
 	
 	
 	// Get texture samples
-	this.mSampleId = new Array();
+	this.mSampleId = [];
 	var sampleId;
 	index = 0;
 	do
 	{
-		sampleId = this.getVariable("Sample" + index);
+		sampleId = this.getVariable("u_sample" + index);
 		if ( sampleId != null )
 		{
 			this.mSampleId.push(sampleId);
@@ -195,13 +129,10 @@ BasicShader.prototype.Init = function ()
 	while ( sampleId != null );
 }
 
-
-
 // Implementation.
-
-BasicShader.prototype.Enable = function ()
+BasicShader.prototype.enable = function ()
 {
-	BaseShader.prototype.Enable.call(this);
+	BaseShader.prototype.enable.call(this);
 	
 	for (var i = 0; i < this.mSampleId.length; ++i)
 	{
@@ -210,21 +141,23 @@ BasicShader.prototype.Enable = function ()
 	}
 	
 	// Set shading type
-	this.setVariableInt(this.mShadingTypeId, this.ShadingType);
+	this.setVariableInt(this.mShadingTypeId, this.shadingType);
 
 
 	// Set light sources
-	this.setVariableInt(this.mNumLightId, this.LightObject.length);
-	for (var i = 0; (i < this.mLightId.length) && (i < this.LightObject.length); ++i)
+	this.setVariableInt(this.mNumLightId, this.lightObject.length);
+	for (var i = 0; (i < this.mLightId.length) && (i < this.lightObject.length); ++i)
 	{
-		this.setVariableInt(this.mLightId[i].TypeId, this.LightObject[i].LightType);
-		this.setVariable(this.mLightId[i].PositionId, this.LightObject[i].Position.x, this.LightObject[i].Position.y, this.LightObject[i].Position.z);
-		this.setVariable(this.mLightId[i].AttenuationId, this.LightObject[i].Attenuation.x, this.LightObject[i].Attenuation.y, this.LightObject[i].Attenuation.z);
-		this.setVariable(this.mLightId[i].DirectionId, this.LightObject[i].Direction.x, this.LightObject[i].Direction.y, this.LightObject[i].Direction.z);
-		this.setVariable(this.mLightId[i].ColourId, this.LightObject[i].Colour.x, this.LightObject[i].Colour.y, this.LightObject[i].Colour.z);
-		this.setVariable(this.mLightId[i].OuterCutoffId, this.LightObject[i].OuterCutoff);
-		this.setVariable(this.mLightId[i].InnerCutoffId, this.LightObject[i].InnerCutoff);
-		this.setVariable(this.mLightId[i].ExponentId, this.LightObject[i].Exponent);
+		var lightSrc = this.mLightId[i];
+		var light = this.lightObject[i];
+		this.setVariableInt(lightSrc.typeId, light.lightType);
+		this.setVariable(lightSrc.positionId, light.position.x, light.position.y, light.position.z);
+		this.setVariable(lightSrc.attenuationId, light.attenuation.x, light.attenuation.y, light.attenuation.z);
+		this.setVariable(lightSrc.directionId, light.direction.x, light.direction.y, light.direction.z);
+		this.setVariable(lightSrc.colourId, light.colour.x, light.colour.y, light.colour.z);
+		this.setVariable(lightSrc.outerCutoffId, light.outerCutoff);
+		this.setVariable(lightSrc.innerCutoffId, light.innerCutoff);
+		this.setVariable(lightSrc.exponentId, light.exponent);
 	}
 }
 
@@ -232,38 +165,38 @@ BasicShader.prototype.Enable = function ()
 
 // Implementation.
 
-BasicShader.prototype.Draw = function (entity, numPoints, numIndices)
+BasicShader.prototype.draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices
-	this.setMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.setMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.projection.elements, 4);
+	this.setMatrix(this.mViewId, this.view.elements, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.elements, 4);
 	
-	var scale = entity.objectMatrix.GetScale();
+	var scale = entity.objectMatrix.getScale();
 	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
 	
 
 	// Set material
 	var material = entity.objectMaterial;
-	this.setVariable(this.mMaterialId.AmbientId, material.Ambient.x, material.Ambient.y, material.Ambient.z);
-	this.setVariable(this.mMaterialId.DiffuseId, material.Diffuse.x, material.Diffuse.y, material.Diffuse.z, material.Alpha);
-	this.setVariable(this.mMaterialId.SpecularId, material.Specular.x, material.Specular.y, material.Specular.z);
-	this.setVariable(this.mMaterialId.ShininessId, material.Shininess);
-	this.setVariable(this.mMaterialId.TextureOffsetId, material.TextureOffset.x, material.TextureOffset.y);
-	this.setVariable(this.mMaterialId.TextureScaleId, material.TextureScale.x, material.TextureScale.y);
+	this.setVariable(this.mMaterialId.ambientId, material.ambient.x, material.ambient.y, material.ambient.z);
+	this.setVariable(this.mMaterialId.diffuseId, material.diffuse.x, material.diffuse.y, material.diffuse.z, material.alpha);
+	this.setVariable(this.mMaterialId.specularId, material.specular.x, material.specular.y, material.specular.z);
+	this.setVariable(this.mMaterialId.shininessId, material.shininess);
+	this.setVariable(this.mMaterialId.textureOffsetId, material.textureOffset.x, material.textureOffset.y);
+	this.setVariable(this.mMaterialId.textureScaleId, material.textureScale.x, material.textureScale.y);
 	
 	
 	// Set texture samples
-	if ( (material.Texture != null) && (material.Texture.length != null) )
+	if ( (material.texture != null) && (material.texture.length != null) )
 	{
-		for (var i = 0; i < material.Texture.length; ++i)
+		for (var i = 0; i < material.texture.length; ++i)
 		{
 			gl.activeTexture(gl.TEXTURE0 + i);
-			material.Texture[i].Bind();
+			material.texture[i].bind();
 		}
 	}
 
 
 	// Draw
-	BaseShader.prototype.Draw.call(this, entity.objectEntity, numPoints, numIndices);
+	BaseShader.prototype.draw.call(this, entity.objectEntity, numPoints, numIndices);
 }

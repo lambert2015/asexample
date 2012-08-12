@@ -7,11 +7,8 @@
 // <param name="distance">Distance from the centre of the torus to the centre of the tube.</param>
 function TorusKnot (p, q, numSegments, numRings, radius, distance)
 {
-	
 	// Setup inherited members.
-	
 	PolygonMesh.call(this);
-	
 	
 	// One centre point + points along the circle
 	this.create(numSegments * numRings, ((numSegments - 1) * 6) * (numRings - 1));
@@ -58,7 +55,7 @@ function TorusKnot (p, q, numSegments, numRings, radius, distance)
 	}
 	
 	// Set Normals
-	this.CreateNormals();
+	this.createNormals();
 	
 	// Average normals along the seam
 	var index2;

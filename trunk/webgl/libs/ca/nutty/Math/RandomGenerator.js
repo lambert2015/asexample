@@ -1,7 +1,6 @@
 // RNG using XOR.
 function RandomGenerator ()
 {
-	
 	// Seed to be used in generator.
 	this.mSeed = 0;
 	

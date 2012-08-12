@@ -46,7 +46,7 @@ function GammaCorrectionSceneGen ()
 GammaCorrectionSceneGen.Create = function ()
 {
 	// Array to store the list of entities in the scene.
-	var entity = new Array();
+	var entity = [];
 
 	// Create scene content
 	var sphereMesh = new Sphere(32, 32, 1.5, 0.0);

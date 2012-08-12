@@ -1,60 +1,28 @@
-
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // This fragment shader performs a DOF separable blur algorithm on the specified
 // texture.
-
-
 
 #ifdef GL_ES
 	precision highp float;
 #endif
 
-
-
 // Uniform variables.
 
-uniform vec2 TexelSize;		// Size of one texel (1 / width, 1 / height)
-uniform sampler2D Sample0;	// Colour texture
-uniform sampler2D Sample1;	// Depth texture
+uniform vec2 u_texelSize;		// Size of one texel (1 / width, 1 / height)
+uniform sampler2D u_sample0;	// Colour texture
+uniform sampler2D u_sample1;	// Depth texture
 
-uniform int Orientation;		// 0 = horizontal, 1 = vertical
-uniform float BlurCoefficient;	// Calculated from the blur equation, b = ( f * ms / N )
-uniform float FocusDistance;	// The distance to the subject in perfect focus (= Ds)
-uniform float Near;				// Near clipping plane
-uniform float Far;				// Far clipping plane
-uniform float PPM;				// Pixels per millimetre
+uniform int u_orientation;		// 0 = horizontal, 1 = vertical
+uniform float u_blurCoefficient;	// Calculated from the blur equation, b = ( f * ms / N )
+uniform float u_focusDistance;	// The distance to the subject in perfect focus (= Ds)
+uniform float u_near;				// Near clipping plane
+uniform float u_far;				// Far clipping plane
+uniform float u_pPM;				// Pixels per millimetre
 
 
 
 // Varying variables.
 
-varying vec2 vUv;
+varying vec2 v_uv;
 
 
 
@@ -81,13 +49,13 @@ float unpack (vec4 colour)
 float GetBlurDiameter (float d)
 {
 	// Convert from linear depth to metres
-	float Dd = d * (Far - Near);
+	float Dd = d * (u_far - u_near);
 	
-	float xd = abs(Dd - FocusDistance);
-	float xdd = (Dd < FocusDistance) ? (FocusDistance - xd) : (FocusDistance + xd);
-	float b = BlurCoefficient * (xd / xdd);
+	float xd = abs(Dd - u_focusDistance);
+	float xdd = (Dd < u_focusDistance) ? (u_focusDistance - xd) : (u_focusDistance + xd);
+	float b = u_blurCoefficient * (xd / xdd);
 	
-	return b * PPM;
+	return b * u_pPM;
 }
 
 
@@ -103,7 +71,7 @@ void main ()
 	// Pass the linear depth values recorded in the depth map to the blur
 	// equation to find out how much each pixel should be blurred with the
 	// given camera settings.
-	float depth = unpack(texture2D(Sample1, vUv));
+	float depth = unpack(texture2D(u_sample1, v_uv));
 	float blurAmount = GetBlurDiameter(depth);
 	blurAmount = min(floor(blurAmount), MAX_BLUR_RADIUS);
 
@@ -111,10 +79,10 @@ void main ()
 	float count = 0.0;
 	vec4 colour = vec4(0.0);
 	vec2 texelOffset;
-	if ( Orientation == 0 )
-		texelOffset = vec2(TexelSize.x, 0.0);
+	if ( u_orientation == 0 )
+		texelOffset = vec2(u_texelSize.x, 0.0);
 	else
-		texelOffset = vec2(0.0, TexelSize.y);
+		texelOffset = vec2(0.0, u_texelSize.y);
 	
 	if ( blurAmount >= 1.0 )
 	{
@@ -125,9 +93,9 @@ void main ()
 				break;
 			
 			float offset = i - halfBlur;
-			vec2 vOffset = vUv + (texelOffset * offset);
+			vec2 vOffset = v_uv + (texelOffset * offset);
 
-			colour += texture2D(Sample0, vOffset);
+			colour += texture2D(u_sample0, vOffset);
 			++count;
 		}
 	}
@@ -136,5 +104,5 @@ void main ()
 	if ( count > 0.0 )
 		gl_FragColor = colour / count;
 	else
-		gl_FragColor = texture2D(Sample0, vUv);
+		gl_FragColor = texture2D(u_sample0, v_uv);
 }

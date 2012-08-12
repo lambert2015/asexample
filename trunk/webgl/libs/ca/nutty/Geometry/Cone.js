@@ -22,7 +22,7 @@ function Cone (numPoint, radius, height)
 		this.setPoint(i + 1, new Point(Math.cos(angle) * radius, Math.sin(angle) * radius));
 		this.setUV(i + 1, new Point((Math.cos(angle) + 1.0) * 0.5, (Math.sin(angle) + 1.0) * 0.5));
 
-		this.index[i * 3 + 0] = 0;
+		this.indices[i * 3 + 0] = 0;
 		if ( i == (numPoint - 1) )
 		{
 			this.indices[i * 3 + 1] = i + 1;

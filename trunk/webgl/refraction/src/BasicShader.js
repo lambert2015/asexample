@@ -82,7 +82,7 @@ function BasicShader ()
 	
 	// Array of light objects.
 	
-	this.LightObject = new Array();
+	this.LightObject = [];
 }
 
 
@@ -144,7 +144,7 @@ BasicShader.prototype.Init = function ()
 	// Get light sources
 	this.mNumLightId = this.getVariable("NumLight");
 	
-	this.mLightId = new Array();
+	this.mLightId = [];
 	var lightPosId;
 	var index = 0;
 	do
@@ -180,7 +180,7 @@ BasicShader.prototype.Init = function ()
 	
 	
 	// Get texture samples
-	this.mSampleId = new Array();
+	this.mSampleId = [];
 	var sampleId;
 	index = 0;
 	do
@@ -235,9 +235,9 @@ BasicShader.prototype.Enable = function ()
 BasicShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices
-	this.setMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.setMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.Projection.elements, 4);
+	this.setMatrix(this.mViewId, this.View.elements, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.elements, 4);
 	
 	var scale = entity.objectMatrix.GetScale();
 	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);

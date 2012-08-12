@@ -15,33 +15,30 @@ ViewMatrix.frustum = function (left, right, bottom, top, near, far)
 {
 	var matrix = new Matrix(4, 4);
 
-	matrix.MMatrix[0] = (2.0 * near) / (right - left);
-	matrix.MMatrix[1] = 0.0;
-	matrix.MMatrix[2] = 0.0;
-	matrix.MMatrix[3] = 0.0;
+	matrix.elements[0] = (2.0 * near) / (right - left);
+	matrix.elements[1] = 0.0;
+	matrix.elements[2] = 0.0;
+	matrix.elements[3] = 0.0;
 
-	matrix.MMatrix[4] = 0.0;
-	matrix.MMatrix[5] = (2.0 * near) / (top - bottom);
-	matrix.MMatrix[6] = 0.0;
-	matrix.MMatrix[7] = 0.0;
+	matrix.elements[4] = 0.0;
+	matrix.elements[5] = (2.0 * near) / (top - bottom);
+	matrix.elements[6] = 0.0;
+	matrix.elements[7] = 0.0;
 
-	matrix.MMatrix[8] = (right + left) / (right - left);
-	matrix.MMatrix[9] = (top + bottom) / (top - bottom);
-	matrix.MMatrix[10] = -(far + near) / (far - near);
-	matrix.MMatrix[11] = -1.0;
+	matrix.elements[8] = (right + left) / (right - left);
+	matrix.elements[9] = (top + bottom) / (top - bottom);
+	matrix.elements[10] = -(far + near) / (far - near);
+	matrix.elements[11] = -1.0;
 
-	matrix.MMatrix[12] = 0.0;
-	matrix.MMatrix[13] = 0.0;
-	matrix.MMatrix[14] = -(2.0 * far * near) / (far - near);
-	matrix.MMatrix[15] = 0.0;
+	matrix.elements[12] = 0.0;
+	matrix.elements[13] = 0.0;
+	matrix.elements[14] = -(2.0 * far * near) / (far - near);
+	matrix.elements[15] = 0.0;
 
 	return matrix;
 }
 
-
-
 // Build an orthographic matrix with centre at (0,0).
-
 // <param name="width">Width of the frustum.</param>
 // <param name="height">Height of the frustum.</param>
 // <param name="near">Near distance of frustum.</param>
@@ -51,33 +48,30 @@ ViewMatrix.orthographic = function (width, height, near, far)
 {
 	var matrix = new Matrix(4, 4);
 
-	matrix.MMatrix[0] = 1.0 / width;
-	matrix.MMatrix[1] = 0.0;
-	matrix.MMatrix[2] = 0.0;
-	matrix.MMatrix[3] = 0.0;
+	matrix.elements[0] = 1.0 / width;
+	matrix.elements[1] = 0.0;
+	matrix.elements[2] = 0.0;
+	matrix.elements[3] = 0.0;
 
-	matrix.MMatrix[4] = 0.0;
-	matrix.MMatrix[5] = 1.0 / height;
-	matrix.MMatrix[6] = 0.0;
-	matrix.MMatrix[7] = 0.0;
+	matrix.elements[4] = 0.0;
+	matrix.elements[5] = 1.0 / height;
+	matrix.elements[6] = 0.0;
+	matrix.elements[7] = 0.0;
 
-	matrix.MMatrix[8] = 0.0;
-	matrix.MMatrix[9] = 0.0;
-	matrix.MMatrix[10] = -2.0 / (far - near);
-	matrix.MMatrix[11] = 0.0;
+	matrix.elements[8] = 0.0;
+	matrix.elements[9] = 0.0;
+	matrix.elements[10] = -2.0 / (far - near);
+	matrix.elements[11] = 0.0;
 
-	matrix.MMatrix[12] = 0;
-	matrix.MMatrix[13] = 0;
-	matrix.MMatrix[14] = -near / (far - near);
-	matrix.MMatrix[15] = 1.0;
+	matrix.elements[12] = 0;
+	matrix.elements[13] = 0;
+	matrix.elements[14] = -near / (far - near);
+	matrix.elements[15] = 1.0;
 
 	return matrix;
 }
 
-
-
 // Build an orthographic matrix.
-
 // <param name="left">Left coordinate of frustum.</param>
 // <param name="right">Right coordinate of frustum.</param>
 // <param name="bottom">Bottom coordinate of frustum.</param>
@@ -89,33 +83,30 @@ ViewMatrix.orthographicRect = function (left, right, bottom, top, near, far)
 {
 	var matrix = new Matrix(4, 4);
 
-	matrix.MMatrix[0] = 2.0 / (right - left);
-	matrix.MMatrix[1] = 0.0;
-	matrix.MMatrix[2] = 0.0;
-	matrix.MMatrix[3] = 0.0;
+	matrix.elements[0] = 2.0 / (right - left);
+	matrix.elements[1] = 0.0;
+	matrix.elements[2] = 0.0;
+	matrix.elements[3] = 0.0;
 
-	matrix.MMatrix[4] = 0.0;
-	matrix.MMatrix[5] = 2.0 / (top - bottom);
-	matrix.MMatrix[6] = 0.0;
-	matrix.MMatrix[7] = 0.0;
+	matrix.elements[4] = 0.0;
+	matrix.elements[5] = 2.0 / (top - bottom);
+	matrix.elements[6] = 0.0;
+	matrix.elements[7] = 0.0;
 
-	matrix.MMatrix[8] = 0.0;
-	matrix.MMatrix[9] = 0.0;
-	matrix.MMatrix[10] = -2.0 / (far - near);
-	matrix.MMatrix[11] = 0.0;
+	matrix.elements[8] = 0.0;
+	matrix.elements[9] = 0.0;
+	matrix.elements[10] = -2.0 / (far - near);
+	matrix.elements[11] = 0.0;
 
-	matrix.MMatrix[12] = -(right + left) / (right - left);
-	matrix.MMatrix[13] = -(top + bottom) / (top - bottom);
-	matrix.MMatrix[14] = -(far + near) / (far - near);
-	matrix.MMatrix[15] = 1.0;
+	matrix.elements[12] = -(right + left) / (right - left);
+	matrix.elements[13] = -(top + bottom) / (top - bottom);
+	matrix.elements[14] = -(far + near) / (far - near);
+	matrix.elements[15] = 1.0;
 
 	return matrix;
 }
 
-
-
 // Build a perspective matrix.
-
 // <param name="fovY">Angular pitch of frustum</param>
 // <param name="aspect">Aspext ratio of frustum</param>
 // <param name="near">Near distance of frustum</param>
@@ -136,10 +127,7 @@ ViewMatrix.perspective = function (fovY, aspect, near, far)
 						far);
 }
 
-
-
 // Build a viewport matrix.
-
 // <param name="width">Width of the viewport.</param>
 // <param name="height">Height of the viewport.</param>
 // <returns>A viewport matrix.</returns>
@@ -147,25 +135,25 @@ ViewMatrix.viewPort = function (x, y, width, height)
 {
 	var matrix = new Matrix(4, 4);
 
-	matrix.MMatrix[0] = width * 0.5;
-	matrix.MMatrix[1] = 0.0;
-	matrix.MMatrix[2] = 0.0;
-	matrix.MMatrix[3] = 0.0;
+	matrix.elements[0] = width * 0.5;
+	matrix.elements[1] = 0.0;
+	matrix.elements[2] = 0.0;
+	matrix.elements[3] = 0.0;
 
-	matrix.MMatrix[4] = 0.0;
-	matrix.MMatrix[5] = height * 0.5;
-	matrix.MMatrix[6] = 0.0;
-	matrix.MMatrix[7] = 0.0;
+	matrix.elements[4] = 0.0;
+	matrix.elements[5] = height * 0.5;
+	matrix.elements[6] = 0.0;
+	matrix.elements[7] = 0.0;
 
-	matrix.MMatrix[8] = 0.0;
-	matrix.MMatrix[9] = 0.0;
-	matrix.MMatrix[10] = 1.0;
-	matrix.MMatrix[11] = 0.0;
+	matrix.elements[8] = 0.0;
+	matrix.elements[9] = 0.0;
+	matrix.elements[10] = 1.0;
+	matrix.elements[11] = 0.0;
 
-	matrix.MMatrix[12] = x + width * 0.5;
-	matrix.MMatrix[13] = y + height * 0.5;
-	matrix.MMatrix[14] = 0.0;
-	matrix.MMatrix[15] = 1.0;
+	matrix.elements[12] = x + width * 0.5;
+	matrix.elements[13] = y + height * 0.5;
+	matrix.elements[14] = 0.0;
+	matrix.elements[15] = 1.0;
 
 	return matrix;
 }

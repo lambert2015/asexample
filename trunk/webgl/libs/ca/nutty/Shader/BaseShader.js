@@ -2,14 +2,10 @@
 // or may not be rendered in the vertex and fragment shaders. Implementations of
 // this class should extend it to support additional parameters required by that
 // specific shader.
-
 function BaseShader ()
 {
-	
 	// Setup inherited members.
 	GLShaderProgram.call(this);
-
-
 	
 	// Reference to shader attributes.
 	this.mAttribVertex = -1;
@@ -17,19 +13,16 @@ function BaseShader ()
 	this.mAttribNormal = -1;
 }
 
-
-
 // Prototypal Inheritance.
-
 BaseShader.prototype = new GLShaderProgram();
 BaseShader.prototype.constructor = BaseShader;
 
 // Initialize the shader. Only call once after all shaders have been added.
 BaseShader.prototype.init = function ()
 {
-	this.mAttribVertex = this.GetAttribute("Vertex");
-	this.mAttribUv = this.GetAttribute("Uv");
-	this.mAttribNormal = this.GetAttribute("Normal");
+	this.mAttribVertex = this.getAttribute("a_vertex");
+	this.mAttribUv = this.getAttribute("a_uv");
+	this.mAttribNormal = this.getAttribute("a_normal");
 }
 
 // Enable the shader.
@@ -47,10 +40,7 @@ BaseShader.prototype.enable = function ()
 		gl.enableVertexAttribArray(this.mAttribNormal);
 }
 
-
-
 // Disable the shader.
-
 BaseShader.prototype.disable = function ()
 {
 	// Disable states

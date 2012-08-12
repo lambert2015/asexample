@@ -21,17 +21,11 @@ function Quaternion (x, y, z, w)
 		this.w = 1.0;
 }
 
-
-
 // Prototypal Inheritance.
-
 Quaternion.prototype = new Point();
 Quaternion.prototype.constructor = Quaternion;
 
-
-
 // Rotate a quaternion using Euler angles.
-
 // <param name="x">X-angle rotation.</param>
 // <param name="y">Y-angle rotation.</param>
 // <param name="z">Z-angle rotation.</param>
@@ -59,17 +53,14 @@ Quaternion.prototype.rotate = function (x, y, z)
 	this.z = (c2 * cs) - (s2 * sc);
 }
 
-
-
 // Spherical Linear Interpolation between two quaternions.
-
 // <param name="quat">Quaternion to slerp to.</param>
 // <param name="t">Scalar value between 0.0 and 1.0.</param>
 // <returns>The interpolated quaternion.</returns>
 Quaternion.prototype.slerp = function (quat, t)
 {
 	// Calculate the angle between both quaternions
-	var angle = Math.acos(this.Dot(quat));
+	var angle = Math.acos(this.dot(quat));
 	
 	var s1 = 0.0;
 	var s2 = 0.0;
@@ -93,10 +84,7 @@ Quaternion.prototype.slerp = function (quat, t)
 						   (s1 * this.w) + (s2 * quat.w))).normalize();
 }
 
-
-
 // Convert a quaternion to a matrix.
-
 // <param name="matrix">Reference to a 4x4 matrix.</param>
 Quaternion.prototype.toMatrix = function (matrix)
 {

@@ -1,82 +1,45 @@
-
-// Nutty Software Open WebGL Framework
-// 
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // This script is responsible for creating the scene rendered using shadow maps.
-
-
-
-
-// Constructor.
 
 function ShadowMapSceneGen ()
 {
 }
 
-
-
 // Function creates the VBO objects used in the scene.
-
-ShadowMapSceneGen.Create = function ()
+ShadowMapSceneGen.create = function ()
 {
 	// Array to store the list of entities in the scene.
-	var entity = new Array();
+	var entity = [];
 
 	// Create the room (box)
 	var cubeMesh = new Cube(10.0, 3.0, 10.0);
 	// Invert cube normals because we're inside the cube
-	for (var i = 0; i < cubeMesh.Normal.length; ++i)
-		cubeMesh.Normal[i] = -cubeMesh.Normal[i];
+	for (var i = 0; i < cubeMesh.normals.length; ++i)
+		cubeMesh.normals[i] = -cubeMesh.normals[i];
+		
 	var cubeVbo = new GLVertexBufferObject();
-	cubeVbo.Create(cubeMesh);
+	cubeVbo.create(cubeMesh);
 	
 	// Create the column (cylinder)
 	var cylinderMesh = new Cylinder(32.0, 0.25, 6.0);
 	var cylinderVbo = new GLVertexBufferObject();
-	cylinderVbo.Create(cylinderMesh);
+	cylinderVbo.create(cylinderMesh);
 	
 	// Create the central stand
 	var cubeMeshStand = new Cube(1.0, 1.0, 1.0);
 	var cubeStandVbo = new GLVertexBufferObject();
-	cubeStandVbo.Create(cubeMeshStand);
+	cubeStandVbo.create(cubeMeshStand);
 	
 	// Create the central marble
 	var sphereMesh = new Sphere(24, 24, 1.0, 0.0);
 	var sphereVbo = new GLVertexBufferObject();
-	sphereVbo.Create(sphereMesh);
+	sphereVbo.create(sphereMesh);
 	
 	// Create entities
 	var roomEntity = new Entity();
 	roomEntity.objectEntity = cubeVbo;
-	roomEntity.objectMatrix.Translate(0.0, 0.0, 0.0);
-	roomEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
-	roomEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
+	roomEntity.objectMatrix.translate(0.0, 0.0, 0.0);
+	roomEntity.objectMaterial.diffuse.setPoint(0.8, 0.8, 0.8);
+	roomEntity.objectMaterial.specular.setPoint(0.0, 0.0, 0.0);
 	entity.push(roomEntity);
 	
 	// 4 column entities
@@ -86,11 +49,11 @@ ShadowMapSceneGen.Create = function ()
 		{
 			var columnEntity = new Entity();
 			columnEntity.objectEntity = cylinderVbo;
-			columnEntity.objectMatrix.Translate(x * 3.5, 0.0, z * 3.5);
-			columnEntity.objectMatrix.Rotate(90.0, 0.0, 0.0);
-			columnEntity.objectMaterial.Diffuse.setPoint(0.6, 0.6, 0.6);
-			columnEntity.objectMaterial.Specular.setPoint(0.1, 0.1, 0.1);
-			columnEntity.objectMaterial.Shininess = 6;
+			columnEntity.objectMatrix.translate(x * 3.5, 0.0, z * 3.5);
+			columnEntity.objectMatrix.rotate(90.0, 0.0, 0.0);
+			columnEntity.objectMaterial.diffuse.setPoint(0.6, 0.6, 0.6);
+			columnEntity.objectMaterial.specular.setPoint(0.1, 0.1, 0.1);
+			columnEntity.objectMaterial.shininess = 6;
 			entity.push(columnEntity);
 		}
 	}
@@ -98,20 +61,20 @@ ShadowMapSceneGen.Create = function ()
 	// Central stand
 	var cubeStandEntity = new Entity();
 	cubeStandEntity.objectEntity = cubeStandVbo;
-	cubeStandEntity.objectMatrix.Translate(0.0, -2.0, 0.0);
-	cubeStandEntity.objectMatrix.Scale(0.5, 1.0, 0.5);
-	cubeStandEntity.objectMaterial.Diffuse.setPoint(0.8, 0.8, 0.8);
-	cubeStandEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
+	cubeStandEntity.objectMatrix.translate(0.0, -2.0, 0.0);
+	cubeStandEntity.objectMatrix.scale(0.5, 1.0, 0.5);
+	cubeStandEntity.objectMaterial.diffuse.setPoint(0.8, 0.8, 0.8);
+	cubeStandEntity.objectMaterial.specular.setPoint(0.0, 0.0, 0.0);
 	entity.push(cubeStandEntity);
 	
 	// Central marble
 	var sphereEntity = new Entity();
 	sphereEntity.objectEntity = sphereVbo;
-	sphereEntity.objectMatrix.Translate(0.0, -0.5, 0.0);
-	sphereEntity.objectMatrix.Scale(0.5, 0.5, 0.5);
-	sphereEntity.objectMaterial.Diffuse.setPoint(0.8, 0.4, 0.4);
-	sphereEntity.objectMaterial.Specular.setPoint(0.4, 0.4, 0.4);
-	sphereEntity.objectMaterial.Shininess = 32;
+	sphereEntity.objectMatrix.translate(0.0, -0.5, 0.0);
+	sphereEntity.objectMatrix.scale(0.5, 0.5, 0.5);
+	sphereEntity.objectMaterial.diffuse.setPoint(0.8, 0.4, 0.4);
+	sphereEntity.objectMaterial.specular.setPoint(0.4, 0.4, 0.4);
+	sphereEntity.objectMaterial.shininess = 32;
 	entity.push(sphereEntity);
 	
 	return entity;

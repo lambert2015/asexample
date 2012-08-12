@@ -1,33 +1,3 @@
-
-// Nutty Software Open WebGL Framework
-// 
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // SSAO is a post-processing shader that computes the amount of ambient occlusion at each
 // fragment. This shader requires 3 textures and outputs one luninance floating point texture.
 //
@@ -37,84 +7,57 @@
 //
 // The resulting output from this shader can be blended with the original rendered scene.
 
-
-
-
-// Constructor.
-
 function SSAOShader ()
 {
 	
 	// Setup inherited members.
-	
 	ImageShader.call(this);
 	
-	
-	
 	// Shader variables.
-	
 	this.mOccluderBiasId;
 	this.mSamplingRadiusId
 	this.mAttenuationId;
 
-
-	
 	// Attenuation amounts.
 	// x = constant
 	// y = linear
 	// z = quadratic (not used)
-	
-	this.Attenuation = new Point(1.0, 0.0, 0.0);
-	
-	
+	this.attenuation = new Point(1.0, 0.0, 0.0);
 	
 	// Occluder bias to minimize self-occlusion.
-	
-	this.OccluderBias = 0.05;
-	
-	
+	this.occluderBias = 0.05;
 	
 	// Specifies the size of the sampling radius.
-	
-	this.SamplingRadius = 20.0;
+	this.samplingRadius = 20.0;
 	
 	
 	// View matrices not used
-	this.Projection = new Matrix(4, 4);
-	this.View = new Matrix(4, 4);
+	this.projection = new Matrix(4, 4);
+	this.view = new Matrix(4, 4);
 }
 
-
-
 // Prototypal Inheritance.
-
 SSAOShader.prototype = new ImageShader();
 SSAOShader.prototype.constructor = SSAOShader;
 
-
-
 // Implementation.
-
-SSAOShader.prototype.Init = function ()
+SSAOShader.prototype.init = function ()
 {
-	ImageShader.prototype.Init.call(this);
+	ImageShader.prototype.init.call(this);
 	
 	// Get variables
-	this.mOccluderBiasId = this.getVariable("OccluderBias");
-	this.mSamplingRadiusId = this.getVariable("SamplingRadius");
-	this.mAttenuationId = this.getVariable("Attenuation");
+	this.mOccluderBiasId = this.getVariable("u_occluderBias");
+	this.mSamplingRadiusId = this.getVariable("u_samplingRadius");
+	this.mAttenuationId = this.getVariable("u_attenuation");
 }
 
-
-
 // Implementation.
-
-SSAOShader.prototype.Enable = function ()
+SSAOShader.prototype.enable = function ()
 {
-	ImageShader.prototype.Enable.call(this);
+	ImageShader.prototype.enable.call(this);
 
 	// Set shader variables
-	this.setVariable(this.mOccluderBiasId, this.OccluderBias);
-	this.setVariable(this.mSamplingRadiusId, this.SamplingRadius);
-	this.setVariable(this.mAttenuationId, this.Attenuation.x, this.Attenuation.y);
+	this.setVariable(this.mOccluderBiasId, this.occluderBias);
+	this.setVariable(this.mSamplingRadiusId, this.samplingRadius);
+	this.setVariable(this.mAttenuationId, this.attenuation.x, this.attenuation.y);
 }

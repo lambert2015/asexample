@@ -3,10 +3,8 @@
 // <param name="y">Y-Axis extent of the rectangle.</param>
 function Rectangle (x, y)
 {
-	
 	// Setup inherited members.
 	PolygonMesh.call();
-	
 	
 	// Create two triangles
 	this.create(4, 6);

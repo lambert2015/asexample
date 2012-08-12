@@ -50,7 +50,7 @@ Light.LightSourceType =
 // Sets the cutoff for directional light sources in radians.
 // <param name="outer">Outer cutoff angle.</param>
 // <param name="inner">Inner cutoff angle.</param>
-Light.prototype.SetCutoff = function (outer, inner)
+Light.prototype.setCutoff = function (outer, inner)
 {
 	if ( inner == null )
 		inner = 0.0;
@@ -59,10 +59,7 @@ Light.prototype.SetCutoff = function (outer, inner)
 	this.innerCutoff = Math.cos(inner * (Math.PI / 180.0));
 }
 
-
-
 // Returns the attenuation factor based on the distance to the target.
-
 // <param name="distance">Distance to the target.</param>
 // <returns>Attenuation factor.</returns>
 Light.prototype.attenuationFactor = function (distance)

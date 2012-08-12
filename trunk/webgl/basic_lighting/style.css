@@ -42,28 +42,12 @@ h4
 
 #tabs
 {
-	display: none;
 	width: 800px;
 }
 
 #tabs-1
 {
 	height: 487px;
-}
-
-#DivStart
-{
-}
-
-#BtnStartWebGL
-{
-	margin-bottom: 10px;
-}
-
-#DivNoWebGL
-{
-	color: #FF0000;
-	display: none;
 }
 
 #DivLoading
@@ -87,10 +71,9 @@ h4
 
 #WebGLDemo
 {
-	display: none;
 }
 
-#Canvas
+#webgl_canvas
 {
 	left: 138px;
 	position: relative;

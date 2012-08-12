@@ -1,89 +1,45 @@
-
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // Basic lighting vertex shader.
 
-
-
-
 // Material source structure.
-
 struct MaterialSource
 {
-	vec3 Ambient;
-	vec4 Diffuse;
-	vec3 Specular;
-	float Shininess;
-	vec2 TextureOffset;
-	vec2 TextureScale;
+	vec3 ambient;
+	vec4 diffuse;
+	vec3 specular;
+	float shininess;
+	vec2 textureOffset;
+	vec2 textureScale;
 };
 
-
-
 // Attributes.
-
-attribute vec3 Vertex;
-attribute vec2 Uv;
-attribute vec3 Normal;
-
-
+attribute vec3 a_vertex;
+attribute vec2 a_uv;
+attribute vec3 a_normal;
 
 // Uniform variables.
+uniform mat4 u_projectionMatrix;
+uniform mat4 u_viewMatrix;
+uniform mat4 u_modelMatrix;
+uniform vec3 u_modelScale;
 
-uniform mat4 ProjectionMatrix;
-uniform mat4 ViewMatrix;
-uniform mat4 ModelMatrix;
-uniform vec3 ModelScale;
-
-uniform MaterialSource Material;
-
-
+uniform MaterialSource u_material;
 
 // Varying variables.
-
-varying vec4 vWorldVertex;
-varying vec3 vWorldNormal;
-varying vec2 vUv;
-varying vec3 vViewVec;
-
-
+varying vec4 v_worldVertex;
+varying vec3 v_worldNormal;
+varying vec2 v_uv;
+varying vec3 v_viewVec;
 
 // Vertex shader entry.
-
 void main ()
 {
-	vWorldVertex = ModelMatrix * vec4(Vertex * ModelScale, 1.0);
-	vec4 viewVertex = ViewMatrix * vWorldVertex;
-	gl_Position = ProjectionMatrix * viewVertex;
+	v_worldVertex = u_modelMatrix * vec4(a_vertex * u_modelScale, 1.0);
+	vec4 t_viewVertex = u_viewMatrix * v_worldVertex;
+	gl_Position = u_projectionMatrix * t_viewVertex;
+
+	v_uv = u_material.textureOffset + (a_uv * u_material.textureScale);
 	
-	vUv = Material.TextureOffset + (Uv * Material.TextureScale);
+	v_worldNormal = normalize(mat3(u_modelMatrix) * a_normal);
 	
-	vWorldNormal = normalize(mat3(ModelMatrix) * Normal);
-	
-	vViewVec = normalize(-viewVertex.xyz);
+	v_viewVec = normalize(-t_viewVertex.xyz);
 }
