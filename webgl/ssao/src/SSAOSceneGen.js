@@ -1,74 +1,35 @@
-
-// Nutty Software Open WebGL Framework
-// 
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // This script is responsible for creating the scene entities for the demo.
-
-
-
-
-// Constructor.
-
 function SSAOSceneGen ()
 {
 }
 
-
-
 // Function creates the VBO objects used in the scene.
-
-SSAOSceneGen.Create = function ()
+SSAOSceneGen.create = function ()
 {
 	// Array to store the list of entities in the scene.
-	var entity = new Array();
+	var entity = [];
 
-	// Create scene content
+	// create scene content
 	var sphereMesh = new Sphere(32, 32, 1.0, 0.0);
 	var sphereVbo = new GLVertexBufferObject();
-	sphereVbo.Create(sphereMesh);
+	sphereVbo.create(sphereMesh);
 	
 	var cubeMesh = new Cube(1.0, 1.0, 1.0);
 	// Invert cube normals because we're inside the cube
-	for (var i = 0; i < cubeMesh.Normal.length; ++i)
-		cubeMesh.Normal[i] = -cubeMesh.Normal[i];
+	for (var i = 0; i < cubeMesh.normals.length; ++i)
+		cubeMesh.normals[i] = -cubeMesh.normals[i];
 	var cubeVbo = new GLVertexBufferObject();
-	cubeVbo.Create(cubeMesh);
+	cubeVbo.create(cubeMesh);
 	
-	// Create torus knot 1
+	// create torus knot 1
 	var torusKnotMesh = new TorusKnot(2, 3, 64, 64, 0.1, 0.5);
 	var torusKnotVbo = new GLVertexBufferObject();
-	torusKnotVbo.Create(torusKnotMesh);
+	torusKnotVbo.create(torusKnotMesh);
 	
-	// Create torus knot 2
+	// create torus knot 2
 	var torusKnotMesh2 = new TorusKnot(3, 8, 64, 64, 0.1, 0.5);
 	var torusKnotVbo2 = new GLVertexBufferObject();
-	torusKnotVbo2.Create(torusKnotMesh2);
+	torusKnotVbo2.create(torusKnotMesh2);
 	
 	
 	// Stack a bunch of spheres in the shape of a cone
@@ -86,10 +47,10 @@ SSAOSceneGen.Create = function ()
 			{
 				var sphereEntity = new Entity();
 				sphereEntity.objectEntity = sphereVbo;
-				sphereEntity.objectMaterial.Ambient.setPoint(0.4, 0.4, 0.4);
-				sphereEntity.objectMaterial.Specular.setPoint(0.0, 0.0, 0.0);
-				sphereEntity.objectMatrix.Translate(x * spread - halfCount, y * ySpread, z * spread - halfCount);
-				sphereEntity.objectMatrix.Scale(scale, scale, scale);
+				sphereEntity.objectMaterial.ambient.setPoint(0.4, 0.4, 0.4);
+				sphereEntity.objectMaterial.specular.setPoint(0.0, 0.0, 0.0);
+				sphereEntity.objectMatrix.translate(x * spread - halfCount, y * ySpread, z * spread - halfCount);
+				sphereEntity.objectMatrix.scale(scale, scale, scale);
 				entity.push(sphereEntity);
 			}
 		}
@@ -99,27 +60,27 @@ SSAOSceneGen.Create = function ()
 		halfCount = (current - 1.0) * 0.5 * spread;
 	}
 	
-	// Create a cube entity (room)
+	// create a cube entity (room)
 	var cubeEntity = new Entity();
 	cubeEntity.objectEntity = cubeVbo;
-	cubeEntity.objectMatrix.Translate(0.0, 1.7, 0.0);
-	cubeEntity.objectMatrix.Scale(4.0, 2.0, 4.0);
+	cubeEntity.objectMatrix.translate(0.0, 1.7, 0.0);
+	cubeEntity.objectMatrix.scale(4.0, 2.0, 4.0);
 	entity.push(cubeEntity);
 	
-	// Create a torus knot entity
+	// create a torus knot entity
 	var torusKnotEntity = new Entity();
 	torusKnotEntity.objectEntity = torusKnotVbo;
-	torusKnotEntity.objectMatrix.Translate(0.0, 1.5, 1.5);
-	torusKnotEntity.objectMatrix.Scale(1.0, 1.0, 1.0);
-	torusKnotEntity.objectMaterial.Ambient.setPoint(0.4, 0.4, 0.4);
+	torusKnotEntity.objectMatrix.translate(0.0, 1.5, 1.5);
+	torusKnotEntity.objectMatrix.scale(1.0, 1.0, 1.0);
+	torusKnotEntity.objectMaterial.ambient.setPoint(0.4, 0.4, 0.4);
 	entity.push(torusKnotEntity);
 	
-	// Create a torus knot entity
+	// create a torus knot entity
 	var torusKnotEntity2 = new Entity();
 	torusKnotEntity2.objectEntity = torusKnotVbo2;
-	torusKnotEntity2.objectMatrix.Translate(0.0, 1.5, -1.5);
-	torusKnotEntity2.objectMatrix.Scale(1.0, 1.0, 1.0);
-	torusKnotEntity2.objectMaterial.Ambient.setPoint(0.4, 0.4, 0.4);
+	torusKnotEntity2.objectMatrix.translate(0.0, 1.5, -1.5);
+	torusKnotEntity2.objectMatrix.scale(1.0, 1.0, 1.0);
+	torusKnotEntity2.objectMaterial.ambient.setPoint(0.4, 0.4, 0.4);
 	entity.push(torusKnotEntity2);
 	
 	return entity;

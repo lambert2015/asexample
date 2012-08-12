@@ -107,7 +107,7 @@ function GammaCorrectionScene ()
 	
 	// Textures.
 	
-	this.mTexture = new Array();
+	this.mTexture = [];
 	
 	
 	
@@ -124,7 +124,7 @@ function GammaCorrectionScene ()
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	
-	this.mSceneText = new Array();
+	this.mSceneText = [];
 	
 	this.mAmbientRedSlider = null;
 	this.mAmbientRedSliderTxt = null;
@@ -176,7 +176,7 @@ GammaCorrectionScene.prototype.constructor = GammaCorrectionScene;
 GammaCorrectionScene.prototype.Start = function ()
 {
 	// Setup members and default values
-	this.mShader = new Array();
+	this.mShader = [];
 	this.mCanvas = document.getElementById("Canvas");
 	
 	// Set the FBO dimensions to match with the window
@@ -207,7 +207,7 @@ GammaCorrectionScene.prototype.Start = function ()
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
 	this.mSurface.objectEntity = rectVbo;
-	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture = [];
 	this.mSurface.objectMaterial.Texture.push(this.mFboColourColourBuffer.TextureObject);
 
 	
@@ -853,7 +853,7 @@ GammaCorrectionScene.prototype.LoadShaders = function (index)
 GammaCorrectionScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders
-	var shaderResource = new Array();
+	var shaderResource = [];
 	shaderResource.push(this.mResource.Find("basic.vs"));
 	shaderResource.push(this.mResource.Find("basic.fs"));
 	shaderResource.push(this.mResource.Find("image.vs"));
@@ -887,7 +887,7 @@ GammaCorrectionScene.prototype.OnLoadComplete = function ()
 	// Assign the default "white" texture to all objects (necessary to avoid problems in the basic fragment shader)
 	for (var i = 0; i < this.mEntity.length; ++i)
 	{
-		this.mEntity[i].objectMaterial.Texture = new Array();
+		this.mEntity[i].objectMaterial.Texture = [];
 		this.mEntity[i].objectMaterial.Texture.push(this.mTexture[1]);
 	}
 	

@@ -1,11 +1,4 @@
-
 // This class creates a cube mesh.
-
-
-
-
-// Constructor.
-
 // <param name="x">X-Axis extent of the cube.</param>
 // <param name="y">Y-Axis extent of the cube.</param>
 // <param name="z">Z-Axis extent of the cube.</param>
@@ -13,12 +6,10 @@ function Cube (x, y, z)
 {
 	
 	// Setup inherited members.
-	
 	PolygonMesh.call();
 	
-	
 	// One centre point + points along the circle
-	this.Create(8 + 2 + 2, 12 * 3);
+	this.create(8 + 2 + 2, 12 * 3);
 
 	// Set points
 	this.setPoint(0, new Point(-x, -y, -z));
@@ -54,14 +45,14 @@ function Cube (x, y, z)
 	this.setUV(10, new Point(0.0, 1.0));
 	this.setUV(11, new Point(1.0, 1.0));
 
-	// Back				Left				// Bottom				// Front				// Right				Top
-	this.indices[0] = 0;	this.indices[6] = 0;	this.indices[12] = 0;		this.indices[18] = 5;		this.indices[24] = 5;		this.indices[30] = 9;
-	this.indices[1] = 3;	this.indices[7] = 4;	this.indices[13] = 1;		this.indices[19] = 6;		this.indices[25] = 1;		this.indices[31] = 2;
-	this.indices[2] = 2;	this.indices[8] = 7;	this.indices[14] = 11;	this.indices[20] = 7;		this.indices[26] = 2;		this.indices[32] = 3;
+	// Back				Left				// Bottom				// Front			// Right			//Top
+	this.indices[0] = 0;this.indices[6] = 0;this.indices[12] = 0;this.indices[18] = 5;	this.indices[24] = 5;this.indices[30] = 9;
+	this.indices[1] = 3;this.indices[7] = 4;this.indices[13] = 1;this.indices[19] = 6;	this.indices[25] = 1;this.indices[31] = 2;
+	this.indices[2] = 2;this.indices[8] = 7;this.indices[14] = 11;this.indices[20] = 7;	this.indices[26] = 2;this.indices[32] = 3;
 
-	this.indices[3] = 2;	this.indices[9] = 7;	this.indices[15] = 11;	this.indices[21] = 7;		this.indices[27] = 2;		this.indices[33] = 3;
-	this.indices[4] = 1;	this.indices[10] = 3;	this.indices[16] = 10;	this.indices[22] = 4;		this.indices[28] = 6;		this.indices[34] = 8;
-	this.indices[5] = 0;	this.indices[11] = 0;	this.indices[17] = 0;		this.indices[23] = 5;		this.indices[29] = 5;		this.indices[35] = 9;
+	this.indices[3] = 2;this.indices[9] = 7;this.indices[15] = 11;this.indices[21] = 7;	this.indices[27] = 2;this.indices[33] = 3;
+	this.indices[4] = 1;this.indices[10] = 3;this.indices[16] = 10;this.indices[22] = 4;this.indices[28] = 6;this.indices[34] = 8;
+	this.indices[5] = 0;this.indices[11] = 0;this.indices[17] = 0;this.indices[23] = 5;	this.indices[29] = 5;this.indices[35] = 9;
 
 	// Set Normals
 	for (var i = 0; i < 12; ++i)
@@ -74,9 +65,6 @@ function Cube (x, y, z)
 	}
 }
 
-
-
 // Prototypal Inheritance.
-
 Cube.prototype = new PolygonMesh();
 Cube.prototype.constructor = Cube;

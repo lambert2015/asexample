@@ -5,10 +5,8 @@
 // <param name="cutoff">Amount of sphere to cutoff. 0.5 generates a hemisphere.</param>
 function Sphere (numSegments, numRings, radius, cutoff)
 {
-	
 	// Setup inherited members.
 	PolygonMesh.call(this);
-	
 	
 	cutoff = 1.0 - cutoff;
 	var actualRings = (numRings * cutoff);
@@ -67,7 +65,7 @@ function Sphere (numSegments, numRings, radius, cutoff)
 
 		if ( actualRings == numRings )
 		{
-			index1 = (this.vertexPoint.length - 3) - index1;
+			index1 = (this.vertices.length - 3) - index1;
 			this.normals[index1 + 0] = 0.0;
 			this.normals[index1 + 1] = 0.0;
 			this.normals[index1 + 2] = -1.0;

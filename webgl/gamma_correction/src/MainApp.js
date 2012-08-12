@@ -44,7 +44,7 @@ var currentScene = null;
 // Function called when the HTML page has loaded.
 // Initialize page.
 
-AppLoad = function ()
+appLoad = function ()
 {
 	// Initialize UI
 	var tabs = $("#tabs");
@@ -62,7 +62,7 @@ AppLoad = function ()
 
 // This method is called when the HTML page has loaded.
 
-AppStart = function ()
+appStart = function ()
 {
 	// Initialize WebGL
 	var canvas = document.getElementById("Canvas");
@@ -80,7 +80,7 @@ AppStart = function ()
 			currentScene.Start();
 
 			// Start renderer
-			AppRender();
+			appRender();
 		}
 	}
 	catch ( error )
@@ -95,7 +95,7 @@ AppStart = function ()
 
 // This method is called when the HTML page is unloading.
 
-AppStop = function ()
+appStop = function ()
 {
 	// Cleanup
 	if ( currentScene )
@@ -111,7 +111,7 @@ AppStop = function ()
 // in the browser. Typically, this function is called 60 times
 // per second.
 
-AppRender = function ()
+appRender = function ()
 {
 	if ( currentScene )
 	{
@@ -121,14 +121,14 @@ AppRender = function ()
 		// HTML standards at its finest. Bind this function to the
 		// next frame cycle.
 		if ( window.requestAnimationFrame )
-			window.requestAnimationFrame(AppRender);
+			window.requestAnimationFrame(appRender);
 		else if ( window.webkitRequestAnimationFrame )
-			window.webkitRequestAnimationFrame(AppRender);
+			window.webkitRequestAnimationFrame(appRender);
 		else if ( window.mozRequestAnimationFrame )
-			window.mozRequestAnimationFrame(AppRender);
+			window.mozRequestAnimationFrame(appRender);
 		else if ( window.oRequestAnimationFrame )
-			window.oRequestAnimationFrame(AppRender);
+			window.oRequestAnimationFrame(appRender);
 		else if ( window.msRequestAnimationFrame )
-			window.msRequestAnimationFrame(AppRender);
+			window.msRequestAnimationFrame(appRender);
 	}
 }

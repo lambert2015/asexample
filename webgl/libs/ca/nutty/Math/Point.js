@@ -12,10 +12,7 @@ function Point (x, y, z, w)
 	this.w = (w != null) ? w : 0;
 }
 
-
-
 // Sum of points.
-
 Point.prototype.add = function (point)
 {
 	return new Point(this.x + point.x,
@@ -32,10 +29,7 @@ Point.prototype.addScalar = function (value)
 					 this.w + value);
 }
 
-
-
 // Negative.
-
 Point.prototype.negative = function ()
 {
 	return new Point(-this.x,
@@ -44,10 +38,7 @@ Point.prototype.negative = function ()
 					 -this.w);
 }
 
-
-
 // Difference of points.
-
 Point.prototype.subtract = function (point)
 {
 	return new Point(this.x - point.x,
@@ -64,10 +55,7 @@ Point.prototype.subtractScalar = function (value)
 					 this.w - value);
 }
 
-
-
 // Multiplication of points.
-
 Point.prototype.multiply = function (point)
 {
 	return new Point(this.x * point.x,
@@ -84,10 +72,7 @@ Point.prototype.multiplyScalar = function (value)
 					 this.w * value);
 }
 
-
-
 // Division of points.
-
 Point.prototype.divide = function (point)
 {
 	return new Point(this.x / point.x,
@@ -104,10 +89,7 @@ Point.prototype.divideScalar = function (value)
 					 this.w / value);
 }
 
-
-
 // Absolute value of point.
-
 Point.prototype.absolute = function ()
 {
 	return new Point(this.x < 0 ? -this.x : this.x,
@@ -116,10 +98,7 @@ Point.prototype.absolute = function ()
 					 this.w < 0 ? -this.w : this.w);
 }
 
-
-
 // Clamp.
-
 Point.prototype.clamp = function (min, max)
 {
 	return new Point(this.x < min ? min : this.x > max ? max : this.x,
@@ -128,10 +107,7 @@ Point.prototype.clamp = function (min, max)
 					 this.w < min ? min : this.w > max ? max : this.w);
 }
 
-
-
 // cross product of points.
-
 Point.prototype.cross = function (point)
 {
 	return new Point(this.y * point.z - this.z * point.y,
@@ -139,10 +115,7 @@ Point.prototype.cross = function (point)
 					 this.x * point.y - this.y * point.x);
 }
 
-
-
 // Distance between two points.
-
 Point.prototype.distance = function (point)
 {
 	return Math.sqrt(((this.x - point.x) * (this.x - point.x)) +
@@ -150,13 +123,10 @@ Point.prototype.distance = function (point)
 					 ((this.z - point.z) * (this.z - point.z)));
 }
 
-
-
 // Dot product between two points.
 // If dot < 0, vectors are greater than 90 degrees apart (facing each other, or away)
 // If dot > 0, vectors are within 90 degrees of each other (facing in similar direction)
 // If dot = 0, vectors are orthogonal (perpindicular)
-
 Point.prototype.dot = function (point)
 {
 	return ((this.x * point.x) +
@@ -164,10 +134,7 @@ Point.prototype.dot = function (point)
 			(this.z * point.z));
 }
 
-
-
 // Magnitude of this point.
-
 Point.prototype.magnitude = function ()
 {
 	return Math.sqrt((this.x * this.x) +
@@ -176,13 +143,10 @@ Point.prototype.magnitude = function ()
 					 (this.w * this.w));
 }
 
-
-
 // normalize point.
-
 Point.prototype.normalize = function ()
 {
-	var unit = this.Magnitude();
+	var unit = this.magnitude();
 	if ( unit != 0.0 )
 	{
 		this.x /= unit;
@@ -194,10 +158,7 @@ Point.prototype.normalize = function ()
 	return this;
 }
 
-
-
 // Set point.
-
 Point.prototype.setPoint = function (x, y, z, w)
 {
 	this.x = x ? x : 0;

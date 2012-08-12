@@ -125,7 +125,7 @@ function RefractionScene ()
 	
 	// Stores the textures used by this scene.
 	
-	this.mTexture = new Array();
+	this.mTexture = [];
 	
 	
 	
@@ -239,7 +239,7 @@ RefractionScene.prototype.OnMouseUp = function (key)
 RefractionScene.prototype.Start = function ()
 {
 	// Setup members and default values
-	this.mShader = new Array();
+	this.mShader = [];
 	this.mCanvas = document.getElementById("Canvas");
 	
 	// Set the FBO dimensions to match with the window
@@ -279,7 +279,7 @@ RefractionScene.prototype.Start = function ()
 	rectVbo.Create(rectMesh);
 	this.mSurface = new Entity();
 	this.mSurface.objectEntity = rectVbo;
-	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture = [];
 	this.mSurface.objectMaterial.Texture.push(this.mFboColourColourBuffer.TextureObject);
 
 	
@@ -738,7 +738,7 @@ RefractionScene.prototype.LoadShaders = function (index)
 RefractionScene.prototype.OnLoadComplete = function ()
 {
 	// Process shaders
-	var shaderResource = new Array();
+	var shaderResource = [];
 	shaderResource.push(this.mResource.Find("basic.vs"));
 	shaderResource.push(this.mResource.Find("basic.fs"));
 	shaderResource.push(this.mResource.Find("pixel_tag.fs"));
@@ -749,11 +749,11 @@ RefractionScene.prototype.OnLoadComplete = function ()
 	shaderResource.push(this.mResource.Find("brightness.fs"));
 	
 	// Process textures
-	this.mTexture = new Array();
+	this.mTexture = [];
 	this.mTexture.push(this.mResource.Find("white.png"));
 	this.mTexture.push(this.mResource.Find("sand.jpg"));
 	var sampler = new SamplerState(SamplerState.LinearRepeat);
-	sampler.HasMipMap = true;
+	sampler.hasMipMap = true;
 	
 	for (var i = 0; i < this.mTexture.length; ++i)
 	{
@@ -765,7 +765,7 @@ RefractionScene.prototype.OnLoadComplete = function ()
 		}
 	}
 	
-	var skyboxCubemap = new Array();
+	var skyboxCubemap = [];
 	skyboxCubemap.push(this.mResource.Find("sky_positive_x.jpg"));
 	skyboxCubemap.push(this.mResource.Find("sky_negative_x.jpg"));
 	skyboxCubemap.push(this.mResource.Find("sky_positive_y.jpg"));
@@ -794,7 +794,7 @@ RefractionScene.prototype.OnLoadComplete = function ()
 	for (var i = 0; i < this.mEntity.length; ++i)
 	{
 		// Assign blank texture by default
-		this.mEntity[i].objectMaterial.Texture = new Array();
+		this.mEntity[i].objectMaterial.Texture = [];
 		this.mEntity[i].objectMaterial.Texture.push(this.mTexture[0]);
 	}
 	

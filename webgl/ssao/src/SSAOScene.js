@@ -1,33 +1,3 @@
-
-// Nutty Software Open WebGL Framework
-// 
-// Copyright (C) 2012 Nathaniel Meyer
-// Nutty Software, http://www.nutty.ca
-// All Rights Reserved.
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-// of the Software, and to permit persons to whom the Software is furnished to do
-// so, subject to the following conditions:
-//     1. The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//     2. Redistributions in binary or minimized form must reproduce the above copyright
-//        notice and this list of conditions in the documentation and/or other materials
-//        provided with the distribution.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-
-
-
 // This scene demonstrates the screen space ambient occlusion algorithm (SSAO). The algorithm
 // is divided into several steps.
 //
@@ -45,125 +15,74 @@
 //	   The result is stored into a floating point luminance texture.
 //
 // 5. Subtract the AO map from the colour buffer to produce the final image.
-
-
-
-
-// Constructor.
-
 function SSAOScene ()
 {
 	
 	// Setup inherited members.
-	
 	BaseScene.call(this);
-	
-	
 	
 	// This framebuffer object stores the rendered scene to an RGB texture. It will be
 	// blended with the AO map calculated later.
-	
 	this.mFboColour = null;
 	this.mFboColourColourBuffer = null;
 	this.mFboColourDepthBuffer = null;
 	
-	
-	
+
 	// This framebuffer object stores the view space position (vertices) to texture.
 	// It uses an RGBA floating point texture to store the results. The alpha channel
 	// stores the linear depth values, which is used to compute the AO sampling radius.
-	
 	this.mFboDeferredPosition = null;
 	this.mFboDeferredPositionColourBuffer = null;
 	this.mFboDeferredPositionDepthBuffer = null;
 	
-	
-	
 	// This framebuffer object stores the view space normal vectors to texture.
 	// It uses an RGB floating point texture to store the results.
-	
 	this.mFboDeferredNormals = null;
 	this.mFboDeferredNormalsColourBuffer = null;
 	this.mFboDeferredNormalsDepthBuffer = null;
 	
-	
-	
 	// This framebuffer object stores the calculated ambient occlusion values.
 	// It uses a luminance floating point texture to store the results.
-	
 	this.mFboSSAO = null;
 	this.mFboSSAOColourBuffer = null;
 	
-	
-	
 	// Gets or sets the dimensions of the FBO, which may or may not be the same size
 	// as the window.
-	
 	this.mFboDimension = null;
 	
-	
-	
 	// The basic shader renders the scene using standard transform and lighting.
-	
 	this.mBasicShader = null;
-	
-	
 	
 	// The deferred shader output's geometry data to a floating point texture for
 	// later processing.
-	
 	this.mDeferredPositionShader = null;
 	this.mDeferredNormalsShader = null;
 	
-	
-	
 	// Shader for calculating the ambient occlusion values.
-	
 	this.mSSAOShader = null;
 	
-	
-	
 	// Shader for blending and rendering the scene and AO map textures.
-	
 	this.mSSAOBlendShader = null;
 	
-	
-	
 	// Shader for correcting the brightness, contrast, and gamma prior to output.
-	
 	this.mBrightnessShader = null;
-	
-	
 	
 	// Surface (rectangle) to perform post-processing effects.
 	// It is designed to fit the size of the viewport.
-	
 	this.mSurface = null;
 	
-	
-	
 	// Stores the textures used by this scene.
-	
-	this.mTexture = new Array();
-	
-	
+	this.mTexture = [];
 	
 	// Stores a reference to the canvas DOM element, which is used to reset the viewport
 	// back to its original size after rendering to the FBO, which uses a different
 	// dimension.
-	
 	this.mCanvas = null;
 	
-	
-	
 	// Gets or sets whether SSAO is rendered or not.
-	
 	this.mEnableSSAO = true;
 	
-	
-	
 	// Mouse controls for camera position and zoom.
-	
 	this.mMouseDown = false;
 	this.mMouseStartPos = new Point();
 	this.mCameraRot = 0.0;
@@ -173,10 +92,7 @@ function SSAOScene ()
 	this.mCameraStartZoom = 0.0;
 	this.mCameraTargetPos = new Point(0.0, 0.4, 0.0);
 	
-	
-	
 	// UI members.
-	
 	this.mDivLoading = null;
 	this.mTxtLoadingProgress = null;
 	this.mControls = null;
@@ -185,21 +101,15 @@ function SSAOScene ()
 	this.mNumResources = 0;
 }
 
-
-
 // Prototypal Inheritance.
-
 SSAOScene.prototype = new BaseScene();
 SSAOScene.prototype.constructor = SSAOScene;
 
-
-
 // Called when the mouse button is pressed.
-
-SSAOScene.prototype.OnMouseDown = function (key)
+SSAOScene.prototype.onMouseDown = function (key)
 {
 	// Record the current mouse position
-	var owner = this.Owner;
+	var owner = this.owner;
 	owner.mMouseDown = true;
 	owner.mMouseStartPos.x = key.pageX - this.offsetLeft;
 	owner.mMouseStartPos.y = key.pageY - this.offsetTop;
@@ -212,10 +122,10 @@ SSAOScene.prototype.OnMouseDown = function (key)
 // Called when there is mouse movement. Apply rotation and zoom
 // only when the mouse button is held down.
 
-SSAOScene.prototype.OnMouseMove = function (key)
+SSAOScene.prototype.onMouseMove = function (key)
 {
 	// Process mouse movement only when the mouse button is held down
-	var owner = this.Owner;
+	var owner = this.owner;
 	if ( owner.mMouseDown )
 	{
 		// Rotate and zoom camera about centre
@@ -232,35 +142,29 @@ SSAOScene.prototype.OnMouseMove = function (key)
 		else if ( owner.mCameraZoom > 3.9 )
 			owner.mCameraZoom = 3.9;
 		
-		owner.mViewMatrix.PointAt(new Point(Math.sin(owner.mCameraRot) * owner.mCameraZoom, owner.mCameraHeight, Math.cos(owner.mCameraRot) * owner.mCameraZoom),
+		owner.mViewMatrix.pointAt(new Point(Math.sin(owner.mCameraRot) * owner.mCameraZoom, owner.mCameraHeight, Math.cos(owner.mCameraRot) * owner.mCameraZoom),
 								  owner.mCameraTargetPos);
 		owner.mInvViewMatrix = owner.mViewMatrix.Inverse();
 		
-		owner.mBasicShader.View = owner.mInvViewMatrix;
-		owner.mDeferredPositionShader.View = owner.mInvViewMatrix;
-		owner.mDeferredNormalsShader.View = owner.mInvViewMatrix;
+		owner.mBasicShader.view = owner.mInvViewMatrix;
+		owner.mDeferredPositionShader.view = owner.mInvViewMatrix;
+		owner.mDeferredNormalsShader.view = owner.mInvViewMatrix;
 	}
 }
 
-
-
 // Called when the mouse button is released.
-
-SSAOScene.prototype.OnMouseUp = function (key)
+SSAOScene.prototype.onMouseUp = function (key)
 {
-	var owner = this.Owner;
+	var owner = this.owner;
 	owner.mMouseDown = false;
 }
 
-
-
 // Implementation.
-
-SSAOScene.prototype.Start = function ()
+SSAOScene.prototype.start = function ()
 {
 	// Setup members and default values
-	this.mShader = new Array();
-	this.mCanvas = document.getElementById("Canvas");
+	this.mShader = [];
+	this.mCanvas = document.getElementById("webgl_canvas");
 	
 	// Specify the FBO dimensions
 	this.mFboDimension = new Point(this.mCanvas.width, this.mCanvas.height);
@@ -268,42 +172,42 @@ SSAOScene.prototype.Start = function ()
 	
 	// Construct FBO for rendering the scene to an RGB texture
 	this.mFboColourColourBuffer = new FrameBufferObject(FrameBufferObject.BufferType.Colour);
-	this.mFboColourColourBuffer.TextureObject = new GLTexture2D();
-	this.mFboColourColourBuffer.TextureObject.Create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Rgb, SamplerState.LinearClamp);
+	this.mFboColourColourBuffer.textureObject = new GLTexture2D();
+	this.mFboColourColourBuffer.textureObject.create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Rgb, SamplerState.LinearClamp);
 	
 	this.mFboColourDepthBuffer = new FrameBufferObject(FrameBufferObject.BufferType.Depth);
 	this.mFboColourDepthBuffer.RenderBufferFormat = Texture.Format.Depth16;
 	
 	this.mFboColour = new GLFrameBufferObject();
-	this.mFboColour.Create(this.mFboDimension.x, this.mFboDimension.y);
+	this.mFboColour.create(this.mFboDimension.x, this.mFboDimension.y);
 	this.mFboColour.AttachBuffer(this.mFboColourColourBuffer);
 	this.mFboColour.AttachBuffer(this.mFboColourDepthBuffer);
 	
 	
 	// Construct FBO for rendering the view space positions for ambient occlusion calculations
 	this.mFboDeferredPositionColourBuffer = new FrameBufferObject(FrameBufferObject.BufferType.Colour);
-	this.mFboDeferredPositionColourBuffer.TextureObject = new GLTexture2D();
-	this.mFboDeferredPositionColourBuffer.TextureObject.Create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Vector4, SamplerState.PointClamp);
+	this.mFboDeferredPositionColourBuffer.textureObject = new GLTexture2D();
+	this.mFboDeferredPositionColourBuffer.textureObject.create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Vector4, SamplerState.PointClamp);
 	
 	this.mFboDeferredPositionDepthBuffer = new FrameBufferObject(FrameBufferObject.BufferType.Depth);
 	this.mFboDeferredPositionDepthBuffer.RenderBufferFormat = Texture.Format.Depth16;
 	
 	this.mFboDeferredPosition = new GLFrameBufferObject();
-	this.mFboDeferredPosition.Create(this.mFboDimension.x, this.mFboDimension.y);
+	this.mFboDeferredPosition.create(this.mFboDimension.x, this.mFboDimension.y);
 	this.mFboDeferredPosition.AttachBuffer(this.mFboDeferredPositionColourBuffer);
 	this.mFboDeferredPosition.AttachBuffer(this.mFboDeferredPositionDepthBuffer);
 	
 	
 	// Construct FBO for rendering the view space normals for ambient occlusion calculations
 	this.mFboDeferredNormalsColourBuffer = new FrameBufferObject(FrameBufferObject.BufferType.Colour);
-	this.mFboDeferredNormalsColourBuffer.TextureObject = new GLTexture2D();
-	this.mFboDeferredNormalsColourBuffer.TextureObject.Create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Vector3, SamplerState.PointClamp);
+	this.mFboDeferredNormalsColourBuffer.textureObject = new GLTexture2D();
+	this.mFboDeferredNormalsColourBuffer.textureObject.create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Vector3, SamplerState.PointClamp);
 	
 	this.mFboDeferredNormalsDepthBuffer = new FrameBufferObject(FrameBufferObject.BufferType.Depth);
 	this.mFboDeferredNormalsDepthBuffer.RenderBufferFormat = Texture.Format.Depth16;
 	
 	this.mFboDeferredNormals = new GLFrameBufferObject();
-	this.mFboDeferredNormals.Create(this.mFboDimension.x, this.mFboDimension.y);
+	this.mFboDeferredNormals.create(this.mFboDimension.x, this.mFboDimension.y);
 	this.mFboDeferredNormals.AttachBuffer(this.mFboDeferredNormalsColourBuffer);
 	this.mFboDeferredNormals.AttachBuffer(this.mFboDeferredNormalsDepthBuffer);
 	
@@ -312,63 +216,63 @@ SSAOScene.prototype.Start = function ()
 	// Floating point luminance textures don't appear to work on AMD driver 12.6, so falling back to (wasteful)
 	// RGB space.
 	this.mFboSSAOColourBuffer = new FrameBufferObject(FrameBufferObject.BufferType.Colour);
-	this.mFboSSAOColourBuffer.TextureObject = new GLTexture2D();
-	this.mFboSSAOColourBuffer.TextureObject.Create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Vector3/*Single*/, SamplerState.LinearClamp);
+	this.mFboSSAOColourBuffer.textureObject = new GLTexture2D();
+	this.mFboSSAOColourBuffer.textureObject.create(this.mFboDimension.x, this.mFboDimension.y, Texture.Format.Vector3/*Single*/, SamplerState.LinearClamp);
 	
 	this.mFboSSAO = new GLFrameBufferObject();
-	this.mFboSSAO.Create(this.mFboDimension.x, this.mFboDimension.y);
+	this.mFboSSAO.create(this.mFboDimension.x, this.mFboDimension.y);
 	this.mFboSSAO.AttachBuffer(this.mFboSSAOColourBuffer);
 	
 	
 	// Construct the surface used to for post-processing images
 	var rectMesh = new Rectangle(1.0, 1.0);
 	var rectVbo = new GLVertexBufferObject();
-	rectVbo.Create(rectMesh);
+	rectVbo.create(rectMesh);
 	this.mSurface = new Entity();
 	this.mSurface.objectEntity = rectVbo;
 	this.mSurface.objectMatrix = new Matrix(4, 4);
-	this.mSurface.objectMaterial.Texture = new Array();
+	this.mSurface.objectMaterial.Texture = [];
 	this.mSurface.objectMaterial.Texture.push(null);	// SSAO view space position data
 	this.mSurface.objectMaterial.Texture.push(null);	// SSAO view space normal vectors data
 	this.mSurface.objectMaterial.Texture.push(null);	// SSAO normalmap / randomizer
 	
 	
 	// Construct the scene to be rendered
-	this.mEntity = SSAOSceneGen.Create();
+	this.mEntity = SSAOSceneGen.create();
 
 	
 	// Prepare resources to download
 	
 	// Basic transform and lighting shader
-	this.mResource.Add(new ResourceItem("basic.vs", null, "./shaders/basic.vs"));
-	this.mResource.Add(new ResourceItem("basic.fs", null, "./shaders/basic.fs"));
+	this.mResource.add(new ResourceItem("basic.vs", null, "./shaders/basic.vs"));
+	this.mResource.add(new ResourceItem("basic.fs", null, "./shaders/basic.fs"));
 	
 	// Deferred rendering shaders
-	this.mResource.Add(new ResourceItem("deferred.vs", null, "./shaders/deferred.vs"));
-	this.mResource.Add(new ResourceItem("deferred_position.fs", null, "./shaders/deferred_position.fs"));
-	this.mResource.Add(new ResourceItem("deferred_normals.fs", null, "./shaders/deferred_normals.fs"));
+	this.mResource.add(new ResourceItem("deferred.vs", null, "./shaders/deferred.vs"));
+	this.mResource.add(new ResourceItem("deferred_position.fs", null, "./shaders/deferred_position.fs"));
+	this.mResource.add(new ResourceItem("deferred_normals.fs", null, "./shaders/deferred_normals.fs"));
 	
 	// Post-processing shaders
-	this.mResource.Add(new ResourceItem("image.vs", null, "./shaders/image.vs"));
-	this.mResource.Add(new ResourceItem("ssao.fs", null, "./shaders/ssao.fs"));
-	this.mResource.Add(new ResourceItem("ssao_blend.fs", null, "./shaders/ssao_blend.fs"));
-	this.mResource.Add(new ResourceItem("brightness.fs", null, "./shaders/brightness.fs"));
+	this.mResource.add(new ResourceItem("image.vs", null, "./shaders/image.vs"));
+	this.mResource.add(new ResourceItem("ssao.fs", null, "./shaders/ssao.fs"));
+	this.mResource.add(new ResourceItem("ssao_blend.fs", null, "./shaders/ssao_blend.fs"));
+	this.mResource.add(new ResourceItem("brightness.fs", null, "./shaders/brightness.fs"));
 	
 	
 	// Textures used in the scene
-	this.mResource.Add(new ResourceItem("normalmap.png", null, "./images/normalmap.png"));
+	this.mResource.add(new ResourceItem("normalmap.png", null, "./images/normalmap.png"));
 	
 	// Number of resource to load (including time taken to compile and load shader programs)
 	// 9 shaders to compile
 	// 5 shader programs to load
-	this.mNumResources = this.mResource.Item.length + 9 + 5;
+	this.mNumResources = this.mResource.item.length + 9 + 5;
 	
 	
 	// Listen for mouse activity
-	this.mCanvas.Owner = this;
-	this.mCanvas.onmousedown = this.OnMouseDown;
-	this.mCanvas.onmouseup = this.OnMouseUp;
-	this.mCanvas.onmousemove = this.OnMouseMove;
+	this.mCanvas.owner = this;
+	this.mCanvas.onmousedown = this.onMouseDown;
+	this.mCanvas.onmouseup = this.onMouseUp;
+	this.mCanvas.onmousemove = this.onMouseMove;
 	
 	
 	// Setup user interface
@@ -385,7 +289,7 @@ SSAOScene.prototype.Start = function ()
 		["#AttLinearSlider", 0.1, 0.0, 10.0, 5.0, this.OnLinearAttenuationValueChanged]
 	];
 	
-	this.mControls = new Array();
+	this.mControls = [];
 	for (var i = 0; i < sliders.length; ++i)
 	{
 		var item = sliders[i];
@@ -411,11 +315,11 @@ SSAOScene.prototype.Start = function ()
 	
 	// View options
 	this.mBtnEnableSSAO = $("#BtnEnableSSAO");
-	this.mBtnEnableSSAO.on("change", this, this.OnEnableSSAOClicked);
+	this.mBtnEnableSSAO.on("change", this, this.onEnableSSAOClicked);
 	
 	
 	// Start downloading resources
-	BaseScene.prototype.Start.call(this);
+	BaseScene.prototype.start.call(this);
 }
 
 
@@ -424,7 +328,7 @@ SSAOScene.prototype.Start = function ()
 
 SSAOScene.prototype.OnOccluderBiasValueChanged = function (event, ui)
 {
-	event.data.owner.mSSAOShader.OccluderBias = ui.value;
+	event.data.owner.mSSAOShader.occluderBias = ui.value;
 	event.data.owner.mControls[1].text(ui.value);
 }
 
@@ -434,7 +338,7 @@ SSAOScene.prototype.OnOccluderBiasValueChanged = function (event, ui)
 
 SSAOScene.prototype.OnSamplingRadiusValueChanged = function (event, ui)
 {
-	event.data.owner.mSSAOShader.SamplingRadius = ui.value;
+	event.data.owner.mSSAOShader.samplingRadius = ui.value;
 	event.data.owner.mControls[3].text(ui.value);
 }
 
@@ -444,7 +348,7 @@ SSAOScene.prototype.OnSamplingRadiusValueChanged = function (event, ui)
 
 SSAOScene.prototype.OnConstantAttenuationValueChanged = function (event, ui)
 {
-	event.data.owner.mSSAOShader.Attenuation.x = ui.value;
+	event.data.owner.mSSAOShader.attenuation.x = ui.value;
 	event.data.owner.mControls[5].text(ui.value);
 }
 
@@ -454,7 +358,7 @@ SSAOScene.prototype.OnConstantAttenuationValueChanged = function (event, ui)
 
 SSAOScene.prototype.OnLinearAttenuationValueChanged = function (event, ui)
 {
-	event.data.owner.mSSAOShader.Attenuation.y = ui.value;
+	event.data.owner.mSSAOShader.attenuation.y = ui.value;
 	event.data.owner.mControls[7].text(ui.value);
 }
 
@@ -462,7 +366,7 @@ SSAOScene.prototype.OnLinearAttenuationValueChanged = function (event, ui)
 
 // Method called when the view mode combo box has changed.
 
-SSAOScene.prototype.OnEnableSSAOClicked = function (event)
+SSAOScene.prototype.onEnableSSAOClicked = function (event)
 {
 	event.data.mEnableSSAO = event.currentTarget.checked;
 }
@@ -471,9 +375,9 @@ SSAOScene.prototype.OnEnableSSAOClicked = function (event)
 
 // Implementation.
 
-SSAOScene.prototype.Update = function ()
+SSAOScene.prototype.update = function ()
 {
-	BaseScene.prototype.Update.call(this);
+	BaseScene.prototype.update.call(this);
 	
 	// Draw only when all resources have been loaded
 	if ( this.mLoadComplete )
@@ -481,33 +385,33 @@ SSAOScene.prototype.Update = function ()
 		//
 		// Step 1: Render the scene to texture using a standard T&L shader
 		//
-		this.mBasicShader.Enable();
-			this.mFboColour.Enable();
+		this.mBasicShader.enable();
+			this.mFboColour.enable();
 				// Set and clear viewport
-				gl.viewport(0, 0, this.mFboColour.GetFrameWidth(), this.mFboColour.GetFrameHeight());
+				gl.viewport(0, 0, this.mFboColour.getFrameWidth(), this.mFboColour.getFrameHeight());
 				gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 				
 				// Render
 				for (var i = 0; i < this.mEntity.length; ++i)
-					this.mBasicShader.Draw(this.mEntity[i]);
-			this.mFboColour.Disable();
-		this.mBasicShader.Disable();
+					this.mBasicShader.draw(this.mEntity[i]);
+			this.mFboColour.disable();
+		this.mBasicShader.disable();
 		
 		
 		//
 		// Step 2: Render the scene's view space positions (vertices) to texture
 		//
-		this.mDeferredPositionShader.Enable();
-			this.mFboDeferredPosition.Enable();
+		this.mDeferredPositionShader.enable();
+			this.mFboDeferredPosition.enable();
 				// Set and clear viewport
-				gl.viewport(0, 0, this.mFboDeferredPosition.GetFrameWidth(), this.mFboDeferredPosition.GetFrameHeight());
+				gl.viewport(0, 0, this.mFboDeferredPosition.getFrameWidth(), this.mFboDeferredPosition.getFrameHeight());
 				gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 				
 				// Render
 				for (var i = 0; i < this.mEntity.length; ++i)
-					this.mDeferredPositionShader.Draw(this.mEntity[i]);
-			this.mFboDeferredPosition.Disable();
-		this.mDeferredPositionShader.Disable();
+					this.mDeferredPositionShader.draw(this.mEntity[i]);
+			this.mFboDeferredPosition.disable();
+		this.mDeferredPositionShader.disable();
 		
 		
 		//
@@ -516,33 +420,33 @@ SSAOScene.prototype.Update = function ()
 		//		   step 2; however WebGL / OpenGL ES 2.0 only supports one colour attachment to the FBO,
 		//		   so we need to do it in another pass.
 		//
-		this.mDeferredNormalsShader.Enable();
-			this.mFboDeferredNormals.Enable();
+		this.mDeferredNormalsShader.enable();
+			this.mFboDeferredNormals.enable();
 				// Set and clear viewport
-				gl.viewport(0, 0, this.mFboDeferredNormals.GetFrameWidth(), this.mFboDeferredNormals.GetFrameHeight());
+				gl.viewport(0, 0, this.mFboDeferredNormals.getFrameWidth(), this.mFboDeferredNormals.getFrameHeight());
 				gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 				
 				// Render
 				for (var i = 0; i < this.mEntity.length; ++i)
-					this.mDeferredNormalsShader.Draw(this.mEntity[i]);
-			this.mFboDeferredNormals.Disable();
-		this.mDeferredNormalsShader.Disable();
+					this.mDeferredNormalsShader.draw(this.mEntity[i]);
+			this.mFboDeferredNormals.disable();
+		this.mDeferredNormalsShader.disable();
 		
 		
 		//
 		// Step 4: Calculate the ambient occlusion values.
 		//
-		this.mSSAOShader.Enable();
-			this.mFboSSAO.Enable();
+		this.mSSAOShader.enable();
+			this.mFboSSAO.enable();
 				// Set textures
-				this.mSurface.objectMaterial.Texture[0] = this.mFboDeferredPositionColourBuffer.TextureObject;	// From step 2
-				this.mSurface.objectMaterial.Texture[1] = this.mFboDeferredNormalsColourBuffer.TextureObject;	// From step 3
-				this.mSurface.objectMaterial.Texture[2] = this.mTexture[0];										// normalmap.png
+				this.mSurface.objectMaterial.texture[0] = this.mFboDeferredPositionColourBuffer.textureObject;	// From step 2
+				this.mSurface.objectMaterial.texture[1] = this.mFboDeferredNormalsColourBuffer.textureObject;	// From step 3
+				this.mSurface.objectMaterial.texture[2] = this.mTexture[0];										// normalmap.png
 				
 				// Render
-				this.mSSAOShader.Draw(this.mSurface);
-			this.mFboSSAO.Disable();
-		this.mSSAOShader.Disable();
+				this.mSSAOShader.draw(this.mSurface);
+			this.mFboSSAO.disable();
+		this.mSSAOShader.disable();
 				
 		
 		// Restore viewport
@@ -556,27 +460,27 @@ SSAOScene.prototype.Update = function ()
 			// Step 5: Blend the ambient occlusion map with the rendered scene and apply and final post-processing
 			//		   operations.
 			//
-			this.mSSAOBlendShader.Enable();
+			this.mSSAOBlendShader.enable();
 				// Set textures
-				this.mSurface.objectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
-				this.mSurface.objectMaterial.Texture[1] = this.mFboSSAOColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.texture[0] = this.mFboColourColourBuffer.textureObject;
+				this.mSurface.objectMaterial.texture[1] = this.mFboSSAOColourBuffer.textureObject;
 				
 				// Render
-				this.mSSAOBlendShader.Draw(this.mSurface);
-			this.mSSAOBlendShader.Disable();
+				this.mSSAOBlendShader.draw(this.mSurface);
+			this.mSSAOBlendShader.disable();
 		}
 		else
 		{
 			//
 			// SSAO disabled, just show normal scene with gamma correction
 			//
-			this.mBrightnessShader.Enable();
+			this.mBrightnessShader.enable();
 				// Set textures
-				this.mSurface.objectMaterial.Texture[0] = this.mFboColourColourBuffer.TextureObject;
+				this.mSurface.objectMaterial.texture[0] = this.mFboColourColourBuffer.textureObject;
 				
 				// Render
-				this.mBrightnessShader.Draw(this.mSurface);
-			this.mBrightnessShader.Disable();
+				this.mBrightnessShader.draw(this.mSurface);
+			this.mBrightnessShader.disable();
 		}
 	}
 }
@@ -585,46 +489,46 @@ SSAOScene.prototype.Update = function ()
 
 // Implementation.
 
-SSAOScene.prototype.End = function ()
+SSAOScene.prototype.end = function ()
 {
-	BaseScene.prototype.End.call(this);
+	BaseScene.prototype.end.call(this);
 
 	// Cleanup
 	
 	// Release FBOs
 	if ( this.mFboColour != null )
 	{
-		this.mFboColour.Release();
-		this.mFboColourColourBuffer.TextureObject.Release();
+		this.mFboColour.release();
+		this.mFboColourColourBuffer.textureObject.release();
 	}
 	
 	if ( this.mFboDeferredPosition != null )
 	{
-		this.mFboDeferredPosition.Release();
-		this.mFboDeferredPositionColourBuffer.TextureObject.Release();
+		this.mFboDeferredPosition.release();
+		this.mFboDeferredPositionColourBuffer.textureObject.release();
 	}
 	
 	if ( this.mFboDeferredNormals != null )
 	{
-		this.mFboDeferredNormals.Release();
-		this.mFboDeferredNormalsColourBuffer.TextureObject.Release();
+		this.mFboDeferredNormals.release();
+		this.mFboDeferredNormalsColourBuffer.textureObject.release();
 	}
 	
 	if ( this.mFboSSAO != null )
 	{
-		this.mFboSSAO.Release();
-		this.mFboSSAOColourBuffer.TextureObject.Release();
+		this.mFboSSAO.release();
+		this.mFboSSAOColourBuffer.textureObject.release();
 	}
 	
 	// Release VBOs
 	if ( this.mSurface != null )
-		this.mSurface.objectEntity.Release();
+		this.mSurface.objectEntity.release();
 		
 	// Release textures
 	if ( this.mTexture != null )
 	{
 		for (var i = 0; i < this.mTexture.length; ++i)
-			this.mTexture[i].Release();
+			this.mTexture[i].release();
 	}
 	
 	// Release controls
@@ -641,7 +545,7 @@ SSAOScene.prototype.End = function ()
 // <param name="increment">
 // Set to true to increment the resource counter by one. Normally hanadled by BaseScene.
 // </param>
-SSAOScene.prototype.UpdateProgress = function (increment)
+SSAOScene.prototype.updateProgress = function (increment)
 {
 	if ( increment != null )
 		++this.mResourceCount;
@@ -654,10 +558,10 @@ SSAOScene.prototype.UpdateProgress = function (increment)
 
 // Implementation.
 
-SSAOScene.prototype.OnItemLoaded = function (sender, response)
+SSAOScene.prototype.onItemLoaded = function (sender, response)
 {
-	BaseScene.prototype.OnItemLoaded.call(this, sender, response);
-	this.UpdateProgress();
+	BaseScene.prototype.onItemLoaded.call(this, sender, response);
+	this.updateProgress();
 }
 
 
@@ -666,18 +570,18 @@ SSAOScene.prototype.OnItemLoaded = function (sender, response)
 // blocked while the GPU compiles, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
 
-SSAOScene.prototype.CompileShaders = function (index, list)
+SSAOScene.prototype.compileShaders = function (index, list)
 {
 	var shaderItem = list[index];
 	if ( shaderItem != null )
 	{
 		// Compile vertex shader
 		var shader = new GLShader();
-		if ( !shader.Create((shaderItem.Name.lastIndexOf(".vs") != -1) ? shader.ShaderType.Vertex : shader.ShaderType.Fragment, shaderItem.Item) )
+		if ( !shader.create((shaderItem.name.lastIndexOf(".vs") != -1) ? GLShader.ShaderType.Vertex : GLShader.ShaderType.Fragment, shaderItem.Item) )
 		{
 			// Report error
-			var log = shader.GetLog();
-			alert("Error compiling " + shaderItem.Name + ".\n\n" + log);
+			var log = shader.getLog();
+			alert("Error compiling " + shaderItem.name + ".\n\n" + log);
 			return;
 		}
 		else
@@ -692,18 +596,18 @@ SSAOScene.prototype.CompileShaders = function (index, list)
 	
 	// Update loading progress
 	++index;
-	this.UpdateProgress(true);
+	this.updateProgress(true);
 
 	if ( index < list.length )
 	{
 		// Move on to next shader
 		var parent = this;
-		setTimeout(function () { parent.CompileShaders(index, list) }, 1);
+		setTimeout(function () { parent.compileShaders(index, list) }, 1);
 	}
 	else if ( index == list.length )
 	{
 		// Now start loading in the shaders
-		this.LoadShaders(0);
+		this.loadShaders(0);
 	}
 }
 
@@ -713,25 +617,25 @@ SSAOScene.prototype.CompileShaders = function (index, list)
 // blocked while the GPU loads, so we need to give the browser a chance
 // to refresh its view and take user input while this happens (good ui practice).
 
-SSAOScene.prototype.LoadShaders = function (index, blendModes)
+SSAOScene.prototype.loadShaders = function (index, blendModes)
 {
 	if ( index == 0 )
 	{
 		// Create basic T&L program
 		this.mBasicShader = new BasicShader();
-		this.mBasicShader.Projection = this.mProjectionMatrix;
-		this.mBasicShader.View = this.mInvViewMatrix;
-		this.mBasicShader.Create();
-		this.mBasicShader.AddShader(this.mShader[0]);	// basic.vs
-		this.mBasicShader.AddShader(this.mShader[1]);	// basic.fs
-		this.mBasicShader.Link();
-		this.mBasicShader.Init();
+		this.mBasicShader.projection = this.mProjectionMatrix;
+		this.mBasicShader.view = this.mInvViewMatrix;
+		this.mBasicShader.create();
+		this.mBasicShader.addShader(this.mShader[0]);	// basic.vs
+		this.mBasicShader.addShader(this.mShader[1]);	// basic.fs
+		this.mBasicShader.link();
+		this.mBasicShader.init();
 		
 		// Add light sources
 		var light1 = new Light();
 		light1.LightType = Light.LightSourceType.Point;
 		light1.Position = new Point(0.0, 4.0, 0.0);
-		this.mBasicShader.LightObject.push(light1);
+		this.mBasicShader.lightObject.push(light1);
 		
 		this.mShader.push(this.mBasicShader);
 	}
@@ -739,13 +643,13 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 	{
 		// Create deferred position shader program
 		this.mDeferredPositionShader = new DeferredShader();
-		this.mDeferredPositionShader.Projection = this.mProjectionMatrix;
-		this.mDeferredPositionShader.View = this.mInvViewMatrix;
-		this.mDeferredPositionShader.Create();
-		this.mDeferredPositionShader.AddShader(this.mShader[2]);	// deferred.vs
-		this.mDeferredPositionShader.AddShader(this.mShader[3]);	// deferred_position.fs
-		this.mDeferredPositionShader.Link();
-		this.mDeferredPositionShader.Init();
+		this.mDeferredPositionShader.projection = this.mProjectionMatrix;
+		this.mDeferredPositionShader.view = this.mInvViewMatrix;
+		this.mDeferredPositionShader.create();
+		this.mDeferredPositionShader.addShader(this.mShader[2]);	// deferred.vs
+		this.mDeferredPositionShader.addShader(this.mShader[3]);	// deferred_position.fs
+		this.mDeferredPositionShader.link();
+		this.mDeferredPositionShader.init();
 		
 		// Setup parameters
 		this.mDeferredPositionShader.LinearDepth = 20.0 - 0.1;
@@ -756,13 +660,13 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 	{
 		// Create deferred normals program
 		this.mDeferredNormalsShader = new DeferredShader();
-		this.mDeferredNormalsShader.Projection = this.mProjectionMatrix;
-		this.mDeferredNormalsShader.View = this.mInvViewMatrix;
-		this.mDeferredNormalsShader.Create();
-		this.mDeferredNormalsShader.AddShader(this.mShader[2]);	// deferred.vs
-		this.mDeferredNormalsShader.AddShader(this.mShader[4]);	// deferred_normals.fs
-		this.mDeferredNormalsShader.Link();
-		this.mDeferredNormalsShader.Init();
+		this.mDeferredNormalsShader.projection = this.mProjectionMatrix;
+		this.mDeferredNormalsShader.view = this.mInvViewMatrix;
+		this.mDeferredNormalsShader.create();
+		this.mDeferredNormalsShader.addShader(this.mShader[2]);	// deferred.vs
+		this.mDeferredNormalsShader.addShader(this.mShader[4]);	// deferred_normals.fs
+		this.mDeferredNormalsShader.link();
+		this.mDeferredNormalsShader.init();
 		
 		this.mShader.push(this.mDeferredNormalsShader);
 	}
@@ -770,17 +674,17 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 	{
 		// Create SSAO shader program for performing the ambient-occlusion calculations
 		this.mSSAOShader = new SSAOShader();
-		this.mSSAOShader.Create();
-		this.mSSAOShader.AddShader(this.mShader[5]);	// image.vs
-		this.mSSAOShader.AddShader(this.mShader[6]);	// ssao.fs
-		this.mSSAOShader.Link();
-		this.mSSAOShader.Init();
-		this.mSSAOShader.SetSize(this.mFboDimension.x, this.mFboDimension.y);
+		this.mSSAOShader.create();
+		this.mSSAOShader.addShader(this.mShader[5]);	// image.vs
+		this.mSSAOShader.addShader(this.mShader[6]);	// ssao.fs
+		this.mSSAOShader.link();
+		this.mSSAOShader.init();
+		this.mSSAOShader.setSize(this.mFboDimension.x, this.mFboDimension.y);
 		
 		// Setup parameters
-		this.mSSAOShader.OccluderBias = this.mControls[0].slider("value");
-		this.mSSAOShader.SamplingRadius = this.mControls[2].slider("value");
-		this.mSSAOShader.Attenuation.setPoint(this.mControls[4].slider("value"),
+		this.mSSAOShader.occluderBias = this.mControls[0].slider("value");
+		this.mSSAOShader.samplingRadius = this.mControls[2].slider("value");
+		this.mSSAOShader.attenuation.setPoint(this.mControls[4].slider("value"),
 											  this.mControls[6].slider("value"));
 		
 		this.mShader.push(this.mSSAOShader);
@@ -789,13 +693,13 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 	{
 		// Create SSAO blend shader program for blending the rendered scene with the AO map
 		this.mSSAOBlendShader = new ImageShader();
-		this.mSSAOBlendShader.Projection = new Matrix(4, 4);	// Not used
-		this.mSSAOBlendShader.View = new Matrix(4, 4);
-		this.mSSAOBlendShader.Create();
-		this.mSSAOBlendShader.AddShader(this.mShader[5]);	// image.vs
-		this.mSSAOBlendShader.AddShader(this.mShader[7]);	// ssao_blend.fs
-		this.mSSAOBlendShader.Link();
-		this.mSSAOBlendShader.Init();
+		this.mSSAOBlendShader.projection = new Matrix(4, 4);	// Not used
+		this.mSSAOBlendShader.view = new Matrix(4, 4);
+		this.mSSAOBlendShader.create();
+		this.mSSAOBlendShader.addShader(this.mShader[5]);	// image.vs
+		this.mSSAOBlendShader.addShader(this.mShader[7]);	// ssao_blend.fs
+		this.mSSAOBlendShader.link();
+		this.mSSAOBlendShader.init();
 		
 		this.mShader.push(this.mSSAOBlendShader);
 	}
@@ -803,11 +707,11 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 	{
 		// Create brightness shader to correct brightness, contrast, and gamma
 		this.mBrightnessShader = new BrightnessShader();
-		this.mBrightnessShader.Create();
-		this.mBrightnessShader.AddShader(this.mShader[5]);	// image.vs
-		this.mBrightnessShader.AddShader(this.mShader[8]);	// brightness.fs
-		this.mBrightnessShader.Link();
-		this.mBrightnessShader.Init();
+		this.mBrightnessShader.create();
+		this.mBrightnessShader.addShader(this.mShader[5]);	// image.vs
+		this.mBrightnessShader.addShader(this.mShader[8]);	// brightness.fs
+		this.mBrightnessShader.link();
+		this.mBrightnessShader.init();
 		
 		this.mShader.push(this.mBrightnessShader);
 		
@@ -822,11 +726,11 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 	{
 		// Update loading progress
 		++index;
-		this.UpdateProgress(true);
+		this.updateProgress(true);
 	
 		// Move on
 		var parent = this;
-		setTimeout(function () { parent.LoadShaders(index) }, 1);
+		setTimeout(function () { parent.loadShaders(index) }, 1);
 	}
 }
 
@@ -834,7 +738,7 @@ SSAOScene.prototype.LoadShaders = function (index, blendModes)
 
 // Implementation.
 
-SSAOScene.prototype.OnLoadComplete = function ()
+SSAOScene.prototype.onLoadComplete = function ()
 {
 	// Process shaders
 	var shaderList =
@@ -850,10 +754,10 @@ SSAOScene.prototype.OnLoadComplete = function ()
 		"brightness.fs"
 	];
 	
-	var shaderResource = new Array();
+	var shaderResource = [];
 	for (var i = 0; i < shaderList.length; ++i)
 	{
-		var resource = this.mResource.Find(shaderList[i]);
+		var resource = this.mResource.find(shaderList[i]);
 		if ( resource == null )
 		{
 			alert("Missing resource file: " + shaderList[i]);
@@ -863,8 +767,8 @@ SSAOScene.prototype.OnLoadComplete = function ()
 	}
 	
 	// Process textures
-	this.mTexture = new Array();
-	this.mTexture.push(this.mResource.Find("normalmap.png"));
+	this.mTexture = [];
+	this.mTexture.push(this.mResource.find("normalmap.png"));
 	
 	for (var i = 0; i < this.mTexture.length; ++i)
 	{
@@ -872,16 +776,16 @@ SSAOScene.prototype.OnLoadComplete = function ()
 		if ( resource != null )
 		{
 			this.mTexture[i] = new GLTexture2D();
-			this.mTexture[i].Create(resource.Item.width, resource.Item.height, Texture.Format.Rgb, SamplerState.LinearClamp, resource.Item);
+			this.mTexture[i].create(resource.item.width, resource.item.height, Texture.Format.Rgb, SamplerState.LinearClamp, resource.item);
 		}
 	}
 	
 	// Setup camera matrices
-	this.mProjectionMatrix = ViewMatrix.Perspective(60.0, 1.333, 0.1, 20.0);
-	this.mViewMatrix.PointAt(new Point(0.0, this.mCameraHeight, this.mCameraZoom),
+	this.mProjectionMatrix = ViewMatrix.perspective(60.0, 1.333, 0.1, 20.0);
+	this.mViewMatrix.pointAt(new Point(0.0, this.mCameraHeight, this.mCameraZoom),
 							 this.mCameraTargetPos);
-	this.mInvViewMatrix = this.mViewMatrix.Inverse();
+	this.mInvViewMatrix = this.mViewMatrix.inverse();
 	
 	// Compile shaders
-	this.CompileShaders(0, shaderResource);
+	this.compileShaders(0, shaderResource);
 }

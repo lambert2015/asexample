@@ -2,7 +2,7 @@
 function ResourceManager ()
 {
 	// Store a collection of ResourceItem objects.
-	this.items = new Array();
+	this.items = [];
 }
 
 // Add an item to the list.

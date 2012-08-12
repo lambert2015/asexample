@@ -46,7 +46,7 @@ function RefractionSceneGen ()
 RefractionSceneGen.Create = function ()
 {
 	// Array to store the list of entities in the scene.
-	var entity = new Array();
+	var entity = [];
 
 	// Create scene VBOs
 	var sphereMesh = new Sphere(32, 32, 1.0, 0.0);

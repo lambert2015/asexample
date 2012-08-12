@@ -7,51 +7,40 @@ var currentScene = null;
 
 // Function called when the HTML page has loaded.
 // Initialize page.
-AppLoad = function ()
+appLoad = function ()
 {
 	// Initialize UI
 	var tabs = $("#tabs");
 	tabs.tabs();
 	tabs.show();
+	
+	appStart();
 }
 
 // This method is called when the HTML page has loaded.
-AppStart = function ()
+appStart = function ()
 {
 	// Initialize WebGL
-	var canvas = document.getElementById("Canvas");
-	try
-	{
-		gl = canvas.getContext("experimental-webgl");
-		gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-		
-		// Start main scene
-		if ( currentScene != null )
-		{
-			$("#DivStart").hide();
-			$("#WebGLDemo").show();
-		
-			currentScene.Start();
+	var canvas = document.getElementById("webgl_canvas");
 
-			// Start renderer
-			AppRender();
-		}
-	}
-	catch ( error )
-	{
-		// Does not support WebGL
-		$("#DivNoWebGL").show();
-		$("#BtnStartWebGL").hide();
-	}
+	gl = canvas.getContext("experimental-webgl");
+	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
+	
+	currentScene = new BasicLightingScene();
+
+	currentScene.start();
+
+	// Start renderer
+	appRender();
 }
 
 // This method is called when the HTML page is unloading.
-AppStop = function ()
+appStop = function ()
 {
 	// Cleanup
 	if ( currentScene )
 	{
-		currentScene.End();
+		currentScene.end();
 		currentScene = null;
 	}
 }
@@ -59,24 +48,24 @@ AppStop = function ()
 // This method is called when a new frame is to be rendered
 // in the browser. Typically, this function is called 60 times
 // per second.
-AppRender = function ()
+appRender = function ()
 {
 	if ( currentScene )
 	{
 		// Render the current scene
-		currentScene.Update();
+		currentScene.update();
 		
 		// HTML standards at its finest. Bind this function to the
 		// next frame cycle.
 		if ( window.requestAnimationFrame )
-			window.requestAnimationFrame(AppRender);
+			window.requestAnimationFrame(appRender);
 		else if ( window.webkitRequestAnimationFrame )
-			window.webkitRequestAnimationFrame(AppRender);
+			window.webkitRequestAnimationFrame(appRender);
 		else if ( window.mozRequestAnimationFrame )
-			window.mozRequestAnimationFrame(AppRender);
+			window.mozRequestAnimationFrame(appRender);
 		else if ( window.oRequestAnimationFrame )
-			window.oRequestAnimationFrame(AppRender);
+			window.oRequestAnimationFrame(appRender);
 		else if ( window.msRequestAnimationFrame )
-			window.msRequestAnimationFrame(AppRender);
+			window.msRequestAnimationFrame(appRender);
 	}
 }

@@ -87,7 +87,7 @@ SkyboxShader.prototype.Init = function ()
 	this.mModelScaleId = this.getVariable("ModelScale");
 	
 	// Get texture samples
-	this.mSampleId = new Array();
+	this.mSampleId = [];
 	var sampleId;
 	index = 0;
 	do
@@ -124,9 +124,9 @@ SkyboxShader.prototype.Enable = function ()
 SkyboxShader.prototype.Draw = function (entity, vbo, numPoints, numIndices)
 {
 	// Set matrices
-	this.setMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.setMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.Projection.elements, 4);
+	this.setMatrix(this.mViewId, this.View.elements, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.elements, 4);
 	
 	var scale = entity.objectMatrix.GetScale();
 	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);

@@ -1,9 +1,8 @@
 // Matrices are column-major order.
 function Matrix ()
 {
-	
 	// An arbitrary sized matrix.
-	this.MMatrix = [];
+	this.elements = [];
 	
 	// Stores the number of rows.
 	this.mNumRows = 4;
@@ -27,9 +26,9 @@ Matrix.prototype.add = function (matrix)
 {
 	// Add
 	var newMatrix = new Matrix(this.mNumRows, this.mNumColumns);
-	var size = newMatrix.GetSize();
+	var size = newMatrix.getSize();
 	for (var i = 0; i < size; ++i)
-		newMatrix.MMatrix[i] = this.MMatrix[i] + matrix.MMatrix[i];
+		newMatrix.elements[i] = this.elements[i] + matrix.elements[i];
 	return newMatrix;
 }
 
@@ -40,7 +39,7 @@ Matrix.prototype.subtract = function (matrix)
 	var newMatrix = new Matrix(this.mNumRows, this.mNumColumns);
 	var size = newMatrix.getSize();
 	for (var i = 0; i < size; ++i)
-		newMatrix.MMatrix[i] = this.MMatrix[i] - matrix2.MMatrix[i];
+		newMatrix.elements[i] = this.elements[i] - matrix2.elements[i];
 	return newMatrix;
 }
 
@@ -51,7 +50,7 @@ Matrix.prototype.multiply = function (matrix)
 	var newMatrix = new Matrix(this.mNumRows, this.mNumColumns);
 	var size = newMatrix.getSize();
 	for (var i = 0; i < size; ++i)
-		newMatrix.MMatrix[i] = 0;
+		newMatrix.elements[i] = 0;
 
 	for (var i = 0; i < newMatrix. mNumRows; ++i)
 	{
@@ -60,7 +59,7 @@ Matrix.prototype.multiply = function (matrix)
 		{
 			for (var k = 0; k < newMatrix.mNumColumns; ++k)
 			{
-				newMatrix.MMatrix[rowIndex + j] += (this.MMatrix[rowIndex + k] * matrix.MMatrix[k * newMatrix.mNumColumns + j]);
+				newMatrix.elements[rowIndex + j] += (this.elements[rowIndex + k] * matrix.elements[k * newMatrix.mNumColumns + j]);
 			}
 		}
 	}
@@ -72,10 +71,7 @@ Matrix.prototype.multiply = function (matrix)
 	return newMatrix;
 }
 
-
-
 // Transpose a matrix.
-
 Matrix.prototype.transpose = function (matrix)
 {
 	// Transpose
@@ -84,41 +80,38 @@ Matrix.prototype.transpose = function (matrix)
 	{
 		for (var j = 0; j < transposeMatrix.mNumColumns; ++j)
 		{
-			transposeMatrix.setValue(i, j, matrix.MMatrix[i + j * transposeMatrix.mNumColumns]);
+			transposeMatrix.setValue(i, j, matrix.elements[i + j * transposeMatrix.mNumColumns]);
 		}
 	}
 	return transposeMatrix;
 }
 
-
-
 // Invert a 4x4 matrix quickly.
-
 Matrix.prototype.inverse = function ()
 {
 	var matrix = new Matrix(4, 4);
 
 	// Invert rotation (transpose 3x3 matrix)
-	matrix.MMatrix[0] = this.MMatrix[0];
-	matrix.MMatrix[1] = this.MMatrix[4];
-	matrix.MMatrix[2] = this.MMatrix[8];
+	matrix.elements[0] = this.elements[0];
+	matrix.elements[1] = this.elements[4];
+	matrix.elements[2] = this.elements[8];
 
-	matrix.MMatrix[4] = this.MMatrix[1];
-	matrix.MMatrix[5] = this.MMatrix[5];
-	matrix.MMatrix[6] = this.MMatrix[9];
+	matrix.elements[4] = this.elements[1];
+	matrix.elements[5] = this.elements[5];
+	matrix.elements[6] = this.elements[9];
 
-	matrix.MMatrix[8] = this.MMatrix[2];
-	matrix.MMatrix[9] = this.MMatrix[6];
-	matrix.MMatrix[10] = this.MMatrix[10];
+	matrix.elements[8] = this.elements[2];
+	matrix.elements[9] = this.elements[6];
+	matrix.elements[10] = this.elements[10];
 
 	matrix.mRotation.x = -this.mRotation.x;
 	matrix.mRotation.y = -this.mRotation.y;
 	matrix.mRotation.z = -this.mRotation.z;
 
 	// Invert translation -(R dot T)
-	matrix.MMatrix[12] = -((matrix.MMatrix[0] * this.MMatrix[12]) + (matrix.MMatrix[4] * this.MMatrix[13]) + (matrix.MMatrix[8] * this.MMatrix[14]));
-	matrix.MMatrix[13] = -((matrix.MMatrix[1] * this.MMatrix[12]) + (matrix.MMatrix[5] * this.MMatrix[13]) + (matrix.MMatrix[9] * this.MMatrix[14]));
-	matrix.MMatrix[14] = -((matrix.MMatrix[2] * this.MMatrix[12]) + (matrix.MMatrix[6] * this.MMatrix[13]) + (matrix.MMatrix[10] * this.MMatrix[14]));
+	matrix.elements[12] = -((matrix.elements[0] * this.elements[12]) + (matrix.elements[4] * this.elements[13]) + (matrix.elements[8] * this.elements[14]));
+	matrix.elements[13] = -((matrix.elements[1] * this.elements[12]) + (matrix.elements[5] * this.elements[13]) + (matrix.elements[9] * this.elements[14]));
+	matrix.elements[14] = -((matrix.elements[2] * this.elements[12]) + (matrix.elements[6] * this.elements[13]) + (matrix.elements[10] * this.elements[14]));
 
 	// Invert scale
 	matrix.mScale.x = 1.0 / this.mScale.x;
@@ -129,7 +122,6 @@ Matrix.prototype.inverse = function ()
 	return matrix;
 }
 
-
 // Defines - Matrix Inverse
 function SWAP_ROWS (a, b)
 {
@@ -137,8 +129,6 @@ function SWAP_ROWS (a, b)
 	a = b;
 	b = tmp;
 }
-
-
 
 // Invert a 4x4 matrix properly.
 //
@@ -167,34 +157,34 @@ Matrix.prototype.slowInverse = function ()
 
 	// Inverse (4x4)
 	var matrixInverse = new Matrix(4, 4);
-	var mInverse = new Array();
+	var mInverse = [];
 
 	var m0, m1, m2, m3, s;
-	var r0 = new Array();
-	var r1 = new Array();
-	var r2 = new Array();
-	var r3 = new Array();
+	var r0 = [];
+	var r1 = [];
+	var r2 = [];
+	var r3 = [];
 
-	r0[0] = this.MMatrix[0+0*4]; r0[1] = this.MMatrix[0+1*4];
-	r0[2] = this.MMatrix[0+2*4]; r0[3] = this.MMatrix[0+3*4];
+	r0[0] = this.elements[0+0*4]; r0[1] = this.elements[0+1*4];
+	r0[2] = this.elements[0+2*4]; r0[3] = this.elements[0+3*4];
 	r0[4] = 1.0; r0[5] = r0[6] = r0[7] = 0.0;
 
-	r1[0] = this.MMatrix[1+0*4]; r1[1] = this.MMatrix[1+1*4];
-	r1[2] = this.MMatrix[1+2*4]; r1[3] = this.MMatrix[1+3*4];
+	r1[0] = this.elements[1+0*4]; r1[1] = this.elements[1+1*4];
+	r1[2] = this.elements[1+2*4]; r1[3] = this.elements[1+3*4];
 	r1[5] = 1.0; r1[4] = r1[6] = r1[7] = 0.0;
 
-	r2[0] = this.MMatrix[2+0*4]; r2[1] = this.MMatrix[2+1*4];
-	r2[2] = this.MMatrix[2+2*4]; r2[3] = this.MMatrix[2+3*4];
+	r2[0] = this.elements[2+0*4]; r2[1] = this.elements[2+1*4];
+	r2[2] = this.elements[2+2*4]; r2[3] = this.elements[2+3*4];
 	r2[6] = 1.0; r2[4] = r2[5] = r2[7] = 0.0;
 
-	r3[0] = this.MMatrix[3+0*4]; r3[1] = this.MMatrix[3+1*4];
-	r3[2] = this.MMatrix[3+2*4]; r3[3] = this.MMatrix[3+3*4];
+	r3[0] = this.elements[3+0*4]; r3[1] = this.elements[3+1*4];
+	r3[2] = this.elements[3+2*4]; r3[3] = this.elements[3+3*4];
 	r3[7] = 1.0; r3[4] = r3[5] = r3[6] = 0.0;
 
 	// choose pivot - or die
-	if (Math.abs(r3[0])>Math.abs(r2[0])) SWAP_ROWS(r3, r2);
-	if (Math.abs(r2[0])>Math.abs(r1[0])) SWAP_ROWS(r2, r1);
-	if (Math.abs(r1[0])>Math.abs(r0[0])) SWAP_ROWS(r1, r0);
+	if (Math.abs(r3[0]) > Math.abs(r2[0])) SWAP_ROWS(r3, r2);
+	if (Math.abs(r2[0]) > Math.abs(r1[0])) SWAP_ROWS(r2, r1);
+	if (Math.abs(r1[0]) > Math.abs(r0[0])) SWAP_ROWS(r1, r0);
 	if (0.0 == r0[0])
 		return matrixInverse;
 
@@ -213,8 +203,8 @@ Matrix.prototype.slowInverse = function ()
 	if (s != 0.0) { r1[7] -= m1 * s; r2[7] -= m2 * s; r3[7] -= m3 * s; }
 
 	// choose pivot - or die
-	if (Math.abs(r3[1])>Math.abs(r2[1])) SWAP_ROWS(r3, r2);
-	if (Math.abs(r2[1])>Math.abs(r1[1])) SWAP_ROWS(r2, r1);
+	if (Math.abs(r3[1]) > Math.abs(r2[1])) SWAP_ROWS(r3, r2);
+	if (Math.abs(r2[1]) > Math.abs(r1[1])) SWAP_ROWS(r2, r1);
 	if (0.0 == r1[1])
 		return matrixInverse;
 
@@ -228,7 +218,7 @@ Matrix.prototype.slowInverse = function ()
 	s = r1[7]; if (0.0 != s) { r2[7] -= m2 * s; r3[7] -= m3 * s; }
 
 	// choose pivot - or die
-	if (Math.abs(r3[2])>Math.abs(r2[2])) SWAP_ROWS(r3, r2);
+	if (Math.abs(r3[2]) > Math.abs(r2[2])) SWAP_ROWS(r3, r2);
 	if (0.0 == r2[2])
 		return matrixInverse;
 
@@ -284,14 +274,11 @@ Matrix.prototype.slowInverse = function ()
 
 	// Copy inverse matrix
 	for (var i = 0; i < 16; ++i)
-		matrixInverse.MMatrix[i] = mInverse[i];
+		matrixInverse.elements[i] = mInverse[i];
 	return matrixInverse;
 }
 
-
-
 // Points the matrix to look at the specified target.
-
 // <param name="eye">Position of the matrix.</param>
 // <param name="target">Target to look at.</param>
 // <param name="up">Up-vector.</param>
@@ -315,45 +302,39 @@ Matrix.prototype.pointAt = function (eye, target, up)
 	up = left.cross(forward);
 
 	// Update matrix
-	this.MMatrix[0] = left.x;
-	this.MMatrix[1] = left.y;
-	this.MMatrix[2] = left.z;
-	this.MMatrix[3] = 0.0;
+	this.elements[0] = left.x;
+	this.elements[1] = left.y;
+	this.elements[2] = left.z;
+	this.elements[3] = 0.0;
 
-	this.MMatrix[4] = up.x;
-	this.MMatrix[5] = up.y;
-	this.MMatrix[6] = up.z;
-	this.MMatrix[7] = 0.0;
+	this.elements[4] = up.x;
+	this.elements[5] = up.y;
+	this.elements[6] = up.z;
+	this.elements[7] = 0.0;
 
-	this.MMatrix[8] = -forward.x;
-	this.MMatrix[9] = -forward.y;
-	this.MMatrix[10] = -forward.z;
-	this.MMatrix[11] = 0.0;
+	this.elements[8] = -forward.x;
+	this.elements[9] = -forward.y;
+	this.elements[10] = -forward.z;
+	this.elements[11] = 0.0;
 
-	this.MMatrix[12] = eye.x;
-	this.MMatrix[13] = eye.y;
-	this.MMatrix[14] = eye.z;
-	this.MMatrix[15] = 1.0;
+	this.elements[12] = eye.x;
+	this.elements[13] = eye.y;
+	this.elements[14] = eye.z;
+	this.elements[15] = 1.0;
 }
 
-
-
 // Translate this matrix by the specified values.
-
 // <param name="x">X-axis translation.</param>
 // <param name="y">Y-axis translation.</param>
 // <param name="z">Z-axis translation.</param>
 Matrix.prototype.translate = function (x, y, z)
 {
-	this.MMatrix[12] = x;
-	this.MMatrix[13] = y;
-	this.MMatrix[14] = z;
+	this.elements[12] = x;
+	this.elements[13] = y;
+	this.elements[14] = z;
 }
 
-
-
 // Rotate this matrix by the specified values.
-
 // <param name="x">X-axis rotation.</param>
 // <param name="y">Y-axis rotation.</param>
 // <param name="z">Z-axis rotation.</param>
@@ -363,13 +344,10 @@ Matrix.prototype.rotate = function (x, y, z)
 
 	var quat = new Quaternion();
 	quat.rotate(x, y, z);
-	quat.toMatrix(this.MMatrix);
+	quat.toMatrix(this.elements);
 }
 
-
-
 // Scale this matrix by the specified values.
-
 // <param name="x">X-axis scale.</param>
 // <param name="y">Y-axis scale.</param>
 // <param name="z">Z-axis scale.</param>
@@ -378,10 +356,7 @@ Matrix.prototype.scale = function (x, y, z)
 	this.mScale.setPoint(x, y, z, 1);
 }
 
-
-
 // Set the identity matrix.
-
 Matrix.prototype.setIdentity = function ()
 {
 	// Set diagonal to 1.0 and the rest to 0.0
@@ -390,49 +365,40 @@ Matrix.prototype.setIdentity = function ()
 		for (var j = 0; j < this.mNumColumns; ++j)
 		{
 			if ( j == i )
-				this.MMatrix[i * this.mNumColumns + j] = 1.0;
+				this.elements[i * this.mNumColumns + j] = 1.0;
 			else
-				this.MMatrix[i * this.mNumColumns + j] = 0.0;
+				this.elements[i * this.mNumColumns + j] = 0.0;
 		}
 	}
 }
 
-
-
 // Returns the value at the specified row x column.
-
 // <param name="row">Row'th index to retrieve.</param>
 // <param name="column">Column'th index to retrieve.</param>
 // <returns>The value at Row x Column.</returns>
 Matrix.prototype.getValue = function (row, column)
 {
-	return this.MMatrix[row * this.mNumColumns + column];
+	return this.elements[row * this.mNumColumns + column];
 }
 
-
-
 // Sets a value at the specified row x column.
-
 // <param name="row">Row'th index to set.</param>
 // <param name="column">Column'th index to set.</param>
 // <param name="value">Value to set at Row x Column.</param>
 Matrix.prototype.setValue = function (row, column, value)
 {
-	this.MMatrix[row * this.mNumColumns + column] = value;
+	this.elements[row * this.mNumColumns + column] = value;
 }
-
 
 Matrix.prototype.getTranslation = function ()
 {
-	return new Point(this.MMatrix[12], this.MMatrix[13], this.MMatrix[14]);
+	return new Point(this.elements[12], this.elements[13], this.elements[14]);
 }
-
 
 Matrix.prototype.getRotation = function ()
 {
 	return this.mRotation;
 }
-
 
 Matrix.prototype.getScale = function ()
 {

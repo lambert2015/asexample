@@ -4,7 +4,6 @@
 // <param name="uri">URI to download the resource.</param>
 function ResourceItem (name, item, uri)
 {
-	
 	// Stores a unique name assigned to this resource.
 	this.name = name;
 

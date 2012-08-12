@@ -120,9 +120,9 @@ PixelTagShader.prototype.Disable = function ()
 PixelTagShader.prototype.Draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices
-	this.setMatrix(this.mProjectionId, this.Projection.MMatrix, 4);
-	this.setMatrix(this.mViewId, this.View.MMatrix, 4);
-	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.Projection.elements, 4);
+	this.setMatrix(this.mViewId, this.View.elements, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.elements, 4);
 	
 	var scale = entity.objectMatrix.GetScale();
 	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);

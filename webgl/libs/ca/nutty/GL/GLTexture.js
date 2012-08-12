@@ -1,66 +1,36 @@
-
 // Manages OpenGL textures.
-
-
-
-
-// Constructor.
-
 function GLTexture ()
 {
-	
 	// Setup inherited members.
-	
 	Texture.call(this);
 	
-	
-	
 	// Gets or sets the type of this texture.
-	
 	this.mTextureType;
 
-
-	
 	// Stores the texture.
-	
 	this.texture = null;
 	
-	
-	
 	// Gets or sets the sampler state for this texture.
-	
 	this.mSampler = null;
 
-
-	
 	// Gets or sets GL friendly texture format.
-	
 	this.mGlInternalFormat = 0;
 	this.mGlFormat = 0;
 	this.mGlType = 0;
 }
 
-
-
 // Prototypal Inheritance.
-
 GLTexture.prototype = new Texture();
 GLTexture.prototype.constructor = GLTexture;
 
-
-
 // Enumeration of the possible texture types.
-
 GLTexture.TextureType =
 {
 	Texture2D : 0x0DE1,
 	TextureCube : 0x8513
 };
 
-
-
 // Create a new blank texture.
-
 // <param name="width">Width of the texture, in pixels.</param>
 // <param name="height">Height of the texture, in pixels.</param>
 // <param name="format">Format of the texture.</param>
@@ -81,25 +51,25 @@ GLTexture.prototype.create = function (width, height, format, sampler)
 	if ( this.texture != null )
 	{
 		// First bind the texture location
-		gl.bindTexture(this.mTextureType, this.Texture);
+		gl.bindTexture(this.mTextureType, this.texture);
 
 		// Texture alignment
 		gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
 
 		// Texture mode
-		gl.texParameteri(this.mTextureType, gl.TEXTURE_WRAP_S, (sampler.AddressU == SamplerState.TextureAddressMode.Clamp) ? gl.CLAMP_TO_EDGE : gl.REPEAT);
-		gl.texParameteri(this.mTextureType, gl.TEXTURE_WRAP_T, (sampler.AddressV == SamplerState.TextureAddressMode.Clamp) ? gl.CLAMP_TO_EDGE : gl.REPEAT);
+		gl.texParameteri(this.mTextureType, gl.TEXTURE_WRAP_S, (sampler.addressU == SamplerState.TextureAddressMode.Clamp) ? gl.CLAMP_TO_EDGE : gl.REPEAT);
+		gl.texParameteri(this.mTextureType, gl.TEXTURE_WRAP_T, (sampler.addressV == SamplerState.TextureAddressMode.Clamp) ? gl.CLAMP_TO_EDGE : gl.REPEAT);
 
 		// Texture filter
 		if ( sampler.filter & SamplerState.TextureFilter.Linear )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, sampler.HasMipMap ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
+			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, sampler.hasMipMap ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
 		}
 		else if ( sampler.filter & SamplerState.TextureFilter.Point )
 		{
 			gl.texParameteri(this.mTextureType, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, sampler.HasMipMap ? gl.NEAREST_MIPMAP_NEAREST : gl.NEAREST);
+			gl.texParameteri(this.mTextureType, gl.TEXTURE_MIN_FILTER, sampler.hasMipMap ? gl.NEAREST_MIPMAP_NEAREST : gl.NEAREST);
 		}
 		else if ( sampler.filter & SamplerState.TextureFilter.LinearMipPoint )
 		{
@@ -134,7 +104,7 @@ GLTexture.prototype.create = function (width, height, format, sampler)
 
 		if ( sampler.filter & SamplerState.TextureFilter.Anisotropic )
 		{
-			gl.texParameterf(this.mTextureType, gl.TEXTURE_MAX_ANISOTROPY_EXT, sampler.MaxAnisotropy);
+			gl.texParameterf(this.mTextureType, gl.TEXTURE_MAX_ANISOTROPY_EXT, sampler.maxAnisotropy);
 		}
 
 		// Texture format
@@ -143,7 +113,8 @@ GLTexture.prototype.create = function (width, height, format, sampler)
 		this.mGlType = gl.UNSIGNED_BYTE;
 
 		if ( format == Texture.Format.Rgba )
-		{}
+		{
+		}
 		else if ( format == Texture.Format.Rgb )
 		{
 			this.mGlInternalFormat = gl.RGB;
@@ -216,27 +187,21 @@ GLTexture.prototype.create = function (width, height, format, sampler)
 	}
 }
 
-
-
 // Creates a set of mipmaps for this texture.
-
 GLTexture.prototype.createMipmaps = function ()
 {
 	gl.bindTexture(this.mTextureType, this.texture);
 	gl.generateMipmap(this.mTextureType);
 }
 
-
-
 // Free up any used resources.
-
 GLTexture.prototype.release = function ()
 {
 	if ( this.texture != null )
 	{
 		gl.deleteTexture(this.texture);
 		
-		this.Texture = null;
+		this.texture = null;
 		this.mWidth = 0;
 		this.mHeight = 0;
 		
@@ -246,39 +211,27 @@ GLTexture.prototype.release = function ()
 	}
 }
 
-
-
 // Binds the texture for use.
-
 GLTexture.prototype.bind = function ()
 {
 	gl.bindTexture(this.mTextureType, this.texture);
 }
 
-
-
 // Returns the texture type.
-
 // <returns>The texture type.</returns>
 GLTexture.prototype.getTextureType = function ()
 {
 	return this.mTextureType;
 }
 
-
-
 // Returns the texture id used by this object.
-
 // <returns>The texture id used by this object.</returns>
 GLTexture.prototype.getTextureId = function ()
 {
 	return this.texture;
 }
 
-
-
 // Returns the sampler state of the texture.
-
 // <returns>The sampler state of the texture.</returns>
 GLTexture.prototype.getSamplerState = function ()
 {

@@ -1,7 +1,6 @@
 // Image shader renderer (base shader for image processing).
 function ImageShader ()
 {
-	
 	// Setup inherited members.
 	BaseShader.call(this);
 	
@@ -15,27 +14,17 @@ function ImageShader ()
 	this.mTexelSizeId;
 	this.mColourId;
 	
-	
-	
 	// Array of texture samples
 	this.mSampleId;
 	
-	
-	
 	// Projection matrix.
 	this.projection;
-
-
 	
 	// View matrix.
 	this.view;
 	
-	
-	
 	// Stores the size of the image.
 	this.mImageSize = new Point();
-	
-	
 	
 	// Stores the size of one texel.
 	this.mTexelSize = new Point();
@@ -52,22 +41,22 @@ ImageShader.prototype.init = function ()
 	BaseShader.prototype.init.call(this);
 
 	// Get shader variables
-	this.mProjectionId = this.getVariable("ProjectionMatrix");
-	this.mViewId = this.getVariable("ViewMatrix");
-	this.mModelId = this.getVariable("ModelMatrix");
-	this.mModelScaleId = this.getVariable("ModelScale");
+	this.mProjectionId = this.getVariable("u_projectionMatrix");
+	this.mViewId = this.getVariable("u_viewMatrix");
+	this.mModelId = this.getVariable("u_modelMatrix");
+	this.mModelScaleId = this.getVariable("u_modelScale");
 	
-	this.mImageSizeId = this.getVariable("ImageSize");
-	this.mTexelSizeId = this.getVariable("TexelSize");
-	this.mColourId = this.getVariable("Colour");
+	this.mImageSizeId = this.getVariable("u_imageSize");
+	this.mTexelSizeId = this.getVariable("u_texelSize");
+	this.mColourId = this.getVariable("u_colour");
 	
 	// Get texture samples
-	this.mSampleId = new Array();
+	this.mSampleId = [];
 	var sampleId;
 	index = 0;
 	do
 	{
-		sampleId = this.getVariable("Sample" + index);
+		sampleId = this.getVariable("u_sample" + index);
 		if ( sampleId != null )
 		{
 			this.mSampleId.push(sampleId);
@@ -77,10 +66,7 @@ ImageShader.prototype.init = function ()
 	while ( sampleId != null );
 }
 
-
-
 // Implementation.
-
 ImageShader.prototype.enable = function ()
 {
 	BaseShader.prototype.enable.call(this);
@@ -93,10 +79,7 @@ ImageShader.prototype.enable = function ()
 	}
 }
 
-
-
 // Sets the size of the image.
-
 ImageShader.prototype.setSize = function (width, height)
 {
 	this.mImageSize.x = width;
@@ -106,16 +89,13 @@ ImageShader.prototype.setSize = function (width, height)
 	this.mTexelSize.y = (height != 0.0) ? 1.0 / height : 0.0;
 }
 
-
-
 // Implementation.
-
 ImageShader.prototype.draw = function (entity, numPoints, numIndices)
 {
 	// Set matrices
-	this.setMatrix(this.mProjectionId, this.projection.MMatrix, 4);
-	this.setMatrix(this.mViewId, this.view.MMatrix, 4);
-	this.setMatrix(this.mModelId, entity.objectMatrix.MMatrix, 4);
+	this.setMatrix(this.mProjectionId, this.projection.elements, 4);
+	this.setMatrix(this.mViewId, this.view.elements, 4);
+	this.setMatrix(this.mModelId, entity.objectMatrix.elements, 4);
 	
 	var scale = entity.objectMatrix.getScale();
 	this.setVariable(this.mModelScaleId, scale.x, scale.y, scale.z);
@@ -127,12 +107,12 @@ ImageShader.prototype.draw = function (entity, numPoints, numIndices)
 	this.setVariable(this.mColourId, material.diffuse.x, material.diffuse.y, material.diffuse.z, material.alpha);
 
 	// Set texture samples
-	if ( (material.Texture != null) && (material.texture.length != null) && (material.texture.length > 0) )
+	if ( (material.texture != null) && (material.texture.length != null) && (material.texture.length > 0) )
 	{
 		for (var i = 0; (i < material.texture.length) && (i < this.mSampleId.length); ++i)
 		{
 			gl.activeTexture(gl.TEXTURE0 + i);
-			material.texture[i].Bind();
+			material.texture[i].bind();
 		}
 	}
 	
