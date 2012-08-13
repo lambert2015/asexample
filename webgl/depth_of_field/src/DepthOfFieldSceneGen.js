@@ -3,10 +3,7 @@ function DepthOfFieldSceneGen ()
 {
 }
 
-
-
 // Function creates the VBO objects used in the scene.
-
 DepthOfFieldSceneGen.create = function ()
 {
 	// Array to store the list of entities in the scene.
