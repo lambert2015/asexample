@@ -308,13 +308,15 @@ DepthOfFieldScene.prototype.update = function ()
 		// Step 1: Render the scene as normal to texture
 		//	
 		this.mBasicShader.enable();
-			this.mFboColour.enable();
-				gl.viewport(0, 0, this.mFboColour.getFrameWidth(), this.mFboColour.getFrameHeight());
-				gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		this.mFboColour.enable();
+		
+		gl.viewport(0, 0, this.mFboColour.getFrameWidth(), this.mFboColour.getFrameHeight());
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 					
-				for (var i = 0; i < this.mEntity.length; ++i)
-					this.mBasicShader.draw(this.mEntity[i]);
-			this.mFboColour.disable();
+		for (var i = 0; i < this.mEntity.length; ++i)
+			this.mBasicShader.draw(this.mEntity[i]);
+			
+		this.mFboColour.disable();
 		this.mBasicShader.disable();
 	
 	
@@ -369,17 +371,17 @@ DepthOfFieldScene.prototype.update = function ()
 		{
 			// Post-process final image
 			this.mDofImageShader.enable();
-				this.mSurface.objectMaterial.texture[0] = this.mFboColourColourBuffer.textureObject;
-				this.mSurface.objectMaterial.texture[2] = this.mFboBlur2ColourBuffer.textureObject;
-				this.mDofImageShader.draw(this.mSurface);
+			this.mSurface.objectMaterial.texture[0] = this.mFboColourColourBuffer.textureObject;
+			this.mSurface.objectMaterial.texture[2] = this.mFboBlur2ColourBuffer.textureObject;
+			this.mDofImageShader.draw(this.mSurface);
 			this.mDofImageShader.disable();
 		}
 		else
 		{
 			// Visualize depth map
 			this.mDepthImageShader.enable();
-				this.mSurface.objectMaterial.texture[0] = this.mFboDepthColourBuffer.textureObject;
-				this.mDepthImageShader.draw(this.mSurface);
+			this.mSurface.objectMaterial.texture[0] = this.mFboDepthColourBuffer.textureObject;
+			this.mDepthImageShader.draw(this.mSurface);
 			this.mDepthImageShader.disable();
 		}
 	}
