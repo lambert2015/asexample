@@ -1,16 +1,14 @@
 // GLShader is a high level class to create and remove vertex and
 // fragment shaders.
-function GLShader ()
-{
+function GLShader() {
 	// Name to identify this shader.
 	this.name = null;
-	
+
 	// Stores a reference to the shader object.
 	this.shader = null;
 }
 
-GLShader.ShaderType =
-{
+GLShader.ShaderType = {
 	"Vertex" : 0,
 	"Fragment" : 1
 };
@@ -19,35 +17,29 @@ GLShader.ShaderType =
 // <param name="type">Type of shader to create.</param>
 // <param name="source">String containing the source code of the shader.</param>
 // <returns>True if the shader compiled successfully, otherwise false.</param>
-GLShader.prototype.create = function (type, source)
-{
+GLShader.prototype.create = function(type, source) {
 	this.release();
 
-	if ( type == GLShader.ShaderType.Vertex )
+	if (type == GLShader.ShaderType.Vertex)
 		this.shader = gl.createShader(gl.VERTEX_SHADER);
 	else
 		this.shader = gl.createShader(gl.FRAGMENT_SHADER);
-		
-	if ( this.shader != null )
-	{
+
+	if (this.shader != null) {
 		gl.shaderSource(this.shader, source);
 		gl.compileShader(this.shader);
-		
+
 		return gl.getShaderParameter(this.shader, gl.COMPILE_STATUS);
 	}
-	
+
 	return false;
 }
-
 // Removes the shader.
-GLShader.prototype.release = function ()
-{
+GLShader.prototype.release = function() {
 	gl.deleteShader(this.shader);
 	this.shader = null;
 }
-
 // Retrieves debugging information.
-GLShader.prototype.getLog = function ()
-{
+GLShader.prototype.getLog = function() {
 	return gl.getShaderInfoLog(this.shader)
 }

@@ -1,12 +1,11 @@
 // This class contains the http response from an http request.
-function HttpResponse ()
-{
+function HttpResponse() {
 	// Response status code.
-	this.statusCode;
-	
+	this.statusCode
+
 	// Response text.
-	this.responseText;
-	
+	this.responseText
+
 	// Optional state object.
-	this.state;
+	this.state
 }

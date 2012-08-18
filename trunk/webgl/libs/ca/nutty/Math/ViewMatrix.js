@@ -1,6 +1,5 @@
 // ViewMatrix builds Matrix objects based on certain desired views.
-function ViewMatrix ()
-{
+function ViewMatrix() {
 }
 
 // Build a frustum matrix.
@@ -11,8 +10,7 @@ function ViewMatrix ()
 // <param name="near">Near distance of frustum.</param>
 // <param name="far">Far distance of frustum.</param>
 // <returns>A frustum (3D rectangular region of space) matrix.</returns>
-ViewMatrix.frustum = function (left, right, bottom, top, near, far)
-{
+ViewMatrix.frustum = function(left, right, bottom, top, near, far) {
 	var matrix = new Matrix(4, 4);
 
 	matrix.elements[0] = (2.0 * near) / (right - left);
@@ -37,15 +35,13 @@ ViewMatrix.frustum = function (left, right, bottom, top, near, far)
 
 	return matrix;
 }
-
 // Build an orthographic matrix with centre at (0,0).
 // <param name="width">Width of the frustum.</param>
 // <param name="height">Height of the frustum.</param>
 // <param name="near">Near distance of frustum.</param>
 // <param name="far">Far distance of frustum.</param>
 // <returns>An orthographic matrix.</returns>
-ViewMatrix.orthographic = function (width, height, near, far)
-{
+ViewMatrix.orthographic = function(width, height, near, far) {
 	var matrix = new Matrix(4, 4);
 
 	matrix.elements[0] = 1.0 / width;
@@ -70,7 +66,6 @@ ViewMatrix.orthographic = function (width, height, near, far)
 
 	return matrix;
 }
-
 // Build an orthographic matrix.
 // <param name="left">Left coordinate of frustum.</param>
 // <param name="right">Right coordinate of frustum.</param>
@@ -79,8 +74,7 @@ ViewMatrix.orthographic = function (width, height, near, far)
 // <param name="near">Near distance of frustum.</param>
 // <param name="far">Far distance of frustum.</param>
 // <returns>An orthographic matrix.</returns>
-ViewMatrix.orthographicRect = function (left, right, bottom, top, near, far)
-{
+ViewMatrix.orthographicRect = function(left, right, bottom, top, near, far) {
 	var matrix = new Matrix(4, 4);
 
 	matrix.elements[0] = 2.0 / (right - left);
@@ -105,34 +99,25 @@ ViewMatrix.orthographicRect = function (left, right, bottom, top, near, far)
 
 	return matrix;
 }
-
 // Build a perspective matrix.
 // <param name="fovY">Angular pitch of frustum</param>
 // <param name="aspect">Aspext ratio of frustum</param>
 // <param name="near">Near distance of frustum</param>
 // <param name="far">Far distance of frustum</param>
 // <returns>A projection matrix</returns>
-ViewMatrix.perspective = function (fovY, aspect, near, far)
-{
+ViewMatrix.perspective = function(fovY, aspect, near, far) {
 	var top = near * Math.tan(fovY * (Math.PI / 360.0));
 	var bottom = -top;
 	var left = bottom * aspect;
 	var right = top * aspect;
 
-	return this.frustum(left,
-						right,
-						bottom,
-						top,
-						near,
-						far);
+	return this.frustum(left, right, bottom, top, near, far);
 }
-
 // Build a viewport matrix.
 // <param name="width">Width of the viewport.</param>
 // <param name="height">Height of the viewport.</param>
 // <returns>A viewport matrix.</returns>
-ViewMatrix.viewPort = function (x, y, width, height)
-{
+ViewMatrix.viewPort = function(x, y, width, height) {
 	var matrix = new Matrix(4, 4);
 
 	matrix.elements[0] = width * 0.5;
