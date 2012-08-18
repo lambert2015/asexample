@@ -1,6 +1,5 @@
 // Contains sampler state, which determines how to sample texture data.
-function SamplerState (sampler)
-{
+function SamplerState(sampler) {
 	// Gets or sets the texture-address mode for the u-coordinate.
 	this.addressU = (sampler != null) ? sampler.addressU : SamplerState.TextureAddressMode.Repeat;
 
@@ -24,8 +23,7 @@ function SamplerState (sampler)
 };
 
 // Enumeration of the possible texture modes for each address.
-SamplerState.TextureAddressMode =
-{
+SamplerState.TextureAddressMode = {
 	// Texture coordinates outside the range [0.0, 1.0] are set to
 	// the texture color at 0.0 or 1.0, respectively.
 	Clamp : 0,
@@ -36,14 +34,13 @@ SamplerState.TextureAddressMode =
 };
 
 // Enumeration of the possible texture filters.
-SamplerState.TextureFilter =
-{
+SamplerState.TextureFilter = {
 	// Use linear filtering.
 	Linear : 1,
 
 	// Use point filtering.
 	Point : 2,
-	
+
 	// Use anisotropic filtering.
 	Anisotropic : 4,
 
@@ -98,4 +95,4 @@ SamplerState.PointRepeat = new SamplerState();
 SamplerState.PointRepeat.addressU = SamplerState.TextureAddressMode.Repeat;
 SamplerState.PointRepeat.addressV = SamplerState.TextureAddressMode.Repeat;
 SamplerState.PointRepeat.addressW = SamplerState.TextureAddressMode.Repeat;
-SamplerState.PointRepeat.filter = SamplerState.TextureFilter.Point;
+SamplerState.PointRepeat.filter = SamplerState.TextureFilter.Point; 

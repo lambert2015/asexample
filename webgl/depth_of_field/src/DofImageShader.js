@@ -2,8 +2,7 @@
 // fragment properties as the DofBlur shader in order to reproduce the blur
 // calculations and determine how much to blend the blurred texture into the
 // rendered scene texture.
-function DofImageShader ()
-{
+function DofImageShader() {
 	// Setup inherited members.
 	DofBlurShader.call(this);
 }

@@ -14,7 +14,6 @@ function Torus (numSegments, numRings, radius, distance)
 	// Range between 0 and 2PI
 	var u;
 	var v;
-
 	var point = 0;
 	var index = 0;
 

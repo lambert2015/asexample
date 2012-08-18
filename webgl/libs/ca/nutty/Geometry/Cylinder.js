@@ -2,17 +2,15 @@
 // <param name="numPoint">Number of points to create for this shape.</param>
 // <param name="radius">Radius of the cylinder.</param>
 // <param name="height">Height of the cylinder.</param>
-function Cylinder (numPoint, radius, height)
-{
-	
+function Cylinder(numPoint, radius, height) {
+
 	// Setup inherited members.
 	PolygonMesh.call(this);
-	
-	
+
 	height *= 0.5;
 
 	// Must have even number of points
-	if ( (numPoint % 2) != 0 )
+	if ((numPoint % 2) != 0)
 		++numPoint;
 
 	// One centre point + points along the circle
@@ -20,8 +18,7 @@ function Cylinder (numPoint, radius, height)
 	this.create(numPoint, (numPoint - 2) * 3);
 
 	// Points on shape
-	for (var i = 0; i < numPoint; i += 2)
-	{
+	for (var i = 0; i < numPoint; i += 2) {
 		//var angle = (i / numPoint) * (2.0 * CMath.PI);
 		var angle = (i / (numPoint - 2.0)) * (2.0 * Math.PI);
 		var p1 = new Point(Math.cos(angle) * radius, Math.sin(angle) * radius, height);
@@ -35,8 +32,7 @@ function Cylinder (numPoint, radius, height)
 		this.setUV(i, uv);
 		this.setUV(i + 1, new Point(uv.x, 0));
 
-		if ( i < (numPoint - 2) )
-		{
+		if (i < (numPoint - 2)) {
 			this.indices[i * 3 + 0] = i;
 			this.indices[i * 3 + 1] = i + 1;
 			this.indices[i * 3 + 2] = i + 3;
@@ -51,8 +47,7 @@ function Cylinder (numPoint, radius, height)
 	this.createNormals();
 
 	// Average normals along the seem
-	if ( numPoint > 2 )
-	{
+	if (numPoint > 2) {
 		var endIndex = (numPoint * 3) - 6;
 		this.normals[0] = (this.normals[0] + this.normals[endIndex + 0]) * 0.5;
 		this.normals[1] = (this.normals[1] + this.normals[endIndex + 1]) * 0.5;
@@ -74,4 +69,4 @@ function Cylinder (numPoint, radius, height)
 
 // Prototypal Inheritance.
 Cylinder.prototype = new PolygonMesh();
-Cylinder.prototype.constructor = Cylinder;
+Cylinder.prototype.constructor = Cylinder; 

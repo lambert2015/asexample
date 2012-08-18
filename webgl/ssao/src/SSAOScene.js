@@ -17,7 +17,6 @@
 // 5. Subtract the AO map from the colour buffer to produce the final image.
 function SSAOScene ()
 {
-	
 	// Setup inherited members.
 	BaseScene.call(this);
 	

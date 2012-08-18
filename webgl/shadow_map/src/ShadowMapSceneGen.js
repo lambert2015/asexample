@@ -1,12 +1,10 @@
 // This script is responsible for creating the scene rendered using shadow maps.
 
-function ShadowMapSceneGen ()
-{
+function ShadowMapSceneGen() {
 }
 
 // Function creates the VBO objects used in the scene.
-ShadowMapSceneGen.create = function ()
-{
+ShadowMapSceneGen.create = function() {
 	// Array to store the list of entities in the scene.
 	var entity = [];
 
@@ -15,25 +13,25 @@ ShadowMapSceneGen.create = function ()
 	// Invert cube normals because we're inside the cube
 	for (var i = 0; i < cubeMesh.normals.length; ++i)
 		cubeMesh.normals[i] = -cubeMesh.normals[i];
-		
+
 	var cubeVbo = new GLVertexBufferObject();
 	cubeVbo.create(cubeMesh);
-	
+
 	// Create the column (cylinder)
 	var cylinderMesh = new Cylinder(32.0, 0.25, 6.0);
 	var cylinderVbo = new GLVertexBufferObject();
 	cylinderVbo.create(cylinderMesh);
-	
+
 	// Create the central stand
 	var cubeMeshStand = new Cube(1.0, 1.0, 1.0);
 	var cubeStandVbo = new GLVertexBufferObject();
 	cubeStandVbo.create(cubeMeshStand);
-	
+
 	// Create the central marble
 	var sphereMesh = new Sphere(24, 24, 1.0, 0.0);
 	var sphereVbo = new GLVertexBufferObject();
 	sphereVbo.create(sphereMesh);
-	
+
 	// Create entities
 	var roomEntity = new Entity();
 	roomEntity.objectEntity = cubeVbo;
@@ -41,12 +39,10 @@ ShadowMapSceneGen.create = function ()
 	roomEntity.objectMaterial.diffuse.setPoint(0.8, 0.8, 0.8);
 	roomEntity.objectMaterial.specular.setPoint(0.0, 0.0, 0.0);
 	entity.push(roomEntity);
-	
+
 	// 4 column entities
-	for (var x = -1; x <= 1; x += 2)
-	{
-		for (var z = -1; z <= 1; z += 2)
-		{
+	for (var x = -1; x <= 1; x += 2) {
+		for (var z = -1; z <= 1; z += 2) {
 			var columnEntity = new Entity();
 			columnEntity.objectEntity = cylinderVbo;
 			columnEntity.objectMatrix.translate(x * 3.5, 0.0, z * 3.5);
@@ -57,7 +53,7 @@ ShadowMapSceneGen.create = function ()
 			entity.push(columnEntity);
 		}
 	}
-	
+
 	// Central stand
 	var cubeStandEntity = new Entity();
 	cubeStandEntity.objectEntity = cubeStandVbo;
@@ -66,7 +62,7 @@ ShadowMapSceneGen.create = function ()
 	cubeStandEntity.objectMaterial.diffuse.setPoint(0.8, 0.8, 0.8);
 	cubeStandEntity.objectMaterial.specular.setPoint(0.0, 0.0, 0.0);
 	entity.push(cubeStandEntity);
-	
+
 	// Central marble
 	var sphereEntity = new Entity();
 	sphereEntity.objectEntity = sphereVbo;
@@ -76,6 +72,6 @@ ShadowMapSceneGen.create = function ()
 	sphereEntity.objectMaterial.specular.setPoint(0.4, 0.4, 0.4);
 	sphereEntity.objectMaterial.shininess = 32;
 	entity.push(sphereEntity);
-	
+
 	return entity;
 }
