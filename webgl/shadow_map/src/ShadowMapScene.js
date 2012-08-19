@@ -274,7 +274,7 @@ ShadowMapScene.prototype.start = function() {
 	BaseScene.prototype.start.call(this);
 
 	// Create camera matrices
-	this.mProjectionMatrix = ViewMatrix.perspective(65.0, 1.333, 1.0, 30.0);
+	this.mProjectionMatrix = ViewMatrix.perspective(90.0, 1.333, 1.0, 30.0);
 	this.mViewMatrix.pointAt(new Point(0.0, 2.0, 9.9), new Point());
 	this.mInvViewMatrix = this.mViewMatrix.inverse();
 }
@@ -588,7 +588,9 @@ ShadowMapScene.prototype.compileShaders = function(index, list) {
 	if (shaderItem != null) {
 		// Compile vertex shader
 		var shader = new GLShader();
-		if (!shader.create((shaderItem.name.lastIndexOf(".vs") != -1) ? GLShader.ShaderType.Vertex : GLShader.ShaderType.Fragment, shaderItem.item)) {
+		if (!shader.create((shaderItem.name.lastIndexOf(".vs") != -1) ? 
+		GLShader.ShaderType.Vertex : 
+			GLShader.ShaderType.Fragment, shaderItem.item)) {
 			// Report error
 			var log = shader.getLog();
 			alert("Error compiling " + shaderItem.name + ".\n\n" + log);

@@ -155,7 +155,7 @@ BasicShader.prototype.Enable = function() {
 	// Set light sources
 	this.setVariableInt(this.mNumLightId, this.LightObject.length);
 	for (var i = 0; (i < this.mLightId.length) && (i < this.LightObject.length); ++i) {
-		this.setVariableInt(this.mLightId[i].TypeId, this.LightObject[i].LightType);
+		this.setVariableInt(this.mLightId[i].TypeId, this.LightObject[i].lightType);
 		this.setVariable(this.mLightId[i].PositionId, this.LightObject[i].Position.x, this.LightObject[i].Position.y, this.LightObject[i].Position.z);
 		this.setVariable(this.mLightId[i].AttenuationId, this.LightObject[i].Attenuation.x, this.LightObject[i].Attenuation.y, this.LightObject[i].Attenuation.z);
 		this.setVariable(this.mLightId[i].DirectionId, this.LightObject[i].Direction.x, this.LightObject[i].Direction.y, this.LightObject[i].Direction.z);

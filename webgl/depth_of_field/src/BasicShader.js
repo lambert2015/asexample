@@ -80,7 +80,7 @@ BasicShader.prototype.init = function() {
 		if (lightPosId != null) {
 			var light = new BasicShader.LightSource();
 			light.positionId = lightPosId;
-			light.TypeId = this.getVariable("u_lights[" + index + "].type");
+			light.typeId = this.getVariable("u_lights[" + index + "].type");
 			light.attenuationId = this.getVariable("u_lights[" + index + "].attenuation");
 			light.directionId = this.getVariable("u_lights[" + index + "].direction");
 			light.colourId = this.getVariable("u_lights[" + index + "].colour");
@@ -88,7 +88,8 @@ BasicShader.prototype.init = function() {
 			light.innerCutoffId = this.getVariable("u_lights[" + index + "].innerCutoff");
 			light.exponentId = this.getVariable("u_lights[" + index + "].exponent");
 
-			this.mLightId.push(light); ++index;
+			this.mLightId.push(light); 
+			++index;
 		}
 	} while ( lightPosId != null );
 
@@ -108,7 +109,8 @@ BasicShader.prototype.init = function() {
 	do {
 		sampleId = this.getVariable("u_sample" + index);
 		if (sampleId != null) {
-			this.mSampleId.push(sampleId); ++index;
+			this.mSampleId.push(sampleId); 
+			++index;
 		}
 	} while ( sampleId != null );
 }
@@ -130,10 +132,10 @@ BasicShader.prototype.enable = function() {
 		var lightSrc = this.mLightId[i];
 		var light = this.lightObject[i];
 		this.setVariableInt(lightSrc.typeId, light.lightType);
-		this.setVariable(lightSrc.positionId, light.position.x, light.position.y, light.position.z);
-		this.setVariable(lightSrc.attenuationId, light.attenuation.x, light.attenuation.y, light.attenuation.z);
-		this.setVariable(lightSrc.directionId, light.direction.x, light.direction.y, light.direction.z);
-		this.setVariable(lightSrc.colourId, light.colour.x, light.colour.y, light.colour.z);
+		this.setVariableVec3(lightSrc.positionId, light.position);
+		this.setVariableVec3(lightSrc.attenuationId, light.attenuation);
+		this.setVariableVec3(lightSrc.directionId, light.direction);
+		this.setVariableVec3(lightSrc.colourId, light.colour);
 		this.setVariable(lightSrc.outerCutoffId, light.outerCutoff);
 		this.setVariable(lightSrc.innerCutoffId, light.innerCutoff);
 		this.setVariable(lightSrc.exponentId, light.exponent);

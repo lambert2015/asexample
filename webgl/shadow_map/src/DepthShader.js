@@ -4,17 +4,17 @@ function DepthShader() {
 	BaseShader.call(this);
 
 	// Shader variables.
-	this.mProjectionId
-	this.mViewId
-	this.mModelId
-	this.mModelScaleId
-	this.mFilterTypeId
+	this.mProjectionId;
+	this.mViewId;
+	this.mModelId;
+	this.mModelScaleId;
+	this.mFilterTypeId;
 
 	// Projection matrix.
-	this.projection
+	this.projection;
 
 	// View matrix.
-	this.view
+	this.view;
 
 	// Specifies the type of shadow map filtering to perform.
 	// 0 = None

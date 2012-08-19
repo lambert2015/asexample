@@ -5,8 +5,8 @@ function DepthRenderShader() {
 	ImageShader.call(this);
 
 	// Shader variables.
-	this.mFilterTypeId
-	this.mSampleCubeId
+	this.mFilterTypeId;
+	this.mSampleCubeId;
 
 	// Specifies the type of shadow map filtering to perform.
 	// 0 = None

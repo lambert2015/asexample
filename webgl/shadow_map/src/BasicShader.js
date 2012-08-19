@@ -5,22 +5,22 @@ function BasicShader() {
 	BaseShader.call(this);
 
 	// Shader variables.
-	this.mProjectionId
-	this.mViewId
-	this.mModelId
-	this.mModelScaleId
+	this.mProjectionId;
+	this.mViewId;
+	this.mModelId;
+	this.mModelScaleId;
 
-	this.mShadingTypeId
-	this.mNumLightId
-	this.mLightId// Array of light sources
-	this.mMaterialId
-	this.mSampleId// Array of texture samples
+	this.mShadingTypeId;
+	this.mNumLightId;
+	this.mLightId;// Array of light sources
+	this.mMaterialId;
+	this.mSampleId;// Array of texture samples
 
 	// Projection matrix.
-	this.projection
+	this.projection;
 
 	// View matrix.
-	this.view
+	this.view;
 
 	// Shading type.
 	// 0 = Gouraud shading
@@ -127,11 +127,11 @@ BasicShader.prototype.enable = function() {
 	var lights = this.lightObject;
 	this.setVariableInt(this.mNumLightId, lights.length);
 	for (var i = 0; (i < this.mLightId.length) && (i < lights.length); ++i) {
-		this.setVariableInt(this.mLightId[i].typeId, lights[i].LightType);
-		this.setVariable(this.mLightId[i].positionId, lights[i].position.x, lights[i].position.y, lights[i].position.z);
-		this.setVariable(this.mLightId[i].attenuationId, lights[i].attenuation.x, lights[i].attenuation.y, lights[i].attenuation.z);
-		this.setVariable(this.mLightId[i].directionId, lights[i].direction.x, lights[i].direction.y, lights[i].direction.z);
-		this.setVariable(this.mLightId[i].colourId, lights[i].colour.x, lights[i].colour.y, lights[i].colour.z);
+		this.setVariableInt(this.mLightId[i].typeId, lights[i].lightType);
+		this.setVariableVec3(this.mLightId[i].positionId, lights[i].position);
+		this.setVariableVec3(this.mLightId[i].attenuationId, lights[i].attenuation);
+		this.setVariableVec3(this.mLightId[i].directionId, lights[i].direction);
+		this.setVariableVec3(this.mLightId[i].colourId, lights[i].colour);
 		this.setVariable(this.mLightId[i].outerCutoffId, lights[i].outerCutoff);
 		this.setVariable(this.mLightId[i].innerCutoffId, lights[i].innerCutoff);
 		this.setVariable(this.mLightId[i].exponentId, lights[i].exponent);
@@ -149,12 +149,12 @@ BasicShader.prototype.draw = function(entity, numPoints, numIndices) {
 
 	// Set material
 	var material = entity.objectMaterial;
-	this.setVariable(this.mMaterialId.ambientId, material.ambient.x, material.ambient.y, material.ambient.z);
+	this.setVariableVec3(this.mMaterialId.ambientId, material.ambient);
 	this.setVariable(this.mMaterialId.diffuseId, material.diffuse.x, material.diffuse.y, material.diffuse.z, material.alpha);
-	this.setVariable(this.mMaterialId.specularId, material.specular.x, material.specular.y, material.specular.z);
+	this.setVariableVec3(this.mMaterialId.specularId, material.specular);
 	this.setVariable(this.mMaterialId.shininessId, material.shininess);
-	this.setVariable(this.mMaterialId.textureOffsetId, material.textureOffset.x, material.textureOffset.y);
-	this.setVariable(this.mMaterialId.textureScaleId, material.textureScale.x, material.textureScale.y);
+	this.setVariableVec2(this.mMaterialId.textureOffsetId, material.textureOffset);
+	this.setVariableVec2(this.mMaterialId.textureScaleId, material.textureScale);
 
 	// Set texture samples
 	if ((material.texture != null) && (material.texture.length != null)) {
