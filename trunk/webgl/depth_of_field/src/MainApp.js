@@ -18,8 +18,7 @@ appLoad = function() {
 appStart = function() {
 	// Initialize WebGL
 	var canvas = document.getElementById("webgl_canvas");
-	// try
-	// {
+
 	gl = canvas.getContext("experimental-webgl");
 	gl.viewport(0.0, 0.0, canvas.width, canvas.height);
 
@@ -30,11 +29,6 @@ appStart = function() {
 
 	// Start renderer
 	appRender();
-	// }
-	// catch ( error )
-	// {
-	// 	// Does not support WebGL
-	// }
 }
 // This method is called when the HTML page is unloading.
 

@@ -1,7 +1,5 @@
 // Vertex shader for rendering the scene with shadows.
-
 // Material source structure.
-
 struct MaterialSource
 {
 	vec3 ambient;

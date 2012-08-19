@@ -624,7 +624,7 @@ DepthOfFieldScene.prototype.onLoadComplete = function() {
 	var imgCheckerBoard = this.mResource.find("checker_board.png");
 	if (imgCheckerBoard != null) {
 		this.mTexCheckerBoard = new GLTexture2D();
-		this.mTexCheckerBoard.create(imgCheckerBoard.item.width, imgCheckerBoard.item.height, Texture.Format.Alpha8, sampler, imgCheckerBoard.Item);
+		this.mTexCheckerBoard.create(imgCheckerBoard.item.width, imgCheckerBoard.item.height, Texture.Format.Alpha8, sampler, imgCheckerBoard.item);
 
 		this.mEntity[1].objectMaterial.texture = [];
 		this.mEntity[1].objectMaterial.texture.push(this.mTexCheckerBoard);

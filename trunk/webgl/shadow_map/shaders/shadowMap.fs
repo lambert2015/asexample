@@ -102,10 +102,10 @@ void main ()
 {
 	// v_worldNormal is interpolated when passed into the fragment shader.
 	// We need to renormalize the vector so that it stays at unit length.
-	vec3 normal = normalize(v_worldNormal);
+	vec3 t_normal = normalize(v_worldNormal);
 
 	// Colour the fragment as normal
-	vec3 colour = u_material.ambient;
+	vec3 t_colour = u_material.ambient;
 	for (int i = 0; i < 4; ++i)
 	{
 		if ( i >= u_numLight )
@@ -113,7 +113,7 @@ void main ()
 
 		// Calculate diffuse term
 		vec3 t_lightVec = normalize(u_lights[i].position - v_worldVertex.xyz);
-		float l = dot(normal, t_lightVec);
+		float l = dot(t_normal, t_lightVec);
 		if ( l > 0.0 )
 		{
 			// Calculate spotlight effect
@@ -126,7 +126,7 @@ void main ()
 			}
 			
 			// Calculate specular term
-			vec3 r = -normalize(reflect(t_lightVec, normal));
+			vec3 r = -normalize(reflect(t_lightVec, t_normal));
 			float s = pow(max(dot(r, v_viewVec), 0.0), u_material.shininess);
 			
 			// Calculate attenuation factor
@@ -134,7 +134,7 @@ void main ()
 			float a = 1.0 / (u_lights[i].attenuation.x + (u_lights[i].attenuation.y * d) + (u_lights[i].attenuation.z * d * d));
 			
 			// Add to colour
-			colour += ((u_material.diffuse.xyz * l) + (u_material.specular * s)) * u_lights[i].colour * a * spotlight;
+			t_colour += ((u_material.diffuse.xyz * l) + (u_material.specular * s)) * u_lights[i].colour * a * spotlight;
 		}
 	}
 	
@@ -209,5 +209,5 @@ void main ()
 	//
 	// Apply colour and shadow
 	//
-	gl_FragColor = clamp(vec4(colour * shadow, u_material.diffuse.w), 0.0, 1.0);
+	gl_FragColor = clamp(vec4(t_colour * shadow, u_material.diffuse.w), 0.0, 1.0);
 }

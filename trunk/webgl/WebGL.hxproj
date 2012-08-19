@@ -20,10 +20,10 @@
   <!-- Build options -->
   <build>
     <option directives="" />
-    <option flashStrict="False" />
+    <option flashStrict="True" />
     <option mainClass="Main" />
-    <option enabledebug="False" />
-    <option additional="" />
+    <option enabledebug="True" />
+    <option additional="-lib haxe-webgl&#xA;-lib html5&#xA;--js-modern" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

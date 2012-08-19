@@ -54,7 +54,8 @@ ImageShader.prototype.init = function() {
 	do {
 		sampleId = this.getVariable("u_sample" + index);
 		if (sampleId != null) {
-			this.mSampleId.push(sampleId); ++index;
+			this.mSampleId.push(sampleId); 
+			++index;
 		}
 	} while ( sampleId != null );
 }
