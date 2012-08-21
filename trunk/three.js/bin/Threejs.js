@@ -1,3 +1,4 @@
+(function () { "use strict";
 var HxOverrides = function() { }
 HxOverrides.__name__ = true;
 HxOverrides.dateStr = function(date) {
@@ -109,7 +110,7 @@ Std.parseFloat = function(x) {
 Std.random = function(x) {
 	return x <= 0?0:Math.floor(Math.random() * x);
 }
-var js = js || {}
+var js = {}
 js.Boot = function() { }
 js.Boot.__name__ = true;
 js.Boot.__unhtml = function(s) {
@@ -253,14 +254,14 @@ js.Lib.debug = function() {
 js.Lib.alert = function(v) {
 	alert(js.Boot.__string_rec(v,""));
 }
-js.Lib.eval = function(code) {
+js.Lib["eval"] = function(code) {
 	return eval(code);
 }
 js.Lib.setErrorHandler = function(f) {
 	js.Lib.onerror = f;
 }
-var three = three || {}
-if(!three.math) three.math = {}
+var three = {}
+three.math = {}
 three.math.Color = function(hex) {
 };
 three.math.Color.__name__ = true;
@@ -368,7 +369,7 @@ three.math.Vector2.prototype = {
 	}
 	,__class__: three.math.Vector2
 }
-if(!three.scenes) three.scenes = {}
+three.scenes = {}
 three.scenes.Fog = function(hex,near,far) {
 	if(far == null) far = 1000;
 	if(near == null) near = 1;
@@ -421,5 +422,6 @@ if(typeof window != "undefined") {
 	};
 }
 Main.main();
+})();
 
 //@ sourceMappingURL=Threejs.js.map
