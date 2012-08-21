@@ -84,6 +84,7 @@ Main.main = function() {
 	vec2.setTo(100,200);
 	var vec22 = vec2.clone();
 	js.Lib.alert(vec22);
+	var fog = new three.scenes.Fog(0,2,3000);
 }
 var Std = function() { }
 Std.__name__ = true;
@@ -260,6 +261,12 @@ js.Lib.setErrorHandler = function(f) {
 }
 var three = three || {}
 if(!three.math) three.math = {}
+three.math.Color = function(hex) {
+};
+three.math.Color.__name__ = true;
+three.math.Color.prototype = {
+	__class__: three.math.Color
+}
 three.math.Vector2 = function(x,y) {
 	if(y == null) y = 0;
 	if(x == null) x = 0;
@@ -315,13 +322,7 @@ three.math.Vector2.prototype = {
 		return this.x * value.x + this.y * value.y;
 	}
 	,negate: function() {
-		return (function($this) {
-			var $r;
-			$this.x *= -1;
-			$this.y *= -1;
-			$r = $this;
-			return $r;
-		}(this));
+		return this.multiplyScalar(-1);
 	}
 	,divideScalar: function(value) {
 		if(value != 0) {
@@ -366,6 +367,18 @@ three.math.Vector2.prototype = {
 		return this;
 	}
 	,__class__: three.math.Vector2
+}
+if(!three.scenes) three.scenes = {}
+three.scenes.Fog = function(hex,near,far) {
+	if(far == null) far = 1000;
+	if(near == null) near = 1;
+	this.color = new three.math.Color(hex);
+	this.near = near;
+	this.far = far;
+};
+three.scenes.Fog.__name__ = true;
+three.scenes.Fog.prototype = {
+	__class__: three.scenes.Fog
 }
 if(Array.prototype.indexOf) HxOverrides.remove = function(a,o) {
 	var i = a.indexOf(o);
