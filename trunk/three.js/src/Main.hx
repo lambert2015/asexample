@@ -1,5 +1,6 @@
 package ;
 
+import js.Dom;
 import js.Lib;
 import three.math.Vector2;
 import three.scenes.Fog;
@@ -14,14 +15,20 @@ class Main
 	
 	static function main() 
 	{
-		var vec2:Vector2 = new Vector2();
-		vec2.setTo(100, 200);
-		
-		var vec22:Vector2 = vec2.clone();
-		Lib.alert(vec22);
-		
-		var fog:Fog = new Fog(0, 2, 3000);
-		
+		new Main();
+	}
+	
+	public function new()
+	{
+		Lib.window.onload = onLoad;
+	}
+	
+	private function onLoad(e:Event):Void
+	{
+		var canvas = Lib.document.getElementById("webgl_canvas");
+		var gl = untyped canvas.getContext("experimental-webgl");
+		untyped gl.viewport(0.0, 0.0, canvas.width, canvas.height);
+		untyped gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	}
 	
 }
