@@ -22,8 +22,8 @@
     <option directives="" />
     <option flashStrict="False" />
     <option mainClass="Main" />
-    <option enabledebug="False" />
-    <option additional="" />
+    <option enabledebug="True" />
+    <option additional="--js-modern" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
