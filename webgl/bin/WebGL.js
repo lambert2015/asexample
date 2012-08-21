@@ -79,20 +79,17 @@ IntIter.prototype = {
 	,__class__: IntIter
 }
 var Main = function() {
-	js.Lib.window.onload = $bind(this,this.onLoad);
+	var vec = new Vector3();
+	var canvas = js.Lib.document.getElementById("webgl_canvas");
 };
 Main.__name__ = true;
 Main.main = function() {
-	new Main();
+	var vec = new Vector3();
+	vec.x = 100;
+	js.Lib.alert(vec.x);
 }
 Main.prototype = {
-	onLoad: function(e) {
-		var canvas = js.Lib.document.getElementById("webgl_canvas");
-		var gl = canvas.getContext("experimental-webgl");
-		gl.viewport(0.0,0.0,canvas.width,canvas.height);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	}
-	,__class__: Main
+	__class__: Main
 }
 var Std = function() { }
 Std.__name__ = true;
@@ -116,6 +113,14 @@ Std.parseFloat = function(x) {
 }
 Std.random = function(x) {
 	return x <= 0?0:Math.floor(Math.random() * x);
+}
+var Vector3 = function() {
+};
+Vector3.__name__ = true;
+Vector3.prototype = {
+	add: function(value) {
+	}
+	,__class__: Vector3
 }
 var js = {}
 js.Boot = function() { }
@@ -267,129 +272,6 @@ js.Lib["eval"] = function(code) {
 js.Lib.setErrorHandler = function(f) {
 	js.Lib.onerror = f;
 }
-var three = {}
-three.math = {}
-three.math.Color = function(hex) {
-};
-three.math.Color.__name__ = true;
-three.math.Color.prototype = {
-	__class__: three.math.Color
-}
-three.math.Vector2 = function(x,y) {
-	if(y == null) y = 0;
-	if(x == null) x = 0;
-	this.x = x;
-	this.y = y;
-};
-three.math.Vector2.__name__ = true;
-three.math.Vector2.prototype = {
-	clone: function() {
-		return new three.math.Vector2(this.x,this.y);
-	}
-	,isZero: function() {
-		return this.lengthSq() < 0.0001;
-	}
-	,equals: function(value) {
-		return value.x == this.x && value.y == this.y;
-	}
-	,lerpSelf: function(value,interp) {
-		this.x += (value.x - this.x) * interp;
-		this.y += (value.y - this.y) * interp;
-		return this;
-	}
-	,setLength: function(value) {
-		return this.normalize().multiplyScalar(value);
-	}
-	,distanceTo: function(value) {
-		var dx = this.x - value.x, dy = this.y - value.y;
-		return Math.sqrt(dx * dx + dy * dy);
-	}
-	,distanceToSquared: function(value) {
-		var dx = this.x - value.x, dy = this.y - value.y;
-		return dx * dx + dy * dy;
-	}
-	,normalize: function() {
-		var lengthSquare = this.x * this.x + this.y * this.y;
-		if(lengthSquare != 0) {
-			var len = 1 / lengthSquare;
-			this.x *= len;
-			this.y *= len;
-		} else {
-			this.x = 0;
-			this.y = 0;
-		}
-		return this;
-	}
-	,length: function() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
-	}
-	,lengthSq: function() {
-		return this.x * this.x + this.y * this.y;
-	}
-	,dot: function(value) {
-		return this.x * value.x + this.y * value.y;
-	}
-	,negate: function() {
-		return this.multiplyScalar(-1);
-	}
-	,divideScalar: function(value) {
-		if(value != 0) {
-			this.x /= value;
-			this.y /= value;
-		} else this.setTo(0,0);
-		return this;
-	}
-	,multiplyScalar: function(value) {
-		this.x *= value;
-		this.y *= value;
-		return this;
-	}
-	,subSelf: function(value) {
-		this.x -= value.x;
-		this.y -= value.y;
-		return this;
-	}
-	,sub: function(a,b) {
-		this.x = a.x - b.x;
-		this.y = a.y - b.y;
-		return this;
-	}
-	,addSelf: function(value) {
-		this.x += value.x;
-		this.y += value.y;
-		return this;
-	}
-	,add: function(a,b) {
-		this.x = a.x + b.x;
-		this.y = a.y + b.y;
-		return this;
-	}
-	,copy: function(value) {
-		this.x = value.x;
-		this.y = value.y;
-		return this;
-	}
-	,setTo: function(x,y) {
-		this.x = x;
-		this.y = y;
-		return this;
-	}
-	,__class__: three.math.Vector2
-}
-three.scenes = {}
-three.scenes.Fog = function(hex,near,far) {
-	if(far == null) far = 1000;
-	if(near == null) near = 1;
-	this.color = new three.math.Color(hex);
-	this.near = near;
-	this.far = far;
-};
-three.scenes.Fog.__name__ = true;
-three.scenes.Fog.prototype = {
-	__class__: three.scenes.Fog
-}
-var $_;
-function $bind(o,m) { var f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; return f; };
 if(Array.prototype.indexOf) HxOverrides.remove = function(a,o) {
 	var i = a.indexOf(o);
 	if(i == -1) return false;
@@ -433,4 +315,4 @@ if(typeof window != "undefined") {
 Main.main();
 })();
 
-//@ sourceMappingURL=Threejs.js.map
+//@ sourceMappingURL=WebGL.js.map
