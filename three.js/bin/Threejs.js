@@ -88,8 +88,8 @@ Main.main = function() {
 Main.prototype = {
 	onLoad: function(e) {
 		var canvas = js.Lib.document.getElementById("webgl_canvas");
-		var gl = canvas.getContext("experimental-webgl");
-		gl.viewport(0.0,0.0,canvas.width,canvas.height);
+		var gl = js.Boot.__cast(canvas.getContext("experimental-webgl") , WebGLRenderingContext);
+		gl.viewport(0,0,canvas.width,canvas.height);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	}
 	,__class__: Main
