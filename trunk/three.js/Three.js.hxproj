@@ -23,7 +23,7 @@
     <option flashStrict="False" />
     <option mainClass="Main" />
     <option enabledebug="True" />
-    <option additional="--js-modern" />
+    <option additional="--js-modern&#xA;-lib xirsys_stdjs" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

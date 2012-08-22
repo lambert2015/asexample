@@ -2,6 +2,7 @@ package ;
 
 import js.Dom;
 import js.Lib;
+import UserAgentContext;
 import three.math.Vector2;
 import three.scenes.Fog;
 
@@ -25,10 +26,10 @@ class Main
 	
 	private function onLoad(e:Event):Void
 	{
-		var canvas = Lib.document.getElementById("webgl_canvas");
-		var gl = untyped canvas.getContext("experimental-webgl");
-		untyped gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-		untyped gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		var canvas = untyped Lib.document.getElementById("webgl_canvas");
+		var gl:WebGLRenderingContext = cast(canvas.getContext("experimental-webgl"),WebGLRenderingContext);
+		gl.viewport(0, 0, canvas.width, canvas.height);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	}
 	
 }
