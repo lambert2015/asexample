@@ -26,7 +26,7 @@ class Main
 	
 	private function onLoad(e:Event):Void
 	{
-		var canvas = untyped Lib.document.getElementById("webgl_canvas");
+		var canvas:HTMLCanvasElement = cast Lib.document.getElementById("webgl_canvas");
 		var gl:WebGLRenderingContext = cast(canvas.getContext("experimental-webgl"),WebGLRenderingContext);
 		gl.viewport(0, 0, canvas.width, canvas.height);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
