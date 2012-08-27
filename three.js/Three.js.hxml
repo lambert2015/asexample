@@ -1,0 +1,5 @@
+-cp src
+-js bin/Threejs.js
+-main Main
+--js-modern
+-lib xirsys_stdjs

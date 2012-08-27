@@ -91,12 +91,14 @@ class Vector2
 		return this.x * value.x + this.y * value.y;
 	}
 	
-	public function lengthSq():Float
+	public var lengthSq(getLengthSq, never):Float;
+	public function getLengthSq():Float
 	{
 		return this.x * this.x + this.y * this.y;
 	}
 	
-	public function length():Float
+	public var length(getLength, never):Float;
+	public function getLength():Float
 	{
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
@@ -152,7 +154,7 @@ class Vector2
 	
 	public function isZero():Bool
 	{
-		return this.lengthSq() < 0.0001;
+		return this.lengthSq < 0.0001;
 	}
 	
 	public function clone():Vector2

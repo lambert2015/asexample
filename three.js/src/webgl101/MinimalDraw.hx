@@ -1,4 +1,4 @@
-package ;
+package webgl101;
 
 import js.Dom;
 import js.Lib;
@@ -8,19 +8,15 @@ import UserAgentContext;
 import three.math.Vector2;
 import three.scenes.Fog;
 import three.utils.WebGLUtil;
-import three.core.Object3D;
-import three.scenes.Scene;
 /**
  * ...
  * @author 
  */
-
-class Main 
+class MinimalDraw 
 {
-	
 	static function main() 
 	{
-		new Main();
+		new MinimalDraw();
 	}
 	
 	private var gl:WebGLRenderingContext;
@@ -29,7 +25,6 @@ class Main
 		this.gl = null;
 		Lib.window.onload = onLoad;
 	}
-	
 	
 	private function onLoad(e:Event):Void
 	{
@@ -58,10 +53,5 @@ class Main
 		gl.enableVertexAttribArray(index);
 		gl.vertexAttribPointer(index, 2, gl.FLOAT, false, 0, 0);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
-		
-		var color:Color = new Color(0x000000);
-		color.rgb = 0xFF0000;
-		var c:Int = color.rgb;
-		var matrix4:Matrix4 = new Matrix4();
 	}
 }

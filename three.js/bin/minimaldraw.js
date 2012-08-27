@@ -1,10 +1,5 @@
 (function () { "use strict";
 var $estr = function() { return js.Boot.__string_rec(this,''); };
-function $extend(from, fields) {
-	function inherit() {}; inherit.prototype = from; var proto = new inherit();
-	for (var name in fields) proto[name] = fields[name];
-	return proto;
-}
 var HxOverrides = function() { }
 HxOverrides.__name__ = true;
 HxOverrides.dateStr = function(date) {
@@ -83,41 +78,6 @@ IntIter.prototype = {
 		return this.min < this.max;
 	}
 	,__class__: IntIter
-}
-var Main = function() {
-	this.gl = null;
-	js.Lib.window.onload = $bind(this,this.onLoad);
-};
-Main.__name__ = true;
-Main.main = function() {
-	new Main();
-}
-Main.prototype = {
-	onLoad: function(e) {
-		var canvas = js.Lib.document.getElementById("webgl_canvas");
-		this.gl = js.Boot.__cast(canvas.getContext("experimental-webgl") , WebGLRenderingContext);
-		this.gl.viewport(0,0,canvas.width,canvas.height);
-		this.gl.clearColor(0,0,0.8,1);
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-		var vertexPosBuffer = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER,vertexPosBuffer);
-		var vertices = [-0.5,-0.5,0.5,-0.5,0,0.5];
-		var floatArray = new Float32Array(vertices);
-		this.gl.bufferData(this.gl.ARRAY_BUFFER,floatArray,this.gl.STATIC_DRAW);
-		var vs = "attribute vec2 pos;\n" + "void main(){ gl_Position = vec4(pos,0,1); }";
-		var fs = "precision mediump float;\n" + "void main() { gl_FragColor = vec4(0,0.8,0,1); }";
-		var program = three.utils.WebGLUtil.createProgram(this.gl,vs,fs);
-		this.gl.useProgram(program);
-		var index = this.gl.getAttribLocation(program,"pos");
-		this.gl.enableVertexAttribArray(index);
-		this.gl.vertexAttribPointer(index,2,this.gl.FLOAT,false,0,0);
-		this.gl.drawArrays(this.gl.TRIANGLES,0,3);
-		var color = new three.math.Color(0);
-		color.setRGB(16711680);
-		var c = color.getRGB();
-		var matrix4 = new three.math.Matrix4();
-	}
-	,__class__: Main
 }
 var Std = function() { }
 Std.__name__ = true;
@@ -294,6 +254,140 @@ js.Lib.setErrorHandler = function(f) {
 }
 var three = {}
 three.math = {}
+three.math.Color = function(value) {
+	if(value == null) value = -16777216;
+	this.setRGBA(value);
+};
+three.math.Color.__name__ = true;
+three.math.Color.prototype = {
+	setRGBA: function(value) {
+		var invert = 1.0 / 255;
+		this.a = (value >> 24 & 255) * invert;
+		this.r = (value >> 16 & 255) * invert;
+		this.g = (value >> 8 & 255) * invert;
+		this.b = (value & 255) * invert;
+		return value;
+	}
+	,getRGBA: function() {
+		return Math.floor(this.a * 255) << 24 | Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
+	}
+	,setRGB: function(value) {
+		var invert = 1.0 / 255;
+		this.r = (value >> 16 & 255) * invert;
+		this.g = (value >> 8 & 255) * invert;
+		this.b = (value & 255) * invert;
+		return value;
+	}
+	,getRGB: function() {
+		return Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
+	}
+	,clone: function() {
+		var result = new three.math.Color();
+		result.copy(this);
+		return result;
+	}
+	,copy: function(value) {
+		this.r = value.r;
+		this.g = value.g;
+		this.b = value.b;
+		this.a = value.a;
+		return this;
+	}
+	,lerpSelf: function(color,interp) {
+		this.r += (color.r - this.r) * interp;
+		this.g += (color.g - this.g) * interp;
+		this.b += (color.b - this.b) * interp;
+		this.a += (color.a - this.a) * interp;
+		return this;
+	}
+	,setTo: function(r,g,b,a) {
+		if(a == null) a = 1.0;
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
+		return this;
+	}
+	,setHSV: function(h,s,v) {
+		var f, p, q, t;
+		if(v == 0) this.r = this.g = this.b = 0; else {
+			var i = Math.floor(h * 6);
+			f = h * 6 - i;
+			p = v * (1 - s);
+			q = v * (1 - s * f);
+			t = v * (1 - s * (1 - f));
+			if(i == 0) {
+				this.r = v;
+				this.g = t;
+				this.b = p;
+			} else if(i == 1) {
+				this.r = q;
+				this.g = v;
+				this.b = p;
+			} else if(i == 2) {
+				this.r = p;
+				this.g = v;
+				this.b = t;
+			} else if(i == 3) {
+				this.r = p;
+				this.g = q;
+				this.b = v;
+			} else if(i == 4) {
+				this.r = t;
+				this.g = p;
+				this.b = v;
+			} else if(i == 5) {
+				this.r = v;
+				this.g = p;
+				this.b = q;
+			}
+		}
+		return this;
+	}
+	,__class__: three.math.Color
+}
+three.math.EulerOrder = { __ename__ : true, __constructs__ : ["XYZ","YXZ","ZXY","ZYX","YZX","XZY"] }
+three.math.EulerOrder.XYZ = ["XYZ",0];
+three.math.EulerOrder.XYZ.toString = $estr;
+three.math.EulerOrder.XYZ.__enum__ = three.math.EulerOrder;
+three.math.EulerOrder.YXZ = ["YXZ",1];
+three.math.EulerOrder.YXZ.toString = $estr;
+three.math.EulerOrder.YXZ.__enum__ = three.math.EulerOrder;
+three.math.EulerOrder.ZXY = ["ZXY",2];
+three.math.EulerOrder.ZXY.toString = $estr;
+three.math.EulerOrder.ZXY.__enum__ = three.math.EulerOrder;
+three.math.EulerOrder.ZYX = ["ZYX",3];
+three.math.EulerOrder.ZYX.toString = $estr;
+three.math.EulerOrder.ZYX.__enum__ = three.math.EulerOrder;
+three.math.EulerOrder.YZX = ["YZX",4];
+three.math.EulerOrder.YZX.toString = $estr;
+three.math.EulerOrder.YZX.__enum__ = three.math.EulerOrder;
+three.math.EulerOrder.XZY = ["XZY",5];
+three.math.EulerOrder.XZY.toString = $estr;
+three.math.EulerOrder.XZY.__enum__ = three.math.EulerOrder;
+three.math.MathUtil = function() { }
+three.math.MathUtil.__name__ = true;
+three.math.MathUtil.clamp = function(value,min,max) {
+	return value < min?min:value > max?max:value;
+}
+three.math.MathUtil.mapLinear = function(x,a1,a2,b1,b2) {
+	return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
+}
+three.math.MathUtil.randInt = function(low,high) {
+	return low + Math.floor(Math.random() * (high - low + 1));
+}
+three.math.MathUtil.randFloat = function(low,high) {
+	return low + Math.random() * (high - low);
+}
+three.math.MathUtil.sign = function(x) {
+	return x < 0?-1:x > 0?1:0;
+}
+three.math.Matrix3 = function() {
+};
+three.math.Matrix3.__name__ = true;
+three.math.Matrix3.prototype = {
+	__class__: three.math.Matrix3
+}
 three.math.Matrix4 = function() {
 	this.elements = new Float32Array(16);
 };
@@ -1013,292 +1107,6 @@ three.math.Matrix4.prototype = {
 		return this;
 	}
 	,__class__: three.math.Matrix4
-}
-three.core = {}
-three.core.Object3D = function() {
-	this.id = three.core.Object3D.Object3DCount++;
-	this.name = "";
-	this.properties = { };
-	this.parent = null;
-	this.children = new Array();
-	this.up = new three.math.Vector3(0,1,0);
-	this.position = new three.math.Vector3();
-	this.rotation = new three.math.Vector3();
-	this.eulerOrder = three.math.EulerOrder.XYZ;
-	this.scale = new three.math.Vector3(1,1,1);
-	this.renderDepth = null;
-	this.rotationAutoUpdate = true;
-	this.matrix = new three.math.Matrix4();
-	this.matrixWorld = new three.math.Matrix4();
-	this.matrixRotationWorld = new three.math.Matrix4();
-	this.matrixAutoUpdate = true;
-	this.matrixWorldNeedsUpdate = true;
-	this.quaternion = new three.math.Quaternion();
-	this.useQuaternion = false;
-	this.boundRadius = 0.0;
-	this.boundRadiusScale = 1.0;
-	this.visible = true;
-	this.castShadow = false;
-	this.receiveShadow = false;
-	this.frustumCulled = true;
-	this._vector = new three.math.Vector3();
-};
-three.core.Object3D.__name__ = true;
-three.core.Object3D.prototype = {
-	clone: function() {
-		return null;
-	}
-	,localToWorld: function(vector) {
-		return this.matrixWorld.multiplyVector3(vector);
-	}
-	,worldToLocal: function(vector) {
-		return three.core.Object3D._m1.getInverse(this.matrixWorld).multiplyVector3(vector);
-	}
-	,updateMatrixWorld: function(force) {
-		if(this.matrixAutoUpdate) this.updateMatrix();
-		if(this.matrixWorldNeedsUpdate || force) {
-			if(this.parent != null) this.matrixWorld.multiply(this.parent.matrixWorld,this.matrix); else this.matrixWorld.copy(this.matrix);
-			this.matrixWorldNeedsUpdate = false;
-			force = true;
-		}
-		var _g1 = 0, _g = this.children.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			this.children[i].updateMatrixWorld(force);
-		}
-	}
-	,updateMatrix: function() {
-		this.matrix.setPosition(this.position);
-		if(this.useQuaternion) this.matrix.setRotationFromQuaternion(this.quaternion); else this.matrix.setRotationFromEuler(this.rotation,this.eulerOrder);
-		if(this.scale.x != 1 || this.scale.y != 1 || this.scale.z != 1) {
-			this.matrix.scale(this.scale);
-			this.boundRadiusScale = Math.max(this.scale.x,Math.max(this.scale.y,this.scale.z));
-		}
-		this.matrixWorldNeedsUpdate = true;
-	}
-	,getChildByName: function(name,recursive) {
-		var child;
-		var _g1 = 0, _g = this.children.length;
-		while(_g1 < _g) {
-			var c = _g1++;
-			child = this.children[c];
-			if(child.name == name) return child;
-			if(recursive) {
-				child = child.getChildByName(name,recursive);
-				if(child != null) return child;
-			}
-		}
-		return null;
-	}
-	,remove: function(object) {
-		var index = this.children.indexOf(object);
-		if(index != -1) {
-			object.parent = null;
-			this.children.splice(index,1);
-			var scene = js.Boot.__cast(this , three.scenes.Scene);
-			while(scene.parent != null) scene = js.Boot.__cast(scene.parent , three.scenes.Scene);
-			if(scene != null && js.Boot.__instanceof(scene,three.scenes.Scene)) scene.__removeObject(object);
-		}
-	}
-	,add: function(object) {
-		if(object == this) {
-			three.utils.Logger.warn("Object3D.add: An object can't be added as a child of itself.");
-			return;
-		}
-		if(js.Boot.__instanceof(object,three.core.Object3D)) {
-			if(object.parent != null) object.parent.remove(object);
-			object.parent = this;
-			this.children.push(object);
-			var scene = js.Boot.__cast(this , three.scenes.Scene);
-			while(scene.parent != null) scene = js.Boot.__cast(scene.parent , three.scenes.Scene);
-			if(scene != null && js.Boot.__instanceof(scene,three.scenes.Scene)) scene.__addObject(object);
-		}
-	}
-	,lookAt: function(vector) {
-		this.matrix.lookAt(vector,this.position,this.up);
-		if(this.rotationAutoUpdate) this.rotation.setEulerFromRotationMatrix(this.matrix,this.eulerOrder);
-	}
-	,translateZ: function(distance) {
-		this.translate(distance,new three.math.Vector3(0,0,1));
-	}
-	,translateY: function(distance) {
-		this.translate(distance,new three.math.Vector3(0,1,0));
-	}
-	,translateX: function(distance) {
-		this.translate(distance,new three.math.Vector3(1,0,0));
-	}
-	,translate: function(distance,axis) {
-		this.matrix.rotateAxis(axis);
-		this.position.addSelf(axis.multiplyScalar(distance));
-	}
-	,applyMatrix: function(matrix) {
-		this.matrix.multiply(matrix,this.matrix);
-		this.scale.getScaleFromMatrix(this.matrix);
-		var mat = new three.math.Matrix4().extractRotation(this.matrix);
-		this.rotation.setEulerFromRotationMatrix(mat,this.eulerOrder);
-		this.position.getPositionFromMatrix(this.matrix);
-	}
-	,__class__: three.core.Object3D
-}
-three.cameras = {}
-three.cameras.Camera = function() {
-	three.core.Object3D.call(this);
-};
-three.cameras.Camera.__name__ = true;
-three.cameras.Camera.__super__ = three.core.Object3D;
-three.cameras.Camera.prototype = $extend(three.core.Object3D.prototype,{
-	__class__: three.cameras.Camera
-});
-three.lights = {}
-three.lights.Light = function() {
-	three.core.Object3D.call(this);
-	this.color = new three.math.Color();
-};
-three.lights.Light.__name__ = true;
-three.lights.Light.__super__ = three.core.Object3D;
-three.lights.Light.prototype = $extend(three.core.Object3D.prototype,{
-	__class__: three.lights.Light
-});
-three.materials = {}
-three.materials.Material = function() {
-};
-three.materials.Material.__name__ = true;
-three.materials.Material.prototype = {
-	__class__: three.materials.Material
-}
-three.math.Color = function(value) {
-	if(value == null) value = -16777216;
-	this.setRGBA(value);
-};
-three.math.Color.__name__ = true;
-three.math.Color.prototype = {
-	setRGBA: function(value) {
-		var invert = 1.0 / 255;
-		this.a = (value >> 24 & 255) * invert;
-		this.r = (value >> 16 & 255) * invert;
-		this.g = (value >> 8 & 255) * invert;
-		this.b = (value & 255) * invert;
-		return value;
-	}
-	,getRGBA: function() {
-		return Math.floor(this.a * 255) << 24 | Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
-	}
-	,setRGB: function(value) {
-		var invert = 1.0 / 255;
-		this.r = (value >> 16 & 255) * invert;
-		this.g = (value >> 8 & 255) * invert;
-		this.b = (value & 255) * invert;
-		return value;
-	}
-	,getRGB: function() {
-		return Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
-	}
-	,clone: function() {
-		var result = new three.math.Color();
-		result.copy(this);
-		return result;
-	}
-	,copy: function(value) {
-		this.r = value.r;
-		this.g = value.g;
-		this.b = value.b;
-		this.a = value.a;
-		return this;
-	}
-	,lerpSelf: function(color,interp) {
-		this.r += (color.r - this.r) * interp;
-		this.g += (color.g - this.g) * interp;
-		this.b += (color.b - this.b) * interp;
-		this.a += (color.a - this.a) * interp;
-		return this;
-	}
-	,setTo: function(r,g,b,a) {
-		if(a == null) a = 1.0;
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		return this;
-	}
-	,setHSV: function(h,s,v) {
-		var f, p, q, t;
-		if(v == 0) this.r = this.g = this.b = 0; else {
-			var i = Math.floor(h * 6);
-			f = h * 6 - i;
-			p = v * (1 - s);
-			q = v * (1 - s * f);
-			t = v * (1 - s * (1 - f));
-			if(i == 0) {
-				this.r = v;
-				this.g = t;
-				this.b = p;
-			} else if(i == 1) {
-				this.r = q;
-				this.g = v;
-				this.b = p;
-			} else if(i == 2) {
-				this.r = p;
-				this.g = v;
-				this.b = t;
-			} else if(i == 3) {
-				this.r = p;
-				this.g = q;
-				this.b = v;
-			} else if(i == 4) {
-				this.r = t;
-				this.g = p;
-				this.b = v;
-			} else if(i == 5) {
-				this.r = v;
-				this.g = p;
-				this.b = q;
-			}
-		}
-		return this;
-	}
-	,__class__: three.math.Color
-}
-three.math.EulerOrder = { __ename__ : true, __constructs__ : ["XYZ","YXZ","ZXY","ZYX","YZX","XZY"] }
-three.math.EulerOrder.XYZ = ["XYZ",0];
-three.math.EulerOrder.XYZ.toString = $estr;
-three.math.EulerOrder.XYZ.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.YXZ = ["YXZ",1];
-three.math.EulerOrder.YXZ.toString = $estr;
-three.math.EulerOrder.YXZ.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.ZXY = ["ZXY",2];
-three.math.EulerOrder.ZXY.toString = $estr;
-three.math.EulerOrder.ZXY.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.ZYX = ["ZYX",3];
-three.math.EulerOrder.ZYX.toString = $estr;
-three.math.EulerOrder.ZYX.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.YZX = ["YZX",4];
-three.math.EulerOrder.YZX.toString = $estr;
-three.math.EulerOrder.YZX.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.XZY = ["XZY",5];
-three.math.EulerOrder.XZY.toString = $estr;
-three.math.EulerOrder.XZY.__enum__ = three.math.EulerOrder;
-three.math.MathUtil = function() { }
-three.math.MathUtil.__name__ = true;
-three.math.MathUtil.clamp = function(value,min,max) {
-	return value < min?min:value > max?max:value;
-}
-three.math.MathUtil.mapLinear = function(x,a1,a2,b1,b2) {
-	return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
-}
-three.math.MathUtil.randInt = function(low,high) {
-	return low + Math.floor(Math.random() * (high - low + 1));
-}
-three.math.MathUtil.randFloat = function(low,high) {
-	return low + Math.random() * (high - low);
-}
-three.math.MathUtil.sign = function(x) {
-	return x < 0?-1:x > 0?1:0;
-}
-three.math.Matrix3 = function() {
-};
-three.math.Matrix3.__name__ = true;
-three.math.Matrix3.prototype = {
-	__class__: three.math.Matrix3
 }
 three.math.Quaternion = function(x,y,z,w) {
 	if(w == null) w = 1;
@@ -2041,15 +1849,6 @@ three.math.Vector4.prototype = {
 	}
 	,__class__: three.math.Vector4
 }
-three.objects = {}
-three.objects.Bone = function() {
-	three.core.Object3D.call(this);
-};
-three.objects.Bone.__name__ = true;
-three.objects.Bone.__super__ = three.core.Object3D;
-three.objects.Bone.prototype = $extend(three.core.Object3D.prototype,{
-	__class__: three.objects.Bone
-});
 three.scenes = {}
 three.scenes.Fog = function(hex,near,far) {
 	if(far == null) far = 1000;
@@ -2062,61 +1861,6 @@ three.scenes.Fog.__name__ = true;
 three.scenes.Fog.prototype = {
 	__class__: three.scenes.Fog
 }
-three.scenes.Scene = function() {
-	three.core.Object3D.call(this);
-	this.fog = null;
-	this.overrideMaterial = null;
-	this.matrixAutoUpdate = false;
-	this.__objects = [];
-	this.__lights = [];
-	this.__objectsAdded = [];
-	this.__objectsRemoved = [];
-};
-three.scenes.Scene.__name__ = true;
-three.scenes.Scene.__super__ = three.core.Object3D;
-three.scenes.Scene.prototype = $extend(three.core.Object3D.prototype,{
-	__removeObject: function(object) {
-		if(js.Boot.__instanceof(object,three.lights.Light)) {
-			var i = this.__lights.indexOf(object);
-			if(i != -1) this.__lights.splice(i,1);
-		} else if(!js.Boot.__instanceof(object,three.cameras.Camera)) {
-			var i = this.__objects.indexOf(object);
-			if(i != -1) {
-				this.__objects.splice(i,1);
-				this.__objectsRemoved.push(object);
-				var ai = this.__objectsAdded.indexOf(object);
-				if(ai != -1) this.__objectsAdded.splice(ai,1);
-			}
-		}
-		var _g1 = 0, _g = object.children.length;
-		while(_g1 < _g) {
-			var c = _g1++;
-			this.__removeObject(object.children[c]);
-		}
-	}
-	,__addObject: function(object) {
-		if(js.Boot.__instanceof(object,three.lights.Light)) {
-			var light = js.Boot.__cast(object , three.lights.Light);
-			var i = this.__lights.indexOf(light);
-			if(i == -1) this.__lights.push(light);
-			if(light.target != null && light.target.parent == null) this.add(light.target);
-		} else if(!(js.Boot.__instanceof(object,three.cameras.Camera) || js.Boot.__instanceof(object,three.objects.Bone))) {
-			var i = this.__objects.indexOf(object);
-			if(i == -1) {
-				this.__objects.push(object);
-				this.__objectsAdded.push(object);
-				var i1 = this.__objectsRemoved.indexOf(object);
-				if(i1 != -1) this.__objectsRemoved.splice(i1,1);
-			}
-		}
-		var _g1 = 0, _g = object.children.length;
-		while(_g1 < _g) {
-			var c = _g1++;
-			this.__addObject(object.children[c]);
-		}
-	}
-	,__class__: three.scenes.Scene
-});
 three.utils = {}
 three.utils.Assert = function() {
 };
@@ -2126,13 +1870,6 @@ three.utils.Assert.assert = function(condition,info) {
 }
 three.utils.Assert.prototype = {
 	__class__: three.utils.Assert
-}
-three.utils.Logger = function() { }
-three.utils.Logger.__name__ = true;
-three.utils.Logger.log = function(value) {
-	console.log(value);
-}
-three.utils.Logger.warn = function(value) {
 }
 three.utils.TempVars = function() {
 	this.isUsed = false;
@@ -2190,6 +1927,38 @@ three.utils.WebGLUtil.createProgram = function(gl,vertexSource,fragSource) {
 	if(!gl.getProgramParameter(program,gl.LINK_STATUS)) throw gl.getProgramInfoLog(program);
 	return program;
 }
+var webgl101 = {}
+webgl101.MinimalDraw = function() {
+	this.gl = null;
+	js.Lib.window.onload = $bind(this,this.onLoad);
+};
+webgl101.MinimalDraw.__name__ = true;
+webgl101.MinimalDraw.main = function() {
+	new webgl101.MinimalDraw();
+}
+webgl101.MinimalDraw.prototype = {
+	onLoad: function(e) {
+		var canvas = js.Lib.document.getElementById("webgl_canvas");
+		this.gl = js.Boot.__cast(canvas.getContext("experimental-webgl") , WebGLRenderingContext);
+		this.gl.viewport(0,0,canvas.width,canvas.height);
+		this.gl.clearColor(0,0,0.8,1);
+		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+		var vertexPosBuffer = this.gl.createBuffer();
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER,vertexPosBuffer);
+		var vertices = [-0.5,-0.5,0.5,-0.5,0,0.5];
+		var floatArray = new Float32Array(vertices);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER,floatArray,this.gl.STATIC_DRAW);
+		var vs = "attribute vec2 pos;\n" + "void main(){ gl_Position = vec4(pos,0,1); }";
+		var fs = "precision mediump float;\n" + "void main() { gl_FragColor = vec4(0,0.8,0,1); }";
+		var program = three.utils.WebGLUtil.createProgram(this.gl,vs,fs);
+		this.gl.useProgram(program);
+		var index = this.gl.getAttribLocation(program,"pos");
+		this.gl.enableVertexAttribArray(index);
+		this.gl.vertexAttribPointer(index,2,this.gl.FLOAT,false,0,0);
+		this.gl.drawArrays(this.gl.TRIANGLES,0,3);
+	}
+	,__class__: webgl101.MinimalDraw
+}
 var $_;
 function $bind(o,m) { var f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; return f; };
 if(Array.prototype.indexOf) HxOverrides.remove = function(a,o) {
@@ -2232,15 +2001,10 @@ if(typeof window != "undefined") {
 		return f(msg,[url + ":" + line]);
 	};
 }
-three.core.Object3D.Object3DCount = 0;
-three.core.Object3D._m1 = new three.math.Matrix4();
-three.math.Vector3.X_AXIS = new three.math.Vector3(1,0,0);
-three.math.Vector3.Y_AXIS = new three.math.Vector3(0,1,0);
-three.math.Vector3.Z_AXIS = new three.math.Vector3(0,0,1);
 three.utils.TempVars.STACK_SIZE = 5;
 three.utils.TempVars.currentIndex = 0;
 three.utils.TempVars.varStack = new Array();
-Main.main();
+webgl101.MinimalDraw.main();
 })();
 
-//@ sourceMappingURL=Threejs.js.map
+//@ sourceMappingURL=minimaldraw.js.map

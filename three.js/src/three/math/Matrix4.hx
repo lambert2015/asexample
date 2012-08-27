@@ -1,29 +1,27 @@
+package three.math;
+
 /**
- * @author mrdoob / http://mrdoob.com/
- * @author supereggbert / http://www.paulbrunt.co.uk/
- * @author philogb / http://blog.thejit.org/
- * @author jordi_ros / http://plattsoft.com
- * @author D1plo1d / http://github.com/D1plo1d
- * @author alteredq / http://alteredqualia.com/
- * @author mikael emtinger / http://gomo.se/
- * @author timknip / http://www.floorplanner.com/
+ * ...
+ * @author andy
  */
+import UserAgentContext;
+import three.utils.TempVars;
 
-THREE.Matrix4 = function(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
-
-	this.elements = new Float32Array(16);
-
-	this.set((n11 !== undefined ) ? n11 : 1, n12 || 0, n13 || 0, n14 || 0, n21 || 0, (n22 !== undefined ) ? n22 : 1, n23 || 0, n24 || 0, n31 || 0, n32 || 0, (n33 !== undefined ) ? n33 : 1, n34 || 0, n41 || 0, n42 || 0, n43 || 0, (n44 !== undefined ) ? n44 : 1);
-
-};
-
-THREE.Matrix4.prototype = {
-
-	constructor : THREE.Matrix4,
-
-	set : function(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
-
-		var te = this.elements;
+class Matrix4 
+{
+	public var elements:Float32Array;
+	
+	public function new() 
+	{
+		this.elements = new Float32Array(16);
+	}
+	
+	public function setTo(n11:Float, n12:Float, n13:Float, n14:Float, 
+							n21:Float, n22:Float, n23:Float, n24:Float, 
+							n31:Float, n32:Float, n33:Float, n34:Float,
+							n41:Float, n42:Float, n43:Float, n44:Float):Matrix4
+	{
+		var te:Float32Array = this.elements;
 
 		te[0] = n11;
 		te[4] = n12;
@@ -43,70 +41,74 @@ THREE.Matrix4.prototype = {
 		te[15] = n44;
 
 		return this;
-
-	},
-
-	identity : function() {
-
-		this.set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-
+	}
+	
+	public function identity():Matrix4
+	{
+		this.setTo(1, 0, 0, 0,
+					0, 1, 0, 0,
+					0, 0, 1, 0,
+					0, 0, 0, 1);
+					
 		return this;
-
-	},
-
-	copy : function(m) {
-
-		var me = m.elements;
-
-		this.set(me[0], me[4], me[8], me[12], me[1], me[5], me[9], me[13], me[2], me[6], me[10], me[14], me[3], me[7], me[11], me[15]);
-
+	}
+	
+	public function copy(m:Matrix4):Matrix4
+	{
+		var me:Float32Array = m.elements;
+		
+		this.setTo(me[0], me[4], me[8], me[12], 
+					me[1], me[5], me[9], me[13], 
+					me[2], me[6], me[10], me[14], 
+					me[3], me[7], me[11], me[15]);
+		
 		return this;
-
-	},
-
-	lookAt : function(eye, target, up) {
-
+	}
+	
+	public function lookAt(eye:Vector3, target:Vector3, up:Vector3):Matrix4
+	{
 		var te = this.elements;
-
-		var x = THREE.Matrix4.__v1;
-		var y = THREE.Matrix4.__v2;
-		var z = THREE.Matrix4.__v3;
-
-		z.sub(eye, target).normalize();
-
-		if (z.length === 0) {
-
-			z.z = 1;
-
+		
+		var tVar = TempVars.getTempVars();
+		
+		var vx:Vector3 = tVar.vect1;
+		var vy:Vector3 = tVar.vect2;
+		var vz:Vector3 = tVar.vect2;
+		
+		vz.sub(eye, target).normalize();
+		
+		if (vz.length == 0)
+		{
+			vz.z = 1;
 		}
-
-		x.cross(up, z).normalize();
-
-		if (x.length() === 0) {
-
-			z.x += 0.0001;
-			x.cross(up, z).normalize();
-
+		
+		vx.cross(up, vz).normalize();
+		
+		if (vx.length == 0)
+		{
+			vz.x += 0.0001;
+			vx.cross(up, vz).normalize();
 		}
-
-		y.cross(z, x);
-
-		te[0] = x.x;
-		te[4] = y.x;
-		te[8] = z.x;
-		te[1] = x.y;
-		te[5] = y.y;
-		te[9] = z.y;
-		te[2] = x.z;
-		te[6] = y.z;
-		te[10] = z.z;
+		
+		vy.cross(vz, vx);
+		
+		te[0] = vx.x;
+		te[4] = vy.x;
+		te[8] = vz.x;
+		te[1] = vx.y;
+		te[5] = vy.y;
+		te[9] = vz.y;
+		te[2] = vx.z;
+		te[6] = vy.z;
+		te[10] = vz.z;
+		
+		tVar.release();
 
 		return this;
-
-	},
-
-	multiply : function(a, b) {
-
+	}
+	
+	public function multiply(a:Matrix4, b:Matrix4):Matrix4
+	{
 		var ae = a.elements;
 		var be = b.elements;
 		var te = this.elements;
@@ -142,17 +144,15 @@ THREE.Matrix4.prototype = {
 		te[15] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
 
 		return this;
-
-	},
-
-	multiplySelf : function(m) {
-
+	}
+	
+	public function multiplySelf(m:Matrix4):Matrix4
+	{
 		return this.multiply(this, m);
-
-	},
-
-	multiplyToArray : function(a, b, r) {
-
+	}
+	
+	public function multiplyToArray(a:Matrix4, b:Matrix4, r:Array<Float>):Matrix4
+	{
 		var te = this.elements;
 
 		this.multiply(a, b);
@@ -175,11 +175,10 @@ THREE.Matrix4.prototype = {
 		r[15] = te[15];
 
 		return this;
-
-	},
-
-	multiplyScalar : function(s) {
-
+	}
+	
+	public function multiplyScalar(s:Float):Matrix4
+	{
 		var te = this.elements;
 
 		te[0] *= s;
@@ -200,11 +199,10 @@ THREE.Matrix4.prototype = {
 		te[15] *= s;
 
 		return this;
-
-	},
-
-	multiplyVector3 : function(v) {
-
+	}
+	
+	public function multiplyVector3(v:Vector3):Vector3
+	{
 		var te = this.elements;
 
 		var vx = v.x, vy = v.y, vz = v.z;
@@ -215,11 +213,10 @@ THREE.Matrix4.prototype = {
 		v.z = (te[2] * vx + te[6] * vy + te[10] * vz + te[14] ) * d;
 
 		return v;
-
-	},
-
-	multiplyVector4 : function(v) {
-
+	}
+	
+	public function multiplyVector4(v:Vector4):Vector4
+	{
 		var te = this.elements;
 		var vx = v.x, vy = v.y, vz = v.z, vw = v.w;
 
@@ -229,15 +226,17 @@ THREE.Matrix4.prototype = {
 		v.w = te[3] * vx + te[7] * vy + te[11] * vz + te[15] * vw;
 
 		return v;
+	}
+	
+	public function multiplyVector3Array(a:Array<Float>):Array<Float>
+	{
+		var tVar:TempVars = TempVars.getTempVars();
+		var tmp:Vector3 = tVar.vect1;
 
-	},
-
-	multiplyVector3Array : function(a) {
-
-		var tmp = THREE.Matrix4.__v1;
-
-		for (var i = 0, il = a.length; i < il; i += 3) {
-
+		var il = a.length;
+		var i = 0;
+		while (i < il)
+		{
 			tmp.x = a[i];
 			tmp.y = a[i + 1];
 			tmp.z = a[i + 2];
@@ -248,14 +247,16 @@ THREE.Matrix4.prototype = {
 			a[i + 1] = tmp.y;
 			a[i + 2] = tmp.z;
 
+			i += 3;
 		}
+		
+		tVar.release();
 
 		return a;
-
-	},
-
-	rotateAxis : function(v) {
-
+	}
+	
+	public function rotateAxis(v:Vector3):Vector3
+	{
 		var te = this.elements;
 		var vx = v.x, vy = v.y, vz = v.z;
 
@@ -266,26 +267,24 @@ THREE.Matrix4.prototype = {
 		v.normalize();
 
 		return v;
-
-	},
-
-	crossVector : function(a) {
-
+	}
+	
+	public function crossVector(a:Vector4):Vector4
+	{
 		var te = this.elements;
-		var v = new THREE.Vector4();
+		var v = new Vector4();
 
 		v.x = te[0] * a.x + te[4] * a.y + te[8] * a.z + te[12] * a.w;
 		v.y = te[1] * a.x + te[5] * a.y + te[9] * a.z + te[13] * a.w;
 		v.z = te[2] * a.x + te[6] * a.y + te[10] * a.z + te[14] * a.w;
 
-		v.w = (a.w ) ? te[3] * a.x + te[7] * a.y + te[11] * a.z + te[15] * a.w : 1;
+		v.w = (a.w != 0) ? te[3] * a.x + te[7] * a.y + te[11] * a.z + te[15] * a.w : 1;
 
 		return v;
-
-	},
-
-	determinant : function() {
-
+	}
+	
+	public function determinant():Float
+	{
 		var te = this.elements;
 
 		var n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12];
@@ -298,15 +297,13 @@ THREE.Matrix4.prototype = {
 		// http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
 		// )
 
-		return (n14 * n23 * n32 * n41 - n13 * n24 * n32 * n41 - n14 * n22 * n33 * n41 + n12 * n24 * n33 * n41 + n13 * n22 * n34 * n41 - n12 * n23 * n34 * n41 - n14 * n23 * n31 * n42 + n13 * n24 * n31 * n42 + n14 * n21 * n33 * n42 - n11 * n24 * n33 * n42 - n13 * n21 * n34 * n42 + n11 * n23 * n34 * n42 + n14 * n22 * n31 * n43 - n12 * n24 * n31 * n43 - n14 * n21 * n32 * n43 + n11 * n24 * n32 * n43 + n12 * n21 * n34 * n43 - n11 * n22 * n34 * n43 - n13 * n22 * n31 * n44 + n12 * n23 * n31 * n44 + n13 * n21 * n32 * n44 - n11 * n23 * n32 * n44 - n12 * n21 * n33 * n44 + n11 * n22 * n33 * n44
-		);
-
-	},
-
-	transpose : function() {
-
+		return n14 * n23 * n32 * n41 - n13 * n24 * n32 * n41 - n14 * n22 * n33 * n41 + n12 * n24 * n33 * n41 + n13 * n22 * n34 * n41 - n12 * n23 * n34 * n41 - n14 * n23 * n31 * n42 + n13 * n24 * n31 * n42 + n14 * n21 * n33 * n42 - n11 * n24 * n33 * n42 - n13 * n21 * n34 * n42 + n11 * n23 * n34 * n42 + n14 * n22 * n31 * n43 - n12 * n24 * n31 * n43 - n14 * n21 * n32 * n43 + n11 * n24 * n32 * n43 + n12 * n21 * n34 * n43 - n11 * n22 * n34 * n43 - n13 * n22 * n31 * n44 + n12 * n23 * n31 * n44 + n13 * n21 * n32 * n44 - n11 * n23 * n32 * n44 - n12 * n21 * n33 * n44 + n11 * n22 * n33 * n44;
+	}
+	
+	public function transpose():Matrix4
+	{
 		var te = this.elements;
-		var tmp;
+		var tmp:Float;
 
 		tmp = te[1];
 		te[1] = te[4];
@@ -329,11 +326,10 @@ THREE.Matrix4.prototype = {
 		te[14] = tmp;
 
 		return this;
-
-	},
-
-	flattenToArray : function(flat) {
-
+	}
+	
+	public function flattenToArray(flat:Array<Float>):Array<Float>
+	{
 		var te = this.elements;
 		flat[0] = te[0];
 		flat[1] = te[1];
@@ -353,11 +349,10 @@ THREE.Matrix4.prototype = {
 		flat[15] = te[15];
 
 		return flat;
-
-	},
-
-	flattenToArrayOffset : function(flat, offset) {
-
+	}
+	
+	public function flattenToArrayOffset(flat:Array<Float>,offset:Int):Array<Float>
+	{
 		var te = this.elements;
 		flat[offset] = te[0];
 		flat[offset + 1] = te[1];
@@ -380,18 +375,16 @@ THREE.Matrix4.prototype = {
 		flat[offset + 15] = te[15];
 
 		return flat;
-
-	},
-
-	getPosition : function() {
-
+	}
+	
+	public function getPosition():Vector3
+	{
 		var te = this.elements;
-		return THREE.Matrix4.__v1.set(te[12], te[13], te[14]);
-
-	},
-
-	setPosition : function(v) {
-
+		return new Vector3(te[12], te[13], te[14]);
+	}
+	
+	public function setPosition(v:Vector3):Matrix4
+	{
 		var te = this.elements;
 
 		te[12] = v.x;
@@ -399,32 +392,28 @@ THREE.Matrix4.prototype = {
 		te[14] = v.z;
 
 		return this;
-
-	},
-
-	getColumnX : function() {
-
+	}
+	
+	public function getColumnX():Vector3
+	{
 		var te = this.elements;
-		return THREE.Matrix4.__v1.set(te[0], te[1], te[2]);
-
-	},
-
-	getColumnY : function() {
-
+		return new Vector3(te[0], te[1], te[2]);
+	}
+	
+	public function getColumnY():Vector3
+	{
 		var te = this.elements;
-		return THREE.Matrix4.__v1.set(te[4], te[5], te[6]);
-
-	},
-
-	getColumnZ : function() {
-
+		return new Vector3(te[4], te[5], te[6]);
+	}
+	
+	public function getColumnZ():Vector3
+	{
 		var te = this.elements;
-		return THREE.Matrix4.__v1.set(te[8], te[9], te[10]);
-
-	},
-
-	getInverse : function(m) {
-
+		return new Vector3(te[8], te[9], te[10]);
+	}
+	
+	public function getInverse(m:Matrix4):Matrix4
+	{
 		// based on
 		// http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
 		var te = this.elements;
@@ -454,20 +443,19 @@ THREE.Matrix4.prototype = {
 		this.multiplyScalar(1 / m.determinant());
 
 		return this;
-
-	},
-
-	setRotationFromEuler : function(v, order) {
-
+	}
+	
+	public function setRotationFromEuler(v:Vector3, order:EulerOrder):Matrix4
+	{
 		var te = this.elements;
 
-		var x = v.x, y = v.y, z = v.z;
-		var a = Math.cos(x), b = Math.sin(x);
-		var c = Math.cos(y), d = Math.sin(y);
-		var e = Math.cos(z), f = Math.sin(z);
+		var x:Float = v.x, y:Float = v.y, z:Float = v.z;
+		var a:Float = Math.cos(x), b:Float = Math.sin(x);
+		var c:Float = Math.cos(y), d:Float = Math.sin(y);
+		var e:Float = Math.cos(z), f:Float = Math.sin(z);
 
-		if (order === undefined || order === 'XYZ') {
-
+		if (order == EulerOrder.XYZ) 
+		{
 			var ae = a * e, af = a * f, be = b * e, bf = b * f;
 
 			te[0] = c * e;
@@ -481,9 +469,9 @@ THREE.Matrix4.prototype = {
 			te[2] = bf - ae * d;
 			te[6] = be + af * d;
 			te[10] = a * c;
-
-		} else if (order === 'YXZ') {
-
+		} 
+		else if (order == EulerOrder.YXZ) 
+		{
 			var ce = c * e, cf = c * f, de = d * e, df = d * f;
 
 			te[0] = ce + df * b;
@@ -497,9 +485,9 @@ THREE.Matrix4.prototype = {
 			te[2] = cf * b - de;
 			te[6] = df + ce * b;
 			te[10] = a * c;
-
-		} else if (order === 'ZXY') {
-
+		} 
+		else if (order == EulerOrder.ZXY) 
+		{
 			var ce = c * e, cf = c * f, de = d * e, df = d * f;
 
 			te[0] = ce - df * b;
@@ -513,9 +501,9 @@ THREE.Matrix4.prototype = {
 			te[2] = -a * d;
 			te[6] = b;
 			te[10] = a * c;
-
-		} else if (order === 'ZYX') {
-
+		} 
+		else if (order == EulerOrder.ZYX) 
+		{
 			var ae = a * e, af = a * f, be = b * e, bf = b * f;
 
 			te[0] = c * e;
@@ -529,9 +517,9 @@ THREE.Matrix4.prototype = {
 			te[2] = -d;
 			te[6] = b * c;
 			te[10] = a * c;
-
-		} else if (order === 'YZX') {
-
+		} 
+		else if (order == EulerOrder.YZX) 
+		{
 			var ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
 			te[0] = c * e;
@@ -545,9 +533,9 @@ THREE.Matrix4.prototype = {
 			te[2] = -d * e;
 			te[6] = ad * f + bc;
 			te[10] = ac - bd * f;
-
-		} else if (order === 'XZY') {
-
+		} 
+		else if (order == EulerOrder.XZY) 
+		{
 			var ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
 			te[0] = c * e;
@@ -561,15 +549,12 @@ THREE.Matrix4.prototype = {
 			te[2] = bc * f - ad;
 			te[6] = b * e;
 			te[10] = bd * f + ac;
-
 		}
-
 		return this;
-
-	},
-
-	setRotationFromQuaternion : function(q) {
-
+	}
+	
+	public function setRotationFromQuaternion(q:Quaternion):Matrix4
+	{
 		var te = this.elements;
 
 		var x = q.x, y = q.y, z = q.z, w = q.w;
@@ -591,14 +576,16 @@ THREE.Matrix4.prototype = {
 		te[10] = 1 - (xx + yy );
 
 		return this;
-
-	},
-
-	compose : function(translation, rotation, scale) {
-
+	}
+	
+	public function compose(translation:Vector3, rotation:Quaternion, scale:Vector3):Matrix4
+	{
 		var te = this.elements;
-		var mRotation = THREE.Matrix4.__m1;
-		var mScale = THREE.Matrix4.__m2;
+		
+		var tVar:TempVars = TempVars.getTempVars();
+		
+		var mRotation:Matrix4 = tVar.tempMat4;
+		var mScale:Matrix4 = tVar.tempMat42;
 
 		mRotation.identity();
 		mRotation.setRotationFromQuaternion(rotation);
@@ -611,30 +598,32 @@ THREE.Matrix4.prototype = {
 		te[13] = translation.y;
 		te[14] = translation.z;
 
+		tVar.release();
+		
 		return this;
-
-	},
-
-	decompose : function(translation, rotation, scale) {
-
+	}
+	
+	public function decompose(translation:Vector3, rotation:Quaternion, scale:Vector3):Array<Dynamic>
+	{
 		var te = this.elements;
 
+		var tVar:TempVars = TempVars.getTempVars();
 		// grab the axis vectors
-		var x = THREE.Matrix4.__v1;
-		var y = THREE.Matrix4.__v2;
-		var z = THREE.Matrix4.__v3;
+		var x = tVar.vect1;
+		var y = tVar.vect2;
+		var z = tVar.vect3;
 
-		x.set(te[0], te[1], te[2]);
-		y.set(te[4], te[5], te[6]);
-		z.set(te[8], te[9], te[10]);
+		x.setTo(te[0], te[1], te[2]);
+		y.setTo(te[4], te[5], te[6]);
+		z.setTo(te[8], te[9], te[10]);
 
-		translation = ( translation instanceof THREE.Vector3 ) ? translation : new THREE.Vector3();
-		rotation = ( rotation instanceof THREE.Quaternion ) ? rotation : new THREE.Quaternion();
-		scale = ( scale instanceof THREE.Vector3 ) ? scale : new THREE.Vector3();
+		translation = ( translation != null ) ? translation : new Vector3();
+		rotation = ( rotation != null ) ? rotation : new Quaternion();
+		scale = ( scale != null ) ? scale : new Vector3();
 
-		scale.x = x.length();
-		scale.y = y.length();
-		scale.z = z.length();
+		scale.x = x.length;
+		scale.y = y.length;
+		scale.z = z.length;
 
 		translation.x = te[12];
 		translation.y = te[13];
@@ -642,7 +631,7 @@ THREE.Matrix4.prototype = {
 
 		// scale the rotation part
 
-		var matrix = THREE.Matrix4.__m1;
+		var matrix:Matrix4 = tVar.tempMat4;
 
 		matrix.copy(this);
 
@@ -659,13 +648,14 @@ THREE.Matrix4.prototype = {
 		matrix.elements[10] /= scale.z;
 
 		rotation.setFromRotationMatrix(matrix);
+		
+		tVar.release();
 
 		return [translation, rotation, scale];
-
-	},
-
-	extractPosition : function(m) {
-
+	}
+	
+	public function extractPosition(m:Matrix4):Matrix4
+	{
 		var te = this.elements;
 		var me = m.elements;
 
@@ -674,19 +664,19 @@ THREE.Matrix4.prototype = {
 		te[14] = me[14];
 
 		return this;
-
-	},
-
-	extractRotation : function(m) {
-
+	}
+	
+	public function extractRotation(m:Matrix4):Matrix4
+	{
 		var te = this.elements;
 		var me = m.elements;
 
-		var vector = THREE.Matrix4.__v1;
+		var tVar:TempVars = TempVars.getTempVars();
+		var vector:Vector3 = tVar.vect1;
 
-		var scaleX = 1 / vector.set(me[0], me[1], me[2]).length();
-		var scaleY = 1 / vector.set(me[4], me[5], me[6]).length();
-		var scaleZ = 1 / vector.set(me[8], me[9], me[10]).length();
+		var scaleX = 1 / vector.setTo(me[0], me[1], me[2]).length;
+		var scaleY = 1 / vector.setTo(me[4], me[5], me[6]).length;
+		var scaleZ = 1 / vector.setTo(me[8], me[9], me[10]).length;
 
 		te[0] = me[0] * scaleX;
 		te[1] = me[1] * scaleX;
@@ -699,15 +689,14 @@ THREE.Matrix4.prototype = {
 		te[8] = me[8] * scaleZ;
 		te[9] = me[9] * scaleZ;
 		te[10] = me[10] * scaleZ;
+		
+		tVar.release();
 
 		return this;
-
-	},
-
-	//
-
-	translate : function(v) {
-
+	}
+	
+	public function translate(v:Vector3):Matrix4
+	{
 		var te = this.elements;
 		var x = v.x, y = v.y, z = v.z;
 
@@ -717,10 +706,10 @@ THREE.Matrix4.prototype = {
 		te[15] = te[3] * x + te[7] * y + te[11] * z + te[15];
 
 		return this;
-
-	},
-
-	rotateX : function(angle) {
+	}
+	
+	public function rotateX(angle:Float):Matrix4 
+	{
 
 		var te = this.elements;
 		var m12 = te[4];
@@ -746,9 +735,10 @@ THREE.Matrix4.prototype = {
 
 		return this;
 
-	},
+	}
 
-	rotateY : function(angle) {
+	public function rotateY(angle:Float):Matrix4 
+	{
 
 		var te = this.elements;
 		var m11 = te[0];
@@ -774,9 +764,10 @@ THREE.Matrix4.prototype = {
 
 		return this;
 
-	},
+	}
 
-	rotateZ : function(angle) {
+	public function rotateZ(angle:Float):Matrix4 
+	{
 
 		var te = this.elements;
 		var m11 = te[0];
@@ -802,23 +793,24 @@ THREE.Matrix4.prototype = {
 
 		return this;
 
-	},
+	}
 
-	rotateByAxis : function(axis, angle) {
+	public function rotateByAxis(axis:Vector3, angle:Float):Matrix4
+	{
 
 		var te = this.elements;
 
 		// optimize by checking axis
 
-		if (axis.x === 1 && axis.y === 0 && axis.z === 0) {
+		if (axis.x == 1 && axis.y == 0 && axis.z == 0) {
 
 			return this.rotateX(angle);
 
-		} else if (axis.x === 0 && axis.y === 1 && axis.z === 0) {
+		} else if (axis.x == 0 && axis.y == 1 && axis.z == 0) {
 
 			return this.rotateY(angle);
 
-		} else if (axis.x === 0 && axis.y === 0 && axis.z === 1) {
+		} else if (axis.x == 0 && axis.y == 0 && axis.z == 1) {
 
 			return this.rotateZ(angle);
 
@@ -874,9 +866,10 @@ THREE.Matrix4.prototype = {
 
 		return this;
 
-	},
+	}
 
-	scale : function(v) {
+	public function scale(v:Vector3):Matrix4
+	{
 
 		var te = this.elements;
 		var x = v.x, y = v.y, z = v.z;
@@ -896,9 +889,9 @@ THREE.Matrix4.prototype = {
 
 		return this;
 
-	},
+	}
 
-	getMaxScaleOnAxis : function() {
+	public function getMaxScaleOnAxis():Float {
 
 		var te = this.elements;
 
@@ -908,49 +901,53 @@ THREE.Matrix4.prototype = {
 
 		return Math.sqrt(Math.max(scaleXSq, Math.max(scaleYSq, scaleZSq)));
 
-	},
+	}
 
 	//
 
-	makeTranslation : function(x, y, z) {
+	public function makeTranslation(x:Float, y:Float, z:Float):Matrix4 {
 
-		this.set(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);
+		this.setTo(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);
 
 		return this;
 
-	},
+	}
 
-	makeRotationX : function(theta) {
+	public function makeRotationX(theta:Float):Matrix4
+	{
 
 		var c = Math.cos(theta), s = Math.sin(theta);
 
-		this.set(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
+		this.setTo(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
 
 		return this;
 
-	},
+	}
 
-	makeRotationY : function(theta) {
+	public function makeRotationY(theta:Float):Matrix4
+	{
 
 		var c = Math.cos(theta), s = Math.sin(theta);
 
-		this.set(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
+		this.setTo(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
 
 		return this;
 
-	},
+	}
 
-	makeRotationZ : function(theta) {
+	public function makeRotationZ(theta:Float):Matrix4
+	{
 
 		var c = Math.cos(theta), s = Math.sin(theta);
 
-		this.set(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.setTo(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
 		return this;
 
-	},
+	}
 
-	makeRotationAxis : function(axis, angle) {
+	public function makeRotationAxis(axis:Vector3, angle:Float):Matrix4
+	{
 
 		// Based on http://www.gamedev.net/reference/articles/article1199.asp
 
@@ -960,21 +957,23 @@ THREE.Matrix4.prototype = {
 		var x = axis.x, y = axis.y, z = axis.z;
 		var tx = t * x, ty = t * y;
 
-		this.set(tx * x + c, tx * y - s * z, tx * z + s * y, 0, tx * y + s * z, ty * y + c, ty * z - s * x, 0, tx * z - s * y, ty * z + s * x, t * z * z + c, 0, 0, 0, 0, 1);
+		this.setTo(tx * x + c, tx * y - s * z, tx * z + s * y, 0, tx * y + s * z, ty * y + c, ty * z - s * x, 0, tx * z - s * y, ty * z + s * x, t * z * z + c, 0, 0, 0, 0, 1);
 
 		return this;
 
-	},
+	}
 
-	makeScale : function(x, y, z) {
+	public function makeScale(x:Float, y:Float, z:Float):Matrix4 
+	{
 
-		this.set(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1);
+		this.setTo(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1);
 
 		return this;
 
-	},
+	}
 
-	makeFrustum : function(left, right, bottom, top, near, far) {
+	public function makeFrustum(left:Float, right:Float, bottom:Float, top:Float, near:Float, far:Float):Matrix4  
+	{
 
 		var te = this.elements;
 		var x = 2 * near / (right - left );
@@ -1004,9 +1003,10 @@ THREE.Matrix4.prototype = {
 
 		return this;
 
-	},
+	}
 
-	makePerspective : function(fov, aspect, near, far) {
+	public function makePerspective(fov:Float, aspect:Float, near:Float, far:Float):Matrix4
+	{
 
 		var ymax = near * Math.tan(fov * Math.PI / 360);
 		var ymin = -ymax;
@@ -1015,10 +1015,10 @@ THREE.Matrix4.prototype = {
 
 		return this.makeFrustum(xmin, xmax, ymin, ymax, near, far);
 
-	},
+	}
 
-	makeOrthographic : function(left, right, top, bottom, near, far) {
-
+	public function makeOrthographic(left:Float, right:Float, top:Float, bottom:Float, near:Float, far:Float):Matrix4
+	{
 		var te = this.elements;
 		var w = right - left;
 		var h = top - bottom;
@@ -1046,21 +1046,16 @@ THREE.Matrix4.prototype = {
 		te[15] = 1;
 
 		return this;
-
-	},
-
-	clone : function() {
-
-		var te = this.elements;
-
-		return new THREE.Matrix4(te[0], te[4], te[8], te[12], te[1], te[5], te[9], te[13], te[2], te[6], te[10], te[14], te[3], te[7], te[11], te[15]);
-
 	}
-};
 
-THREE.Matrix4.__v1 = new THREE.Vector3();
-THREE.Matrix4.__v2 = new THREE.Vector3();
-THREE.Matrix4.__v3 = new THREE.Vector3();
-
-THREE.Matrix4.__m1 = new THREE.Matrix4();
-THREE.Matrix4.__m2 = new THREE.Matrix4();
+	public function clone():Matrix4
+	{
+		var result:Matrix4 = new Matrix4();
+		var te = this.elements;
+		result.setTo(te[0], te[4], te[8], te[12], 
+					te[1], te[5], te[9], te[13], 
+					te[2], te[6], te[10], te[14], 
+					te[3], te[7], te[11], te[15]);
+		return result;
+	}
+}
