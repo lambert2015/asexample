@@ -10,6 +10,18 @@ import three.scenes.Fog;
 import three.utils.WebGLUtil;
 import three.core.Object3D;
 import three.scenes.Scene;
+import three.lights.AmbientLight;
+import three.lights.DirectionalLight;
+import three.lights.PointLight;
+import three.lights.SpotLight;
+import three.materials.Material;
+import three.renderers.renderables.RenderableFace3;
+import three.renderers.renderables.RenderableFace4;
+import three.renderers.renderables.RenderableLine;
+import three.renderers.renderables.RenderableObject;
+import three.renderers.renderables.RenderableParticle;
+import three.renderers.renderables.RenderableVertex;
+import three.renderers.WebGLRenderer;
 /**
  * ...
  * @author 

@@ -13,11 +13,11 @@ class Light extends Object3D
 	
 	public var color:Color;
 
-	public function new() 
+	public function new(hex:Int) 
 	{
 		super();
 		
-		this.color = new Color();
+		this.color = new Color(hex);
 	}
 	
 }
