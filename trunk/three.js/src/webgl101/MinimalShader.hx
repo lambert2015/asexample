@@ -1,4 +1,4 @@
-package ;
+package webgl101;
 
 import js.Dom;
 import js.Lib;
@@ -8,19 +8,15 @@ import UserAgentContext;
 import three.math.Vector2;
 import three.scenes.Fog;
 import three.utils.WebGLUtil;
-import three.core.Object3D;
-import three.scenes.Scene;
 /**
  * ...
  * @author 
  */
-
-class Main 
+class MinimalShader
 {
-	
 	static function main() 
 	{
-		new Main();
+		new MinimalShader();
 	}
 	
 	private var gl:WebGLRenderingContext;
@@ -29,7 +25,6 @@ class Main
 		this.gl = null;
 		Lib.window.onload = onLoad;
 	}
-	
 	
 	private function onLoad(e:Event):Void
 	{
@@ -44,8 +39,10 @@ class Main
 		
 		var vertices:Array<Float> = [ -0.5, -0.5, 0.5, -0.5, 0, 0.5];
 		var floatArray:Float32Array = new Float32Array(vertices);
-		//floatArray.set(vertices);
 		gl.bufferData(gl.ARRAY_BUFFER, floatArray, gl.STATIC_DRAW);
+		
+		var itemSize:Int = 2;
+		var numItem:Int = 4;
 		
 		var vs:String = "attribute vec2 pos;\n" +
 						"void main(){ gl_Position = vec4(pos,0,1); }";
@@ -56,12 +53,7 @@ class Main
 		gl.useProgram(program);
 		var index:Int = gl.getAttribLocation(program, "pos");
 		gl.enableVertexAttribArray(index);
-		gl.vertexAttribPointer(index, 2, gl.FLOAT, false, 0, 0);
-		gl.drawArrays(gl.TRIANGLES, 0, 3);
-		
-		var color:Color = new Color(0x000000);
-		color.rgb = 0xFF0000;
-		var c:Int = color.rgb;
-		var matrix4:Matrix4 = new Matrix4();
+		gl.vertexAttribPointer(index, itemSize, gl.FLOAT, false, 0, 0);
+		gl.drawArrays(gl.TRIANGLE_STRIP, 0, numItem);
 	}
 }
