@@ -1150,22 +1150,160 @@ three.cameras.Camera.prototype = $extend(three.core.Object3D.prototype,{
 	__class__: three.cameras.Camera
 });
 three.lights = {}
-three.lights.Light = function() {
+three.lights.Light = function(hex) {
 	three.core.Object3D.call(this);
-	this.color = new three.math.Color();
+	this.color = new three.math.Color(hex);
 };
 three.lights.Light.__name__ = true;
 three.lights.Light.__super__ = three.core.Object3D;
 three.lights.Light.prototype = $extend(three.core.Object3D.prototype,{
 	__class__: three.lights.Light
 });
+three.lights.AmbientLight = function(hex) {
+	three.lights.Light.call(this,hex);
+};
+three.lights.AmbientLight.__name__ = true;
+three.lights.AmbientLight.__super__ = three.lights.Light;
+three.lights.AmbientLight.prototype = $extend(three.lights.Light.prototype,{
+	__class__: three.lights.AmbientLight
+});
+three.lights.DirectionalLight = function(hex,intensity,distance) {
+	if(distance == null) distance = 0;
+	if(intensity == null) intensity = 1;
+	three.lights.Light.call(this,hex);
+	this.position = new three.math.Vector3(0,1,0);
+	this.intensity = intensity;
+	this.distance = distance;
+	this.castShadow = false;
+	this.onlyShadow = false;
+	this.shadowCameraNear = 50;
+	this.shadowCameraFar = 5000;
+	this.shadowCameraLeft = -500;
+	this.shadowCameraRight = 500;
+	this.shadowCameraTop = 500;
+	this.shadowCameraBottom = -500;
+	this.shadowCameraVisible = false;
+	this.shadowBias = 0;
+	this.shadowDarkness = 0.5;
+	this.shadowMapWidth = 512;
+	this.shadowMapHeight = 512;
+	this.shadowCascade = false;
+	this.shadowCascadeOffset = new three.math.Vector3(0,0,-1000);
+	this.shadowCascadeCount = 2;
+	this.shadowCascadeBias = [0,0,0];
+	this.shadowCascadeWidth = [512,512,512];
+	this.shadowCascadeHeight = [512,512,512];
+	this.shadowCascadeNearZ = [-1.000,0.990,0.998];
+	this.shadowCascadeFarZ = [0.990,0.998,1.000];
+	this.shadowCascadeArray = [];
+	this.shadowMap = null;
+	this.shadowMapSize = null;
+	this.shadowCamera = null;
+	this.shadowMatrix = null;
+};
+three.lights.DirectionalLight.__name__ = true;
+three.lights.DirectionalLight.__super__ = three.lights.Light;
+three.lights.DirectionalLight.prototype = $extend(three.lights.Light.prototype,{
+	__class__: three.lights.DirectionalLight
+});
+three.lights.PointLight = function(hex,intensity,distance) {
+	if(distance == null) distance = 0;
+	if(intensity == null) intensity = 1;
+	three.lights.Light.call(this,hex);
+	this.position = new three.math.Vector3();
+	this.intensity = intensity;
+	this.distance = distance;
+};
+three.lights.PointLight.__name__ = true;
+three.lights.PointLight.__super__ = three.lights.Light;
+three.lights.PointLight.prototype = $extend(three.lights.Light.prototype,{
+	__class__: three.lights.PointLight
+});
+three.lights.SpotLight = function(hex,intensity,distance,angle,exponent) {
+	if(exponent == null) exponent = 10;
+	if(angle == null) angle = 1.57;
+	if(distance == null) distance = 0;
+	if(intensity == null) intensity = 1;
+	three.lights.Light.call(this,hex);
+	this.position = new three.math.Vector3(0,1,0);
+	this.intensity = intensity;
+	this.distance = distance;
+	this.angle = angle;
+	this.exponent = exponent;
+	this.castShadow = false;
+	this.onlyShadow = false;
+	this.shadowCameraNear = 50;
+	this.shadowCameraFar = 5000;
+	this.shadowCameraFov = 50;
+	this.shadowCameraVisible = false;
+	this.shadowBias = 0;
+	this.shadowDarkness = 0.5;
+	this.shadowMapWidth = 512;
+	this.shadowMapHeight = 512;
+	this.shadowMap = null;
+	this.shadowMapSize = null;
+	this.shadowCamera = null;
+	this.shadowMatrix = null;
+};
+three.lights.SpotLight.__name__ = true;
+three.lights.SpotLight.__super__ = three.lights.Light;
+three.lights.SpotLight.prototype = $extend(three.lights.Light.prototype,{
+	__class__: three.lights.SpotLight
+});
 three.materials = {}
+three.materials.BlendFactor = function() { }
+three.materials.BlendFactor.__name__ = true;
+three.materials.BlendingType = function() { }
+three.materials.BlendingType.__name__ = true;
+three.materials.EquationType = function() { }
+three.materials.EquationType.__name__ = true;
 three.materials.Material = function() {
+	this.alphaTest = 0;
+	this.id = three.materials.Material.MaterialCount++;
+	this.name = "";
+	this.side = 0;
+	this.opacity = 1;
+	this.transparent = false;
+	this.blending = 1;
+	this.blendSrc = 204;
+	this.blendDst = 205;
+	this.blendEquation = 100;
+	this.depthTest = true;
+	this.depthWrite = true;
+	this.polygonOffset = false;
+	this.polygonOffsetFactor = 0;
+	this.polygonOffsetUnits = 0;
+	this.alphaTest = 0;
+	this.overdraw = false;
+	this.visible = true;
+	this.needsUpdate = true;
 };
 three.materials.Material.__name__ = true;
 three.materials.Material.prototype = {
-	__class__: three.materials.Material
+	clone: function(material) {
+		if(material == null) material = new three.materials.Material();
+		material.name = this.name;
+		material.side = this.side;
+		material.opacity = this.opacity;
+		material.transparent = this.transparent;
+		material.blending = this.blending;
+		material.blendSrc = this.blendSrc;
+		material.blendDst = this.blendDst;
+		material.blendEquation = this.blendEquation;
+		material.depthTest = this.depthTest;
+		material.depthWrite = this.depthWrite;
+		material.polygonOffset = this.polygonOffset;
+		material.polygonOffsetFactor = this.polygonOffsetFactor;
+		material.polygonOffsetUnits = this.polygonOffsetUnits;
+		material.alphaTest = this.alphaTest;
+		material.overdraw = this.overdraw;
+		material.visible = this.visible;
+		return material;
+	}
+	,__class__: three.materials.Material
 }
+three.materials.SideType = function() { }
+three.materials.SideType.__name__ = true;
 three.math.Color = function(value) {
 	if(value == null) value = -16777216;
 	this.setRGBA(value);
@@ -2050,6 +2188,98 @@ three.objects.Bone.__super__ = three.core.Object3D;
 three.objects.Bone.prototype = $extend(three.core.Object3D.prototype,{
 	__class__: three.objects.Bone
 });
+three.renderers = {}
+three.renderers.IRenderer = function() { }
+three.renderers.IRenderer.__name__ = true;
+three.renderers.IRenderer.prototype = {
+	__class__: three.renderers.IRenderer
+}
+three.renderers.WebGLRenderer = function() {
+};
+three.renderers.WebGLRenderer.__name__ = true;
+three.renderers.WebGLRenderer.__interfaces__ = [three.renderers.IRenderer];
+three.renderers.WebGLRenderer.prototype = {
+	render: function() {
+	}
+	,__class__: three.renderers.WebGLRenderer
+}
+three.renderers.renderables = {}
+three.renderers.renderables.RenderableFace3 = function() {
+	this.v1 = new three.renderers.renderables.RenderableVertex();
+	this.v2 = new three.renderers.renderables.RenderableVertex();
+	this.v3 = new three.renderers.renderables.RenderableVertex();
+	this.centroidWorld = new three.math.Vector3();
+	this.centroidScreen = new three.math.Vector3();
+	this.normalWorld = new three.math.Vector3();
+	this.vertexNormalsWorld = [new three.math.Vector3(),new three.math.Vector3(),new three.math.Vector3()];
+	this.material = null;
+	this.uvs = [[]];
+	this.z = null;
+};
+three.renderers.renderables.RenderableFace3.__name__ = true;
+three.renderers.renderables.RenderableFace3.prototype = {
+	__class__: three.renderers.renderables.RenderableFace3
+}
+three.renderers.renderables.RenderableFace4 = function() {
+	this.v1 = new three.renderers.renderables.RenderableVertex();
+	this.v2 = new three.renderers.renderables.RenderableVertex();
+	this.v3 = new three.renderers.renderables.RenderableVertex();
+	this.centroidWorld = new three.math.Vector3();
+	this.centroidScreen = new three.math.Vector3();
+	this.normalWorld = new three.math.Vector3();
+	this.vertexNormalsWorld = [new three.math.Vector3(),new three.math.Vector3(),new three.math.Vector3(),new three.math.Vector3()];
+	this.material = null;
+	this.uvs = [[]];
+	this.z = null;
+};
+three.renderers.renderables.RenderableFace4.__name__ = true;
+three.renderers.renderables.RenderableFace4.prototype = {
+	__class__: three.renderers.renderables.RenderableFace4
+}
+three.renderers.renderables.RenderableLine = function() {
+	this.z = null;
+	this.v1 = new three.renderers.renderables.RenderableVertex();
+	this.v2 = new three.renderers.renderables.RenderableVertex();
+	this.material = null;
+};
+three.renderers.renderables.RenderableLine.__name__ = true;
+three.renderers.renderables.RenderableLine.prototype = {
+	__class__: three.renderers.renderables.RenderableLine
+}
+three.renderers.renderables.RenderableObject = function() {
+	this.object = null;
+	this.z = null;
+};
+three.renderers.renderables.RenderableObject.__name__ = true;
+three.renderers.renderables.RenderableObject.prototype = {
+	__class__: three.renderers.renderables.RenderableObject
+}
+three.renderers.renderables.RenderableParticle = function() {
+	this.object = null;
+	this.x = null;
+	this.y = null;
+	this.z = null;
+	this.rotation = null;
+	this.scale = new three.math.Vector2();
+	this.material = null;
+};
+three.renderers.renderables.RenderableParticle.__name__ = true;
+three.renderers.renderables.RenderableParticle.prototype = {
+	__class__: three.renderers.renderables.RenderableParticle
+}
+three.renderers.renderables.RenderableVertex = function() {
+	this.positionWorld = new three.math.Vector3();
+	this.positionScreen = new three.math.Vector4();
+	this.visible = true;
+};
+three.renderers.renderables.RenderableVertex.__name__ = true;
+three.renderers.renderables.RenderableVertex.prototype = {
+	copy: function(vertex) {
+		this.positionWorld.copy(vertex.positionWorld);
+		this.positionScreen.copy(vertex.positionScreen);
+	}
+	,__class__: three.renderers.renderables.RenderableVertex
+}
 three.scenes = {}
 three.scenes.Fog = function(hex,near,far) {
 	if(far == null) far = 1000;
@@ -2234,6 +2464,30 @@ if(typeof window != "undefined") {
 }
 three.core.Object3D.Object3DCount = 0;
 three.core.Object3D._m1 = new three.math.Matrix4();
+three.materials.BlendFactor.ZeroFactor = 200;
+three.materials.BlendFactor.OneFactor = 201;
+three.materials.BlendFactor.SrcColorFactor = 202;
+three.materials.BlendFactor.OneMinusSrcColorFactor = 203;
+three.materials.BlendFactor.SrcAlphaFactor = 204;
+three.materials.BlendFactor.OneMinusSrcAlphaFactor = 205;
+three.materials.BlendFactor.DstAlphaFactor = 206;
+three.materials.BlendFactor.OneMinusDstAlphaFactor = 207;
+three.materials.BlendFactor.DstColorFactor = 208;
+three.materials.BlendFactor.OneMinusDstColorFactor = 209;
+three.materials.BlendFactor.SrcAlphaSaturateFactor = 210;
+three.materials.BlendingType.NoBlending = 0;
+three.materials.BlendingType.NormalBlending = 1;
+three.materials.BlendingType.AdditiveBlending = 2;
+three.materials.BlendingType.SubtractiveBlending = 3;
+three.materials.BlendingType.MultiplyBlending = 4;
+three.materials.BlendingType.CustomBlending = 5;
+three.materials.EquationType.AddEquation = 100;
+three.materials.EquationType.SubtractEquation = 101;
+three.materials.EquationType.ReverseSubtractEquation = 102;
+three.materials.Material.MaterialCount = 0;
+three.materials.SideType.FrontSide = 0;
+three.materials.SideType.BackSide = 1;
+three.materials.SideType.DoubleSide = 2;
 three.math.Vector3.X_AXIS = new three.math.Vector3(1,0,0);
 three.math.Vector3.Y_AXIS = new three.math.Vector3(0,1,0);
 three.math.Vector3.Z_AXIS = new three.math.Vector3(0,0,1);
