@@ -4,6 +4,7 @@ import js.Dom;
 import js.Lib;
 import three.math.Color;
 import three.math.Matrix4;
+import three.math.Vector3;
 import UserAgentContext;
 import three.math.Vector2;
 import three.scenes.Fog;
@@ -22,6 +23,12 @@ import three.renderers.renderables.RenderableObject;
 import three.renderers.renderables.RenderableParticle;
 import three.renderers.renderables.RenderableVertex;
 import three.renderers.WebGLRenderer;
+import three.cameras.Camera;
+import three.cameras.PerspectiveCamera;
+import three.cameras.OrthographicCamera;
+import three.core.Clock;
+import three.core.Frustum;
+import three.core.BufferGeometry;
 /**
  * ...
  * @author 
@@ -70,10 +77,5 @@ class Main
 		gl.enableVertexAttribArray(index);
 		gl.vertexAttribPointer(index, 2, gl.FLOAT, false, 0, 0);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
-		
-		var color:Color = new Color(0x000000);
-		color.rgb = 0xFF0000;
-		var c:Int = color.rgb;
-		var matrix4:Matrix4 = new Matrix4();
 	}
 }
