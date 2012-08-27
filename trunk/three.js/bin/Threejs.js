@@ -112,10 +112,6 @@ Main.prototype = {
 		this.gl.enableVertexAttribArray(index);
 		this.gl.vertexAttribPointer(index,2,this.gl.FLOAT,false,0,0);
 		this.gl.drawArrays(this.gl.TRIANGLES,0,3);
-		var color = new three.math.Color(0);
-		color.setRGB(16711680);
-		var c = color.getRGB();
-		var matrix4 = new three.math.Matrix4();
 	}
 	,__class__: Main
 }
@@ -1143,12 +1139,291 @@ three.core.Object3D.prototype = {
 three.cameras = {}
 three.cameras.Camera = function() {
 	three.core.Object3D.call(this);
+	this.matrixWorldInverse = new three.math.Matrix4();
+	this.projectionMatrix = new three.math.Matrix4();
+	this.projectionMatrixInverse = new three.math.Matrix4();
 };
 three.cameras.Camera.__name__ = true;
 three.cameras.Camera.__super__ = three.core.Object3D;
 three.cameras.Camera.prototype = $extend(three.core.Object3D.prototype,{
-	__class__: three.cameras.Camera
+	lookAt: function(target) {
+		this.matrix.lookAt(this.position,target,this.up);
+		if(this.rotationAutoUpdate) this.rotation.setEulerFromRotationMatrix(this.matrix,this.eulerOrder);
+	}
+	,__class__: three.cameras.Camera
 });
+three.cameras.OrthographicCamera = function(left,right,top,bottom,near,far) {
+	if(far == null) far = 2000;
+	if(near == null) near = 0.1;
+	three.cameras.Camera.call(this);
+	this.left = left;
+	this.right = right;
+	this.top = top;
+	this.bottom = bottom;
+	this.near = near;
+	this.far = far;
+	this.updateProjectionMatrix();
+};
+three.cameras.OrthographicCamera.__name__ = true;
+three.cameras.OrthographicCamera.__super__ = three.cameras.Camera;
+three.cameras.OrthographicCamera.prototype = $extend(three.cameras.Camera.prototype,{
+	updateProjectionMatrix: function() {
+		this.projectionMatrix.makeOrthographic(this.left,this.right,this.top,this.bottom,this.near,this.far);
+	}
+	,__class__: three.cameras.OrthographicCamera
+});
+three.cameras.PerspectiveCamera = function(fov,aspect,near,far) {
+	if(far == null) far = 2000;
+	if(near == null) near = 0.1;
+	if(aspect == null) aspect = 1;
+	if(fov == null) fov = 50;
+	three.cameras.Camera.call(this);
+	this.fov = fov;
+	this.aspect = aspect;
+	this.near = near;
+	this.far = far;
+	this.fullWidth = 0;
+	this.fullHeight = 0;
+	this.updateProjectionMatrix();
+};
+three.cameras.PerspectiveCamera.__name__ = true;
+three.cameras.PerspectiveCamera.__super__ = three.cameras.Camera;
+three.cameras.PerspectiveCamera.prototype = $extend(three.cameras.Camera.prototype,{
+	updateProjectionMatrix: function() {
+		if(this.fullWidth > 0) {
+			var aspect = this.fullWidth / this.fullHeight;
+			var top = Math.tan(this.fov * 0.5 * (Math.PI / 180)) * this.near;
+			var bottom = -top;
+			var left = aspect * bottom;
+			var right = aspect * top;
+			var width = Math.abs(right - left);
+			var height = Math.abs(top - bottom);
+			this.projectionMatrix.makeFrustum(left + this.x * width / this.fullWidth,left + (this.x + this.width) * width / this.fullWidth,top - (this.y + this.height) * height / this.fullHeight,top - this.y * height / this.fullHeight,this.near,this.far);
+		} else this.projectionMatrix.makePerspective(this.fov,this.aspect,this.near,this.far);
+	}
+	,setViewOffset: function(fullWidth,fullHeight,x,y,width,height) {
+		this.fullWidth = fullWidth;
+		this.fullHeight = fullHeight;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.updateProjectionMatrix();
+	}
+	,setLens: function(focalLength,frameHeight) {
+		if(frameHeight == null) frameHeight = 24;
+		this.fov = 2 * Math.atan(frameHeight / (focalLength * 2)) * (180 / Math.PI);
+		this.updateProjectionMatrix();
+	}
+	,__class__: three.cameras.PerspectiveCamera
+});
+three.core.BoundingBox = function() {
+	this.min = new three.math.Vector3(Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY);
+	this.max = new three.math.Vector3(Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY);
+};
+three.core.BoundingBox.__name__ = true;
+three.core.BoundingBox.prototype = {
+	computeFromPoints: function(points) {
+		var x, y, z;
+		var i = 0;
+		var pSize = points.length;
+		while(i < pSize) {
+			x = points[i];
+			y = points[i + 1];
+			z = points[i + 2];
+			if(x < this.min.x) this.min.x = x; else if(x > this.max.x) this.max.x = x;
+			if(y < this.min.y) this.min.y = y; else if(y > this.max.y) this.max.y = y;
+			if(z < this.min.z) this.min.z = z; else if(z > this.max.z) this.max.z = z;
+			i += 3;
+		}
+	}
+	,resetTo: function(x,y,z) {
+		this.min.setTo(x,y,z);
+		this.max.setTo(x,y,z);
+	}
+	,__class__: three.core.BoundingBox
+}
+three.core.BoundingSphere = function() {
+	this.radius = 0;
+};
+three.core.BoundingSphere.__name__ = true;
+three.core.BoundingSphere.prototype = {
+	computeFromPoints: function(points) {
+		var x, y, z;
+		var radiusSq, maxRadiusSq = 0;
+		var i = 0;
+		var pSize = points.length;
+		while(i < pSize) {
+			x = points[i];
+			y = points[i + 1];
+			z = points[i + 2];
+			radiusSq = x * x + y * y + z * z;
+			if(radiusSq > maxRadiusSq) maxRadiusSq = radiusSq;
+			i += 3;
+		}
+		this.radius = Math.sqrt(maxRadiusSq);
+	}
+	,__class__: three.core.BoundingSphere
+}
+three.core.BufferGeometry = function() {
+	this.id = three.core.BufferGeometry.GeometryCount++;
+	this.attributes = { };
+	this.isDynamic = false;
+	this.boundingBox = null;
+	this.boundingSphere = null;
+	this.hasTangents = false;
+	this.morphTargets = [];
+	this.verticesNeedUpdate = false;
+	this.normalsNeedUpdate = false;
+};
+three.core.BufferGeometry.__name__ = true;
+three.core.BufferGeometry.prototype = {
+	computeBoundingSphere: function() {
+		if(this.boundingSphere == null) this.boundingSphere = new three.core.BoundingSphere();
+		var positions = this.attributes.position.array;
+		if(positions != null) this.boundingSphere.computeFromPoints(positions); else this.boundingSphere.radius = 0;
+	}
+	,computeBoundingBox: function() {
+		if(this.boundingBox == null) this.boundingBox = new three.core.BoundingBox();
+		var positions = this.attributes.position.array;
+		if(positions != null && positions.length >= 3) this.boundingBox.computeFromPoints(positions); else this.boundingBox.resetTo(0,0,0);
+	}
+	,applyMatrix: function(matrix) {
+		var positionArray = null;
+		var normalArray = null;
+		if(this.attributes.position != null) positionArray = this.attributes.position.array;
+		if(this.attributes.normal != null) normalArray = this.attributes.normal.array;
+		if(positionArray != null) {
+			matrix.multiplyVector3Array(positionArray);
+			this.verticesNeedUpdate = true;
+		}
+		if(normalArray != null) {
+			var matrixRotation = new three.math.Matrix4();
+			matrixRotation.extractRotation(matrix);
+			matrixRotation.multiplyVector3Array(normalArray);
+			this.normalsNeedUpdate = true;
+		}
+	}
+	,__class__: three.core.BufferGeometry
+}
+three.core.Clock = function(autoStart) {
+	if(autoStart == null) autoStart = true;
+	this.autoStart = autoStart;
+	this.startTime = 0;
+	this.oldTime = 0;
+	this.elapsedTime = 0;
+	this.running = false;
+};
+three.core.Clock.__name__ = true;
+three.core.Clock.prototype = {
+	getDelta: function() {
+		var diff = 0;
+		if(this.autoStart && !this.running) this.start();
+		if(this.running) {
+			var newTime = new Date().getTime();
+			diff = 0.001 * (newTime - this.oldTime);
+			this.oldTime = newTime;
+			this.elapsedTime += diff;
+		}
+		return diff;
+	}
+	,getElapsedTime: function() {
+		this.elapsedTime += this.getDelta();
+		return this.elapsedTime;
+	}
+	,stop: function() {
+		this.getElapsedTime();
+		this.running = false;
+	}
+	,start: function() {
+		this.startTime = new Date().getTime();
+		this.oldTime = this.startTime;
+		this.running = true;
+	}
+	,__class__: three.core.Clock
+}
+three.core.Face = function() {
+};
+three.core.Face.__name__ = true;
+three.core.Face.prototype = {
+	__class__: three.core.Face
+}
+three.core.Frustum = function() {
+	this.planes = [new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4()];
+};
+three.core.Frustum.__name__ = true;
+three.core.Frustum.prototype = {
+	contains: function(object) {
+		var distance = 0.0;
+		var planes = this.planes;
+		var matrix = object.matrixWorld;
+		var me = matrix.elements;
+		var radius = -object.geometry.boundingSphere.radius * matrix.getMaxScaleOnAxis();
+		var _g = 0;
+		while(_g < 6) {
+			var i = _g++;
+			distance = planes[i].x * me[12] + planes[i].y * me[13] + planes[i].z * me[14] + planes[i].w;
+			if(distance <= radius) return false;
+		}
+		return true;
+	}
+	,setFromMatrix: function(m) {
+		var plane;
+		var planes = this.planes;
+		var me = m.elements;
+		var me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
+		var me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
+		var me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];
+		var me12 = me[12], me13 = me[13], me14 = me[14], me15 = me[15];
+		planes[0].setTo(me3 - me0,me7 - me4,me11 - me8,me15 - me12);
+		planes[1].setTo(me3 + me0,me7 + me4,me11 + me8,me15 + me12);
+		planes[2].setTo(me3 + me1,me7 + me5,me11 + me9,me15 + me13);
+		planes[3].setTo(me3 - me1,me7 - me5,me11 - me9,me15 - me13);
+		planes[4].setTo(me3 - me2,me7 - me6,me11 - me10,me15 - me14);
+		planes[5].setTo(me3 + me2,me7 + me6,me11 + me10,me15 + me14);
+		var _g = 0;
+		while(_g < 6) {
+			var i = _g++;
+			plane = planes[i];
+			plane.divideScalar(Math.sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z));
+		}
+	}
+	,__class__: three.core.Frustum
+}
+three.core.Geometry = function() {
+};
+three.core.Geometry.__name__ = true;
+three.core.Geometry.prototype = {
+	__class__: three.core.Geometry
+}
+three.core.UV = function(u,v) {
+	if(v == null) v = 0;
+	if(u == null) u = 0;
+	this.u = u;
+	this.v = v;
+};
+three.core.UV.__name__ = true;
+three.core.UV.prototype = {
+	lerpSelf: function(uv,interp) {
+		this.u += (uv.u - this.u) * interp;
+		this.v += (uv.v - this.v) * interp;
+		return this;
+	}
+	,setTo: function(u,v) {
+		this.u = u;
+		this.v = v;
+		return this;
+	}
+	,clone: function() {
+		return new three.core.UV(this.u,this.v);
+	}
+	,copy: function(value) {
+		this.u = value.u;
+		this.v = value.v;
+		return this;
+	}
+	,__class__: three.core.UV
+}
 three.lights = {}
 three.lights.Light = function(hex) {
 	three.core.Object3D.call(this);
@@ -2188,6 +2463,14 @@ three.objects.Bone.__super__ = three.core.Object3D;
 three.objects.Bone.prototype = $extend(three.core.Object3D.prototype,{
 	__class__: three.objects.Bone
 });
+three.objects.Mesh = function() {
+	three.core.Object3D.call(this);
+};
+three.objects.Mesh.__name__ = true;
+three.objects.Mesh.__super__ = three.core.Object3D;
+three.objects.Mesh.prototype = $extend(three.core.Object3D.prototype,{
+	__class__: three.objects.Mesh
+});
 three.renderers = {}
 three.renderers.IRenderer = function() { }
 three.renderers.IRenderer.__name__ = true;
@@ -2464,6 +2747,8 @@ if(typeof window != "undefined") {
 }
 three.core.Object3D.Object3DCount = 0;
 three.core.Object3D._m1 = new three.math.Matrix4();
+three.core.BufferGeometry.GeometryCount = 0;
+three.core.Geometry.GeometryCount = 0;
 three.materials.BlendFactor.ZeroFactor = 200;
 three.materials.BlendFactor.OneFactor = 201;
 three.materials.BlendFactor.SrcColorFactor = 202;
@@ -2488,6 +2773,8 @@ three.materials.Material.MaterialCount = 0;
 three.materials.SideType.FrontSide = 0;
 three.materials.SideType.BackSide = 1;
 three.materials.SideType.DoubleSide = 2;
+three.math.MathUtil.RAD2DEG = 180 / Math.PI;
+three.math.MathUtil.DEG2RAD = Math.PI / 180;
 three.math.Vector3.X_AXIS = new three.math.Vector3(1,0,0);
 three.math.Vector3.Y_AXIS = new three.math.Vector3(0,1,0);
 three.math.Vector3.Z_AXIS = new three.math.Vector3(0,0,1);

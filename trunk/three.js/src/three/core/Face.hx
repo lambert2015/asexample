@@ -1,6 +1,6 @@
 package three.core;
 import three.math.Vector3;
-
+import three.math.Color;
 /**
  * ...
  * @author andy
