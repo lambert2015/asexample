@@ -29,6 +29,8 @@ import three.cameras.OrthographicCamera;
 import three.core.Clock;
 import three.core.Frustum;
 import three.core.BufferGeometry;
+import three.renderers.WebGLRenderTarget;
+import three.renderers.WebGLRenderTargetCube;
 /**
  * ...
  * @author 
