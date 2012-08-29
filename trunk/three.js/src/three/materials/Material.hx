@@ -74,8 +74,8 @@ class Material
 		this.needsUpdate = true;
 	}
 	
-	//public function setValues(values:Dynamic):Void
-	//{
+	public function setValues(values:Dynamic):Void
+	{
 		//if (values == null)
 			//return;
 //
@@ -117,7 +117,7 @@ class Material
 //
 		//}
 //
-	//}
+	}
 
 	public function clone(?material:Material = null):Material 
 	{
