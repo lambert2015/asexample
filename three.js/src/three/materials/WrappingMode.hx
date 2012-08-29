@@ -1,4 +1,4 @@
-package public static inline var materials;
+package three.materials;
 
 /**
  * ...

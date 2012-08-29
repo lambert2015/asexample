@@ -1530,8 +1530,12 @@ three.materials.BlendFactor = function() { }
 three.materials.BlendFactor.__name__ = true;
 three.materials.BlendingType = function() { }
 three.materials.BlendingType.__name__ = true;
+three.materials.DataType = function() { }
+three.materials.DataType.__name__ = true;
 three.materials.EquationType = function() { }
 three.materials.EquationType.__name__ = true;
+three.materials.FilterType = function() { }
+three.materials.FilterType.__name__ = true;
 three.materials.Material = function() {
 	this.alphaTest = 0;
 	this.id = three.materials.Material.MaterialCount++;
@@ -1575,10 +1579,18 @@ three.materials.Material.prototype = {
 		material.visible = this.visible;
 		return material;
 	}
+	,setValues: function(values) {
+	}
 	,__class__: three.materials.Material
 }
+three.materials.PixelFormat = function() { }
+three.materials.PixelFormat.__name__ = true;
+three.materials.PixelType = function() { }
+three.materials.PixelType.__name__ = true;
 three.materials.SideType = function() { }
 three.materials.SideType.__name__ = true;
+three.materials.WrappingMode = function() { }
+three.materials.WrappingMode.__name__ = true;
 three.math.Color = function(value) {
 	if(value == null) value = -16777216;
 	this.setRGBA(value);
@@ -2477,6 +2489,52 @@ three.renderers.IRenderer.__name__ = true;
 three.renderers.IRenderer.prototype = {
 	__class__: three.renderers.IRenderer
 }
+three.renderers.WebGLRenderTarget = function(width,height,options) {
+	this.width = width;
+	this.height = height;
+	if(options == null) options = { };
+	this.wrapS = options.wrapS != null?options.wrapS:1001;
+	this.wrapT = options.wrapT != null?options.wrapT:1001;
+	this.magFilter = options.magFilter != null?options.magFilter:1006;
+	this.minFilter = options.minFilter != null?options.minFilter:1008;
+	this.anisotropy = options.anisotropy != null?options.anisotropy:1;
+	this.offset = new three.math.Vector2(0,0);
+	this.repeat = new three.math.Vector2(1,1);
+	this.format = options.format != null?options.format:1021;
+	this.type = options.type != null?options.type:1009;
+	this.depthBuffer = options.depthBuffer != null?options.depthBuffer:true;
+	this.stencilBuffer = options.stencilBuffer != null?options.stencilBuffer:true;
+	this.generateMipmaps = true;
+};
+three.renderers.WebGLRenderTarget.__name__ = true;
+three.renderers.WebGLRenderTarget.prototype = {
+	clone: function() {
+		var result = new three.renderers.WebGLRenderTarget(this.width,this.height);
+		result.wrapS = this.wrapS;
+		result.wrapT = this.wrapT;
+		result.magFilter = this.magFilter;
+		result.anisotropy = this.anisotropy;
+		result.minFilter = this.minFilter;
+		result.offset.copy(this.offset);
+		result.repeat.copy(this.repeat);
+		result.format = this.format;
+		result.type = this.type;
+		result.depthBuffer = this.depthBuffer;
+		result.stencilBuffer = this.stencilBuffer;
+		result.generateMipmaps = this.generateMipmaps;
+		return result;
+	}
+	,__class__: three.renderers.WebGLRenderTarget
+}
+three.renderers.WebGLRenderTargetCube = function(width,height,options) {
+	three.renderers.WebGLRenderTarget.call(this,width,height,options);
+	this.activeCubeFace = 0;
+};
+three.renderers.WebGLRenderTargetCube.__name__ = true;
+three.renderers.WebGLRenderTargetCube.__super__ = three.renderers.WebGLRenderTarget;
+three.renderers.WebGLRenderTargetCube.prototype = $extend(three.renderers.WebGLRenderTarget.prototype,{
+	__class__: three.renderers.WebGLRenderTargetCube
+});
 three.renderers.WebGLRenderer = function() {
 };
 three.renderers.WebGLRenderer.__name__ = true;
@@ -2766,13 +2824,37 @@ three.materials.BlendingType.AdditiveBlending = 2;
 three.materials.BlendingType.SubtractiveBlending = 3;
 three.materials.BlendingType.MultiplyBlending = 4;
 three.materials.BlendingType.CustomBlending = 5;
+three.materials.DataType.UnsignedByteType = 1009;
+three.materials.DataType.ByteType = 1010;
+three.materials.DataType.ShortType = 1011;
+three.materials.DataType.UnsignedShortType = 1012;
+three.materials.DataType.IntType = 1013;
+three.materials.DataType.UnsignedIntType = 1014;
+three.materials.DataType.FloatType = 1015;
 three.materials.EquationType.AddEquation = 100;
 three.materials.EquationType.SubtractEquation = 101;
 three.materials.EquationType.ReverseSubtractEquation = 102;
+three.materials.FilterType.NearestFilter = 1003;
+three.materials.FilterType.NearestMipMapNearestFilter = 1004;
+three.materials.FilterType.NearestMipMapLinearFilter = 1005;
+three.materials.FilterType.LinearFilter = 1006;
+three.materials.FilterType.LinearMipMapNearestFilter = 1007;
+three.materials.FilterType.LinearMipMapLinearFilter = 1008;
 three.materials.Material.MaterialCount = 0;
+three.materials.PixelFormat.AlphaFormat = 1019;
+three.materials.PixelFormat.RGBFormat = 1020;
+three.materials.PixelFormat.RGBAFormat = 1021;
+three.materials.PixelFormat.LuminanceFormat = 1022;
+three.materials.PixelFormat.LuminanceAlphaFormat = 1023;
+three.materials.PixelType.UnsignedShort4444Type = 1016;
+three.materials.PixelType.UnsignedShort5551Type = 1017;
+three.materials.PixelType.UnsignedShort565Type = 1018;
 three.materials.SideType.FrontSide = 0;
 three.materials.SideType.BackSide = 1;
 three.materials.SideType.DoubleSide = 2;
+three.materials.WrappingMode.RepeatWrapping = 1000;
+three.materials.WrappingMode.ClampToEdgeWrapping = 1001;
+three.materials.WrappingMode.MirroredRepeatWrapping = 1002;
 three.math.MathUtil.RAD2DEG = 180 / Math.PI;
 three.math.MathUtil.DEG2RAD = Math.PI / 180;
 three.math.Vector3.X_AXIS = new three.math.Vector3(1,0,0);
