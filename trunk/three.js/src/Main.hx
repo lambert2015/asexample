@@ -33,6 +33,9 @@ import three.renderers.WebGLRenderTarget;
 import three.renderers.WebGLRenderTargetCube;
 import three.objects.Mesh;
 import three.objects.MorphAnimMesh;
+import three.materials.MeshBasicMaterial;
+import three.materials.MeshNormalMaterial;
+import three.loaders.Loader;
 /**
  * ...
  * @author 
@@ -81,5 +84,9 @@ class Main
 		gl.enableVertexAttribArray(index);
 		gl.vertexAttribPointer(index, 2, gl.FLOAT, false, 0, 0);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
+		
+		var material:Material = new Material();
+		material.setValues( { name:"abcd", transparent:true } );
+		//Lib.alert(material.name);
 	}
 }

@@ -1,5 +1,5 @@
 (function () { "use strict";
-var $estr = function() { return js.Boot.__string_rec(this,''); };
+var $hxClasses = {},$estr = function() { return js.Boot.__string_rec(this,''); };
 function $extend(from, fields) {
 	function inherit() {}; inherit.prototype = from; var proto = new inherit();
 	for (var name in fields) proto[name] = fields[name];
@@ -9,7 +9,8 @@ var EReg = function(r,opt) {
 	opt = opt.split("u").join("");
 	this.r = new RegExp(r,opt);
 };
-EReg.__name__ = true;
+$hxClasses["EReg"] = EReg;
+EReg.__name__ = ["EReg"];
 EReg.prototype = {
 	customReplace: function(s,f) {
 		var buf = new StringBuf();
@@ -55,10 +56,12 @@ EReg.prototype = {
 		this.r.s = s;
 		return this.r.m != null;
 	}
+	,r: null
 	,__class__: EReg
 }
 var HxOverrides = function() { }
-HxOverrides.__name__ = true;
+$hxClasses["HxOverrides"] = HxOverrides;
+HxOverrides.__name__ = ["HxOverrides"];
 HxOverrides.dateStr = function(date) {
 	var m = date.getMonth() + 1;
 	var d = date.getDate();
@@ -126,7 +129,8 @@ var IntIter = function(min,max) {
 	this.min = min;
 	this.max = max;
 };
-IntIter.__name__ = true;
+$hxClasses["IntIter"] = IntIter;
+IntIter.__name__ = ["IntIter"];
 IntIter.prototype = {
 	next: function() {
 		return this.min++;
@@ -134,13 +138,16 @@ IntIter.prototype = {
 	,hasNext: function() {
 		return this.min < this.max;
 	}
+	,max: null
+	,min: null
 	,__class__: IntIter
 }
 var Main = function() {
 	this.gl = null;
 	js.Lib.window.onload = $bind(this,this.onLoad);
 };
-Main.__name__ = true;
+$hxClasses["Main"] = Main;
+Main.__name__ = ["Main"];
 Main.main = function() {
 	new Main();
 }
@@ -164,11 +171,15 @@ Main.prototype = {
 		this.gl.enableVertexAttribArray(index);
 		this.gl.vertexAttribPointer(index,2,this.gl.FLOAT,false,0,0);
 		this.gl.drawArrays(this.gl.TRIANGLES,0,3);
+		var material = new three.materials.Material();
+		material.setValues({ name : "abcd", transparent : true});
 	}
+	,gl: null
 	,__class__: Main
 }
 var Reflect = function() { }
-Reflect.__name__ = true;
+$hxClasses["Reflect"] = Reflect;
+Reflect.__name__ = ["Reflect"];
 Reflect.hasField = function(o,field) {
 	return Object.prototype.hasOwnProperty.call(o,field);
 }
@@ -242,7 +253,8 @@ Reflect.makeVarArgs = function(f) {
 	};
 }
 var Std = function() { }
-Std.__name__ = true;
+$hxClasses["Std"] = Std;
+Std.__name__ = ["Std"];
 Std["is"] = function(v,t) {
 	return js.Boot.__instanceof(v,t);
 }
@@ -267,7 +279,8 @@ Std.random = function(x) {
 var StringBuf = function() {
 	this.b = "";
 };
-StringBuf.__name__ = true;
+$hxClasses["StringBuf"] = StringBuf;
+StringBuf.__name__ = ["StringBuf"];
 StringBuf.prototype = {
 	toString: function() {
 		return this.b;
@@ -281,11 +294,195 @@ StringBuf.prototype = {
 	,add: function(x) {
 		this.b += Std.string(x);
 	}
+	,b: null
 	,__class__: StringBuf
+}
+var ValueType = $hxClasses["ValueType"] = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
+ValueType.TNull = ["TNull",0];
+ValueType.TNull.toString = $estr;
+ValueType.TNull.__enum__ = ValueType;
+ValueType.TInt = ["TInt",1];
+ValueType.TInt.toString = $estr;
+ValueType.TInt.__enum__ = ValueType;
+ValueType.TFloat = ["TFloat",2];
+ValueType.TFloat.toString = $estr;
+ValueType.TFloat.__enum__ = ValueType;
+ValueType.TBool = ["TBool",3];
+ValueType.TBool.toString = $estr;
+ValueType.TBool.__enum__ = ValueType;
+ValueType.TObject = ["TObject",4];
+ValueType.TObject.toString = $estr;
+ValueType.TObject.__enum__ = ValueType;
+ValueType.TFunction = ["TFunction",5];
+ValueType.TFunction.toString = $estr;
+ValueType.TFunction.__enum__ = ValueType;
+ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
+ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; }
+ValueType.TUnknown = ["TUnknown",8];
+ValueType.TUnknown.toString = $estr;
+ValueType.TUnknown.__enum__ = ValueType;
+var Type = function() { }
+$hxClasses["Type"] = Type;
+Type.__name__ = ["Type"];
+Type.getClass = function(o) {
+	if(o == null) return null;
+	return o.__class__;
+}
+Type.getEnum = function(o) {
+	if(o == null) return null;
+	return o.__enum__;
+}
+Type.getSuperClass = function(c) {
+	return c.__super__;
+}
+Type.getClassName = function(c) {
+	var a = c.__name__;
+	return a.join(".");
+}
+Type.getEnumName = function(e) {
+	var a = e.__ename__;
+	return a.join(".");
+}
+Type.resolveClass = function(name) {
+	var cl = $hxClasses[name];
+	if(cl == null || !cl.__name__) return null;
+	return cl;
+}
+Type.resolveEnum = function(name) {
+	var e = $hxClasses[name];
+	if(e == null || !e.__ename__) return null;
+	return e;
+}
+Type.createInstance = function(cl,args) {
+	switch(args.length) {
+	case 0:
+		return new cl();
+	case 1:
+		return new cl(args[0]);
+	case 2:
+		return new cl(args[0],args[1]);
+	case 3:
+		return new cl(args[0],args[1],args[2]);
+	case 4:
+		return new cl(args[0],args[1],args[2],args[3]);
+	case 5:
+		return new cl(args[0],args[1],args[2],args[3],args[4]);
+	case 6:
+		return new cl(args[0],args[1],args[2],args[3],args[4],args[5]);
+	case 7:
+		return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6]);
+	case 8:
+		return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
+	default:
+		throw "Too many arguments";
+	}
+	return null;
+}
+Type.createEmptyInstance = function(cl) {
+	function empty() {}; empty.prototype = cl.prototype;
+	return new empty();
+}
+Type.createEnum = function(e,constr,params) {
+	var f = Reflect.field(e,constr);
+	if(f == null) throw "No such constructor " + constr;
+	if(Reflect.isFunction(f)) {
+		if(params == null) throw "Constructor " + constr + " need parameters";
+		return f.apply(e,params);
+	}
+	if(params != null && params.length != 0) throw "Constructor " + constr + " does not need parameters";
+	return f;
+}
+Type.createEnumIndex = function(e,index,params) {
+	var c = e.__constructs__[index];
+	if(c == null) throw index + " is not a valid enum constructor index";
+	return Type.createEnum(e,c,params);
+}
+Type.getInstanceFields = function(c) {
+	var a = [];
+	for(var i in c.prototype) a.push(i);
+	HxOverrides.remove(a,"__class__");
+	HxOverrides.remove(a,"__properties__");
+	return a;
+}
+Type.getClassFields = function(c) {
+	var a = Reflect.fields(c);
+	HxOverrides.remove(a,"__name__");
+	HxOverrides.remove(a,"__interfaces__");
+	HxOverrides.remove(a,"__properties__");
+	HxOverrides.remove(a,"__super__");
+	HxOverrides.remove(a,"prototype");
+	return a;
+}
+Type.getEnumConstructs = function(e) {
+	var a = e.__constructs__;
+	return a.slice();
+}
+Type["typeof"] = function(v) {
+	switch(typeof(v)) {
+	case "boolean":
+		return ValueType.TBool;
+	case "string":
+		return ValueType.TClass(String);
+	case "number":
+		if(Math.ceil(v) == v % 2147483648.0) return ValueType.TInt;
+		return ValueType.TFloat;
+	case "object":
+		if(v == null) return ValueType.TNull;
+		var e = v.__enum__;
+		if(e != null) return ValueType.TEnum(e);
+		var c = v.__class__;
+		if(c != null) return ValueType.TClass(c);
+		return ValueType.TObject;
+	case "function":
+		if(v.__name__ || v.__ename__) return ValueType.TObject;
+		return ValueType.TFunction;
+	case "undefined":
+		return ValueType.TNull;
+	default:
+		return ValueType.TUnknown;
+	}
+}
+Type.enumEq = function(a,b) {
+	if(a == b) return true;
+	try {
+		if(a[0] != b[0]) return false;
+		var _g1 = 2, _g = a.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(!Type.enumEq(a[i],b[i])) return false;
+		}
+		var e = a.__enum__;
+		if(e != b.__enum__ || e == null) return false;
+	} catch( e ) {
+		return false;
+	}
+	return true;
+}
+Type.enumConstructor = function(e) {
+	return e[0];
+}
+Type.enumParameters = function(e) {
+	return e.slice(2);
+}
+Type.enumIndex = function(e) {
+	return e[1];
+}
+Type.allEnums = function(e) {
+	var all = [];
+	var cst = e.__constructs__;
+	var _g = 0;
+	while(_g < cst.length) {
+		var c = cst[_g];
+		++_g;
+		var v = Reflect.field(e,c);
+		if(!Reflect.isFunction(v)) all.push(v);
+	}
+	return all;
 }
 var js = {}
 js.Boot = function() { }
-js.Boot.__name__ = true;
+$hxClasses["js.Boot"] = js.Boot;
+js.Boot.__name__ = ["js","Boot"];
 js.Boot.__unhtml = function(s) {
 	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
 }
@@ -420,7 +617,10 @@ js.Boot.__cast = function(o,t) {
 	if(js.Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
 }
 js.Lib = function() { }
-js.Lib.__name__ = true;
+$hxClasses["js.Lib"] = js.Lib;
+js.Lib.__name__ = ["js","Lib"];
+js.Lib.document = null;
+js.Lib.window = null;
 js.Lib.debug = function() {
 	debugger;
 }
@@ -438,7 +638,8 @@ three.math = {}
 three.math.Matrix4 = function() {
 	this.elements = new Float32Array(16);
 };
-three.math.Matrix4.__name__ = true;
+$hxClasses["three.math.Matrix4"] = three.math.Matrix4;
+three.math.Matrix4.__name__ = ["three","math","Matrix4"];
 three.math.Matrix4.prototype = {
 	clone: function() {
 		var result = new three.math.Matrix4();
@@ -1153,6 +1354,7 @@ three.math.Matrix4.prototype = {
 		te[15] = n44;
 		return this;
 	}
+	,elements: null
 	,__class__: three.math.Matrix4
 }
 three.core = {}
@@ -1184,7 +1386,8 @@ three.core.Object3D = function() {
 	this.frustumCulled = true;
 	this._vector = new three.math.Vector3();
 };
-three.core.Object3D.__name__ = true;
+$hxClasses["three.core.Object3D"] = three.core.Object3D;
+three.core.Object3D.__name__ = ["three","core","Object3D"];
 three.core.Object3D.prototype = {
 	clone: function() {
 		return null;
@@ -1279,6 +1482,32 @@ three.core.Object3D.prototype = {
 		this.rotation.setEulerFromRotationMatrix(mat,this.eulerOrder);
 		this.position.getPositionFromMatrix(this.matrix);
 	}
+	,_vector: null
+	,frustumCulled: null
+	,receiveShadow: null
+	,castShadow: null
+	,visible: null
+	,boundRadiusScale: null
+	,boundRadius: null
+	,useQuaternion: null
+	,quaternion: null
+	,matrixWorldNeedsUpdate: null
+	,matrixAutoUpdate: null
+	,matrixRotationWorld: null
+	,matrixWorld: null
+	,matrix: null
+	,rotationAutoUpdate: null
+	,renderDepth: null
+	,scale: null
+	,eulerOrder: null
+	,rotation: null
+	,position: null
+	,up: null
+	,children: null
+	,parent: null
+	,properties: null
+	,name: null
+	,id: null
 	,__class__: three.core.Object3D
 }
 three.cameras = {}
@@ -1288,13 +1517,17 @@ three.cameras.Camera = function() {
 	this.projectionMatrix = new three.math.Matrix4();
 	this.projectionMatrixInverse = new three.math.Matrix4();
 };
-three.cameras.Camera.__name__ = true;
+$hxClasses["three.cameras.Camera"] = three.cameras.Camera;
+three.cameras.Camera.__name__ = ["three","cameras","Camera"];
 three.cameras.Camera.__super__ = three.core.Object3D;
 three.cameras.Camera.prototype = $extend(three.core.Object3D.prototype,{
 	lookAt: function(target) {
 		this.matrix.lookAt(this.position,target,this.up);
 		if(this.rotationAutoUpdate) this.rotation.setEulerFromRotationMatrix(this.matrix,this.eulerOrder);
 	}
+	,projectionMatrixInverse: null
+	,projectionMatrix: null
+	,matrixWorldInverse: null
 	,__class__: three.cameras.Camera
 });
 three.cameras.OrthographicCamera = function(left,right,top,bottom,near,far) {
@@ -1309,12 +1542,19 @@ three.cameras.OrthographicCamera = function(left,right,top,bottom,near,far) {
 	this.far = far;
 	this.updateProjectionMatrix();
 };
-three.cameras.OrthographicCamera.__name__ = true;
+$hxClasses["three.cameras.OrthographicCamera"] = three.cameras.OrthographicCamera;
+three.cameras.OrthographicCamera.__name__ = ["three","cameras","OrthographicCamera"];
 three.cameras.OrthographicCamera.__super__ = three.cameras.Camera;
 three.cameras.OrthographicCamera.prototype = $extend(three.cameras.Camera.prototype,{
 	updateProjectionMatrix: function() {
 		this.projectionMatrix.makeOrthographic(this.left,this.right,this.top,this.bottom,this.near,this.far);
 	}
+	,far: null
+	,near: null
+	,bottom: null
+	,top: null
+	,right: null
+	,left: null
 	,__class__: three.cameras.OrthographicCamera
 });
 three.cameras.PerspectiveCamera = function(fov,aspect,near,far) {
@@ -1331,7 +1571,8 @@ three.cameras.PerspectiveCamera = function(fov,aspect,near,far) {
 	this.fullHeight = 0;
 	this.updateProjectionMatrix();
 };
-three.cameras.PerspectiveCamera.__name__ = true;
+$hxClasses["three.cameras.PerspectiveCamera"] = three.cameras.PerspectiveCamera;
+three.cameras.PerspectiveCamera.__name__ = ["three","cameras","PerspectiveCamera"];
 three.cameras.PerspectiveCamera.__super__ = three.cameras.Camera;
 three.cameras.PerspectiveCamera.prototype = $extend(three.cameras.Camera.prototype,{
 	updateProjectionMatrix: function() {
@@ -1355,18 +1596,29 @@ three.cameras.PerspectiveCamera.prototype = $extend(three.cameras.Camera.prototy
 		this.height = height;
 		this.updateProjectionMatrix();
 	}
+	,height: null
+	,width: null
+	,y: null
+	,x: null
+	,fullHeight: null
+	,fullWidth: null
 	,setLens: function(focalLength,frameHeight) {
 		if(frameHeight == null) frameHeight = 24;
 		this.fov = 2 * Math.atan(frameHeight / (focalLength * 2)) * (180 / Math.PI);
 		this.updateProjectionMatrix();
 	}
+	,far: null
+	,near: null
+	,aspect: null
+	,fov: null
 	,__class__: three.cameras.PerspectiveCamera
 });
 three.core.BoundingBox = function() {
 	this.min = new three.math.Vector3(Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY);
 	this.max = new three.math.Vector3(Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY);
 };
-three.core.BoundingBox.__name__ = true;
+$hxClasses["three.core.BoundingBox"] = three.core.BoundingBox;
+three.core.BoundingBox.__name__ = ["three","core","BoundingBox"];
 three.core.BoundingBox.prototype = {
 	computeFromPoints: function(points) {
 		var x, y, z;
@@ -1386,12 +1638,15 @@ three.core.BoundingBox.prototype = {
 		this.min.setTo(x,y,z);
 		this.max.setTo(x,y,z);
 	}
+	,max: null
+	,min: null
 	,__class__: three.core.BoundingBox
 }
 three.core.BoundingSphere = function() {
 	this.radius = 0;
 };
-three.core.BoundingSphere.__name__ = true;
+$hxClasses["three.core.BoundingSphere"] = three.core.BoundingSphere;
+three.core.BoundingSphere.__name__ = ["three","core","BoundingSphere"];
 three.core.BoundingSphere.prototype = {
 	computeFromPoints: function(points) {
 		var x, y, z;
@@ -1408,6 +1663,7 @@ three.core.BoundingSphere.prototype = {
 		}
 		this.radius = Math.sqrt(maxRadiusSq);
 	}
+	,radius: null
 	,__class__: three.core.BoundingSphere
 }
 three.core.BufferGeometry = function() {
@@ -1421,7 +1677,8 @@ three.core.BufferGeometry = function() {
 	this.verticesNeedUpdate = false;
 	this.normalsNeedUpdate = false;
 };
-three.core.BufferGeometry.__name__ = true;
+$hxClasses["three.core.BufferGeometry"] = three.core.BufferGeometry;
+three.core.BufferGeometry.__name__ = ["three","core","BufferGeometry"];
 three.core.BufferGeometry.prototype = {
 	computeBoundingSphere: function() {
 		if(this.boundingSphere == null) this.boundingSphere = new three.core.BoundingSphere();
@@ -1449,6 +1706,17 @@ three.core.BufferGeometry.prototype = {
 			this.normalsNeedUpdate = true;
 		}
 	}
+	,firstAnimation: null
+	,animations: null
+	,normalsNeedUpdate: null
+	,verticesNeedUpdate: null
+	,attributes: null
+	,isDynamic: null
+	,morphTargets: null
+	,hasTangents: null
+	,boundingSphere: null
+	,boundingBox: null
+	,id: null
 	,__class__: three.core.BufferGeometry
 }
 three.core.Clock = function(autoStart) {
@@ -1459,7 +1727,8 @@ three.core.Clock = function(autoStart) {
 	this.elapsedTime = 0;
 	this.running = false;
 };
-three.core.Clock.__name__ = true;
+$hxClasses["three.core.Clock"] = three.core.Clock;
+three.core.Clock.__name__ = ["three","core","Clock"];
 three.core.Clock.prototype = {
 	getDelta: function() {
 		var diff = 0;
@@ -1485,18 +1754,35 @@ three.core.Clock.prototype = {
 		this.oldTime = this.startTime;
 		this.running = true;
 	}
+	,running: null
+	,elapsedTime: null
+	,oldTime: null
+	,startTime: null
+	,autoStart: null
 	,__class__: three.core.Clock
 }
 three.core.Face = function() {
 };
-three.core.Face.__name__ = true;
+$hxClasses["three.core.Face"] = three.core.Face;
+three.core.Face.__name__ = ["three","core","Face"];
 three.core.Face.prototype = {
-	__class__: three.core.Face
+	centroid: null
+	,materialIndex: null
+	,vertexTangents: null
+	,vertexColors: null
+	,color: null
+	,vertexNormals: null
+	,normal: null
+	,c: null
+	,b: null
+	,a: null
+	,__class__: three.core.Face
 }
 three.core.Frustum = function() {
 	this.planes = [new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4()];
 };
-three.core.Frustum.__name__ = true;
+$hxClasses["three.core.Frustum"] = three.core.Frustum;
+three.core.Frustum.__name__ = ["three","core","Frustum"];
 three.core.Frustum.prototype = {
 	contains: function(object) {
 		var distance = 0.0;
@@ -1533,13 +1819,23 @@ three.core.Frustum.prototype = {
 			plane.divideScalar(Math.sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z));
 		}
 	}
+	,planes: null
 	,__class__: three.core.Frustum
 }
 three.core.Geometry = function() {
 };
-three.core.Geometry.__name__ = true;
+$hxClasses["three.core.Geometry"] = three.core.Geometry;
+three.core.Geometry.__name__ = ["three","core","Geometry"];
 three.core.Geometry.prototype = {
-	__class__: three.core.Geometry
+	faceVertexUvs: null
+	,faceUvs: null
+	,faces: null
+	,materials: null
+	,colors: null
+	,vertices: null
+	,name: null
+	,id: null
+	,__class__: three.core.Geometry
 }
 three.core.UV = function(u,v) {
 	if(v == null) v = 0;
@@ -1547,7 +1843,8 @@ three.core.UV = function(u,v) {
 	this.u = u;
 	this.v = v;
 };
-three.core.UV.__name__ = true;
+$hxClasses["three.core.UV"] = three.core.UV;
+three.core.UV.__name__ = ["three","core","UV"];
 three.core.UV.prototype = {
 	lerpSelf: function(uv,interp) {
 		this.u += (uv.u - this.u) * interp;
@@ -1567,6 +1864,8 @@ three.core.UV.prototype = {
 		this.v = value.v;
 		return this;
 	}
+	,v: null
+	,u: null
 	,__class__: three.core.UV
 }
 three.lights = {}
@@ -1574,15 +1873,19 @@ three.lights.Light = function(hex) {
 	three.core.Object3D.call(this);
 	this.color = new three.math.Color(hex);
 };
-three.lights.Light.__name__ = true;
+$hxClasses["three.lights.Light"] = three.lights.Light;
+three.lights.Light.__name__ = ["three","lights","Light"];
 three.lights.Light.__super__ = three.core.Object3D;
 three.lights.Light.prototype = $extend(three.core.Object3D.prototype,{
-	__class__: three.lights.Light
+	color: null
+	,target: null
+	,__class__: three.lights.Light
 });
 three.lights.AmbientLight = function(hex) {
 	three.lights.Light.call(this,hex);
 };
-three.lights.AmbientLight.__name__ = true;
+$hxClasses["three.lights.AmbientLight"] = three.lights.AmbientLight;
+three.lights.AmbientLight.__name__ = ["three","lights","AmbientLight"];
 three.lights.AmbientLight.__super__ = three.lights.Light;
 three.lights.AmbientLight.prototype = $extend(three.lights.Light.prototype,{
 	__class__: three.lights.AmbientLight
@@ -1621,10 +1924,38 @@ three.lights.DirectionalLight = function(hex,intensity,distance) {
 	this.shadowCamera = null;
 	this.shadowMatrix = null;
 };
-three.lights.DirectionalLight.__name__ = true;
+$hxClasses["three.lights.DirectionalLight"] = three.lights.DirectionalLight;
+three.lights.DirectionalLight.__name__ = ["three","lights","DirectionalLight"];
 three.lights.DirectionalLight.__super__ = three.lights.Light;
 three.lights.DirectionalLight.prototype = $extend(three.lights.Light.prototype,{
-	__class__: three.lights.DirectionalLight
+	shadowMatrix: null
+	,shadowCamera: null
+	,shadowMapSize: null
+	,shadowMap: null
+	,shadowCascadeArray: null
+	,shadowCascadeFarZ: null
+	,shadowCascadeNearZ: null
+	,shadowCascadeHeight: null
+	,shadowCascadeWidth: null
+	,shadowCascadeBias: null
+	,shadowCascadeCount: null
+	,shadowCascadeOffset: null
+	,shadowCascade: null
+	,shadowMapHeight: null
+	,shadowMapWidth: null
+	,shadowDarkness: null
+	,shadowBias: null
+	,shadowCameraVisible: null
+	,shadowCameraBottom: null
+	,shadowCameraTop: null
+	,shadowCameraRight: null
+	,shadowCameraLeft: null
+	,shadowCameraFar: null
+	,shadowCameraNear: null
+	,onlyShadow: null
+	,distance: null
+	,intensity: null
+	,__class__: three.lights.DirectionalLight
 });
 three.lights.PointLight = function(hex,intensity,distance) {
 	if(distance == null) distance = 0;
@@ -1634,10 +1965,13 @@ three.lights.PointLight = function(hex,intensity,distance) {
 	this.intensity = intensity;
 	this.distance = distance;
 };
-three.lights.PointLight.__name__ = true;
+$hxClasses["three.lights.PointLight"] = three.lights.PointLight;
+three.lights.PointLight.__name__ = ["three","lights","PointLight"];
 three.lights.PointLight.__super__ = three.lights.Light;
 three.lights.PointLight.prototype = $extend(three.lights.Light.prototype,{
-	__class__: three.lights.PointLight
+	distance: null
+	,intensity: null
+	,__class__: three.lights.PointLight
 });
 three.lights.SpotLight = function(hex,intensity,distance,angle,exponent) {
 	if(exponent == null) exponent = 10;
@@ -1665,22 +1999,116 @@ three.lights.SpotLight = function(hex,intensity,distance,angle,exponent) {
 	this.shadowCamera = null;
 	this.shadowMatrix = null;
 };
-three.lights.SpotLight.__name__ = true;
+$hxClasses["three.lights.SpotLight"] = three.lights.SpotLight;
+three.lights.SpotLight.__name__ = ["three","lights","SpotLight"];
 three.lights.SpotLight.__super__ = three.lights.Light;
 three.lights.SpotLight.prototype = $extend(three.lights.Light.prototype,{
-	__class__: three.lights.SpotLight
+	shadowMatrix: null
+	,shadowCamera: null
+	,shadowMapSize: null
+	,shadowMap: null
+	,shadowMapHeight: null
+	,shadowMapWidth: null
+	,shadowDarkness: null
+	,shadowBias: null
+	,shadowCameraVisible: null
+	,shadowCameraFov: null
+	,shadowCameraFar: null
+	,shadowCameraNear: null
+	,onlyShadow: null
+	,exponent: null
+	,angle: null
+	,distance: null
+	,intensity: null
+	,__class__: three.lights.SpotLight
 });
+three.loaders = {}
+three.loaders.Loader = function() {
+};
+$hxClasses["three.loaders.Loader"] = three.loaders.Loader;
+three.loaders.Loader.__name__ = ["three","loaders","Loader"];
+three.loaders.Loader.createMaterial = function(m,texturePath) {
+	return null;
+}
+three.loaders.Loader.prototype = {
+	loadImage: function(where,url) {
+		var image = new Image();
+		var _imgThis = image;
+		image.onload = function(e) {
+			if(!three.math.MathUtil.isPow2(_imgThis.width) || !three.math.MathUtil.isPow2(_imgThis.height)) {
+				var width = three.math.MathUtil.nearestPow2(_imgThis.width);
+				var height = three.math.MathUtil.nearestPow2(_imgThis.height);
+				where.image.width = width;
+				where.image.height = height;
+				where.image.getContext("2d").drawImage(_imgThis,0,0,width,height);
+			} else where.image = _imgThis;
+			where.needsUpdate = true;
+		};
+		image.src = url;
+	}
+	,hasNormals: function(scope) {
+		var m;
+		var _g1 = 0, _g = scope.materials.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			m = scope.materials[i];
+			if(js.Boot.__instanceof(m,three.materials.ShaderMaterial)) return true;
+		}
+		return false;
+	}
+	,initMaterials: function(scope,materials,texturepath) {
+		scope.materials = [];
+		var _g1 = 0, _g = materials.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			scope.materials[i] = three.loaders.Loader.createMaterial(materials[i],texturepath);
+		}
+	}
+	,extractUrlBase: function(url) {
+		var parts = url.split("/");
+		parts.pop();
+		return (parts.length < 1?".":parts.join("/")) + "/";
+	}
+	,updateProgress: function(progress) {
+		var message = "Loaded ";
+		if(progress.total != null) message += (progress.loaded / progress.total).toFixed(0) + "%"; else message += (progress.loaded / 1000).toFixed(2) + " KB";
+		this.statusDomElement.innerHTML = message;
+	}
+	,addStatusElement: function() {
+		var e = js.Lib.document.createElement("div");
+		e.style.position = "absolute";
+		e.style.right = "0px";
+		e.style.top = "0px";
+		e.style.fontSize = "0.8em";
+		e.style.textAlign = "left";
+		e.style.background = "rgba(0,0,0,0.25)";
+		e.style.color = "#fff";
+		e.style.width = "120px";
+		e.style.padding = "0.5em 0.5em 0.5em 0.5em";
+		e.style.zIndex = 1000;
+		e.innerHTML = "Loading ...";
+		return e;
+	}
+	,statusDomElement: null
+	,showStatus: null
+	,__class__: three.loaders.Loader
+}
 three.materials = {}
 three.materials.BlendFactor = function() { }
-three.materials.BlendFactor.__name__ = true;
+$hxClasses["three.materials.BlendFactor"] = three.materials.BlendFactor;
+three.materials.BlendFactor.__name__ = ["three","materials","BlendFactor"];
 three.materials.BlendingType = function() { }
-three.materials.BlendingType.__name__ = true;
+$hxClasses["three.materials.BlendingType"] = three.materials.BlendingType;
+three.materials.BlendingType.__name__ = ["three","materials","BlendingType"];
 three.materials.DataType = function() { }
-three.materials.DataType.__name__ = true;
+$hxClasses["three.materials.DataType"] = three.materials.DataType;
+three.materials.DataType.__name__ = ["three","materials","DataType"];
 three.materials.EquationType = function() { }
-three.materials.EquationType.__name__ = true;
+$hxClasses["three.materials.EquationType"] = three.materials.EquationType;
+three.materials.EquationType.__name__ = ["three","materials","EquationType"];
 three.materials.FilterType = function() { }
-three.materials.FilterType.__name__ = true;
+$hxClasses["three.materials.FilterType"] = three.materials.FilterType;
+three.materials.FilterType.__name__ = ["three","materials","FilterType"];
 three.materials.Material = function() {
 	this.alphaTest = 0;
 	this.id = three.materials.Material.MaterialCount++;
@@ -1702,7 +2130,8 @@ three.materials.Material = function() {
 	this.visible = true;
 	this.needsUpdate = true;
 };
-three.materials.Material.__name__ = true;
+$hxClasses["three.materials.Material"] = three.materials.Material;
+three.materials.Material.__name__ = ["three","materials","Material"];
 three.materials.Material.prototype = {
 	clone: function(material) {
 		if(material == null) material = new three.materials.Material();
@@ -1725,30 +2154,148 @@ three.materials.Material.prototype = {
 		return material;
 	}
 	,setValues: function(values) {
+		if(values == null) return;
+		var fields = Type.getClassFields(values);
+		var _g = 0;
+		while(_g < fields.length) {
+			var key = fields[_g];
+			++_g;
+			var newValue = Reflect.field(values,key);
+			if(newValue == null) {
+				three.utils.Logger.warn("Material: '" + key + "' parameter is undefined.");
+				continue;
+			}
+			if(Reflect.hasField(this,key)) {
+				var currentValue = Reflect.field(values,key);
+				if(js.Boot.__instanceof(currentValue,three.math.Color) && js.Boot.__instanceof(newValue,three.math.Color)) currentValue.copy(newValue); else if(js.Boot.__instanceof(currentValue,three.math.Color) && js.Boot.__instanceof(newValue,Float)) currentValue.setHex(newValue); else if(js.Boot.__instanceof(currentValue,three.math.Vector3) && js.Boot.__instanceof(newValue,three.math.Vector3)) currentValue.copy(newValue); else this[key] = newValue;
+			}
+		}
 	}
+	,needsUpdate: null
+	,visible: null
+	,overdraw: null
+	,alphaTest: null
+	,polygonOffsetUnits: null
+	,polygonOffsetFactor: null
+	,polygonOffset: null
+	,depthWrite: null
+	,depthTest: null
+	,blendEquation: null
+	,blendDst: null
+	,blendSrc: null
+	,blending: null
+	,transparent: null
+	,opacity: null
+	,side: null
+	,name: null
+	,id: null
 	,__class__: three.materials.Material
 }
 three.materials.MeshBasicMaterial = function(parameters) {
 	three.materials.Material.call(this);
+	if(parameters != null) this.setValues(parameters);
 };
-three.materials.MeshBasicMaterial.__name__ = true;
+$hxClasses["three.materials.MeshBasicMaterial"] = three.materials.MeshBasicMaterial;
+three.materials.MeshBasicMaterial.__name__ = ["three","materials","MeshBasicMaterial"];
 three.materials.MeshBasicMaterial.__super__ = three.materials.Material;
 three.materials.MeshBasicMaterial.prototype = $extend(three.materials.Material.prototype,{
-	__class__: three.materials.MeshBasicMaterial
+	clone: function(material) {
+		var result;
+		if(material == null) result = new three.materials.MeshBasicMaterial(); else result = js.Boot.__cast(material , three.materials.MeshBasicMaterial);
+		three.materials.Material.prototype.clone.call(this,result);
+		result.color.copy(this.color);
+		result.map = this.map;
+		result.lightMap = this.lightMap;
+		result.specularMap = this.specularMap;
+		result.envMap = this.envMap;
+		result.combine = this.combine;
+		result.reflectivity = this.reflectivity;
+		result.refractionRatio = this.refractionRatio;
+		result.fog = this.fog;
+		result.shading = this.shading;
+		result.wireframe = this.wireframe;
+		result.wireframeLinewidth = this.wireframeLinewidth;
+		result.wireframeLinecap = this.wireframeLinecap;
+		result.wireframeLinejoin = this.wireframeLinejoin;
+		result.vertexColors = this.vertexColors;
+		result.skinning = this.skinning;
+		result.morphTargets = this.morphTargets;
+		return result;
+	}
+	,morphTargets: null
+	,skinning: null
+	,vertexColors: null
+	,wireframeLinejoin: null
+	,wireframeLinecap: null
+	,wireframeLinewidth: null
+	,wireframe: null
+	,shading: null
+	,fog: null
+	,refractionRatio: null
+	,reflectivity: null
+	,combine: null
+	,envMap: null
+	,specularMap: null
+	,lightMap: null
+	,map: null
+	,color: null
+	,__class__: three.materials.MeshBasicMaterial
+});
+three.materials.MeshNormalMaterial = function(parameters) {
+	three.materials.Material.call(this);
+	this.shading = 1;
+	this.wireframe = false;
+	this.wireframeLinewidth = 1;
+	if(parameters != null) this.setValues(parameters);
+};
+$hxClasses["three.materials.MeshNormalMaterial"] = three.materials.MeshNormalMaterial;
+three.materials.MeshNormalMaterial.__name__ = ["three","materials","MeshNormalMaterial"];
+three.materials.MeshNormalMaterial.__super__ = three.materials.Material;
+three.materials.MeshNormalMaterial.prototype = $extend(three.materials.Material.prototype,{
+	clone: function(material) {
+		var result;
+		if(material == null) result = new three.materials.MeshNormalMaterial(); else result = js.Boot.__cast(material , three.materials.MeshNormalMaterial);
+		three.materials.Material.prototype.clone.call(this,result);
+		result.shading = this.shading;
+		result.wireframe = this.wireframe;
+		result.wireframeLinewidth = this.wireframeLinewidth;
+		return result;
+	}
+	,wireframeLinewidth: null
+	,wireframe: null
+	,shading: null
+	,__class__: three.materials.MeshNormalMaterial
 });
 three.materials.PixelFormat = function() { }
-three.materials.PixelFormat.__name__ = true;
+$hxClasses["three.materials.PixelFormat"] = three.materials.PixelFormat;
+three.materials.PixelFormat.__name__ = ["three","materials","PixelFormat"];
 three.materials.PixelType = function() { }
-three.materials.PixelType.__name__ = true;
+$hxClasses["three.materials.PixelType"] = three.materials.PixelType;
+three.materials.PixelType.__name__ = ["three","materials","PixelType"];
+three.materials.ShaderMaterial = function() {
+	three.materials.Material.call(this);
+};
+$hxClasses["three.materials.ShaderMaterial"] = three.materials.ShaderMaterial;
+three.materials.ShaderMaterial.__name__ = ["three","materials","ShaderMaterial"];
+three.materials.ShaderMaterial.__super__ = three.materials.Material;
+three.materials.ShaderMaterial.prototype = $extend(three.materials.Material.prototype,{
+	__class__: three.materials.ShaderMaterial
+});
+three.materials.ShadingType = function() { }
+$hxClasses["three.materials.ShadingType"] = three.materials.ShadingType;
+three.materials.ShadingType.__name__ = ["three","materials","ShadingType"];
 three.materials.SideType = function() { }
-three.materials.SideType.__name__ = true;
+$hxClasses["three.materials.SideType"] = three.materials.SideType;
+three.materials.SideType.__name__ = ["three","materials","SideType"];
 three.materials.WrappingMode = function() { }
-three.materials.WrappingMode.__name__ = true;
+$hxClasses["three.materials.WrappingMode"] = three.materials.WrappingMode;
+three.materials.WrappingMode.__name__ = ["three","materials","WrappingMode"];
 three.math.Color = function(value) {
 	if(value == null) value = -16777216;
 	this.setRGBA(value);
 };
-three.math.Color.__name__ = true;
+$hxClasses["three.math.Color"] = three.math.Color;
+three.math.Color.__name__ = ["three","math","Color"];
 three.math.Color.prototype = {
 	setRGBA: function(value) {
 		var invert = 1.0 / 255;
@@ -1761,6 +2308,7 @@ three.math.Color.prototype = {
 	,getRGBA: function() {
 		return Math.floor(this.a * 255) << 24 | Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
 	}
+	,rgba: null
 	,setRGB: function(value) {
 		var invert = 1.0 / 255;
 		this.r = (value >> 16 & 255) * invert;
@@ -1771,6 +2319,7 @@ three.math.Color.prototype = {
 	,getRGB: function() {
 		return Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
 	}
+	,rgb: null
 	,clone: function() {
 		var result = new three.math.Color();
 		result.copy(this);
@@ -1834,10 +2383,14 @@ three.math.Color.prototype = {
 		}
 		return this;
 	}
+	,b: null
+	,g: null
+	,r: null
+	,a: null
 	,__class__: three.math.Color
 	,__properties__: {set_rgb:"setRGB",get_rgb:"getRGB",set_rgba:"setRGBA",get_rgba:"getRGBA"}
 }
-three.math.EulerOrder = { __ename__ : true, __constructs__ : ["XYZ","YXZ","ZXY","ZYX","YZX","XZY"] }
+three.math.EulerOrder = $hxClasses["three.math.EulerOrder"] = { __ename__ : ["three","math","EulerOrder"], __constructs__ : ["XYZ","YXZ","ZXY","ZYX","YZX","XZY"] }
 three.math.EulerOrder.XYZ = ["XYZ",0];
 three.math.EulerOrder.XYZ.toString = $estr;
 three.math.EulerOrder.XYZ.__enum__ = three.math.EulerOrder;
@@ -1857,7 +2410,8 @@ three.math.EulerOrder.XZY = ["XZY",5];
 three.math.EulerOrder.XZY.toString = $estr;
 three.math.EulerOrder.XZY.__enum__ = three.math.EulerOrder;
 three.math.MathUtil = function() { }
-three.math.MathUtil.__name__ = true;
+$hxClasses["three.math.MathUtil"] = three.math.MathUtil;
+three.math.MathUtil.__name__ = ["three","math","MathUtil"];
 three.math.MathUtil.clamp = function(value,min,max) {
 	return value < min?min:value > max?max:value;
 }
@@ -1873,9 +2427,21 @@ three.math.MathUtil.randFloat = function(low,high) {
 three.math.MathUtil.sign = function(x) {
 	return x < 0?-1:x > 0?1:0;
 }
+three.math.MathUtil.isPow2 = function(n) {
+	var l = Math.log(n) / Math.LN2;
+	return Math.floor(l) == l;
+}
+three.math.MathUtil.nearestPow2 = function(n) {
+	var l = Math.log(n) / Math.LN2;
+	return Math.pow(2,Math.round(l)) | 0;
+}
+three.math.MathUtil.rgb2hex = function(rgb) {
+	return ((rgb[0] * 255 | 0) << 16) + ((rgb[1] * 255 | 0) << 8) + (rgb[2] | 0) * 255;
+}
 three.math.Matrix3 = function() {
 };
-three.math.Matrix3.__name__ = true;
+$hxClasses["three.math.Matrix3"] = three.math.Matrix3;
+three.math.Matrix3.__name__ = ["three","math","Matrix3"];
 three.math.Matrix3.prototype = {
 	__class__: three.math.Matrix3
 }
@@ -1889,7 +2455,8 @@ three.math.Quaternion = function(x,y,z,w) {
 	this.z = z;
 	this.w = w;
 };
-three.math.Quaternion.__name__ = true;
+$hxClasses["three.math.Quaternion"] = three.math.Quaternion;
+three.math.Quaternion.__name__ = ["three","math","Quaternion"];
 three.math.Quaternion.prototype = {
 	clone: function() {
 		return new three.math.Quaternion(this.x,this.y,this.z,this.w);
@@ -1971,6 +2538,7 @@ three.math.Quaternion.prototype = {
 	,getLength: function() {
 		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
 	}
+	,length: null
 	,inverse: function() {
 		this.x *= -1;
 		this.y *= -1;
@@ -2076,6 +2644,10 @@ three.math.Quaternion.prototype = {
 		this.w = w;
 		return this;
 	}
+	,w: null
+	,z: null
+	,y: null
+	,x: null
 	,__class__: three.math.Quaternion
 	,__properties__: {get_length:"getLength"}
 }
@@ -2085,7 +2657,8 @@ three.math.Vector2 = function(x,y) {
 	this.x = x;
 	this.y = y;
 };
-three.math.Vector2.__name__ = true;
+$hxClasses["three.math.Vector2"] = three.math.Vector2;
+three.math.Vector2.__name__ = ["three","math","Vector2"];
 three.math.Vector2.prototype = {
 	clone: function() {
 		return new three.math.Vector2(this.x,this.y);
@@ -2127,9 +2700,11 @@ three.math.Vector2.prototype = {
 	,getLength: function() {
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
+	,length: null
 	,getLengthSq: function() {
 		return this.x * this.x + this.y * this.y;
 	}
+	,lengthSq: null
 	,dot: function(value) {
 		return this.x * value.x + this.y * value.y;
 	}
@@ -2178,6 +2753,8 @@ three.math.Vector2.prototype = {
 		this.y = y;
 		return this;
 	}
+	,y: null
+	,x: null
 	,__class__: three.math.Vector2
 	,__properties__: {get_lengthSq:"getLengthSq",get_length:"getLength"}
 }
@@ -2189,7 +2766,8 @@ three.math.Vector3 = function(x,y,z) {
 	this.y = y;
 	this.z = z;
 };
-three.math.Vector3.__name__ = true;
+$hxClasses["three.math.Vector3"] = three.math.Vector3;
+three.math.Vector3.__name__ = ["three","math","Vector3"];
 three.math.Vector3.prototype = {
 	clone: function() {
 		return new three.math.Vector3(this.x,this.y,this.z);
@@ -2359,9 +2937,11 @@ three.math.Vector3.prototype = {
 	,getLength: function() {
 		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
 	}
+	,length: null
 	,getLengthSq: function() {
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}
+	,lengthSq: null
 	,dot: function(value) {
 		return this.x * value.x + this.y * value.y + this.z * value.z;
 	}
@@ -2430,6 +3010,9 @@ three.math.Vector3.prototype = {
 		this.z = z;
 		return this;
 	}
+	,z: null
+	,y: null
+	,x: null
 	,__class__: three.math.Vector3
 	,__properties__: {get_lengthSq:"getLengthSq",get_length:"getLength"}
 }
@@ -2443,7 +3026,8 @@ three.math.Vector4 = function(x,y,z,w) {
 	this.z = z;
 	this.w = w;
 };
-three.math.Vector4.__name__ = true;
+$hxClasses["three.math.Vector4"] = three.math.Vector4;
+three.math.Vector4.__name__ = ["three","math","Vector4"];
 three.math.Vector4.prototype = {
 	setAxisAngleFromRotationMatrix: function(m) {
 		var angle, x, y, z;
@@ -2554,9 +3138,11 @@ three.math.Vector4.prototype = {
 	,getLength: function() {
 		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
 	}
+	,length: null
 	,getLengthSq: function() {
 		return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
 	}
+	,lengthSq: null
 	,dot: function(value) {
 		return this.x * value.x + this.y * value.y + this.z * value.z + this.w * value.w;
 	}
@@ -2621,6 +3207,10 @@ three.math.Vector4.prototype = {
 		this.w = w;
 		return this;
 	}
+	,w: null
+	,z: null
+	,y: null
+	,x: null
 	,__class__: three.math.Vector4
 	,__properties__: {get_lengthSq:"getLengthSq",get_length:"getLength"}
 }
@@ -2628,7 +3218,8 @@ three.objects = {}
 three.objects.Bone = function() {
 	three.core.Object3D.call(this);
 };
-three.objects.Bone.__name__ = true;
+$hxClasses["three.objects.Bone"] = three.objects.Bone;
+three.objects.Bone.__name__ = ["three","objects","Bone"];
 three.objects.Bone.__super__ = three.core.Object3D;
 three.objects.Bone.prototype = $extend(three.core.Object3D.prototype,{
 	__class__: three.objects.Bone
@@ -2655,7 +3246,8 @@ three.objects.Mesh = function(geometry,material) {
 		}
 	}
 };
-three.objects.Mesh.__name__ = true;
+$hxClasses["three.objects.Mesh"] = three.objects.Mesh;
+three.objects.Mesh.__name__ = ["three","objects","Mesh"];
 three.objects.Mesh.__super__ = three.core.Object3D;
 three.objects.Mesh.prototype = $extend(three.core.Object3D.prototype,{
 	getMorphTargetIndexByName: function(name) {
@@ -2663,6 +3255,12 @@ three.objects.Mesh.prototype = $extend(three.core.Object3D.prototype,{
 		three.utils.Logger.log("Mesh.getMorphTargetIndexByName: morph target " + name + " does not exist. Returning 0.");
 		return 0;
 	}
+	,morphTargetDictionary: null
+	,morphTargetInfluences: null
+	,morphTargetForcedOrder: null
+	,morphTargetBase: null
+	,material: null
+	,geometry: null
 	,__class__: three.objects.Mesh
 });
 three.objects.MorphAnimMesh = function(geometry,material) {
@@ -2676,7 +3274,8 @@ three.objects.MorphAnimMesh = function(geometry,material) {
 	this.directionBackwards = false;
 	this.setFrameRange(0,this.geometry.morphTargets.length - 1);
 };
-three.objects.MorphAnimMesh.__name__ = true;
+$hxClasses["three.objects.MorphAnimMesh"] = three.objects.MorphAnimMesh;
+three.objects.MorphAnimMesh.__name__ = ["three","objects","MorphAnimMesh"];
 three.objects.MorphAnimMesh.__super__ = three.objects.Mesh;
 three.objects.MorphAnimMesh.prototype = $extend(three.objects.Mesh.prototype,{
 	updateAnimation: function(delta) {
@@ -2763,13 +3362,25 @@ three.objects.MorphAnimMesh.prototype = $extend(three.objects.Mesh.prototype,{
 		this.endKeyframe = end;
 		this.length = this.endKeyframe - this.startKeyframe + 1;
 	}
+	,directionBackwards: null
+	,direction: null
+	,length: null
+	,endKeyframe: null
+	,startKeyframe: null
+	,currentKeyframe: null
+	,lastKeyframe: null
+	,time: null
+	,mirroredLoop: null
+	,duration: null
 	,__class__: three.objects.MorphAnimMesh
 });
 three.renderers = {}
 three.renderers.IRenderer = function() { }
-three.renderers.IRenderer.__name__ = true;
+$hxClasses["three.renderers.IRenderer"] = three.renderers.IRenderer;
+three.renderers.IRenderer.__name__ = ["three","renderers","IRenderer"];
 three.renderers.IRenderer.prototype = {
-	__class__: three.renderers.IRenderer
+	render: null
+	,__class__: three.renderers.IRenderer
 }
 three.renderers.WebGLRenderTarget = function(width,height,options) {
 	this.width = width;
@@ -2788,7 +3399,8 @@ three.renderers.WebGLRenderTarget = function(width,height,options) {
 	this.stencilBuffer = options.stencilBuffer != null?options.stencilBuffer:true;
 	this.generateMipmaps = true;
 };
-three.renderers.WebGLRenderTarget.__name__ = true;
+$hxClasses["three.renderers.WebGLRenderTarget"] = three.renderers.WebGLRenderTarget;
+three.renderers.WebGLRenderTarget.__name__ = ["three","renderers","WebGLRenderTarget"];
 three.renderers.WebGLRenderTarget.prototype = {
 	clone: function() {
 		var result = new three.renderers.WebGLRenderTarget(this.width,this.height);
@@ -2806,20 +3418,38 @@ three.renderers.WebGLRenderTarget.prototype = {
 		result.generateMipmaps = this.generateMipmaps;
 		return result;
 	}
+	,generateMipmaps: null
+	,stencilBuffer: null
+	,depthBuffer: null
+	,type: null
+	,format: null
+	,repeat: null
+	,offset: null
+	,anisotropy: null
+	,minFilter: null
+	,magFilter: null
+	,wrapT: null
+	,wrapS: null
+	,options: null
+	,height: null
+	,width: null
 	,__class__: three.renderers.WebGLRenderTarget
 }
 three.renderers.WebGLRenderTargetCube = function(width,height,options) {
 	three.renderers.WebGLRenderTarget.call(this,width,height,options);
 	this.activeCubeFace = 0;
 };
-three.renderers.WebGLRenderTargetCube.__name__ = true;
+$hxClasses["three.renderers.WebGLRenderTargetCube"] = three.renderers.WebGLRenderTargetCube;
+three.renderers.WebGLRenderTargetCube.__name__ = ["three","renderers","WebGLRenderTargetCube"];
 three.renderers.WebGLRenderTargetCube.__super__ = three.renderers.WebGLRenderTarget;
 three.renderers.WebGLRenderTargetCube.prototype = $extend(three.renderers.WebGLRenderTarget.prototype,{
-	__class__: three.renderers.WebGLRenderTargetCube
+	activeCubeFace: null
+	,__class__: three.renderers.WebGLRenderTargetCube
 });
 three.renderers.WebGLRenderer = function() {
 };
-three.renderers.WebGLRenderer.__name__ = true;
+$hxClasses["three.renderers.WebGLRenderer"] = three.renderers.WebGLRenderer;
+three.renderers.WebGLRenderer.__name__ = ["three","renderers","WebGLRenderer"];
 three.renderers.WebGLRenderer.__interfaces__ = [three.renderers.IRenderer];
 three.renderers.WebGLRenderer.prototype = {
 	render: function() {
@@ -2839,9 +3469,20 @@ three.renderers.renderables.RenderableFace3 = function() {
 	this.uvs = [[]];
 	this.z = null;
 };
-three.renderers.renderables.RenderableFace3.__name__ = true;
+$hxClasses["three.renderers.renderables.RenderableFace3"] = three.renderers.renderables.RenderableFace3;
+three.renderers.renderables.RenderableFace3.__name__ = ["three","renderers","renderables","RenderableFace3"];
 three.renderers.renderables.RenderableFace3.prototype = {
-	__class__: three.renderers.renderables.RenderableFace3
+	z: null
+	,uvs: null
+	,material: null
+	,vertexNormalsWorld: null
+	,normalWorld: null
+	,centroidScreen: null
+	,centroidWorld: null
+	,v3: null
+	,v2: null
+	,v1: null
+	,__class__: three.renderers.renderables.RenderableFace3
 }
 three.renderers.renderables.RenderableFace4 = function() {
 	this.v1 = new three.renderers.renderables.RenderableVertex();
@@ -2855,9 +3496,21 @@ three.renderers.renderables.RenderableFace4 = function() {
 	this.uvs = [[]];
 	this.z = null;
 };
-three.renderers.renderables.RenderableFace4.__name__ = true;
+$hxClasses["three.renderers.renderables.RenderableFace4"] = three.renderers.renderables.RenderableFace4;
+three.renderers.renderables.RenderableFace4.__name__ = ["three","renderers","renderables","RenderableFace4"];
 three.renderers.renderables.RenderableFace4.prototype = {
-	__class__: three.renderers.renderables.RenderableFace4
+	z: null
+	,uvs: null
+	,material: null
+	,vertexNormalsWorld: null
+	,normalWorld: null
+	,centroidScreen: null
+	,centroidWorld: null
+	,v4: null
+	,v3: null
+	,v2: null
+	,v1: null
+	,__class__: three.renderers.renderables.RenderableFace4
 }
 three.renderers.renderables.RenderableLine = function() {
 	this.z = null;
@@ -2865,17 +3518,25 @@ three.renderers.renderables.RenderableLine = function() {
 	this.v2 = new three.renderers.renderables.RenderableVertex();
 	this.material = null;
 };
-three.renderers.renderables.RenderableLine.__name__ = true;
+$hxClasses["three.renderers.renderables.RenderableLine"] = three.renderers.renderables.RenderableLine;
+three.renderers.renderables.RenderableLine.__name__ = ["three","renderers","renderables","RenderableLine"];
 three.renderers.renderables.RenderableLine.prototype = {
-	__class__: three.renderers.renderables.RenderableLine
+	z: null
+	,material: null
+	,v2: null
+	,v1: null
+	,__class__: three.renderers.renderables.RenderableLine
 }
 three.renderers.renderables.RenderableObject = function() {
 	this.object = null;
 	this.z = null;
 };
-three.renderers.renderables.RenderableObject.__name__ = true;
+$hxClasses["three.renderers.renderables.RenderableObject"] = three.renderers.renderables.RenderableObject;
+three.renderers.renderables.RenderableObject.__name__ = ["three","renderers","renderables","RenderableObject"];
 three.renderers.renderables.RenderableObject.prototype = {
-	__class__: three.renderers.renderables.RenderableObject
+	z: null
+	,object: null
+	,__class__: three.renderers.renderables.RenderableObject
 }
 three.renderers.renderables.RenderableParticle = function() {
 	this.object = null;
@@ -2886,21 +3547,33 @@ three.renderers.renderables.RenderableParticle = function() {
 	this.scale = new three.math.Vector2();
 	this.material = null;
 };
-three.renderers.renderables.RenderableParticle.__name__ = true;
+$hxClasses["three.renderers.renderables.RenderableParticle"] = three.renderers.renderables.RenderableParticle;
+three.renderers.renderables.RenderableParticle.__name__ = ["three","renderers","renderables","RenderableParticle"];
 three.renderers.renderables.RenderableParticle.prototype = {
-	__class__: three.renderers.renderables.RenderableParticle
+	object: null
+	,material: null
+	,scale: null
+	,rotation: null
+	,z: null
+	,y: null
+	,x: null
+	,__class__: three.renderers.renderables.RenderableParticle
 }
 three.renderers.renderables.RenderableVertex = function() {
 	this.positionWorld = new three.math.Vector3();
 	this.positionScreen = new three.math.Vector4();
 	this.visible = true;
 };
-three.renderers.renderables.RenderableVertex.__name__ = true;
+$hxClasses["three.renderers.renderables.RenderableVertex"] = three.renderers.renderables.RenderableVertex;
+three.renderers.renderables.RenderableVertex.__name__ = ["three","renderers","renderables","RenderableVertex"];
 three.renderers.renderables.RenderableVertex.prototype = {
 	copy: function(vertex) {
 		this.positionWorld.copy(vertex.positionWorld);
 		this.positionScreen.copy(vertex.positionScreen);
 	}
+	,visible: null
+	,positionScreen: null
+	,positionWorld: null
 	,__class__: three.renderers.renderables.RenderableVertex
 }
 three.scenes = {}
@@ -2911,9 +3584,13 @@ three.scenes.Fog = function(hex,near,far) {
 	this.near = near;
 	this.far = far;
 };
-three.scenes.Fog.__name__ = true;
+$hxClasses["three.scenes.Fog"] = three.scenes.Fog;
+three.scenes.Fog.__name__ = ["three","scenes","Fog"];
 three.scenes.Fog.prototype = {
-	__class__: three.scenes.Fog
+	far: null
+	,near: null
+	,color: null
+	,__class__: three.scenes.Fog
 }
 three.scenes.Scene = function() {
 	three.core.Object3D.call(this);
@@ -2925,7 +3602,8 @@ three.scenes.Scene = function() {
 	this.__objectsAdded = [];
 	this.__objectsRemoved = [];
 };
-three.scenes.Scene.__name__ = true;
+$hxClasses["three.scenes.Scene"] = three.scenes.Scene;
+three.scenes.Scene.__name__ = ["three","scenes","Scene"];
 three.scenes.Scene.__super__ = three.core.Object3D;
 three.scenes.Scene.prototype = $extend(three.core.Object3D.prototype,{
 	__removeObject: function(object) {
@@ -2968,27 +3646,42 @@ three.scenes.Scene.prototype = $extend(three.core.Object3D.prototype,{
 			this.__addObject(object.children[c]);
 		}
 	}
+	,__objectsRemoved: null
+	,__objectsAdded: null
+	,__lights: null
+	,__objects: null
+	,overrideMaterial: null
+	,fog: null
 	,__class__: three.scenes.Scene
 });
 three.textures = {}
 three.textures.Texture = function() {
 };
-three.textures.Texture.__name__ = true;
+$hxClasses["three.textures.Texture"] = three.textures.Texture;
+three.textures.Texture.__name__ = ["three","textures","Texture"];
 three.textures.Texture.prototype = {
 	__class__: three.textures.Texture
 }
 three.utils = {}
 three.utils.Assert = function() {
 };
-three.utils.Assert.__name__ = true;
+$hxClasses["three.utils.Assert"] = three.utils.Assert;
+three.utils.Assert.__name__ = ["three","utils","Assert"];
 three.utils.Assert.assert = function(condition,info) {
 	if(!condition) console.log(info);
 }
 three.utils.Assert.prototype = {
 	__class__: three.utils.Assert
 }
+three.utils.ImageUtil = function() { }
+$hxClasses["three.utils.ImageUtil"] = three.utils.ImageUtil;
+three.utils.ImageUtil.__name__ = ["three","utils","ImageUtil"];
+three.utils.ImageUtil.createImage = function() {
+	return new Image();
+}
 three.utils.Logger = function() { }
-three.utils.Logger.__name__ = true;
+$hxClasses["three.utils.Logger"] = three.utils.Logger;
+three.utils.Logger.__name__ = ["three","utils","Logger"];
 three.utils.Logger.log = function(value) {
 	console.log(value);
 }
@@ -3011,7 +3704,8 @@ three.utils.TempVars = function() {
 	this.tempMat4 = new three.math.Matrix4();
 	this.tempMat42 = new three.math.Matrix4();
 };
-three.utils.TempVars.__name__ = true;
+$hxClasses["three.utils.TempVars"] = three.utils.TempVars;
+three.utils.TempVars.__name__ = ["three","utils","TempVars"];
 three.utils.TempVars.getTempVars = function() {
 	var instance = three.utils.TempVars.varStack[three.utils.TempVars.currentIndex];
 	if(instance == null) {
@@ -3029,10 +3723,27 @@ three.utils.TempVars.prototype = {
 		three.utils.TempVars.currentIndex--;
 		three.utils.Assert.assert(three.utils.TempVars.varStack[three.utils.TempVars.currentIndex] == this,"An instance of TempVars has not been released in a called method!");
 	}
+	,tempMat42: null
+	,tempMat4: null
+	,tempMat3: null
+	,vect2d2: null
+	,vect2d: null
+	,vect4f: null
+	,vect8: null
+	,vect7: null
+	,vect6: null
+	,vect5: null
+	,vect4: null
+	,vect3: null
+	,vect2: null
+	,vect1: null
+	,color: null
+	,isUsed: null
 	,__class__: three.utils.TempVars
 }
 three.utils.WebGLUtil = function() { }
-three.utils.WebGLUtil.__name__ = true;
+$hxClasses["three.utils.WebGLUtil"] = three.utils.WebGLUtil;
+three.utils.WebGLUtil.__name__ = ["three","utils","WebGLUtil"];
 three.utils.WebGLUtil.createShader = function(gl,shaderSource,type) {
 	var shader = gl.createShader(type);
 	gl.shaderSource(shader,shaderSource);
@@ -3062,27 +3773,28 @@ Math.__name__ = ["Math"];
 Math.NaN = Number.NaN;
 Math.NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY;
 Math.POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
+$hxClasses.Math = Math;
 Math.isFinite = function(i) {
 	return isFinite(i);
 };
 Math.isNaN = function(i) {
 	return isNaN(i);
 };
-String.prototype.__class__ = String;
-String.__name__ = true;
-Array.prototype.__class__ = Array;
-Array.__name__ = true;
-Date.prototype.__class__ = Date;
+String.prototype.__class__ = $hxClasses.String = String;
+String.__name__ = ["String"];
+Array.prototype.__class__ = $hxClasses.Array = Array;
+Array.__name__ = ["Array"];
+Date.prototype.__class__ = $hxClasses.Date = Date;
 Date.__name__ = ["Date"];
-var Int = { __name__ : ["Int"]};
-var Dynamic = { __name__ : ["Dynamic"]};
-var Float = Number;
+var Int = $hxClasses.Int = { __name__ : ["Int"]};
+var Dynamic = $hxClasses.Dynamic = { __name__ : ["Dynamic"]};
+var Float = $hxClasses.Float = Number;
 Float.__name__ = ["Float"];
-var Bool = Boolean;
+var Bool = $hxClasses.Bool = Boolean;
 Bool.__ename__ = ["Bool"];
-var Class = { __name__ : ["Class"]};
+var Class = $hxClasses.Class = { __name__ : ["Class"]};
 var Enum = { };
-var Void = { __ename__ : ["Void"]};
+var Void = $hxClasses.Void = { __ename__ : ["Void"]};
 if(typeof document != "undefined") js.Lib.document = document;
 if(typeof window != "undefined") {
 	js.Lib.window = window;
@@ -3092,6 +3804,7 @@ if(typeof window != "undefined") {
 		return f(msg,[url + ":" + line]);
 	};
 }
+js.Lib.onerror = null;
 three.core.Object3D.Object3DCount = 0;
 three.core.Object3D._m1 = new three.math.Matrix4();
 three.core.BufferGeometry.GeometryCount = 0;
@@ -3138,12 +3851,16 @@ three.materials.PixelFormat.LuminanceAlphaFormat = 1023;
 three.materials.PixelType.UnsignedShort4444Type = 1016;
 three.materials.PixelType.UnsignedShort5551Type = 1017;
 three.materials.PixelType.UnsignedShort565Type = 1018;
+three.materials.ShadingType.NoShading = 0;
+three.materials.ShadingType.FlatShading = 1;
+three.materials.ShadingType.SmoothShading = 2;
 three.materials.SideType.FrontSide = 0;
 three.materials.SideType.BackSide = 1;
 three.materials.SideType.DoubleSide = 2;
 three.materials.WrappingMode.RepeatWrapping = 1000;
 three.materials.WrappingMode.ClampToEdgeWrapping = 1001;
 three.materials.WrappingMode.MirroredRepeatWrapping = 1002;
+three.math.MathUtil.LN2 = Math.LN2;
 three.math.MathUtil.RAD2DEG = 180 / Math.PI;
 three.math.MathUtil.DEG2RAD = Math.PI / 180;
 three.math.Vector3.X_AXIS = new three.math.Vector3(1,0,0);

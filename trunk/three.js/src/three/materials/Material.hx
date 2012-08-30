@@ -76,47 +76,42 @@ class Material
 	
 	public function setValues(values:Dynamic):Void
 	{
-		//if (values == null)
-			//return;
-//
-		//var key:String;
-		//for (key in values ) 
-		//{
-//
-			//var newValue = values[key];
-//
-			//if (newValue == null) {
-//
-				//Logger.warn('Material: \'' + key + '\' parameter is undefined.');
-				//continue;
-			//}
-//
-			//if ( key in this) 
-			//if(Reflect.hasField(this,key))
-			//{
-				//var currentValue = Reflect.getProperty(this, key);//this[key];
-//
-				//if ( Std.is(currentValue, Color) && Std.is(newValue,Color)) 
-				//{
-					//currentValue.copy(newValue);
-				//} 
-				//else if ( Std.is(currentValue, Color) && Std.is(newValue,Float)) 
-				//{
-					//currentValue.setHex(newValue);
-				//} 
-				//else if ( Std.is(currentValue, Vector3) && Std.is(newValue,Vector3)) 
-				//{
-					//currentValue.copy(newValue);
-				//} 
-				//else 
-				//{
-					//this[key] = newValue;
-				//}
-//
-			//}
-//
-		//}
-//
+		if (values == null)
+			return;
+		
+		var fields:Array<String> = Type.getClassFields(values);
+		for (key in fields)
+		{
+			var newValue = Reflect.field(values, key);
+			
+			if (newValue == null) 
+			{
+				Logger.warn('Material: \'' + key + '\' parameter is undefined.');
+				continue;
+			}
+			
+			if (Reflect.hasField(this,key))
+			{
+				var currentValue = Reflect.field(values, key);
+				
+				if (Std.is(currentValue, Color) && Std.is(newValue, Color)) 
+				{
+					untyped currentValue.copy(newValue);
+				} 
+				else if ( Std.is(currentValue, Color) && Std.is(newValue,Float)) 
+				{
+					untyped currentValue.setHex(newValue);
+				} 
+				else if ( Std.is(currentValue, Vector3) && Std.is(newValue,Vector3)) 
+				{
+					untyped currentValue.copy(newValue);
+				} 
+				else 
+				{
+					Reflect.setField(this, key, newValue);
+				}
+			}
+		}
 	}
 
 	public function clone(?material:Material = null):Material 

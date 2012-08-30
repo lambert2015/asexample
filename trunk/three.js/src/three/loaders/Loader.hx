@@ -3,6 +3,8 @@ import js.Lib;
 import js.Dom;
 import three.materials.Material;
 import three.materials.ShaderMaterial;
+import three.math.MathUtil;
+import three.utils.ImageUtil;
 /**
  * ...
  * @author 
@@ -44,11 +46,11 @@ class Loader
 		var message:String = "Loaded ";
 		if (progress.total != null)
 		{
-			message += (progress.loaded / progress.total).toFixed(0) + "%";
+			message += untyped (progress.loaded / progress.total).toFixed(0) + "%";
 		}
 		else
 		{
-			message += (progress.loaded / 1000).toFixed(2) + " KB";
+			message += untyped (progress.loaded / 1000).toFixed(2) + " KB";
 		}
 		
 		this.statusDomElement.innerHTML = message;
@@ -85,9 +87,36 @@ class Loader
 		return false;
 	}
 	
+	private function loadImage(where:Dynamic, url:String):Void
+	{
+		var image:Image = ImageUtil.createImage();
+		var _imgThis:Image = image;
+		image.onload = function(e):Void
+		{
+			if (!MathUtil.isPow2(_imgThis.width) || !MathUtil.isPow2(_imgThis.height))
+			{
+				var width:Int = MathUtil.nearestPow2(_imgThis.width);
+				var height:Int = MathUtil.nearestPow2(_imgThis.height);
+				
+				where.image.width = width;
+				where.image.height = height;
+				where.image.getContext("2d").drawImage(_imgThis, 0, 0, width, height);
+			}
+			else
+			{
+				where.image = _imgThis;
+			}
+			
+			where.needsUpdate = true;
+		}
+		
+		//image.crossorigin = this.crossOrigin;
+		image.src = url;
+	}
+	
 	public static function createMaterial(m:Material, texturePath:String):Material
 	{
-		
+		return null;
 	}
 	
 }
