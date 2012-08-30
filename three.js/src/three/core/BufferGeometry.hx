@@ -22,6 +22,9 @@ class BufferGeometry
 	
 	public var verticesNeedUpdate:Bool;
 	public var normalsNeedUpdate:Bool;
+	
+	public var animations:Dynamic;
+	public var firstAnimation:String;
 	public function new() 
 	{
 		this.id = GeometryCount++;
