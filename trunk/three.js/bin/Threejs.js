@@ -3719,6 +3719,37 @@ three.textures.Texture.prototype = {
 	,id: null
 	,__class__: three.textures.Texture
 }
+three.textures.DataTexture = function(data,width,height,mapping) {
+	three.textures.Texture.call(this,null,mapping);
+	this.data = data;
+	this.width = width;
+	this.height = height;
+};
+$hxClasses["three.textures.DataTexture"] = three.textures.DataTexture;
+three.textures.DataTexture.__name__ = ["three","textures","DataTexture"];
+three.textures.DataTexture.__super__ = three.textures.Texture;
+three.textures.DataTexture.prototype = $extend(three.textures.Texture.prototype,{
+	clone: function() {
+		var clonedTexture = new three.textures.DataTexture(this.data,this.width,this.height,this.mapping);
+		clonedTexture.wrapS = this.wrapS;
+		clonedTexture.wrapT = this.wrapS;
+		clonedTexture.magFilter = this.magFilter;
+		clonedTexture.minFilter = this.magFilter;
+		clonedTexture.anisotropy = this.anisotropy;
+		clonedTexture.format = this.format;
+		clonedTexture.type = this.type;
+		clonedTexture.offset.copy(this.offset);
+		clonedTexture.repeat.copy(this.repeat);
+		clonedTexture.generateMipmaps = this.generateMipmaps;
+		clonedTexture.premultiplyAlpha = this.premultiplyAlpha;
+		clonedTexture.flipY = this.flipY;
+		return clonedTexture;
+	}
+	,height: null
+	,width: null
+	,data: null
+	,__class__: three.textures.DataTexture
+});
 three.utils = {}
 three.utils.Assert = function() {
 };
