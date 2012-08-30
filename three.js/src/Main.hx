@@ -36,6 +36,7 @@ import three.objects.MorphAnimMesh;
 import three.materials.MeshBasicMaterial;
 import three.materials.MeshNormalMaterial;
 import three.loaders.Loader;
+import three.textures.Texture;
 /**
  * ...
  * @author 
