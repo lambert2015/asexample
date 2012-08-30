@@ -2287,6 +2287,13 @@ three.materials.ShadingType.__name__ = ["three","materials","ShadingType"];
 three.materials.SideType = function() { }
 $hxClasses["three.materials.SideType"] = three.materials.SideType;
 three.materials.SideType.__name__ = ["three","materials","SideType"];
+three.materials.UVMapping = function() {
+};
+$hxClasses["three.materials.UVMapping"] = three.materials.UVMapping;
+three.materials.UVMapping.__name__ = ["three","materials","UVMapping"];
+three.materials.UVMapping.prototype = {
+	__class__: three.materials.UVMapping
+}
 three.materials.WrappingMode = function() { }
 $hxClasses["three.materials.WrappingMode"] = three.materials.WrappingMode;
 three.materials.WrappingMode.__name__ = ["three","materials","WrappingMode"];
@@ -3655,12 +3662,62 @@ three.scenes.Scene.prototype = $extend(three.core.Object3D.prototype,{
 	,__class__: three.scenes.Scene
 });
 three.textures = {}
-three.textures.Texture = function() {
+three.textures.Texture = function(image,mapping) {
+	this.id = three.textures.Texture.TextureCount++;
+	this.image = image;
+	this.mapping = mapping != null?mapping:new three.materials.UVMapping();
+	this.wrapS = 1001;
+	this.wrapT = 1001;
+	this.magFilter = 1006;
+	this.minFilter = 1008;
+	this.anisotropy = 1;
+	this.format = 1021;
+	this.type = 1021;
+	this.offset = new three.math.Vector2(0,0);
+	this.repeat = new three.math.Vector2(1,1);
+	this.generateMipmaps = true;
+	this.premultiplyAlpha = false;
+	this.flipY = true;
+	this.needsUpdate = false;
+	this.onUpdate = null;
 };
 $hxClasses["three.textures.Texture"] = three.textures.Texture;
 three.textures.Texture.__name__ = ["three","textures","Texture"];
 three.textures.Texture.prototype = {
-	__class__: three.textures.Texture
+	clone: function() {
+		var clonedTexture = new three.textures.Texture(this.image,this.mapping);
+		clonedTexture.wrapS = this.wrapS;
+		clonedTexture.wrapT = this.wrapS;
+		clonedTexture.magFilter = this.magFilter;
+		clonedTexture.minFilter = this.magFilter;
+		clonedTexture.anisotropy = this.anisotropy;
+		clonedTexture.format = this.format;
+		clonedTexture.type = this.type;
+		clonedTexture.offset.copy(this.offset);
+		clonedTexture.repeat.copy(this.repeat);
+		clonedTexture.generateMipmaps = this.generateMipmaps;
+		clonedTexture.premultiplyAlpha = this.premultiplyAlpha;
+		clonedTexture.flipY = this.flipY;
+		return clonedTexture;
+	}
+	,onUpdate: null
+	,needsUpdate: null
+	,flipY: null
+	,premultiplyAlpha: null
+	,generateMipmaps: null
+	,repeat: null
+	,offset: null
+	,type: null
+	,format: null
+	,anisotropy: null
+	,minFilter: null
+	,magFilter: null
+	,wrapT: null
+	,wrapS: null
+	,mapping: null
+	,image: null
+	,id: null
+	,__class__: three.textures.Texture
 }
 three.utils = {}
 three.utils.Assert = function() {
@@ -3866,6 +3923,7 @@ three.math.MathUtil.DEG2RAD = Math.PI / 180;
 three.math.Vector3.X_AXIS = new three.math.Vector3(1,0,0);
 three.math.Vector3.Y_AXIS = new three.math.Vector3(0,1,0);
 three.math.Vector3.Z_AXIS = new three.math.Vector3(0,0,1);
+three.textures.Texture.TextureCount = 0;
 three.utils.TempVars.STACK_SIZE = 5;
 three.utils.TempVars.currentIndex = 0;
 three.utils.TempVars.varStack = new Array();
