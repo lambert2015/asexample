@@ -31,6 +31,8 @@ import three.core.Frustum;
 import three.core.BufferGeometry;
 import three.renderers.WebGLRenderTarget;
 import three.renderers.WebGLRenderTargetCube;
+import three.objects.Mesh;
+import three.objects.MorphAnimMesh;
 /**
  * ...
  * @author 

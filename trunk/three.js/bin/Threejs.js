@@ -5,6 +5,58 @@ function $extend(from, fields) {
 	for (var name in fields) proto[name] = fields[name];
 	return proto;
 }
+var EReg = function(r,opt) {
+	opt = opt.split("u").join("");
+	this.r = new RegExp(r,opt);
+};
+EReg.__name__ = true;
+EReg.prototype = {
+	customReplace: function(s,f) {
+		var buf = new StringBuf();
+		while(true) {
+			if(!this.match(s)) break;
+			buf.b += Std.string(this.matchedLeft());
+			buf.b += Std.string(f(this));
+			s = this.matchedRight();
+		}
+		buf.b += Std.string(s);
+		return buf.b;
+	}
+	,replace: function(s,by) {
+		return s.replace(this.r,by);
+	}
+	,split: function(s) {
+		var d = "#__delim__#";
+		return s.replace(this.r,d).split(d);
+	}
+	,matchedPos: function() {
+		if(this.r.m == null) throw "No string matched";
+		return { pos : this.r.m.index, len : this.r.m[0].length};
+	}
+	,matchedRight: function() {
+		if(this.r.m == null) throw "No string matched";
+		var sz = this.r.m.index + this.r.m[0].length;
+		return this.r.s.substr(sz,this.r.s.length - sz);
+	}
+	,matchedLeft: function() {
+		if(this.r.m == null) throw "No string matched";
+		return this.r.s.substr(0,this.r.m.index);
+	}
+	,matched: function(n) {
+		return this.r.m != null && n >= 0 && n < this.r.m.length?this.r.m[n]:(function($this) {
+			var $r;
+			throw "EReg::matched";
+			return $r;
+		}(this));
+	}
+	,match: function(s) {
+		if(this.r.global) this.r.lastIndex = 0;
+		this.r.m = this.r.exec(s);
+		this.r.s = s;
+		return this.r.m != null;
+	}
+	,__class__: EReg
+}
 var HxOverrides = function() { }
 HxOverrides.__name__ = true;
 HxOverrides.dateStr = function(date) {
@@ -115,6 +167,80 @@ Main.prototype = {
 	}
 	,__class__: Main
 }
+var Reflect = function() { }
+Reflect.__name__ = true;
+Reflect.hasField = function(o,field) {
+	return Object.prototype.hasOwnProperty.call(o,field);
+}
+Reflect.field = function(o,field) {
+	var v = null;
+	try {
+		v = o[field];
+	} catch( e ) {
+	}
+	return v;
+}
+Reflect.setField = function(o,field,value) {
+	o[field] = value;
+}
+Reflect.getProperty = function(o,field) {
+	var tmp;
+	return o == null?null:o.__properties__ && (tmp = o.__properties__["get_" + field])?o[tmp]():o[field];
+}
+Reflect.setProperty = function(o,field,value) {
+	var tmp;
+	if(o.__properties__ && (tmp = o.__properties__["set_" + field])) o[tmp](value); else o[field] = value;
+}
+Reflect.callMethod = function(o,func,args) {
+	return func.apply(o,args);
+}
+Reflect.fields = function(o) {
+	var a = [];
+	if(o != null) {
+		var hasOwnProperty = Object.prototype.hasOwnProperty;
+		for( var f in o ) {
+		if(hasOwnProperty.call(o,f)) a.push(f);
+		}
+	}
+	return a;
+}
+Reflect.isFunction = function(f) {
+	return typeof(f) == "function" && !(f.__name__ || f.__ename__);
+}
+Reflect.compare = function(a,b) {
+	return a == b?0:a > b?1:-1;
+}
+Reflect.compareMethods = function(f1,f2) {
+	if(f1 == f2) return true;
+	if(!Reflect.isFunction(f1) || !Reflect.isFunction(f2)) return false;
+	return f1.scope == f2.scope && f1.method == f2.method && f1.method != null;
+}
+Reflect.isObject = function(v) {
+	if(v == null) return false;
+	var t = typeof(v);
+	return t == "string" || t == "object" && !v.__enum__ || t == "function" && (v.__name__ || v.__ename__);
+}
+Reflect.deleteField = function(o,f) {
+	if(!Reflect.hasField(o,f)) return false;
+	delete(o[f]);
+	return true;
+}
+Reflect.copy = function(o) {
+	var o2 = { };
+	var _g = 0, _g1 = Reflect.fields(o);
+	while(_g < _g1.length) {
+		var f = _g1[_g];
+		++_g;
+		o2[f] = Reflect.field(o,f);
+	}
+	return o2;
+}
+Reflect.makeVarArgs = function(f) {
+	return function() {
+		var a = Array.prototype.slice.call(arguments);
+		return f(a);
+	};
+}
 var Std = function() { }
 Std.__name__ = true;
 Std["is"] = function(v,t) {
@@ -137,6 +263,25 @@ Std.parseFloat = function(x) {
 }
 Std.random = function(x) {
 	return x <= 0?0:Math.floor(Math.random() * x);
+}
+var StringBuf = function() {
+	this.b = "";
+};
+StringBuf.__name__ = true;
+StringBuf.prototype = {
+	toString: function() {
+		return this.b;
+	}
+	,addSub: function(s,pos,len) {
+		this.b += HxOverrides.substr(s,pos,len);
+	}
+	,addChar: function(c) {
+		this.b += String.fromCharCode(c);
+	}
+	,add: function(x) {
+		this.b += Std.string(x);
+	}
+	,__class__: StringBuf
 }
 var js = {}
 js.Boot = function() { }
@@ -1583,6 +1728,14 @@ three.materials.Material.prototype = {
 	}
 	,__class__: three.materials.Material
 }
+three.materials.MeshBasicMaterial = function(parameters) {
+	three.materials.Material.call(this);
+};
+three.materials.MeshBasicMaterial.__name__ = true;
+three.materials.MeshBasicMaterial.__super__ = three.materials.Material;
+three.materials.MeshBasicMaterial.prototype = $extend(three.materials.Material.prototype,{
+	__class__: three.materials.MeshBasicMaterial
+});
 three.materials.PixelFormat = function() { }
 three.materials.PixelFormat.__name__ = true;
 three.materials.PixelType = function() { }
@@ -1682,6 +1835,7 @@ three.math.Color.prototype = {
 		return this;
 	}
 	,__class__: three.math.Color
+	,__properties__: {set_rgb:"setRGB",get_rgb:"getRGB",set_rgba:"setRGBA",get_rgba:"getRGBA"}
 }
 three.math.EulerOrder = { __ename__ : true, __constructs__ : ["XYZ","YXZ","ZXY","ZYX","YZX","XZY"] }
 three.math.EulerOrder.XYZ = ["XYZ",0];
@@ -1923,6 +2077,7 @@ three.math.Quaternion.prototype = {
 		return this;
 	}
 	,__class__: three.math.Quaternion
+	,__properties__: {get_length:"getLength"}
 }
 three.math.Vector2 = function(x,y) {
 	if(y == null) y = 0;
@@ -2024,6 +2179,7 @@ three.math.Vector2.prototype = {
 		return this;
 	}
 	,__class__: three.math.Vector2
+	,__properties__: {get_lengthSq:"getLengthSq",get_length:"getLength"}
 }
 three.math.Vector3 = function(x,y,z) {
 	if(z == null) z = 0;
@@ -2275,6 +2431,7 @@ three.math.Vector3.prototype = {
 		return this;
 	}
 	,__class__: three.math.Vector3
+	,__properties__: {get_lengthSq:"getLengthSq",get_length:"getLength"}
 }
 three.math.Vector4 = function(x,y,z,w) {
 	if(w == null) w = 1;
@@ -2465,6 +2622,7 @@ three.math.Vector4.prototype = {
 		return this;
 	}
 	,__class__: three.math.Vector4
+	,__properties__: {get_lengthSq:"getLengthSq",get_length:"getLength"}
 }
 three.objects = {}
 three.objects.Bone = function() {
@@ -2475,13 +2633,137 @@ three.objects.Bone.__super__ = three.core.Object3D;
 three.objects.Bone.prototype = $extend(three.core.Object3D.prototype,{
 	__class__: three.objects.Bone
 });
-three.objects.Mesh = function() {
+three.objects.Mesh = function(geometry,material) {
 	three.core.Object3D.call(this);
+	this.geometry = geometry;
+	if(material == null) material = new three.materials.MeshBasicMaterial({ color : Math.random() * 16777215, wireframe : true});
+	this.material = material;
+	if(this.geometry != null) {
+		if(this.geometry.boundingSphere != null) this.geometry.computeBoundingSphere();
+		this.boundRadius = this.geometry.boundingSphere.radius;
+		if(this.geometry.morphTargets.length > 0) {
+			this.morphTargetBase = -1;
+			this.morphTargetForcedOrder = [];
+			this.morphTargetInfluences = [];
+			this.morphTargetDictionary = { };
+			var _g1 = 0, _g = this.geometry.morphTargets.length;
+			while(_g1 < _g) {
+				var m = _g1++;
+				this.morphTargetInfluences.push(0);
+				Reflect.setProperty(this.morphTargetDictionary,this.geometry.morphTargets[m].name,m);
+			}
+		}
+	}
 };
 three.objects.Mesh.__name__ = true;
 three.objects.Mesh.__super__ = three.core.Object3D;
 three.objects.Mesh.prototype = $extend(three.core.Object3D.prototype,{
-	__class__: three.objects.Mesh
+	getMorphTargetIndexByName: function(name) {
+		if(Reflect.getProperty(this.morphTargetDictionary,name) != null) return Reflect.getProperty(this.morphTargetDictionary,name);
+		three.utils.Logger.log("Mesh.getMorphTargetIndexByName: morph target " + name + " does not exist. Returning 0.");
+		return 0;
+	}
+	,__class__: three.objects.Mesh
+});
+three.objects.MorphAnimMesh = function(geometry,material) {
+	three.objects.Mesh.call(this,geometry,material);
+	this.duration = 1000;
+	this.mirroredLoop = false;
+	this.time = 0;
+	this.lastKeyframe = 0;
+	this.currentKeyframe = 0;
+	this.direction = 1;
+	this.directionBackwards = false;
+	this.setFrameRange(0,this.geometry.morphTargets.length - 1);
+};
+three.objects.MorphAnimMesh.__name__ = true;
+three.objects.MorphAnimMesh.__super__ = three.objects.Mesh;
+three.objects.MorphAnimMesh.prototype = $extend(three.objects.Mesh.prototype,{
+	updateAnimation: function(delta) {
+		var frameTime = this.duration / this.length;
+		this.time += this.direction * delta;
+		if(this.mirroredLoop) {
+			if(this.time > this.duration || this.time < 0) {
+				this.direction *= -1;
+				if(this.time > this.duration) {
+					this.time = this.duration;
+					this.directionBackwards = true;
+				}
+				if(this.time < 0) {
+					this.time = 0;
+					this.directionBackwards = false;
+				}
+			}
+		} else {
+			this.time = this.time % this.duration;
+			if(this.time < 0) this.time += this.duration;
+		}
+		var keyframe = this.startKeyframe + three.math.MathUtil.clamp(Math.floor(this.time / frameTime),0,this.length - 1) | 0;
+		if(keyframe != this.currentKeyframe) {
+			this.morphTargetInfluences[this.lastKeyframe] = 0;
+			this.morphTargetInfluences[this.currentKeyframe] = 1;
+			this.morphTargetInfluences[keyframe] = 0;
+			this.lastKeyframe = this.currentKeyframe;
+			this.currentKeyframe = keyframe;
+		}
+		var mix = this.time % frameTime / frameTime;
+		if(this.directionBackwards) mix = 1 - mix;
+		this.morphTargetInfluences[this.currentKeyframe] = mix;
+		this.morphTargetInfluences[this.lastKeyframe] = 1 - mix;
+	}
+	,playAnimation: function(label,fps) {
+		var animation = Reflect.getProperty(this.geometry.animations,label);
+		if(animation != null) {
+			this.setFrameRange(animation.start,animation.end);
+			this.duration = 1000 * ((animation.end - animation.start) / fps);
+			this.time = 0;
+		} else three.utils.Logger.warn("animation[" + label + "] undefined");
+	}
+	,setAnimationLabel: function(label,start,end) {
+		if(this.geometry.animations == null) this.geometry.animations = { };
+		this.geometry.animations[label] = { start : start, end : end};
+	}
+	,parseAnimations: function() {
+		var geometry = this.geometry;
+		if(geometry.animations == null) geometry.animations = { };
+		var firstAnimation = "";
+		var animations = geometry.animations;
+		var pattern = new EReg("([a-z]+)(\\d+)","");
+		var _g1 = 0, _g = geometry.morphTargets.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var morph = geometry.morphTargets[i];
+			var morphName = morph.name;
+			var parts = morphName.match(pattern);
+			if(parts != null && parts.length > 1) {
+				var label = parts[1];
+				var num = parts[2];
+				var animation = Reflect.getProperty(animations,label);
+				if(animation == null) {
+					animation = { start : Math.POSITIVE_INFINITY | 0, end : Math.NEGATIVE_INFINITY | 0};
+					animations[label] = animation;
+				}
+				if(i < animation.start) animation.start = i;
+				if(i > animation.end) animation.end = i;
+				if(firstAnimation == "") firstAnimation = label;
+			}
+		}
+		geometry.firstAnimation = firstAnimation;
+	}
+	,setDirectionBackward: function() {
+		this.direction = -1;
+		this.directionBackwards = true;
+	}
+	,setDirectionForward: function() {
+		this.direction = 1;
+		this.directionBackwards = false;
+	}
+	,setFrameRange: function(start,end) {
+		this.startKeyframe = start;
+		this.endKeyframe = end;
+		this.length = this.endKeyframe - this.startKeyframe + 1;
+	}
+	,__class__: three.objects.MorphAnimMesh
 });
 three.renderers = {}
 three.renderers.IRenderer = function() { }
@@ -2688,6 +2970,13 @@ three.scenes.Scene.prototype = $extend(three.core.Object3D.prototype,{
 	}
 	,__class__: three.scenes.Scene
 });
+three.textures = {}
+three.textures.Texture = function() {
+};
+three.textures.Texture.__name__ = true;
+three.textures.Texture.prototype = {
+	__class__: three.textures.Texture
+}
 three.utils = {}
 three.utils.Assert = function() {
 };
