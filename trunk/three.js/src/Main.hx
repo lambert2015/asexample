@@ -5,6 +5,7 @@ import js.Lib;
 import three.math.Color;
 import three.math.Matrix4;
 import three.math.Vector3;
+import three.renderers.ShaderDef;
 import UserAgentContext;
 import three.math.Vector2;
 import three.scenes.Fog;
@@ -38,6 +39,8 @@ import three.materials.MeshNormalMaterial;
 import three.loaders.Loader;
 import three.textures.Texture;
 import three.textures.DataTexture;
+import three.renderers.ShaderLib;
+
 /**
  * ...
  * @author 
@@ -90,5 +93,9 @@ class Main
 		var material:Material = new Material();
 		material.setValues( { name:"abcd", transparent:true } );
 		//Lib.alert(material.name);
+		
+		ShaderLib.initShaderLib();
+		
+		var def:ShaderDef = ShaderLib.getShaderDef("phong");
 	}
 }
