@@ -1,16 +1,17 @@
-package webgl101;
-
+package;
+import UserAgentContext;
 import js.Lib;
+import js.Dom;
 import WebGLUtil;
 /**
  * ...
- * @author 
+ * @author andy
  */
-class MinimalShader
+class MinimalDraw 
 {
 	static function main() 
 	{
-		new MinimalShader();
+		new MinimalDraw();
 	}
 	
 	private var gl:WebGLRenderingContext;
@@ -20,7 +21,7 @@ class MinimalShader
 		Lib.window.onload = onLoad;
 	}
 	
-	private function onLoad(e:Event):Void
+	private function onLoad(e:js.Event):Void
 	{
 		var canvas:HTMLCanvasElement = cast Lib.document.getElementById("webgl_canvas");
 		gl = cast(canvas.getContext("experimental-webgl"),WebGLRenderingContext);
@@ -35,9 +36,6 @@ class MinimalShader
 		var floatArray:Float32Array = new Float32Array(vertices);
 		gl.bufferData(gl.ARRAY_BUFFER, floatArray, gl.STATIC_DRAW);
 		
-		var itemSize:Int = 2;
-		var numItem:Int = 4;
-		
 		var vs:String = "attribute vec2 pos;\n" +
 						"void main(){ gl_Position = vec4(pos,0,1); }";
 		var fs:String = "precision mediump float;\n" +
@@ -47,7 +45,7 @@ class MinimalShader
 		gl.useProgram(program);
 		var index:Int = gl.getAttribLocation(program, "pos");
 		gl.enableVertexAttribArray(index);
-		gl.vertexAttribPointer(index, itemSize, gl.FLOAT, false, 0, 0);
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, numItem);
+		gl.vertexAttribPointer(index, 2, gl.FLOAT, false, 0, 0);
+		gl.drawArrays(gl.TRIANGLES, 0, 3);
 	}
 }
