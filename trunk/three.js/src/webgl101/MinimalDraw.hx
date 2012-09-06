@@ -1,13 +1,7 @@
 package webgl101;
-
-import js.Dom;
-import js.Lib;
-import three.math.Color;
-import three.math.Matrix4;
 import UserAgentContext;
-import three.math.Vector2;
-import three.scenes.Fog;
-import three.utils.WebGLUtil;
+import js.Lib;
+import WebGLUtil;
 /**
  * ...
  * @author 
@@ -39,7 +33,6 @@ class MinimalDraw
 		
 		var vertices:Array<Float> = [ -0.5, -0.5, 0.5, -0.5, 0, 0.5];
 		var floatArray:Float32Array = new Float32Array(vertices);
-		//floatArray.set(vertices);
 		gl.bufferData(gl.ARRAY_BUFFER, floatArray, gl.STATIC_DRAW);
 		
 		var vs:String = "attribute vec2 pos;\n" +

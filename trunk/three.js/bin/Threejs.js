@@ -3524,6 +3524,21 @@ three.renderers.WebGLRenderer.prototype = {
 		this.context.blendFunc(this.context.SRC_ALPHA,this.context.ONE_MINUS_SRC_ALPHA);
 		this.context.clearColor(this._clearColor.r,this._clearColor.g,this._clearColor.b,this._clearColor.a);
 	}
+	,initGL: function() {
+	}
+	,allocateShadows: function(lights) {
+		var light;
+		var maxShadows = 0;
+		var _g1 = 0, _g = lights.length;
+		while(_g1 < _g) {
+			var l = _g1++;
+			light = lights[l];
+			if(!light.castShadow) continue;
+			if(js.Boot.__instanceof(light,three.lights.SpotLight)) maxShadows++;
+			if(js.Boot.__instanceof(light,three.lights.DirectionalLight) && !(js.Boot.__cast(light , three.lights.DirectionalLight)).shadowCascade) maxShadows++;
+		}
+		return maxShadows;
+	}
 	,render: function() {
 	}
 	,_clearColor: null

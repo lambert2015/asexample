@@ -78,7 +78,7 @@ class WebGLRenderer implements IRenderer
 		
 	}
 	
-	public function allocateShadows(lights:Array<Light>):Void 
+	public function allocateShadows(lights:Array<Light>):Int 
 	{
 		var light:Light; 
 		var maxShadows:Int = 0;
