@@ -9,9 +9,9 @@ class BoundingSphere
 {
 	public var radius:Float;
 
-	public function new() 
+	public function new(radius:Float = 0) 
 	{
-		radius = 0;
+		this.radius = radius;
 	}
 	
 	public function computeFromPoints(points:Array<Float>):Void

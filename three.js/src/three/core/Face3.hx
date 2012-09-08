@@ -7,7 +7,7 @@ import three.math.Vector3;
  * @author andy
  */
 
-class Face3 
+class Face3 extends Face
 {
 	public function new(a:Vector3, b:Vector3, c:Vector3, normal:Dynamic = null, color:Dynamic = null, materialIndex:Int = 0) 
 	{
@@ -18,10 +18,10 @@ class Face3
 		this.c = c;
 		
 		this.normal = Std.is(normal, Vector3) ? normal : new Vector3();
-		this.vertexNormals = Std.is(normal, Array<Vector3>) ? normal : [];
+		this.vertexNormals = Std.is(normal, Array) ? normal : [];
 		
 		this.color = Std.is(color, Color) ? color : new Color();
-		this.vertexColors = Std.is(color, Array<Vector3>) ? color : [];
+		this.vertexColors = Std.is(color, Array) ? color : [];
 		
 		this.vertexTangents = [];
 		
