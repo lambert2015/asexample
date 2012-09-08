@@ -40,6 +40,7 @@ import three.loaders.Loader;
 import three.textures.Texture;
 import three.textures.DataTexture;
 import three.renderers.ShaderLib;
+import three.objects.shape.SphereGeometry;
 
 /**
  * ...

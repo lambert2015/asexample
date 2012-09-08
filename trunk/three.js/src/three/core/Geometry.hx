@@ -24,8 +24,20 @@ class Geometry
 	public var faces:Array<Face>;
 	
 	public var faceUvs:Array<UV>;
-	public var faceVertexUvs:Array<Array<UV>>;
+	public var faceVertexUvs:Array<Array<Array<UV>>>;
+	
+	public var boundingSphere:BoundingSphere;
 	public function new() 
+	{
+		
+	}
+	
+	public function computeCentroids():Void
+	{
+		
+	}
+	
+	public function computeFaceNormals():Void
 	{
 		
 	}

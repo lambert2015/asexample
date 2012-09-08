@@ -21,10 +21,10 @@ class Face4 extends Face
 		this.d = d;
 		
 		this.normal = Std.is(normal, Vector3) ? normal : new Vector3();
-		this.vertexNormals = Std.is(normal, Array<Vector3>) ? normal : [];
+		this.vertexNormals = Std.is(normal, Array) ? normal : [];
 		
 		this.color = Std.is(color, Color) ? color : new Color();
-		this.vertexColors = Std.is(color, Array<Vector3>) ? color : [];
+		this.vertexColors = Std.is(color, Array) ? color : [];
 		
 		this.vertexTangents = [];
 		
