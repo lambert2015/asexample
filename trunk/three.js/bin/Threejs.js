@@ -1644,8 +1644,9 @@ three.core.BoundingBox.prototype = {
 	,min: null
 	,__class__: three.core.BoundingBox
 }
-three.core.BoundingSphere = function() {
-	this.radius = 0;
+three.core.BoundingSphere = function(radius) {
+	if(radius == null) radius = 0;
+	this.radius = radius;
 };
 $hxClasses["three.core.BoundingSphere"] = three.core.BoundingSphere;
 three.core.BoundingSphere.__name__ = ["three","core","BoundingSphere"];
@@ -1780,6 +1781,94 @@ three.core.Face.prototype = {
 	,a: null
 	,__class__: three.core.Face
 }
+three.core.Face3 = function(a,b,c,normal,color,materialIndex) {
+	if(materialIndex == null) materialIndex = 0;
+	three.core.Face.call(this);
+	this.a = a;
+	this.b = b;
+	this.c = c;
+	this.normal = js.Boot.__instanceof(normal,three.math.Vector3)?normal:new three.math.Vector3();
+	this.vertexNormals = js.Boot.__instanceof(normal,Array)?normal:[];
+	this.color = js.Boot.__instanceof(color,three.math.Color)?color:new three.math.Color();
+	this.vertexColors = js.Boot.__instanceof(color,Array)?color:[];
+	this.vertexTangents = [];
+	this.materialIndex = materialIndex;
+	this.centroid = new three.math.Vector3();
+};
+$hxClasses["three.core.Face3"] = three.core.Face3;
+three.core.Face3.__name__ = ["three","core","Face3"];
+three.core.Face3.__super__ = three.core.Face;
+three.core.Face3.prototype = $extend(three.core.Face.prototype,{
+	clone: function() {
+		var face = new three.core.Face3(this.a,this.b,this.c);
+		face.normal.copy(this.normal);
+		face.color.copy(this.color);
+		face.centroid.copy(this.centroid);
+		face.materialIndex = this.materialIndex;
+		var _g1 = 0, _g = this.vertexNormals.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			face.vertexNormals[i] = this.vertexNormals[i].clone();
+		}
+		var _g1 = 0, _g = this.vertexColors.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			face.vertexColors[i] = this.vertexColors[i].clone();
+		}
+		var _g1 = 0, _g = this.vertexTangents.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			face.vertexTangents[i] = this.vertexTangents[i].clone();
+		}
+		return face;
+	}
+	,__class__: three.core.Face3
+});
+three.core.Face4 = function(a,b,c,d,normal,color,materialIndex) {
+	if(materialIndex == null) materialIndex = 0;
+	three.core.Face.call(this);
+	this.a = a;
+	this.b = b;
+	this.c = c;
+	this.d = d;
+	this.normal = js.Boot.__instanceof(normal,three.math.Vector3)?normal:new three.math.Vector3();
+	this.vertexNormals = js.Boot.__instanceof(normal,Array)?normal:[];
+	this.color = js.Boot.__instanceof(color,three.math.Color)?color:new three.math.Color();
+	this.vertexColors = js.Boot.__instanceof(color,Array)?color:[];
+	this.vertexTangents = [];
+	this.materialIndex = materialIndex;
+	this.centroid = new three.math.Vector3();
+};
+$hxClasses["three.core.Face4"] = three.core.Face4;
+three.core.Face4.__name__ = ["three","core","Face4"];
+three.core.Face4.__super__ = three.core.Face;
+three.core.Face4.prototype = $extend(three.core.Face.prototype,{
+	clone: function() {
+		var face = new three.core.Face4(this.a,this.b,this.c,this.d);
+		face.normal.copy(this.normal);
+		face.color.copy(this.color);
+		face.centroid.copy(this.centroid);
+		face.materialIndex = this.materialIndex;
+		var _g1 = 0, _g = this.vertexNormals.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			face.vertexNormals[i] = this.vertexNormals[i].clone();
+		}
+		var _g1 = 0, _g = this.vertexColors.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			face.vertexColors[i] = this.vertexColors[i].clone();
+		}
+		var _g1 = 0, _g = this.vertexTangents.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			face.vertexTangents[i] = this.vertexTangents[i].clone();
+		}
+		return face;
+	}
+	,d: null
+	,__class__: three.core.Face4
+});
 three.core.Frustum = function() {
 	this.planes = [new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4(),new three.math.Vector4()];
 };
@@ -1829,7 +1918,14 @@ three.core.Geometry = function() {
 $hxClasses["three.core.Geometry"] = three.core.Geometry;
 three.core.Geometry.__name__ = ["three","core","Geometry"];
 three.core.Geometry.prototype = {
-	faceVertexUvs: null
+	mergeVertices: function() {
+	}
+	,computeFaceNormals: function() {
+	}
+	,computeCentroids: function() {
+	}
+	,boundingSphere: null
+	,faceVertexUvs: null
 	,faceUvs: null
 	,faces: null
 	,materials: null
@@ -3382,6 +3478,194 @@ three.objects.MorphAnimMesh.prototype = $extend(three.objects.Mesh.prototype,{
 	,mirroredLoop: null
 	,duration: null
 	,__class__: three.objects.MorphAnimMesh
+});
+three.objects.shape = {}
+three.objects.shape.CubeGeometry = function(width,height,depth,segmentsWidth,segmentsHeight,segmentsDepth,materials,sides) {
+	three.core.Geometry.call(this);
+	this.width = width;
+	this.height = height;
+	this.depth = depth;
+	this.segmentsWidth = segmentsWidth < 1?1:segmentsWidth;
+	this.segmentsHeight = segmentsHeight < 1?1:segmentsHeight;
+	this.segmentsDepth = segmentsDepth < 1?1:segmentsDepth;
+	var scope = this, width_half = width / 2, height_half = height / 2, depth_half = depth / 2;
+	var mpx = 0, mpy = 0, mpz = 0, mnx = 0, mny = 0, mnz = 0;
+	if(materials != null) {
+		if(js.Boot.__instanceof(materials,Array)) this.materials = materials; else {
+			this.materials = [];
+			var _g = 0;
+			while(_g < 6) {
+				var i = _g++;
+				this.materials.push(materials);
+			}
+		}
+		mpx = 0;
+		mnx = 1;
+		mpy = 2;
+		mny = 3;
+		mpz = 4;
+		mnz = 5;
+	} else this.materials = [];
+	this.sides = { px : true, nx : true, py : true, ny : true, pz : true, nz : true};
+	if(sides != null) {
+		var fields = Type.getClassFields(sides);
+		var _g = 0;
+		while(_g < fields.length) {
+			var key = fields[_g];
+			++_g;
+			if(this.sides[key] != null) this.sides[key] = sides[key];
+		}
+	}
+	if(this.sides.px) this.buildPlane("z","y",-1,-1,depth,height,width_half,mpx);
+	if(this.sides.nx) this.buildPlane("z","y",1,-1,depth,height,-width_half,mnx);
+	if(this.sides.py) this.buildPlane("x","z",1,1,width,depth,height_half,mpy);
+	if(this.sides.ny) this.buildPlane("x","z",1,-1,width,depth,-height_half,mny);
+	if(this.sides.pz) this.buildPlane("x","y",1,-1,width,height,depth_half,mpz);
+	if(this.sides.nz) this.buildPlane("x","y",-1,-1,width,height,-depth_half,mnz);
+	this.computeCentroids();
+	this.mergeVertices();
+};
+$hxClasses["three.objects.shape.CubeGeometry"] = three.objects.shape.CubeGeometry;
+three.objects.shape.CubeGeometry.__name__ = ["three","objects","shape","CubeGeometry"];
+three.objects.shape.CubeGeometry.__super__ = three.core.Geometry;
+three.objects.shape.CubeGeometry.prototype = $extend(three.core.Geometry.prototype,{
+	buildPlane: function(u,v,udir,vdir,width,height,depth,material) {
+		var w = "";
+		var gridX = this.segmentsWidth;
+		var gridY = this.segmentsHeight;
+		var width_half = width / 2;
+		var height_half = height / 2;
+		var offset = this.vertices.length;
+		if(u == "x" && v == "y" || u == "y" && v == "x") w = "z"; else if(u == "x" && v == "z" || u == "z" && v == "x") {
+			w = "y";
+			gridY = this.segmentsDepth;
+		} else if(u == "z" && v == "y" || u == "y" && v == "z") {
+			w = "x";
+			gridX = this.segmentsDepth;
+		}
+		var gridX1 = gridX + 1;
+		var gridY1 = gridY + 1;
+		var segment_width = width / gridX;
+		var segment_height = height / gridY;
+		var normal = new three.math.Vector3();
+		normal[w] = depth > 0?1:-1;
+		var _g = 0;
+		while(_g < gridY1) {
+			var iy = _g++;
+			var _g1 = 0;
+			while(_g1 < gridX1) {
+				var ix = _g1++;
+				var vector = new three.math.Vector3();
+				vector[u] = (ix * segment_width - width_half) * udir;
+				vector[v] = (iy * segment_height - height_half) * vdir;
+				vector[w] = depth;
+				this.vertices.push(vector);
+			}
+		}
+		var _g = 0;
+		while(_g < gridY) {
+			var iy = _g++;
+			var _g1 = 0;
+			while(_g1 < gridX) {
+				var ix = _g1++;
+				var a = ix + gridX1 * iy;
+				var b = ix + gridX1 * (iy + 1);
+				var c = ix + 1 + gridX1 * (iy + 1);
+				var d = ix + 1 + gridX1 * iy;
+				var face = new three.core.Face4(a + offset,b + offset,c + offset,d + offset);
+				face.normal.copy(normal);
+				face.vertexNormals.push(normal.clone());
+				face.vertexNormals.push(normal.clone());
+				face.vertexNormals.push(normal.clone());
+				face.vertexNormals.push(normal.clone());
+				face.materialIndex = material;
+				this.faces.push(face);
+				this.faceVertexUvs[0].push([new three.core.UV(ix / gridX,1 - iy / gridY),new three.core.UV(ix / gridX,1 - (iy + 1) / gridY),new three.core.UV((ix + 1) / gridX,1 - (iy + 1) / gridY),new three.core.UV((ix + 1) / gridX,1 - iy / gridY)]);
+			}
+		}
+	}
+	,sides: null
+	,segmentsDepth: null
+	,segmentsHeight: null
+	,segmentsWidth: null
+	,depth: null
+	,height: null
+	,width: null
+	,__class__: three.objects.shape.CubeGeometry
+});
+three.objects.shape.SphereGeometry = function(radius,segmentsWidth,segmentsHeight,phiStart,phiLength,thetaStart,thetaLength) {
+	if(thetaLength == null) thetaLength = 3.1416;
+	if(thetaStart == null) thetaStart = 0;
+	if(phiLength == null) phiLength = 6.2832;
+	if(phiStart == null) phiStart = 0;
+	if(segmentsHeight == null) segmentsHeight = 6;
+	if(segmentsWidth == null) segmentsWidth = 8;
+	if(radius == null) radius = 50;
+	three.core.Geometry.call(this);
+	var segmentsX = segmentsWidth > 3?segmentsWidth:3;
+	var segmentsY = segmentsHeight > 2?segmentsHeight:2;
+	var indices = new Array();
+	var uvs = new Array();
+	var _g1 = 0, _g = segmentsY + 1;
+	while(_g1 < _g) {
+		var y = _g1++;
+		var verticesRow = [];
+		var uvsRow = [];
+		var _g3 = 0, _g2 = segmentsX + 1;
+		while(_g3 < _g2) {
+			var x = _g3++;
+			var u = x / segmentsX;
+			var v = y / segmentsY;
+			var vertex = new three.math.Vector3();
+			vertex.x = -radius * Math.cos(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
+			vertex.y = radius * Math.cos(thetaStart + v * thetaLength);
+			vertex.z = radius * Math.sin(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
+			this.vertices.push(vertex);
+			verticesRow.push(this.vertices.length - 1);
+			uvsRow.push(new three.core.UV(u,1 - v));
+		}
+		indices.push(verticesRow);
+		uvs.push(uvsRow);
+	}
+	var _g = 0;
+	while(_g < segmentsY) {
+		var y = _g++;
+		var _g1 = 0;
+		while(_g1 < segmentsX) {
+			var x = _g1++;
+			var v1 = indices[y][x + 1];
+			var v2 = indices[y][x];
+			var v3 = indices[y + 1][x];
+			var v4 = indices[y + 1][x + 1];
+			var n1 = this.vertices[v1].clone().normalize();
+			var n2 = this.vertices[v2].clone().normalize();
+			var n3 = this.vertices[v3].clone().normalize();
+			var n4 = this.vertices[v4].clone().normalize();
+			var uv1 = uvs[y][x + 1].clone();
+			var uv2 = uvs[y][x].clone();
+			var uv3 = uvs[y + 1][x].clone();
+			var uv4 = uvs[y + 1][x + 1].clone();
+			if(Math.abs(this.vertices[v1].y) == radius) {
+				this.faces.push(new three.core.Face3(v1,v3,v4,[n1,n3,n4]));
+				this.faceVertexUvs[0].push([uv1,uv3,uv4]);
+			} else if(Math.abs(this.vertices[v3].y) == radius) {
+				this.faces.push(new three.core.Face3(v1,v2,v3,[n1,n2,n3]));
+				this.faceVertexUvs[0].push([uv1,uv2,uv3]);
+			} else {
+				this.faces.push(new three.core.Face4(v1,v2,v3,v4,[n1,n2,n3,n4]));
+				this.faceVertexUvs[0].push([uv1,uv2,uv3,uv4]);
+			}
+		}
+	}
+	this.computeCentroids();
+	this.computeFaceNormals();
+	this.boundingSphere = new three.core.BoundingSphere(radius);
+};
+$hxClasses["three.objects.shape.SphereGeometry"] = three.objects.shape.SphereGeometry;
+three.objects.shape.SphereGeometry.__name__ = ["three","objects","shape","SphereGeometry"];
+three.objects.shape.SphereGeometry.__super__ = three.core.Geometry;
+three.objects.shape.SphereGeometry.prototype = $extend(three.core.Geometry.prototype,{
+	__class__: three.objects.shape.SphereGeometry
 });
 three.renderers = {}
 three.renderers.IPostRenderPlugin = function() { }
