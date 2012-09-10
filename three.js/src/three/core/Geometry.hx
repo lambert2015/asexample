@@ -42,4 +42,9 @@ class Geometry
 		
 	}
 	
+	public function mergeVertices():Void
+	{
+		
+	}
+	
 }

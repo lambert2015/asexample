@@ -9,7 +9,7 @@ import three.math.Vector3;
 
 class Face3 extends Face
 {
-	public function new(a:Vector3, b:Vector3, c:Vector3, normal:Dynamic = null, color:Dynamic = null, materialIndex:Int = 0) 
+	public function new(a:Int, b:Int, c:Int, normal:Dynamic = null, color:Dynamic = null, materialIndex:Int = 0) 
 	{
 		super();
 		

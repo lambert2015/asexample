@@ -8,9 +8,9 @@ import three.math.Color;
 
 class Face 
 {
-	public var a:Vector3;
-	public var b:Vector3;
-	public var c:Vector3;
+	public var a:Int;
+	public var b:Int;
+	public var c:Int;
 	
 	public var normal:Vector3;
 	public var vertexNormals:Array<Vector3>;

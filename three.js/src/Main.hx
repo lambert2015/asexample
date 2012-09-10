@@ -41,7 +41,7 @@ import three.textures.Texture;
 import three.textures.DataTexture;
 import three.renderers.ShaderLib;
 import three.objects.shape.SphereGeometry;
-
+import three.objects.shape.CubeGeometry;
 /**
  * ...
  * @author 
