@@ -7,4 +7,5 @@ package three.renderers;
 
 interface IPostRenderPlugin 
 {
+	function init(renderer:IRenderer):Void;
 }

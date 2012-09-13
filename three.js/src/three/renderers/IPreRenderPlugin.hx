@@ -7,5 +7,5 @@ package three.renderers;
 
 interface IPreRenderPlugin 
 {
-
+	function init(renderer:IRenderer):Void;
 }

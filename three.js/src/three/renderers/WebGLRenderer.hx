@@ -17,6 +17,8 @@ import three.core.Face4;
 import three.core.Object3D;
 import three.core.BoundingBox;
 import three.core.BoundingSphere;
+import three.scenes.Scene;
+import three.cameras.Camera;
 import three.utils.Logger;
 import UserAgentContext;
 /**
@@ -92,9 +94,18 @@ class WebGLRenderer implements IRenderer
 	
 	private var _preserveDrawingBuffer:Bool;
 	
-	private var _clearColor:Color;
-	
 	private var _maxLights:Int;
+	
+	private var _frustum:Frustum;
+	
+	private var _projScreenMatrix:Matrix4;
+	private var _projScreenMatrixPS:Matrix4;
+	private var _vector3:Vector4;
+	
+	private var _direction:Vector3;
+	
+	private var _lightsNeedUpdate:Bool;
+	private var _lights:Dynamic;
 	
 	public function new(parameters:Dynamic = null) 
 	{
@@ -118,17 +129,14 @@ class WebGLRenderer implements IRenderer
 		// public properties
 
 		this.domElement = _canvas;
-		this.context = null;
-
+		
 		// clearing
-
 		this.autoClear = true;
 		this.autoClearColor = true;
 		this.autoClearDepth = true;
 		this.autoClearStencil = true;
 
 		// scene graph
-
 		this.sortObjects = true;
 
 		this.autoUpdateObjects = true;
@@ -180,18 +188,18 @@ class WebGLRenderer implements IRenderer
 		};
 
 		// frustum
-		_frustum = new Frustum(),
+		_frustum = new Frustum();
 
 		// camera matrices cache
 
-		_projScreenMatrix = new Matrix4(), 
-		_projScreenMatrixPS = new Matrix4(), 
-		_vector3 = new THREE.Vector4(),
+		_projScreenMatrix = new Matrix4(); 
+		_projScreenMatrixPS = new Matrix4(); 
+		_vector3 = new Vector4();
 
 		// light arrays cache
 
-		_direction = new Vector3(), 
-		_lightsNeedUpdate = true, 
+		_direction = new Vector3(); 
+		_lightsNeedUpdate = true; 
 		_lights = {
 
 			ambient : [0, 0, 0],
@@ -218,11 +226,6 @@ class WebGLRenderer implements IRenderer
 		};
 
 		// initialize
-
-		var _glExtensionTextureFloat;
-		var _glExtensionStandardDerivatives;
-		var _glExtensionTextureFilterAnisotropic;
-
 		initGL();
 
 		setDefaultGLState();
@@ -230,10 +233,10 @@ class WebGLRenderer implements IRenderer
 		// GPU capabilities
 
 		_maxVertexTextures = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
-		_maxTextureSize = gl.getParameter(_gl.MAX_TEXTURE_SIZE); 
-		_maxCubemapSize = gl.getParameter(_gl.MAX_CUBE_MAP_TEXTURE_SIZE);
+		_maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE); 
+		_maxCubemapSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);
 
-		_maxAnisotropy = _glExtensionTextureFilterAnisotropic ? gl.getParameter(_glExtensionTextureFilterAnisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0;
+		_maxAnisotropy = _glExtensionTextureFilterAnisotropic != null ? gl.getParameter(_glExtensionTextureFilterAnisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0;
 
 		_supportsVertexTextures = (_maxVertexTextures > 0 );
 		_supportsBoneTextures = _supportsVertexTextures && _glExtensionTextureFloat;
@@ -241,18 +244,17 @@ class WebGLRenderer implements IRenderer
 	
 	private var _glExtensionTextureFloat:Bool;
 	private var _glExtensionStandardDerivatives:Bool;
-	private var _glExtensionTextureFilterAnisotropic:Bool;
+	private var _glExtensionTextureFilterAnisotropic:Dynamic;
 	
 	private var _maxVertexTextures:Int;
 	private var _maxTextureSize:Int;
 	private var _maxCubemapSize:Int;
 	
-	private var _maxVertexTextures:Int;
 	private var _maxAnisotropy:Int;
 	private var _supportsVertexTextures:Bool;
 	private var _supportsBoneTextures:Bool;
 	
-	public function render():Void
+	public function render(scene:Scene, camera:Camera, renderTarget:WebGLRenderTarget, forceClear:Bool = false):Void
 	{
 		
 	}
@@ -281,30 +283,42 @@ class WebGLRenderer implements IRenderer
 	
 	public function initGL():Void
 	{
-		try {
-
-			if (!( gl = _canvas.getContext('experimental-webgl', 
+		try 
+		{
+			 gl = cast(_canvas.getContext('experimental-webgl', 
 							{
 								alpha : _alpha,
 								premultipliedAlpha : _premultipliedAlpha,
 								antialias : _antialias,
 								stencil : _stencil,
 								preserveDrawingBuffer : _preserveDrawingBuffer
-							}))) 
+							}),WebGLRenderingContext);
+
+			if (gl != null) 
 			{
 				throw 'Error creating WebGL context.';
 			}
 
-		} catch ( error ) {
+		} catch ( error:String ) 
+		{
 			//console.error(error);
 		}
 
-		_glExtensionTextureFloat = gl.getExtension('OES_texture_float');
-		_glExtensionStandardDerivatives = gl.getExtension('OES_standard_derivatives');
+		_glExtensionTextureFloat = cast(gl.getExtension('OES_texture_float'),Bool);
+		_glExtensionStandardDerivatives = cast(gl.getExtension('OES_standard_derivatives'),Bool);
 
-		_glExtensionTextureFilterAnisotropic = gl.getExtension('EXT_texture_filter_anisotropic') || 
-											gl.getExtension('MOZ_EXT_texture_filter_anisotropic') || 
-											gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
+		if (gl.getExtension('EXT_texture_filter_anisotropic') != null)
+		{
+			_glExtensionTextureFilterAnisotropic = gl.getExtension('EXT_texture_filter_anisotropic');
+		}
+		else if (gl.getExtension('MOZ_EXT_texture_filter_anisotropic') != null)
+		{
+			_glExtensionTextureFilterAnisotropic = gl.getExtension('MOZ_EXT_texture_filter_anisotropic');
+		}
+		else if (gl.getExtension('MOZ_EXT_texture_filter_anisotropic') != null)
+		{
+			_glExtensionTextureFilterAnisotropic = gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
+		}
 
 		if (!_glExtensionTextureFloat) 
 		{
@@ -340,5 +354,103 @@ class WebGLRenderer implements IRenderer
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 		gl.clearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearColor.a);
+	}
+	
+	public function supportsVertexTextures():Bool
+	{
+		return _supportsVertexTextures;
+	}
+	
+	public function getMaxAnisotropy():Int
+	{
+		return _maxAnisotropy;
+	}
+	
+	public function setSize(width:Int, height:Int):Void
+	{
+		_canvas.width = width;
+		_canvas.height = height;
+		
+		setViewport(0, 0, _canvas.width, _canvas.height);
+	}
+	
+	private var _viewportX:Int;
+	private var _viewportY:Int;
+	private var _viewportWidth:Int;
+	private var _viewportHeight:Int;
+	public function setViewport(x:Int, y:Int, width:Int, height:Int):Void
+	{
+		_viewportX = x;
+		_viewportY = y;
+		_viewportWidth = width;
+		_viewportHeight = height;
+		
+		gl.viewport(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
+	}
+	
+	public function setScissor(x:Int, y:Int, width:Int, height:Int):Void
+	{
+		gl.scissor(x, y, width, height);
+	}
+	
+	public function enableScissorTest(enable:Bool):Void
+	{
+		if (enable)
+		{
+			gl.enable(gl.SCISSOR_TEST);
+		}
+		else
+		{
+			gl.disable(gl.SCISSOR_TEST);
+		}
+	}
+	
+	public function setClearColor(color:Int):Void
+	{
+		_clearColor.setRGBA(color);
+		
+		gl.clearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearColor.a);
+	}
+	
+	public function getClearColor():Color
+	{
+		return _clearColor;
+	}
+	
+	public function clear(color:Bool, depth:Bool, stencil:Bool):Void
+	{
+		var bits:Int = 0;
+		
+		if (color)
+			bits |= gl.COLOR_BUFFER_BIT;
+		if (depth)
+			bits |= gl.DEPTH_BUFFER_BIT;
+		if (stencil)
+			bits |= gl.STENCIL_BUFFER_BIT;
+		
+		gl.clear(bits);
+	}
+	
+	public function clearTarget(renderTarget:WebGLRenderTarget, color:Bool, depth:Bool, stencil:Bool):Void
+	{
+		this.setRenderTarget(renderTarget);
+		this.clear(color, depth, stencil);
+	}
+	
+	public function setRenderTarget(renderTarget:WebGLRenderTarget):Void
+	{
+		
+	}
+	
+	public function addPostPlugin(plugin:IPostRenderPlugin):Void
+	{
+		plugin.init(this);
+		this.renderPluginsPost.push(plugin);
+	}
+	
+	public function addPrePlugin(plugin:IPreRenderPlugin):Void
+	{
+		plugin.init(this);
+		this.renderPluginsPre.push(plugin);
 	}
 }
