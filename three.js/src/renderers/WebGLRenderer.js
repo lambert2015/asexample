@@ -6099,7 +6099,8 @@ THREE.WebGLRenderer = function(parameters) {
 
 			// Setup texture, create render and frame buffers
 
-			var isTargetPowerOfTwo = isPowerOfTwo(renderTarget.width) && isPowerOfTwo(renderTarget.height), glFormat = paramThreeToGL(renderTarget.format), glType = paramThreeToGL(renderTarget.type);
+			var isTargetPowerOfTwo = isPowerOfTwo(renderTarget.width) && isPowerOfTwo(renderTarget.height), 
+			glFormat = paramThreeToGL(renderTarget.format), glType = paramThreeToGL(renderTarget.type);
 
 			if (isCube) {
 

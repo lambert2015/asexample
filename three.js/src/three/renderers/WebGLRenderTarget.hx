@@ -1,10 +1,7 @@
 package three.renderers;
 import three.math.Vector2;
-import three.materials.WrappingMode;
-import three.materials.PixelFormat;
-import three.materials.PixelType;
-import three.materials.FilterType;
-import three.materials.DataType;
+import UserAgentContext;
+import three.Three;
 /**
  * ...
  * @author 
@@ -35,6 +32,10 @@ class WebGLRenderTarget
 	public var stencilBuffer:Bool;
 	
 	public var generateMipmaps:Bool;
+	
+	public var __webglFramebuffer:Array<WebGLFramebuffer>;
+	public var __webglRenderbuffer:Array<WebGLRenderbuffer> ;
+	public var __webglTexture:Array<WebGLTexture>;
 
 	public function new(width:Int, height:Int, options:Dynamic = null)
 	{
@@ -46,19 +47,19 @@ class WebGLRenderTarget
 			options = { };
 		}
 
-		this.wrapS = options.wrapS != null ? options.wrapS : WrappingMode.ClampToEdgeWrapping;
-		this.wrapT = options.wrapT != null ? options.wrapT : WrappingMode.ClampToEdgeWrapping;
+		this.wrapS = options.wrapS != null ? options.wrapS : Three.ClampToEdgeWrapping;
+		this.wrapT = options.wrapT != null ? options.wrapT : Three.ClampToEdgeWrapping;
 
-		this.magFilter = options.magFilter != null ? options.magFilter : FilterType.LinearFilter;
-		this.minFilter = options.minFilter != null ? options.minFilter : FilterType.LinearMipMapLinearFilter;
+		this.magFilter = options.magFilter != null ? options.magFilter : Three.LinearFilter;
+		this.minFilter = options.minFilter != null ? options.minFilter : Three.LinearMipMapLinearFilter;
 
 		this.anisotropy = options.anisotropy != null ? options.anisotropy : 1;
 
 		this.offset = new Vector2(0, 0);
 		this.repeat = new Vector2(1, 1);
 
-		this.format = options.format != null ? options.format : PixelFormat.RGBAFormat;
-		this.type = options.type != null ? options.type : DataType.UnsignedByteType;
+		this.format = options.format != null ? options.format : Three.RGBAFormat;
+		this.type = options.type != null ? options.type : Three.UnsignedByteType;
 
 		this.depthBuffer = options.depthBuffer != null ? options.depthBuffer : true;
 		this.stencilBuffer = options.stencilBuffer != null ? options.stencilBuffer : true;
