@@ -2,6 +2,7 @@ package three.materials;
 import three.utils.Logger;
 import three.math.Color;
 import three.math.Vector3;
+import three.Three;
 /**
  * ...
  * @author andy
@@ -46,16 +47,16 @@ class Material
 
 		this.name = '';
 
-		this.side = SideType.FrontSide;
+		this.side = Three.FrontSide;
 
 		this.opacity = 1;
 		this.transparent = false;
 
-		this.blending = BlendingType.NormalBlending;
+		this.blending = Three.NormalBlending;
 
-		this.blendSrc = BlendFactor.SrcAlphaFactor;
-		this.blendDst = BlendFactor.OneMinusSrcAlphaFactor;
-		this.blendEquation = EquationType.AddEquation;
+		this.blendSrc = Three.SrcAlphaFactor;
+		this.blendDst = Three.OneMinusSrcAlphaFactor;
+		this.blendEquation = Three.AddEquation;
 
 		this.depthTest = true;
 		this.depthWrite = true;

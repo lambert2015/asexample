@@ -19,6 +19,7 @@ import three.core.BoundingBox;
 import three.core.BoundingSphere;
 import three.scenes.Scene;
 import three.cameras.Camera;
+import three.Three;
 import three.utils.Logger;
 import UserAgentContext;
 /**
@@ -439,7 +440,75 @@ class WebGLRenderer implements IRenderer
 	
 	public function setRenderTarget(renderTarget:WebGLRenderTarget):Void
 	{
+		if (renderTarget == null)
+			return;	
+		var isCube:Bool = Std.is(renderTarget, WebGLRenderTargetCube);
 		
+		if (renderTarget.__webglFramebuffer == null)
+		{
+			renderTarget.depthBuffer = true;
+			renderTarget.stencilBuffer = true;
+			
+			renderTarget.__webglTexture = gl.createTexture();
+			
+			// Setup texture, create render and frame buffers
+			var isTargetPowerOfTow = MathUtil.isPow2(renderTarget.width) &&
+									MathUtil.isPow2(renderTarget.height);
+			var glFormat:GLenum = Three.paramThreeToGL(renderTarget.format, gl);
+			var glType:GLenum = Three.paramThreeToGL(renderTarget.type, gl);
+			
+			if (isCube)
+			{
+				renderTarget.__webglFramebuffer = [];
+				renderTarget.__webglRenderbuffer = [];
+				
+				gl.bindTexture(gl.TEXTURE_CUBE_MAP, renderTarget.__webglTexture);
+				setTextureParameters(gl.TEXTURE_CUBE_MAP, renderTarget, isTargetPowerOfTow);
+				
+				for (i in 0...6)
+				{
+					renderTarget.__webglFramebuffer[i] = gl.createFramebuffer();
+					renderTarget.__webglRenderbuffer[i] = gl.createRenderbuffer();
+					
+					gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, glFormat, renderTarget.width, renderTarget.height, 0, glFormat, glType, null);
+					
+					setupFrameBuffer(renderTarget.__webglFramebuffer[i], renderTarget, gl.TEXTURE_CUBE_MAP_POSITIVE_X + i);
+					setupRenderBuffer(renderTarget.__webglRenderbuffer[i], renderTarget);
+				}
+				
+				if (isTargetPowerOfTow)
+					gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+			}
+			else
+			{
+				renderTarget.__webglFramebuffer[0] = gl.createFramebuffer();
+				renderTarget.__webglRenderbuffer[0] = gl.createRenderbuffer();
+				
+				gl.bindTexture(gl.TEXTURE_2D, renderTarget.__webglTexture);
+				setTextureParameters(gl.TEXTURE_2D, renderTarget, isTargetPowerOfTwo);
+				
+				gl.texImage2D(gl.TEXTURE_2D, 0, glFormat, renderTarget.width, renderTarget.height, 0, glFormat, glType, null);
+
+				setupFrameBuffer(renderTarget.__webglFramebuffer[0], renderTarget, gl.TEXTURE_2D);
+				setupRenderBuffer(renderTarget.__webglRenderbuffer[0], renderTarget);
+
+				if (isTargetPowerOfTwo)
+					gl.generateMipmap(gl.TEXTURE_2D);
+			}
+			
+			//Release everything
+			if (isCube)
+			{
+				gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+			}
+			else
+			{
+				gl.bindTexture(gl.TEXTURE_2D, null);
+			}
+			
+			gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+		}
 	}
 	
 	public function addPostPlugin(plugin:IPostRenderPlugin):Void

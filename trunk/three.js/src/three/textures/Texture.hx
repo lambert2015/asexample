@@ -2,10 +2,7 @@ package three.textures;
 import js.Dom;
 import three.materials.UVMapping;
 import three.math.Vector2;
-import three.materials.FilterType;
-import three.materials.PixelFormat;
-import three.materials.PixelType;
-import three.materials.WrappingMode;
+import three.Three;
 /**
  * ...
  * @author 
@@ -48,16 +45,16 @@ class Texture
 
 		this.mapping = mapping != null ? mapping : new UVMapping();
 
-		this.wrapS = WrappingMode.ClampToEdgeWrapping;
-		this.wrapT = WrappingMode.ClampToEdgeWrapping;
+		this.wrapS = Three.ClampToEdgeWrapping;
+		this.wrapT = Three.ClampToEdgeWrapping;
 
-		this.magFilter = FilterType.LinearFilter;
-		this.minFilter = FilterType.LinearMipMapLinearFilter;
+		this.magFilter = Three.LinearFilter;
+		this.minFilter = Three.LinearMipMapLinearFilter;
 
 		this.anisotropy = 1;
 
-		this.format = PixelFormat.RGBAFormat;
-		this.type = PixelFormat.RGBAFormat;
+		this.format = Three.RGBAFormat;
+		this.type = Three.RGBAFormat;
 
 		this.offset = new Vector2(0, 0);
 		this.repeat = new Vector2(1, 1);
