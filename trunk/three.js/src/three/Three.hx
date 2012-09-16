@@ -125,11 +125,6 @@ class Three
 	public static inline var LuminanceFormat:Int = 1022;
 	public static inline var LuminanceAlphaFormat:Int = 1023;
 
-
-	public function new() 
-	{
-		
-	}
 	
 	// Map js constants to WebGL constants
 
