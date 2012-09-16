@@ -1,0 +1,276 @@
+﻿<html>
+  <head>
+    <title>Opera Mobile WebGL demo</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+    <script type="text/javascript" src="../js/Collada.js"></script>
+    <script type="text/javascript" src="../js/PreProcess.js"></script>
+    <script type="text/javascript" src="../js/Loader.js"></script>
+    <script type="text/javascript" src="../js/VectorMath.js"></script>
+    <script type="text/javascript" src="../js/Animation.js"></script>
+    <script type="text/javascript" src="../js/Material.js"></script>
+    <script type="text/javascript" src="../js/MaterialCache.js"></script>
+    <script type="text/javascript" src="../js/TextureCache.js"></script>
+    <script type="text/javascript" src="../js/Node.js"></script>
+    <script type="text/javascript" src="../js/Mesh.js"></script>
+    <script type="text/javascript" src="../js/DebugDraw.js"></script>
+    <script type="text/javascript" src="../js/Joint.js"></script>
+    <script type="text/javascript" src="../js/Scene.js"></script>
+    <script type="text/javascript" src="../js/Light.js"></script>
+    <script type="text/javascript" src="../js/Camera.js"></script>
+    <script type="text/javascript" src="../js/GlobalMaterialProperties.js"></script>
+    <script type="text/javascript" src="../js/ArcBall.js"></script>
+
+    <script language="javascript" type="text/javascript">
+      var canvas;
+      var gl;
+      var scene;
+      var character;
+      var sceneIsLoaded = false;
+      var characterIsLoaded = false;
+      var startTime = (new Date()).getTime();
+      var frameCount = 0;
+      var updateInterval = 30;
+      var spin = 0;
+      var dx = [0,0,0];
+      var leftDown = false;
+      var downOnButton = false;
+
+      function ErrorMessage(msg) {
+        alert(msg);
+      }
+
+      function InfoMessage(msg) {
+      }
+
+      function characterLoaded() {
+        characterIsLoaded = true;
+        scene.subScenes[0] = character;
+        character.loadAnimation('json/anim-idle_anim.json', 'animation', true, function() { });
+        charRoot = character.findNode('RIG_joints_grp');
+        charRoot.rotate = [0, 180, 0];
+        update();
+      }
+
+      function loadIdleAnim() {
+        character.loadAnimation('json/anim-idle_anim.json', 'animation', true, function() { });
+      }
+
+      function loadWalkAnim() {
+        character.loadAnimation('json/anim-walk_anim.json', 'animation', true, function() { });
+      }
+
+      function sceneLoaded() {
+        sceneIsLoaded = true;
+        character = new Scene('json/character.json', function () { characterLoaded(); }, canvas.width / canvas.height);
+
+        scene.currentCamera.yfov = 7.5;
+      }
+
+      function initWebGL() {
+        fps = document.getElementById('fps');
+        canvas = document.getElementById("my-canvas");
+        buttons = [document.getElementById("walk"), document.getElementById("idle")];
+        gl = canvas.getContext("experimental-webgl", { alpha : true });
+        if (gl) {
+          gl.clearColor(0.0, 0.0, 0.0, 0.0);
+          gl.clearDepth(1.0);
+          gl.enable(gl.DEPTH_TEST);
+          gl.depthFunc(gl.LEQUAL);
+
+          lastTime = (new Date()).getTime();
+
+          scene = new Scene('json/mobile-a.json', function() { sceneLoaded(); }, canvas.width / canvas.height);
+        }
+
+        window.addEventListener('touchstart', onTouchStart, false);
+        window.addEventListener('touchmove', onTouchMove, false);
+        window.addEventListener('touchend', onTouchEnd, false);
+        window.addEventListener('mousedown', onMouseDown, false);
+        window.addEventListener('mousemove', onMouseMove, false);
+        window.addEventListener('mouseup', onMouseUp, false);
+
+        parseQueryParams();
+        if (qs.hasOwnProperty('fps'))
+          fps.style.display = 'inline';
+
+        globalMaterialProperties.ambient = [0.25, 0.25, 0.25];
+        globalMaterialProperties.maxLights = 1;
+
+        var alod = 0;
+        if (qs.hasOwnProperty('alod'))
+          alod = qs['alod'];
+
+        globalMaterialProperties.animationLOD = alod;
+        if (alod == 2)
+          globalMaterialProperties.maxBones = 10;
+        else if (alod == 1)
+          globalMaterialProperties.maxBones = 18;
+        else
+          globalMaterialProperties.maxBones = 29;
+      }
+
+      function update() {
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+
+        var currTime = (new Date()).getTime();
+
+        if (++frameCount == updateInterval) {
+          frameCount = 0;
+          fps.innerHTML = (1000/((currTime - startTime)/updateInterval)).toFixed(2);
+          startTime = currTime;
+        }
+        var dt = (currTime - lastTime) / 1000.0;
+        lastTime = currTime;
+
+        if (scene && sceneIsLoaded) {
+
+          if (spin) {
+            charRoot.rotate = [0, charRoot.rotate[1] + spin, 0];
+            spin *= 0.9;
+          }
+
+          if (scene.currentCamera)
+            scene.currentCamera.setMatrices();
+
+          scene.update(dt);
+
+          modelMatrix().makeIdentity();
+          scene.draw();
+
+          setTimeout(update, 0);
+        }
+      }
+
+      function onButtons(x, y) {
+        for (var b in buttons) {
+          var elem = buttons[b];
+          if (elem.offsetLeft <= x && x < elem.offsetLeft + elem.width && elem.offsetTop <= y && y < elem.offsetTop + elem.height) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function onMouseDown(evt) {
+        if (evt.button == 0) {
+          leftDown = true;
+          onDown(evt, evt.pageX, evt.pageY);
+        }
+      }
+
+      function onMouseMove(evt) {
+        if (leftDown) {
+          onMove(evt, evt.pageX, evt.pageY);
+        }
+      }
+
+      function onMouseUp(evt) {
+        if (evt.button == 0) {
+          leftDown = false;
+          onUp(evt, evt.pageX, evt.pageY);
+        }
+      }
+
+      function onTouchStart(evt) {
+        onDown(evt, evt.changedTouches[0].pageX, evt.changedTouches[0].pageY);
+      }
+
+      function onTouchMove(evt) {
+        onMove(evt, evt.changedTouches[0].pageX, evt.changedTouches[0].pageY);
+      }
+
+      function onTouchEnd(evt) {
+        onUp(evt, evt.changedTouches[0].pageX, evt.changedTouches[0].pageY);
+      }
+
+      function onDown(evt, x, y) {
+        downOnButton = onButtons(x, y);
+        if (downOnButton)
+          return;
+        evt.preventDefault();
+        lastMouseX = x;
+        dx[0] = 0; dx[1] = 0; dx[2] = 0;
+      }
+
+      function onMove(evt, x, y) {
+        if (downOnButton)
+          return;
+        evt.preventDefault();
+        dx[0] = dx[1];
+        dx[1] = dx[2];
+        dx[2] = x - lastMouseX;
+        if (sceneIsLoaded && characterIsLoaded) {
+          charRoot.rotate = [0, charRoot.rotate[1] + dx[2], 0];
+        }
+        lastMouseX = x;
+      }
+
+      function onUp(evt, x, y) {
+        evt.preventDefault();
+        if (!downOnButton)
+          spin = (dx[0] + dx[1] + dx[2]) / 3;
+      }
+
+      function parseQueryParams() {
+        qs = new Array();
+        var query = window.location.search.substring(1);
+        var parms = query.split('&');
+        for (var i = 0; i < parms.length; ++i) {
+          var pos = parms[i].indexOf('=');
+          if (pos > 0) {
+            var key = parms[i].substring(0, pos);
+            var val = parms[i].substring(pos+1);
+            qs[key] = val;
+          } else {
+            qs[parms[i]] = undefined;
+          }
+        }
+      }
+
+    </script>
+    <style>
+      body {
+        color: white;
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        background-image: url("backdrop.png");
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+      canvas {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -150px;
+        margin-top: -250px;
+      }
+      img.ico {
+        position: absolute;
+        top: 50%;
+        right: 0%;
+        margin-right: 0px;
+      }
+      img.banner {
+        height: 100%;
+      }
+      @media screen and (min-height: 800px) {
+        img.banner {
+          position: relative;
+          height: 800px;
+          top: 50%;
+          margin-top: -400px;
+        }
+      }
+    </style>
+  </head>
+  <body onload="initWebGL()">
+      <canvas id="my-canvas" width='300' height='500'></canvas>
+      <img id='idle' class='ico' src='idle.png' style='margin-top: -150px' onclick='loadIdleAnim();'></img>
+      <img id='walk' class='ico' src='walk.png' onclick='loadWalkAnim();'></img>
+      <img class='banner' src='OperaMobile.png'></img>
+      <p id='fps' style='position:absolute; display: none'></p>
+  </body>
+</html>
