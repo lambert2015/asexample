@@ -13,9 +13,7 @@ class DirectionalLight extends Light
 	public var intensity:Float;
 	
 	public var distance:Float;
-	
-	public var onlyShadow:Bool;
-	
+
 	public var shadowCameraNear:Float;
 	public var shadowCameraFar:Float;
 	

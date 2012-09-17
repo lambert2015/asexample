@@ -2,9 +2,11 @@ package three.renderers;
 
 import js.Dom;
 import js.Lib;
+import three.core.Geometry;
 import three.lights.Light;
 import three.lights.DirectionalLight;
 import three.lights.SpotLight;
+import three.lights.PointLight;
 import three.math.Color;
 import three.math.Vector2;
 import three.math.Vector3;
@@ -17,9 +19,14 @@ import three.core.Face4;
 import three.core.Object3D;
 import three.core.BoundingBox;
 import three.core.BoundingSphere;
+import three.renderers.plugins.LensFlarePlugin;
+import three.renderers.plugins.ShadowMapPlugin;
+import three.renderers.plugins.SpritePlugin;
 import three.scenes.Scene;
+import three.objects.SkinnedMesh;
 import three.cameras.Camera;
-import three.Three;
+import three.textures.Texture;
+import three.ThreeGlobal;
 import three.utils.Logger;
 import UserAgentContext;
 /**
@@ -107,6 +114,8 @@ class WebGLRenderer implements IRenderer
 	
 	private var _lightsNeedUpdate:Bool;
 	private var _lights:Dynamic;
+	
+	private var shadowMapPlugin:ShadowMapPlugin;
 	
 	public function new(parameters:Dynamic = null) 
 	{
@@ -241,6 +250,14 @@ class WebGLRenderer implements IRenderer
 
 		_supportsVertexTextures = (_maxVertexTextures > 0 );
 		_supportsBoneTextures = _supportsVertexTextures && _glExtensionTextureFloat;
+		
+		
+		// default plugins (order is important)
+		this.shadowMapPlugin = new ShadowMapPlugin();
+		this.addPrePlugin(this.shadowMapPlugin);
+		
+		this.addPostPlugin(new SpritePlugin());
+		this.addPostPlugin(new LensFlarePlugin());
 	}
 	
 	private var _glExtensionTextureFloat:Bool;
@@ -258,6 +275,93 @@ class WebGLRenderer implements IRenderer
 	public function render(scene:Scene, camera:Camera, renderTarget:WebGLRenderTarget, forceClear:Bool = false):Void
 	{
 		
+	}
+	
+	public function allocateBones(object:Dynamic):Int
+	{
+		if (_supportsBoneTextures && object != null && object.useVertexTexture)
+		{
+			return 1024;
+		}
+		else
+		{
+			// default for when object is not specified
+			// ( for example when prebuilding shader
+			//   to be used with multiple objects )
+			//
+			// 	- leave some extra space for other uniforms
+			//  - limit here is ANGLE's 254 max uniform vectors
+			//    (up to 54 should be safe)
+
+			var nVertexUniforms:Int = gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS);
+			var nVertexMatrices:Int = Math.floor((nVertexUniforms - 20 ) / 4);
+
+			var maxBones:Int = nVertexMatrices;
+
+			if (object != null && Std.is(object,SkinnedMesh)) 
+			{
+				var skinnedMesh:SkinnedMesh = cast(object, SkinnedMesh);
+				maxBones = Std.int(Math.min(skinnedMesh.bones.length, maxBones));
+				if (maxBones < skinnedMesh.bones.length) 
+				{
+					Logger.warn("WebGLRenderer: too many bones - " + skinnedMesh.bones.length + ", this GPU supports just " + maxBones + " (try OpenGL instead of ANGLE)");
+				}
+			}
+			return maxBones;
+		}
+	}
+	public function allocateLights(lights:Array<Light>):Dynamic
+	{
+		var light:Light;
+		var pointLights:Int;
+		var spotLights:Int;
+		var dirLights:Int;
+		var maxDirLights:Int;
+		var maxPointLights:Int;
+		var maxSpotLights:Int;
+		
+		dirLights = pointLights = spotLights = maxDirLights = maxPointLights = maxSpotLights = 0;
+		
+		for ( i in 0...lights.length)
+		{
+			light = lights[i];
+			
+			if (light.onlyShadow)
+				continue;
+				
+			if (Std.is(light, DirectionalLight))
+			{
+				dirLights++;
+			}
+			else if (Std.is(light, PointLight))
+			{
+				pointLights++;
+			}
+			else if (Std.is(light, SpotLight))
+			{
+				spotLights++;
+			}
+		}
+		
+		if (pointLights + spotLights + dirLights <= _maxLights)
+		{
+			maxDirLights = dirLights;
+			maxPointLights = pointLights;
+			maxSpotLights = spotLights;
+		}
+		else
+		{
+			// this is not really correct
+			maxDirLights = Math.ceil(_maxLights * dirLights / (pointLights + dirLights));
+			maxPointLights = _maxLights - maxDirLights;
+			maxSpotLights = maxPointLights;
+		}
+		
+		return {
+			'directional' : maxDirLights,
+			'point' : maxPointLights,
+			'spot' : maxSpotLights
+		};
 	}
 	
 	public function allocateShadows(lights:Array<Light>):Int 
@@ -293,7 +397,9 @@ class WebGLRenderer implements IRenderer
 								antialias : _antialias,
 								stencil : _stencil,
 								preserveDrawingBuffer : _preserveDrawingBuffer
-							}),WebGLRenderingContext);
+							}), WebGLRenderingContext);
+			
+			ThreeGlobal.gl = gl;
 
 			if (gl != null) 
 			{
@@ -438,13 +544,16 @@ class WebGLRenderer implements IRenderer
 		this.clear(color, depth, stencil);
 	}
 	
+	private var _currentFramebuffer:WebGLFramebuffer;
+	private var _currentWidth:Int;
+	private var _currentHeight:Int;
 	public function setRenderTarget(renderTarget:WebGLRenderTarget):Void
 	{
 		if (renderTarget == null)
 			return;	
 		var isCube:Bool = Std.is(renderTarget, WebGLRenderTargetCube);
 		
-		if (renderTarget.__webglFramebuffer == null)
+		if (renderTarget != null && renderTarget.__webglFramebuffer == null)
 		{
 			renderTarget.depthBuffer = true;
 			renderTarget.stencilBuffer = true;
@@ -452,10 +561,10 @@ class WebGLRenderer implements IRenderer
 			renderTarget.__webglTexture = gl.createTexture();
 			
 			// Setup texture, create render and frame buffers
-			var isTargetPowerOfTow = MathUtil.isPow2(renderTarget.width) &&
+			var isTargetPowerOfTwo = MathUtil.isPow2(renderTarget.width) &&
 									MathUtil.isPow2(renderTarget.height);
-			var glFormat:GLenum = Three.paramThreeToGL(renderTarget.format, gl);
-			var glType:GLenum = Three.paramThreeToGL(renderTarget.type, gl);
+			var glFormat:GLenum = ThreeGlobal.paramThreeToGL(renderTarget.format);
+			var glType:GLenum = ThreeGlobal.paramThreeToGL(renderTarget.type);
 			
 			if (isCube)
 			{
@@ -463,7 +572,7 @@ class WebGLRenderer implements IRenderer
 				renderTarget.__webglRenderbuffer = [];
 				
 				gl.bindTexture(gl.TEXTURE_CUBE_MAP, renderTarget.__webglTexture);
-				setTextureParameters(gl.TEXTURE_CUBE_MAP, renderTarget, isTargetPowerOfTow);
+				setTextureParameters(gl.TEXTURE_CUBE_MAP, renderTarget, isTargetPowerOfTwo);
 				
 				for (i in 0...6)
 				{
@@ -476,7 +585,7 @@ class WebGLRenderer implements IRenderer
 					setupRenderBuffer(renderTarget.__webglRenderbuffer[i], renderTarget);
 				}
 				
-				if (isTargetPowerOfTow)
+				if (isTargetPowerOfTwo)
 					gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 			}
 			else
@@ -509,6 +618,127 @@ class WebGLRenderer implements IRenderer
 			gl.bindRenderbuffer(gl.RENDERBUFFER, null);
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		}
+		
+		var framebuffer:WebGLFramebuffer;
+		var width:Int, height:Int, vx:Int, vy:Int;
+		if (renderTarget != null)
+		{
+			if (isCube)
+			{
+				framebuffer = renderTarget.__webglFramebuffer[cast(renderTarget,WebGLRenderTargetCube).activeCubeFace];
+			}
+			else
+			{
+				framebuffer = renderTarget.__webglFramebuffer[0];
+			}
+			
+			width = renderTarget.width;
+			height = renderTarget.height;
+			
+			vx = 0;
+			vy = 0;
+		}
+		else
+		{
+			framebuffer = null;
+			
+			width = _viewportWidth;
+			height = _viewportHeight;
+			
+			vx = _viewportX;
+			vy = _viewportY;
+		}
+		
+		if (framebuffer != _currentFramebuffer)
+		{
+			gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+			gl.viewport(vx, vy, width, height);
+			
+			_currentFramebuffer = framebuffer;
+		}
+		
+		_currentWidth = width;
+		_currentHeight = height;
+	}
+	
+	public function setupFrameBuffer(framebuffer:WebGLFramebuffer, renderTarget:WebGLRenderTarget, textureTarget:GLenum):Void
+	{
+		gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, textureTarget, renderTarget.__webglTexture, 0);
+	}
+	
+	public function setupRenderBuffer(renderbuffer:WebGLRenderbuffer, renderTarget:WebGLRenderTarget):Void
+	{
+		gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+		if (renderTarget.depthBuffer && !renderTarget.stencilBuffer)
+		{
+			gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, renderTarget.width, renderTarget.height);
+			gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+			
+			/* For some reason this is not working. Defaulting to RGBA4.
+			 } else if( ! renderTarget.depthBuffer && renderTarget.stencilBuffer ) {
+
+			 _gl.renderbufferStorage( _gl.RENDERBUFFER, _gl.STENCIL_INDEX8,
+			renderTarget.width, renderTarget.height );
+			 _gl.framebufferRenderbuffer( _gl.FRAMEBUFFER, _gl.STENCIL_ATTACHMENT,
+			_gl.RENDERBUFFER, renderbuffer );
+			 */
+		}
+		else if(renderTarget.depthBuffer && renderTarget.stencilBuffer)
+		{
+			gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL, renderTarget.width, renderTarget.height);
+			gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+		}
+		else
+		{
+			gl.renderbufferStorage(gl.RENDERBUFFER, gl.RGBA4, renderTarget.width, renderTarget.height);
+		}
+	}
+	
+	public function setTextureParameters(textureType:GLenum, texture:WebGLRenderTarget, isImagePowerOfTwo:Bool):Void 
+	{
+		if (isImagePowerOfTwo) 
+		{
+			gl.texParameteri(textureType, gl.TEXTURE_WRAP_S, ThreeGlobal.paramThreeToGL(texture.wrapS));
+			gl.texParameteri(textureType, gl.TEXTURE_WRAP_T, ThreeGlobal.paramThreeToGL(texture.wrapT));
+
+			gl.texParameteri(textureType, gl.TEXTURE_MAG_FILTER, ThreeGlobal.paramThreeToGL(texture.magFilter));
+			gl.texParameteri(textureType, gl.TEXTURE_MIN_FILTER, ThreeGlobal.paramThreeToGL(texture.minFilter));
+		} 
+		else 
+		{
+			gl.texParameteri(textureType, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(textureType, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+			gl.texParameteri(textureType, gl.TEXTURE_MAG_FILTER, ThreeGlobal.filterFallback(texture.magFilter));
+			gl.texParameteri(textureType, gl.TEXTURE_MIN_FILTER, ThreeGlobal.filterFallback(texture.minFilter));
+		}
+
+		if (_glExtensionTextureFilterAnisotropic && texture.type != ThreeGlobal.FloatType) 
+		{
+			if (texture.anisotropy > 1 || texture.__oldAnisotropy <= 0) 
+			{
+				gl.texParameterf(textureType, _glExtensionTextureFilterAnisotropic.TEXTURE_MAX_ANISOTROPY_EXT, 
+								Math.min(texture.anisotropy, _maxAnisotropy));
+				texture.__oldAnisotropy = texture.anisotropy;
+			}
+		}
+	}
+	
+	public function updateRenderTargetMipmap(renderTarget:WebGLRenderTarget):Void
+	{
+		if (Std.is(renderTarget, WebGLRenderTargetCube))
+		{
+			gl.bindTexture(gl.TEXTURE_CUBE_MAP, renderTarget.__webglTexture);
+			gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+			gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+		}
+		else
+		{
+			gl.bindTexture(gl.TEXTURE_2D, renderTarget.__webglTexture);
+			gl.generateMipmap(gl.TEXTURE_2D);
+			gl.bindTexture(gl.TEXTURE_2D, null);
+		}
 	}
 	
 	public function addPostPlugin(plugin:IPostRenderPlugin):Void
@@ -522,4 +752,304 @@ class WebGLRenderer implements IRenderer
 		plugin.init(this);
 		this.renderPluginsPre.push(plugin);
 	}
+	
+	private var _currentProgram:WebGLProgram;
+	private var _oldBlending:Int;
+	private var _oldDepthTest:Int;
+	private var _oldDepthWrite:Int;
+	private var _currentGeometryGroupHash:Int;
+	private var _currentMaterialId:Int;
+	private var _oldDoubleSided:Int;
+	private var _oldFlipSided:Int;
+	public function updateShadowMap(scene:Scene, camera:Camera):Void
+	{
+		_currentProgram = null;
+		_oldBlending = -1;
+		_oldDepthTest = -1;
+		_oldDepthWrite = -1;
+		_currentGeometryGroupHash = -1;
+		_currentMaterialId = -1;
+		_lightsNeedUpdate = true;
+		_oldDoubleSided = -1;
+		_oldFlipSided = -1;
+
+		this.shadowMapPlugin.update(scene, camera);
+	}
+	
+	// Internal functions
+	// Buffer allocation
+	private function createParticleBuffers(geometry:Geometry):Void
+	{
+		geometry.__webglVertexBuffer = gl.createBuffer();
+		geometry.__webglColorBuffer = gl.createBuffer();
+		
+		this.info.geometries++;
+	}
+	
+	private function createLineBuffers(geometry:Geometry):Void
+	{
+		geometry.__webglVertexBuffer = gl.createBuffer();
+		geometry.__webglColorBuffer = gl.createBuffer();
+
+		this.info.memory.geometries++;
+	}
+	
+	private function createRibbonBuffers(geometry:Geometry):Void
+	{
+		geometry.__webglVertexBuffer = gl.createBuffer();
+		geometry.__webglColorBuffer = gl.createBuffer();
+
+		this.info.memory.geometries++;
+	}
+	
+	private function createMeshBuffers(geometryGroup:Dynamic):Void 
+	{
+		//geometryGroup.__webglVertexBuffer = gl.createBuffer();
+		//geometryGroup.__webglNormalBuffer = gl.createBuffer();
+		//geometryGroup.__webglTangentBuffer = gl.createBuffer();
+		//geometryGroup.__webglColorBuffer = gl.createBuffer();
+		//geometryGroup.__webglUVBuffer = gl.createBuffer();
+		//geometryGroup.__webglUV2Buffer = gl.createBuffer();
+//
+		//geometryGroup.__webglSkinVertexABuffer = gl.createBuffer();
+		//geometryGroup.__webglSkinVertexBBuffer = gl.createBuffer();
+		//geometryGroup.__webglSkinIndicesBuffer = gl.createBuffer();
+		//geometryGroup.__webglSkinWeightsBuffer = gl.createBuffer();
+//
+		//geometryGroup.__webglFaceBuffer = gl.createBuffer();
+		//geometryGroup.__webglLineBuffer = gl.createBuffer();
+//
+		//if (geometryGroup.numMorphTargets) 
+		//{
+			//geometryGroup.__webglMorphTargetsBuffers = [];
+//
+			//for ( m in 0...geometryGroup.numMorphTargets) 
+			//{
+				//geometryGroup.__webglMorphTargetsBuffers.push(gl.createBuffer());
+			//}
+		//}
+//
+		//if (geometryGroup.numMorphNormals) 
+		//{
+			//geometryGroup.__webglMorphNormalsBuffers = [];
+//
+			//for ( m in 0...geometryGroup.numMorphNormals) 
+			//{
+				//geometryGroup.__webglMorphNormalsBuffers.push(gl.createBuffer());
+			//}
+		//}
+		//this.info.memory.geometries++;
+	}
+	
+	// Buffer deallocation
+
+	private function deleteParticleBuffers(geometry:Geometry):Void
+	{
+		gl.deleteBuffer(geometry.__webglVertexBuffer);
+		gl.deleteBuffer(geometry.__webglColorBuffer);
+
+		this.info.memory.geometries--;
+	}
+
+	private function deleteLineBuffers(geometry:Geometry):Void
+	{
+		gl.deleteBuffer(geometry.__webglVertexBuffer);
+		gl.deleteBuffer(geometry.__webglColorBuffer);
+
+		this.info.memory.geometries--;
+	}
+
+	private function deleteRibbonBuffers(geometry:Geometry):Void
+	{
+		gl.deleteBuffer(geometry.__webglVertexBuffer);
+		gl.deleteBuffer(geometry.__webglColorBuffer);
+
+		this.info.memory.geometries--;
+	}
+
+	private function deleteMeshBuffers(geometryGroup:Dynamic):Void 
+	{
+		//gl.deleteBuffer(geometryGroup.__webglVertexBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglNormalBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglTangentBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglColorBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglUVBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglUV2Buffer);
+//
+		//gl.deleteBuffer(geometryGroup.__webglSkinVertexABuffer);
+		//gl.deleteBuffer(geometryGroup.__webglSkinVertexBBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglSkinIndicesBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglSkinWeightsBuffer);
+//
+		//gl.deleteBuffer(geometryGroup.__webglFaceBuffer);
+		//gl.deleteBuffer(geometryGroup.__webglLineBuffer);
+//
+		//if (geometryGroup.numMorphTargets) 
+		//{
+			//for ( m in 0...geometryGroup.numMorphTargets) 
+			//{
+				//gl.deleteBuffer(geometryGroup.__webglMorphTargetsBuffers[m]);
+			//}
+		//}
+//
+		//if (geometryGroup.numMorphNormals) 
+		//{
+			//for ( m in 0...geometryGroup.numMorphNormals) 
+			//{
+				//gl.deleteBuffer(geometryGroup.__webglMorphNormalsBuffers[m]);
+			//}
+		//}
+//
+		//if (geometryGroup.__webglCustomAttributesList) 
+		//{
+			//for (var id in geometryGroup.__webglCustomAttributesList ) 
+			//{
+				//gl.deleteBuffer(geometryGroup.__webglCustomAttributesList[id].buffer);
+			//}
+		//}
+//
+		//this.info.memory.geometries--;
+	}
+
+	// Buffer initialization
+	// Deallocation
+	//public function deallocateObject(object):Void 
+	//{
+		//if (!object.__webglInit)
+			//return;
+//
+		//object.__webglInit = false;
+		//delete object._modelViewMatrix;
+		//delete object._normalMatrix;
+		//delete object._normalMatrixArray;
+		//delete object._modelViewMatrixArray;
+		//delete object._modelMatrixArray;
+//
+		//if ( object instanceof THREE.Mesh) 
+		//{
+			//for (var g in object.geometry.geometryGroups ) 
+			//{
+				//deleteMeshBuffers(object.geometry.geometryGroups[g]);
+			//}
+		//} 
+		//else if ( object instanceof THREE.Ribbon) 
+		//{
+			//deleteRibbonBuffers(object.geometry);
+//
+		//} 
+		//else if ( object instanceof THREE.Line) 
+		//{
+			//deleteLineBuffers(object.geometry);
+		//} 
+		//else if ( object instanceof THREE.ParticleSystem) 
+		//{
+			//deleteParticleBuffers(object.geometry);
+		//}
+	//}
+//
+	//public function deallocateTexture(texture):Void 
+	//{
+//
+		//if (!texture.__webglInit)
+			//return;
+//
+		//texture.__webglInit = false;
+		//_gl.deleteTexture(texture.__webglTexture);
+//
+		//_this.info.memory.textures--;
+//
+	//};
+//
+	//public function deallocateRenderTarget(renderTarget):Void 
+	//{
+//
+		//if (!renderTarget || !renderTarget.__webglTexture)
+			//return;
+//
+		//_gl.deleteTexture(renderTarget.__webglTexture);
+//
+		//if ( renderTarget instanceof THREE.WebGLRenderTargetCube) {
+//
+			//for (var i = 0; i < 6; i++) {
+//
+				//_gl.deleteFramebuffer(renderTarget.__webglFramebuffer[i]);
+				//_gl.deleteRenderbuffer(renderTarget.__webglRenderbuffer[i]);
+//
+			//}
+//
+		//} else {
+//
+			//_gl.deleteFramebuffer(renderTarget.__webglFramebuffer);
+			//_gl.deleteRenderbuffer(renderTarget.__webglRenderbuffer);
+//
+		//}
+//
+	//};
+//
+	//public function deallocateMaterial(material):Void 
+	//{
+//
+		//var program = material.program;
+//
+		//if (!program)
+			//return;
+//
+		//material.program = undefined;
+//
+		// only deallocate GL program if this was the last use of shared program
+		// assumed there is only single copy of any program in the _programs list
+		// (that's how it's constructed)
+//
+		//var i, il, programInfo;
+		//var deleteProgram = false;
+//
+		//for ( i = 0, il = _programs.length; i < il; i++) {
+//
+			//programInfo = _programs[i];
+//
+			//if (programInfo.program === program) {
+//
+				//programInfo.usedTimes--;
+//
+				//if (programInfo.usedTimes === 0) {
+//
+					//deleteProgram = true;
+//
+				//}
+//
+				//break;
+//
+			//}
+//
+		//}
+//
+		//if (deleteProgram) {
+//
+			// avoid using array.splice, this is costlier than creating new array from
+			// scratch
+//
+			//var newPrograms = [];
+//
+			//for ( i = 0, il = _programs.length; i < il; i++) {
+//
+				//programInfo = _programs[i];
+//
+				//if (programInfo.program !== program) {
+//
+					//newPrograms.push(programInfo);
+//
+				//}
+//
+			//}
+//
+			//_programs = newPrograms;
+//
+			//_gl.deleteProgram(program);
+//
+			//_this.info.memory.programs--;
+//
+		//}
+//
+	//}
+
 }

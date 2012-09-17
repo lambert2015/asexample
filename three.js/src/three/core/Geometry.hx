@@ -2,6 +2,7 @@ package three.core;
 import three.math.Vector3;
 import three.math.Color;
 import three.materials.Material;
+import UserAgentContext;
 /**
  * ...
  * @author andy
@@ -27,6 +28,10 @@ class Geometry
 	public var faceVertexUvs:Array<Array<Array<UV>>>;
 	
 	public var boundingSphere:BoundingSphere;
+	
+	public var __webglVertexBuffer:WebGLBuffer;
+	public var __webglColorBuffer:WebGLBuffer;
+	
 	public function new() 
 	{
 		

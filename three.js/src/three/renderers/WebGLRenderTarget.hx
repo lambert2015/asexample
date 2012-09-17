@@ -1,7 +1,7 @@
 package three.renderers;
 import three.math.Vector2;
 import UserAgentContext;
-import three.Three;
+import three.ThreeGlobal;
 /**
  * ...
  * @author 
@@ -35,7 +35,9 @@ class WebGLRenderTarget
 	
 	public var __webglFramebuffer:Array<WebGLFramebuffer>;
 	public var __webglRenderbuffer:Array<WebGLRenderbuffer> ;
-	public var __webglTexture:Array<WebGLTexture>;
+	public var __webglTexture:WebGLTexture;
+	
+	public var __oldAnisotropy:Int;
 
 	public function new(width:Int, height:Int, options:Dynamic = null)
 	{
@@ -47,19 +49,19 @@ class WebGLRenderTarget
 			options = { };
 		}
 
-		this.wrapS = options.wrapS != null ? options.wrapS : Three.ClampToEdgeWrapping;
-		this.wrapT = options.wrapT != null ? options.wrapT : Three.ClampToEdgeWrapping;
+		this.wrapS = options.wrapS != null ? options.wrapS : ThreeGlobal.ClampToEdgeWrapping;
+		this.wrapT = options.wrapT != null ? options.wrapT : ThreeGlobal.ClampToEdgeWrapping;
 
-		this.magFilter = options.magFilter != null ? options.magFilter : Three.LinearFilter;
-		this.minFilter = options.minFilter != null ? options.minFilter : Three.LinearMipMapLinearFilter;
+		this.magFilter = options.magFilter != null ? options.magFilter : ThreeGlobal.LinearFilter;
+		this.minFilter = options.minFilter != null ? options.minFilter : ThreeGlobal.LinearMipMapLinearFilter;
 
 		this.anisotropy = options.anisotropy != null ? options.anisotropy : 1;
 
 		this.offset = new Vector2(0, 0);
 		this.repeat = new Vector2(1, 1);
 
-		this.format = options.format != null ? options.format : Three.RGBAFormat;
-		this.type = options.type != null ? options.type : Three.UnsignedByteType;
+		this.format = options.format != null ? options.format : ThreeGlobal.RGBAFormat;
+		this.type = options.type != null ? options.type : ThreeGlobal.UnsignedByteType;
 
 		this.depthBuffer = options.depthBuffer != null ? options.depthBuffer : true;
 		this.stencilBuffer = options.stencilBuffer != null ? options.stencilBuffer : true;

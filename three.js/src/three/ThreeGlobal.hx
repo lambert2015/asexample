@@ -5,7 +5,7 @@ import UserAgentContext;
  * @author 
  */
 
-class Three 
+class ThreeGlobal
 {
 	// side
 
@@ -125,10 +125,10 @@ class Three
 	public static inline var LuminanceFormat:Int = 1022;
 	public static inline var LuminanceAlphaFormat:Int = 1023;
 
-	
+	public static var gl:WebGLRenderingContext;
 	// Map js constants to WebGL constants
 
-	public static function paramThreeToGL(p:Int, gl:WebGLRenderingContext):GLenum
+	public static function paramThreeToGL(p:Int):GLenum
 	{
 		if (p == RepeatWrapping)
 			return gl.REPEAT;
@@ -218,4 +218,20 @@ class Three
 		return 0;
 	}
 	
+	/**
+	 * Fallback filters for non-power-of-2 textures
+	 * @param	f
+	 * @return
+	 */
+	public static function filterFallback(f:Int):GLenum
+	{
+		if (f == NearestFilter || 
+			f == NearestMipMapNearestFilter || 
+			f == NearestMipMapLinearFilter) 
+		{
+			return gl.NEAREST;
+		}
+
+		return gl.LINEAR;
+	}
 }

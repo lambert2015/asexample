@@ -2,7 +2,7 @@ package three.textures;
 import js.Dom;
 import three.materials.UVMapping;
 import three.math.Vector2;
-import three.Three;
+import three.ThreeGlobal;
 /**
  * ...
  * @author 
@@ -45,16 +45,16 @@ class Texture
 
 		this.mapping = mapping != null ? mapping : new UVMapping();
 
-		this.wrapS = Three.ClampToEdgeWrapping;
-		this.wrapT = Three.ClampToEdgeWrapping;
+		this.wrapS = ThreeGlobal.ClampToEdgeWrapping;
+		this.wrapT = ThreeGlobal.ClampToEdgeWrapping;
 
-		this.magFilter = Three.LinearFilter;
-		this.minFilter = Three.LinearMipMapLinearFilter;
+		this.magFilter = ThreeGlobal.LinearFilter;
+		this.minFilter = ThreeGlobal.LinearMipMapLinearFilter;
 
 		this.anisotropy = 1;
 
-		this.format = Three.RGBAFormat;
-		this.type = Three.RGBAFormat;
+		this.format = ThreeGlobal.RGBAFormat;
+		this.type = ThreeGlobal.RGBAFormat;
 
 		this.offset = new Vector2(0, 0);
 		this.repeat = new Vector2(1, 1);

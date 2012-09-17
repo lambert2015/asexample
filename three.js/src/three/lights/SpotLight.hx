@@ -18,8 +18,6 @@ class SpotLight extends Light
 	
 	public var exponent:Float;
 
-	public var onlyShadow:Bool;
-	
 	public var shadowCameraNear:Float;
 	public var shadowCameraFar:Float;
 	public var shadowCameraFov:Float;
