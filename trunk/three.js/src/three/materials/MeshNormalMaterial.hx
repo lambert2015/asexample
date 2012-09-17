@@ -1,5 +1,5 @@
 package three.materials;
-import three.Three;
+import three.ThreeGlobal;
 /**
  * ...
  * @author 
@@ -16,7 +16,7 @@ class MeshNormalMaterial extends Material
 	{
 		super();
 		
-		this.shading = Three.FlatShading;
+		this.shading = ThreeGlobal.FlatShading;
 
 		this.wireframe = false;
 		this.wireframeLinewidth = 1;

@@ -63,7 +63,7 @@ class Main
 	}
 	
 	
-	private function onLoad(e:Event):Void
+	private function onLoad(e:js.Event):Void
 	{
 		var canvas:HTMLCanvasElement = cast Lib.document.getElementById("webgl_canvas");
 		gl = cast(canvas.getContext("experimental-webgl"),WebGLRenderingContext);

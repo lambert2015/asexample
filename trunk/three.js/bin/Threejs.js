@@ -636,53 +636,54 @@ js.Lib.setErrorHandler = function(f) {
 	js.Lib.onerror = f;
 }
 var three = {}
-three.Three = function() {
-};
-$hxClasses["three.Three"] = three.Three;
-three.Three.__name__ = ["three","Three"];
-three.Three.paramThreeToGL = function(p,gl) {
-	if(p == 1000) return gl.REPEAT;
-	if(p == 1001) return gl.CLAMP_TO_EDGE;
-	if(p == 1002) return gl.MIRRORED_REPEAT;
-	if(p == 1003) return gl.NEAREST;
-	if(p == 1004) return gl.NEAREST_MIPMAP_NEAREST;
-	if(p == 1005) return gl.NEAREST_MIPMAP_LINEAR;
-	if(p == 1006) return gl.LINEAR;
-	if(p == 1007) return gl.LINEAR_MIPMAP_NEAREST;
-	if(p == 1008) return gl.LINEAR_MIPMAP_LINEAR;
-	if(p == 1009) return gl.UNSIGNED_BYTE;
-	if(p == 1016) return gl.UNSIGNED_SHORT_4_4_4_4;
-	if(p == 1017) return gl.UNSIGNED_SHORT_5_5_5_1;
-	if(p == 1018) return gl.UNSIGNED_SHORT_5_6_5;
-	if(p == 1010) return gl.BYTE;
-	if(p == 1011) return gl.SHORT;
-	if(p == 1012) return gl.UNSIGNED_SHORT;
-	if(p == 1013) return gl.INT;
-	if(p == 1014) return gl.UNSIGNED_INT;
-	if(p == 1015) return gl.FLOAT;
-	if(p == 1019) return gl.ALPHA;
-	if(p == 1020) return gl.RGB;
-	if(p == 1021) return gl.RGBA;
-	if(p == 1022) return gl.LUMINANCE;
-	if(p == 1023) return gl.LUMINANCE_ALPHA;
-	if(p == 100) return gl.FUNC_ADD;
-	if(p == 101) return gl.FUNC_SUBTRACT;
-	if(p == 102) return gl.FUNC_REVERSE_SUBTRACT;
-	if(p == 200) return gl.ZERO;
-	if(p == 201) return gl.ONE;
-	if(p == 202) return gl.SRC_COLOR;
-	if(p == 203) return gl.ONE_MINUS_SRC_COLOR;
-	if(p == 204) return gl.SRC_ALPHA;
-	if(p == 205) return gl.ONE_MINUS_SRC_ALPHA;
-	if(p == 206) return gl.DST_ALPHA;
-	if(p == 207) return gl.ONE_MINUS_DST_ALPHA;
-	if(p == 208) return gl.DST_COLOR;
-	if(p == 209) return gl.ONE_MINUS_DST_COLOR;
-	if(p == 210) return gl.SRC_ALPHA_SATURATE;
+three.ThreeGlobal = function() { }
+$hxClasses["three.ThreeGlobal"] = three.ThreeGlobal;
+three.ThreeGlobal.__name__ = ["three","ThreeGlobal"];
+three.ThreeGlobal.gl = null;
+three.ThreeGlobal.paramThreeToGL = function(p) {
+	if(p == 1000) return three.ThreeGlobal.gl.REPEAT;
+	if(p == 1001) return three.ThreeGlobal.gl.CLAMP_TO_EDGE;
+	if(p == 1002) return three.ThreeGlobal.gl.MIRRORED_REPEAT;
+	if(p == 1003) return three.ThreeGlobal.gl.NEAREST;
+	if(p == 1004) return three.ThreeGlobal.gl.NEAREST_MIPMAP_NEAREST;
+	if(p == 1005) return three.ThreeGlobal.gl.NEAREST_MIPMAP_LINEAR;
+	if(p == 1006) return three.ThreeGlobal.gl.LINEAR;
+	if(p == 1007) return three.ThreeGlobal.gl.LINEAR_MIPMAP_NEAREST;
+	if(p == 1008) return three.ThreeGlobal.gl.LINEAR_MIPMAP_LINEAR;
+	if(p == 1009) return three.ThreeGlobal.gl.UNSIGNED_BYTE;
+	if(p == 1016) return three.ThreeGlobal.gl.UNSIGNED_SHORT_4_4_4_4;
+	if(p == 1017) return three.ThreeGlobal.gl.UNSIGNED_SHORT_5_5_5_1;
+	if(p == 1018) return three.ThreeGlobal.gl.UNSIGNED_SHORT_5_6_5;
+	if(p == 1010) return three.ThreeGlobal.gl.BYTE;
+	if(p == 1011) return three.ThreeGlobal.gl.SHORT;
+	if(p == 1012) return three.ThreeGlobal.gl.UNSIGNED_SHORT;
+	if(p == 1013) return three.ThreeGlobal.gl.INT;
+	if(p == 1014) return three.ThreeGlobal.gl.UNSIGNED_INT;
+	if(p == 1015) return three.ThreeGlobal.gl.FLOAT;
+	if(p == 1019) return three.ThreeGlobal.gl.ALPHA;
+	if(p == 1020) return three.ThreeGlobal.gl.RGB;
+	if(p == 1021) return three.ThreeGlobal.gl.RGBA;
+	if(p == 1022) return three.ThreeGlobal.gl.LUMINANCE;
+	if(p == 1023) return three.ThreeGlobal.gl.LUMINANCE_ALPHA;
+	if(p == 100) return three.ThreeGlobal.gl.FUNC_ADD;
+	if(p == 101) return three.ThreeGlobal.gl.FUNC_SUBTRACT;
+	if(p == 102) return three.ThreeGlobal.gl.FUNC_REVERSE_SUBTRACT;
+	if(p == 200) return three.ThreeGlobal.gl.ZERO;
+	if(p == 201) return three.ThreeGlobal.gl.ONE;
+	if(p == 202) return three.ThreeGlobal.gl.SRC_COLOR;
+	if(p == 203) return three.ThreeGlobal.gl.ONE_MINUS_SRC_COLOR;
+	if(p == 204) return three.ThreeGlobal.gl.SRC_ALPHA;
+	if(p == 205) return three.ThreeGlobal.gl.ONE_MINUS_SRC_ALPHA;
+	if(p == 206) return three.ThreeGlobal.gl.DST_ALPHA;
+	if(p == 207) return three.ThreeGlobal.gl.ONE_MINUS_DST_ALPHA;
+	if(p == 208) return three.ThreeGlobal.gl.DST_COLOR;
+	if(p == 209) return three.ThreeGlobal.gl.ONE_MINUS_DST_COLOR;
+	if(p == 210) return three.ThreeGlobal.gl.SRC_ALPHA_SATURATE;
 	return 0;
 }
-three.Three.prototype = {
-	__class__: three.Three
+three.ThreeGlobal.filterFallback = function(f) {
+	if(f == 1003 || f == 1004 || f == 1005) return three.ThreeGlobal.gl.NEAREST;
+	return three.ThreeGlobal.gl.LINEAR;
 }
 three.math = {}
 three.math.Matrix4 = function() {
@@ -1972,6 +1973,8 @@ three.core.Geometry.prototype = {
 	}
 	,computeCentroids: function() {
 	}
+	,__webglColorBuffer: null
+	,__webglVertexBuffer: null
 	,boundingSphere: null
 	,faceVertexUvs: null
 	,faceUvs: null
@@ -2023,7 +2026,8 @@ $hxClasses["three.lights.Light"] = three.lights.Light;
 three.lights.Light.__name__ = ["three","lights","Light"];
 three.lights.Light.__super__ = three.core.Object3D;
 three.lights.Light.prototype = $extend(three.core.Object3D.prototype,{
-	color: null
+	onlyShadow: null
+	,color: null
 	,target: null
 	,__class__: three.lights.Light
 });
@@ -2098,7 +2102,6 @@ three.lights.DirectionalLight.prototype = $extend(three.lights.Light.prototype,{
 	,shadowCameraLeft: null
 	,shadowCameraFar: null
 	,shadowCameraNear: null
-	,onlyShadow: null
 	,distance: null
 	,intensity: null
 	,__class__: three.lights.DirectionalLight
@@ -2161,7 +2164,6 @@ three.lights.SpotLight.prototype = $extend(three.lights.Light.prototype,{
 	,shadowCameraFov: null
 	,shadowCameraFar: null
 	,shadowCameraNear: null
-	,onlyShadow: null
 	,exponent: null
 	,angle: null
 	,distance: null
@@ -3497,6 +3499,15 @@ three.objects.MorphAnimMesh.prototype = $extend(three.objects.Mesh.prototype,{
 	,duration: null
 	,__class__: three.objects.MorphAnimMesh
 });
+three.objects.SkinnedMesh = function() {
+	this.bones = [];
+};
+$hxClasses["three.objects.SkinnedMesh"] = three.objects.SkinnedMesh;
+three.objects.SkinnedMesh.__name__ = ["three","objects","SkinnedMesh"];
+three.objects.SkinnedMesh.prototype = {
+	bones: null
+	,__class__: three.objects.SkinnedMesh
+}
 three.objects.shape = {}
 three.objects.shape.CubeGeometry = function(width,height,depth,segmentsWidth,segmentsHeight,segmentsDepth,materials,sides) {
 	three.core.Geometry.call(this);
@@ -3690,14 +3701,16 @@ three.renderers.IPostRenderPlugin = function() { }
 $hxClasses["three.renderers.IPostRenderPlugin"] = three.renderers.IPostRenderPlugin;
 three.renderers.IPostRenderPlugin.__name__ = ["three","renderers","IPostRenderPlugin"];
 three.renderers.IPostRenderPlugin.prototype = {
-	init: null
+	update: null
+	,init: null
 	,__class__: three.renderers.IPostRenderPlugin
 }
 three.renderers.IPreRenderPlugin = function() { }
 $hxClasses["three.renderers.IPreRenderPlugin"] = three.renderers.IPreRenderPlugin;
 three.renderers.IPreRenderPlugin.__name__ = ["three","renderers","IPreRenderPlugin"];
 three.renderers.IPreRenderPlugin.prototype = {
-	init: null
+	update: null
+	,init: null
 	,__class__: three.renderers.IPreRenderPlugin
 }
 three.renderers.IRenderer = function() { }
@@ -3788,7 +3801,9 @@ three.renderers.WebGLRenderTarget.prototype = {
 		result.generateMipmaps = this.generateMipmaps;
 		return result;
 	}
+	,__oldAnisotropy: null
 	,__webglTexture: null
+	,__webglRenderbuffer: null
 	,__webglFramebuffer: null
 	,generateMipmaps: null
 	,stencilBuffer: null
@@ -3867,12 +3882,70 @@ three.renderers.WebGLRenderer = function(parameters) {
 	this._maxAnisotropy = this._glExtensionTextureFilterAnisotropic != null?this.gl.getParameter(this._glExtensionTextureFilterAnisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT):0;
 	this._supportsVertexTextures = this._maxVertexTextures > 0;
 	this._supportsBoneTextures = this._supportsVertexTextures && this._glExtensionTextureFloat;
+	this.shadowMapPlugin = new three.renderers.plugins.ShadowMapPlugin();
+	this.addPrePlugin(this.shadowMapPlugin);
+	this.addPostPlugin(new three.renderers.plugins.SpritePlugin());
+	this.addPostPlugin(new three.renderers.plugins.LensFlarePlugin());
 };
 $hxClasses["three.renderers.WebGLRenderer"] = three.renderers.WebGLRenderer;
 three.renderers.WebGLRenderer.__name__ = ["three","renderers","WebGLRenderer"];
 three.renderers.WebGLRenderer.__interfaces__ = [three.renderers.IRenderer];
 three.renderers.WebGLRenderer.prototype = {
-	addPrePlugin: function(plugin) {
+	deleteMeshBuffers: function(geometryGroup) {
+	}
+	,deleteRibbonBuffers: function(geometry) {
+		this.gl.deleteBuffer(geometry.__webglVertexBuffer);
+		this.gl.deleteBuffer(geometry.__webglColorBuffer);
+		this.info.memory.geometries--;
+	}
+	,deleteLineBuffers: function(geometry) {
+		this.gl.deleteBuffer(geometry.__webglVertexBuffer);
+		this.gl.deleteBuffer(geometry.__webglColorBuffer);
+		this.info.memory.geometries--;
+	}
+	,deleteParticleBuffers: function(geometry) {
+		this.gl.deleteBuffer(geometry.__webglVertexBuffer);
+		this.gl.deleteBuffer(geometry.__webglColorBuffer);
+		this.info.memory.geometries--;
+	}
+	,createMeshBuffers: function(geometryGroup) {
+	}
+	,createRibbonBuffers: function(geometry) {
+		geometry.__webglVertexBuffer = this.gl.createBuffer();
+		geometry.__webglColorBuffer = this.gl.createBuffer();
+		this.info.memory.geometries++;
+	}
+	,createLineBuffers: function(geometry) {
+		geometry.__webglVertexBuffer = this.gl.createBuffer();
+		geometry.__webglColorBuffer = this.gl.createBuffer();
+		this.info.memory.geometries++;
+	}
+	,createParticleBuffers: function(geometry) {
+		geometry.__webglVertexBuffer = this.gl.createBuffer();
+		geometry.__webglColorBuffer = this.gl.createBuffer();
+		this.info.geometries++;
+	}
+	,updateShadowMap: function(scene,camera) {
+		this._currentProgram = null;
+		this._oldBlending = -1;
+		this._oldDepthTest = -1;
+		this._oldDepthWrite = -1;
+		this._currentGeometryGroupHash = -1;
+		this._currentMaterialId = -1;
+		this._lightsNeedUpdate = true;
+		this._oldDoubleSided = -1;
+		this._oldFlipSided = -1;
+		this.shadowMapPlugin.update(scene,camera);
+	}
+	,_oldFlipSided: null
+	,_oldDoubleSided: null
+	,_currentMaterialId: null
+	,_currentGeometryGroupHash: null
+	,_oldDepthWrite: null
+	,_oldDepthTest: null
+	,_oldBlending: null
+	,_currentProgram: null
+	,addPrePlugin: function(plugin) {
 		plugin.init(this);
 		this.renderPluginsPre.push(plugin);
 	}
@@ -3880,16 +3953,115 @@ three.renderers.WebGLRenderer.prototype = {
 		plugin.init(this);
 		this.renderPluginsPost.push(plugin);
 	}
+	,updateRenderTargetMipmap: function(renderTarget) {
+		if(js.Boot.__instanceof(renderTarget,three.renderers.WebGLRenderTargetCube)) {
+			this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP,renderTarget.__webglTexture);
+			this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
+			this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP,null);
+		} else {
+			this.gl.bindTexture(this.gl.TEXTURE_2D,renderTarget.__webglTexture);
+			this.gl.generateMipmap(this.gl.TEXTURE_2D);
+			this.gl.bindTexture(this.gl.TEXTURE_2D,null);
+		}
+	}
+	,setTextureParameters: function(textureType,texture,isImagePowerOfTwo) {
+		if(isImagePowerOfTwo) {
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_WRAP_S,three.ThreeGlobal.paramThreeToGL(texture.wrapS));
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_WRAP_T,three.ThreeGlobal.paramThreeToGL(texture.wrapT));
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_MAG_FILTER,three.ThreeGlobal.paramThreeToGL(texture.magFilter));
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_MIN_FILTER,three.ThreeGlobal.paramThreeToGL(texture.minFilter));
+		} else {
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_WRAP_S,this.gl.CLAMP_TO_EDGE);
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_WRAP_T,this.gl.CLAMP_TO_EDGE);
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_MAG_FILTER,three.ThreeGlobal.filterFallback(texture.magFilter));
+			this.gl.texParameteri(textureType,this.gl.TEXTURE_MIN_FILTER,three.ThreeGlobal.filterFallback(texture.minFilter));
+		}
+		if(this._glExtensionTextureFilterAnisotropic && texture.type != 1015) {
+			if(texture.anisotropy > 1 || texture.__oldAnisotropy <= 0) {
+				this.gl.texParameterf(textureType,this._glExtensionTextureFilterAnisotropic.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(texture.anisotropy,this._maxAnisotropy));
+				texture.__oldAnisotropy = texture.anisotropy;
+			}
+		}
+	}
+	,setupRenderBuffer: function(renderbuffer,renderTarget) {
+		this.gl.bindRenderbuffer(this.gl.RENDERBUFFER,renderbuffer);
+		if(renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
+			this.gl.renderbufferStorage(this.gl.RENDERBUFFER,this.gl.DEPTH_COMPONENT16,renderTarget.width,renderTarget.height);
+			this.gl.framebufferRenderbuffer(this.gl.FRAMEBUFFER,this.gl.DEPTH_ATTACHMENT,this.gl.RENDERBUFFER,renderbuffer);
+		} else if(renderTarget.depthBuffer && renderTarget.stencilBuffer) {
+			this.gl.renderbufferStorage(this.gl.RENDERBUFFER,this.gl.DEPTH_STENCIL,renderTarget.width,renderTarget.height);
+			this.gl.framebufferRenderbuffer(this.gl.FRAMEBUFFER,this.gl.DEPTH_STENCIL_ATTACHMENT,this.gl.RENDERBUFFER,renderbuffer);
+		} else this.gl.renderbufferStorage(this.gl.RENDERBUFFER,this.gl.RGBA4,renderTarget.width,renderTarget.height);
+	}
+	,setupFrameBuffer: function(framebuffer,renderTarget,textureTarget) {
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER,framebuffer);
+		this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER,this.gl.COLOR_ATTACHMENT0,textureTarget,renderTarget.__webglTexture,0);
+	}
 	,setRenderTarget: function(renderTarget) {
 		if(renderTarget == null) return;
 		var isCube = js.Boot.__instanceof(renderTarget,three.renderers.WebGLRenderTargetCube);
-		if(renderTarget.__webglFramebuffer == null) {
+		if(renderTarget != null && renderTarget.__webglFramebuffer == null) {
 			renderTarget.depthBuffer = true;
 			renderTarget.stencilBuffer = true;
 			renderTarget.__webglTexture = this.gl.createTexture();
-			var isTargetPowerOfTow = three.math.MathUtil.isPow2(renderTarget.width) && three.math.MathUtil.isPow2(renderTarget.height);
+			var isTargetPowerOfTwo = three.math.MathUtil.isPow2(renderTarget.width) && three.math.MathUtil.isPow2(renderTarget.height);
+			var glFormat = three.ThreeGlobal.paramThreeToGL(renderTarget.format);
+			var glType = three.ThreeGlobal.paramThreeToGL(renderTarget.type);
+			if(isCube) {
+				renderTarget.__webglFramebuffer = [];
+				renderTarget.__webglRenderbuffer = [];
+				this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP,renderTarget.__webglTexture);
+				this.setTextureParameters(this.gl.TEXTURE_CUBE_MAP,renderTarget,isTargetPowerOfTwo);
+				var _g = 0;
+				while(_g < 6) {
+					var i = _g++;
+					renderTarget.__webglFramebuffer[i] = this.gl.createFramebuffer();
+					renderTarget.__webglRenderbuffer[i] = this.gl.createRenderbuffer();
+					this.gl.texImage2D(this.gl.TEXTURE_CUBE_MAP_POSITIVE_X + i,0,glFormat,renderTarget.width,renderTarget.height,0,glFormat,glType,null);
+					this.setupFrameBuffer(renderTarget.__webglFramebuffer[i],renderTarget,this.gl.TEXTURE_CUBE_MAP_POSITIVE_X + i);
+					this.setupRenderBuffer(renderTarget.__webglRenderbuffer[i],renderTarget);
+				}
+				if(isTargetPowerOfTwo) this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
+			} else {
+				renderTarget.__webglFramebuffer[0] = this.gl.createFramebuffer();
+				renderTarget.__webglRenderbuffer[0] = this.gl.createRenderbuffer();
+				this.gl.bindTexture(this.gl.TEXTURE_2D,renderTarget.__webglTexture);
+				this.setTextureParameters(this.gl.TEXTURE_2D,renderTarget,isTargetPowerOfTwo);
+				this.gl.texImage2D(this.gl.TEXTURE_2D,0,glFormat,renderTarget.width,renderTarget.height,0,glFormat,glType,null);
+				this.setupFrameBuffer(renderTarget.__webglFramebuffer[0],renderTarget,this.gl.TEXTURE_2D);
+				this.setupRenderBuffer(renderTarget.__webglRenderbuffer[0],renderTarget);
+				if(isTargetPowerOfTwo) this.gl.generateMipmap(this.gl.TEXTURE_2D);
+			}
+			if(isCube) this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP,null); else this.gl.bindTexture(this.gl.TEXTURE_2D,null);
+			this.gl.bindRenderbuffer(this.gl.RENDERBUFFER,null);
+			this.gl.bindFramebuffer(this.gl.FRAMEBUFFER,null);
 		}
+		var framebuffer;
+		var width, height, vx, vy;
+		if(renderTarget != null) {
+			if(isCube) framebuffer = renderTarget.__webglFramebuffer[(js.Boot.__cast(renderTarget , three.renderers.WebGLRenderTargetCube)).activeCubeFace]; else framebuffer = renderTarget.__webglFramebuffer[0];
+			width = renderTarget.width;
+			height = renderTarget.height;
+			vx = 0;
+			vy = 0;
+		} else {
+			framebuffer = null;
+			width = this._viewportWidth;
+			height = this._viewportHeight;
+			vx = this._viewportX;
+			vy = this._viewportY;
+		}
+		if(framebuffer != this._currentFramebuffer) {
+			this.gl.bindFramebuffer(this.gl.FRAMEBUFFER,framebuffer);
+			this.gl.viewport(vx,vy,width,height);
+			this._currentFramebuffer = framebuffer;
+		}
+		this._currentWidth = width;
+		this._currentHeight = height;
 	}
+	,_currentHeight: null
+	,_currentWidth: null
+	,_currentFramebuffer: null
 	,clearTarget: function(renderTarget,color,depth,stencil) {
 		this.setRenderTarget(renderTarget);
 		this.clear(color,depth,stencil);
@@ -3953,6 +4125,7 @@ three.renderers.WebGLRenderer.prototype = {
 	,initGL: function() {
 		try {
 			this.gl = js.Boot.__cast(this._canvas.getContext("experimental-webgl",{ alpha : this._alpha, premultipliedAlpha : this._premultipliedAlpha, antialias : this._antialias, stencil : this._stencil, preserveDrawingBuffer : this._preserveDrawingBuffer}) , WebGLRenderingContext);
+			three.ThreeGlobal.gl = this.gl;
 			if(this.gl != null) throw "Error creating WebGL context.";
 		} catch( error ) {
 			if( js.Boot.__instanceof(error,String) ) {
@@ -3978,6 +4151,46 @@ three.renderers.WebGLRenderer.prototype = {
 		}
 		return maxShadows;
 	}
+	,allocateLights: function(lights) {
+		var light;
+		var pointLights;
+		var spotLights;
+		var dirLights;
+		var maxDirLights;
+		var maxPointLights;
+		var maxSpotLights;
+		dirLights = pointLights = spotLights = maxDirLights = maxPointLights = maxSpotLights = 0;
+		var _g1 = 0, _g = lights.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			light = lights[i];
+			if(light.onlyShadow) continue;
+			if(js.Boot.__instanceof(light,three.lights.DirectionalLight)) dirLights++; else if(js.Boot.__instanceof(light,three.lights.PointLight)) pointLights++; else if(js.Boot.__instanceof(light,three.lights.SpotLight)) spotLights++;
+		}
+		if(pointLights + spotLights + dirLights <= this._maxLights) {
+			maxDirLights = dirLights;
+			maxPointLights = pointLights;
+			maxSpotLights = spotLights;
+		} else {
+			maxDirLights = Math.ceil(this._maxLights * dirLights / (pointLights + dirLights));
+			maxPointLights = this._maxLights - maxDirLights;
+			maxSpotLights = maxPointLights;
+		}
+		return { directional : maxDirLights, point : maxPointLights, spot : maxSpotLights};
+	}
+	,allocateBones: function(object) {
+		if(this._supportsBoneTextures && object != null && object.useVertexTexture) return 1024; else {
+			var nVertexUniforms = this.gl.getParameter(this.gl.MAX_VERTEX_UNIFORM_VECTORS);
+			var nVertexMatrices = Math.floor((nVertexUniforms - 20) / 4);
+			var maxBones = nVertexMatrices;
+			if(object != null && js.Boot.__instanceof(object,three.objects.SkinnedMesh)) {
+				var skinnedMesh = js.Boot.__cast(object , three.objects.SkinnedMesh);
+				maxBones = Math.min(skinnedMesh.bones.length,maxBones) | 0;
+				if(maxBones < skinnedMesh.bones.length) three.utils.Logger.warn("WebGLRenderer: too many bones - " + skinnedMesh.bones.length + ", this GPU supports just " + maxBones + " (try OpenGL instead of ANGLE)");
+			}
+			return maxBones;
+		}
+	}
 	,render: function(scene,camera,renderTarget,forceClear) {
 		if(forceClear == null) forceClear = false;
 	}
@@ -3990,6 +4203,7 @@ three.renderers.WebGLRenderer.prototype = {
 	,_glExtensionTextureFilterAnisotropic: null
 	,_glExtensionStandardDerivatives: null
 	,_glExtensionTextureFloat: null
+	,shadowMapPlugin: null
 	,_lights: null
 	,_lightsNeedUpdate: null
 	,_direction: null
@@ -4031,6 +4245,43 @@ three.renderers.WebGLRenderer.prototype = {
 	,gl: null
 	,domElement: null
 	,__class__: three.renderers.WebGLRenderer
+}
+three.renderers.plugins = {}
+three.renderers.plugins.LensFlarePlugin = function() {
+};
+$hxClasses["three.renderers.plugins.LensFlarePlugin"] = three.renderers.plugins.LensFlarePlugin;
+three.renderers.plugins.LensFlarePlugin.__name__ = ["three","renderers","plugins","LensFlarePlugin"];
+three.renderers.plugins.LensFlarePlugin.__interfaces__ = [three.renderers.IPostRenderPlugin];
+three.renderers.plugins.LensFlarePlugin.prototype = {
+	update: function(scene,camera) {
+	}
+	,init: function(renderer) {
+	}
+	,__class__: three.renderers.plugins.LensFlarePlugin
+}
+three.renderers.plugins.ShadowMapPlugin = function() {
+};
+$hxClasses["three.renderers.plugins.ShadowMapPlugin"] = three.renderers.plugins.ShadowMapPlugin;
+three.renderers.plugins.ShadowMapPlugin.__name__ = ["three","renderers","plugins","ShadowMapPlugin"];
+three.renderers.plugins.ShadowMapPlugin.__interfaces__ = [three.renderers.IPreRenderPlugin];
+three.renderers.plugins.ShadowMapPlugin.prototype = {
+	update: function(scene,camera) {
+	}
+	,init: function(renderer) {
+	}
+	,__class__: three.renderers.plugins.ShadowMapPlugin
+}
+three.renderers.plugins.SpritePlugin = function() {
+};
+$hxClasses["three.renderers.plugins.SpritePlugin"] = three.renderers.plugins.SpritePlugin;
+three.renderers.plugins.SpritePlugin.__name__ = ["three","renderers","plugins","SpritePlugin"];
+three.renderers.plugins.SpritePlugin.__interfaces__ = [three.renderers.IPostRenderPlugin];
+three.renderers.plugins.SpritePlugin.prototype = {
+	update: function(scene,camera) {
+	}
+	,init: function(renderer) {
+	}
+	,__class__: three.renderers.plugins.SpritePlugin
 }
 three.renderers.renderables = {}
 three.renderers.renderables.RenderableFace3 = function() {
@@ -4462,61 +4713,61 @@ if(typeof window != "undefined") {
 	};
 }
 js.Lib.onerror = null;
-three.Three.FrontSide = 0;
-three.Three.BackSide = 1;
-three.Three.DoubleSide = 2;
-three.Three.NoShading = 0;
-three.Three.FlatShading = 1;
-three.Three.SmoothShading = 2;
-three.Three.NoColors = 0;
-three.Three.FaceColors = 1;
-three.Three.VertexColors = 2;
-three.Three.NoBlending = 0;
-three.Three.NormalBlending = 1;
-three.Three.AdditiveBlending = 2;
-three.Three.SubtractiveBlending = 3;
-three.Three.MultiplyBlending = 4;
-three.Three.CustomBlending = 5;
-three.Three.AddEquation = 100;
-three.Three.SubtractEquation = 101;
-three.Three.ReverseSubtractEquation = 102;
-three.Three.ZeroFactor = 200;
-three.Three.OneFactor = 201;
-three.Three.SrcColorFactor = 202;
-three.Three.OneMinusSrcColorFactor = 203;
-three.Three.SrcAlphaFactor = 204;
-three.Three.OneMinusSrcAlphaFactor = 205;
-three.Three.DstAlphaFactor = 206;
-three.Three.OneMinusDstAlphaFactor = 207;
-three.Three.DstColorFactor = 208;
-three.Three.OneMinusDstColorFactor = 209;
-three.Three.SrcAlphaSaturateFactor = 210;
-three.Three.MultiplyOperation = 0;
-three.Three.MixOperation = 1;
-three.Three.RepeatWrapping = 1000;
-three.Three.ClampToEdgeWrapping = 1001;
-three.Three.MirroredRepeatWrapping = 1002;
-three.Three.NearestFilter = 1003;
-three.Three.NearestMipMapNearestFilter = 1004;
-three.Three.NearestMipMapLinearFilter = 1005;
-three.Three.LinearFilter = 1006;
-three.Three.LinearMipMapNearestFilter = 1007;
-three.Three.LinearMipMapLinearFilter = 1008;
-three.Three.UnsignedByteType = 1009;
-three.Three.ByteType = 1010;
-three.Three.ShortType = 1011;
-three.Three.UnsignedShortType = 1012;
-three.Three.IntType = 1013;
-three.Three.UnsignedIntType = 1014;
-three.Three.FloatType = 1015;
-three.Three.UnsignedShort4444Type = 1016;
-three.Three.UnsignedShort5551Type = 1017;
-three.Three.UnsignedShort565Type = 1018;
-three.Three.AlphaFormat = 1019;
-three.Three.RGBFormat = 1020;
-three.Three.RGBAFormat = 1021;
-three.Three.LuminanceFormat = 1022;
-three.Three.LuminanceAlphaFormat = 1023;
+three.ThreeGlobal.FrontSide = 0;
+three.ThreeGlobal.BackSide = 1;
+three.ThreeGlobal.DoubleSide = 2;
+three.ThreeGlobal.NoShading = 0;
+three.ThreeGlobal.FlatShading = 1;
+three.ThreeGlobal.SmoothShading = 2;
+three.ThreeGlobal.NoColors = 0;
+three.ThreeGlobal.FaceColors = 1;
+three.ThreeGlobal.VertexColors = 2;
+three.ThreeGlobal.NoBlending = 0;
+three.ThreeGlobal.NormalBlending = 1;
+three.ThreeGlobal.AdditiveBlending = 2;
+three.ThreeGlobal.SubtractiveBlending = 3;
+three.ThreeGlobal.MultiplyBlending = 4;
+three.ThreeGlobal.CustomBlending = 5;
+three.ThreeGlobal.AddEquation = 100;
+three.ThreeGlobal.SubtractEquation = 101;
+three.ThreeGlobal.ReverseSubtractEquation = 102;
+three.ThreeGlobal.ZeroFactor = 200;
+three.ThreeGlobal.OneFactor = 201;
+three.ThreeGlobal.SrcColorFactor = 202;
+three.ThreeGlobal.OneMinusSrcColorFactor = 203;
+three.ThreeGlobal.SrcAlphaFactor = 204;
+three.ThreeGlobal.OneMinusSrcAlphaFactor = 205;
+three.ThreeGlobal.DstAlphaFactor = 206;
+three.ThreeGlobal.OneMinusDstAlphaFactor = 207;
+three.ThreeGlobal.DstColorFactor = 208;
+three.ThreeGlobal.OneMinusDstColorFactor = 209;
+three.ThreeGlobal.SrcAlphaSaturateFactor = 210;
+three.ThreeGlobal.MultiplyOperation = 0;
+three.ThreeGlobal.MixOperation = 1;
+three.ThreeGlobal.RepeatWrapping = 1000;
+three.ThreeGlobal.ClampToEdgeWrapping = 1001;
+three.ThreeGlobal.MirroredRepeatWrapping = 1002;
+three.ThreeGlobal.NearestFilter = 1003;
+three.ThreeGlobal.NearestMipMapNearestFilter = 1004;
+three.ThreeGlobal.NearestMipMapLinearFilter = 1005;
+three.ThreeGlobal.LinearFilter = 1006;
+three.ThreeGlobal.LinearMipMapNearestFilter = 1007;
+three.ThreeGlobal.LinearMipMapLinearFilter = 1008;
+three.ThreeGlobal.UnsignedByteType = 1009;
+three.ThreeGlobal.ByteType = 1010;
+three.ThreeGlobal.ShortType = 1011;
+three.ThreeGlobal.UnsignedShortType = 1012;
+three.ThreeGlobal.IntType = 1013;
+three.ThreeGlobal.UnsignedIntType = 1014;
+three.ThreeGlobal.FloatType = 1015;
+three.ThreeGlobal.UnsignedShort4444Type = 1016;
+three.ThreeGlobal.UnsignedShort5551Type = 1017;
+three.ThreeGlobal.UnsignedShort565Type = 1018;
+three.ThreeGlobal.AlphaFormat = 1019;
+three.ThreeGlobal.RGBFormat = 1020;
+three.ThreeGlobal.RGBAFormat = 1021;
+three.ThreeGlobal.LuminanceFormat = 1022;
+three.ThreeGlobal.LuminanceAlphaFormat = 1023;
 three.core.Object3D.Object3DCount = 0;
 three.core.Object3D._m1 = new three.math.Matrix4();
 three.core.BufferGeometry.GeometryCount = 0;

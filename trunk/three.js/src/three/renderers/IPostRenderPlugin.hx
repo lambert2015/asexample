@@ -1,4 +1,6 @@
 package three.renderers;
+import three.cameras.Camera;
+import three.scenes.Scene;
 
 /**
  * ...
@@ -8,4 +10,5 @@ package three.renderers;
 interface IPostRenderPlugin 
 {
 	function init(renderer:IRenderer):Void;
+	function update(scene:Scene, camera:Camera):Void;
 }
