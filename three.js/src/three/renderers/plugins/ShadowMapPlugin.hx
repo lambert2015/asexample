@@ -25,4 +25,9 @@ class ShadowMapPlugin implements IPreRenderPlugin
 	{
 		
 	}
+	
+	public function render(scene:Scene, camera:Camera, width:Int, height:Int):Void
+	{
+		
+	}
 }

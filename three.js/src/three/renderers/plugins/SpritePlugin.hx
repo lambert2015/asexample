@@ -24,4 +24,9 @@ class SpritePlugin implements IPostRenderPlugin
 	{
 		
 	}
+	
+	public function render(scene:Scene, camera:Camera, width:Int, height:Int):Void
+	{
+		
+	}
 }

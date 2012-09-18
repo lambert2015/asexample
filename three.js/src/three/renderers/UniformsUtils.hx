@@ -32,7 +32,7 @@ class UniformsUtils
 		return merged;
 	}
 	
-	public function clone( uniforms_src:Dynamic):Dynamic
+	public static function clone( uniforms_src:Dynamic):Dynamic
 	{
 		var uniforms_dst:Dynamic = { };
 		

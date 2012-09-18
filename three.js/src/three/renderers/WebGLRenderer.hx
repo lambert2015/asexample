@@ -7,6 +7,7 @@ import three.lights.Light;
 import three.lights.DirectionalLight;
 import three.lights.SpotLight;
 import three.lights.PointLight;
+import three.materials.Material;
 import three.math.Color;
 import three.math.Vector2;
 import three.math.Vector3;
@@ -22,9 +23,19 @@ import three.core.BoundingSphere;
 import three.renderers.plugins.LensFlarePlugin;
 import three.renderers.plugins.ShadowMapPlugin;
 import three.renderers.plugins.SpritePlugin;
+import three.scenes.Fog;
 import three.scenes.Scene;
 import three.objects.SkinnedMesh;
 import three.cameras.Camera;
+import three.textures.Texture;
+import three.materials.Material;
+import three.materials.MeshBasicMaterial;
+import three.materials.MeshLambertMaterial;
+import three.materials.MeshNormalMaterial;
+import three.materials.MeshPhongMaterial;
+import three.materials.ShaderMaterial;
+import three.materials.*;
+import three.textures.DataTexture;
 import three.textures.Texture;
 import three.ThreeGlobal;
 import three.utils.Logger;
@@ -272,9 +283,232 @@ class WebGLRenderer implements IRenderer
 	private var _supportsVertexTextures:Bool;
 	private var _supportsBoneTextures:Bool;
 	
+	private var _currentCamera:Camera;
+	public function renderPlugins(plugins:Array<IPlugin>, scene:Scene, camera:Camera):Void
+	{
+		if (plugins.length == 0)
+			return;
+
+		for (i in 0...plugins.length) 
+		{
+			// reset state for plugin (to start from clean slate)
+			_currentProgram = null;
+			_currentCamera = null;
+
+			_oldBlending = -1;
+			_oldDepthTest = -1;
+			_oldDepthWrite = -1;
+			_oldDoubleSided = -1;
+			_oldFlipSided = -1;
+			_currentGeometryGroupHash = -1;
+			_currentMaterialId = -1;
+
+			_lightsNeedUpdate = true;
+
+			plugins[i].render(scene, camera, _currentWidth, _currentHeight);
+
+			// reset state after plugin (anything could have changed)
+
+			_currentProgram = null;
+			_currentCamera = null;
+
+			_oldBlending = -1;
+			_oldDepthTest = -1;
+			_oldDepthWrite = -1;
+			_oldDoubleSided = -1;
+			_oldFlipSided = -1;
+			_currentGeometryGroupHash = -1;
+			_currentMaterialId = -1;
+
+			_lightsNeedUpdate = true;
+
+		}
+	}
+	
 	public function render(scene:Scene, camera:Camera, renderTarget:WebGLRenderTarget, forceClear:Bool = false):Void
 	{
 		
+	}
+	
+	public function setMaterialShaders(material:Material, shaders:Dynamic):Void
+	{
+		material.uniforms = UniformsUtils.clone(shaders.uniforms);
+		material.vertexShader = shaders.vertexShader;
+		material.fragmentShader = shaders.fragmentShader;
+	}
+
+	public function setProgram(camera:Camera, lights:Array<Light>, fog:Fog, material:Material, object:Dynamic):WebGLProgram
+	{
+		if (material.needsUpdate) 
+		{
+			if (material.program != null)
+				this.deallocateMaterial(material);
+
+			this.initMaterial(material, lights, fog, object);
+			material.needsUpdate = false;
+		}
+
+		if (material.morphTargets != null) 
+		{
+			if (object.__webglMorphTargetInfluences == null) 
+			{
+				object.__webglMorphTargetInfluences = new Float32Array(this.maxMorphTargets);
+			}
+		}
+
+		var refreshMaterial:Bool = false;
+
+		var program:WebGLProgram = material.program, 
+		p_uniforms:Dynamic = program.uniforms, 
+		m_uniforms:Dynamic = material.uniforms;
+
+		if (program != _currentProgram) 
+		{
+			gl.useProgram(program);
+			_currentProgram = program;
+			refreshMaterial = true;
+		}
+
+		if (material.id != _currentMaterialId) 
+		{
+			_currentMaterialId = material.id;
+			refreshMaterial = true;
+		}
+
+		if (refreshMaterial || camera != _currentCamera) 
+		{
+			gl.uniformMatrix4fv(p_uniforms.projectionMatrix, false, camera._projectionMatrixArray);
+
+			if (camera != _currentCamera)
+				_currentCamera = camera;
+
+		}
+
+		if (refreshMaterial) 
+		{
+			// refresh uniforms common to several materials
+			if (fog != null && material.fog != null) 
+			{
+				refreshUniformsFog(m_uniforms, fog);
+			}
+
+			if ( Std.is(material, MeshPhongMaterial) || 
+				Std.is(material, MeshLambertMaterial) || 
+				material.lights != null) 
+			{
+				if (_lightsNeedUpdate) 
+				{
+					setupLights(program, lights);
+					_lightsNeedUpdate = false;
+				}
+
+				refreshUniformsLights(m_uniforms, _lights);
+			}
+
+			if ( Std.is(material,MeshBasicMaterial) || 
+				Std.is(material,MeshLambertMaterial) || 
+				Std.is(material,MeshPhongMaterial) )
+			{
+				refreshUniformsCommon(m_uniforms, material);
+			}
+
+			// refresh single material specific uniforms
+
+			if ( Std.is(material, LineBasicMaterial)) 
+			{
+				refreshUniformsLine(m_uniforms, material);
+			} 
+			else if ( Std.is(material,ParticleBasicMaterial)) 
+			{
+				refreshUniformsParticle(m_uniforms, material);
+			} 
+			else if ( Std.is(material,MeshPhongMaterial)) 
+			{
+				refreshUniformsPhong(m_uniforms, material);
+			} 
+			else if ( Std.is(material,MeshLambertMaterial))
+			{
+				refreshUniformsLambert(m_uniforms, material);
+			} 
+			else if ( Std.is(material,MeshDepthMaterial)) 
+			{
+				m_uniforms.mNear.value = camera.near;
+				m_uniforms.mFar.value = camera.far;
+				m_uniforms.opacity.value = material.opacity;
+			} 
+			else if ( Std.is(material,MeshNormalMaterial)) 
+			{
+				m_uniforms.opacity.value = material.opacity;
+			}
+
+			if (object.receiveShadow && !material._shadowPass) 
+			{
+				refreshUniformsShadow(m_uniforms, lights);
+			}
+
+			// load common uniforms
+
+			loadUniformsGeneric(program, material.uniformsList);
+
+			// load material specific uniforms
+			// (shader material also gets them for the sake of genericity)
+
+			if ( Std.is(material, ShaderMaterial) || 
+				Std.is(material,MeshPhongMaterial) || 
+				material.envMap != null) 
+			{
+				if (p_uniforms.cameraPosition != null) 
+				{
+					var position:Vector3 = camera.matrixWorld.getPosition();
+					gl.uniform3f(p_uniforms.cameraPosition, position.x, position.y, position.z);
+				}
+			}
+
+			if ( Std.is(material, MeshPhongMaterial) || 
+				Std.is(material,MeshLambertMaterial) || 
+				Std.is(material,ShaderMaterial) || 
+				material.skinning) 
+			{
+				if (p_uniforms.viewMatrix != null) 
+				{
+					gl.uniformMatrix4fv(p_uniforms.viewMatrix, false, camera._viewMatrixArray);
+				}
+			}
+
+		}
+
+		if (material.skinning) 
+		{
+			if (_supportsBoneTextures && object.useVertexTexture) 
+			{
+				if (p_uniforms.boneTexture != null) 
+				{
+					// shadowMap texture array starts from 6
+					// texture unit 12 should leave space for 6 shadowmaps
+					var textureUnit:Int = 12;
+					gl.uniform1i(p_uniforms.boneTexture, textureUnit);
+					this.setTexture(object.boneTexture, textureUnit);
+				}
+			} 
+			else 
+			{
+				if (p_uniforms.boneGlobalMatrices != null) 
+				{
+					gl.uniformMatrix4fv(p_uniforms.boneGlobalMatrices, false, object.boneMatrices);
+				}
+			}
+
+		}
+
+		loadUniformsMatrices(p_uniforms, object);
+
+		if (p_uniforms.modelMatrix != null) 
+		{
+			gl.uniformMatrix4fv(p_uniforms.modelMatrix, false, object.matrixWorld.elements);
+		}
+
+		return program;
+
 	}
 	
 	public function allocateBones(object:Dynamic):Int
@@ -1051,5 +1285,249 @@ class WebGLRenderer implements IRenderer
 		//}
 //
 	//}
+	
+	public function setTexture(texture:Texture, slot):Void
+	{
+		if (texture.needsUpdate) 
+		{
+			if (!texture.__webglInit) 
+			{
+				texture.__webglInit = true;
+				texture.__webglTexture = gl.createTexture();
 
+				this.info.memory.textures++;
+			}
+
+			gl.activeTexture(gl.TEXTURE0 + slot);
+			gl.bindTexture(gl.TEXTURE_2D, texture.__webglTexture);
+
+			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
+			gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
+
+			var image:Image = texture.image, 
+			isImagePowerOfTwo = MathUtil.isPowerOfTwo(image.width) && 
+								MathUtil.isPowerOfTwo(image.height), 
+			glFormat:GLenum = ThreeGlobal.paramThreeToGL(texture.format), 
+			glType:GLenum = ThreeGlobal.paramThreeToGL(texture.type);
+
+			setTextureParameters(gl.TEXTURE_2D, texture, isImagePowerOfTwo);
+
+			if ( Std.is(texture,DataTexture)) 
+			{
+				gl.texImage2D(gl.TEXTURE_2D, 0, glFormat, image.width, image.height, 0, glFormat, glType, image.data);
+			} 
+			else 
+			{
+				gl.texImage2D(gl.TEXTURE_2D, 0, glFormat, glFormat, glType, texture.image);
+			}
+
+			if (texture.generateMipmaps && isImagePowerOfTwo)
+				gl.generateMipmap(gl.TEXTURE_2D);
+
+			texture.needsUpdate = false;
+
+			if (texture.onUpdate)
+				texture.onUpdate();
+
+		} 
+		else 
+		{
+			gl.activeTexture(gl.TEXTURE0 + slot);
+			gl.bindTexture(gl.TEXTURE_2D, texture.__webglTexture);
+		}
+	}
+	
+	// Materials
+
+	public function initMaterial(material, lights, fog, object):Void
+	{
+
+		var u, a, identifiers, i, parameters, maxLightCount, maxBones, maxShadows, shaderID;
+
+		if ( Std.is(material, MeshDepthMaterial))
+		{
+
+			shaderID = 'depth';
+
+		} 
+		else if ( Std.is(material, MeshNormalMaterial))
+		{
+
+			shaderID = 'normal';
+
+		} 
+		else if ( Std.is(material, MeshBasicMaterial)) 
+		{
+
+			shaderID = 'basic';
+
+		} 
+		else if ( Std.is(material, MeshLambertMaterial)) 
+		{
+
+			shaderID = 'lambert';
+
+		} 
+		else if ( Std.is(material, MeshPhongMaterial)) 
+		{
+
+			shaderID = 'phong';
+
+		} 
+		else if ( Std.is(material, LineBasicMaterial)) 
+		{
+
+			shaderID = 'basic';
+
+		} 
+		else if ( Std.is(material, ParticleBasicMaterial)) 
+		{
+
+			shaderID = 'particle_basic';
+
+		}
+
+		if (shaderID) {
+
+			setMaterialShaders(material, THREE.ShaderLib[shaderID]);
+
+		}
+
+		// heuristics to create shader parameters according to lights in the scene
+		// (not to blow over maxLights budget)
+
+		maxLightCount = allocateLights(lights);
+
+		maxShadows = allocateShadows(lights);
+
+		maxBones = allocateBones(object);
+
+		parameters = {
+
+			map : !!material.map,
+			envMap : !!material.envMap,
+			lightMap : !!material.lightMap,
+			bumpMap : !!material.bumpMap,
+			specularMap : !!material.specularMap,
+
+			vertexColors : material.vertexColors,
+
+			fog : fog,
+			useFog : material.fog,
+
+			sizeAttenuation : material.sizeAttenuation,
+
+			skinning : material.skinning,
+			maxBones : maxBones,
+			useVertexTexture : _supportsBoneTextures && object && object.useVertexTexture,
+			boneTextureWidth : object && object.boneTextureWidth,
+			boneTextureHeight : object && object.boneTextureHeight,
+
+			morphTargets : material.morphTargets,
+			morphNormals : material.morphNormals,
+			maxMorphTargets : this.maxMorphTargets,
+			maxMorphNormals : this.maxMorphNormals,
+
+			maxDirLights : maxLightCount.directional,
+			maxPointLights : maxLightCount.point,
+			maxSpotLights : maxLightCount.spot,
+
+			maxShadows : maxShadows,
+			shadowMapEnabled : this.shadowMapEnabled && object.receiveShadow,
+			shadowMapSoft : this.shadowMapSoft,
+			shadowMapDebug : this.shadowMapDebug,
+			shadowMapCascade : this.shadowMapCascade,
+
+			alphaTest : material.alphaTest,
+			metal : material.metal,
+			perPixel : material.perPixel,
+			wrapAround : material.wrapAround,
+			doubleSided : material.side === THREE.DoubleSide
+
+		};
+
+		material.program = buildProgram(shaderID, material.fragmentShader, material.vertexShader, material.uniforms, material.attributes, parameters);
+
+		var attributes = material.program.attributes;
+
+		if (attributes.position >= 0)
+			_gl.enableVertexAttribArray(attributes.position);
+		if (attributes.color >= 0)
+			_gl.enableVertexAttribArray(attributes.color);
+		if (attributes.normal >= 0)
+			_gl.enableVertexAttribArray(attributes.normal);
+		if (attributes.tangent >= 0)
+			_gl.enableVertexAttribArray(attributes.tangent);
+
+		if (material.skinning && attributes.skinVertexA >= 0 && attributes.skinVertexB >= 0 && attributes.skinIndex >= 0 && attributes.skinWeight >= 0) {
+
+			_gl.enableVertexAttribArray(attributes.skinVertexA);
+			_gl.enableVertexAttribArray(attributes.skinVertexB);
+			_gl.enableVertexAttribArray(attributes.skinIndex);
+			_gl.enableVertexAttribArray(attributes.skinWeight);
+
+		}
+
+		if (material.attributes) {
+
+			for (a in material.attributes ) {
+
+				if (attributes[a] !== undefined && attributes[a] >= 0)
+					_gl.enableVertexAttribArray(attributes[a]);
+
+			}
+
+		}
+
+		if (material.morphTargets) {
+
+			material.numSupportedMorphTargets = 0;
+
+			var id, base = "morphTarget";
+
+			for ( i = 0; i < this.maxMorphTargets; i++) {
+
+				id = base + i;
+
+				if (attributes[id] >= 0) {
+
+					_gl.enableVertexAttribArray(attributes[id]);
+					material.numSupportedMorphTargets++;
+
+				}
+
+			}
+
+		}
+
+		if (material.morphNormals) {
+
+			material.numSupportedMorphNormals = 0;
+
+			var id, base = "morphNormal";
+
+			for ( i = 0; i < this.maxMorphNormals; i++) {
+
+				id = base + i;
+
+				if (attributes[id] >= 0) {
+
+					_gl.enableVertexAttribArray(attributes[id]);
+					material.numSupportedMorphNormals++;
+
+				}
+
+			}
+
+		}
+
+		material.uniformsList = [];
+
+		for (u in material.uniforms ) {
+
+			material.uniformsList.push([material.uniforms[u], u]);
+
+		}
+
+	}
 }

@@ -2,7 +2,7 @@ package three.cameras;
 import three.core.Object3D;
 import three.math.Matrix4;
 import three.math.Vector3;
-
+import UserAgentContext;
 /**
  * ...
  * @author andy
@@ -16,6 +16,11 @@ class Camera extends Object3D
 	
 	public var projectionMatrixInverse:Matrix4;
 
+	public var _projectionMatrixArray:Float32Array;
+	public var _viewMatrixArray:Float32Array;
+	
+	public var near:Float;
+	public var far:Float;
 	public function new() 
 	{
 		super();

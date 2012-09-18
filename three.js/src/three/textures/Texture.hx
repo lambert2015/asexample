@@ -3,6 +3,7 @@ import js.Dom;
 import three.materials.UVMapping;
 import three.math.Vector2;
 import three.ThreeGlobal;
+import UserAgentContext;
 /**
  * ...
  * @author 
@@ -36,7 +37,12 @@ class Texture
 	
 	public var needsUpdate:Bool;
 	public var onUpdate:Dynamic;
-
+	
+	public var __webglInit:Bool;
+	public var __webglTexture:WebGLTexture;
+	
+	public var __oldAnisotropy:Int;
+	
 	public function new(image:Image, mapping:UVMapping = null) 
 	{
 		this.id = TextureCount++;

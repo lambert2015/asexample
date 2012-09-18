@@ -48,6 +48,11 @@ class MathUtil
 		return Std.int(Math.pow(2, Math.round(l)));
 	}
 	
+	public static function isPowerOfTwo(value:Int):Bool 
+	{
+		return (value & (value - 1 ) ) == 0;
+	}
+	
 	public static inline function rgb2hex(rgb:Array<Float>):Float
 	{
 		return (Std.int(rgb[0] * 255) << 16 ) + (Std.int(rgb[1] * 255) << 8 ) + Std.int(rgb[2]) * 255;

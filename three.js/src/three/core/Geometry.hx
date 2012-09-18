@@ -32,6 +32,7 @@ class Geometry
 	public var __webglVertexBuffer:WebGLBuffer;
 	public var __webglColorBuffer:WebGLBuffer;
 	
+	public var geometryGroups:Array<Dynamic>;
 	public function new() 
 	{
 		
