@@ -37,38 +37,35 @@ class UniformsUtils
 		var uniforms_dst:Dynamic = { };
 		
 		//var u, p, parameter, parameter_src;
-//
-		//for ( u in uniforms_src ) {
-//
+		//for ( u in uniforms_src ) 
+		//{
 			//uniforms_dst[ u ] = {};
 //
-			//for ( p in uniforms_src[ u ] ) {
-//
+			//for ( p in uniforms_src[ u ] ) 
+			//{
 				//parameter_src = uniforms_src[ u ][ p ];
 //
-				//if ( parameter_src instanceof Color ||
-					 //parameter_src instanceof Vector2 ||
-					 //parameter_src instanceof Vector3 ||
-					 //parameter_src instanceof Vector4 ||
-					 //parameter_src instanceof Matrix4 ||
-					 //parameter_src instanceof Texture ) {
+				//if ( Std.is(parameter_src,Color) ||
+					 //Std.is(parameter_src,Vector2) ||
+					 //Std.is(parameter_src,Vector3) ||
+					 //Std.is(parameter_src,Vector4) ||
+					 //Std.is(parameter_src,Matrix4) ||
+					 //Std.is(parameter_src,Texture) ) 
+					 //{
 //
 					//uniforms_dst[ u ][ p ] = parameter_src.clone();
 //
-				//} else if ( parameter_src instanceof Array ) {
-//
+				//} 
+				//else if ( Std.is(parameter_src,Array) ) 
+				//{
 					//uniforms_dst[ u ][ p ] = parameter_src.slice();
-//
-				//} else {
-//
+				//} 
+				//else 
+				//{
 					//uniforms_dst[ u ][ p ] = parameter_src;
-//
 				//}
-//
 			//}
-//
 		//}
-
 		return uniforms_dst;
 	}
 	

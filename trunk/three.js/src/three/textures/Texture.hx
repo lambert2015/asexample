@@ -36,8 +36,7 @@ class Texture
 	public var flipY:Bool;
 	
 	public var needsUpdate:Bool;
-	public var onUpdate:Dynamic;
-	
+
 	public var __webglInit:Bool;
 	public var __webglTexture:WebGLTexture;
 	
@@ -70,7 +69,11 @@ class Texture
 		this.flipY = true;
 
 		this.needsUpdate = false;
-		this.onUpdate = null;
+	}
+	
+	public function onUpdate():Void
+	{
+		
 	}
 	
 	public function clone():Texture
