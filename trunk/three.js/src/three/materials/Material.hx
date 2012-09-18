@@ -3,6 +3,9 @@ import three.utils.Logger;
 import three.math.Color;
 import three.math.Vector3;
 import three.ThreeGlobal;
+import three.textures.Texture;
+import three.lights.Light;
+import UserAgentContext;
 /**
  * ...
  * @author andy
@@ -41,6 +44,22 @@ class Material
 	
 	public var needsUpdate:Bool;
 	
+	public var uniforms:Dynamic;
+	public var vertexShader:WebGLShader;
+	public var fragmentShader:WebGLShader;
+	public var program:WebGLProgram;
+	
+	public var uniformsList:Dynamic;
+	
+	public var skinning:Bool;
+	
+	public var morphTargets:Dynamic;
+	
+	public var envMap:Texture;
+	
+	public var lights:Array<Light>;
+	
+	public var _shadowPass:Bool;
 	public function new() 
 	{
 		this.id = MaterialCount++;

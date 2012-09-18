@@ -9,8 +9,6 @@ class PerspectiveCamera extends Camera
 {
 	public var fov:Float;
 	public var aspect:Float;
-	public var near:Float;
-	public var far:Float;
 
 	public function new(fov:Float = 50, aspect:Float = 1, near:Float = 0.1, far:Float = 2000 )
 	{

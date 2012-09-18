@@ -14,8 +14,7 @@ class MeshBasicMaterial extends Material
 	public var map:Texture;
 	public var lightMap:Texture;
 	public var specularMap:Texture;
-	public var envMap:Texture;
-	
+
 	public var combine:Int;
 	
 	public var reflectivity:Float;
@@ -31,8 +30,6 @@ class MeshBasicMaterial extends Material
 	public var wireframeLinejoin:String;
 	
 	public var vertexColors:Array<Float>;
-	public var skinning:Bool;
-	public var morphTargets:Dynamic;
 
 	public function new(parameters:Dynamic = null)
 	{

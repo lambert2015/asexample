@@ -7,7 +7,7 @@ import three.scenes.Scene;
  * @author 
  */
 
-interface IPreRenderPlugin 
+interface IPreRenderPlugin implements IPlugin
 {
 	function init(renderer:IRenderer):Void;
 	
