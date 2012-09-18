@@ -17,4 +17,9 @@ class Logger
 	{
 		
 	}
+	
+	public static function error(value:Dynamic):Void
+	{
+		
+	}
 }

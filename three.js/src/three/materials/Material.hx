@@ -45,8 +45,8 @@ class Material
 	public var needsUpdate:Bool;
 	
 	public var uniforms:Dynamic;
-	public var vertexShader:WebGLShader;
-	public var fragmentShader:WebGLShader;
+	public var vertexShader:String;
+	public var fragmentShader:String;
 	public var program:WebGLProgram;
 	
 	public var uniformsList:Dynamic;
@@ -54,10 +54,23 @@ class Material
 	public var skinning:Bool;
 	
 	public var morphTargets:Dynamic;
+	public var morphNormals:Dynamic;
 	
 	public var envMap:Texture;
+	public var map:Texture;
+	public var lightMap:Texture;
+	public var bumpMap:Texture;
+	public var specularMap:Texture;
+	
+	public var fog:Bool;
+	
+	public var sizeAttenuation:Float;
+	
+	public var vertexColors:Array<Float>;
 	
 	public var lights:Array<Light>;
+	
+	
 	
 	public var _shadowPass:Bool;
 	public function new() 

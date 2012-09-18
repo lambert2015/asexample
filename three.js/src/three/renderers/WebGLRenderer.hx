@@ -24,6 +24,7 @@ import three.renderers.plugins.LensFlarePlugin;
 import three.renderers.plugins.ShadowMapPlugin;
 import three.renderers.plugins.SpritePlugin;
 import three.scenes.Fog;
+import three.scenes.FogExp2;
 import three.scenes.Scene;
 import three.objects.SkinnedMesh;
 import three.cameras.Camera;
@@ -39,6 +40,7 @@ import three.textures.DataTexture;
 import three.textures.Texture;
 import three.ThreeGlobal;
 import three.utils.Logger;
+import three.utils.BoolUtil;
 import UserAgentContext;
 /**
  * ...
@@ -330,7 +332,7 @@ class WebGLRenderer implements IRenderer
 		
 	}
 	
-	public function setMaterialShaders(material:Material, shaders:Dynamic):Void
+	public function setMaterialShaders(material:Material, shaders:ShaderDef):Void
 	{
 		material.uniforms = UniformsUtils.clone(shaders.uniforms);
 		material.vertexShader = shaders.vertexShader;
@@ -929,7 +931,7 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 	
-	public function setTextureParameters(textureType:GLenum, texture:WebGLRenderTarget, isImagePowerOfTwo:Bool):Void 
+	public function setTextureParameters(textureType:GLenum, texture:Texture, isImagePowerOfTwo:Bool):Void 
 	{
 		if (isImagePowerOfTwo) 
 		{
@@ -1220,73 +1222,61 @@ class WebGLRenderer implements IRenderer
 //
 	//};
 //
-	//public function deallocateMaterial(material):Void 
-	//{
-//
-		//var program = material.program;
-//
-		//if (!program)
-			//return;
-//
-		//material.program = undefined;
-//
-		// only deallocate GL program if this was the last use of shared program
-		// assumed there is only single copy of any program in the _programs list
-		// (that's how it's constructed)
-//
-		//var i, il, programInfo;
-		//var deleteProgram = false;
-//
-		//for ( i = 0, il = _programs.length; i < il; i++) {
-//
-			//programInfo = _programs[i];
-//
-			//if (programInfo.program === program) {
-//
-				//programInfo.usedTimes--;
-//
-				//if (programInfo.usedTimes === 0) {
-//
-					//deleteProgram = true;
-//
-				//}
-//
-				//break;
-//
-			//}
-//
-		//}
-//
-		//if (deleteProgram) {
-//
-			// avoid using array.splice, this is costlier than creating new array from
-			// scratch
-//
-			//var newPrograms = [];
-//
-			//for ( i = 0, il = _programs.length; i < il; i++) {
-//
-				//programInfo = _programs[i];
-//
-				//if (programInfo.program !== program) {
-//
-					//newPrograms.push(programInfo);
-//
-				//}
-//
-			//}
-//
-			//_programs = newPrograms;
-//
-			//_gl.deleteProgram(program);
-//
-			//_this.info.memory.programs--;
-//
-		//}
-//
-	//}
+	private var _programs:Array<ProgramInfo>;
+	public function deallocateMaterial(material:Material):Void 
+	{
+		var program:WebGLProgram = material.program;
+
+		if (program == null)
+			return;
+
+		material.program = null;
+
+		 //only deallocate GL program if this was the last use of shared program
+		 //assumed there is only single copy of any program in the _programs list
+		 //(that's how it's constructed)
+
+		var programInfo:ProgramInfo;
+		var deleteProgram:Bool = false;
+		for ( i in 0..._programs.length) 
+		{
+			programInfo = _programs[i];
+
+			if (programInfo.program == program) 
+			{
+				programInfo.usedTimes--;
+				if (programInfo.usedTimes == 0) 
+				{
+					deleteProgram = true;
+				}
+				break;
+			}
+		}
+
+		if (deleteProgram) 
+		{
+			 //avoid using array.splice, this is costlier than creating new array from
+			 //scratch
+
+			var newPrograms:Array<ProgramInfo> = [];
+			for ( i in 0..._programs.length) 
+			{
+				programInfo = _programs[i];
+				if (programInfo.program != program) 
+				{
+					newPrograms.push(programInfo);
+				}
+			}
+
+			_programs = newPrograms;
+
+			gl.deleteProgram(program);
+
+			this.info.memory.programs--;
+		}
+	}
 	
-	public function setTexture(texture:Texture, slot):Void
+	public function setTexture(texture:Texture, slot:Int):Void
 	{
 		if (texture.needsUpdate) 
 		{
@@ -1301,8 +1291,8 @@ class WebGLRenderer implements IRenderer
 			gl.activeTexture(gl.TEXTURE0 + slot);
 			gl.bindTexture(gl.TEXTURE_2D, texture.__webglTexture);
 
-			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
-			gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
+			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, BoolUtil.toInt(texture.flipY));
+			gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, BoolUtil.toInt(texture.premultiplyAlpha));
 
 			var image:Image = texture.image, 
 			isImagePowerOfTwo = MathUtil.isPowerOfTwo(image.width) && 
@@ -1326,7 +1316,7 @@ class WebGLRenderer implements IRenderer
 
 			texture.needsUpdate = false;
 
-			if (texture.onUpdate)
+			if (texture.onUpdate != null)
 				texture.onUpdate();
 
 		} 
@@ -1339,58 +1329,43 @@ class WebGLRenderer implements IRenderer
 	
 	// Materials
 
-	public function initMaterial(material, lights, fog, object):Void
+	public function initMaterial(material:Material, lights:Array<Light>, 
+								fog:Dynamic, object:Dynamic):Void
 	{
-
 		var u, a, identifiers, i, parameters, maxLightCount, maxBones, maxShadows, shaderID;
 
 		if ( Std.is(material, MeshDepthMaterial))
 		{
-
 			shaderID = 'depth';
-
 		} 
 		else if ( Std.is(material, MeshNormalMaterial))
 		{
-
 			shaderID = 'normal';
-
 		} 
 		else if ( Std.is(material, MeshBasicMaterial)) 
 		{
-
 			shaderID = 'basic';
-
 		} 
 		else if ( Std.is(material, MeshLambertMaterial)) 
 		{
-
 			shaderID = 'lambert';
-
 		} 
 		else if ( Std.is(material, MeshPhongMaterial)) 
 		{
-
 			shaderID = 'phong';
-
 		} 
 		else if ( Std.is(material, LineBasicMaterial)) 
 		{
-
 			shaderID = 'basic';
-
 		} 
 		else if ( Std.is(material, ParticleBasicMaterial)) 
 		{
-
 			shaderID = 'particle_basic';
-
 		}
 
-		if (shaderID) {
-
-			setMaterialShaders(material, THREE.ShaderLib[shaderID]);
-
+		if (shaderID) 
+		{
+			setMaterialShaders(material, ShaderLib.getShaderDef(shaderID));
 		}
 
 		// heuristics to create shader parameters according to lights in the scene
@@ -1404,11 +1379,11 @@ class WebGLRenderer implements IRenderer
 
 		parameters = {
 
-			map : !!material.map,
-			envMap : !!material.envMap,
-			lightMap : !!material.lightMap,
-			bumpMap : !!material.bumpMap,
-			specularMap : !!material.specularMap,
+			map : material.map,
+			envMap : material.envMap,
+			lightMap : material.lightMap,
+			bumpMap : material.bumpMap,
+			specularMap : material.specularMap,
 
 			vertexColors : material.vertexColors,
 
@@ -1442,8 +1417,7 @@ class WebGLRenderer implements IRenderer
 			metal : material.metal,
 			perPixel : material.perPixel,
 			wrapAround : material.wrapAround,
-			doubleSided : material.side === THREE.DoubleSide
-
+			doubleSided : material.side == ThreeGlobal.DoubleSide
 		};
 
 		material.program = buildProgram(shaderID, material.fragmentShader, material.vertexShader, material.uniforms, material.attributes, parameters);
@@ -1451,83 +1425,555 @@ class WebGLRenderer implements IRenderer
 		var attributes = material.program.attributes;
 
 		if (attributes.position >= 0)
-			_gl.enableVertexAttribArray(attributes.position);
+			gl.enableVertexAttribArray(attributes.position);
 		if (attributes.color >= 0)
-			_gl.enableVertexAttribArray(attributes.color);
+			gl.enableVertexAttribArray(attributes.color);
 		if (attributes.normal >= 0)
-			_gl.enableVertexAttribArray(attributes.normal);
+			gl.enableVertexAttribArray(attributes.normal);
 		if (attributes.tangent >= 0)
-			_gl.enableVertexAttribArray(attributes.tangent);
+			gl.enableVertexAttribArray(attributes.tangent);
 
-		if (material.skinning && attributes.skinVertexA >= 0 && attributes.skinVertexB >= 0 && attributes.skinIndex >= 0 && attributes.skinWeight >= 0) {
-
-			_gl.enableVertexAttribArray(attributes.skinVertexA);
-			_gl.enableVertexAttribArray(attributes.skinVertexB);
-			_gl.enableVertexAttribArray(attributes.skinIndex);
-			_gl.enableVertexAttribArray(attributes.skinWeight);
-
+		if (material.skinning && 
+			attributes.skinVertexA >= 0 && 
+			attributes.skinVertexB >= 0 && 
+			attributes.skinIndex >= 0 && 
+			attributes.skinWeight >= 0) 
+		{
+			gl.enableVertexAttribArray(attributes.skinVertexA);
+			gl.enableVertexAttribArray(attributes.skinVertexB);
+			gl.enableVertexAttribArray(attributes.skinIndex);
+			gl.enableVertexAttribArray(attributes.skinWeight);
 		}
 
-		if (material.attributes) {
-
-			for (a in material.attributes ) {
-
-				if (attributes[a] !== undefined && attributes[a] >= 0)
-					_gl.enableVertexAttribArray(attributes[a]);
-
+		if (material.attributes) 
+		{
+			for (a in material.attributes ) 
+			{
+				if (attributes[a] != null && attributes[a] >= 0)
+					gl.enableVertexAttribArray(attributes[a]);
 			}
-
 		}
 
-		if (material.morphTargets) {
-
+		if (material.morphTargets) 
+		{
 			material.numSupportedMorphTargets = 0;
 
 			var id, base = "morphTarget";
 
-			for ( i = 0; i < this.maxMorphTargets; i++) {
+			for ( i in 0...this.maxMorphTargets) 
+			{
 
 				id = base + i;
 
-				if (attributes[id] >= 0) {
-
-					_gl.enableVertexAttribArray(attributes[id]);
+				if (attributes[id] >= 0) 
+				{
+					gl.enableVertexAttribArray(attributes[id]);
 					material.numSupportedMorphTargets++;
-
 				}
-
 			}
-
 		}
 
-		if (material.morphNormals) {
-
+		if (material.morphNormals) 
+		{
 			material.numSupportedMorphNormals = 0;
 
 			var id, base = "morphNormal";
 
-			for ( i = 0; i < this.maxMorphNormals; i++) {
-
+			for ( i in 0...this.maxMorphNormals) 
+			{
 				id = base + i;
-
-				if (attributes[id] >= 0) {
-
-					_gl.enableVertexAttribArray(attributes[id]);
+				if (attributes[id] >= 0) 
+				{
+					gl.enableVertexAttribArray(attributes[id]);
 					material.numSupportedMorphNormals++;
-
 				}
-
 			}
-
 		}
 
 		material.uniformsList = [];
 
-		for (u in material.uniforms ) {
-
+		for (u in material.uniforms ) 
+		{
 			material.uniformsList.push([material.uniforms[u], u]);
-
 		}
 
+	}
+	
+	// GL state setting
+
+	public function setFaceCulling(cullFace:String, frontFace:String):Void 
+	{
+		if (cullFace != "") 
+		{
+			if (frontFace == "ccw") 
+			{
+				gl.frontFace(gl.CCW);
+			}
+			else 
+			{
+				gl.frontFace(gl.CW);
+			}
+
+			if (cullFace == "back") 
+			{
+				gl.cullFace(gl.BACK);
+			} 
+			else if (cullFace == "front") 
+			{
+				gl.cullFace(gl.FRONT);
+			} 
+			else 
+			{
+				gl.cullFace(gl.FRONT_AND_BACK);
+			}
+
+			gl.enable(gl.CULL_FACE);
+
+		} 
+		else 
+		{
+			gl.disable(gl.CULL_FACE);
+		}
+	}
+
+	public function setMaterialFaces(material:Material):Void 
+	{
+
+		var doubleSided:Bool = material.side == ThreeGlobal.DoubleSide;
+		var flipSided:Bool = material.side == ThreeGlobal.BackSide;
+
+		if (_oldDoubleSided != doubleSided) 
+		{
+			if (doubleSided) 
+			{
+				gl.disable(gl.CULL_FACE);
+			} 
+			else 
+			{
+				gl.enable(gl.CULL_FACE);
+			}
+
+			_oldDoubleSided = doubleSided;
+		}
+
+		if (_oldFlipSided != flipSided) 
+		{
+			if (flipSided) 
+			{
+				gl.frontFace(gl.CW);
+			} 
+			else 
+			{
+				gl.frontFace(gl.CCW);
+			}
+			_oldFlipSided = flipSided;
+		}
+	}
+
+	public function setDepthTest(depthTest:Bool):Void
+	{
+		if (_oldDepthTest != depthTest) 
+		{
+			if (depthTest) 
+			{
+				gl.enable(gl.DEPTH_TEST);
+			} 
+			else 
+			{
+				gl.disable(gl.DEPTH_TEST);
+			}
+			_oldDepthTest = depthTest;
+		}
+	}
+
+	public function setDepthWrite(depthWrite:Bool):Void
+	{
+		if (_oldDepthWrite != depthWrite)
+		{
+			gl.depthMask(depthWrite);
+			_oldDepthWrite = depthWrite;
+		}
+	}
+
+	public function setLineWidth(width:Float):Void
+	{
+		if (width != _oldLineWidth) 
+		{
+			gl.lineWidth(width);
+
+			_oldLineWidth = width;
+		}
+	}
+
+	public function setPolygonOffset(polygonoffset:Float, factor:Float, units:Int):Void
+	{
+		if (_oldPolygonOffset != polygonoffset) 
+		{
+			if (polygonoffset > 0) 
+			{
+				gl.enable(_gl.POLYGON_OFFSET_FILL);
+			} 
+			else 
+			{
+				gl.disable(_gl.POLYGON_OFFSET_FILL);
+			}
+
+			_oldPolygonOffset = polygonoffset;
+		}
+
+		if (polygonoffset > 0 && (_oldPolygonOffsetFactor != factor || _oldPolygonOffsetUnits != units )) 
+		{
+			gl.polygonOffset(factor, units);
+
+			_oldPolygonOffsetFactor = factor;
+			_oldPolygonOffsetUnits = units;
+		}
+	}
+
+	public function setBlending(blending:Int, blendEquation:Int, blendSrc:Int, blendDst:Int):Void
+	{
+		if (blending != _oldBlending)
+		{
+			if (blending == ThreeGlobal.NoBlending) 
+			{
+				gl.disable(gl.BLEND);
+			} 
+			else if (blending == ThreeGlobal.AdditiveBlending) 
+			{
+				gl.enable(gl.BLEND);
+				gl.blendEquation(gl.FUNC_ADD);
+				gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+			} 
+			else if (blending == ThreeGlobal.SubtractiveBlending) 
+			{
+				// TODO: Find blendFuncSeparate() combination
+				gl.enable(gl.BLEND);
+				gl.blendEquation(gl.FUNC_ADD);
+				gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
+			} 
+			else if (blending == ThreeGlobal.MultiplyBlending) 
+			{
+				// TODO: Find blendFuncSeparate() combination
+				gl.enable(gl.BLEND);
+				gl.blendEquation(gl.FUNC_ADD);
+				gl.blendFunc(gl.ZERO, gl.SRC_COLOR);
+			}
+			else if (blending == ThreeGlobal.CustomBlending) 
+			{
+				gl.enable(gl.BLEND);
+			}
+			else 
+			{
+				gl.enable(gl.BLEND);
+				gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
+				gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+			}
+
+			_oldBlending = blending;
+		}
+
+		if (blending == ThreeGlobal.CustomBlending) 
+		{
+			if (blendEquation != _oldBlendEquation) 
+			{
+				gl.blendEquation(ThreeGlobal.paramThreeToGL(blendEquation));
+
+				_oldBlendEquation = blendEquation;
+			}
+
+			if (blendSrc != _oldBlendSrc || blendDst != _oldBlendDst) 
+			{
+				gl.blendFunc(ThreeGlobal.paramThreeToGL(blendSrc), ThreeGlobal.paramThreeToGL(blendDst));
+
+				_oldBlendSrc = blendSrc;
+				_oldBlendDst = blendDst;
+			}
+		}
+		else 
+		{
+			_oldBlendEquation = null;
+			_oldBlendSrc = null;
+			_oldBlendDst = null;
+		}
+	}
+
+	// Shaders
+
+	public function buildProgram(shaderID:String, fragmentShader:String, vertexShader:String, 
+								uniforms:Dynamic, attributes:Dynamic, parameters:Dynamic):Void
+	{
+
+		var p, pl, program, code;
+		var chunks = [];
+
+		// Generate code
+		if (shaderID) 
+		{
+			chunks.push(shaderID);
+		} 
+		else 
+		{
+			chunks.push(fragmentShader);
+			chunks.push(vertexShader);
+		}
+
+		for (p in parameters ) 
+		{
+			chunks.push(p);
+			chunks.push(parameters[p]);
+		}
+
+		code = chunks.join();
+
+		// Check if code has been already compiled
+
+		for ( p in 0..._programs.length) 
+		{
+			var programInfo:ProgramInfo = _programs[p];
+
+			if (programInfo.code == code) 
+			{
+				//Logger.log( "Code already compiled." /*: \n\n" + code*/ );
+				programInfo.usedTimes++;
+				return programInfo.program;
+			}
+		}
+
+		//Logger.log( "building new program " );
+
+		//
+
+		program = gl.createProgram();
+
+		var prefix_vertex = ["precision " + _precision + " float;", 
+		_supportsVertexTextures ? "#define VERTEX_TEXTURES" : "", 
+		this.gammaInput ? "#define GAMMA_INPUT" : "", 
+		this.gammaOutput ? "#define GAMMA_OUTPUT" : "", 
+		this.physicallyBasedShading ? "#define PHYSICALLY_BASED_SHADING" : "",
+		"#define MAX_DIR_LIGHTS " + parameters.maxDirLights,
+		"#define MAX_POINT_LIGHTS " + parameters.maxPointLights,
+		"#define MAX_SPOT_LIGHTS " + parameters.maxSpotLights,
+		"#define MAX_SHADOWS " + parameters.maxShadows,
+		"#define MAX_BONES " + parameters.maxBones,
+		parameters.map ? "#define USE_MAP" : "",
+		parameters.envMap ? "#define USE_ENVMAP" : "",
+		parameters.lightMap ? "#define USE_LIGHTMAP" : "",
+		parameters.bumpMap ? "#define USE_BUMPMAP" : "",
+		parameters.specularMap ? "#define USE_SPECULARMAP" : "", parameters.vertexColors ? "#define USE_COLOR" : "", parameters.skinning ? "#define USE_SKINNING" : "",
+		parameters.useVertexTexture ? "#define BONE_TEXTURE" : "",
+		parameters.boneTextureWidth ? "#define N_BONE_PIXEL_X " + parameters.boneTextureWidth.toFixed(1) : "",
+		parameters.boneTextureHeight ? "#define N_BONE_PIXEL_Y " + parameters.boneTextureHeight.toFixed(1) : "",
+		parameters.morphTargets ? "#define USE_MORPHTARGETS" : "",
+		parameters.morphNormals ? "#define USE_MORPHNORMALS" : "",
+		parameters.perPixel ? "#define PHONG_PER_PIXEL" : "",
+		parameters.wrapAround ? "#define WRAP_AROUND" : "",
+		parameters.doubleSided ? "#define DOUBLE_SIDED" : "",
+		parameters.shadowMapEnabled ? "#define USE_SHADOWMAP" : "",
+		parameters.shadowMapSoft ? "#define SHADOWMAP_SOFT" : "",
+		parameters.shadowMapDebug ? "#define SHADOWMAP_DEBUG" : "",
+		parameters.shadowMapCascade ? "#define SHADOWMAP_CASCADE" : "",
+		parameters.sizeAttenuation ? "#define USE_SIZEATTENUATION" : "",
+		"uniform mat4 modelMatrix;", "uniform mat4 modelViewMatrix;",
+		"uniform mat4 projectionMatrix;", "uniform mat4 viewMatrix;",
+		"uniform mat3 normalMatrix;", "uniform vec3 cameraPosition;",
+		"attribute vec3 position;", "attribute vec3 normal;",
+		"attribute vec2 uv;", "attribute vec2 uv2;", "#ifdef USE_COLOR",
+		"attribute vec3 color;", "#endif", "#ifdef USE_MORPHTARGETS",
+		"attribute vec3 morphTarget0;", "attribute vec3 morphTarget1;",
+		"attribute vec3 morphTarget2;", "attribute vec3 morphTarget3;",
+		"#ifdef USE_MORPHNORMALS", "attribute vec3 morphNormal0;",
+		"attribute vec3 morphNormal1;", 
+		"attribute vec3 morphNormal2;",
+		"attribute vec3 morphNormal3;", 
+		"#else", "attribute vec3 morphTarget4;",
+		"attribute vec3 morphTarget5;", 
+		"attribute vec3 morphTarget6;", 
+		"attribute vec3 morphTarget7;", 
+		"#endif", "#endif", 
+		"#ifdef USE_SKINNING", 
+		"attribute vec4 skinVertexA;", 
+		"attribute vec4 skinVertexB;", 
+		"attribute vec4 skinIndex;", 
+		"attribute vec4 skinWeight;", 
+		"#endif", ""].join("\n");
+
+		var prefix_fragment = ["precision " + _precision + " float;", 
+		parameters.bumpMap ? "#extension GL_OES_standard_derivatives : enable" : "",
+		"#define MAX_DIR_LIGHTS " + parameters.maxDirLights,
+		"#define MAX_POINT_LIGHTS " + parameters.maxPointLights,
+		"#define MAX_SPOT_LIGHTS " + parameters.maxSpotLights,
+		"#define MAX_SHADOWS " + parameters.maxShadows,
+		parameters.alphaTest ? "#define ALPHATEST " + parameters.alphaTest : "",
+		this.gammaInput ? "#define GAMMA_INPUT" : "",
+		this.gammaOutput ? "#define GAMMA_OUTPUT" : "",
+		this.physicallyBasedShading ? "#define PHYSICALLY_BASED_SHADING" : "",
+		(parameters.useFog && parameters.fog ) ? "#define USE_FOG" : "",
+		(parameters.useFog && Std.is(parameters.fog,FogExp2) ) ? "#define FOG_EXP2" : "",
+		parameters.map ? "#define USE_MAP" : "", parameters.envMap ? "#define USE_ENVMAP" : "",
+		parameters.lightMap ? "#define USE_LIGHTMAP" : "", parameters.bumpMap ? "#define USE_BUMPMAP" : "",
+		parameters.specularMap ? "#define USE_SPECULARMAP" : "", parameters.vertexColors ? "#define USE_COLOR" : "",
+		parameters.metal ? "#define METAL" : "", parameters.perPixel ? "#define PHONG_PER_PIXEL" : "",
+		parameters.wrapAround ? "#define WRAP_AROUND" : "",
+		parameters.doubleSided ? "#define DOUBLE_SIDED" : "",
+		parameters.shadowMapEnabled ? "#define USE_SHADOWMAP" : "",
+		parameters.shadowMapSoft ? "#define SHADOWMAP_SOFT" : "",
+		parameters.shadowMapDebug ? "#define SHADOWMAP_DEBUG" : "", 
+		parameters.shadowMapCascade ? "#define SHADOWMAP_CASCADE" : "",
+		"uniform mat4 viewMatrix;", "uniform vec3 cameraPosition;",
+		""].join("\n");
+
+		var glFragmentShader:WebGLShader = getShader("fragment", prefix_fragment + fragmentShader);
+		var glVertexShader:WebGLShader = getShader("vertex", prefix_vertex + vertexShader);
+
+		gl.attachShader(program, glVertexShader);
+		gl.attachShader(program, glFragmentShader);
+
+		gl.linkProgram(program);
+
+		if (!gl.getProgramParameter(program, gl.LINK_STATUS)) 
+		{
+			Logger.error("Could not initialise shader\n" + "VALIDATE_STATUS: " + 
+							gl.getProgramParameter(program, gl.VALIDATE_STATUS) + 
+							", gl error [" + gl.getError() + "]");
+		}
+
+		// clean up
+		gl.deleteShader(glFragmentShader);
+		gl.deleteShader(glVertexShader);
+
+		//console.log( prefix_fragment + fragmentShader );
+		//console.log( prefix_vertex + vertexShader );
+
+		program.uniforms = {};
+		program.attributes = {};
+
+		var identifiers, u, a, i;
+
+		// cache uniform locations
+
+		identifiers = ['viewMatrix', 
+						'modelViewMatrix', 
+						'projectionMatrix', 
+						'normalMatrix', 
+						'modelMatrix', 
+						'cameraPosition', 
+						'morphTargetInfluences'];
+
+		if (parameters.useVertexTexture) 
+		{
+			identifiers.push('boneTexture');
+		} 
+		else 
+		{
+			identifiers.push('boneGlobalMatrices');
+		}
+
+		for (u in uniforms ) 
+		{
+			identifiers.push(u);
+		}
+
+		cacheUniformLocations(program, identifiers);
+
+		// cache attributes locations
+
+		identifiers = ["position", 
+						"normal", 
+						"uv", 
+						"uv2", 
+						"tangent", 
+						"color", 
+						"skinVertexA", 
+						"skinVertexB", 
+						"skinIndex", 
+						"skinWeight"];
+
+		for ( i in 0...parameters.maxMorphTargets) 
+		{
+			identifiers.push("morphTarget" + i);
+		}
+
+		for ( i in 0...parameters.maxMorphNormals) 
+		{
+			identifiers.push("morphNormal" + i);
+		}
+
+		for (a in attributes ) 
+		{
+			identifiers.push(a);
+		}
+
+		cacheAttributeLocations(program, identifiers);
+
+		program.id = _programs_counter++;
+		
+		var pInfo:ProgramInfo = {
+			program : program,
+			code : code,
+			usedTimes : 1
+		};
+
+		_programs.push(pInfo);
+
+		this.info.memory.programs = _programs.length;
+
+		return program;
+	}
+// Shader parameters cache
+
+	public function cacheUniformLocations(program:WebGLProgram, identifiers:Array<String>):Void
+	{
+		var id:String;
+		for ( i in 0...identifiers.length) 
+		{
+			id = identifiers[i];
+			program.uniforms[id] = gl.getUniformLocation(program, id);
+		}
+	}
+
+	public function cacheAttributeLocations(program:WebGLProgram, identifiers:Array<String>):Void
+	{
+		var id:String;
+		for ( i in 0...identifiers.length) 
+		{
+			id = identifiers[i];
+			program.attributes[id] = gl.getAttribLocation(program, id);
+		}
+	}
+
+	public function addLineNumbers(source:String):String
+	{
+		var chunks:Array<String> = source.split("\n");
+		for (i in 0...chunks.length) 
+		{
+			// Chrome reports shader errors on lines
+			// starting counting from 1
+			chunks[i] = (i + 1 ) + ": " + chunks[i];
+		}
+		return chunks.join("\n");
+	}
+
+	public function getShader(type:String, source:String):WebGLShader
+	{
+		var shader:WebGLShader;
+		if (type == "fragment") 
+		{
+			shader = gl.createShader(gl.FRAGMENT_SHADER);
+		} 
+		else if (type == "vertex") 
+		{
+			shader = gl.createShader(gl.VERTEX_SHADER);
+		}
+
+		gl.shaderSource(shader, source);
+		gl.compileShader(shader);
+
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) 
+		{
+			Logger.error(gl.getShaderInfoLog(shader));
+			Logger.error(addLineNumbers(source));
+			return null;
+		}
+		return shader;
 	}
 }

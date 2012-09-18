@@ -33,6 +33,8 @@ class WebGLRenderTarget
 	
 	public var generateMipmaps:Bool;
 	
+	public var needsUpdate:Bool;
+	
 	public var __webglFramebuffer:Array<WebGLFramebuffer>;
 	public var __webglRenderbuffer:Array<WebGLRenderbuffer> ;
 	public var __webglTexture:WebGLTexture;
@@ -94,5 +96,4 @@ class WebGLRenderTarget
 
 		return result;
 	}
-
 }
