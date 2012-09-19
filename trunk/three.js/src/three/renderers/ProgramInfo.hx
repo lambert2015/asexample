@@ -8,5 +8,5 @@ import UserAgentContext;
 typedef ProgramInfo = {
 	var program:WebGLProgram;
 	var usedTimes:Int;
-	var code:Int;
+	var code:String;
 }
