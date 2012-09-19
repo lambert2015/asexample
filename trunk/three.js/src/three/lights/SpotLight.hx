@@ -10,10 +10,6 @@ import three.cameras.Camera;
 
 class SpotLight extends Light
 {
-	public var intensity:Float;
-	
-	public var distance:Float;
-	
 	public var angle:Float;
 	
 	public var exponent:Float;

@@ -25,6 +25,11 @@ class Material
 	
 	public var blending:Int;
 	
+	public var ambient:Color;
+	public var emissive:Color;
+	public var specular:Color;
+	public var wrapRGB:Bool;
+	
 	public var blendSrc:Int;
 	public var blendDst:Int;
 	public var blendEquation:Int;
@@ -73,6 +78,8 @@ class Material
 	public var metal:Dynamic;
 	public var perPixel:Dynamic;
 	public var wrapAround:Dynamic;
+	
+	public var attributes:Dynamic;
 	
 	public var _shadowPass:Bool;
 	public function new() 
