@@ -7,6 +7,7 @@ import three.lights.Light;
 import three.lights.DirectionalLight;
 import three.lights.SpotLight;
 import three.lights.PointLight;
+import three.lights.AmbientLight;
 import three.materials.Material;
 import three.math.Color;
 import three.math.Vector2;
@@ -35,6 +36,7 @@ import three.materials.MeshLambertMaterial;
 import three.materials.MeshNormalMaterial;
 import three.materials.MeshPhongMaterial;
 import three.materials.ShaderMaterial;
+import three.materials.LineBasicMaterial;
 import three.materials.*;
 import three.textures.DataTexture;
 import three.textures.Texture;
@@ -126,7 +128,7 @@ class WebGLRenderer implements IRenderer
 	private var _direction:Vector3;
 	
 	private var _lightsNeedUpdate:Bool;
-	private var _lights:Dynamic;
+	private var _lights:LightsDef;
 	
 	private var shadowMapPlugin:ShadowMapPlugin;
 	
@@ -298,10 +300,10 @@ class WebGLRenderer implements IRenderer
 			_currentCamera = null;
 
 			_oldBlending = -1;
-			_oldDepthTest = -1;
-			_oldDepthWrite = -1;
-			_oldDoubleSided = -1;
-			_oldFlipSided = -1;
+			_oldDepthTest = false;
+			_oldDepthWrite = false;
+			_oldDoubleSided = false;
+			_oldFlipSided = false;
 			_currentGeometryGroupHash = -1;
 			_currentMaterialId = -1;
 
@@ -315,10 +317,10 @@ class WebGLRenderer implements IRenderer
 			_currentCamera = null;
 
 			_oldBlending = -1;
-			_oldDepthTest = -1;
-			_oldDepthWrite = -1;
-			_oldDoubleSided = -1;
-			_oldFlipSided = -1;
+			_oldDepthTest = false;
+			_oldDepthWrite = false;
+			_oldDoubleSided = false;
+			_oldFlipSided = false;
 			_currentGeometryGroupHash = -1;
 			_currentMaterialId = -1;
 
@@ -991,12 +993,12 @@ class WebGLRenderer implements IRenderer
 	
 	private var _currentProgram:WebGLProgram;
 	private var _oldBlending:Int;
-	private var _oldDepthTest:Int;
-	private var _oldDepthWrite:Int;
+	private var _oldDepthTest:Bool;
+	private var _oldDepthWrite:Bool;
 	private var _currentGeometryGroupHash:Int;
 	private var _currentMaterialId:Int;
-	private var _oldDoubleSided:Int;
-	private var _oldFlipSided:Int;
+	private var _oldDoubleSided:Bool;
+	private var _oldFlipSided:Bool;
 	public function updateShadowMap(scene:Scene, camera:Camera):Void
 	{
 		_currentProgram = null;
@@ -1332,8 +1334,9 @@ class WebGLRenderer implements IRenderer
 	public function initMaterial(material:Material, lights:Array<Light>, 
 								fog:Dynamic, object:Dynamic):Void
 	{
-		var u, a, identifiers, i, parameters, maxLightCount, maxBones, maxShadows, shaderID;
+		var u, a, identifiers, i, parameters, maxLightCount, maxBones, maxShadows;
 
+		var shaderID:String = "";
 		if ( Std.is(material, MeshDepthMaterial))
 		{
 			shaderID = 'depth';
@@ -1363,7 +1366,7 @@ class WebGLRenderer implements IRenderer
 			shaderID = 'particle_basic';
 		}
 
-		if (shaderID) 
+		if (shaderID != "") 
 		{
 			setMaterialShaders(material, ShaderLib.getShaderDef(shaderID));
 		}
@@ -1422,7 +1425,7 @@ class WebGLRenderer implements IRenderer
 
 		material.program = buildProgram(shaderID, material.fragmentShader, material.vertexShader, material.uniforms, material.attributes, parameters);
 
-		var attributes = material.program.attributes;
+		var attributes:Dynamic = material.program.attributes;
 
 		if (attributes.position >= 0)
 			gl.enableVertexAttribArray(attributes.position);
@@ -1458,13 +1461,11 @@ class WebGLRenderer implements IRenderer
 		{
 			material.numSupportedMorphTargets = 0;
 
-			var id, base = "morphTarget";
-
+			var id:String;
+			var base:String = "morphTarget";
 			for ( i in 0...this.maxMorphTargets) 
 			{
-
 				id = base + i;
-
 				if (attributes[id] >= 0) 
 				{
 					gl.enableVertexAttribArray(attributes[id]);
@@ -1477,8 +1478,8 @@ class WebGLRenderer implements IRenderer
 		{
 			material.numSupportedMorphNormals = 0;
 
-			var id, base = "morphNormal";
-
+			var id:String;
+			var base:String = "morphNormal";
 			for ( i in 0...this.maxMorphNormals) 
 			{
 				id = base + i;
@@ -1496,6 +1497,188 @@ class WebGLRenderer implements IRenderer
 		{
 			material.uniformsList.push([material.uniforms[u], u]);
 		}
+
+	}
+	
+	public function setupMatrices(object:Object3D, camera:Camera):Void
+	{
+		object._modelViewMatrix.multiply(camera.matrixWorldInverse, object.matrixWorld);
+
+		object._normalMatrix.getInverse(object._modelViewMatrix);
+		object._normalMatrix.transpose();
+	}
+
+	function setupLights(program:WebGLProgram, lights:Array<Light>):Void
+	{
+
+		var light:Light;
+		var color:Color;
+		var intensity:Float;
+		var r:Float = 0, g:Float = 0, b:Float = 0; 
+		var n, 
+		position,
+		distance, zlights = _lights, 
+		dcolors = zlights.directional.colors, 
+		dpositions = zlights.directional.positions, 
+		pcolors = zlights.point.colors, 
+		ppositions = zlights.point.positions, 
+		pdistances = zlights.point.distances, 
+		scolors = zlights.spot.colors, 
+		spositions = zlights.spot.positions, 
+		sdistances = zlights.spot.distances, 
+		sdirections = zlights.spot.directions, 
+		sangles = zlights.spot.angles, 
+		sexponents = zlights.spot.exponents, 
+		dlength = 0, 
+		plength = 0, 
+		slength = 0, 
+		doffset = 0, 
+		poffset = 0, 
+		soffset = 0;
+
+		for ( l in 0...lights.length) 
+		{
+			light = lights[l];
+
+			if (light.onlyShadow || !light.visible)
+				continue;
+
+			color = light.color;
+			intensity = light.intensity;
+			distance = light.distance;
+
+			if ( Std.is(light,AmbientLight)) {
+
+				if (_this.gammaInput) {
+
+					r += color.r * color.r;
+					g += color.g * color.g;
+					b += color.b * color.b;
+
+				} else {
+
+					r += color.r;
+					g += color.g;
+					b += color.b;
+
+				}
+
+			} else if ( Std.is(light,DirectionalLight)) {
+
+				doffset = dlength * 3;
+
+				if (_this.gammaInput) {
+
+					dcolors[doffset] = color.r * color.r * intensity * intensity;
+					dcolors[doffset + 1] = color.g * color.g * intensity * intensity;
+					dcolors[doffset + 2] = color.b * color.b * intensity * intensity;
+
+				} else {
+
+					dcolors[doffset] = color.r * intensity;
+					dcolors[doffset + 1] = color.g * intensity;
+					dcolors[doffset + 2] = color.b * intensity;
+
+				}
+
+				_direction.copy(light.matrixWorld.getPosition());
+				_direction.subSelf(light.target.matrixWorld.getPosition());
+				_direction.normalize();
+
+				dpositions[doffset] = _direction.x;
+				dpositions[doffset + 1] = _direction.y;
+				dpositions[doffset + 2] = _direction.z;
+
+				dlength += 1;
+
+			} else if ( Std.is(light,PointLight)) {
+
+				poffset = plength * 3;
+
+				if (_this.gammaInput) {
+
+					pcolors[poffset] = color.r * color.r * intensity * intensity;
+					pcolors[poffset + 1] = color.g * color.g * intensity * intensity;
+					pcolors[poffset + 2] = color.b * color.b * intensity * intensity;
+
+				} else {
+
+					pcolors[poffset] = color.r * intensity;
+					pcolors[poffset + 1] = color.g * intensity;
+					pcolors[poffset + 2] = color.b * intensity;
+
+				}
+
+				position = light.matrixWorld.getPosition();
+
+				ppositions[poffset] = position.x;
+				ppositions[poffset + 1] = position.y;
+				ppositions[poffset + 2] = position.z;
+
+				pdistances[plength] = distance;
+
+				plength += 1;
+
+			} else if ( Std.is(light,SpotLight)) {
+
+				soffset = slength * 3;
+
+				if (_this.gammaInput) {
+
+					scolors[soffset] = color.r * color.r * intensity * intensity;
+					scolors[soffset + 1] = color.g * color.g * intensity * intensity;
+					scolors[soffset + 2] = color.b * color.b * intensity * intensity;
+
+				} else {
+
+					scolors[soffset] = color.r * intensity;
+					scolors[soffset + 1] = color.g * intensity;
+					scolors[soffset + 2] = color.b * intensity;
+
+				}
+
+				position = light.matrixWorld.getPosition();
+
+				spositions[soffset] = position.x;
+				spositions[soffset + 1] = position.y;
+				spositions[soffset + 2] = position.z;
+
+				sdistances[slength] = distance;
+
+				_direction.copy(position);
+				_direction.subSelf(light.target.matrixWorld.getPosition());
+				_direction.normalize();
+
+				sdirections[soffset] = _direction.x;
+				sdirections[soffset + 1] = _direction.y;
+				sdirections[soffset + 2] = _direction.z;
+
+				sangles[slength] = Math.cos(light.angle);
+				sexponents[slength] = light.exponent;
+
+				slength += 1;
+
+			}
+
+		}
+
+		// null eventual remains from removed lights
+		// (this is to avoid if in shader)
+
+		for ( l = dlength * 3, ll = dcolors.length; l < ll; l++)
+			dcolors[l] = 0.0;
+		for ( l = plength * 3, ll = pcolors.length; l < ll; l++)
+			pcolors[l] = 0.0;
+		for ( l = slength * 3, ll = scolors.length; l < ll; l++)
+			scolors[l] = 0.0;
+
+		zlights.directional.length = dlength;
+		zlights.point.length = plength;
+		zlights.spot.length = slength;
+
+		zlights.ambient[0] = r;
+		zlights.ambient[1] = g;
+		zlights.ambient[2] = b;
 
 	}
 	
@@ -1595,6 +1778,7 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
+	private var _oldLineWidth:Float;
 	public function setLineWidth(width:Float):Void
 	{
 		if (width != _oldLineWidth) 
@@ -1605,23 +1789,26 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
+	private var _oldPolygonOffset:Float;
 	public function setPolygonOffset(polygonoffset:Float, factor:Float, units:Int):Void
 	{
 		if (_oldPolygonOffset != polygonoffset) 
 		{
 			if (polygonoffset > 0) 
 			{
-				gl.enable(_gl.POLYGON_OFFSET_FILL);
+				gl.enable(gl.POLYGON_OFFSET_FILL);
 			} 
 			else 
 			{
-				gl.disable(_gl.POLYGON_OFFSET_FILL);
+				gl.disable(gl.POLYGON_OFFSET_FILL);
 			}
 
 			_oldPolygonOffset = polygonoffset;
 		}
 
-		if (polygonoffset > 0 && (_oldPolygonOffsetFactor != factor || _oldPolygonOffsetUnits != units )) 
+		if (polygonoffset > 0 && 
+			(_oldPolygonOffsetFactor != factor || 
+			_oldPolygonOffsetUnits != units )) 
 		{
 			gl.polygonOffset(factor, units);
 
@@ -1698,16 +1885,19 @@ class WebGLRenderer implements IRenderer
 	}
 
 	// Shaders
-
-	public function buildProgram(shaderID:String, fragmentShader:String, vertexShader:String, 
-								uniforms:Dynamic, attributes:Dynamic, parameters:Dynamic):Void
+	private static var _programs_counter:Int = 0;
+	public function buildProgram(shaderID:String, 
+								fragmentShader:String, vertexShader:String, 
+								uniforms:Dynamic, 
+								attributes:Dynamic, parameters:Dynamic):WebGLProgram
 	{
 
-		var p, pl, program, code;
-		var chunks = [];
+		var p, pl, program; 
+		var code:String;
+		var chunks:Array<Dynamic> = [];
 
 		// Generate code
-		if (shaderID) 
+		if (shaderID != "") 
 		{
 			chunks.push(shaderID);
 		} 
@@ -1723,7 +1913,7 @@ class WebGLRenderer implements IRenderer
 			chunks.push(parameters[p]);
 		}
 
-		code = chunks.join();
+		code = chunks.join("");
 
 		// Check if code has been already compiled
 

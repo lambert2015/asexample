@@ -70,7 +70,9 @@ class Material
 	
 	public var lights:Array<Light>;
 	
-	
+	public var metal:Dynamic;
+	public var perPixel:Dynamic;
+	public var wrapAround:Dynamic;
 	
 	public var _shadowPass:Bool;
 	public function new() 

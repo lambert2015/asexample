@@ -49,6 +49,9 @@ class Object3D
 	
 	public var frustumCulled:Bool;
 	
+	public var _modelViewMatrix:Matrix4;
+	public var _normalMatrix:Matrix4;
+	
 	private var _vector:Vector3;
 	public function new() 
 	{
