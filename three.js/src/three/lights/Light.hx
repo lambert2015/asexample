@@ -14,6 +14,10 @@ class Light extends Object3D
 	public var color:Color;
 	
 	public var onlyShadow:Bool;
+	
+	public var intensity:Float;
+	
+	public var distance:Float;
 
 	public function new(hex:Int) 
 	{

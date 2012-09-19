@@ -6,7 +6,7 @@ import three.math.Color;
  * @author 
  */
 
-class Fog 
+class Fog implements IFog
 {
 	public var color:Color;
 	

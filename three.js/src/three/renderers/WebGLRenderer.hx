@@ -26,6 +26,7 @@ import three.renderers.plugins.ShadowMapPlugin;
 import three.renderers.plugins.SpritePlugin;
 import three.scenes.Fog;
 import three.scenes.FogExp2;
+import three.scenes.IFog;
 import three.scenes.Scene;
 import three.objects.SkinnedMesh;
 import three.cameras.Camera;
@@ -899,6 +900,74 @@ class WebGLRenderer implements IRenderer
 		_currentHeight = height;
 	}
 	
+	public function setCubeTexture(texture:Texture, slot:Int):Void
+	{
+		if (texture.image.length == 6) 
+		{
+			if (texture.needsUpdate) 
+			{
+				if (!texture.image.__webglTextureCube) 
+				{
+					texture.image.__webglTextureCube = gl.createTexture();
+				}
+
+				gl.activeTexture(gl.TEXTURE0 + slot);
+				gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.image.__webglTextureCube);
+
+				gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
+
+				var cubeImage = [];
+
+				for (i in 0...6) 
+				{
+					if (this.autoScaleCubemaps)
+					{
+						cubeImage[i] = clampToMaxSize(texture.image[i], _maxCubemapSize);
+					} 
+					else
+					{
+						cubeImage[i] = texture.image[i];
+					}
+				}
+
+				var image = cubeImage[0], 
+				isImagePowerOfTwo = MathUtil.isPowerOfTwo(image.width) && 
+									MathUtil.isPowerOfTwo(image.height), 
+				glFormat = ThreeGlobal.paramThreeToGL(texture.format), 
+				glType = ThreeGlobal.paramThreeToGL(texture.type);
+
+				setTextureParameters(gl.TEXTURE_CUBE_MAP, texture, isImagePowerOfTwo);
+
+				for (i in 0...6) 
+				{
+					gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, glFormat, glFormat, glType, cubeImage[i]);
+				}
+
+				if (texture.generateMipmaps && isImagePowerOfTwo) 
+				{
+					gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+				}
+
+				texture.needsUpdate = false;
+
+				if (texture.onUpdate)
+					texture.onUpdate();
+
+			} 
+			else 
+			{
+				gl.activeTexture(gl.TEXTURE0 + slot);
+				gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.image.__webglTextureCube);
+			}
+		}
+	}
+
+	public function setCubeTextureDynamic(texture:Texture, slot:Int):Void
+	{
+		gl.activeTexture(gl.TEXTURE0 + slot);
+		gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.__webglTexture);
+	}
+	
 	public function setupFrameBuffer(framebuffer:WebGLFramebuffer, renderTarget:WebGLRenderTarget, textureTarget:GLenum):Void
 	{
 		gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
@@ -1003,13 +1072,13 @@ class WebGLRenderer implements IRenderer
 	{
 		_currentProgram = null;
 		_oldBlending = -1;
-		_oldDepthTest = -1;
-		_oldDepthWrite = -1;
+		_oldDepthTest = false;
+		_oldDepthWrite = false;
 		_currentGeometryGroupHash = -1;
 		_currentMaterialId = -1;
 		_lightsNeedUpdate = true;
-		_oldDoubleSided = -1;
-		_oldFlipSided = -1;
+		_oldDoubleSided = false;
+		_oldFlipSided = false;
 
 		this.shadowMapPlugin.update(scene, camera);
 	}
@@ -1507,8 +1576,406 @@ class WebGLRenderer implements IRenderer
 		object._normalMatrix.getInverse(object._modelViewMatrix);
 		object._normalMatrix.transpose();
 	}
+	
+	// Uniforms (refresh uniforms objects)
 
-	function setupLights(program:WebGLProgram, lights:Array<Light>):Void
+	private function refreshUniformsCommon(uniforms:Dynamic, material:Material):Void
+	{
+		uniforms.opacity.value = material.opacity;
+
+		if (this.gammaInput) 
+		{
+			uniforms.diffuse.value.copyGammaToLinear(material.color);
+		} 
+		else 
+		{
+			uniforms.diffuse.value = material.color;
+		}
+
+		uniforms.map.texture = material.map;
+		uniforms.lightMap.texture = material.lightMap;
+		uniforms.specularMap.texture = material.specularMap;
+
+		if (material.bumpMap != null) 
+		{
+			uniforms.bumpMap.texture = material.bumpMap;
+			uniforms.bumpScale.value = material.bumpScale;
+		}
+
+		// uv repeat and offset setting priorities
+		//	1. color map
+		//	2. specular map
+		//	3. bump map
+
+		var uvScaleMap:Texture;
+
+		if (material.map != null) 
+		{
+			uvScaleMap = material.map;
+		} 
+		else if (material.specularMap != null) 
+		{
+			uvScaleMap = material.specularMap;
+		} 
+		else if (material.bumpMap != null) 
+		{
+			uvScaleMap = material.bumpMap;
+		}
+
+		if (uvScaleMap  != null) 
+		{
+			var offset:Vector2 = uvScaleMap.offset;
+			var repeat:Vector2 = uvScaleMap.repeat;
+			uniforms.offsetRepeat.value.set(offset.x, offset.y, repeat.x, repeat.y);
+		}
+
+		uniforms.envMap.texture = material.envMap;
+		uniforms.flipEnvMap.value = (Std.is(material.envMap, WebGLRenderTargetCube) ) ? 1 : -1;
+
+		if (this.gammaInput) 
+		{
+			//uniforms.reflectivity.value = material.reflectivity * material.reflectivity;
+			uniforms.reflectivity.value = material.reflectivity;
+		} 
+		else 
+		{
+			uniforms.reflectivity.value = material.reflectivity;
+		}
+
+		uniforms.refractionRatio.value = material.refractionRatio;
+		uniforms.combine.value = material.combine;
+		uniforms.useRefract.value = material.envMap != null && Std.is(material.envMap.mapping,CubeRefractionMapping);
+	}
+
+	private function refreshUniformsLine(uniforms:Dynamic, material:Material):Void
+	{
+		uniforms.diffuse.value = material.color;
+		uniforms.opacity.value = material.opacity;
+	}
+
+	private function refreshUniformsParticle(uniforms:Dynamic, material:Material):Void
+	{
+		uniforms.psColor.value = material.color;
+		uniforms.opacity.value = material.opacity;
+		uniforms.size.value = material.size;
+		uniforms.scale.value = _canvas.height / 2.0;
+		// TODO: Cache this.
+
+		uniforms.map.texture = material.map;
+	}
+
+	private function refreshUniformsFog(uniforms:Dynamic, fog:IFog):Void
+	{
+		uniforms.fogColor.value = fog.color;
+
+		if ( Std.is(fog, Fog)) 
+		{
+			uniforms.fogNear.value = fog.near;
+			uniforms.fogFar.value = fog.far;
+		} 
+		else if ( Std.is(fog,FogExp2)) 
+		{
+			uniforms.fogDensity.value = fog.density;
+		}
+	}
+
+	private function refreshUniformsPhong(uniforms:Dynamic, material:Material):Void
+	{
+		uniforms.shininess.value = material.shininess;
+
+		if (this.gammaInput) 
+		{
+			uniforms.ambient.value.copyGammaToLinear(material.ambient);
+			uniforms.emissive.value.copyGammaToLinear(material.emissive);
+			uniforms.specular.value.copyGammaToLinear(material.specular);
+		} 
+		else 
+		{
+			uniforms.ambient.value = material.ambient;
+			uniforms.emissive.value = material.emissive;
+			uniforms.specular.value = material.specular;
+		}
+
+		if (material.wrapAround) 
+		{
+			uniforms.wrapRGB.value.copy(material.wrapRGB);
+		}
+	}
+
+	private function refreshUniformsLambert(uniforms:Dynamic, material:Material):Void
+	{
+		if (this.gammaInput) 
+		{
+			uniforms.ambient.value.copyGammaToLinear(material.ambient);
+			uniforms.emissive.value.copyGammaToLinear(material.emissive);
+		} 
+		else 
+		{
+			uniforms.ambient.value = material.ambient;
+			uniforms.emissive.value = material.emissive;
+		}
+
+		if (material.wrapAround) 
+		{
+			uniforms.wrapRGB.value.copy(material.wrapRGB);
+		}
+	}
+
+	private function refreshUniformsLights(uniforms:Dynamic, lights:LightsDef):Void
+	{
+		uniforms.ambientLightColor.value = lights.ambient;
+
+		uniforms.directionalLightColor.value = lights.directional.colors;
+		uniforms.directionalLightDirection.value = lights.directional.positions;
+
+		uniforms.pointLightColor.value = lights.point.colors;
+		uniforms.pointLightPosition.value = lights.point.positions;
+		uniforms.pointLightDistance.value = lights.point.distances;
+
+		uniforms.spotLightColor.value = lights.spot.colors;
+		uniforms.spotLightPosition.value = lights.spot.positions;
+		uniforms.spotLightDistance.value = lights.spot.distances;
+		uniforms.spotLightDirection.value = lights.spot.directions;
+		uniforms.spotLightAngle.value = lights.spot.angles;
+		uniforms.spotLightExponent.value = lights.spot.exponents;
+	}
+
+	private function refreshUniformsShadow(uniforms:Dynamic, lights:LightsDef):Void
+	{
+		if (uniforms.shadowMatrix) 
+		{
+			var j = 0;
+			for (i in 0...lights.length) 
+			{
+				var light:Light = lights[i];
+
+				if (!light.castShadow)
+					continue;
+
+				if ( Std.is(light, SpotLight) || 
+					(Std.is(light, DirectionalLight) && !light.shadowCascade ))
+				{
+					uniforms.shadowMap.texture[j] = light.shadowMap;
+					uniforms.shadowMapSize.value[j] = light.shadowMapSize;
+
+					uniforms.shadowMatrix.value[j] = light.shadowMatrix;
+
+					uniforms.shadowDarkness.value[j] = light.shadowDarkness;
+					uniforms.shadowBias.value[j] = light.shadowBias;
+
+					j++;
+				}
+			}
+		}
+	}
+
+	// Uniforms (load to GPU)
+
+	private function loadUniformsMatrices(uniforms:Dynamic, object:Object3D):Void
+	{
+		gl.uniformMatrix4fv(uniforms.modelViewMatrix, false, object._modelViewMatrix.elements);
+
+		if (uniforms.normalMatrix != null) 
+		{
+			gl.uniformMatrix3fv(uniforms.normalMatrix, false, object._normalMatrix.elements);
+		}
+	}
+
+	private function loadUniformsGeneric(program:WebGLProgram, uniforms:Array<Dynamic>):Void
+	{
+		var uniform, value; 
+		var type:String;
+		var location:WebGLUniformLocation;
+		var texture:Dynamic;
+		var offset:Int;
+
+		for ( j in 0...uniforms.length) 
+		{
+			location = program.uniforms[uniforms[ j ][1]];
+			if (location != null)
+				continue;
+
+			uniform = uniforms[ j ][0];
+
+			type = uniform.type;
+			value = uniform.value;
+
+			if (type == "i") 
+			{
+				// single integer
+				gl.uniform1i(location, value);
+			} 
+			else if (type == "f") 
+			{
+				// single float
+				gl.uniform1f(location, value);
+			} 
+			else if (type == "v2") 
+			{
+				// single THREE.Vector2
+				gl.uniform2f(location, value.x, value.y);
+			} 
+			else if (type == "v3") 
+			{
+				// single THREE.Vector3
+				gl.uniform3f(location, value.x, value.y, value.z);
+			} 
+			else if (type == "v4") 
+			{
+				// single THREE.Vector4
+				gl.uniform4f(location, value.x, value.y, value.z, value.w);
+			} 
+			else if (type == "c") 
+			{
+				// single THREE.Color
+				gl.uniform3f(location, value.r, value.g, value.b);
+			} 
+			else if (type == "iv1") 
+			{
+				// flat array of integers (JS or typed array)
+				gl.uniform1iv(location, value);
+			} 
+			else if (type == "iv") 
+			{
+				// flat array of integers with 3 x N size (JS or typed array)
+				gl.uniform3iv(location, value);
+			} 
+			else if (type == "fv1")
+			{
+				// flat array of floats (JS or typed array)
+				gl.uniform1fv(location, value);
+			} 
+			else if (type == "fv") 
+			{
+				// flat array of floats with 3 x N size (JS or typed array)
+				gl.uniform3fv(location, value);
+			} 
+			else if (type == "v2v") 
+			{
+				// array of THREE.Vector2
+				if (uniform._array == null) 
+				{
+					uniform._array = new Float32Array(2 * value.length);
+				}
+
+				for ( i in 0...value.length) 
+				{
+					offset = i * 2;
+
+					uniform._array[offset] = value[i].x;
+					uniform._array[offset + 1] = value[i].y;
+				}
+				gl.uniform2fv(location, uniform._array);
+			}
+			else if (type == "v3v") 
+			{
+				// array of THREE.Vector3
+				if (uniform._array == null) 
+				{
+					uniform._array = new Float32Array(3 * value.length);
+				}
+
+				for ( i in 0...value.length) 
+				{
+					offset = i * 3;
+
+					uniform._array[offset] = value[i].x;
+					uniform._array[offset + 1] = value[i].y;
+					uniform._array[offset + 2] = value[i].z;
+				}
+				gl.uniform3fv(location, uniform._array);
+			} 
+			else if (type == "v4v") 
+			{
+				// array of THREE.Vector4
+				if (uniform._array == null) 
+				{
+					uniform._array = new Float32Array(4 * value.length);
+				}
+
+				for ( i in 0...value.length) 
+				{
+					offset = i * 4;
+
+					uniform._array[offset] = value[i].x;
+					uniform._array[offset + 1] = value[i].y;
+					uniform._array[offset + 2] = value[i].z;
+					uniform._array[offset + 3] = value[i].w;
+				}
+
+				gl.uniform4fv(location, uniform._array);
+			} 
+			else if (type == "m4") 
+			{
+				// single THREE.Matrix4
+				if (uniform._array == null) 
+				{
+					uniform._array = new Float32Array(16);
+				}
+
+				value.flattenToArray(uniform._array);
+				gl.uniformMatrix4fv(location, false, uniform._array);
+			} 
+			else if (type == "m4v") 
+			{
+				// array of THREE.Matrix4
+				if (uniform._array == null) 
+				{
+					uniform._array = new Float32Array(16 * value.length);
+				}
+
+				for ( i in 0...value.length) 
+				{
+					value[i].flattenToArrayOffset(uniform._array, i * 16);
+				}
+				gl.uniformMatrix4fv(location, false, uniform._array);
+			} 
+			else if (type == "t") 
+			{
+				// single THREE.Texture (2d or cube)
+				gl.uniform1i(location, value);
+				texture = uniform.texture;
+				if (!texture)
+					continue;
+				if (Std.is(texture.image,Array) && texture.image.length == 6) 
+				{
+					setCubeTexture(texture, value);
+				} 
+				else if ( Std.is(texture,WebGLRenderTargetCube)) 
+				{
+					setCubeTextureDynamic(texture, value);
+				} 
+				else 
+				{
+					this.setTexture(texture, value);
+				}
+			} 
+			else if (type == "tv") 
+			{
+				// array of THREE.Texture (2d)
+				if (uniform._array == null) 
+				{
+					uniform._array = [];
+					for ( i in 0...uniform.texture.length) 
+					{
+						uniform._array[i] = value + i;
+					}
+				}
+
+				gl.uniform1iv(location, uniform._array);
+
+				for ( i in 0...uniform.texture.length) 
+				{
+					texture = uniform.texture[i];
+					if (!texture)
+						continue;
+					this.setTexture(texture, uniform._array[i]);
+				}
+			}
+		}
+	}
+
+	private function setupLights(program:WebGLProgram, lights:Array<Light>):Void
 	{
 
 		var light:Light;
@@ -1549,7 +2016,7 @@ class WebGLRenderer implements IRenderer
 
 			if ( Std.is(light,AmbientLight)) {
 
-				if (_this.gammaInput) {
+				if (this.gammaInput) {
 
 					r += color.r * color.r;
 					g += color.g * color.g;
@@ -1567,7 +2034,7 @@ class WebGLRenderer implements IRenderer
 
 				doffset = dlength * 3;
 
-				if (_this.gammaInput) {
+				if (this.gammaInput) {
 
 					dcolors[doffset] = color.r * color.r * intensity * intensity;
 					dcolors[doffset + 1] = color.g * color.g * intensity * intensity;
@@ -1595,7 +2062,7 @@ class WebGLRenderer implements IRenderer
 
 				poffset = plength * 3;
 
-				if (_this.gammaInput) {
+				if (this.gammaInput) {
 
 					pcolors[poffset] = color.r * color.r * intensity * intensity;
 					pcolors[poffset + 1] = color.g * color.g * intensity * intensity;
@@ -1621,9 +2088,11 @@ class WebGLRenderer implements IRenderer
 
 			} else if ( Std.is(light,SpotLight)) {
 
+				var spotLight:SpotLight = cast(light, SpotLight);
+				
 				soffset = slength * 3;
 
-				if (_this.gammaInput) {
+				if (this.gammaInput) {
 
 					scolors[soffset] = color.r * color.r * intensity * intensity;
 					scolors[soffset + 1] = color.g * color.g * intensity * intensity;
@@ -1637,7 +2106,7 @@ class WebGLRenderer implements IRenderer
 
 				}
 
-				position = light.matrixWorld.getPosition();
+				position = spotLight.matrixWorld.getPosition();
 
 				spositions[soffset] = position.x;
 				spositions[soffset + 1] = position.y;
@@ -1653,8 +2122,8 @@ class WebGLRenderer implements IRenderer
 				sdirections[soffset + 1] = _direction.y;
 				sdirections[soffset + 2] = _direction.z;
 
-				sangles[slength] = Math.cos(light.angle);
-				sexponents[slength] = light.exponent;
+				sangles[slength] = Math.cos(spotLight.angle);
+				sexponents[slength] = spotLight.exponent;
 
 				slength += 1;
 
@@ -1665,11 +2134,11 @@ class WebGLRenderer implements IRenderer
 		// null eventual remains from removed lights
 		// (this is to avoid if in shader)
 
-		for ( l = dlength * 3, ll = dcolors.length; l < ll; l++)
+		for ( l in dlength * 3...dcolors.length)
 			dcolors[l] = 0.0;
-		for ( l = plength * 3, ll = pcolors.length; l < ll; l++)
+		for ( l in plength * 3...pcolors.length)
 			pcolors[l] = 0.0;
-		for ( l = slength * 3, ll = scolors.length; l < ll; l++)
+		for ( l in slength * 3...scolors.length)
 			scolors[l] = 0.0;
 
 		zlights.directional.length = dlength;
@@ -1790,6 +2259,8 @@ class WebGLRenderer implements IRenderer
 	}
 
 	private var _oldPolygonOffset:Float;
+	private var _oldPolygonOffsetFactor:Float;
+	private var _oldPolygonOffsetUnits:Int;
 	public function setPolygonOffset(polygonoffset:Float, factor:Float, units:Int):Void
 	{
 		if (_oldPolygonOffset != polygonoffset) 
@@ -1817,6 +2288,9 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
+	private var _oldBlendEquation:Int;
+	private var _oldBlendSrc:Int;
+	private var _oldBlendDst:Int;
 	public function setBlending(blending:Int, blendEquation:Int, blendSrc:Int, blendDst:Int):Void
 	{
 		if (blending != _oldBlending)

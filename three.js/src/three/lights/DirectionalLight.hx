@@ -10,10 +10,6 @@ import three.math.Vector3;
 
 class DirectionalLight extends Light
 {
-	public var intensity:Float;
-	
-	public var distance:Float;
-
 	public var shadowCameraNear:Float;
 	public var shadowCameraFar:Float;
 	
