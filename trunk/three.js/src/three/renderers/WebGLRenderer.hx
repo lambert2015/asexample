@@ -1,5 +1,6 @@
 package three.renderers;
 
+import js.Boot;
 import js.Dom;
 import js.Lib;
 import three.core.Geometry;
@@ -1670,12 +1671,13 @@ class WebGLRenderer implements IRenderer
 
 		if ( Std.is(fog, Fog)) 
 		{
+			var fog:Fog = cast(fog, Flog);
 			uniforms.fogNear.value = fog.near;
 			uniforms.fogFar.value = fog.far;
 		} 
 		else if ( Std.is(fog,FogExp2)) 
 		{
-			uniforms.fogDensity.value = fog.density;
+			uniforms.fogDensity.value = cast(fog,FogExp2).density;
 		}
 	}
 
@@ -1740,7 +1742,7 @@ class WebGLRenderer implements IRenderer
 		uniforms.spotLightExponent.value = lights.spot.exponents;
 	}
 
-	private function refreshUniformsShadow(uniforms:Dynamic, lights:LightsDef):Void
+	private function refreshUniformsShadow(uniforms:Dynamic, lights:Array<Light>):Void
 	{
 		if (uniforms.shadowMatrix) 
 		{
@@ -1812,23 +1814,27 @@ class WebGLRenderer implements IRenderer
 			} 
 			else if (type == "v2") 
 			{
+				var vec2:Vector2 = cast(value, Vector2);
 				// single THREE.Vector2
-				gl.uniform2f(location, value.x, value.y);
+				gl.uniform2f(location, vec2.x, vec2.y);
 			} 
 			else if (type == "v3") 
 			{
+				var vec3:Vector3 = cast(value, Vector3);
 				// single THREE.Vector3
-				gl.uniform3f(location, value.x, value.y, value.z);
+				gl.uniform3f(location, vec3.x, vec3.y, vec3.z);
 			} 
 			else if (type == "v4") 
 			{
+				var vec4:Vector4 = cast(value, Vector4);
 				// single THREE.Vector4
-				gl.uniform4f(location, value.x, value.y, value.z, value.w);
+				gl.uniform4f(location, vec4.x, vec4.y, vec4.z, vec4.w);
 			} 
 			else if (type == "c") 
 			{
+				var color:Color = cast(value, Color);
 				// single THREE.Color
-				gl.uniform3f(location, value.r, value.g, value.b);
+				gl.uniform3f(location, color.r, color.g, color.b);
 			} 
 			else if (type == "iv1") 
 			{
@@ -1852,55 +1858,58 @@ class WebGLRenderer implements IRenderer
 			} 
 			else if (type == "v2v") 
 			{
+				var arr:Array<Vector2> = cast(value, Array);
 				// array of THREE.Vector2
 				if (uniform._array == null) 
 				{
-					uniform._array = new Float32Array(2 * value.length);
+					uniform._array = new Float32Array(2 * arr.length);
 				}
 
-				for ( i in 0...value.length) 
+				for ( i in 0...arr.length) 
 				{
 					offset = i * 2;
 
-					uniform._array[offset] = value[i].x;
-					uniform._array[offset + 1] = value[i].y;
+					uniform._array[offset] = arr[i].x;
+					uniform._array[offset + 1] = arr[i].y;
 				}
 				gl.uniform2fv(location, uniform._array);
 			}
 			else if (type == "v3v") 
 			{
+				var arr:Array<Vector3> = cast(value, Array);
 				// array of THREE.Vector3
 				if (uniform._array == null) 
 				{
-					uniform._array = new Float32Array(3 * value.length);
+					uniform._array = new Float32Array(3 * arr.length);
 				}
 
-				for ( i in 0...value.length) 
+				for ( i in 0...arr.length) 
 				{
 					offset = i * 3;
 
-					uniform._array[offset] = value[i].x;
-					uniform._array[offset + 1] = value[i].y;
-					uniform._array[offset + 2] = value[i].z;
+					uniform._array[offset] = arr[i].x;
+					uniform._array[offset + 1] = arr[i].y;
+					uniform._array[offset + 2] = arr[i].z;
 				}
 				gl.uniform3fv(location, uniform._array);
 			} 
 			else if (type == "v4v") 
 			{
+				var arr:Array<Vector4> = cast(value, Array);
 				// array of THREE.Vector4
 				if (uniform._array == null) 
 				{
-					uniform._array = new Float32Array(4 * value.length);
+					uniform._array = new Float32Array(4 * arr.length);
 				}
 
-				for ( i in 0...value.length) 
+				for ( i in 0...arr.length) 
 				{
 					offset = i * 4;
 
-					uniform._array[offset] = value[i].x;
-					uniform._array[offset + 1] = value[i].y;
-					uniform._array[offset + 2] = value[i].z;
-					uniform._array[offset + 3] = value[i].w;
+					uniform._array[offset] = arr[i].x;
+					uniform._array[offset + 1] = arr[i].y;
+					uniform._array[offset + 2] = arr[i].z;
+					uniform._array[offset + 3] = arr[i].w;
 				}
 
 				gl.uniform4fv(location, uniform._array);
@@ -1918,13 +1927,14 @@ class WebGLRenderer implements IRenderer
 			} 
 			else if (type == "m4v") 
 			{
+				var arr:Array<Matrix4> = cast(value, Array);
 				// array of THREE.Matrix4
 				if (uniform._array == null) 
 				{
-					uniform._array = new Float32Array(16 * value.length);
+					uniform._array = new Float32Array(16 * arr.length);
 				}
 
-				for ( i in 0...value.length) 
+				for ( i in 0...arr.length) 
 				{
 					value[i].flattenToArrayOffset(uniform._array, i * 16);
 				}
@@ -1935,7 +1945,7 @@ class WebGLRenderer implements IRenderer
 				// single THREE.Texture (2d or cube)
 				gl.uniform1i(location, value);
 				texture = uniform.texture;
-				if (!texture)
+				if (texture == null)
 					continue;
 				if (Std.is(texture.image,Array) && texture.image.length == 6) 
 				{
