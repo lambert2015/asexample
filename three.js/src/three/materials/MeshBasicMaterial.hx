@@ -9,15 +9,12 @@ import three.textures.Texture;
 
 class MeshBasicMaterial extends Material
 {
-	public var color:Color;
-	
 	//public var map:Texture;
 	//public var lightMap:Texture;
 	//public var specularMap:Texture;
 //
 	public var combine:Int;
-	
-	public var reflectivity:Float;
+
 	public var refractionRatio:Float;
 	
 	//public var fog:Bool;

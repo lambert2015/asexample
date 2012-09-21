@@ -25,6 +25,7 @@ class Material
 	
 	public var blending:Int;
 	
+	public var color:Color;
 	public var ambient:Color;
 	public var emissive:Color;
 	public var specular:Color;
@@ -64,8 +65,16 @@ class Material
 	public var envMap:Texture;
 	public var map:Texture;
 	public var lightMap:Texture;
+	
 	public var bumpMap:Texture;
+	public var bumpScale:Float;
+	
 	public var specularMap:Texture;
+	
+	public var reflectivity:Float;
+	
+	public var shininess:Float;
+	public var size:Float;
 	
 	public var fog:Bool;
 	
@@ -80,6 +89,8 @@ class Material
 	public var wrapAround:Dynamic;
 	
 	public var attributes:Dynamic;
+	
+	public var numSupportedMorphTargets:Int;
 	
 	public var _shadowPass:Bool;
 	public function new() 
