@@ -15,20 +15,18 @@ class UniformsUtils
 	public static function merge(uniforms:Array<Dynamic>):Dynamic
 	{
 		var merged:Dynamic = { };
-		//var p, tmp;
-//
-		//for ( u in 0...uniforms.length) 
-		//{
-			//tmp = clone( uniforms[ u ] );
-//
-			//for ( p in tmp ) {
-//
-				//merged[ p ] = tmp[ p ];
-//
-			//}
-//
-		//}
+		var tmp:Dynamic;
 
+		for ( u in 0...uniforms.length) 
+		{
+			tmp = clone(uniforms[u]);
+
+			var fields:Array<String> = Type.getClassFields(tmp);
+			for (key in fields)
+			{
+				untyped merged[key] = tmp[key];
+			}
+		}
 		return merged;
 	}
 	
@@ -36,36 +34,37 @@ class UniformsUtils
 	{
 		var uniforms_dst:Dynamic = { };
 		
-		//var u, p, parameter, parameter_src;
-		//for ( u in uniforms_src ) 
-		//{
-			//uniforms_dst[ u ] = {};
-//
-			//for ( p in uniforms_src[ u ] ) 
-			//{
-				//parameter_src = uniforms_src[ u ][ p ];
-//
-				//if ( Std.is(parameter_src,Color) ||
-					 //Std.is(parameter_src,Vector2) ||
-					 //Std.is(parameter_src,Vector3) ||
-					 //Std.is(parameter_src,Vector4) ||
-					 //Std.is(parameter_src,Matrix4) ||
-					 //Std.is(parameter_src,Texture) ) 
-					 //{
-//
-					//uniforms_dst[ u ][ p ] = parameter_src.clone();
-//
-				//} 
-				//else if ( Std.is(parameter_src,Array) ) 
-				//{
-					//uniforms_dst[ u ][ p ] = parameter_src.slice();
-				//} 
-				//else 
-				//{
-					//uniforms_dst[ u ][ p ] = parameter_src;
-				//}
-			//}
-		//}
+		var parameter_src:Dynamic;
+		
+		var fields:Array<String> = Type.getClassFields(uniforms_src);
+		for (u in fields)
+		{
+			var srcItem:Dynamic = { };
+			var itemFields:Array<String> = Type.getClassFields(srcItem);
+			for ( p in itemFields) 
+			{
+				parameter_src = untyped itemFields[p];
+
+				if ( Std.is(parameter_src,Color) ||
+					 Std.is(parameter_src,Vector2) ||
+					 Std.is(parameter_src,Vector3) ||
+					 Std.is(parameter_src,Vector4) ||
+					 Std.is(parameter_src,Matrix4) ||
+					 Std.is(parameter_src,Texture) ) 
+				{
+					untyped srcItem[p] = parameter_src.clone();
+				} 
+				else if ( Std.is(parameter_src,Array) ) 
+				{
+					untyped srcItem[p] = cast(parameter_src, Array<Dynamic>).slice(0);
+				} 
+				else 
+				{
+					untyped srcItem[p] = parameter_src;
+				}
+			}
+			untyped uniforms_dst[u] = srcItem;
+		}
 		return uniforms_dst;
 	}
 	
