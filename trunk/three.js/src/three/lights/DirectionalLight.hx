@@ -20,14 +20,6 @@ class DirectionalLight extends Light
 
 	public var shadowCameraVisible:Bool;
 	
-	public var shadowBias:Float;
-	public var shadowDarkness:Float;
-	
-	public var shadowMapWidth:Int;
-	public var shadowMapHeight:Int;
-	
-	public var shadowCascade:Bool;
-	
 	public var shadowCascadeOffset:Vector3;
 	public var shadowCascadeCount:Int;
 	
@@ -39,11 +31,7 @@ class DirectionalLight extends Light
 	public var shadowCascadeFarZ:Array<Float>;
 	
 	public var shadowCascadeArray:Array<Dynamic>;
-	
-	public var shadowMap:Dynamic;
-	public var shadowMapSize:Dynamic;
-	public var shadowCamera:Camera;
-	public var shadowMatrix:Matrix4;
+
 	public function new(hex:Int, intensity:Float = 1, distance:Float = 0) 
 	{
 		super(hex);

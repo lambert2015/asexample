@@ -72,6 +72,8 @@ class Material
 	public var specularMap:Texture;
 	
 	public var reflectivity:Float;
+	public var refractionRatio:Float;
+	public var combine:Int;
 	
 	public var shininess:Float;
 	public var size:Float;
@@ -91,6 +93,7 @@ class Material
 	public var attributes:Dynamic;
 	
 	public var numSupportedMorphTargets:Int;
+	public var numSupportedMorphNormals:Int;
 	
 	public var _shadowPass:Bool;
 	public function new() 

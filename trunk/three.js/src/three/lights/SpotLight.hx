@@ -19,17 +19,6 @@ class SpotLight extends Light
 	public var shadowCameraFov:Float;
 
 	public var shadowCameraVisible:Bool;
-	
-	public var shadowBias:Float;
-	public var shadowDarkness:Float;
-	
-	public var shadowMapWidth:Int;
-	public var shadowMapHeight:Int;
-
-	public var shadowMap:Dynamic;
-	public var shadowMapSize:Dynamic;
-	public var shadowCamera:Camera;
-	public var shadowMatrix:Matrix4;
 
 	public function new(hex:Int, intensity:Float = 1, distance:Float = 0, angle:Float = 1.57, exponent:Int = 10)
 	{
