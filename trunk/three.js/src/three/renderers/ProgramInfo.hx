@@ -6,7 +6,7 @@ import UserAgentContext;
  */
 
 typedef ProgramInfo = {
-	var program:WebGLProgram;
+	var program:Program3D;
 	var usedTimes:Int;
 	var code:String;
 }

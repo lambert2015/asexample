@@ -1,4 +1,5 @@
 package three.materials;
+import three.renderers.Program3D;
 import three.utils.Logger;
 import three.math.Color;
 import three.math.Vector3;
@@ -53,7 +54,7 @@ class Material
 	public var uniforms:Dynamic;
 	public var vertexShader:String;
 	public var fragmentShader:String;
-	public var program:WebGLProgram;
+	public var program:Program3D;
 	
 	public var uniformsList:Dynamic;
 	

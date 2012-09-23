@@ -39,6 +39,7 @@ import three.materials.MeshNormalMaterial;
 import three.materials.MeshPhongMaterial;
 import three.materials.ShaderMaterial;
 import three.materials.LineBasicMaterial;
+import three.materials.CubeRefractionMapping;
 import three.materials.*;
 import three.textures.DataTexture;
 import three.textures.Texture;
@@ -343,7 +344,7 @@ class WebGLRenderer implements IRenderer
 		material.fragmentShader = shaders.fragmentShader;
 	}
 
-	public function setProgram(camera:Camera, lights:Array<Light>, fog:Fog, material:Material, object:Dynamic):WebGLProgram
+	public function setProgram(camera:Camera, lights:Array<Light>, fog:Fog, material:Material, object:Dynamic):Program3D
 	{
 		if (material.needsUpdate) 
 		{
@@ -364,13 +365,13 @@ class WebGLRenderer implements IRenderer
 
 		var refreshMaterial:Bool = false;
 
-		var program:WebGLProgram = material.program, 
+		var program:Program3D = material.program, 
 		p_uniforms:Dynamic = program.uniforms, 
 		m_uniforms:Dynamic = material.uniforms;
 
 		if (program != _currentProgram) 
 		{
-			gl.useProgram(program);
+			gl.useProgram(program.program);
 			_currentProgram = program;
 			refreshMaterial = true;
 		}
@@ -901,7 +902,7 @@ class WebGLRenderer implements IRenderer
 		_currentHeight = height;
 	}
 	
-	public function clampToMaxSize(image:Image, maxSize:Int):HTMLCanvasElement
+	public function clampToMaxSize(image:Image, maxSize:Int):HTMLElement
 	{
 		if (image.width <= maxSize && image.height <= maxSize) 
 		{
@@ -915,7 +916,7 @@ class WebGLRenderer implements IRenderer
 		var newWidth:Int = Math.floor(image.width * maxSize / maxDimension);
 		var newHeight:Int = Math.floor(image.height * maxSize / maxDimension);
 
-		var canvas:HTMLCanvasElement = cast(document.createElement('canvas'),HTMLCanvasElement);
+		var canvas:HTMLCanvasElement = cast(Lib.document.createElement('canvas'),HTMLCanvasElement);
 		canvas.width = newWidth;
 		canvas.height = newHeight;
 
@@ -1027,7 +1028,13 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 	
-	public function setTextureParameters(textureType:GLenum, texture:Texture, isImagePowerOfTwo:Bool):Void 
+	/**
+	 * 
+	 * @param	textureType
+	 * @param	texture  Texture|WebGLRenderTarget
+	 * @param	isImagePowerOfTwo
+	 */
+	public function setTextureParameters(textureType:GLenum, texture:Dynamic, isImagePowerOfTwo:Bool):Void 
 	{
 		if (isImagePowerOfTwo) 
 		{
@@ -1085,7 +1092,7 @@ class WebGLRenderer implements IRenderer
 		this.renderPluginsPre.push(plugin);
 	}
 	
-	private var _currentProgram:WebGLProgram;
+	private var _currentProgram:Program3D;
 	private var _oldBlending:Int;
 	private var _oldDepthTest:Bool;
 	private var _oldDepthWrite:Bool;
@@ -1321,7 +1328,7 @@ class WebGLRenderer implements IRenderer
 	private var _programs:Array<ProgramInfo>;
 	public function deallocateMaterial(material:Material):Void 
 	{
-		var program:WebGLProgram = material.program;
+		var program:Program3D = material.program;
 
 		if (program == null)
 			return;
@@ -1366,7 +1373,7 @@ class WebGLRenderer implements IRenderer
 
 			_programs = newPrograms;
 
-			gl.deleteProgram(program);
+			gl.deleteProgram(program.program);
 
 			this.info.memory.programs--;
 		}
@@ -1542,12 +1549,13 @@ class WebGLRenderer implements IRenderer
 			gl.enableVertexAttribArray(attributes.skinWeight);
 		}
 
-		if (material.attributes) 
+		if (material.attributes != null) 
 		{
-			for (a in material.attributes ) 
+			var fields:Array<String> = Type.getClassFields(material.attributes);
+			for (a in fields)
 			{
-				if (attributes[a] != null && attributes[a] >= 0)
-					gl.enableVertexAttribArray(attributes[a]);
+				if (untyped attributes[a] != null && attributes[a] >= 0)
+					gl.enableVertexAttribArray(untyped attributes[a]);
 			}
 		}
 
@@ -1577,9 +1585,9 @@ class WebGLRenderer implements IRenderer
 			for ( i in 0...this.maxMorphNormals) 
 			{
 				id = base + i;
-				if (attributes[id] >= 0) 
+				if (untyped attributes[id] >= 0) 
 				{
-					gl.enableVertexAttribArray(attributes[id]);
+					gl.enableVertexAttribArray(untyped attributes[id]);
 					material.numSupportedMorphNormals++;
 				}
 			}
@@ -1587,9 +1595,10 @@ class WebGLRenderer implements IRenderer
 
 		material.uniformsList = [];
 
-		for (u in material.uniforms ) 
+		var fields:Array<String> = Type.getClassFields(material.uniforms);
+		for (u in fields)
 		{
-			material.uniformsList.push([material.uniforms[u], u]);
+			material.uniformsList.push([untyped material.uniforms[u], u]);
 		}
 
 	}
@@ -1632,7 +1641,7 @@ class WebGLRenderer implements IRenderer
 		//	2. specular map
 		//	3. bump map
 
-		var uvScaleMap:Texture;
+		var uvScaleMap:Texture = null;
 
 		if (material.map != null) 
 		{
@@ -1695,7 +1704,7 @@ class WebGLRenderer implements IRenderer
 
 		if ( Std.is(fog, Fog)) 
 		{
-			var fog:Fog = cast(fog, Flog);
+			var fog:Fog = cast(fog, Fog);
 			uniforms.fogNear.value = fog.near;
 			uniforms.fogFar.value = fog.far;
 		} 
@@ -1807,7 +1816,7 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
-	private function loadUniformsGeneric(program:WebGLProgram, uniforms:Array<Uniform>):Void
+	private function loadUniformsGeneric(program:Program3D, uniforms:Array<Uniform>):Void
 	{
 		var uniform:Uniform; 
 		var value:Dynamic; 
@@ -1818,11 +1827,12 @@ class WebGLRenderer implements IRenderer
 
 		for ( j in 0...uniforms.length) 
 		{
-			location = program.uniforms[uniforms[ j ][1]];
+			var obj:Dynamic = untyped uniforms[j];
+			location = program.uniforms[obj[1]];
 			if (location != null)
 				continue;
 
-			uniform = uniforms[ j ][0];
+			uniform = obj[0];
 
 			type = uniform.type;
 			value = uniform.value;
@@ -1883,7 +1893,7 @@ class WebGLRenderer implements IRenderer
 			} 
 			else if (type == "v2v") 
 			{
-				var arr:Array<Vector2> = cast(value, Array);
+				var arr:Array<Vector2> = cast value;
 				// array of THREE.Vector2
 				if (uniform._array == null) 
 				{
@@ -1901,7 +1911,7 @@ class WebGLRenderer implements IRenderer
 			}
 			else if (type == "v3v") 
 			{
-				var arr:Array<Vector3> = cast(value, Array);
+				var arr:Array<Vector3> = cast value;
 				// array of THREE.Vector3
 				if (uniform._array == null) 
 				{
@@ -1920,7 +1930,7 @@ class WebGLRenderer implements IRenderer
 			} 
 			else if (type == "v4v") 
 			{
-				var arr:Array<Vector4> = cast(value, Array);
+				var arr:Array<Vector4> = cast value;
 				// array of THREE.Vector4
 				if (uniform._array == null) 
 				{
@@ -1952,7 +1962,7 @@ class WebGLRenderer implements IRenderer
 			} 
 			else if (type == "m4v") 
 			{
-				var arr:Array<Matrix4> = cast(value, Array);
+				var arr:Array<Matrix4> = cast value;
 				// array of THREE.Matrix4
 				if (uniform._array == null) 
 				{
@@ -2010,7 +2020,7 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
-	private function setupLights(program:WebGLProgram, lights:Array<Light>):Void
+	private function setupLights(program:Program3D, lights:Array<Light>):Void
 	{
 
 		var light:Light;
@@ -2392,10 +2402,11 @@ class WebGLRenderer implements IRenderer
 	public function buildProgram(shaderID:String, 
 								fragmentShader:String, vertexShader:String, 
 								uniforms:Dynamic, 
-								attributes:Dynamic, parameters:Dynamic):WebGLProgram
+								attributes:Dynamic, parameters:Dynamic):Program3D
 	{
 
-		var p, pl, program; 
+		var p, pl; 
+		var program:WebGLProgram; 
 		var code:String;
 		var chunks:Array<Dynamic> = [];
 
@@ -2410,11 +2421,11 @@ class WebGLRenderer implements IRenderer
 			chunks.push(vertexShader);
 		}
 
-		
-		for (p in parameters ) 
+		var fields:Array<String> = Type.getClassFields(parameters);
+		for (p in fields) 
 		{
 			chunks.push(p);
-			chunks.push(parameters[p]);
+			chunks.push(untyped parameters[p]);
 		}
 
 		code = chunks.join("");
@@ -2538,8 +2549,10 @@ class WebGLRenderer implements IRenderer
 		//console.log( prefix_fragment + fragmentShader );
 		//console.log( prefix_vertex + vertexShader );
 
-		program.uniforms = {};
-		program.attributes = {};
+		var program3D:Program3D = new Program3D();
+		program3D.program = program;
+		program3D.uniforms = {};
+		program3D.attributes = {};
 
 		var identifiers, u, a, i;
 
@@ -2562,12 +2575,14 @@ class WebGLRenderer implements IRenderer
 			identifiers.push('boneGlobalMatrices');
 		}
 
-		for (u in uniforms ) 
+		
+		var fields:Array<String> = Type.getClassFields(uniforms);
+		for (u in fields)
 		{
 			identifiers.push(u);
 		}
 
-		cacheUniformLocations(program, identifiers);
+		cacheUniformLocations(program3D, identifiers);
 
 		// cache attributes locations
 
@@ -2592,17 +2607,18 @@ class WebGLRenderer implements IRenderer
 			identifiers.push("morphNormal" + i);
 		}
 
-		for (a in attributes ) 
+		var fields:Array<String> = Type.getClassFields(attributes);
+		for (a in fields) 
 		{
 			identifiers.push(a);
 		}
 
-		cacheAttributeLocations(program, identifiers);
+		cacheAttributeLocations(program3D, identifiers);
 
-		program.id = _programs_counter++;
+		program3D.id = _programs_counter++;
 		
 		var pInfo:ProgramInfo = {
-			program : program,
+			program : program3D,
 			code : code,
 			usedTimes : 1
 		};
@@ -2611,27 +2627,27 @@ class WebGLRenderer implements IRenderer
 
 		this.info.memory.programs = _programs.length;
 
-		return program;
+		return program3D;
 	}
 	
 	// Shader parameters cache
-	public function cacheUniformLocations(program:WebGLProgram, identifiers:Array<String>):Void
+	public function cacheUniformLocations(program:Program3D, identifiers:Array<String>):Void
 	{
 		var id:String;
 		for ( i in 0...identifiers.length) 
 		{
 			id = identifiers[i];
-			program.uniforms[id] = gl.getUniformLocation(program, id);
+			untyped program.uniforms[id] = gl.getUniformLocation(program.program, id);
 		}
 	}
 
-	public function cacheAttributeLocations(program:WebGLProgram, identifiers:Array<String>):Void
+	public function cacheAttributeLocations(program:Program3D, identifiers:Array<String>):Void
 	{
 		var id:String;
 		for ( i in 0...identifiers.length) 
 		{
 			id = identifiers[i];
-			program.attributes[id] = gl.getAttribLocation(program, id);
+			untyped program.attributes[id] = gl.getAttribLocation(program.program, id);
 		}
 	}
 
@@ -2649,7 +2665,7 @@ class WebGLRenderer implements IRenderer
 
 	public function getShader(type:String, source:String):WebGLShader
 	{
-		var shader:WebGLShader;
+		var shader:WebGLShader = null;
 		if (type == "fragment") 
 		{
 			shader = gl.createShader(gl.FRAGMENT_SHADER);
