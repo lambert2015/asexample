@@ -901,6 +901,30 @@ class WebGLRenderer implements IRenderer
 		_currentHeight = height;
 	}
 	
+	public function clampToMaxSize(image:Image, maxSize:Int):HTMLCanvasElement
+	{
+		if (image.width <= maxSize && image.height <= maxSize) 
+		{
+			return image;
+		}
+
+		// Warning: Scaling through the canvas will only work with images that use
+		// premultiplied alpha.
+
+		var maxDimension:Float = Math.max(image.width, image.height);
+		var newWidth:Int = Math.floor(image.width * maxSize / maxDimension);
+		var newHeight:Int = Math.floor(image.height * maxSize / maxDimension);
+
+		var canvas:HTMLCanvasElement = cast(document.createElement('canvas'),HTMLCanvasElement);
+		canvas.width = newWidth;
+		canvas.height = newHeight;
+
+		var ctx:CanvasRenderingContext2D = cast(canvas.getContext("2d"),CanvasRenderingContext2D);
+		ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, newWidth, newHeight);
+
+		return canvas;
+	}
+	
 	public function setCubeTexture(texture:Texture, slot:Int):Void
 	{
 		if (texture.image.length == 6) 
@@ -915,9 +939,9 @@ class WebGLRenderer implements IRenderer
 				gl.activeTexture(gl.TEXTURE0 + slot);
 				gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture.image.__webglTextureCube);
 
-				gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
+				gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, BoolUtil.toInt(texture.flipY));
 
-				var cubeImage = [];
+				var cubeImage:Array<Dynamic> = [];
 
 				for (i in 0...6) 
 				{
@@ -951,7 +975,7 @@ class WebGLRenderer implements IRenderer
 
 				texture.needsUpdate = false;
 
-				if (texture.onUpdate)
+				if (texture.onUpdate != null)
 					texture.onUpdate();
 
 			} 
@@ -1536,9 +1560,9 @@ class WebGLRenderer implements IRenderer
 			for ( i in 0...this.maxMorphTargets) 
 			{
 				id = base + i;
-				if (attributes[id] >= 0) 
+				if (untyped attributes[id] >= 0) 
 				{
-					gl.enableVertexAttribArray(attributes[id]);
+					gl.enableVertexAttribArray(untyped attributes[id]);
 					material.numSupportedMorphTargets++;
 				}
 			}
@@ -1783,9 +1807,10 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
-	private function loadUniformsGeneric(program:WebGLProgram, uniforms:Array<Dynamic>):Void
+	private function loadUniformsGeneric(program:WebGLProgram, uniforms:Array<Uniform>):Void
 	{
-		var uniform, value; 
+		var uniform:Uniform; 
+		var value:Dynamic; 
 		var type:String;
 		var location:WebGLUniformLocation;
 		var texture:Dynamic;
@@ -2024,38 +2049,35 @@ class WebGLRenderer implements IRenderer
 			intensity = light.intensity;
 			distance = light.distance;
 
-			if ( Std.is(light,AmbientLight)) {
-
-				if (this.gammaInput) {
-
+			if ( Std.is(light, AmbientLight)) 
+			{
+				if (this.gammaInput)
+				{
 					r += color.r * color.r;
 					g += color.g * color.g;
 					b += color.b * color.b;
-
-				} else {
-
+				} 
+				else 
+				{
 					r += color.r;
 					g += color.g;
 					b += color.b;
-
 				}
-
-			} else if ( Std.is(light,DirectionalLight)) {
-
+			}
+			else if ( Std.is(light, DirectionalLight)) 
+			{
 				doffset = dlength * 3;
-
-				if (this.gammaInput) {
-
+				if (this.gammaInput) 
+				{
 					dcolors[doffset] = color.r * color.r * intensity * intensity;
 					dcolors[doffset + 1] = color.g * color.g * intensity * intensity;
 					dcolors[doffset + 2] = color.b * color.b * intensity * intensity;
-
-				} else {
-
+				} 
+				else 
+				{
 					dcolors[doffset] = color.r * intensity;
 					dcolors[doffset + 1] = color.g * intensity;
 					dcolors[doffset + 2] = color.b * intensity;
-
 				}
 
 				_direction.copy(light.matrixWorld.getPosition());
@@ -2068,22 +2090,21 @@ class WebGLRenderer implements IRenderer
 
 				dlength += 1;
 
-			} else if ( Std.is(light,PointLight)) {
-
+			}
+			else if ( Std.is(light, PointLight)) 
+			{
 				poffset = plength * 3;
-
-				if (this.gammaInput) {
-
+				if (this.gammaInput) 
+				{
 					pcolors[poffset] = color.r * color.r * intensity * intensity;
 					pcolors[poffset + 1] = color.g * color.g * intensity * intensity;
 					pcolors[poffset + 2] = color.b * color.b * intensity * intensity;
-
-				} else {
-
+				} 
+				else 
+				{
 					pcolors[poffset] = color.r * intensity;
 					pcolors[poffset + 1] = color.g * intensity;
 					pcolors[poffset + 2] = color.b * intensity;
-
 				}
 
 				position = light.matrixWorld.getPosition();
@@ -2096,24 +2117,24 @@ class WebGLRenderer implements IRenderer
 
 				plength += 1;
 
-			} else if ( Std.is(light,SpotLight)) {
-
+			} 
+			else if ( Std.is(light, SpotLight)) 
+			{
 				var spotLight:SpotLight = cast(light, SpotLight);
 				
 				soffset = slength * 3;
 
-				if (this.gammaInput) {
-
+				if (this.gammaInput) 
+				{
 					scolors[soffset] = color.r * color.r * intensity * intensity;
 					scolors[soffset + 1] = color.g * color.g * intensity * intensity;
 					scolors[soffset + 2] = color.b * color.b * intensity * intensity;
-
-				} else {
-
+				} 
+				else 
+				{
 					scolors[soffset] = color.r * intensity;
 					scolors[soffset + 1] = color.g * intensity;
 					scolors[soffset + 2] = color.b * intensity;
-
 				}
 
 				position = spotLight.matrixWorld.getPosition();
@@ -2136,9 +2157,7 @@ class WebGLRenderer implements IRenderer
 				sexponents[slength] = spotLight.exponent;
 
 				slength += 1;
-
 			}
-
 		}
 
 		// null eventual remains from removed lights
@@ -2391,6 +2410,7 @@ class WebGLRenderer implements IRenderer
 			chunks.push(vertexShader);
 		}
 
+		
 		for (p in parameters ) 
 		{
 			chunks.push(p);
@@ -2593,8 +2613,8 @@ class WebGLRenderer implements IRenderer
 
 		return program;
 	}
-// Shader parameters cache
-
+	
+	// Shader parameters cache
 	public function cacheUniformLocations(program:WebGLProgram, identifiers:Array<String>):Void
 	{
 		var id:String;
