@@ -506,38 +506,43 @@ class WebGLRenderer implements IRenderer
 		//gl.finish();
 	}
 	
-	function renderObjects(renderList, reverse, materialType, camera, lights, fog, useBlending, overrideMaterial) {
+	private function renderObjects(renderList, reverse, materialType, 
+								camera, lights, fog, useBlending, overrideMaterial):Void 
+	{
 
 		var webglObject, object, buffer, material, start, end, delta;
 
-		if (reverse) {
-
+		if (reverse) 
+		{
 			start = renderList.length - 1;
 			end = -1;
 			delta = -1;
-
-		} else {
-
+		} 
+		else 
+		{
 			start = 0;
 			end = renderList.length;
 			delta = 1;
 		}
 
-		for (var i = start; i !== end; i += delta) {
-
+		var i:Int = start;
+		while (i != end)
+		{
 			webglObject = renderList[i];
+			
+			i += delta;
 
-			if (webglObject.render) {
-
+			if (webglObject.render) 
+			{
 				object = webglObject.object;
 				buffer = webglObject.buffer;
 
-				if (overrideMaterial) {
-
+				if (overrideMaterial) 
+				{
 					material = overrideMaterial;
-
-				} else {
-
+				} 
+				else 
+				{
 					material = webglObject[materialType];
 
 					if (!material)
@@ -554,157 +559,141 @@ class WebGLRenderer implements IRenderer
 
 				_this.setMaterialFaces(material);
 
-				if ( buffer instanceof THREE.BufferGeometry) {
-
-					_this.renderBufferDirect(camera, lights, fog, material, buffer, object);
-
-				} else {
-
-					_this.renderBuffer(camera, lights, fog, material, buffer, object);
-
+				if ( Std.is(buffer, BufferGeometry)) 
+				{
+					this.renderBufferDirect(camera, lights, fog, material, buffer, object);
+				} 
+				else 
+				{
+					this.renderBuffer(camera, lights, fog, material, buffer, object);
 				}
-
 			}
-
 		}
+	}
 
-	};
+	private function renderObjectsImmediate(renderList, materialType, camera, lights, fog, useBlending, overrideMaterial) 
+	{
+		var webglObject;
+		var object; 
+		var material; 
+		var program;
 
-	function renderObjectsImmediate(renderList, materialType, camera, lights, fog, useBlending, overrideMaterial) {
-
-		var webglObject, object, material, program;
-
-		for (var i = 0, il = renderList.length; i < il; i++) {
-
+		for (i in 0...renderList.length) 
+		{
 			webglObject = renderList[i];
 			object = webglObject.object;
 
-			if (object.visible) {
-
-				if (overrideMaterial) {
-
+			if (object.visible) 
+			{
+				if (overrideMaterial) 
+				{
 					material = overrideMaterial;
-
-				} else {
-
+				} 
+				else
+				{
 					material = webglObject[materialType];
 
 					if (!material)
 						continue;
 
 					if (useBlending)
-						_this.setBlending(material.blending, material.blendEquation, material.blendSrc, material.blendDst);
+						this.setBlending(material.blending, material.blendEquation, material.blendSrc, material.blendDst);
 
-					_this.setDepthTest(material.depthTest);
-					_this.setDepthWrite(material.depthWrite);
+					this.setDepthTest(material.depthTest);
+					this.setDepthWrite(material.depthWrite);
 					setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
-
 				}
-
-				_this.renderImmediateObject(camera, lights, fog, material, object);
-
+				this.renderImmediateObject(camera, lights, fog, material, object);
 			}
-
 		}
+	}
 
-	};
-
-	this.renderImmediateObject = function(camera, lights, fog, material, object) {
-
+	private function renderImmediateObject(camera, lights, fog, material, object):Void 
+	{
 		var program = setProgram(camera, lights, fog, material, object);
 
 		_currentGeometryGroupHash = -1;
 
-		_this.setMaterialFaces(material);
+		this.setMaterialFaces(material);
 
-		if (object.immediateRenderCallback) {
-
+		if (object.immediateRenderCallback) 
+		{
 			object.immediateRenderCallback(program, _gl, _frustum);
-
-		} else {
-
+		} 
+		else 
+		{
 			object.render(function(object) {
 				_this.renderBufferImmediate(object, program, material);
 			});
-
 		}
+	}
 
-	};
+	private function unrollImmediateBufferMaterial(globject):Void 
+	{
+		var object = globject.object;
+		var material:Material = object.material;
 
-	function unrollImmediateBufferMaterial(globject) {
-
-		var object = globject.object, material = object.material;
-
-		if (material.transparent) {
-
+		if (material.transparent) 
+		{
 			globject.transparent = material;
 			globject.opaque = null;
-
-		} else {
-
+		} 
+		else 
+		{
 			globject.opaque = material;
 			globject.transparent = null;
-
 		}
+	}
 
-	};
-
-	function unrollBufferMaterial(globject) {
-
+	private function unrollBufferMaterial(globject):Void
+	{
 		var object = globject.object, buffer = globject.buffer, material, materialIndex, meshMaterial;
 
 		meshMaterial = object.material;
 
-		if ( meshMaterial instanceof THREE.MeshFaceMaterial) {
-
+		if ( Std.is(meshMaterial,MeshFaceMaterial)) 
+		{
 			materialIndex = buffer.materialIndex;
 
-			if (materialIndex >= 0) {
-
+			if (materialIndex >= 0) 
+			{
 				material = object.geometry.materials[materialIndex];
-
-				if (material.transparent) {
-
+				if (material.transparent) 
+				{
 					globject.transparent = material;
 					globject.opaque = null;
-
-				} else {
-
+				} 
+				else
+				{
 					globject.opaque = material;
 					globject.transparent = null;
-
 				}
-
 			}
-
-		} else {
-
+		} 
+		else 
+		{
 			material = meshMaterial;
 
-			if (material) {
-
-				if (material.transparent) {
-
+			if (material) 
+			{
+				if (material.transparent) 
+				{
 					globject.transparent = material;
 					globject.opaque = null;
-
-				} else {
-
+				} 
+				else 
+				{
 					globject.opaque = material;
 					globject.transparent = null;
-
 				}
-
 			}
-
 		}
-
-	};
+	}
 
 	// Geometry splitting
 
-	function sortFacesByMaterial(geometry) {
-
+	private function sortFacesByMaterial(geometry) 
+	{
 		var f, fl, face, materialIndex, vertices, materialHash, groupHash, hash_map = {};
 
 		var numMorphTargets = geometry.morphTargets.length;
@@ -712,25 +701,24 @@ class WebGLRenderer implements IRenderer
 
 		geometry.geometryGroups = {};
 
-		for ( f = 0, fl = geometry.faces.length; f < fl; f++) {
-
+		for ( f in 0...geometry.faces.length) 
+		{
 			face = geometry.faces[f];
 			materialIndex = face.materialIndex;
 
-			materialHash = (materialIndex !== undefined ) ? materialIndex : -1;
+			materialHash = (materialIndex != null ) ? materialIndex : -1;
 
-			if (hash_map[materialHash] === undefined) {
-
+			if (hash_map[materialHash] == null) 
+			{
 				hash_map[materialHash] = {
 					'hash' : materialHash,
 					'counter' : 0
 				};
-
 			}
 
 			groupHash = hash_map[materialHash].hash + '_' + hash_map[materialHash].counter;
 
-			if (geometry.geometryGroups[groupHash] === undefined) {
+			if (geometry.geometryGroups[groupHash] == null) {
 
 				geometry.geometryGroups[groupHash] = {
 					'faces3' : [],
@@ -743,14 +731,14 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			vertices = face instanceof THREE.Face3 ? 3 : 4;
+			vertices = Std.is(face,Face3) ? 3 : 4;
 
-			if (geometry.geometryGroups[groupHash].vertices + vertices > 65535) {
-
+			if (geometry.geometryGroups[groupHash].vertices + vertices > 65535) 
+			{
 				hash_map[materialHash].counter += 1;
 				groupHash = hash_map[materialHash].hash + '_' + hash_map[materialHash].counter;
 
-				if (geometry.geometryGroups[groupHash] === undefined) {
+				if (geometry.geometryGroups[groupHash] == null) {
 
 					geometry.geometryGroups[groupHash] = {
 						'faces3' : [],
@@ -760,19 +748,16 @@ class WebGLRenderer implements IRenderer
 						'numMorphTargets' : numMorphTargets,
 						'numMorphNormals' : numMorphNormals
 					};
-
 				}
-
 			}
 
-			if ( face instanceof THREE.Face3) {
-
+			if ( Std.is(face,Face3)) 
+			{
 				geometry.geometryGroups[groupHash].faces3.push(f);
-
-			} else {
-
+			} 
+			else 
+			{
 				geometry.geometryGroups[groupHash].faces4.push(f);
-
 			}
 
 			geometry.geometryGroups[groupHash].vertices += vertices;
@@ -781,15 +766,13 @@ class WebGLRenderer implements IRenderer
 
 		geometry.geometryGroupsList = [];
 
-		for (var g in geometry.geometryGroups ) {
-
-			geometry.geometryGroups[g].id = _geometryGroupCounter++;
-
-			geometry.geometryGroupsList.push(geometry.geometryGroups[g]);
-
+		var fields:Array<String> = Type.getClassFields(geometry.geometryGroupsList);
+		for (g in fields ) 
+		{
+			untyped geometry.geometryGroups[g].id = _geometryGroupCounter++;
+			geometry.geometryGroupsList.push(untyped geometry.geometryGroups[g]);
 		}
-
-	};
+	}
 
 	
 	public function setMaterialShaders(material:Material, shaders:ShaderDef):Void
@@ -3331,61 +3314,57 @@ class WebGLRenderer implements IRenderer
 	
 	// Buffer initialization
 
-	function initCustomAttributes(geometry, object) {
-
-		var nvertices = geometry.vertices.length;
+	private function initCustomAttributes(geometry, object):Void
+	{
+		var nvertices:Int = geometry.vertices.length;
 
 		var material = object.material;
 
-		if (material.attributes) {
-
-			if (geometry.__webglCustomAttributesList === undefined) {
-
+		if (material.attributes) 
+		{
+			if (geometry.__webglCustomAttributesList == null) 
+			{
 				geometry.__webglCustomAttributesList = [];
-
 			}
 
-			for (var a in material.attributes ) {
+			var fileds:Array<String> = Type.getClassFields(material.attributes);
+			for (a in fileds ) 
+			{
+				var attribute:Dynamic = untyped material.attributes[a];
 
-				var attribute = material.attributes[a];
-
-				if (!attribute.__webglInitialized || attribute.createUniqueBuffers) {
-
+				if (!attribute.__webglInitialized || attribute.createUniqueBuffers) 
+				{
 					attribute.__webglInitialized = true;
 
 					var size = 1;
 					// "f" and "i"
 
-					if (attribute.type === "v2")
+					if (attribute.type == "v2")
 						size = 2;
-					else if (attribute.type === "v3")
+					else if (attribute.type == "v3")
 						size = 3;
-					else if (attribute.type === "v4")
+					else if (attribute.type == "v4")
 						size = 4;
-					else if (attribute.type === "c")
+					else if (attribute.type == "c")
 						size = 3;
 
 					attribute.size = size;
 
 					attribute.array = new Float32Array(nvertices * size);
 
-					attribute.buffer = _gl.createBuffer();
+					attribute.buffer = gl.createBuffer();
 					attribute.buffer.belongsToAttribute = a;
 
 					attribute.needsUpdate = true;
 
 				}
-
 				geometry.__webglCustomAttributesList.push(attribute);
-
 			}
-
 		}
+	}
 
-	};
-
-	function initParticleBuffers(geometry, object) {
-
+	private function initParticleBuffers(geometry, object):Void
+	{
 		var nvertices = geometry.vertices.length;
 
 		geometry.__vertexArray = new Float32Array(nvertices * 3);
@@ -3396,11 +3375,10 @@ class WebGLRenderer implements IRenderer
 		geometry.__webglParticleCount = nvertices;
 
 		initCustomAttributes(geometry, object);
+	}
 
-	};
-
-	function initLineBuffers(geometry, object) {
-
+	private function initLineBuffers(geometry, object):Void
+	{
 		var nvertices = geometry.vertices.length;
 
 		geometry.__vertexArray = new Float32Array(nvertices * 3);
@@ -3410,20 +3388,19 @@ class WebGLRenderer implements IRenderer
 
 		initCustomAttributes(geometry, object);
 
-	};
+	}
 
-	function initRibbonBuffers(geometry) {
-
+	private function initRibbonBuffers(geometry):Void
+	{
 		var nvertices = geometry.vertices.length;
 
 		geometry.__vertexArray = new Float32Array(nvertices * 3);
 		geometry.__colorArray = new Float32Array(nvertices * 3);
 
 		geometry.__webglVertexCount = nvertices;
+	}
 
-	};
-
-	function initMeshBuffers(geometryGroup, object) {
+	private function initMeshBuffers(geometryGroup, object) {
 
 		var geometry = object.geometry, faces3 = geometryGroup.faces3, faces4 = geometryGroup.faces4, nvertices = faces3.length * 3 + faces4.length * 4, ntris = faces3.length * 1 + faces4.length * 2, nlines = faces3.length * 3 + faces4.length * 4, material = getBufferMaterial(object, geometryGroup), uvType = bufferGuessUVType(material), normalType = bufferGuessNormalType(material), vertexColorType = bufferGuessVertexColorType(material);
 
@@ -3478,28 +3455,23 @@ class WebGLRenderer implements IRenderer
 		geometryGroup.__faceArray = new Uint16Array(ntris * 3);
 		geometryGroup.__lineArray = new Uint16Array(nlines * 2);
 
-		var m, ml;
-
-		if (geometryGroup.numMorphTargets) {
-
+		if (geometryGroup.numMorphTargets > 0) 
+		{
 			geometryGroup.__morphTargetsArrays = [];
 
-			for ( m = 0, ml = geometryGroup.numMorphTargets; m < ml; m++) {
-
+			for ( m in 0...geometryGroup.numMorphTargets) 
+			{
 				geometryGroup.__morphTargetsArrays.push(new Float32Array(nvertices * 3));
-
 			}
-
 		}
 
-		if (geometryGroup.numMorphNormals) {
-
+		if (geometryGroup.numMorphNormals > 0) 
+		{
 			geometryGroup.__morphNormalsArrays = [];
 
-			for ( m = 0, ml = geometryGroup.numMorphNormals; m < ml; m++) {
-
+			for ( m in 0...geometryGroup.numMorphNormals) 
+			{
 				geometryGroup.__morphNormalsArrays.push(new Float32Array(nvertices * 3));
-
 			}
 
 		}
@@ -3511,49 +3483,51 @@ class WebGLRenderer implements IRenderer
 
 		if (material.attributes) {
 
-			if (geometryGroup.__webglCustomAttributesList === undefined) {
+			if (geometryGroup.__webglCustomAttributesList == null) {
 
 				geometryGroup.__webglCustomAttributesList = [];
 
 			}
 
-			for (var a in material.attributes ) {
-
+			var fileds:Array<String> = Type.getClassFields(material.attributes);
+			for ( a in fileds ) 
+			{
 				// Do a shallow copy of the attribute object so different geometryGroup chunks
 				// use different
 				// attribute buffers which are correctly indexed in the setMeshBuffers function
 
-				var originalAttribute = material.attributes[a];
+				var originalAttribute:Dynamic = untyped material.attributes[a];
 
 				var attribute = {};
 
-				for (var property in originalAttribute ) {
-
-					attribute[property] = originalAttribute[property];
-
+				var oFileds:Array<String> = Type.getClassFields(originalAttribute);
+				for (property in oFileds ) 
+				{
+					untyped attribute[property] = originalAttribute[property];
 				}
 
-				if (!attribute.__webglInitialized || attribute.createUniqueBuffers) {
+				if (!attribute.__webglInitialized || attribute.createUniqueBuffers) 
+				{
 
 					attribute.__webglInitialized = true;
 
 					var size = 1;
 					// "f" and "i"
 
-					if (attribute.type === "v2")
+					if (attribute.type == "v2")
 						size = 2;
-					else if (attribute.type === "v3")
+					else if (attribute.type == "v3")
 						size = 3;
-					else if (attribute.type === "v4")
+					else if (attribute.type == "v4")
 						size = 4;
-					else if (attribute.type === "c")
+					else if (attribute.type == "c")
 						size = 3;
 
 					attribute.size = size;
 
 					attribute.array = new Float32Array(nvertices * size);
 
-					attribute.buffer = _gl.createBuffer();
+					attribute.buffer = gl.createBuffer();
 					attribute.buffer.belongsToAttribute = a;
 
 					originalAttribute.needsUpdate = true;
@@ -3569,133 +3543,123 @@ class WebGLRenderer implements IRenderer
 
 		geometryGroup.__inittedArrays = true;
 
-	};
+	}
 
-	function getBufferMaterial(object, geometryGroup) {
-
-		if (object.material && !(object.material instanceof THREE.MeshFaceMaterial )) {
-
+	public function  getBufferMaterial(object, geometryGroup):Void
+	{
+		if (object.material && !(Std.is(object.material, MeshFaceMaterial))) 
+		{
 			return object.material;
-
-		} else if (geometryGroup.materialIndex >= 0) {
-
+		} 
+		else if (geometryGroup.materialIndex >= 0) 
+		{
 			return object.geometry.materials[geometryGroup.materialIndex];
-
 		}
+	}
 
-	};
+	public function  materialNeedsSmoothNormals(material) 
+	{
+		return material && material.shading != null && 
+			material.shading == ThreeGlobal.SmoothShading;
+	}
 
-	function materialNeedsSmoothNormals(material) {
-
-		return material && material.shading !== undefined && material.shading === THREE.SmoothShading;
-
-	};
-
-	function bufferGuessNormalType(material) {
-
+	public function  bufferGuessNormalType(material):Int 
+	{
 		// only MeshBasicMaterial and MeshDepthMaterial don't need normals
-
-		if (( material instanceof THREE.MeshBasicMaterial && !material.envMap ) || material instanceof THREE.MeshDepthMaterial) {
-
+		if ((Std.is(material, MeshBasicMaterial) && !material.envMap ) || 
+			Std.is(material, MeshDepthMaterial)) 
+		{
 			return false;
-
 		}
 
-		if (materialNeedsSmoothNormals(material)) {
-
-			return THREE.SmoothShading;
-
-		} else {
-
-			return THREE.FlatShading;
-
+		if (materialNeedsSmoothNormals(material)) 
+		{
+			return ThreeGlobal.SmoothShading;
+		} 
+		else 
+		{
+			return ThreeGlobal.FlatShading;
 		}
+	}
 
-	};
-
-	function bufferGuessVertexColorType(material) {
-
-		if (material.vertexColors) {
-
+	public function bufferGuessVertexColorType(material):Bool
+	{
+		if (material.vertexColors) 
+		{
 			return material.vertexColors;
-
 		}
-
 		return false;
+	}
 
-	};
-
-	function bufferGuessUVType(material) {
+	public function bufferGuessUVType(material) 
+	{
 
 		// material must use some texture to require uvs
 
-		if (material.map || material.lightMap || material.bumpMap || material.specularMap || material instanceof THREE.ShaderMaterial) {
-
+		if (material.map || 
+			material.lightMap || 
+			material.bumpMap || 
+			material.specularMap || 
+			Std.is(material, ShaderMaterial)) 
+		{
 			return true;
-
 		}
 
 		return false;
-
-	};
+	}
 
 	//
 
-	function initDirectBuffers(geometry) {
-
+	public function initDirectBuffers(geometry) 
+	{
 		var a, attribute, type;
-
-		for (a in geometry.attributes ) {
-
-			if (a === "index") {
-
-				type = _gl.ELEMENT_ARRAY_BUFFER;
-
-			} else {
-
-				type = _gl.ARRAY_BUFFER;
-
+		for (a in geometry.attributes ) 
+		{
+			if (a == "index") 
+			{
+				type = gl.ELEMENT_ARRAY_BUFFER;
+			}
+			else 
+			{
+				type = gl.ARRAY_BUFFER;
 			}
 
 			attribute = geometry.attributes[a];
 
-			attribute.buffer = _gl.createBuffer();
-
-			_gl.bindBuffer(type, attribute.buffer);
-			_gl.bufferData(type, attribute.array, _gl.STATIC_DRAW);
-
+			attribute.buffer = gl.createBuffer();
+			gl.bindBuffer(type, attribute.buffer);
+			gl.bufferData(type, attribute.array, gl.STATIC_DRAW);
 		}
-
-	};
+	}
 
 	// Buffer setting
 
-	function setParticleBuffers(geometry, hint, object) {
+	public function  setParticleBuffers(geometry, hint, object) 
+	{
 
 		var v, c, vertex, offset, index, color, vertices = geometry.vertices, vl = vertices.length, colors = geometry.colors, cl = colors.length, vertexArray = geometry.__vertexArray, colorArray = geometry.__colorArray, sortArray = geometry.__sortArray, dirtyVertices = geometry.verticesNeedUpdate, dirtyElements = geometry.elementsNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, customAttributes = geometry.__webglCustomAttributesList, i, il, a, ca, cal, value, customAttribute;
 
-		if (object.sortParticles) {
-
+		if (object.sortParticles) 
+		{
 			_projScreenMatrixPS.copy(_projScreenMatrix);
 			_projScreenMatrixPS.multiplySelf(object.matrixWorld);
 
-			for ( v = 0; v < vl; v++) {
-
+			for ( v in 0...vl) 
+			{
 				vertex = vertices[v];
 
 				_vector3.copy(vertex);
 				_projScreenMatrixPS.multiplyVector3(_vector3);
 
 				sortArray[v] = [_vector3.z, v];
-
 			}
 
 			sortArray.sort(function(a, b) {
 				return b[0] - a[0];
 			});
 
-			for ( v = 0; v < vl; v++) {
-
+			for ( v in 0...vl) 
+			{
 				vertex = vertices[sortArray[v][1]];
 
 				offset = v * 3;
@@ -3706,8 +3670,8 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( c = 0; c < cl; c++) {
-
+			for ( c in 0...cl) 
+			{
 				offset = c * 3;
 
 				color = colors[sortArray[c][1]];
@@ -3720,31 +3684,31 @@ class WebGLRenderer implements IRenderer
 
 			if (customAttributes) {
 
-				for ( i = 0, il = customAttributes.length; i < il; i++) {
-
+				for ( i in 0...customAttributes.length) 
+				{
 					customAttribute = customAttributes[i];
 
-					if (!(customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices" ))
+					if (!(customAttribute.boundTo == null || 
+						customAttribute.boundTo == "vertices" ))
 						continue;
 
 					offset = 0;
 
 					cal = customAttribute.value.length;
 
-					if (customAttribute.size === 1) {
-
-						for ( ca = 0; ca < cal; ca++) {
-
+					if (customAttribute.size == 1) 
+					{
+						for ( ca in 0...cal)
+						{
 							index = sortArray[ ca ][1];
 
 							customAttribute.array[ca] = customAttribute.value[index];
-
 						}
 
-					} else if (customAttribute.size === 2) {
-
-						for ( ca = 0; ca < cal; ca++) {
-
+					} else if (customAttribute.size == 2) 
+					{
+						for ( ca in 0...cal) 
+						{
 							index = sortArray[ ca ][1];
 
 							value = customAttribute.value[index];
@@ -3755,13 +3719,13 @@ class WebGLRenderer implements IRenderer
 							offset += 2;
 
 						}
-
-					} else if (customAttribute.size === 3) {
-
-						if (customAttribute.type === "c") {
-
-							for ( ca = 0; ca < cal; ca++) {
-
+					} 
+					else if (customAttribute.size == 3) 
+					{
+						if (customAttribute.type == "c") 
+						{
+							for ( ca in 0...cal)
+							{
 								index = sortArray[ ca ][1];
 
 								value = customAttribute.value[index];
@@ -3771,13 +3735,12 @@ class WebGLRenderer implements IRenderer
 								customAttribute.array[offset + 2] = value.b;
 
 								offset += 3;
-
 							}
-
-						} else {
-
-							for ( ca = 0; ca < cal; ca++) {
-
+						} 
+						else 
+						{
+							for ( ca in 0...cal) 
+							{
 								index = sortArray[ ca ][1];
 
 								value = customAttribute.value[index];
@@ -3787,15 +3750,14 @@ class WebGLRenderer implements IRenderer
 								customAttribute.array[offset + 2] = value.z;
 
 								offset += 3;
-
 							}
-
 						}
 
-					} else if (customAttribute.size === 4) {
-
-						for ( ca = 0; ca < cal; ca++) {
-
+					} 
+					else if (customAttribute.size == 4) 
+					{
+						for ( ca in 0...cal) 
+						{
 							index = sortArray[ ca ][1];
 
 							value = customAttribute.value[index];
@@ -3806,21 +3768,17 @@ class WebGLRenderer implements IRenderer
 							customAttribute.array[offset + 3] = value.w;
 
 							offset += 4;
-
 						}
-
 					}
-
 				}
-
 			}
-
-		} else {
-
-			if (dirtyVertices) {
-
-				for ( v = 0; v < vl; v++) {
-
+		} 
+		else 
+		{
+			if (dirtyVertices) 
+			{
+				for ( v in 0...vl) 
+				{
 					vertex = vertices[v];
 
 					offset = v * 3;
@@ -3828,15 +3786,14 @@ class WebGLRenderer implements IRenderer
 					vertexArray[offset] = vertex.x;
 					vertexArray[offset + 1] = vertex.y;
 					vertexArray[offset + 2] = vertex.z;
-
 				}
 
 			}
 
-			if (dirtyColors) {
-
-				for ( c = 0; c < cl; c++) {
-
+			if (dirtyColors) 
+			{
+				for ( c in 0...cl) 
+				{
 					color = colors[c];
 
 					offset = c * 3;
@@ -3844,50 +3801,49 @@ class WebGLRenderer implements IRenderer
 					colorArray[offset] = color.r;
 					colorArray[offset + 1] = color.g;
 					colorArray[offset + 2] = color.b;
-
 				}
-
 			}
 
-			if (customAttributes) {
-
-				for ( i = 0, il = customAttributes.length; i < il; i++) {
-
+			if (customAttributes) 
+			{
+				for ( i in 0...customAttributes.length) 
+				{
 					customAttribute = customAttributes[i];
 
-					if (customAttribute.needsUpdate && (customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices")) {
+					if (customAttribute.needsUpdate && 
+						(customAttribute.boundTo == null || 
+						customAttribute.boundTo == "vertices")) 
+					{
 
 						cal = customAttribute.value.length;
 
 						offset = 0;
 
-						if (customAttribute.size === 1) {
-
-							for ( ca = 0; ca < cal; ca++) {
-
+						if (customAttribute.size == 1) 
+						{
+							for ( ca in 0...cal) 
+							{
 								customAttribute.array[ca] = customAttribute.value[ca];
-
 							}
-
-						} else if (customAttribute.size === 2) {
-
-							for ( ca = 0; ca < cal; ca++) {
-
+						} 
+						else if (customAttribute.size == 2) 
+						{
+							for ( ca in 0...cal) 
+							{
 								value = customAttribute.value[ca];
 
 								customAttribute.array[offset] = value.x;
 								customAttribute.array[offset + 1] = value.y;
 
 								offset += 2;
-
 							}
-
-						} else if (customAttribute.size === 3) {
-
-							if (customAttribute.type === "c") {
-
-								for ( ca = 0; ca < cal; ca++) {
-
+						} 
+						else if (customAttribute.size == 3) 
+						{
+							if (customAttribute.type == "c") 
+							{
+								for ( ca in 0...cal) 
+								{
 									value = customAttribute.value[ca];
 
 									customAttribute.array[offset] = value.r;
@@ -3895,13 +3851,12 @@ class WebGLRenderer implements IRenderer
 									customAttribute.array[offset + 2] = value.b;
 
 									offset += 3;
-
 								}
-
-							} else {
-
-								for ( ca = 0; ca < cal; ca++) {
-
+							} 
+							else 
+							{
+								for ( ca in 0...cal) 
+								{
 									value = customAttribute.value[ca];
 
 									customAttribute.array[offset] = value.x;
@@ -3909,15 +3864,13 @@ class WebGLRenderer implements IRenderer
 									customAttribute.array[offset + 2] = value.z;
 
 									offset += 3;
-
 								}
-
 							}
-
-						} else if (customAttribute.size === 4) {
-
-							for ( ca = 0; ca < cal; ca++) {
-
+						} 
+						else if (customAttribute.size == 4) 
+						{
+							for ( ca in 0...cal) 
+							{
 								value = customAttribute.value[ca];
 
 								customAttribute.array[offset] = value.x;
@@ -3926,79 +3879,63 @@ class WebGLRenderer implements IRenderer
 								customAttribute.array[offset + 3] = value.w;
 
 								offset += 4;
-
 							}
-
 						}
-
 					}
-
 				}
-
 			}
-
 		}
 
-		if (dirtyVertices || object.sortParticles) {
-
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometry.__webglVertexBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, vertexArray, hint);
-
+		if (dirtyVertices || object.sortParticles) 
+		{
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometry.__webglVertexBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, vertexArray, hint);
 		}
 
-		if (dirtyColors || object.sortParticles) {
-
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometry.__webglColorBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, colorArray, hint);
-
+		if (dirtyColors || object.sortParticles) 
+		{
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometry.__webglColorBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, colorArray, hint);
 		}
 
-		if (customAttributes) {
-
-			for ( i = 0, il = customAttributes.length; i < il; i++) {
-
+		if (customAttributes) 
+		{
+			for ( i in 0...customAttributes.length) 
+			{
 				customAttribute = customAttributes[i];
 
-				if (customAttribute.needsUpdate || object.sortParticles) {
-
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, customAttribute.buffer);
-					_gl.bufferData(_gl.ARRAY_BUFFER, customAttribute.array, hint);
-
+				if (customAttribute.needsUpdate || object.sortParticles)
+				{
+					gl.bindBuffer(gl.ARRAY_BUFFER, customAttribute.buffer);
+					gl.bufferData(gl.ARRAY_BUFFER, customAttribute.array, hint);
 				}
-
 			}
-
 		}
+	}
 
-	};
-
-	function setLineBuffers(geometry, hint) {
-
+	public function setLineBuffers(geometry, hint) 
+	{
 		var v, c, vertex, offset, color, vertices = geometry.vertices, colors = geometry.colors, vl = vertices.length, cl = colors.length, vertexArray = geometry.__vertexArray, colorArray = geometry.__colorArray, dirtyVertices = geometry.verticesNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, customAttributes = geometry.__webglCustomAttributesList, i, il, a, ca, cal, value, customAttribute;
 
-		if (dirtyVertices) {
-
-			for ( v = 0; v < vl; v++) {
-
+		if (dirtyVertices) 
+		{
+			for ( v in 0...vl) 
+			{
 				vertex = vertices[v];
 
 				offset = v * 3;
-
 				vertexArray[offset] = vertex.x;
 				vertexArray[offset + 1] = vertex.y;
 				vertexArray[offset + 2] = vertex.z;
-
 			}
-
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometry.__webglVertexBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, vertexArray, hint);
-
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometry.__webglVertexBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, vertexArray, hint);
 		}
 
-		if (dirtyColors) {
-
-			for ( c = 0; c < cl; c++) {
-
+		if (dirtyColors)
+		{
+			for ( c in 0...cl) 
+			{
 				color = colors[c];
 
 				offset = c * 3;
@@ -4009,50 +3946,50 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometry.__webglColorBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, colorArray, hint);
-
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometry.__webglColorBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, colorArray, hint);
 		}
 
 		if (customAttributes) {
 
-			for ( i = 0, il = customAttributes.length; i < il; i++) {
-
+			for ( i in 0...customAttributes.length) 
+			{
 				customAttribute = customAttributes[i];
 
-				if (customAttribute.needsUpdate && (customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices" )) {
+				if (customAttribute.needsUpdate && 
+					(customAttribute.boundTo == null || 
+					customAttribute.boundTo == "vertices" )) 
+				{
 
 					offset = 0;
 
 					cal = customAttribute.value.length;
 
-					if (customAttribute.size === 1) {
-
-						for ( ca = 0; ca < cal; ca++) {
-
+					if (customAttribute.size == 1) 
+					{
+						for ( ca in 0...cal) 
+						{
 							customAttribute.array[ca] = customAttribute.value[ca];
-
 						}
-
-					} else if (customAttribute.size === 2) {
-
-						for ( ca = 0; ca < cal; ca++) {
-
+					} 
+					else if (customAttribute.size == 2) 
+					{
+						for ( ca in 0...cal) 
+						{
 							value = customAttribute.value[ca];
 
 							customAttribute.array[offset] = value.x;
 							customAttribute.array[offset + 1] = value.y;
 
 							offset += 2;
-
 						}
-
-					} else if (customAttribute.size === 3) {
-
-						if (customAttribute.type === "c") {
-
-							for ( ca = 0; ca < cal; ca++) {
-
+					} 
+					else if (customAttribute.size == 3) 
+					{
+						if (customAttribute.type == "c") 
+						{
+							for ( ca in 0...cal) 
+							{
 								value = customAttribute.value[ca];
 
 								customAttribute.array[offset] = value.r;
@@ -4060,13 +3997,12 @@ class WebGLRenderer implements IRenderer
 								customAttribute.array[offset + 2] = value.b;
 
 								offset += 3;
-
 							}
-
-						} else {
-
-							for ( ca = 0; ca < cal; ca++) {
-
+						} 
+						else 
+						{
+							for ( ca in 0...cal) 
+							{
 								value = customAttribute.value[ca];
 
 								customAttribute.array[offset] = value.x;
@@ -4074,15 +4010,13 @@ class WebGLRenderer implements IRenderer
 								customAttribute.array[offset + 2] = value.z;
 
 								offset += 3;
-
 							}
-
 						}
-
-					} else if (customAttribute.size === 4) {
-
-						for ( ca = 0; ca < cal; ca++) {
-
+					} 
+					else if (customAttribute.size == 4) 
+					{
+						for ( ca in 0...cal) 
+						{
 							value = customAttribute.value[ca];
 
 							customAttribute.array[offset] = value.x;
@@ -4096,25 +4030,22 @@ class WebGLRenderer implements IRenderer
 
 					}
 
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, customAttribute.buffer);
-					_gl.bufferData(_gl.ARRAY_BUFFER, customAttribute.array, hint);
-
+					gl.bindBuffer(gl.ARRAY_BUFFER, customAttribute.buffer);
+					gl.bufferData(gl.ARRAY_BUFFER, customAttribute.array, hint);
 				}
-
 			}
 
 		}
+	}
 
-	};
-
-	function setRibbonBuffers(geometry, hint) {
-
+	public function  setRibbonBuffers(geometry, hint) 
+	{
 		var v, c, vertex, offset, color, vertices = geometry.vertices, colors = geometry.colors, vl = vertices.length, cl = colors.length, vertexArray = geometry.__vertexArray, colorArray = geometry.__colorArray, dirtyVertices = geometry.verticesNeedUpdate, dirtyColors = geometry.colorsNeedUpdate;
 
-		if (dirtyVertices) {
-
-			for ( v = 0; v < vl; v++) {
-
+		if (dirtyVertices) 
+		{
+			for ( v in 0...vl) 
+			{
 				vertex = vertices[v];
 
 				offset = v * 3;
@@ -4125,15 +4056,14 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometry.__webglVertexBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, vertexArray, hint);
-
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometry.__webglVertexBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, vertexArray, hint);
 		}
 
-		if (dirtyColors) {
-
-			for ( c = 0; c < cl; c++) {
-
+		if (dirtyColors)
+		{
+			for ( c in 0...cl) 
+			{
 				color = colors[c];
 
 				offset = c * 3;
@@ -4144,33 +4074,30 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometry.__webglColorBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, colorArray, hint);
-
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometry.__webglColorBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, colorArray, hint);
 		}
+	}
 
-	};
-
-	function setMeshBuffers(geometryGroup, object, hint, dispose, material) {
-
-		if (!geometryGroup.__inittedArrays) {
-
+	public function setMeshBuffers(geometryGroup, object, hint, dispose, material):Void 
+	{
+		if (!geometryGroup.__inittedArrays) 
+		{
 			// console.log( object );
 			return;
-
 		}
 
-		var normalType = bufferGuessNormalType(material), vertexColorType = bufferGuessVertexColorType(material), uvType = bufferGuessUVType(material), needsSmoothNormals = (normalType === THREE.SmoothShading );
+		var normalType = bufferGuessNormalType(material), vertexColorType = bufferGuessVertexColorType(material), uvType = bufferGuessUVType(material), needsSmoothNormals = (normalType == ThreeGlobal.SmoothShading );
 
-		var f, fl, fi, face, vertexNormals, faceNormal, normal, vertexColors, faceColor, vertexTangents, uv, uv2, v1, v2, v3, v4, t1, t2, t3, t4, n1, n2, n3, n4, c1, c2, c3, c4, sw1, sw2, sw3, sw4, si1, si2, si3, si4, sa1, sa2, sa3, sa4, sb1, sb2, sb3, sb4, m, ml, i, il, vn, uvi, uv2i, vk, vkl, vka, nka, chf, faceVertexNormals, a, vertexIndex = 0, offset = 0, offset_uv = 0, offset_uv2 = 0, offset_face = 0, offset_normal = 0, offset_tangent = 0, offset_line = 0, offset_color = 0, offset_skin = 0, offset_morphTarget = 0, offset_custom = 0, offset_customSrc = 0, value, vertexArray = geometryGroup.__vertexArray, uvArray = geometryGroup.__uvArray, uv2Array = geometryGroup.__uv2Array, normalArray = geometryGroup.__normalArray, tangentArray = geometryGroup.__tangentArray, colorArray = geometryGroup.__colorArray, skinVertexAArray = geometryGroup.__skinVertexAArray, skinVertexBArray = geometryGroup.__skinVertexBArray, skinIndexArray = geometryGroup.__skinIndexArray, skinWeightArray = geometryGroup.__skinWeightArray, morphTargetsArrays = geometryGroup.__morphTargetsArrays, morphNormalsArrays = geometryGroup.__morphNormalsArrays, customAttributes = geometryGroup.__webglCustomAttributesList, customAttribute, faceArray = geometryGroup.__faceArray, lineArray = geometryGroup.__lineArray, geometry = object.geometry,
+		var fi, face, vertexNormals, faceNormal, normal, vertexColors, faceColor, vertexTangents, uv, uv2, v1, v2, v3, v4, t1, t2, t3, t4, n1, n2, n3, n4, c1, c2, c3, c4, sw1, sw2, sw3, sw4, si1, si2, si3, si4, sa1, sa2, sa3, sa4, sb1, sb2, sb3, sb4, m, ml, i, il, vn, uvi, uv2i, vk, vkl, vka, nka, chf, faceVertexNormals, a, vertexIndex = 0, offset = 0, offset_uv = 0, offset_uv2 = 0, offset_face = 0, offset_normal = 0, offset_tangent = 0, offset_line = 0, offset_color = 0, offset_skin = 0, offset_morphTarget = 0, offset_custom = 0, offset_customSrc = 0, value, vertexArray = geometryGroup.__vertexArray, uvArray = geometryGroup.__uvArray, uv2Array = geometryGroup.__uv2Array, normalArray = geometryGroup.__normalArray, tangentArray = geometryGroup.__tangentArray, colorArray = geometryGroup.__colorArray, skinVertexAArray = geometryGroup.__skinVertexAArray, skinVertexBArray = geometryGroup.__skinVertexBArray, skinIndexArray = geometryGroup.__skinIndexArray, skinWeightArray = geometryGroup.__skinWeightArray, morphTargetsArrays = geometryGroup.__morphTargetsArrays, morphNormalsArrays = geometryGroup.__morphNormalsArrays, customAttributes = geometryGroup.__webglCustomAttributesList, customAttribute, faceArray = geometryGroup.__faceArray, lineArray = geometryGroup.__lineArray, geometry = object.geometry,
 		// // this is shared for all chunks
 
 		dirtyVertices = geometry.verticesNeedUpdate, dirtyElements = geometry.elementsNeedUpdate, dirtyUvs = geometry.uvsNeedUpdate, dirtyNormals = geometry.normalsNeedUpdate, dirtyTangents = geometry.tangentsNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, dirtyMorphTargets = geometry.morphTargetsNeedUpdate, vertices = geometry.vertices, chunk_faces3 = geometryGroup.faces3, chunk_faces4 = geometryGroup.faces4, obj_faces = geometry.faces, obj_uvs = geometry.faceVertexUvs[0], obj_uvs2 = geometry.faceVertexUvs[1], obj_colors = geometry.colors, obj_skinVerticesA = geometry.skinVerticesA, obj_skinVerticesB = geometry.skinVerticesB, obj_skinIndices = geometry.skinIndices, obj_skinWeights = geometry.skinWeights, morphTargets = geometry.morphTargets, morphNormals = geometry.morphNormals;
 
-		if (dirtyVertices) {
-
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+		if (dirtyVertices) 
+		{
+			for ( f in 0...chunk_faces3.length) 
+			{
 				face = obj_faces[chunk_faces3[f]];
 
 				v1 = vertices[face.a];
@@ -4193,8 +4120,8 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0..chunk_faces4.length) 
+			{
 				face = obj_faces[chunk_faces4[f]];
 
 				v1 = vertices[face.a];
@@ -4222,19 +4149,19 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglVertexBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, vertexArray, hint);
-
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglVertexBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, vertexArray, hint);
 		}
 
-		if (dirtyMorphTargets) {
+		if (dirtyMorphTargets) 
+		{
 
-			for ( vk = 0, vkl = morphTargets.length; vk < vkl; vk++) {
-
+			for ( vk in 0..morphTargets.length) 
+			{
 				offset_morphTarget = 0;
 
-				for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+				for ( f in 0..chunk_faces3.length) 
+				{
 					chf = chunk_faces3[f];
 					face = obj_faces[chf];
 
@@ -4260,18 +4187,19 @@ class WebGLRenderer implements IRenderer
 
 					// morph normals
 
-					if (material.morphNormals) {
-
-						if (needsSmoothNormals) {
-
+					if (material.morphNormals) 
+					{
+						if (needsSmoothNormals) 
+						{
 							faceVertexNormals = morphNormals[ vk ].vertexNormals[chf];
 
 							n1 = faceVertexNormals.a;
 							n2 = faceVertexNormals.b;
 							n3 = faceVertexNormals.c;
 
-						} else {
-
+						}
+						else 
+						{
 							n1 = morphNormals[ vk ].faceNormals[chf];
 							n2 = n1;
 							n3 = n1;
@@ -4300,8 +4228,8 @@ class WebGLRenderer implements IRenderer
 
 				}
 
-				for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+				for ( f in 0..chunk_faces4.length) 
+				{
 					chf = chunk_faces4[f];
 					face = obj_faces[chf];
 
@@ -4332,10 +4260,10 @@ class WebGLRenderer implements IRenderer
 
 					// morph normals
 
-					if (material.morphNormals) {
-
-						if (needsSmoothNormals) {
-
+					if (material.morphNormals) 
+					{
+						if (needsSmoothNormals)
+						{
 							faceVertexNormals = morphNormals[ vk ].vertexNormals[chf];
 
 							n1 = faceVertexNormals.a;
@@ -4343,8 +4271,9 @@ class WebGLRenderer implements IRenderer
 							n3 = faceVertexNormals.c;
 							n4 = faceVertexNormals.d;
 
-						} else {
-
+						} 
+						else 
+						{
 							n1 = morphNormals[ vk ].faceNormals[chf];
 							n2 = n1;
 							n3 = n1;
@@ -4375,27 +4304,24 @@ class WebGLRenderer implements IRenderer
 					//
 
 					offset_morphTarget += 12;
-
 				}
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[vk]);
-				_gl.bufferData(_gl.ARRAY_BUFFER, morphTargetsArrays[vk], hint);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[vk]);
+				gl.bufferData(gl.ARRAY_BUFFER, morphTargetsArrays[vk], hint);
 
-				if (material.morphNormals) {
-
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglMorphNormalsBuffers[vk]);
-					_gl.bufferData(_gl.ARRAY_BUFFER, morphNormalsArrays[vk], hint);
-
+				if (material.morphNormals) 
+				{
+					gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphNormalsBuffers[vk]);
+					gl.bufferData(gl.ARRAY_BUFFER, morphNormalsArrays[vk], hint);
 				}
 
 			}
-
 		}
 
-		if (obj_skinWeights.length) {
-
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+		if (obj_skinWeights.length) 
+		{
+			for ( f in 0..chunk_faces3.length) 
+			{
 				face = obj_faces[chunk_faces3[f]];
 
 				// weights
@@ -4488,8 +4414,8 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0..chunk_faces4.length) 
+			{
 				face = obj_faces[chunk_faces4[f]];
 
 				// weights
@@ -4606,19 +4532,19 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			if (offset_skin > 0) {
+			if (offset_skin > 0) 
+			{
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexABuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, skinVertexAArray, hint);
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexABuffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, skinVertexAArray, hint);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexBBuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, skinVertexBArray, hint);
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexBBuffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, skinVertexBArray, hint);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinIndicesBuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, skinIndexArray, hint);
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinIndicesBuffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, skinIndexArray, hint);
-
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinWeightsBuffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, skinWeightArray, hint);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinWeightsBuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, skinWeightArray, hint);
 
 			}
 
@@ -4626,21 +4552,22 @@ class WebGLRenderer implements IRenderer
 
 		if (dirtyColors && vertexColorType) {
 
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces3.length) 
+			{
 				face = obj_faces[chunk_faces3[f]];
 
 				vertexColors = face.vertexColors;
 				faceColor = face.color;
 
-				if (vertexColors.length === 3 && vertexColorType === THREE.VertexColors) {
-
+				if (vertexColors.length == 3 && 
+				vertexColorType == ThreeGlobal.VertexColors) 
+				{
 					c1 = vertexColors[0];
 					c2 = vertexColors[1];
 					c3 = vertexColors[2];
-
-				} else {
-
+				} 
+				else
+				{
 					c1 = faceColor;
 					c2 = faceColor;
 					c3 = faceColor;
@@ -4663,14 +4590,14 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces4.length) 
+			{
 				face = obj_faces[chunk_faces4[f]];
 
 				vertexColors = face.vertexColors;
 				faceColor = face.color;
 
-				if (vertexColors.length === 4 && vertexColorType === THREE.VertexColors) {
+				if (vertexColors.length == 4 && vertexColorType == ThreeGlobal.VertexColors) {
 
 					c1 = vertexColors[0];
 					c2 = vertexColors[1];
@@ -4708,8 +4635,8 @@ class WebGLRenderer implements IRenderer
 
 			if (offset_color > 0) {
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglColorBuffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, colorArray, hint);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglColorBuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, colorArray, hint);
 
 			}
 
@@ -4717,8 +4644,8 @@ class WebGLRenderer implements IRenderer
 
 		if (dirtyTangents && geometry.hasTangents) {
 
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces3.length) 
+			{
 				face = obj_faces[chunk_faces3[f]];
 
 				vertexTangents = face.vertexTangents;
@@ -4746,8 +4673,8 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces4.length) 
+			{
 				face = obj_faces[chunk_faces4[f]];
 
 				vertexTangents = face.vertexTangents;
@@ -4781,24 +4708,25 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglTangentBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, tangentArray, hint);
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglTangentBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, tangentArray, hint);
 
 		}
 
 		if (dirtyNormals && normalType) {
 
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces3.length) 
+			{
 				face = obj_faces[chunk_faces3[f]];
 
 				vertexNormals = face.vertexNormals;
 				faceNormal = face.normal;
 
-				if (vertexNormals.length === 3 && needsSmoothNormals) {
+				if (vertexNormals.length == 3 && needsSmoothNormals) 
+				{
 
-					for ( i = 0; i < 3; i++) {
-
+					for ( i in 0...3) 
+					{
 						vn = vertexNormals[i];
 
 						normalArray[offset_normal] = vn.x;
@@ -4811,7 +4739,8 @@ class WebGLRenderer implements IRenderer
 
 				} else {
 
-					for ( i = 0; i < 3; i++) {
+					for ( i in 0...3) 
+					{
 
 						normalArray[offset_normal] = faceNormal.x;
 						normalArray[offset_normal + 1] = faceNormal.y;
@@ -4825,17 +4754,17 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces4.length) 
+			{
 				face = obj_faces[chunk_faces4[f]];
 
 				vertexNormals = face.vertexNormals;
 				faceNormal = face.normal;
 
-				if (vertexNormals.length === 4 && needsSmoothNormals) {
+				if (vertexNormals.length == 4 && needsSmoothNormals) {
 
-					for ( i = 0; i < 4; i++) {
-
+					for ( i in 0...4) 
+					{
 						vn = vertexNormals[i];
 
 						normalArray[offset_normal] = vn.x;
@@ -4848,7 +4777,8 @@ class WebGLRenderer implements IRenderer
 
 				} else {
 
-					for ( i = 0; i < 4; i++) {
+					for ( i in 0...4) 
+					{
 
 						normalArray[offset_normal] = faceNormal.x;
 						normalArray[offset_normal + 1] = faceNormal.y;
@@ -4862,48 +4792,46 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglNormalBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, normalArray, hint);
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglNormalBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, normalArray, hint);
 
 		}
 
 		if (dirtyUvs && obj_uvs && uvType) {
 
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces3.length) 
+			{
 				fi = chunk_faces3[f];
 
 				face = obj_faces[fi];
 				uv = obj_uvs[fi];
 
-				if (uv === undefined)
+				if (uv == null)
 					continue;
 
-				for ( i = 0; i < 3; i++) {
-
+				for ( i in 0...3) 
+				{
 					uvi = uv[i];
 
 					uvArray[offset_uv] = uvi.u;
 					uvArray[offset_uv + 1] = uvi.v;
 
 					offset_uv += 2;
-
 				}
-
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces4.length) 
+			{
 				fi = chunk_faces4[f];
 
 				face = obj_faces[fi];
 				uv = obj_uvs[fi];
 
-				if (uv === undefined)
+				if (uv == null)
 					continue;
 
-				for ( i = 0; i < 4; i++) {
-
+				for ( i in 0...4) 
+				{
 					uvi = uv[i];
 
 					uvArray[offset_uv] = uvi.u;
@@ -4915,28 +4843,27 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			if (offset_uv > 0) {
-
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglUVBuffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, uvArray, hint);
-
+			if (offset_uv > 0) 
+			{
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglUVBuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, uvArray, hint);
 			}
-
 		}
 
 		if (dirtyUvs && obj_uvs2 && uvType) {
 
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces3.length) 
+			{
 				fi = chunk_faces3[f];
 
 				face = obj_faces[fi];
 				uv2 = obj_uvs2[fi];
 
-				if (uv2 === undefined)
+				if (uv2 == null)
 					continue;
 
-				for ( i = 0; i < 3; i++) {
+				for ( i in 0...3)
+				{
 
 					uv2i = uv2[i];
 
@@ -4949,18 +4876,18 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces4.length) 
+			{
 				fi = chunk_faces4[f];
 
 				face = obj_faces[fi];
 				uv2 = obj_uvs2[fi];
 
-				if (uv2 === undefined)
+				if (uv2 == null)
 					continue;
 
-				for ( i = 0; i < 4; i++) {
-
+				for ( i in 0...4) 
+				{
 					uv2i = uv2[i];
 
 					uv2Array[offset_uv2] = uv2i.u;
@@ -4972,19 +4899,17 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			if (offset_uv2 > 0) {
-
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglUV2Buffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, uv2Array, hint);
-
+			if (offset_uv2 > 0) 
+			{
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglUV2Buffer);
+				gl.bufferData(gl.ARRAY_BUFFER, uv2Array, hint);
 			}
-
 		}
 
-		if (dirtyElements) {
-
-			for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+		if (dirtyElements) 
+		{
+			for ( f in 0...chunk_faces3.length) 
+			{
 				face = obj_faces[chunk_faces3[f]];
 
 				faceArray[offset_face] = vertexIndex;
@@ -5008,8 +4933,8 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+			for ( f in 0...chunk_faces4.length) 
+			{
 				face = obj_faces[chunk_faces4[f]];
 
 				faceArray[offset_face] = vertexIndex;
@@ -5040,17 +4965,17 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglFaceBuffer);
-			_gl.bufferData(_gl.ELEMENT_ARRAY_BUFFER, faceArray, hint);
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglFaceBuffer);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, faceArray, hint);
 
-			_gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglLineBuffer);
-			_gl.bufferData(_gl.ELEMENT_ARRAY_BUFFER, lineArray, hint);
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglLineBuffer);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, lineArray, hint);
 
 		}
 
 		if (customAttributes) {
 
-			for ( i = 0, il = customAttributes.length; i < il; i++) {
+			for ( i in 0...customAttributes.length) {
 
 				customAttribute = customAttributes[i];
 
@@ -5060,11 +4985,11 @@ class WebGLRenderer implements IRenderer
 				offset_custom = 0;
 				offset_customSrc = 0;
 
-				if (customAttribute.size === 1) {
+				if (customAttribute.size == 1) {
 
-					if (customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices") {
+					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) {
 
 							face = obj_faces[chunk_faces3[f]];
 
@@ -5076,7 +5001,7 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) {
 
 							face = obj_faces[chunk_faces4[f]];
 
@@ -5089,9 +5014,9 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-					} else if (customAttribute.boundTo === "faces") {
+					} else if (customAttribute.boundTo == "faces") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) {
 
 							value = customAttribute.value[chunk_faces3[f]];
 
@@ -5103,7 +5028,7 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) {
 
 							value = customAttribute.value[chunk_faces4[f]];
 
@@ -5118,11 +5043,11 @@ class WebGLRenderer implements IRenderer
 
 					}
 
-				} else if (customAttribute.size === 2) {
+				} else if (customAttribute.size == 2) {
 
-					if (customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices") {
+					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) {
 
 							face = obj_faces[chunk_faces3[f]];
 
@@ -5143,7 +5068,8 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) 
+						{
 
 							face = obj_faces[chunk_faces4[f]];
 
@@ -5168,9 +5094,9 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-					} else if (customAttribute.boundTo === "faces") {
+					} else if (customAttribute.boundTo == "faces") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) {
 
 							value = customAttribute.value[chunk_faces3[f]];
 
@@ -5191,7 +5117,8 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) 
+						{
 
 							value = customAttribute.value[chunk_faces4[f]];
 
@@ -5218,11 +5145,11 @@ class WebGLRenderer implements IRenderer
 
 					}
 
-				} else if (customAttribute.size === 3) {
+				} else if (customAttribute.size == 3) {
 
 					var pp;
 
-					if (customAttribute.type === "c") {
+					if (customAttribute.type == "c") {
 
 						pp = ["r", "g", "b"];
 
@@ -5232,9 +5159,9 @@ class WebGLRenderer implements IRenderer
 
 					}
 
-					if (customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices") {
+					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) {
 
 							face = obj_faces[chunk_faces3[f]];
 
@@ -5258,7 +5185,7 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) {
 
 							face = obj_faces[chunk_faces4[f]];
 
@@ -5287,9 +5214,10 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-					} else if (customAttribute.boundTo === "faces") {
+					} else if (customAttribute.boundTo == "faces") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) 
+						{
 
 							value = customAttribute.value[chunk_faces3[f]];
 
@@ -5313,7 +5241,8 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) 
+						{
 
 							value = customAttribute.value[chunk_faces4[f]];
 
@@ -5342,9 +5271,10 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-					} else if (customAttribute.boundTo === "faceVertices") {
+					} else if (customAttribute.boundTo == "faceVertices") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) 
+						{
 
 							value = customAttribute.value[chunk_faces3[f]];
 
@@ -5368,7 +5298,8 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) 
+						{
 
 							value = customAttribute.value[chunk_faces4[f]];
 
@@ -5399,11 +5330,12 @@ class WebGLRenderer implements IRenderer
 
 					}
 
-				} else if (customAttribute.size === 4) {
+				} else if (customAttribute.size == 4) {
 
-					if (customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices") {
+					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
+						for ( f in 0...chunk_faces3.length) 
+						{
 
 							face = obj_faces[chunk_faces3[f]];
 
@@ -5430,7 +5362,8 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
+						for ( f in 0...chunk_faces4.length) 
+						{
 
 							face = obj_faces[chunk_faces4[f]];
 
@@ -5463,10 +5396,10 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-					} else if (customAttribute.boundTo === "faces") {
+					} else if (customAttribute.boundTo == "faces") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+						for ( f in 0...chunk_faces3.length) 
+						{
 							value = customAttribute.value[chunk_faces3[f]];
 
 							v1 = value;
@@ -5492,8 +5425,8 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+						for ( f in 0...chunk_faces4.length) 
+						{
 							value = customAttribute.value[chunk_faces4[f]];
 
 							v1 = value;
@@ -5525,10 +5458,10 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-					} else if (customAttribute.boundTo === "faceVertices") {
+					} else if (customAttribute.boundTo == "faceVertices") {
 
-						for ( f = 0, fl = chunk_faces3.length; f < fl; f++) {
-
+						for ( f in 0...chunk_faces3.length) 
+						{
 							value = customAttribute.value[chunk_faces3[f]];
 
 							v1 = value[0];
@@ -5554,8 +5487,8 @@ class WebGLRenderer implements IRenderer
 
 						}
 
-						for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
-
+						for ( f in 0...chunk_faces4.length) 
+						{
 							value = customAttribute.value[chunk_faces4[f]];
 
 							v1 = value[0];
@@ -5591,34 +5524,34 @@ class WebGLRenderer implements IRenderer
 
 				}
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, customAttribute.buffer);
-				_gl.bufferData(_gl.ARRAY_BUFFER, customAttribute.array, hint);
+				gl.bindBuffer(gl.ARRAY_BUFFER, customAttribute.buffer);
+				gl.bufferData(gl.ARRAY_BUFFER, customAttribute.array, hint);
 
 			}
 
 		}
 
 		if (dispose) {
-			delete geometryGroup.__inittedArrays;
-			delete geometryGroup.__colorArray;
-			delete geometryGroup.__normalArray;
-			delete geometryGroup.__tangentArray;
-			delete geometryGroup.__uvArray;
-			delete geometryGroup.__uv2Array;
-			delete geometryGroup.__faceArray;
-			delete geometryGroup.__vertexArray;
-			delete geometryGroup.__lineArray;
-			delete geometryGroup.__skinVertexAArray;
-			delete geometryGroup.__skinVertexBArray;
-			delete geometryGroup.__skinIndexArray;
-			delete geometryGroup.__skinWeightArray;
+			//delete geometryGroup.__inittedArrays;
+			//delete geometryGroup.__colorArray;
+			//delete geometryGroup.__normalArray;
+			//delete geometryGroup.__tangentArray;
+			//delete geometryGroup.__uvArray;
+			//delete geometryGroup.__uv2Array;
+			//delete geometryGroup.__faceArray;
+			//delete geometryGroup.__vertexArray;
+			//delete geometryGroup.__lineArray;
+			//delete geometryGroup.__skinVertexAArray;
+			//delete geometryGroup.__skinVertexBArray;
+			//delete geometryGroup.__skinIndexArray;
+			//delete geometryGroup.__skinWeightArray;
 
 		}
 
-	};
+	}
 
-	function setDirectBuffers(geometry, hint, dispose) {
-
+	public function  setDirectBuffers(geometry, hint, dispose) 
+	{
 		var attributes = geometry.attributes;
 
 		var index = attributes["index"];
@@ -5628,45 +5561,45 @@ class WebGLRenderer implements IRenderer
 		var color = attributes["color"];
 		var tangent = attributes["tangent"];
 
-		if (geometry.elementsNeedUpdate && index !== undefined) {
+		if (geometry.elementsNeedUpdate && index != null) {
 
-			_gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, index.buffer);
-			_gl.bufferData(_gl.ELEMENT_ARRAY_BUFFER, index.array, hint);
-
-		}
-
-		if (geometry.verticesNeedUpdate && position !== undefined) {
-
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, position.buffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, position.array, hint);
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index.buffer);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, index.array, hint);
 
 		}
 
-		if (geometry.normalsNeedUpdate && normal !== undefined) {
+		if (geometry.verticesNeedUpdate && position != null) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, normal.buffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, normal.array, hint);
-
-		}
-
-		if (geometry.uvsNeedUpdate && uv !== undefined) {
-
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, uv.buffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, uv.array, hint);
+			gl.bindBuffer(gl.ARRAY_BUFFER, position.buffer);
+			gl.bufferData(gl.ARRAY_BUFFER, position.array, hint);
 
 		}
 
-		if (geometry.colorsNeedUpdate && color !== undefined) {
+		if (geometry.normalsNeedUpdate && normal != null) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, color.buffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, color.array, hint);
+			gl.bindBuffer(gl.ARRAY_BUFFER, normal.buffer);
+			gl.bufferData(gl.ARRAY_BUFFER, normal.array, hint);
 
 		}
 
-		if (geometry.tangentsNeedUpdate && tangent !== undefined) {
+		if (geometry.uvsNeedUpdate && uv != undefined) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, tangent.buffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, tangent.array, hint);
+			gl.bindBuffer(gl.ARRAY_BUFFER, uv.buffer);
+			gl.bufferData(gl.ARRAY_BUFFER, uv.array, hint);
+
+		}
+
+		if (geometry.colorsNeedUpdate && color != undefined) {
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, color.buffer);
+			gl.bufferData(gl.ARRAY_BUFFER, color.array, hint);
+
+		}
+
+		if (geometry.tangentsNeedUpdate && tangent != undefined) {
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, tangent.buffer);
+			gl.bufferData(gl.ARRAY_BUFFER, tangent.array, hint);
 
 		}
 
@@ -5679,11 +5612,11 @@ class WebGLRenderer implements IRenderer
 
 		}
 
-	};
+	}
 
 	// Buffer rendering
 
-	this.renderBufferImmediate = function(object, program, material) {
+	public function renderBufferImmediate(object, program, material) {
 
 		if (object.hasPositions && !object.__webglVertexBuffer)
 			object.__webglVertexBuffer = _gl.createBuffer();
@@ -5696,16 +5629,16 @@ class WebGLRenderer implements IRenderer
 
 		if (object.hasPositions) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, object.__webglVertexBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, object.positionArray, _gl.DYNAMIC_DRAW);
-			_gl.enableVertexAttribArray(program.attributes.position);
-			_gl.vertexAttribPointer(program.attributes.position, 3, _gl.FLOAT, false, 0, 0);
+			gl.bindBuffer(gl.ARRAY_BUFFER, object.__webglVertexBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, object.positionArray, gl.DYNAMIC_DRAW);
+			gl.enableVertexAttribArray(program.attributes.position);
+			gl.vertexAttribPointer(program.attributes.position, 3, gl.FLOAT, false, 0, 0);
 
 		}
 
 		if (object.hasNormals) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, object.__webglNormalBuffer);
+			gl.bindBuffer(gl.ARRAY_BUFFER, object.__webglNormalBuffer);
 
 			if (material.shading === THREE.FlatShading) {
 
@@ -5747,37 +5680,37 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			_gl.bufferData(_gl.ARRAY_BUFFER, object.normalArray, _gl.DYNAMIC_DRAW);
-			_gl.enableVertexAttribArray(program.attributes.normal);
-			_gl.vertexAttribPointer(program.attributes.normal, 3, _gl.FLOAT, false, 0, 0);
+			gl.bufferData(gl.ARRAY_BUFFER, object.normalArray, gl.DYNAMIC_DRAW);
+			gl.enableVertexAttribArray(program.attributes.normal);
+			gl.vertexAttribPointer(program.attributes.normal, 3, gl.FLOAT, false, 0, 0);
 
 		}
 
 		if (object.hasUvs && material.map) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, object.__webglUvBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, object.uvArray, _gl.DYNAMIC_DRAW);
-			_gl.enableVertexAttribArray(program.attributes.uv);
-			_gl.vertexAttribPointer(program.attributes.uv, 2, _gl.FLOAT, false, 0, 0);
+			gl.bindBuffer(gl.ARRAY_BUFFER, object.__webglUvBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, object.uvArray, gl.DYNAMIC_DRAW);
+			gl.enableVertexAttribArray(program.attributes.uv);
+			gl.vertexAttribPointer(program.attributes.uv, 2, gl.FLOAT, false, 0, 0);
 
 		}
 
-		if (object.hasColors && material.vertexColors !== THREE.NoColors) {
+		if (object.hasColors && material.vertexColors != THREE.NoColors) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, object.__webglColorBuffer);
-			_gl.bufferData(_gl.ARRAY_BUFFER, object.colorArray, _gl.DYNAMIC_DRAW);
-			_gl.enableVertexAttribArray(program.attributes.color);
-			_gl.vertexAttribPointer(program.attributes.color, 3, _gl.FLOAT, false, 0, 0);
+			gl.bindBuffer(gl.ARRAY_BUFFER, object.__webglColorBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, object.colorArray, gl.DYNAMIC_DRAW);
+			gl.enableVertexAttribArray(program.attributes.color);
+			gl.vertexAttribPointer(program.attributes.color, 3, gl.FLOAT, false, 0, 0);
 
 		}
 
-		_gl.drawArrays(_gl.TRIANGLES, 0, object.count);
+		_gl.drawArrays(gl.TRIANGLES, 0, object.count);
 
 		object.count = 0;
 
-	};
+	}
 
-	this.renderBufferDirect = function(camera, lights, fog, material, geometry, object) {
+	public function renderBufferDirect(camera, lights, fog, material, geometry, object) {
 
 		if (material.visible === false)
 			return;
@@ -5790,7 +5723,7 @@ class WebGLRenderer implements IRenderer
 
 		var updateBuffers = false, wireframeBit = material.wireframe ? 1 : 0, geometryHash = (geometry.id * 0xffffff ) + (program.id * 2 ) + wireframeBit;
 
-		if (geometryHash !== _currentGeometryGroupHash) {
+		if (geometryHash != _currentGeometryGroupHash) {
 
 			_currentGeometryGroupHash = geometryHash;
 			updateBuffers = true;
@@ -5821,8 +5754,8 @@ class WebGLRenderer implements IRenderer
 					var position = geometry.attributes["position"];
 					var positionSize = position.itemSize;
 
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, position.buffer);
-					_gl.vertexAttribPointer(attributes.position, positionSize, _gl.FLOAT, false, 0, startIndex * positionSize * 4);
+					gl.bindBuffer(gl.ARRAY_BUFFER, position.buffer);
+					gl.vertexAttribPointer(attributes.position, positionSize, gl.FLOAT, false, 0, startIndex * positionSize * 4);
 					// 4 bytes per Float32
 
 					// normals
@@ -5833,8 +5766,8 @@ class WebGLRenderer implements IRenderer
 
 						var normalSize = normal.itemSize;
 
-						_gl.bindBuffer(_gl.ARRAY_BUFFER, normal.buffer);
-						_gl.vertexAttribPointer(attributes.normal, normalSize, _gl.FLOAT, false, 0, startIndex * normalSize * 4);
+						gl.bindBuffer(gl.ARRAY_BUFFER, normal.buffer);
+						gl.vertexAttribPointer(attributes.normal, normalSize, gl.FLOAT, false, 0, startIndex * normalSize * 4);
 
 					}
 
@@ -5848,10 +5781,10 @@ class WebGLRenderer implements IRenderer
 
 							var uvSize = uv.itemSize;
 
-							_gl.bindBuffer(_gl.ARRAY_BUFFER, uv.buffer);
-							_gl.vertexAttribPointer(attributes.uv, uvSize, _gl.FLOAT, false, 0, startIndex * uvSize * 4);
+							gl.bindBuffer(gl.ARRAY_BUFFER, uv.buffer);
+							gl.vertexAttribPointer(attributes.uv, uvSize, gl.FLOAT, false, 0, startIndex * uvSize * 4);
 
-							_gl.enableVertexAttribArray(attributes.uv);
+							gl.enableVertexAttribArray(attributes.uv);
 
 						} else {
 
@@ -5869,8 +5802,8 @@ class WebGLRenderer implements IRenderer
 
 						var colorSize = color.itemSize;
 
-						_gl.bindBuffer(_gl.ARRAY_BUFFER, color.buffer);
-						_gl.vertexAttribPointer(attributes.color, colorSize, _gl.FLOAT, false, 0, startIndex * colorSize * 4);
+						gl.bindBuffer(gl.ARRAY_BUFFER, color.buffer);
+						gl.vertexAttribPointer(attributes.color, colorSize, gl.FLOAT, false, 0, startIndex * colorSize * 4);
 
 					}
 
@@ -5882,8 +5815,8 @@ class WebGLRenderer implements IRenderer
 
 						var tangentSize = tangent.itemSize;
 
-						_gl.bindBuffer(_gl.ARRAY_BUFFER, tangent.buffer);
-						_gl.vertexAttribPointer(attributes.tangent, tangentSize, _gl.FLOAT, false, 0, startIndex * tangentSize * 4);
+						gl.bindBuffer(gl.ARRAY_BUFFER, tangent.buffer);
+						gl.vertexAttribPointer(attributes.tangent, tangentSize, gl.FLOAT, false, 0, startIndex * tangentSize * 4);
 
 					}
 
@@ -5891,13 +5824,13 @@ class WebGLRenderer implements IRenderer
 
 					var index = geometry.attributes["index"];
 
-					_gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, index.buffer);
+					gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index.buffer);
 
 				}
 
 				// render indexed triangles
 
-				_gl.drawElements(_gl.TRIANGLES, offsets[i].count, _gl.UNSIGNED_SHORT, offsets[i].start * 2);
+				gl.drawElements(gl.TRIANGLES, offsets[i].count, gl.UNSIGNED_SHORT, offsets[i].start * 2);
 				// 2 bytes per Uint16
 
 				_this.info.render.calls++;
@@ -5909,9 +5842,9 @@ class WebGLRenderer implements IRenderer
 
 		}
 
-	};
+	}
 
-	this.renderBuffer = function(camera, lights, fog, material, geometryGroup, object) {
+	public function renderBuffer(camera, lights, fog, material, geometryGroup, object) {
 
 		if (material.visible === false)
 			return;
@@ -5924,7 +5857,7 @@ class WebGLRenderer implements IRenderer
 
 		var updateBuffers = false, wireframeBit = material.wireframe ? 1 : 0, geometryGroupHash = (geometryGroup.id * 0xffffff ) + (program.id * 2 ) + wireframeBit;
 
-		if (geometryGroupHash !== _currentGeometryGroupHash) {
+		if (geometryGroupHash != _currentGeometryGroupHash) {
 
 			_currentGeometryGroupHash = geometryGroupHash;
 			updateBuffers = true;
@@ -5937,8 +5870,8 @@ class WebGLRenderer implements IRenderer
 
 			if (updateBuffers) {
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglVertexBuffer);
-				_gl.vertexAttribPointer(attributes.position, 3, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglVertexBuffer);
+				gl.vertexAttribPointer(attributes.position, 3, gl.FLOAT, false, 0, 0);
 
 			}
 
@@ -5967,8 +5900,8 @@ class WebGLRenderer implements IRenderer
 
 					if (attributes[attribute.buffer.belongsToAttribute] >= 0) {
 
-						_gl.bindBuffer(_gl.ARRAY_BUFFER, attribute.buffer);
-						_gl.vertexAttribPointer(attributes[attribute.buffer.belongsToAttribute], attribute.size, _gl.FLOAT, false, 0, 0);
+						gl.bindBuffer(gl.ARRAY_BUFFER, attribute.buffer);
+						gl.vertexAttribPointer(attributes[attribute.buffer.belongsToAttribute], attribute.size, gl.FLOAT, false, 0, 0);
 
 					}
 
@@ -5980,8 +5913,8 @@ class WebGLRenderer implements IRenderer
 
 			if (attributes.color >= 0) {
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglColorBuffer);
-				_gl.vertexAttribPointer(attributes.color, 3, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglColorBuffer);
+				gl.vertexAttribPointer(attributes.color, 3, gl.FLOAT, false, 0, 0);
 
 			}
 
@@ -5989,8 +5922,8 @@ class WebGLRenderer implements IRenderer
 
 			if (attributes.normal >= 0) {
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglNormalBuffer);
-				_gl.vertexAttribPointer(attributes.normal, 3, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglNormalBuffer);
+				gl.vertexAttribPointer(attributes.normal, 3, gl.FLOAT, false, 0, 0);
 
 			}
 
@@ -5998,8 +5931,8 @@ class WebGLRenderer implements IRenderer
 
 			if (attributes.tangent >= 0) {
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglTangentBuffer);
-				_gl.vertexAttribPointer(attributes.tangent, 4, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglTangentBuffer);
+				gl.vertexAttribPointer(attributes.tangent, 4, gl.FLOAT, false, 0, 0);
 
 			}
 
@@ -6009,10 +5942,10 @@ class WebGLRenderer implements IRenderer
 
 				if (geometryGroup.__webglUVBuffer) {
 
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglUVBuffer);
-					_gl.vertexAttribPointer(attributes.uv, 2, _gl.FLOAT, false, 0, 0);
+					gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglUVBuffer);
+					gl.vertexAttribPointer(attributes.uv, 2, gl.FLOAT, false, 0, 0);
 
-					_gl.enableVertexAttribArray(attributes.uv);
+					gl.enableVertexAttribArray(attributes.uv);
 
 				} else {
 
@@ -6026,10 +5959,10 @@ class WebGLRenderer implements IRenderer
 
 				if (geometryGroup.__webglUV2Buffer) {
 
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglUV2Buffer);
-					_gl.vertexAttribPointer(attributes.uv2, 2, _gl.FLOAT, false, 0, 0);
+					gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglUV2Buffer);
+					gl.vertexAttribPointer(attributes.uv2, 2, gl.FLOAT, false, 0, 0);
 
-					_gl.enableVertexAttribArray(attributes.uv2);
+					gl.enableVertexAttribArray(attributes.uv2);
 
 				} else {
 
@@ -6041,17 +5974,17 @@ class WebGLRenderer implements IRenderer
 
 			if (material.skinning && attributes.skinVertexA >= 0 && attributes.skinVertexB >= 0 && attributes.skinIndex >= 0 && attributes.skinWeight >= 0) {
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexABuffer);
-				_gl.vertexAttribPointer(attributes.skinVertexA, 4, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexABuffer);
+				gl.vertexAttribPointer(attributes.skinVertexA, 4, gl.FLOAT, false, 0, 0);
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexBBuffer);
-				_gl.vertexAttribPointer(attributes.skinVertexB, 4, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinVertexBBuffer);
+				gl.vertexAttribPointer(attributes.skinVertexB, 4, gl.FLOAT, false, 0, 0);
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinIndicesBuffer);
-				_gl.vertexAttribPointer(attributes.skinIndex, 4, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinIndicesBuffer);
+				gl.vertexAttribPointer(attributes.skinIndex, 4, gl.FLOAT, false, 0, 0);
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglSkinWeightsBuffer);
-				_gl.vertexAttribPointer(attributes.skinWeight, 4, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglSkinWeightsBuffer);
+				gl.vertexAttribPointer(attributes.skinWeight, 4, gl.FLOAT, false, 0, 0);
 
 			}
 
@@ -6059,80 +5992,78 @@ class WebGLRenderer implements IRenderer
 
 		// render mesh
 
-		if ( object instanceof THREE.Mesh) {
-
+		if ( Std.is(object, Mesh)) 
+		{
 			// wireframe
-
-			if (material.wireframe) {
-
+			if (material.wireframe)
+			{
 				setLineWidth(material.wireframeLinewidth);
 
 				if (updateBuffers)
-					_gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglLineBuffer);
-				_gl.drawElements(_gl.LINES, geometryGroup.__webglLineCount, _gl.UNSIGNED_SHORT, 0);
+					gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglLineBuffer);
+				gl.drawElements(gl.LINES, geometryGroup.__webglLineCount, gl.UNSIGNED_SHORT, 0);
 
 				// triangles
 
 			} else {
 
 				if (updateBuffers)
-					_gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglFaceBuffer);
-				_gl.drawElements(_gl.TRIANGLES, geometryGroup.__webglFaceCount, _gl.UNSIGNED_SHORT, 0);
+					gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, geometryGroup.__webglFaceBuffer);
+				gl.drawElements(gl.TRIANGLES, geometryGroup.__webglFaceCount, gl.UNSIGNED_SHORT, 0);
 
 			}
 
-			_this.info.render.calls++;
-			_this.info.render.vertices += geometryGroup.__webglFaceCount;
-			_this.info.render.faces += geometryGroup.__webglFaceCount / 3;
+			this.statistics.calls++;
+			this.statistics.vertices += geometryGroup.__webglFaceCount;
+			this.statistics.faces += geometryGroup.__webglFaceCount / 3;
 
 			// render lines
 
-		} else if ( object instanceof THREE.Line) {
+		} else if ( Std.is(object,Line)) {
 
-			primitives = (object.type === THREE.LineStrip ) ? _gl.LINE_STRIP : _gl.LINES;
+			primitives = (object.type == ThreeGlobal.LineStrip ) ? gl.LINE_STRIP : gl.LINES;
 
 			setLineWidth(material.linewidth);
 
-			_gl.drawArrays(primitives, 0, geometryGroup.__webglLineCount);
+			gl.drawArrays(primitives, 0, geometryGroup.__webglLineCount);
 
-			_this.info.render.calls++;
+			this.statistics.calls++;
 
 			// render particles
 
-		} else if ( object instanceof THREE.ParticleSystem) {
+		} else if ( Std.is(object,ParticleSystem)) {
 
-			_gl.drawArrays(_gl.POINTS, 0, geometryGroup.__webglParticleCount);
+			gl.drawArrays(gl.POINTS, 0, geometryGroup.__webglParticleCount);
 
-			_this.info.render.calls++;
-			_this.info.render.points += geometryGroup.__webglParticleCount;
+			this.statistics.calls++;
+			this.statistics.points += geometryGroup.__webglParticleCount;
 
 			// render ribbon
 
-		} else if ( object instanceof THREE.Ribbon) {
+		} else if ( Std.is(object,Ribbon)) {
 
-			_gl.drawArrays(_gl.TRIANGLE_STRIP, 0, geometryGroup.__webglVertexCount);
+			gl.drawArrays(_gl.TRIANGLE_STRIP, 0, geometryGroup.__webglVertexCount);
 
-			_this.info.render.calls++;
-
+			this.statistics.calls++;
 		}
 
-	};
+	}
 
-	function setupMorphTargets(material, geometryGroup, object) {
+	public function setupMorphTargets(material, geometryGroup, object) {
 
 		// set base
 
 		var attributes = material.program.attributes;
 
-		if (object.morphTargetBase !== -1) {
+		if (object.morphTargetBase != -1) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[object.morphTargetBase]);
-			_gl.vertexAttribPointer(attributes.position, 3, _gl.FLOAT, false, 0, 0);
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[object.morphTargetBase]);
+			gl.vertexAttribPointer(attributes.position, 3, gl.FLOAT, false, 0, 0);
 
 		} else if (attributes.position >= 0) {
 
-			_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglVertexBuffer);
-			_gl.vertexAttribPointer(attributes.position, 3, _gl.FLOAT, false, 0, 0);
+			gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglVertexBuffer);
+			gl.vertexAttribPointer(attributes.position, 3, gl.FLOAT, false, 0, 0);
 
 		}
 
@@ -6146,13 +6077,13 @@ class WebGLRenderer implements IRenderer
 
 			while (m < material.numSupportedMorphTargets && m < order.length) {
 
-				_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[order[m]]);
-				_gl.vertexAttribPointer(attributes["morphTarget" + m], 3, _gl.FLOAT, false, 0, 0);
+				gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[order[m]]);
+				gl.vertexAttribPointer(attributes["morphTarget" + m], 3, gl.FLOAT, false, 0, 0);
 
 				if (material.morphNormals) {
 
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglMorphNormalsBuffers[order[m]]);
-					_gl.vertexAttribPointer(attributes["morphNormal" + m], 3, _gl.FLOAT, false, 0, 0);
+					gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphNormalsBuffers[order[m]]);
+					gl.vertexAttribPointer(attributes["morphNormal" + m], 3, gl.FLOAT, false, 0, 0);
 
 				}
 
@@ -6169,7 +6100,7 @@ class WebGLRenderer implements IRenderer
 			var influences = object.morphTargetInfluences;
 			var i, il = influences.length;
 
-			for ( i = 0; i < il; i++) {
+			for ( i in 0...il) {
 
 				influence = influences[i];
 
@@ -6195,7 +6126,6 @@ class WebGLRenderer implements IRenderer
 				activeInfluenceIndices.push([0, 0]);
 
 			}
-			;
 
 			var influenceIndex, m = 0;
 
@@ -6205,14 +6135,14 @@ class WebGLRenderer implements IRenderer
 
 					influenceIndex = activeInfluenceIndices[ m ][0];
 
-					_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[influenceIndex]);
+					gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[influenceIndex]);
 
-					_gl.vertexAttribPointer(attributes["morphTarget" + m], 3, _gl.FLOAT, false, 0, 0);
+					gl.vertexAttribPointer(attributes["morphTarget" + m], 3, gl.FLOAT, false, 0, 0);
 
 					if (material.morphNormals) {
 
-						_gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglMorphNormalsBuffers[influenceIndex]);
-						_gl.vertexAttribPointer(attributes["morphNormal" + m], 3, _gl.FLOAT, false, 0, 0);
+						gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphNormalsBuffers[influenceIndex]);
+						gl.vertexAttribPointer(attributes["morphNormal" + m], 3, gl.FLOAT, false, 0, 0);
 
 					}
 
@@ -6220,11 +6150,11 @@ class WebGLRenderer implements IRenderer
 
 				} else {
 
-					_gl.vertexAttribPointer(attributes["morphTarget" + m], 3, _gl.FLOAT, false, 0, 0);
+					gl.vertexAttribPointer(attributes["morphTarget" + m], 3, gl.FLOAT, false, 0, 0);
 
 					if (material.morphNormals) {
 
-						_gl.vertexAttribPointer(attributes["morphNormal" + m], 3, _gl.FLOAT, false, 0, 0);
+						gl.vertexAttribPointer(attributes["morphNormal" + m], 3, gl.FLOAT, false, 0, 0);
 
 					}
 
@@ -6240,13 +6170,13 @@ class WebGLRenderer implements IRenderer
 
 		// load updated influences uniform
 
-		if (material.program.uniforms.morphTargetInfluences !== null) {
+		if (material.program.uniforms.morphTargetInfluences != null) {
 
-			_gl.uniform1fv(material.program.uniforms.morphTargetInfluences, object.__webglMorphTargetInfluences);
+			gl.uniform1fv(material.program.uniforms.morphTargetInfluences, object.__webglMorphTargetInfluences);
 
 		}
 
-	};
+	}
 
 	// Sorting
 
