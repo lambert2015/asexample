@@ -30,6 +30,8 @@ class MorphAnimMesh extends Mesh
 	
 	public var direction:Int;
 	public var directionBackwards:Bool;
+	
+	public var animations:Dynamic;
 
 	public function new(geometry:BufferGeometry, material:Material = null ) 
 	{
