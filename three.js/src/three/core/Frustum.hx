@@ -40,7 +40,7 @@ class Frustum
 		}
 	}
 
-	public function contains(object:Mesh):Bool
+	public function contains(object:Object3D):Bool
 	{
 		var distance:Float = 0.0;
 		var planes:Array<Vector4> = this.planes;

@@ -11,7 +11,7 @@ import three.objects.Bone;
 
 class Scene extends Object3D
 {
-	public var fog:Fog;
+	public var fog:IFog;
 	public var overrideMaterial:Material;
 	
 	public var __objects:Array<Object3D>;
@@ -19,6 +19,11 @@ class Scene extends Object3D
 	
 	public var __objectsAdded:Array<Object3D>;
 	public var __objectsRemoved:Array<Object3D>;
+	
+	public var __webglObjectsImmediate:Array<Dynamic>;
+	public var __webglObjects:Array<Dynamic>;
+	public var __webglSprites:Array<Dynamic>;
+	public var __webglFlares:Array<Dynamic>;
 
 	public function new() 
 	{
@@ -53,7 +58,7 @@ class Scene extends Object3D
 			}
 
 		} 
-		else if (!( Std.is(object,Camera) || Std.is(object,Bone) )) 
+		else if (!(Std.is(object, Camera) || Std.is(object, Bone))) 
 		{
 			var i:Int = untyped this.__objects.indexOf(object);
 			if (i == -1) 
