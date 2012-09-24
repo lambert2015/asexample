@@ -240,7 +240,7 @@ class Object3D
 		this.matrixWorldNeedsUpdate = true;
 	}
 	
-	public function updateMatrixWorld(force:Bool):Void
+	public function updateMatrixWorld(force:Bool = false):Void
 	{
 		if (this.matrixAutoUpdate)
 			this.updateMatrix();
