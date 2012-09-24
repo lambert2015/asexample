@@ -20,6 +20,8 @@ class Object3D
 	public var parent:Object3D;
 	public var children:Array<Object3D>;
 	
+	public var geometry:Geometry;
+	
 	public var up:Vector3;
 	public var position:Vector3;
 	public var rotation:Vector3;
