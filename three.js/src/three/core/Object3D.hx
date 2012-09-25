@@ -1,4 +1,5 @@
 package three.core;
+import three.materials.Material;
 import three.math.EulerOrder;
 import three.math.Matrix4;
 import three.math.Quaternion;
@@ -51,8 +52,14 @@ class Object3D
 	
 	public var frustumCulled:Bool;
 	
+	public var material:Material;
+	
 	public var _modelViewMatrix:Matrix4;
 	public var _normalMatrix:Matrix4;
+	
+	public var sortParticles:Bool;
+	
+	public var __webglActive:Bool;
 	
 	private var _vector:Vector3;
 	public function new() 

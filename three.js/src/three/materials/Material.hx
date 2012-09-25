@@ -39,7 +39,7 @@ class Material
 	public var depthTest:Bool;
 	public var depthWrite:Bool;
 	
-	public var polygonOffset:Bool;
+	public var polygonOffset:Float;
 	public var polygonOffsetFactor:Float;
 	public var polygonOffsetUnits:Int;
 	
@@ -96,6 +96,8 @@ class Material
 	public var numSupportedMorphTargets:Int;
 	public var numSupportedMorphNormals:Int;
 	
+	public var shading:Int;
+	
 	public var _shadowPass:Bool;
 	public function new() 
 	{
@@ -117,7 +119,7 @@ class Material
 		this.depthTest = true;
 		this.depthWrite = true;
 
-		this.polygonOffset = false;
+		this.polygonOffset = 0;
 		this.polygonOffsetFactor = 0;
 		this.polygonOffsetUnits = 0;
 

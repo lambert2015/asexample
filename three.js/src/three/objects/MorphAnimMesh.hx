@@ -33,7 +33,7 @@ class MorphAnimMesh extends Mesh
 	
 	public var animations:Dynamic;
 
-	public function new(geometry:BufferGeometry, material:Material = null ) 
+	public function new(geometry:Geometry, material:Material = null ) 
 	{
 		super(geometry, material);
 		
@@ -75,7 +75,7 @@ class MorphAnimMesh extends Mesh
 
 	public function parseAnimations():Void 
 	{
-		var geometry:BufferGeometry = this.geometry;
+		var geometry:Geometry = this.geometry;
 
 		if (geometry.animations == null)
 			geometry.animations = {};

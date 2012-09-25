@@ -1,5 +1,6 @@
 package three.core;
 
+import three.math.Vector3;
 /**
  * ...
  * @author andy
@@ -31,6 +32,27 @@ class BoundingSphere
 				maxRadiusSq = radiusSq;
 			
 			i += 3;
+		}
+		this.radius = Math.sqrt(maxRadiusSq);
+	}
+	
+	public function computeFromVertexs(vertexs:Array<Vector3>):Void
+	{
+		if (vertexs.length == 0)
+		{
+			this.radius = 0;
+			return;
+		}
+		
+		var p:Vector3;
+		var radiusSq:Float, maxRadiusSq:Float = 0;
+		for(i in 0...vertexs.length)
+		{
+			p = vertexs[i];
+
+			radiusSq = p.lengthSq;
+			if (radiusSq > maxRadiusSq)
+				maxRadiusSq = radiusSq;
 		}
 		this.radius = Math.sqrt(maxRadiusSq);
 	}

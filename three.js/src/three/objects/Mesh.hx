@@ -12,15 +12,15 @@ import three.utils.Logger;
 
 class Mesh extends Object3D
 {
-	public var geometry:BufferGeometry;
-	public var material:Material;
+	//public var geometry:BufferGeometry;
+	//public var material:Material;
 	
 	public var morphTargetBase:Float;
 	public var morphTargetForcedOrder:Array<Dynamic>;
 	public var morphTargetInfluences:Array<Float>;
 	public var morphTargetDictionary:Dynamic;
 
-	public function new(geometry:BufferGeometry, material:Material = null )
+	public function new(geometry:Geometry, material:Material = null )
 	{
 		super();
 		
