@@ -328,9 +328,9 @@ class Matrix4
 		return this;
 	}
 	
-	public function flattenToArray(flat:Array<Float>):Array<Float>
+	public function flattenToArray(flat:Dynamic):Dynamic
 	{
-		var te = this.elements;
+		var te:Float32Array = this.elements;
 		flat[0] = te[0];
 		flat[1] = te[1];
 		flat[2] = te[2];
@@ -351,7 +351,7 @@ class Matrix4
 		return flat;
 	}
 	
-	public function flattenToArrayOffset(flat:Array<Float>,offset:Int):Array<Float>
+	public function flattenToArrayOffset(flat:Dynamic,offset:Int):Dynamic
 	{
 		var te = this.elements;
 		flat[offset] = te[0];

@@ -15,8 +15,11 @@ class BufferGeometry
 	
 	public var boundingBox:BoundingBox;
 	public var boundingSphere:BoundingSphere;
+	
 	public var hasTangents:Bool;
+	
 	public var morphTargets:Array<Dynamic>;
+	
 	public var isDynamic:Bool;
 	public var attributes:Dynamic;
 	
@@ -24,7 +27,9 @@ class BufferGeometry
 	public var normalsNeedUpdate:Bool;
 	
 	public var animations:Dynamic;
+	
 	public var firstAnimation:String;
+	
 	public function new() 
 	{
 		this.id = GeometryCount++;

@@ -3,13 +3,24 @@ package three.renderers;
 import js.Boot;
 import js.Dom;
 import js.Lib;
+import three.core.BufferGeometry;
 import three.core.Geometry;
+import three.core.Face;
+import three.core.Frustum;
+import three.core.Face3;
+import three.core.Face4;
+import three.core.Object3D;
+import three.core.BoundingBox;
+import three.core.BoundingSphere;
 import three.lights.Light;
 import three.lights.DirectionalLight;
 import three.lights.SpotLight;
 import three.lights.PointLight;
 import three.lights.AmbientLight;
 import three.materials.Material;
+import three.materials.MeshBasicMaterial;
+import three.materials.MeshDepthMaterial;
+import three.materials.MeshFaceMaterial;
 import three.math.Color;
 import three.math.Vector2;
 import three.math.Vector3;
@@ -17,12 +28,6 @@ import three.math.Vector4;
 import three.math.Matrix4;
 import three.math.Matrix3;
 import three.math.MathUtil;
-import three.core.Frustum;
-import three.core.Face3;
-import three.core.Face4;
-import three.core.Object3D;
-import three.core.BoundingBox;
-import three.core.BoundingSphere;
 import three.renderers.plugins.LensFlarePlugin;
 import three.renderers.plugins.ShadowMapPlugin;
 import three.renderers.plugins.SpritePlugin;
@@ -134,7 +139,7 @@ class WebGLRenderer implements IRenderer
 	
 	private var _projScreenMatrix:Matrix4;
 	private var _projScreenMatrixPS:Matrix4;
-	private var _vector3:Vector4;
+	private var _vector3:Vector3;
 	
 	private var _direction:Vector3;
 	
@@ -218,7 +223,7 @@ class WebGLRenderer implements IRenderer
 
 		_projScreenMatrix = new Matrix4(); 
 		_projScreenMatrixPS = new Matrix4(); 
-		_vector3 = new Vector4();
+		_vector3 = new Vector3();
 
 		// light arrays cache
 
@@ -507,10 +512,12 @@ class WebGLRenderer implements IRenderer
 	}
 	
 	private function renderObjects(renderList, reverse, materialType, 
-								camera, lights, fog, useBlending, overrideMaterial):Void 
+								camera, lights, fog, 
+								useBlending:Bool, overrideMaterial:Material):Void 
 	{
 
-		var webglObject, object, buffer, material, start, end, delta;
+		var webglObject, object, buffer, start, end, delta;
+		var material:Material;
 
 		if (reverse) 
 		{
@@ -537,27 +544,27 @@ class WebGLRenderer implements IRenderer
 				object = webglObject.object;
 				buffer = webglObject.buffer;
 
-				if (overrideMaterial) 
+				if (overrideMaterial != null) 
 				{
 					material = overrideMaterial;
 				} 
 				else 
 				{
-					material = webglObject[materialType];
+					material = untyped webglObject[materialType];
 
-					if (!material)
+					if (material == null)
 						continue;
 
 					if (useBlending)
-						_this.setBlending(material.blending, material.blendEquation, material.blendSrc, material.blendDst);
+						this.setBlending(material.blending, material.blendEquation, material.blendSrc, material.blendDst);
 
-					_this.setDepthTest(material.depthTest);
-					_this.setDepthWrite(material.depthWrite);
+					this.setDepthTest(material.depthTest);
+					this.setDepthWrite(material.depthWrite);
 					setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
 
 				}
 
-				_this.setMaterialFaces(material);
+				this.setMaterialFaces(material);
 
 				if ( Std.is(buffer, BufferGeometry)) 
 				{
@@ -574,8 +581,8 @@ class WebGLRenderer implements IRenderer
 	private function renderObjectsImmediate(renderList, materialType, camera, lights, fog, useBlending, overrideMaterial) 
 	{
 		var webglObject;
-		var object; 
-		var material; 
+		var object:Object3D; 
+		var material:Material; 
 		var program;
 
 		for (i in 0...renderList.length) 
@@ -585,7 +592,7 @@ class WebGLRenderer implements IRenderer
 
 			if (object.visible) 
 			{
-				if (overrideMaterial) 
+				if (overrideMaterial != null) 
 				{
 					material = overrideMaterial;
 				} 
@@ -692,9 +699,13 @@ class WebGLRenderer implements IRenderer
 
 	// Geometry splitting
 
-	private function sortFacesByMaterial(geometry) 
+	private function sortFacesByMaterial(geometry:Geometry):Void 
 	{
-		var f, fl, face, materialIndex, vertices, materialHash, groupHash;
+		var face:Face;
+		var materialIndex:Int = -1;
+		var vertices:Int; 
+		var materialHash:Int;
+		var groupHash:String;
 		var hash_map:Dynamic = { };
 
 		var numMorphTargets = geometry.morphTargets.length;
@@ -707,7 +718,7 @@ class WebGLRenderer implements IRenderer
 			face = geometry.faces[f];
 			materialIndex = face.materialIndex;
 
-			materialHash = (materialIndex != null ) ? materialIndex : -1;
+			materialHash = materialIndex;
 
 			if (untyped hash_map[materialHash] == null) 
 			{
@@ -719,9 +730,9 @@ class WebGLRenderer implements IRenderer
 
 			groupHash = hash_map[materialHash].hash + '_' + hash_map[materialHash].counter;
 
-			if (geometry.geometryGroups[groupHash] == null) {
+			if (untyped geometry.geometryGroups[groupHash] == null) {
 
-				geometry.geometryGroups[groupHash] = {
+				untyped geometry.geometryGroups[groupHash] = {
 					'faces3' : [],
 					'faces4' : [],
 					'materialIndex' : materialIndex,
@@ -734,14 +745,14 @@ class WebGLRenderer implements IRenderer
 
 			vertices = Std.is(face,Face3) ? 3 : 4;
 
-			if (geometry.geometryGroups[groupHash].vertices + vertices > 65535) 
+			if (untyped geometry.geometryGroups[groupHash].vertices + vertices > 65535) 
 			{
 				hash_map[materialHash].counter += 1;
 				groupHash = hash_map[materialHash].hash + '_' + hash_map[materialHash].counter;
 
-				if (geometry.geometryGroups[groupHash] == null) {
-
-					geometry.geometryGroups[groupHash] = {
+				if (untyped geometry.geometryGroups[groupHash] == null) 
+				{
+					untyped geometry.geometryGroups[groupHash] = {
 						'faces3' : [],
 						'faces4' : [],
 						'materialIndex' : materialIndex,
@@ -754,20 +765,20 @@ class WebGLRenderer implements IRenderer
 
 			if ( Std.is(face,Face3)) 
 			{
-				geometry.geometryGroups[groupHash].faces3.push(f);
+				untyped geometry.geometryGroups[groupHash].faces3.push(f);
 			} 
 			else 
 			{
-				geometry.geometryGroups[groupHash].faces4.push(f);
+				untyped geometry.geometryGroups[groupHash].faces4.push(f);
 			}
 
-			geometry.geometryGroups[groupHash].vertices += vertices;
+			untyped geometry.geometryGroups[groupHash].vertices += vertices;
 
 		}
 
 		geometry.geometryGroupsList = [];
 
-		var fields:Array<String> = Type.getClassFields(geometry.geometryGroupsList);
+		var fields:Array<String> = Type.getClassFields(geometry.geometryGroups);
 		for (g in fields ) 
 		{
 			untyped geometry.geometryGroups[g].id = _geometryGroupCounter++;
@@ -3174,14 +3185,15 @@ class WebGLRenderer implements IRenderer
 				{
 					if (geometry.geometryGroups == null) 
 					{
-						sortFacesByMaterial(geometry);
+						sortFacesByMaterial(cast geometry);
 					}
 
 					// create separate VBOs per geometry chunk
 
-					for (g in geometry.geometryGroups ) 
+					var fields:Array<String> = Type.getClassFields(geometry.geometryGroups);
+					for (g in fields ) 
 					{
-						geometryGroup = geometry.geometryGroups[g];
+						geometryGroup = untyped geometry.geometryGroups[g];
 
 						// initialise VBO on the first access
 
@@ -3203,7 +3215,7 @@ class WebGLRenderer implements IRenderer
 				} 
 				else if ( Std.is(geometry,BufferGeometry)) 
 				{
-					initDirectBuffers(geometry);
+					initDirectBuffers(cast geometry);
 				}
 
 			} 
@@ -3315,13 +3327,13 @@ class WebGLRenderer implements IRenderer
 	
 	// Buffer initialization
 
-	private function initCustomAttributes(geometry, object):Void
+	private function initCustomAttributes(geometry:Geometry, object:Object3D):Void
 	{
 		var nvertices:Int = geometry.vertices.length;
 
-		var material = object.material;
+		var material:Material = object.material;
 
-		if (material.attributes) 
+		if (material.attributes != null) 
 		{
 			if (geometry.__webglCustomAttributesList == null) 
 			{
@@ -3401,56 +3413,58 @@ class WebGLRenderer implements IRenderer
 		geometry.__webglVertexCount = nvertices;
 	}
 
-	private function initMeshBuffers(geometryGroup, object) {
-
-		var geometry = object.geometry, faces3 = geometryGroup.faces3, faces4 = geometryGroup.faces4, nvertices = faces3.length * 3 + faces4.length * 4, ntris = faces3.length * 1 + faces4.length * 2, nlines = faces3.length * 3 + faces4.length * 4, material = getBufferMaterial(object, geometryGroup), uvType = bufferGuessUVType(material), normalType = bufferGuessNormalType(material), vertexColorType = bufferGuessVertexColorType(material);
+	private function initMeshBuffers(geometryGroup:Dynamic, object:Object3D):Void
+	{
+		var geometry:Geometry = object.geometry, 
+		faces3 = geometryGroup.faces3, 
+		faces4 = geometryGroup.faces4, 
+		nvertices = faces3.length * 3 + faces4.length * 4, 
+		ntris = faces3.length * 1 + faces4.length * 2, 
+		nlines = faces3.length * 3 + faces4.length * 4, 
+		material = getBufferMaterial(object, geometryGroup), 
+		uvType = bufferGuessUVType(material), 
+		normalType = bufferGuessNormalType(material), 
+		vertexColorType = bufferGuessVertexColorType(material);
 
 		//console.log( "uvType", uvType, "normalType", normalType, "vertexColorType",
 		// vertexColorType, object, geometryGroup, material );
 
 		geometryGroup.__vertexArray = new Float32Array(nvertices * 3);
 
-		if (normalType) {
-
+		if (normalType > 0) 
+		{
 			geometryGroup.__normalArray = new Float32Array(nvertices * 3);
-
 		}
 
-		if (geometry.hasTangents) {
-
+		if (geometry.hasTangents) 
+		{
 			geometryGroup.__tangentArray = new Float32Array(nvertices * 4);
-
 		}
 
-		if (vertexColorType) {
-
+		if (vertexColorType) 
+		{
 			geometryGroup.__colorArray = new Float32Array(nvertices * 3);
-
 		}
 
-		if (uvType) {
-
-			if (geometry.faceUvs.length > 0 || geometry.faceVertexUvs.length > 0) {
-
+		if (uvType) 
+		{
+			if (geometry.faceUvs.length > 0 || geometry.faceVertexUvs.length > 0) 
+			{
 				geometryGroup.__uvArray = new Float32Array(nvertices * 2);
-
 			}
 
-			if (geometry.faceUvs.length > 1 || geometry.faceVertexUvs.length > 1) {
-
+			if (geometry.faceUvs.length > 1 || geometry.faceVertexUvs.length > 1)
+			{
 				geometryGroup.__uv2Array = new Float32Array(nvertices * 2);
-
 			}
-
 		}
 
-		if (object.geometry.skinWeights.length && object.geometry.skinIndices.length) {
-
+		if (object.geometry.skinWeights.length > 0 && object.geometry.skinIndices.length > 0)
+		{
 			geometryGroup.__skinVertexAArray = new Float32Array(nvertices * 4);
 			geometryGroup.__skinVertexBArray = new Float32Array(nvertices * 4);
 			geometryGroup.__skinIndexArray = new Float32Array(nvertices * 4);
 			geometryGroup.__skinWeightArray = new Float32Array(nvertices * 4);
-
 		}
 
 		geometryGroup.__faceArray = new Uint16Array(ntris * 3);
@@ -3482,12 +3496,11 @@ class WebGLRenderer implements IRenderer
 
 		// custom attributes
 
-		if (material.attributes) {
-
-			if (geometryGroup.__webglCustomAttributesList == null) {
-
+		if (material.attributes != null) 
+		{
+			if (geometryGroup.__webglCustomAttributesList == null) 
+			{
 				geometryGroup.__webglCustomAttributesList = [];
-
 			}
 
 			var fileds:Array<String> = Type.getClassFields(material.attributes);
@@ -3499,7 +3512,7 @@ class WebGLRenderer implements IRenderer
 
 				var originalAttribute:Dynamic = untyped material.attributes[a];
 
-				var attribute = {};
+				var attribute:Dynamic = {};
 
 				var oFileds:Array<String> = Type.getClassFields(originalAttribute);
 				for (property in oFileds ) 
@@ -3546,9 +3559,9 @@ class WebGLRenderer implements IRenderer
 
 	}
 
-	public function  getBufferMaterial(object, geometryGroup):Void
+	public function  getBufferMaterial(object:Object3D, geometryGroup:Dynamic):Material
 	{
-		if (object.material && !(Std.is(object.material, MeshFaceMaterial))) 
+		if (object.material != null && !(Std.is(object.material, MeshFaceMaterial))) 
 		{
 			return object.material;
 		} 
@@ -3556,21 +3569,22 @@ class WebGLRenderer implements IRenderer
 		{
 			return object.geometry.materials[geometryGroup.materialIndex];
 		}
+		
+		return null;
 	}
 
-	public function  materialNeedsSmoothNormals(material) 
+	public function materialNeedsSmoothNormals(material:Material):Bool 
 	{
-		return material && material.shading != null && 
-			material.shading == ThreeGlobal.SmoothShading;
+		return material != null && material.shading == ThreeGlobal.SmoothShading;
 	}
 
-	public function  bufferGuessNormalType(material):Int 
+	public function bufferGuessNormalType(material:Material):Int 
 	{
 		// only MeshBasicMaterial and MeshDepthMaterial don't need normals
-		if ((Std.is(material, MeshBasicMaterial) && !material.envMap ) || 
+		if ((Std.is(material, MeshBasicMaterial) && material.envMap != null ) || 
 			Std.is(material, MeshDepthMaterial)) 
 		{
-			return false;
+			return 0;
 		}
 
 		if (materialNeedsSmoothNormals(material)) 
@@ -3583,24 +3597,23 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
-	public function bufferGuessVertexColorType(material):Bool
+	public function bufferGuessVertexColorType(material:Material):Bool
 	{
-		if (material.vertexColors) 
+		if (material.vertexColors != null) 
 		{
-			return material.vertexColors;
+			return true;
 		}
 		return false;
 	}
 
-	public function bufferGuessUVType(material) 
+	public function bufferGuessUVType(material:Material):Bool 
 	{
-
 		// material must use some texture to require uvs
 
-		if (material.map || 
-			material.lightMap || 
-			material.bumpMap || 
-			material.specularMap || 
+		if (material.map != null || 
+			material.lightMap != null || 
+			material.bumpMap != null  || 
+			material.specularMap != null || 
 			Std.is(material, ShaderMaterial)) 
 		{
 			return true;
@@ -3610,11 +3623,12 @@ class WebGLRenderer implements IRenderer
 	}
 
 	//
-
-	public function initDirectBuffers(geometry) 
+	public function initDirectBuffers(geometry:BufferGeometry):Void 
 	{
-		var a, attribute, type;
-		for (a in geometry.attributes ) 
+		var type:GLenum;
+		
+		var fields:Array<String> = Type.getClassFields(geometry.attributes);
+		for (a in fields) 
 		{
 			if (a == "index") 
 			{
@@ -3625,7 +3639,7 @@ class WebGLRenderer implements IRenderer
 				type = gl.ARRAY_BUFFER;
 			}
 
-			attribute = geometry.attributes[a];
+			var attribute:Dynamic = untyped geometry.attributes[a];
 
 			attribute.buffer = gl.createBuffer();
 			gl.bindBuffer(type, attribute.buffer);
@@ -3635,9 +3649,8 @@ class WebGLRenderer implements IRenderer
 
 	// Buffer setting
 
-	public function  setParticleBuffers(geometry, hint, object) 
+	public function  setParticleBuffers(geometry:Geometry, hint:Int, object:Object3D):Void 
 	{
-
 		var v, c, vertex, offset, index, color, vertices = geometry.vertices, vl = vertices.length, colors = geometry.colors, cl = colors.length, vertexArray = geometry.__vertexArray, colorArray = geometry.__colorArray, sortArray = geometry.__sortArray, dirtyVertices = geometry.verticesNeedUpdate, dirtyElements = geometry.elementsNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, customAttributes = geometry.__webglCustomAttributesList, i, il, a, ca, cal, value, customAttribute;
 
 		if (object.sortParticles) 
@@ -3683,8 +3696,9 @@ class WebGLRenderer implements IRenderer
 
 			}
 
-			if (customAttributes) {
-
+			var customAttributeArray:Dynamic;
+			if (customAttributes != null)
+			{
 				for ( i in 0...customAttributes.length) 
 				{
 					customAttribute = customAttributes[i];
@@ -3703,7 +3717,7 @@ class WebGLRenderer implements IRenderer
 						{
 							index = sortArray[ ca ][1];
 
-							customAttribute.array[ca] = customAttribute.value[index];
+							customAttributeArray[ca] = customAttribute.value[index];
 						}
 
 					} else if (customAttribute.size == 2) 
@@ -3714,8 +3728,8 @@ class WebGLRenderer implements IRenderer
 
 							value = customAttribute.value[index];
 
-							customAttribute.array[offset] = value.x;
-							customAttribute.array[offset + 1] = value.y;
+							customAttributeArray[offset] = value.x;
+							customAttributeArray[offset + 1] = value.y;
 
 							offset += 2;
 
@@ -3731,9 +3745,9 @@ class WebGLRenderer implements IRenderer
 
 								value = customAttribute.value[index];
 
-								customAttribute.array[offset] = value.r;
-								customAttribute.array[offset + 1] = value.g;
-								customAttribute.array[offset + 2] = value.b;
+								customAttributeArray[offset] = value.r;
+								customAttributeArray[offset + 1] = value.g;
+								customAttributeArray[offset + 2] = value.b;
 
 								offset += 3;
 							}
@@ -3746,9 +3760,9 @@ class WebGLRenderer implements IRenderer
 
 								value = customAttribute.value[index];
 
-								customAttribute.array[offset] = value.x;
-								customAttribute.array[offset + 1] = value.y;
-								customAttribute.array[offset + 2] = value.z;
+								customAttributeArray[offset] = value.x;
+								customAttributeArray[offset + 1] = value.y;
+								customAttributeArray[offset + 2] = value.z;
 
 								offset += 3;
 							}
@@ -3763,10 +3777,10 @@ class WebGLRenderer implements IRenderer
 
 							value = customAttribute.value[index];
 
-							customAttribute.array[offset] = value.x;
-							customAttribute.array[offset + 1] = value.y;
-							customAttribute.array[offset + 2] = value.z;
-							customAttribute.array[offset + 3] = value.w;
+							customAttributeArray[offset] = value.x;
+							customAttributeArray[offset + 1] = value.y;
+							customAttributeArray[offset + 2] = value.z;
+							customAttributeArray[offset + 3] = value.w;
 
 							offset += 4;
 						}
@@ -3824,7 +3838,7 @@ class WebGLRenderer implements IRenderer
 						{
 							for ( ca in 0...cal) 
 							{
-								customAttribute.array[ca] = customAttribute.value[ca];
+								customAttributeArray[ca] = customAttribute.value[ca];
 							}
 						} 
 						else if (customAttribute.size == 2) 
@@ -3833,8 +3847,8 @@ class WebGLRenderer implements IRenderer
 							{
 								value = customAttribute.value[ca];
 
-								customAttribute.array[offset] = value.x;
-								customAttribute.array[offset + 1] = value.y;
+								customAttributeArray[offset] = value.x;
+								customAttributeArray[offset + 1] = value.y;
 
 								offset += 2;
 							}
@@ -3847,9 +3861,9 @@ class WebGLRenderer implements IRenderer
 								{
 									value = customAttribute.value[ca];
 
-									customAttribute.array[offset] = value.r;
-									customAttribute.array[offset + 1] = value.g;
-									customAttribute.array[offset + 2] = value.b;
+									customAttributeArray[offset] = value.r;
+									customAttributeArray[offset + 1] = value.g;
+									customAttributeArray[offset + 2] = value.b;
 
 									offset += 3;
 								}
@@ -3860,9 +3874,9 @@ class WebGLRenderer implements IRenderer
 								{
 									value = customAttribute.value[ca];
 
-									customAttribute.array[offset] = value.x;
-									customAttribute.array[offset + 1] = value.y;
-									customAttribute.array[offset + 2] = value.z;
+									customAttributeArray[offset] = value.x;
+									customAttributeArray[offset + 1] = value.y;
+									customAttributeArray[offset + 2] = value.z;
 
 									offset += 3;
 								}
@@ -3874,10 +3888,10 @@ class WebGLRenderer implements IRenderer
 							{
 								value = customAttribute.value[ca];
 
-								customAttribute.array[offset] = value.x;
-								customAttribute.array[offset + 1] = value.y;
-								customAttribute.array[offset + 2] = value.z;
-								customAttribute.array[offset + 3] = value.w;
+								customAttributeArray[offset] = value.x;
+								customAttributeArray[offset + 1] = value.y;
+								customAttributeArray[offset + 2] = value.z;
+								customAttributeArray[offset + 3] = value.w;
 
 								offset += 4;
 							}
@@ -3908,13 +3922,13 @@ class WebGLRenderer implements IRenderer
 				if (customAttribute.needsUpdate || object.sortParticles)
 				{
 					gl.bindBuffer(gl.ARRAY_BUFFER, customAttribute.buffer);
-					gl.bufferData(gl.ARRAY_BUFFER, customAttribute.array, hint);
+					gl.bufferData(gl.ARRAY_BUFFER, customAttributeArray, hint);
 				}
 			}
 		}
 	}
 
-	public function setLineBuffers(geometry, hint) 
+	public function setLineBuffers(geometry, hint):Void 
 	{
 		var v, c, vertex, offset, color, vertices = geometry.vertices, colors = geometry.colors, vl = vertices.length, cl = colors.length, vertexArray = geometry.__vertexArray, colorArray = geometry.__colorArray, dirtyVertices = geometry.verticesNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, customAttributes = geometry.__webglCustomAttributesList, i, il, a, ca, cal, value, customAttribute;
 
@@ -3970,7 +3984,7 @@ class WebGLRenderer implements IRenderer
 					{
 						for ( ca in 0...cal) 
 						{
-							customAttribute.array[ca] = customAttribute.value[ca];
+							customAttributeArray[ca] = customAttribute.value[ca];
 						}
 					} 
 					else if (customAttribute.size == 2) 
@@ -3979,8 +3993,8 @@ class WebGLRenderer implements IRenderer
 						{
 							value = customAttribute.value[ca];
 
-							customAttribute.array[offset] = value.x;
-							customAttribute.array[offset + 1] = value.y;
+							customAttributeArray[offset] = value.x;
+							customAttributeArray[offset + 1] = value.y;
 
 							offset += 2;
 						}
@@ -3993,9 +4007,9 @@ class WebGLRenderer implements IRenderer
 							{
 								value = customAttribute.value[ca];
 
-								customAttribute.array[offset] = value.r;
-								customAttribute.array[offset + 1] = value.g;
-								customAttribute.array[offset + 2] = value.b;
+								customAttributeArray[offset] = value.r;
+								customAttributeArray[offset + 1] = value.g;
+								customAttributeArray[offset + 2] = value.b;
 
 								offset += 3;
 							}
@@ -4006,9 +4020,9 @@ class WebGLRenderer implements IRenderer
 							{
 								value = customAttribute.value[ca];
 
-								customAttribute.array[offset] = value.x;
-								customAttribute.array[offset + 1] = value.y;
-								customAttribute.array[offset + 2] = value.z;
+								customAttributeArray[offset] = value.x;
+								customAttributeArray[offset + 1] = value.y;
+								customAttributeArray[offset + 2] = value.z;
 
 								offset += 3;
 							}
@@ -4020,10 +4034,10 @@ class WebGLRenderer implements IRenderer
 						{
 							value = customAttribute.value[ca];
 
-							customAttribute.array[offset] = value.x;
-							customAttribute.array[offset + 1] = value.y;
-							customAttribute.array[offset + 2] = value.z;
-							customAttribute.array[offset + 3] = value.w;
+							customAttributeArray[offset] = value.x;
+							customAttributeArray[offset + 1] = value.y;
+							customAttributeArray[offset + 2] = value.z;
+							customAttributeArray[offset + 3] = value.w;
 
 							offset += 4;
 
@@ -4032,14 +4046,14 @@ class WebGLRenderer implements IRenderer
 					}
 
 					gl.bindBuffer(gl.ARRAY_BUFFER, customAttribute.buffer);
-					gl.bufferData(gl.ARRAY_BUFFER, customAttribute.array, hint);
+					gl.bufferData(gl.ARRAY_BUFFER, customAttributeArray, hint);
 				}
 			}
 
 		}
 	}
 
-	public function  setRibbonBuffers(geometry, hint) 
+	public function  setRibbonBuffers(geometry, hint):Void 
 	{
 		var v, c, vertex, offset, color, vertices = geometry.vertices, colors = geometry.colors, vl = vertices.length, cl = colors.length, vertexArray = geometry.__vertexArray, colorArray = geometry.__colorArray, dirtyVertices = geometry.verticesNeedUpdate, dirtyColors = geometry.colorsNeedUpdate;
 
@@ -4090,10 +4104,76 @@ class WebGLRenderer implements IRenderer
 
 		var normalType = bufferGuessNormalType(material), vertexColorType = bufferGuessVertexColorType(material), uvType = bufferGuessUVType(material), needsSmoothNormals = (normalType == ThreeGlobal.SmoothShading );
 
-		var fi, face, vertexNormals, faceNormal, normal, vertexColors, faceColor, vertexTangents, uv, uv2, v1, v2, v3, v4, t1, t2, t3, t4, n1, n2, n3, n4, c1, c2, c3, c4, sw1, sw2, sw3, sw4, si1, si2, si3, si4, sa1, sa2, sa3, sa4, sb1, sb2, sb3, sb4, m, ml, i, il, vn, uvi, uv2i, vk, vkl, vka, nka, chf, faceVertexNormals, a, vertexIndex = 0, offset = 0, offset_uv = 0, offset_uv2 = 0, offset_face = 0, offset_normal = 0, offset_tangent = 0, offset_line = 0, offset_color = 0, offset_skin = 0, offset_morphTarget = 0, offset_custom = 0, offset_customSrc = 0, value, vertexArray = geometryGroup.__vertexArray, uvArray = geometryGroup.__uvArray, uv2Array = geometryGroup.__uv2Array, normalArray = geometryGroup.__normalArray, tangentArray = geometryGroup.__tangentArray, colorArray = geometryGroup.__colorArray, skinVertexAArray = geometryGroup.__skinVertexAArray, skinVertexBArray = geometryGroup.__skinVertexBArray, skinIndexArray = geometryGroup.__skinIndexArray, skinWeightArray = geometryGroup.__skinWeightArray, morphTargetsArrays = geometryGroup.__morphTargetsArrays, morphNormalsArrays = geometryGroup.__morphNormalsArrays, customAttributes = geometryGroup.__webglCustomAttributesList, customAttribute, faceArray = geometryGroup.__faceArray, lineArray = geometryGroup.__lineArray, geometry = object.geometry,
+		var fi, face, 
+		vertexNormals, faceNormal, normal, 
+		vertexColors, faceColor, vertexTangents, 
+		uv, uv2, v1, v2, v3, v4, 
+		t1, t2, t3, t4, 
+		n1, n2, n3, n4, 
+		c1, c2, c3, c4, 
+		sw1, sw2, sw3, sw4, 
+		si1, si2, si3, si4, 
+		sa1, sa2, sa3, sa4, 
+		sb1, sb2, sb3, sb4, 
+		m, ml, i, il, vn, 
+		uvi, uv2i, 
+		vk, vkl, 
+		vka, nka, 
+		chf, 
+		faceVertexNormals, 
+		a, 
+		vertexIndex = 0, 
+		offset = 0, 
+		offset_uv = 0, 
+		offset_uv2 = 0, 
+		offset_face = 0, 
+		offset_normal = 0, 
+		offset_tangent = 0, 
+		offset_line = 0, 
+		offset_color = 0, 
+		offset_skin = 0, 
+		offset_morphTarget = 0, 
+		offset_custom = 0, 
+		offset_customSrc = 0, 
+		value:Array<Dynamic>, 
+		vertexArray = geometryGroup.__vertexArray, 
+		uvArray = geometryGroup.__uvArray, 
+		uv2Array = geometryGroup.__uv2Array, 
+		normalArray = geometryGroup.__normalArray, 
+		tangentArray = geometryGroup.__tangentArray, 
+		colorArray = geometryGroup.__colorArray, 
+		skinVertexAArray = geometryGroup.__skinVertexAArray,
+		skinVertexBArray = geometryGroup.__skinVertexBArray, 
+		skinIndexArray = geometryGroup.__skinIndexArray, 
+		skinWeightArray = geometryGroup.__skinWeightArray, 
+		morphTargetsArrays = geometryGroup.__morphTargetsArrays, 
+		morphNormalsArrays = geometryGroup.__morphNormalsArrays, 
+		customAttributes = geometryGroup.__webglCustomAttributesList, 
+		faceArray = geometryGroup.__faceArray, 
+		lineArray = geometryGroup.__lineArray, 
+		geometry = object.geometry,
 		// // this is shared for all chunks
 
-		dirtyVertices = geometry.verticesNeedUpdate, dirtyElements = geometry.elementsNeedUpdate, dirtyUvs = geometry.uvsNeedUpdate, dirtyNormals = geometry.normalsNeedUpdate, dirtyTangents = geometry.tangentsNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, dirtyMorphTargets = geometry.morphTargetsNeedUpdate, vertices = geometry.vertices, chunk_faces3 = geometryGroup.faces3, chunk_faces4 = geometryGroup.faces4, obj_faces = geometry.faces, obj_uvs = geometry.faceVertexUvs[0], obj_uvs2 = geometry.faceVertexUvs[1], obj_colors = geometry.colors, obj_skinVerticesA = geometry.skinVerticesA, obj_skinVerticesB = geometry.skinVerticesB, obj_skinIndices = geometry.skinIndices, obj_skinWeights = geometry.skinWeights, morphTargets = geometry.morphTargets, morphNormals = geometry.morphNormals;
+		dirtyVertices = geometry.verticesNeedUpdate, 
+		dirtyElements = geometry.elementsNeedUpdate, 
+		dirtyUvs = geometry.uvsNeedUpdate, 
+		dirtyNormals = geometry.normalsNeedUpdate, 
+		dirtyTangents = geometry.tangentsNeedUpdate, 
+		dirtyColors = geometry.colorsNeedUpdate, 
+		dirtyMorphTargets = geometry.morphTargetsNeedUpdate, 
+		vertices = geometry.vertices, 
+		chunk_faces3 = geometryGroup.faces3, 
+		chunk_faces4 = geometryGroup.faces4, 
+		obj_faces = geometry.faces, 
+		obj_uvs = geometry.faceVertexUvs[0], 
+		obj_uvs2 = geometry.faceVertexUvs[1], 
+		obj_colors = geometry.colors, 
+		obj_skinVerticesA = geometry.skinVerticesA, 
+		obj_skinVerticesB = geometry.skinVerticesB, 
+		obj_skinIndices = geometry.skinIndices, 
+		obj_skinWeights = geometry.skinWeights, 
+		morphTargets = geometry.morphTargets, 
+		morphNormals = geometry.morphNormals;
 
 		if (dirtyVertices) 
 		{
@@ -4851,8 +4931,8 @@ class WebGLRenderer implements IRenderer
 			}
 		}
 
-		if (dirtyUvs && obj_uvs2 && uvType) {
-
+		if (dirtyUvs && obj_uvs2 && uvType) 
+		{
 			for ( f in 0...chunk_faces3.length) 
 			{
 				fi = chunk_faces3[f];
@@ -4874,7 +4954,6 @@ class WebGLRenderer implements IRenderer
 					offset_uv2 += 2;
 
 				}
-
 			}
 
 			for ( f in 0...chunk_faces4.length) 
@@ -4974,11 +5053,14 @@ class WebGLRenderer implements IRenderer
 
 		}
 
-		if (customAttributes) {
-
-			for ( i in 0...customAttributes.length) {
-
+		var customAttribute:Dynamic;
+		var customAttributeArray:Array<Dynamic>;
+		if (customAttributes != null) 
+		{
+			for ( i in 0...customAttributes.length) 
+			{
 				customAttribute = customAttributes[i];
+				customAttributeArray = customAttribute.array;
 
 				if (!customAttribute.__original.needsUpdate)
 					continue;
@@ -4986,17 +5068,17 @@ class WebGLRenderer implements IRenderer
 				offset_custom = 0;
 				offset_customSrc = 0;
 
-				if (customAttribute.size == 1) {
-
-					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") {
-
-						for ( f in 0...chunk_faces3.length) {
-
+				if (customAttribute.size == 1) 
+				{
+					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") 
+					{
+						for ( f in 0...chunk_faces3.length) 
+						{
 							face = obj_faces[chunk_faces3[f]];
 
-							customAttribute.array[offset_custom] = customAttribute.value[face.a];
-							customAttribute.array[offset_custom + 1] = customAttribute.value[face.b];
-							customAttribute.array[offset_custom + 2] = customAttribute.value[face.c];
+							customAttributeArray[offset_custom] = customAttribute.value[face.a];
+							customAttributeArray[offset_custom + 1] = customAttribute.value[face.b];
+							customAttributeArray[offset_custom + 2] = customAttribute.value[face.c];
 
 							offset_custom += 3;
 
@@ -5006,10 +5088,10 @@ class WebGLRenderer implements IRenderer
 
 							face = obj_faces[chunk_faces4[f]];
 
-							customAttribute.array[offset_custom] = customAttribute.value[face.a];
-							customAttribute.array[offset_custom + 1] = customAttribute.value[face.b];
-							customAttribute.array[offset_custom + 2] = customAttribute.value[face.c];
-							customAttribute.array[offset_custom + 3] = customAttribute.value[face.d];
+							customAttributeArray[offset_custom] = customAttribute.value[face.a];
+							customAttributeArray[offset_custom + 1] = customAttribute.value[face.b];
+							customAttributeArray[offset_custom + 2] = customAttribute.value[face.c];
+							customAttributeArray[offset_custom + 3] = customAttribute.value[face.d];
 
 							offset_custom += 4;
 
@@ -5021,9 +5103,9 @@ class WebGLRenderer implements IRenderer
 
 							value = customAttribute.value[chunk_faces3[f]];
 
-							customAttribute.array[offset_custom] = value;
-							customAttribute.array[offset_custom + 1] = value;
-							customAttribute.array[offset_custom + 2] = value;
+							customAttributeArray[offset_custom] = value;
+							customAttributeArray[offset_custom + 1] = value;
+							customAttributeArray[offset_custom + 2] = value;
 
 							offset_custom += 3;
 
@@ -5033,10 +5115,10 @@ class WebGLRenderer implements IRenderer
 
 							value = customAttribute.value[chunk_faces4[f]];
 
-							customAttribute.array[offset_custom] = value;
-							customAttribute.array[offset_custom + 1] = value;
-							customAttribute.array[offset_custom + 2] = value;
-							customAttribute.array[offset_custom + 3] = value;
+							customAttributeArray[offset_custom] = value;
+							customAttributeArray[offset_custom + 1] = value;
+							customAttributeArray[offset_custom + 2] = value;
+							customAttributeArray[offset_custom + 3] = value;
 
 							offset_custom += 4;
 
@@ -5056,14 +5138,14 @@ class WebGLRenderer implements IRenderer
 							v2 = customAttribute.value[face.b];
 							v3 = customAttribute.value[face.c];
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
 
-							customAttribute.array[offset_custom + 2] = v2.x;
-							customAttribute.array[offset_custom + 3] = v2.y;
+							customAttributeArray[offset_custom + 2] = v2.x;
+							customAttributeArray[offset_custom + 3] = v2.y;
 
-							customAttribute.array[offset_custom + 4] = v3.x;
-							customAttribute.array[offset_custom + 5] = v3.y;
+							customAttributeArray[offset_custom + 4] = v3.x;
+							customAttributeArray[offset_custom + 5] = v3.y;
 
 							offset_custom += 6;
 
@@ -5079,17 +5161,17 @@ class WebGLRenderer implements IRenderer
 							v3 = customAttribute.value[face.c];
 							v4 = customAttribute.value[face.d];
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
 
-							customAttribute.array[offset_custom + 2] = v2.x;
-							customAttribute.array[offset_custom + 3] = v2.y;
+							customAttributeArray[offset_custom + 2] = v2.x;
+							customAttributeArray[offset_custom + 3] = v2.y;
 
-							customAttribute.array[offset_custom + 4] = v3.x;
-							customAttribute.array[offset_custom + 5] = v3.y;
+							customAttributeArray[offset_custom + 4] = v3.x;
+							customAttributeArray[offset_custom + 5] = v3.y;
 
-							customAttribute.array[offset_custom + 6] = v4.x;
-							customAttribute.array[offset_custom + 7] = v4.y;
+							customAttributeArray[offset_custom + 6] = v4.x;
+							customAttributeArray[offset_custom + 7] = v4.y;
 
 							offset_custom += 8;
 
@@ -5105,14 +5187,14 @@ class WebGLRenderer implements IRenderer
 							v2 = value;
 							v3 = value;
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
 
-							customAttribute.array[offset_custom + 2] = v2.x;
-							customAttribute.array[offset_custom + 3] = v2.y;
+							customAttributeArray[offset_custom + 2] = v2.x;
+							customAttributeArray[offset_custom + 3] = v2.y;
 
-							customAttribute.array[offset_custom + 4] = v3.x;
-							customAttribute.array[offset_custom + 5] = v3.y;
+							customAttributeArray[offset_custom + 4] = v3.x;
+							customAttributeArray[offset_custom + 5] = v3.y;
 
 							offset_custom += 6;
 
@@ -5128,17 +5210,17 @@ class WebGLRenderer implements IRenderer
 							v3 = value;
 							v4 = value;
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
 
-							customAttribute.array[offset_custom + 2] = v2.x;
-							customAttribute.array[offset_custom + 3] = v2.y;
+							customAttributeArray[offset_custom + 2] = v2.x;
+							customAttributeArray[offset_custom + 3] = v2.y;
 
-							customAttribute.array[offset_custom + 4] = v3.x;
-							customAttribute.array[offset_custom + 5] = v3.y;
+							customAttributeArray[offset_custom + 4] = v3.x;
+							customAttributeArray[offset_custom + 5] = v3.y;
 
-							customAttribute.array[offset_custom + 6] = v4.x;
-							customAttribute.array[offset_custom + 7] = v4.y;
+							customAttributeArray[offset_custom + 6] = v4.x;
+							customAttributeArray[offset_custom + 7] = v4.y;
 
 							offset_custom += 8;
 
@@ -5146,48 +5228,47 @@ class WebGLRenderer implements IRenderer
 
 					}
 
-				} else if (customAttribute.size == 3) {
-
-					var pp;
-
-					if (customAttribute.type == "c") {
-
+				} 
+				else if (customAttribute.size == 3) 
+				{
+					var pp:Array<String>;
+					if (customAttribute.type == "c") 
+					{
 						pp = ["r", "g", "b"];
-
-					} else {
-
+					} 
+					else 
+					{
 						pp = ["x", "y", "z"];
-
 					}
 
-					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") {
-
-						for ( f in 0...chunk_faces3.length) {
-
+					if (customAttribute.boundTo == null || 
+					customAttribute.boundTo == "vertices") 
+					{
+						for ( f in 0...chunk_faces3.length) 
+						{
 							face = obj_faces[chunk_faces3[f]];
 
 							v1 = customAttribute.value[face.a];
 							v2 = customAttribute.value[face.b];
 							v3 = customAttribute.value[face.c];
 
-							customAttribute.array[offset_custom] = v1[pp[0]];
-							customAttribute.array[offset_custom + 1] = v1[pp[1]];
-							customAttribute.array[offset_custom + 2] = v1[pp[2]];
+							customAttributeArray[offset_custom] = v1[pp[0]];
+							customAttributeArray[offset_custom + 1] = v1[pp[1]];
+							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttribute.array[offset_custom + 3] = v2[pp[0]];
-							customAttribute.array[offset_custom + 4] = v2[pp[1]];
-							customAttribute.array[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v2[pp[0]];
+							customAttributeArray[offset_custom + 4] = v2[pp[1]];
+							customAttributeArray[offset_custom + 5] = v2[pp[2]];
 
-							customAttribute.array[offset_custom + 6] = v3[pp[0]];
-							customAttribute.array[offset_custom + 7] = v3[pp[1]];
-							customAttribute.array[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v3[pp[0]];
+							customAttributeArray[offset_custom + 7] = v3[pp[1]];
+							customAttributeArray[offset_custom + 8] = v3[pp[2]];
 
 							offset_custom += 9;
-
 						}
 
-						for ( f in 0...chunk_faces4.length) {
-
+						for ( f in 0...chunk_faces4.length) 
+						{
 							face = obj_faces[chunk_faces4[f]];
 
 							v1 = customAttribute.value[face.a];
@@ -5195,48 +5276,48 @@ class WebGLRenderer implements IRenderer
 							v3 = customAttribute.value[face.c];
 							v4 = customAttribute.value[face.d];
 
-							customAttribute.array[offset_custom] = v1[pp[0]];
-							customAttribute.array[offset_custom + 1] = v1[pp[1]];
-							customAttribute.array[offset_custom + 2] = v1[pp[2]];
+							customAttributeArray[offset_custom] = v1[pp[0]];
+							customAttributeArray[offset_custom + 1] = v1[pp[1]];
+							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttribute.array[offset_custom + 3] = v2[pp[0]];
-							customAttribute.array[offset_custom + 4] = v2[pp[1]];
-							customAttribute.array[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v2[pp[0]];
+							customAttributeArray[offset_custom + 4] = v2[pp[1]];
+							customAttributeArray[offset_custom + 5] = v2[pp[2]];
 
-							customAttribute.array[offset_custom + 6] = v3[pp[0]];
-							customAttribute.array[offset_custom + 7] = v3[pp[1]];
-							customAttribute.array[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v3[pp[0]];
+							customAttributeArray[offset_custom + 7] = v3[pp[1]];
+							customAttributeArray[offset_custom + 8] = v3[pp[2]];
 
-							customAttribute.array[offset_custom + 9] = v4[pp[0]];
-							customAttribute.array[offset_custom + 10] = v4[pp[1]];
-							customAttribute.array[offset_custom + 11] = v4[pp[2]];
+							customAttributeArray[offset_custom + 9] = v4[pp[0]];
+							customAttributeArray[offset_custom + 10] = v4[pp[1]];
+							customAttributeArray[offset_custom + 11] = v4[pp[2]];
 
 							offset_custom += 12;
 
 						}
 
-					} else if (customAttribute.boundTo == "faces") {
-
+					} 
+					else if (customAttribute.boundTo == "faces") 
+					{
 						for ( f in 0...chunk_faces3.length) 
 						{
-
 							value = customAttribute.value[chunk_faces3[f]];
 
 							v1 = value;
 							v2 = value;
 							v3 = value;
 
-							customAttribute.array[offset_custom] = v1[pp[0]];
-							customAttribute.array[offset_custom + 1] = v1[pp[1]];
-							customAttribute.array[offset_custom + 2] = v1[pp[2]];
+							customAttributeArray[offset_custom] = v1[pp[0]];
+							customAttributeArray[offset_custom + 1] = v1[pp[1]];
+							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttribute.array[offset_custom + 3] = v2[pp[0]];
-							customAttribute.array[offset_custom + 4] = v2[pp[1]];
-							customAttribute.array[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v2[pp[0]];
+							customAttributeArray[offset_custom + 4] = v2[pp[1]];
+							customAttributeArray[offset_custom + 5] = v2[pp[2]];
 
-							customAttribute.array[offset_custom + 6] = v3[pp[0]];
-							customAttribute.array[offset_custom + 7] = v3[pp[1]];
-							customAttribute.array[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v3[pp[0]];
+							customAttributeArray[offset_custom + 7] = v3[pp[1]];
+							customAttributeArray[offset_custom + 8] = v3[pp[2]];
 
 							offset_custom += 9;
 
@@ -5244,7 +5325,6 @@ class WebGLRenderer implements IRenderer
 
 						for ( f in 0...chunk_faces4.length) 
 						{
-
 							value = customAttribute.value[chunk_faces4[f]];
 
 							v1 = value;
@@ -5252,56 +5332,54 @@ class WebGLRenderer implements IRenderer
 							v3 = value;
 							v4 = value;
 
-							customAttribute.array[offset_custom] = v1[pp[0]];
-							customAttribute.array[offset_custom + 1] = v1[pp[1]];
-							customAttribute.array[offset_custom + 2] = v1[pp[2]];
+							customAttributeArray[offset_custom] = v1[pp[0]];
+							customAttributeArray[offset_custom + 1] = v1[pp[1]];
+							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttribute.array[offset_custom + 3] = v2[pp[0]];
-							customAttribute.array[offset_custom + 4] = v2[pp[1]];
-							customAttribute.array[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v2[pp[0]];
+							customAttributeArray[offset_custom + 4] = v2[pp[1]];
+							customAttributeArray[offset_custom + 5] = v2[pp[2]];
 
-							customAttribute.array[offset_custom + 6] = v3[pp[0]];
-							customAttribute.array[offset_custom + 7] = v3[pp[1]];
-							customAttribute.array[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v3[pp[0]];
+							customAttributeArray[offset_custom + 7] = v3[pp[1]];
+							customAttributeArray[offset_custom + 8] = v3[pp[2]];
 
-							customAttribute.array[offset_custom + 9] = v4[pp[0]];
-							customAttribute.array[offset_custom + 10] = v4[pp[1]];
-							customAttribute.array[offset_custom + 11] = v4[pp[2]];
+							customAttributeArray[offset_custom + 9] = v4[pp[0]];
+							customAttributeArray[offset_custom + 10] = v4[pp[1]];
+							customAttributeArray[offset_custom + 11] = v4[pp[2]];
 
 							offset_custom += 12;
 
 						}
 
-					} else if (customAttribute.boundTo == "faceVertices") {
-
+					} 
+					else if (customAttribute.boundTo == "faceVertices") 
+					{
 						for ( f in 0...chunk_faces3.length) 
 						{
-
 							value = customAttribute.value[chunk_faces3[f]];
 
 							v1 = value[0];
 							v2 = value[1];
 							v3 = value[2];
 
-							customAttribute.array[offset_custom] = v1[pp[0]];
-							customAttribute.array[offset_custom + 1] = v1[pp[1]];
-							customAttribute.array[offset_custom + 2] = v1[pp[2]];
+							customAttributeArray[offset_custom] = v1[pp[0]];
+							customAttributeArray[offset_custom + 1] = v1[pp[1]];
+							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttribute.array[offset_custom + 3] = v2[pp[0]];
-							customAttribute.array[offset_custom + 4] = v2[pp[1]];
-							customAttribute.array[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v2[pp[0]];
+							customAttributeArray[offset_custom + 4] = v2[pp[1]];
+							customAttributeArray[offset_custom + 5] = v2[pp[2]];
 
-							customAttribute.array[offset_custom + 6] = v3[pp[0]];
-							customAttribute.array[offset_custom + 7] = v3[pp[1]];
-							customAttribute.array[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v3[pp[0]];
+							customAttributeArray[offset_custom + 7] = v3[pp[1]];
+							customAttributeArray[offset_custom + 8] = v3[pp[2]];
 
 							offset_custom += 9;
-
 						}
 
 						for ( f in 0...chunk_faces4.length) 
 						{
-
 							value = customAttribute.value[chunk_faces4[f]];
 
 							v1 = value[0];
@@ -5309,21 +5387,21 @@ class WebGLRenderer implements IRenderer
 							v3 = value[2];
 							v4 = value[3];
 
-							customAttribute.array[offset_custom] = v1[pp[0]];
-							customAttribute.array[offset_custom + 1] = v1[pp[1]];
-							customAttribute.array[offset_custom + 2] = v1[pp[2]];
+							customAttributeArray[offset_custom] = v1[pp[0]];
+							customAttributeArray[offset_custom + 1] = v1[pp[1]];
+							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttribute.array[offset_custom + 3] = v2[pp[0]];
-							customAttribute.array[offset_custom + 4] = v2[pp[1]];
-							customAttribute.array[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v2[pp[0]];
+							customAttributeArray[offset_custom + 4] = v2[pp[1]];
+							customAttributeArray[offset_custom + 5] = v2[pp[2]];
 
-							customAttribute.array[offset_custom + 6] = v3[pp[0]];
-							customAttribute.array[offset_custom + 7] = v3[pp[1]];
-							customAttribute.array[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v3[pp[0]];
+							customAttributeArray[offset_custom + 7] = v3[pp[1]];
+							customAttributeArray[offset_custom + 8] = v3[pp[2]];
 
-							customAttribute.array[offset_custom + 9] = v4[pp[0]];
-							customAttribute.array[offset_custom + 10] = v4[pp[1]];
-							customAttribute.array[offset_custom + 11] = v4[pp[2]];
+							customAttributeArray[offset_custom + 9] = v4[pp[0]];
+							customAttributeArray[offset_custom + 10] = v4[pp[1]];
+							customAttributeArray[offset_custom + 11] = v4[pp[2]];
 
 							offset_custom += 12;
 
@@ -5331,41 +5409,41 @@ class WebGLRenderer implements IRenderer
 
 					}
 
-				} else if (customAttribute.size == 4) {
+				} 
+				else if (customAttribute.size == 4) 
+				{
 
-					if (customAttribute.boundTo == null || customAttribute.boundTo == "vertices") {
-
+					if (customAttribute.boundTo == null || 
+					customAttribute.boundTo == "vertices") 
+					{
 						for ( f in 0...chunk_faces3.length) 
 						{
-
 							face = obj_faces[chunk_faces3[f]];
 
 							v1 = customAttribute.value[face.a];
 							v2 = customAttribute.value[face.b];
 							v3 = customAttribute.value[face.c];
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
-							customAttribute.array[offset_custom + 2] = v1.z;
-							customAttribute.array[offset_custom + 3] = v1.w;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom + 2] = v1.z;
+							customAttributeArray[offset_custom + 3] = v1.w;
 
-							customAttribute.array[offset_custom + 4] = v2.x;
-							customAttribute.array[offset_custom + 5] = v2.y;
-							customAttribute.array[offset_custom + 6] = v2.z;
-							customAttribute.array[offset_custom + 7] = v2.w;
+							customAttributeArray[offset_custom + 4] = v2.x;
+							customAttributeArray[offset_custom + 5] = v2.y;
+							customAttributeArray[offset_custom + 6] = v2.z;
+							customAttributeArray[offset_custom + 7] = v2.w;
 
-							customAttribute.array[offset_custom + 8] = v3.x;
-							customAttribute.array[offset_custom + 9] = v3.y;
-							customAttribute.array[offset_custom + 10] = v3.z;
-							customAttribute.array[offset_custom + 11] = v3.w;
+							customAttributeArray[offset_custom + 8] = v3.x;
+							customAttributeArray[offset_custom + 9] = v3.y;
+							customAttributeArray[offset_custom + 10] = v3.z;
+							customAttributeArray[offset_custom + 11] = v3.w;
 
 							offset_custom += 12;
-
 						}
 
 						for ( f in 0...chunk_faces4.length) 
 						{
-
 							face = obj_faces[chunk_faces4[f]];
 
 							v1 = customAttribute.value[face.a];
@@ -5373,32 +5451,32 @@ class WebGLRenderer implements IRenderer
 							v3 = customAttribute.value[face.c];
 							v4 = customAttribute.value[face.d];
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
-							customAttribute.array[offset_custom + 2] = v1.z;
-							customAttribute.array[offset_custom + 3] = v1.w;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom + 2] = v1.z;
+							customAttributeArray[offset_custom + 3] = v1.w;
 
-							customAttribute.array[offset_custom + 4] = v2.x;
-							customAttribute.array[offset_custom + 5] = v2.y;
-							customAttribute.array[offset_custom + 6] = v2.z;
-							customAttribute.array[offset_custom + 7] = v2.w;
+							customAttributeArray[offset_custom + 4] = v2.x;
+							customAttributeArray[offset_custom + 5] = v2.y;
+							customAttributeArray[offset_custom + 6] = v2.z;
+							customAttributeArray[offset_custom + 7] = v2.w;
 
-							customAttribute.array[offset_custom + 8] = v3.x;
-							customAttribute.array[offset_custom + 9] = v3.y;
-							customAttribute.array[offset_custom + 10] = v3.z;
-							customAttribute.array[offset_custom + 11] = v3.w;
+							customAttributeArray[offset_custom + 8] = v3.x;
+							customAttributeArray[offset_custom + 9] = v3.y;
+							customAttributeArray[offset_custom + 10] = v3.z;
+							customAttributeArray[offset_custom + 11] = v3.w;
 
-							customAttribute.array[offset_custom + 12] = v4.x;
-							customAttribute.array[offset_custom + 13] = v4.y;
-							customAttribute.array[offset_custom + 14] = v4.z;
-							customAttribute.array[offset_custom + 15] = v4.w;
+							customAttributeArray[offset_custom + 12] = v4.x;
+							customAttributeArray[offset_custom + 13] = v4.y;
+							customAttributeArray[offset_custom + 14] = v4.z;
+							customAttributeArray[offset_custom + 15] = v4.w;
 
 							offset_custom += 16;
-
 						}
 
-					} else if (customAttribute.boundTo == "faces") {
-
+					} 
+					else if (customAttribute.boundTo == "faces") 
+					{
 						for ( f in 0...chunk_faces3.length) 
 						{
 							value = customAttribute.value[chunk_faces3[f]];
@@ -5407,20 +5485,20 @@ class WebGLRenderer implements IRenderer
 							v2 = value;
 							v3 = value;
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
-							customAttribute.array[offset_custom + 2] = v1.z;
-							customAttribute.array[offset_custom + 3] = v1.w;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom + 2] = v1.z;
+							customAttributeArray[offset_custom + 3] = v1.w;
 
-							customAttribute.array[offset_custom + 4] = v2.x;
-							customAttribute.array[offset_custom + 5] = v2.y;
-							customAttribute.array[offset_custom + 6] = v2.z;
-							customAttribute.array[offset_custom + 7] = v2.w;
+							customAttributeArray[offset_custom + 4] = v2.x;
+							customAttributeArray[offset_custom + 5] = v2.y;
+							customAttributeArray[offset_custom + 6] = v2.z;
+							customAttributeArray[offset_custom + 7] = v2.w;
 
-							customAttribute.array[offset_custom + 8] = v3.x;
-							customAttribute.array[offset_custom + 9] = v3.y;
-							customAttribute.array[offset_custom + 10] = v3.z;
-							customAttribute.array[offset_custom + 11] = v3.w;
+							customAttributeArray[offset_custom + 8] = v3.x;
+							customAttributeArray[offset_custom + 9] = v3.y;
+							customAttributeArray[offset_custom + 10] = v3.z;
+							customAttributeArray[offset_custom + 11] = v3.w;
 
 							offset_custom += 12;
 
@@ -5435,25 +5513,25 @@ class WebGLRenderer implements IRenderer
 							v3 = value;
 							v4 = value;
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
-							customAttribute.array[offset_custom + 2] = v1.z;
-							customAttribute.array[offset_custom + 3] = v1.w;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom + 2] = v1.z;
+							customAttributeArray[offset_custom + 3] = v1.w;
 
-							customAttribute.array[offset_custom + 4] = v2.x;
-							customAttribute.array[offset_custom + 5] = v2.y;
-							customAttribute.array[offset_custom + 6] = v2.z;
-							customAttribute.array[offset_custom + 7] = v2.w;
+							customAttributeArray[offset_custom + 4] = v2.x;
+							customAttributeArray[offset_custom + 5] = v2.y;
+							customAttributeArray[offset_custom + 6] = v2.z;
+							customAttributeArray[offset_custom + 7] = v2.w;
 
-							customAttribute.array[offset_custom + 8] = v3.x;
-							customAttribute.array[offset_custom + 9] = v3.y;
-							customAttribute.array[offset_custom + 10] = v3.z;
-							customAttribute.array[offset_custom + 11] = v3.w;
+							customAttributeArray[offset_custom + 8] = v3.x;
+							customAttributeArray[offset_custom + 9] = v3.y;
+							customAttributeArray[offset_custom + 10] = v3.z;
+							customAttributeArray[offset_custom + 11] = v3.w;
 
-							customAttribute.array[offset_custom + 12] = v4.x;
-							customAttribute.array[offset_custom + 13] = v4.y;
-							customAttribute.array[offset_custom + 14] = v4.z;
-							customAttribute.array[offset_custom + 15] = v4.w;
+							customAttributeArray[offset_custom + 12] = v4.x;
+							customAttributeArray[offset_custom + 13] = v4.y;
+							customAttributeArray[offset_custom + 14] = v4.z;
+							customAttributeArray[offset_custom + 15] = v4.w;
 
 							offset_custom += 16;
 
@@ -5469,20 +5547,20 @@ class WebGLRenderer implements IRenderer
 							v2 = value[1];
 							v3 = value[2];
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
-							customAttribute.array[offset_custom + 2] = v1.z;
-							customAttribute.array[offset_custom + 3] = v1.w;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom + 2] = v1.z;
+							customAttributeArray[offset_custom + 3] = v1.w;
 
-							customAttribute.array[offset_custom + 4] = v2.x;
-							customAttribute.array[offset_custom + 5] = v2.y;
-							customAttribute.array[offset_custom + 6] = v2.z;
-							customAttribute.array[offset_custom + 7] = v2.w;
+							customAttributeArray[offset_custom + 4] = v2.x;
+							customAttributeArray[offset_custom + 5] = v2.y;
+							customAttributeArray[offset_custom + 6] = v2.z;
+							customAttributeArray[offset_custom + 7] = v2.w;
 
-							customAttribute.array[offset_custom + 8] = v3.x;
-							customAttribute.array[offset_custom + 9] = v3.y;
-							customAttribute.array[offset_custom + 10] = v3.z;
-							customAttribute.array[offset_custom + 11] = v3.w;
+							customAttributeArray[offset_custom + 8] = v3.x;
+							customAttributeArray[offset_custom + 9] = v3.y;
+							customAttributeArray[offset_custom + 10] = v3.z;
+							customAttributeArray[offset_custom + 11] = v3.w;
 
 							offset_custom += 12;
 
@@ -5497,42 +5575,39 @@ class WebGLRenderer implements IRenderer
 							v3 = value[2];
 							v4 = value[3];
 
-							customAttribute.array[offset_custom] = v1.x;
-							customAttribute.array[offset_custom + 1] = v1.y;
-							customAttribute.array[offset_custom + 2] = v1.z;
-							customAttribute.array[offset_custom + 3] = v1.w;
+							customAttributeArray[offset_custom] = v1.x;
+							customAttributeArray[offset_custom + 1] = v1.y;
+							customAttributeArray[offset_custom + 2] = v1.z;
+							customAttributeArray[offset_custom + 3] = v1.w;
 
-							customAttribute.array[offset_custom + 4] = v2.x;
-							customAttribute.array[offset_custom + 5] = v2.y;
-							customAttribute.array[offset_custom + 6] = v2.z;
-							customAttribute.array[offset_custom + 7] = v2.w;
+							customAttributeArray[offset_custom + 4] = v2.x;
+							customAttributeArray[offset_custom + 5] = v2.y;
+							customAttributeArray[offset_custom + 6] = v2.z;
+							customAttributeArray[offset_custom + 7] = v2.w;
 
-							customAttribute.array[offset_custom + 8] = v3.x;
-							customAttribute.array[offset_custom + 9] = v3.y;
-							customAttribute.array[offset_custom + 10] = v3.z;
-							customAttribute.array[offset_custom + 11] = v3.w;
+							customAttributeArray[offset_custom + 8] = v3.x;
+							customAttributeArray[offset_custom + 9] = v3.y;
+							customAttributeArray[offset_custom + 10] = v3.z;
+							customAttributeArray[offset_custom + 11] = v3.w;
 
-							customAttribute.array[offset_custom + 12] = v4.x;
-							customAttribute.array[offset_custom + 13] = v4.y;
-							customAttribute.array[offset_custom + 14] = v4.z;
-							customAttribute.array[offset_custom + 15] = v4.w;
+							customAttributeArray[offset_custom + 12] = v4.x;
+							customAttributeArray[offset_custom + 13] = v4.y;
+							customAttributeArray[offset_custom + 14] = v4.z;
+							customAttributeArray[offset_custom + 15] = v4.w;
 
 							offset_custom += 16;
 
 						}
-
 					}
-
 				}
 
 				gl.bindBuffer(gl.ARRAY_BUFFER, customAttribute.buffer);
-				gl.bufferData(gl.ARRAY_BUFFER, customAttribute.array, hint);
-
+				gl.bufferData(gl.ARRAY_BUFFER, customAttributeArray, hint);
 			}
-
 		}
 
-		if (dispose) {
+		if (dispose) 
+		{
 			//delete geometryGroup.__inittedArrays;
 			//delete geometryGroup.__colorArray;
 			//delete geometryGroup.__normalArray;
@@ -5553,55 +5628,49 @@ class WebGLRenderer implements IRenderer
 
 	public function  setDirectBuffers(geometry, hint, dispose) 
 	{
-		var attributes = geometry.attributes;
+		var attributes:Dynamic = geometry.attributes;
 
-		var index = attributes["index"];
-		var position = attributes["position"];
-		var normal = attributes["normal"];
-		var uv = attributes["uv"];
-		var color = attributes["color"];
-		var tangent = attributes["tangent"];
+		var index:Dynamic = untyped attributes["index"];
+		var position:Dynamic = untyped attributes["position"];
+		var normal:Dynamic = untyped attributes["normal"];
+		var uv:Dynamic = untyped attributes["uv"];
+		var color:Dynamic = untyped attributes["color"];
+		var tangent:Dynamic = untyped attributes["tangent"];
 
-		if (geometry.elementsNeedUpdate && index != null) {
-
+		if (geometry.elementsNeedUpdate && index != null) 
+		{
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index.buffer);
 			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, index.array, hint);
-
 		}
 
-		if (geometry.verticesNeedUpdate && position != null) {
-
+		if (geometry.verticesNeedUpdate && position != null) 
+		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, position.buffer);
 			gl.bufferData(gl.ARRAY_BUFFER, position.array, hint);
-
 		}
 
-		if (geometry.normalsNeedUpdate && normal != null) {
-
+		if (geometry.normalsNeedUpdate && normal != null) 
+		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, normal.buffer);
 			gl.bufferData(gl.ARRAY_BUFFER, normal.array, hint);
-
 		}
 
-		if (geometry.uvsNeedUpdate && uv != null) {
-
+		if (geometry.uvsNeedUpdate && uv != null) 
+		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, uv.buffer);
 			gl.bufferData(gl.ARRAY_BUFFER, uv.array, hint);
-
 		}
 
-		if (geometry.colorsNeedUpdate && color != null) {
-
+		if (geometry.colorsNeedUpdate && color != null) 
+		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, color.buffer);
 			gl.bufferData(gl.ARRAY_BUFFER, color.array, hint);
-
 		}
 
-		if (geometry.tangentsNeedUpdate && tangent != null) {
-
+		if (geometry.tangentsNeedUpdate && tangent != null) 
+		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, tangent.buffer);
 			gl.bufferData(gl.ARRAY_BUFFER, tangent.array, hint);
-
 		}
 
 		if (dispose) 
@@ -5616,7 +5685,8 @@ class WebGLRenderer implements IRenderer
 
 	// Buffer rendering
 
-	public function renderBufferImmediate(object, program, material) {
+	public function renderBufferImmediate(object, program, material):Void 
+	{
 
 		if (object.hasPositions && object.__webglVertexBuffer == null)
 			object.__webglVertexBuffer = gl.createBuffer();
@@ -5641,8 +5711,11 @@ class WebGLRenderer implements IRenderer
 
 			if (material.shading == ThreeGlobal.FlatShading) 
 			{
-				var nx, ny, nz, nax, nbx, ncx, nay, nby, ncy, naz, nbz, ncz;
-				var normalArray; 
+				var nx:Float, ny:Float, nz:Float, 
+					nax:Float, nbx:Float, ncx:Float, 
+					nay:Float, nby:Float, ncy:Float, 
+					naz:Float, nbz:Float, ncz:Float;
+				var normalArray:Array<Float>; 
 				var i:Int;
 				var il:Int = object.count * 3;
 
@@ -5711,7 +5784,8 @@ class WebGLRenderer implements IRenderer
 		object.count = 0;
 	}
 
-	public function renderBufferDirect(camera, lights, fog, material, geometry, object) {
+	public function renderBufferDirect(camera, lights, fog, material, geometry, object):Void
+	{
 
 		if (material.visible == false)
 			return;
@@ -5773,7 +5847,7 @@ class WebGLRenderer implements IRenderer
 
 					// uvs
 
-					var uv = geometry.attributes["uv"];
+					var uv:Dynamic = untyped geometry.attributes["uv"];
 
 					if (attributes.uv >= 0 && uv != null) 
 					{
@@ -5794,7 +5868,7 @@ class WebGLRenderer implements IRenderer
 
 					// colors
 
-					var color = geometry.attributes["color"];
+					var color:Dynamic = untyped geometry.attributes["color"];
 
 					if (attributes.color >= 0 && color != null) 
 					{
@@ -5806,11 +5880,11 @@ class WebGLRenderer implements IRenderer
 
 					// tangents
 
-					var tangent = geometry.attributes["tangent"];
+					var tangent:Dynamic = untyped geometry.attributes["tangent"];
 
 					if (attributes.tangent >= 0 && tangent != null) 
 					{
-						var tangentSize = tangent.itemSize;
+						var tangentSize:Int = tangent.itemSize;
 
 						gl.bindBuffer(gl.ARRAY_BUFFER, tangent.buffer);
 						gl.vertexAttribPointer(attributes.tangent, tangentSize, gl.FLOAT, false, 0, startIndex * tangentSize * 4);
@@ -5819,7 +5893,7 @@ class WebGLRenderer implements IRenderer
 
 					// indices
 
-					var index = geometry.attributes["index"];
+					var index:Dynamic = untyped geometry.attributes["index"];
 
 					gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index.buffer);
 
@@ -6037,18 +6111,18 @@ class WebGLRenderer implements IRenderer
 		} 
 		else if ( Std.is(object, Ribbon)) 
 		{
-			gl.drawArrays(_gl.TRIANGLE_STRIP, 0, geometryGroup.__webglVertexCount);
+			gl.drawArrays(gl.TRIANGLE_STRIP, 0, geometryGroup.__webglVertexCount);
 
 			this.statistics.calls++;
 		}
 
 	}
 
-	public function setupMorphTargets(material, geometryGroup, object):Void
+	public function setupMorphTargets(material:Material, geometryGroup, object):Void
 	{
 		// set base
 
-		var attributes = material.program.attributes;
+		var attributes:Dynamic = material.program.attributes;
 
 		if (object.morphTargetBase != -1) 
 		{
@@ -6065,8 +6139,8 @@ class WebGLRenderer implements IRenderer
 		{
 			// set forced order
 
-			var m = 0;
-			var order = object.morphTargetForcedOrder;
+			var m:Int = 0;
+			var order:Array<Dynamic> = object.morphTargetForcedOrder;
 			var influences = object.morphTargetInfluences;
 
 			while (m < material.numSupportedMorphTargets && m < order.length) 
@@ -6166,14 +6240,68 @@ class WebGLRenderer implements IRenderer
 
 	// Sorting
 
-	public function painterSort(a, b):Float 
+	public function painterSort(a, b):Int 
 	{
 		return b.z - a.z;
 	}
 
-	public function numericalSort(a, b):Float 
+	public function numericalSort(a, b):Int 
 	{
 		return b[1] - a[1];
+	}
+	
+	// Objects removal
+
+	private function removeObject(object:Object3D, scene:Scene):Void
+	{
+		if ( Std.is(object, Mesh) || 
+			Std.is(object,ParticleSystem) || 
+			Std.is(object,Ribbon) || 
+			Std.is(object,Line)) 
+		{
+			removeInstances(scene.__webglObjects, object);
+		} 
+		else if ( Std.is(object,Sprite)) 
+		{
+			removeInstancesDirect(scene.__webglSprites, object);
+		} 
+		else if ( Std.is(object,LensFlare)) 
+		{
+			removeInstancesDirect(scene.__webglFlares, object);
+		} 
+		else if ( Std.is(object,ImmediateRenderObject) || cast(object,ImmediateRenderObject).immediateRenderCallback) 
+		{
+			removeInstances(scene.__webglObjectsImmediate, object);
+		}
+
+		object.__webglActive = false;
+	}
+
+	private function removeInstances(objlist:Array<Dynamic>, object:Object3D):Void 
+	{
+		var i:Int = objlist.length - 1;
+		while (i >= 0)
+		{
+			if (objlist[i].object == object) 
+			{
+				objlist.splice(i, 1);
+			}
+			i--;
+		}
+	}
+
+	private function removeInstancesDirect(objlist:Array<Dynamic>, object:Object3D):Void  
+	{
+		var i:Int = objlist.length - 1;
+		while (i >= 0)
+		{
+			if (objlist[i].object == object) 
+			{
+				objlist.splice(i, 1);
+			}
+			i--;
+		}
+
 	}
 
 }

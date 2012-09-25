@@ -9,7 +9,7 @@ import three.textures.Texture;
 
 class MeshBasicMaterial extends Material
 {
-	public var shading:Int;
+	//public var shading:Int;
 	
 	public var wireframe:Bool;
 	public var wireframeLinewidth:Float;

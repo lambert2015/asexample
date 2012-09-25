@@ -1,5 +1,6 @@
 package three.core;
 import three.math.Vector3;
+import three.math.Vector4;
 import three.math.Color;
 /**
  * ...
@@ -18,12 +19,14 @@ class Face
 	public var color:Color;
 	public var vertexColors:Array<Vector3>;
 	
-	public var vertexTangents:Array<Vector3>;
+	public var vertexTangents:Array<Vector4>;
 
 	public var materialIndex:Int;
 	
 	public var centroid:Vector3;
 
+	public var __originalFaceNormal:Vector3;
+	public var __originalVertexNormals:Array<Vector3>;
 	public function new() 
 	{
 		
