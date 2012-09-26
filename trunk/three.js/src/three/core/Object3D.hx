@@ -59,6 +59,8 @@ class Object3D
 	
 	public var sortParticles:Bool;
 	
+	public var immediateRenderCallback:Dynamic;
+	
 	public var __webglActive:Bool;
 	
 	private var _vector:Vector3;
