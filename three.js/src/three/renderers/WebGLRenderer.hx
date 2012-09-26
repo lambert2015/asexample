@@ -615,22 +615,22 @@ class WebGLRenderer implements IRenderer
 		}
 	}
 
-	private function renderImmediateObject(camera, lights, fog, material, object):Void 
+	private function renderImmediateObject(camera:Camera, lights:Array<Light>, fog:IFog, material:Material, object:Object3D):Void 
 	{
-		var program = setProgram(camera, lights, fog, material, object);
+		var program:Program3D = setProgram(camera, lights, fog, material, object);
 
 		_currentGeometryGroupHash = -1;
 
 		this.setMaterialFaces(material);
 
-		if (object.immediateRenderCallback) 
+		if (object.immediateRenderCallback != null) 
 		{
-			object.immediateRenderCallback(program, _gl, _frustum);
+			object.immediateRenderCallback(program, gl, _frustum);
 		} 
 		else 
 		{
 			object.render(function(object) {
-				_this.renderBufferImmediate(object, program, material);
+				this.renderBufferImmediate(object, program, material);
 			});
 		}
 	}
