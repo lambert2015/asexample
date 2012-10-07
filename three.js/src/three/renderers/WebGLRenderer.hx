@@ -416,7 +416,7 @@ class WebGLRenderer implements IRenderer
 
 					if (this.sortObjects) 
 					{
-						if (object.renderDepth) 
+						if (object.renderDepth != 0) 
 						{
 							webglObject.z = object.renderDepth;
 						}
