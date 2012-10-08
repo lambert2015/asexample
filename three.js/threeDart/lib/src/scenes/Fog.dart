@@ -1,0 +1,3 @@
+class Fog {
+  Color color;
+}
