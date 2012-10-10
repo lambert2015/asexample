@@ -3168,7 +3168,9 @@ class WebGLRenderer implements IRenderer
 
 	public function addObject(object:Dynamic, scene:Scene):Void
 	{
-		var g, geometry, geometryGroup;
+		var g:String; 
+		var geometry:Geometry; 
+		var geometryGroup:Dynamic;
 
 		if (!object.__webglInit) 
 		{
