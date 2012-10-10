@@ -135,8 +135,8 @@ class Quaternion
 		var m31:Float = te[2], m32:Float = te[6], m33:Float = te[10]; 
 		var tTrace:Float = m11 + m22 + m33, s:Float;
 
-		if (tTrace > 0) {
-
+		if (tTrace > 0) 
+		{
 			s = 0.5 / Math.sqrt(tTrace + 1.0);
 
 			this.w = 0.25 / s;
@@ -144,8 +144,9 @@ class Quaternion
 			this.y = (m13 - m31 ) * s;
 			this.z = (m21 - m12 ) * s;
 
-		} else if (m11 > m22 && m11 > m33) {
-
+		} 
+		else if (m11 > m22 && m11 > m33) 
+		{
 			s = 2.0 * Math.sqrt(1.0 + m11 - m22 - m33);
 
 			this.w = (m32 - m23 ) / s;
@@ -153,17 +154,18 @@ class Quaternion
 			this.y = (m12 + m21 ) / s;
 			this.z = (m13 + m31 ) / s;
 
-		} else if (m22 > m33) {
-
+		} 
+		else if (m22 > m33) 
+		{
 			s = 2.0 * Math.sqrt(1.0 + m22 - m11 - m33);
 
 			this.w = (m13 - m31 ) / s;
 			this.x = (m12 + m21 ) / s;
 			this.y = 0.25 * s;
 			this.z = (m23 + m32 ) / s;
-
-		} else {
-
+		} 
+		else 
+		{
 			s = 2.0 * Math.sqrt(1.0 + m33 - m11 - m22);
 
 			this.w = (m21 - m12 ) / s;
@@ -174,11 +176,10 @@ class Quaternion
 		}
 
 		return this;
-
 	}
 
-	public function calculateW():Quaternion {
-
+	public function calculateW():Quaternion 
+	{
 		this.w = -Math.sqrt(Math.abs(1.0 - this.x * this.x - this.y * this.y - this.z * this.z));
 
 		return this;
@@ -186,13 +187,11 @@ class Quaternion
 
 	public function inverse():Quaternion
 	{
-
 		this.x *= -1;
 		this.y *= -1;
 		this.z *= -1;
 
 		return this;
-
 	}
 
 	public var length(getLength, never):Float;
@@ -205,7 +204,8 @@ class Quaternion
 	{
 		var l = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
 
-		if (l == 0) {
+		if (l == 0) 
+		{
 			this.x = 0;
 			this.y = 0;
 			this.z = 0;
@@ -283,44 +283,41 @@ class Quaternion
 
 		var cosHalfTheta = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
 
-		if (cosHalfTheta < 0) {
-
+		if (cosHalfTheta < 0) 
+		{
 			this.w = -qb.w;
 			this.x = -qb.x;
 			this.y = -qb.y;
 			this.z = -qb.z;
 
 			cosHalfTheta = -cosHalfTheta;
-
-		} else {
-
+		} 
+		else 
+		{
 			this.copy(qb);
-
 		}
 
-		if (cosHalfTheta >= 1.0) {
-
+		if (cosHalfTheta >= 1.0) 
+		{
 			this.w = w;
 			this.x = x;
 			this.y = y;
 			this.z = z;
 
 			return this;
-
 		}
 
 		var halfTheta = Math.acos(cosHalfTheta);
 		var sinHalfTheta = Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
 
-		if (Math.abs(sinHalfTheta) < 0.001) {
-
+		if (Math.abs(sinHalfTheta) < 0.001)
+		{
 			this.w = 0.5 * (w + this.w );
 			this.x = 0.5 * (x + this.x );
 			this.y = 0.5 * (y + this.y );
 			this.z = 0.5 * (z + this.z );
 
 			return this;
-
 		}
 
 		var ratioA = Math.sin((1 - t ) * halfTheta) / sinHalfTheta, ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
