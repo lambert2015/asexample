@@ -1,4 +1,4 @@
-interface IMaterial 
+interface IMaterial
 {
   int get opacity;
   bool get overdraw;

@@ -1,16 +1,16 @@
 /**
  * @author mr.doob / http://mrdoob.com/
- * 
+ *
  * Ported to Dart from JS by:
  * @author rob silverton / http://www.unwrong.com/
  *
  * parameters = {
  *  opacity: <float>,
- 
+
  *  shading: THREE.FlatShading,
  *  blending: THREE.NormalBlending,
  *  depthTest: <bool>,
- 
+
  *  wireframe: <boolean>,
  *  wireframeLinewidth: <float>
  * }
@@ -24,37 +24,37 @@ class MeshNormalMaterial extends Material {
   String wireframeLinejoin;
 
 
-  MeshNormalMaterial( [ // MeshNormalMaterial                 
-                        this.shading = Three.FlatShading, // doesn't really apply here, normals are not used                 
+  MeshNormalMaterial( [ // MeshNormalMaterial
+                        this.shading = Three.FlatShading, // doesn't really apply here, normals are not used
                         this.wireframe = false,
                         this.wireframeLinewidth = 1,
-                       
-                        // Material 
+
+                        // Material
                         name = '',
                         side = Three.FrontSide,
-                        
+
                         opacity = 1,
                         transparent = false,
-                        
+
                         blending = Three.NormalBlending,
                         blendSrc = Three.SrcAlphaFactor,
                         blendDst = Three.OneMinusSrcAlphaFactor,
                         blendEquation = Three.AddEquation,
-                        
+
                         depthTest = true,
                         depthWrite = true,
-                        
+
                         polygonOffset = false,
                         polygonOffsetFactor = 0,
                         polygonOffsetUnits =  0,
-                        
+
                         alphaTest = 0,
-                        
-                        overdraw = false, 
-                        
+
+                        overdraw = false,
+
                         visible = true ])
                         :
-                          
+
                           super(  name: name,
                                   side: side,
                                   opacity: opacity,
@@ -62,13 +62,13 @@ class MeshNormalMaterial extends Material {
                                   blending: blending,
                                   blendSrc: blendSrc,
                                   blendDst: blendDst,
-                                  blendEquation: blendEquation,      
+                                  blendEquation: blendEquation,
                                   depthTest: depthTest,
-                                  depthWrite: depthWrite,          
+                                  depthWrite: depthWrite,
                                   polygonOffset: polygonOffset,
                                   polygonOffsetFactor: polygonOffsetFactor,
-                                  polygonOffsetUnits: polygonOffsetUnits,             
-                                  alphaTest: alphaTest,              
-                                  overdraw: overdraw,          
+                                  polygonOffsetUnits: polygonOffsetUnits,
+                                  alphaTest: alphaTest,
+                                  overdraw: overdraw,
                                   visible: visible );
 }

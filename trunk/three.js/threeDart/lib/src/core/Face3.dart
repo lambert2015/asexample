@@ -1,7 +1,7 @@
 /**
  * @author mr.doob / http://mrdoob.com/
  * @author alteredq / http://alteredqualia.com/
- * 
+ *
  * Ported to Dart from JS by:
  * @author rob silverton / http://www.unwrong.com/
  */
@@ -13,7 +13,7 @@ class Face3 implements IFace3 {
   Color color;
   int materialIndex;
   Vector3 centroid;
-  
+
   /// normalOrVertexNormals and colorOrVertexColors can be either a [Vector3] or a [List<Vector3>]
   Face3( [this.a, this.b, this.c, normalOrVertexNormals, colorOrVertexColors, this.materialIndex] ) {
 
@@ -27,7 +27,7 @@ class Face3 implements IFace3 {
 
     centroid = new Vector3();
   }
-  
+
   clone() {
 
     var face = new Face3( a, b, c );

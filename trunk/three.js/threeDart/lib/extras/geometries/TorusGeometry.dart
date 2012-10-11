@@ -1,8 +1,8 @@
 class TorusGeometry extends Geometry {
   num radius, tube, segmentsR, segmentsT, arc;
-  
+
   TorusGeometry ([this.radius = 100, this.tube = 40, this.segmentsR = 8, this.segmentsT = 6, this.arc = Math.PI * 2]) : super() {
-    
+
     var center = new Vector3();
     var uvs = <UV>[];
     var normals = <Vector3>[];
@@ -55,6 +55,6 @@ class TorusGeometry extends Geometry {
     }
 
     this.computeCentroids();
-    
+
   }
 }
