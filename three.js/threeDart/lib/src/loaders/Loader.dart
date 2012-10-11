@@ -1,9 +1,9 @@
 /**
  * @author alteredq / http://alteredqualia.com/
- * 
+ *
  * Ported to Dart from JS by:
  * @author nelson silva / http://www.inevo.pt/
- * 
+ *
  * based on r51
  */
 
@@ -15,20 +15,20 @@ typedef void LoadedCallback(Geometry geometry);
 class Loader {
 
   Element statusDomElement;
-  
+
   LoadStartCallback onLoadStart;
   LoadProgressCallback onLoadProgress;
   LoadCompleteCallback onLoadComplete;
-  
+
   String crossOrigin = 'anonymous';
-  
+
   Loader( [bool showStatus = false] ) :
     statusDomElement = showStatus ? Loader.addStatusElement() : null {
     onLoadStart = () {};
     onLoadProgress = (data) {};
     onLoadComplete = () {};
   }
-   
+
   static addStatusElement() {
     var e = new Element.tag('div');
     e.style
@@ -42,9 +42,9 @@ class Loader {
       ..width("120px")
       ..padding("0.5em 0.5em 0.5em 0.5em")
       ..zIndex(1000);
-    
+
     e.innerHTML = "Loading ...";
-   
+
     return e;
   }
 
@@ -108,7 +108,7 @@ class Loader {
     var l = Math.log( n ) / Math.LN2;
     return Math.pow( 2, Math.round(  l ) );
   }
-  
+
   _load_image( where, url ) {
 
     var image = new Image();
@@ -138,13 +138,13 @@ class Loader {
     image.src = url;
 
   }
-  
+
   _create_texture( sourceFile, repeat, offset, wrap, anisotropy ) {
 
     var isCompressed = sourceFile.toLowerCase().endsWith( ".dds" );
     var fullPath = texturePath + "/" + sourceFile;
     var result;
-    
+
     if ( isCompressed ) {
 
       texture = ImageUtils.loadCompressedTexture( fullPath );
@@ -164,8 +164,8 @@ class Loader {
 
       result.repeat.set( repeat[ 0 ], repeat[ 1 ] );
 
-      if ( repeat[ 0 ] !== 1 ) result.wrapS = Three.RepeatWrapping;
-      if ( repeat[ 1 ] !== 1 ) result.wrapT = Three.RepeatWrapping;
+      if ( repeat[ 0 ] != 1 ) result.wrapS = Three.RepeatWrapping;
+      if ( repeat[ 1 ] != 1 ) result.wrapT = Three.RepeatWrapping;
 
     }
 
@@ -198,21 +198,21 @@ class Loader {
       load_image( result, fullPath );
 
     }
-    
+
     return result;
 
   }
 
   _rgb2hex( rgb ) => ( rgb[ 0 ] * 255 << 16 ) + ( rgb[ 1 ] * 255 << 8 ) + rgb[ 2 ] * 255;
 
-  
+
   _createMaterial( Map m, String texturePath ) {
     IMaterial material;
-    
+
     // defaults
 
     var mtype = "MeshLambertMaterial";
-    
+
     // mpars
     var color = 0xeeeeee,
         opacity = 1.0,
@@ -240,7 +240,7 @@ class Loader {
 
       var shading = m["shading"].toLowerCase();
 
-      if ( shading == "phong" ) { 
+      if ( shading == "phong" ) {
         mtype = "MeshPhongMaterial";
       } else if ( shading == "basic" ) {
         mtype = "MeshBasicMaterial";
@@ -381,8 +381,8 @@ class Loader {
       if ( opacity != null ) {
         uniforms[ "uOpacity" ].value = opacity;
       }
-      
-      material = new ShaderMaterial( 
+
+      material = new ShaderMaterial(
                         fragmentShader: shader.fragmentShader,
                         vertexShader: shader.vertexShader,
                         uniforms: uniforms
@@ -391,28 +391,28 @@ class Loader {
                         );
 
     } else {
-      
+
       switch (mtype) {
         case "MeshLambertMaterial" :
-          material = new MeshLambertMaterial(                                
+          material = new MeshLambertMaterial(
                                  map: map,
                                  color: color,
                                  ambient: ambient,
                                  lightMap: lightMap,
                                  specularMap: specularMap,
                                  vertexColors: vertexColors,
-                                 wireframe: wireframe,                           
-                                 side: Three.FrontSide,                                
+                                 wireframe: wireframe,
+                                 side: Three.FrontSide,
                                  opacity: opacity,
-                                 transparent: transparent,                             
-                                 blending: blending,                            
+                                 transparent: transparent,
+                                 blending: blending,
                                  depthTest: depthTest,
-                                 depthWrite: depthWrite,                             
+                                 depthWrite: depthWrite,
                                  visible: visible);
           break;
-          
+
         case "MeshPhongMaterial":
-          material = new MeshPhongMaterial(                                
+          material = new MeshPhongMaterial(
               map: map,
               color: color,
               ambient: ambient,
@@ -422,41 +422,41 @@ class Loader {
               bumpScale: bumpScale,
               specularMap: specularMap,
               vertexColors: vertexColors,
-              wireframe: wireframe,                           
-              side: Three.FrontSide,                                
+              wireframe: wireframe,
+              side: Three.FrontSide,
               opacity: opacity,
-              transparent: transparent,                             
-              blending: blending,                            
+              transparent: transparent,
+              blending: blending,
               depthTest: depthTest,
-              depthWrite: depthWrite,                             
+              depthWrite: depthWrite,
               visible: visible);
           break;
-          
+
         case "MeshBasicMaterial":
-          material = new MeshBasicMaterial(                                
+          material = new MeshBasicMaterial(
               map: map,
               color: color,
               lightMap: lightMap,
               specularMap: specularMap,
               vertexColors: vertexColors,
-              wireframe: wireframe,                           
-              side: Three.FrontSide,                                
+              wireframe: wireframe,
+              side: Three.FrontSide,
               opacity: opacity,
-              transparent: transparent,                             
-              blending: blending,                            
+              transparent: transparent,
+              blending: blending,
               depthTest: depthTest,
-              depthWrite: depthWrite,                             
+              depthWrite: depthWrite,
               visible: visible);
           break;
-          
+
         default:
           print("Unknow material type!");
       }
-     
+
 
     }
 
-    if ( m.containsKey("DbgName") ) { 
+    if ( m.containsKey("DbgName") ) {
       material.name = m["DbgName"];
     }
 

@@ -79,7 +79,7 @@ Texture loadTextureCube ( array, mapping, onLoad ) {
 
 	var i, l;
 	List<ImageElement> images = [];
-	
+
 	var texture = new Texture( images, mapping );
 
 	texture.flipY = false;
@@ -95,7 +95,7 @@ Texture loadTextureCube ( array, mapping, onLoad ) {
 
 		  (images as Dynamic).loadCount += 1;
 
-			if ( (images as Dynamic).loadCount === 6 ) {
+			if ( (images as Dynamic).loadCount == 6 ) {
 
 				texture.needsUpdate = true;
 				if ( onLoad != null ) onLoad();

@@ -5,7 +5,7 @@ class SpotLight extends Light {
   num intensity, distance;
   num angle;
   num exponent;
-  
+
   bool onlyShadow;
 
   //

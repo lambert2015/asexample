@@ -1,8 +1,8 @@
 /**
  * @author alteredq / http://alteredqualia.com/
- * 
+ *
  * Ported to Dart from JS by:
- * @author rob silverton / http://www.unwrong.com/ 
+ * @author rob silverton / http://www.unwrong.com/
  */
 
 #library("ThreeMath");
@@ -30,5 +30,5 @@ num randFloat( num low, num high ) =>low + _randomDouble * ( high - low );
 
 // Random float from <-range/2, range/2> interval
 num randFloatSpread( num range ) => range * ( 0.5 - _randomDouble );
- 
+
 num get _randomDouble => new Random().nextDouble();

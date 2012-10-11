@@ -8,7 +8,7 @@
  */
 
 class ParametricGeometry extends Geometry {
-  
+
   ParametricGeometry( func(u, v), int slices, int stacks, [bool useTris = false] ) : super() {
     var verts = this.vertices;
     var faces = this.faces;

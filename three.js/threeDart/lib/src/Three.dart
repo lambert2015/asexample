@@ -1,6 +1,6 @@
 /**
  * @author mr.doob / http://mrdoob.com/
- * 
+ *
  * Ported to Dart from JS by:
  * @author rob silverton / http://www.unwrong.com/
  */
@@ -8,17 +8,17 @@
 class Three {
   num lastTime;
   List<String> vendors;
-  
+
   // from Line
   static const int LineStrip = 0;
   static const int LinePieces = 1;
-  
+
   // from Geometry
   static int GeometryCount = 0;
-  
+
   // from Object3D
   static int Object3DCount = 0;
-  
+
   // from Material
   static int MaterialCount = 0;
 
@@ -45,7 +45,7 @@ class Three {
  static const int SubtractiveBlending = 3;
  static const int MultiplyBlending = 4;
  static const int CustomBlending = 5;
-  
+
   // custom blending equations
 // (numbers start from 100 not to clash with other
 //  mappings to OpenGL constants defined in Texture.js)
@@ -72,7 +72,7 @@ class Three {
  static const int SrcAlphaSaturateFactor = 210;
 
   // from MeshBasicMaterial
-  
+
   // from Texture
   static int TextureCount = 0;
 
@@ -112,8 +112,8 @@ class Three {
   static const int RGBFormat = 17;
   static const int RGBAFormat = 18;
   static const int LuminanceFormat = 19;
-  static const int LuminanceAlphaFormat = 20;  
-  
+  static const int LuminanceAlphaFormat = 20;
+
   Three()
   {
     GeometryCount = 0;
@@ -128,19 +128,19 @@ class Three {
     /*
     vendors = new List();
     vendors.addAll(['ms', 'moz', 'webkit', 'o']);
-    
+
     int requestAnimationFrame;
     int cancelAnimationFrame;
-    
+
     // loop through browser vendors checking for requestAnimationFrame or cancelAnimationFrame properties
 
-    for(int x = 0; x < vendors.length && !window.dynamic['requestAnimationFrame']; ++x) 
+    for(int x = 0; x < vendors.length && !window.dynamic['requestAnimationFrame']; ++x)
     {
       window.dynamic['requestAnimationFrame'] = window.dynamic[vendors[x]+'RequestAnimationFrame'];
-      window.dynamic['cancelAnimationFrame'] = window.dynamic[vendors[x]+'CancelAnimationFrame'] 
+      window.dynamic['cancelAnimationFrame'] = window.dynamic[vendors[x]+'CancelAnimationFrame']
                                  || window.dynamic[vendors[x]+'RequestCancelAnimationFrame'];
     };
-   
+
     if (!window.dynamic['requestAnimationFrame'])
         window.dynamic['requestAnimationFrame'] = function(callback, element) {
             var currTime = new Date.now().value;
@@ -150,7 +150,7 @@ class Three {
             lastTime = currTime + timeToCall;
             return id;
         };
- 
+
     if (!window.dynamic['cancelAnimationFrame'])
         window.dynamic['cancelAnimationFrame'] = function(id) {
             window.clearTimeout(id);
@@ -159,7 +159,7 @@ class Three {
     /*
     if ( ! window.dynamic['requestAnimationFrame'] )
     {
-      window.dynamic['requestAnimationFrame'] = ( function () 
+      window.dynamic['requestAnimationFrame'] = ( function ()
       {
         int no = (1000 / 60).toInt();
         var func = function ( callback, element ) {

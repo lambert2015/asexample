@@ -16,8 +16,8 @@ class CurvePath extends Curve {
 	bool autoClose; // Automatically closes the path
 
 	List cacheLengths = null;
-	
-	CurvePath() 
+
+	CurvePath()
 		:	curves = [],
 			_bends = [],
 			autoClose = false,
@@ -137,30 +137,30 @@ class CurvePath extends Curve {
 		var p, i, il, sum;
 
 		var v3 = points[0] is Vector3;
-		
+
 		sum = (v3) ? new Vector3() : new Vector2();
 
 		for ( i = 0; i < points.length; i ++ ) {
 
 			p = points[ i ];
 
-			if ( p.x > maxX ) maxX = p.x;
-			else if ( p.x < minX ) minX = p.x;
+			if ( p.x > maxX ) { maxX = p.x;
+			} else if ( p.x < minX ) minX = p.x;
 
-			if ( p.y > maxY ) maxY = p.y;
-			else if ( p.y < minY ) minY = p.y;
+			if ( p.y > maxY ) { maxY = p.y;
+			} else if ( p.y < minY ) minY = p.y;
 
 			if (v3) {
 			  p = p as Vector3;
-	      if ( p.z > maxZ ) maxZ = p.z;
-	      else if ( p.z < minZ ) minZ = p.z;
-	      
+	      if ( p.z > maxZ ) { maxZ = p.z;
+	      } else if ( p.z < minZ ) minZ = p.z;
+
 	      (sum as Vector3).addSelf( p );
 	    } else {
 	      (sum as Vector2).addSelf( p );
 	    }
-			
-			
+
+
 
 		}
 
@@ -178,7 +178,7 @@ class CurvePath extends Curve {
 
 	    ret["maxZ"] = maxZ;
 	    ret["minZ"] = minZ;
-	    
+
 	  }
 
 	  return ret;

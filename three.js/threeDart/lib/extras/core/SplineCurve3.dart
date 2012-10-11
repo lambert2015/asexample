@@ -13,8 +13,8 @@ class SplineCurve3 extends Curve3D {
 
     var v = new Vector3();
     var c = new List<int>(4);
-    var point = ( points.length - 1 ) * t, 
-        intPoint = point.floor().toInt(), 
+    var point = ( points.length - 1 ) * t,
+        intPoint = point.floor().toInt(),
         weight = point - intPoint;
 
     c[ 0 ] = intPoint == 0 ? intPoint : intPoint - 1;

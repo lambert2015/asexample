@@ -2,12 +2,12 @@
  * @author mr.doob / http://mrdoob.com/
  * @author alteredq / http://alteredqualia.com/
  * @author szimek / https://github.com/szimek/
- * 
+ *
  * Ported to Dart from JS by:
  * @author rob silverton / http://www.unwrong.com/
  */
 
-class Texture 
+class Texture
 {
   int _id;
   var image;
@@ -16,18 +16,18 @@ class Texture
   Vector2 offset, repeat;
   bool generateMipmaps;
   bool premultiplyAlpha;
-  
+
   bool needsUpdate;
   var onUpdate;
-  
+
   bool flipY;
-  
+
   Dynamic get mapping {  return _mapping;  }
-  
-  
+
+
   //TODO: resolve dynamic vars, find out what UVMapping is!
-  Texture( [  this.image, 
-              Dynamic mapping = null, 
+  Texture( [  this.image,
+              Dynamic mapping = null,
               this.wrapS = Three.ClampToEdgeWrapping,
               this.wrapT = Three.ClampToEdgeWrapping,
               this.magFilter = Three.LinearFilter,
@@ -39,7 +39,7 @@ class Texture
     _id = Three.TextureCount ++;
 
     //UVMapping _mapping = mapping !== null ? mapping : new UVMapping();
-    _mapping = mapping !== null ? mapping : null;//new UVMapping();
+    _mapping = mapping != null ? mapping : null;//new UVMapping();
 
     offset = new Vector2( 0, 0 );
     repeat = new Vector2( 1, 1 );
@@ -47,7 +47,7 @@ class Texture
     generateMipmaps = true;
     premultiplyAlpha = false;
     flipY = true;
-    
+
     needsUpdate = false;
     onUpdate = null;
   }
@@ -61,20 +61,20 @@ class Texture
 
     return clonedTexture;
   }
-  
+
   // Quick hack to allow setting new properties (used by the renderer)
   Map __data;
-  
+
   get _data {
     if (__data == null) {
       __data = {};
     }
     return __data;
   }
-  
+
   operator [] (String key) => _data[key];
   operator []= (String key, value) => _data[key] = value;
-  
+
 /*
   THREE.TextureCount = 0;
 

@@ -1,6 +1,6 @@
 class SplineCurve extends Curve2D {
   List<Vector2> points;
-  
+
   SplineCurve( [this.points = null] ) {
     if (points == null) points = [];
   }
