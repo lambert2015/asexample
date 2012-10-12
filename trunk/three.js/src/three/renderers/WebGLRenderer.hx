@@ -3677,7 +3677,19 @@ class WebGLRenderer implements IRenderer
 			}
 
 			sortArray.sort(function(a, b) {
-				return b[0] - a[0];
+				var value:Float =  b[0] - a[0];
+				if (value >= 1)
+				{
+					return 1;
+				}
+				else if (value <= -1)
+				{
+					return -1;
+				}
+				else
+				{
+					return 0;
+				}
 			});
 
 			for ( v in 0...vl) 
@@ -3989,7 +4001,7 @@ class WebGLRenderer implements IRenderer
 			gl.bufferData(gl.ARRAY_BUFFER, colorArray, hint);
 		}
 
-		if (customAttributes)
+		if (customAttributes != null)
 		{
 			for ( i in 0...customAttributes.length) 
 			{
@@ -4333,7 +4345,7 @@ class WebGLRenderer implements IRenderer
 
 				}
 
-				for ( f in 0..chunk_faces4.length) 
+				for ( f in 0...chunk_faces4.length) 
 				{
 					chf = chunk_faces4[f];
 					face = obj_faces[chf];
