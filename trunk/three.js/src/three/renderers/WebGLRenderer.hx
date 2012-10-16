@@ -4143,7 +4143,7 @@ class WebGLRenderer implements IRenderer
 		var fi, face, 
 		vertexNormals, faceNormal, normal, 
 		vertexColors, faceColor, vertexTangents, 
-		uv, uv2, v1, v2, v3, v4, 
+		uv, uv2, 
 		t1, t2, t3, t4, 
 		n1, n2, n3, n4, 
 		c1, c2, c3, c4, 
@@ -5219,17 +5219,15 @@ class WebGLRenderer implements IRenderer
 							value = customAttribute.value[chunk_faces3[f]];
 
 							v1 = value;
-							v2 = value;
-							v3 = value;
 
 							customAttributeArray[offset_custom] = v1.x;
 							customAttributeArray[offset_custom + 1] = v1.y;
 
-							customAttributeArray[offset_custom + 2] = v2.x;
-							customAttributeArray[offset_custom + 3] = v2.y;
+							customAttributeArray[offset_custom + 2] = v1.x;
+							customAttributeArray[offset_custom + 3] = v1.y;
 
-							customAttributeArray[offset_custom + 4] = v3.x;
-							customAttributeArray[offset_custom + 5] = v3.y;
+							customAttributeArray[offset_custom + 4] = v1.x;
+							customAttributeArray[offset_custom + 5] = v1.y;
 
 							offset_custom += 6;
 
@@ -5241,21 +5239,18 @@ class WebGLRenderer implements IRenderer
 							value = customAttribute.value[chunk_faces4[f]];
 
 							v1 = value;
-							v2 = value;
-							v3 = value;
-							v4 = value;
 
 							customAttributeArray[offset_custom] = v1.x;
 							customAttributeArray[offset_custom + 1] = v1.y;
 
-							customAttributeArray[offset_custom + 2] = v2.x;
-							customAttributeArray[offset_custom + 3] = v2.y;
+							customAttributeArray[offset_custom + 2] = v1.x;
+							customAttributeArray[offset_custom + 3] = v1.y;
 
-							customAttributeArray[offset_custom + 4] = v3.x;
-							customAttributeArray[offset_custom + 5] = v3.y;
+							customAttributeArray[offset_custom + 4] = v1.x;
+							customAttributeArray[offset_custom + 5] = v1.y;
 
-							customAttributeArray[offset_custom + 6] = v4.x;
-							customAttributeArray[offset_custom + 7] = v4.y;
+							customAttributeArray[offset_custom + 6] = v1.x;
+							customAttributeArray[offset_custom + 7] = v1.y;
 
 							offset_custom += 8;
 
@@ -5339,20 +5334,18 @@ class WebGLRenderer implements IRenderer
 							value = customAttribute.value[chunk_faces3[f]];
 
 							v1 = value;
-							v2 = value;
-							v3 = value;
 
 							customAttributeArray[offset_custom] = v1[pp[0]];
 							customAttributeArray[offset_custom + 1] = v1[pp[1]];
 							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttributeArray[offset_custom + 3] = v2[pp[0]];
-							customAttributeArray[offset_custom + 4] = v2[pp[1]];
-							customAttributeArray[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v1[pp[0]];
+							customAttributeArray[offset_custom + 4] = v1[pp[1]];
+							customAttributeArray[offset_custom + 5] = v1[pp[2]];
 
-							customAttributeArray[offset_custom + 6] = v3[pp[0]];
-							customAttributeArray[offset_custom + 7] = v3[pp[1]];
-							customAttributeArray[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v1[pp[0]];
+							customAttributeArray[offset_custom + 7] = v1[pp[1]];
+							customAttributeArray[offset_custom + 8] = v1[pp[2]];
 
 							offset_custom += 9;
 
@@ -5363,25 +5356,22 @@ class WebGLRenderer implements IRenderer
 							value = customAttribute.value[chunk_faces4[f]];
 
 							v1 = value;
-							v2 = value;
-							v3 = value;
-							v4 = value;
 
 							customAttributeArray[offset_custom] = v1[pp[0]];
 							customAttributeArray[offset_custom + 1] = v1[pp[1]];
 							customAttributeArray[offset_custom + 2] = v1[pp[2]];
 
-							customAttributeArray[offset_custom + 3] = v2[pp[0]];
-							customAttributeArray[offset_custom + 4] = v2[pp[1]];
-							customAttributeArray[offset_custom + 5] = v2[pp[2]];
+							customAttributeArray[offset_custom + 3] = v1[pp[0]];
+							customAttributeArray[offset_custom + 4] = v1[pp[1]];
+							customAttributeArray[offset_custom + 5] = v1[pp[2]];
 
-							customAttributeArray[offset_custom + 6] = v3[pp[0]];
-							customAttributeArray[offset_custom + 7] = v3[pp[1]];
-							customAttributeArray[offset_custom + 8] = v3[pp[2]];
+							customAttributeArray[offset_custom + 6] = v1[pp[0]];
+							customAttributeArray[offset_custom + 7] = v1[pp[1]];
+							customAttributeArray[offset_custom + 8] = v1[pp[2]];
 
-							customAttributeArray[offset_custom + 9] = v4[pp[0]];
-							customAttributeArray[offset_custom + 10] = v4[pp[1]];
-							customAttributeArray[offset_custom + 11] = v4[pp[2]];
+							customAttributeArray[offset_custom + 9] = v1[pp[0]];
+							customAttributeArray[offset_custom + 10] = v1[pp[1]];
+							customAttributeArray[offset_custom + 11] = v1[pp[2]];
 
 							offset_custom += 12;
 
@@ -5825,7 +5815,9 @@ class WebGLRenderer implements IRenderer
 
 		attributes = program.attributes;
 
-		var updateBuffers = false, wireframeBit = material.wireframe ? 1 : 0, geometryHash = (geometry.id * 0xffffff ) + (program.id * 2 ) + wireframeBit;
+		var updateBuffers:Bool = false; 
+		var wireframeBit:Int = material.wireframe ? 1 : 0; 
+		var geometryHash:Int = (geometry.id * 0xffffff ) + (program.id * 2 ) + wireframeBit;
 
 		if (geometryHash != _currentGeometryGroupHash) 
 		{
@@ -5837,7 +5829,7 @@ class WebGLRenderer implements IRenderer
 
 		if ( Std.is(object,Mesh))
 		{
-			var offsets = geometry.offsets;
+			var offsets:Array<Dynamic> = geometry.offsets;
 
 			// if there is more than 1 chunk
 			// must set attribute pointers to use new offsets for each chunk
@@ -5854,7 +5846,7 @@ class WebGLRenderer implements IRenderer
 				{
 					// vertices
 
-					var position = geometry.attributes["position"];
+					var position = untyped geometry.attributes["position"];
 					var positionSize = position.itemSize;
 
 					gl.bindBuffer(gl.ARRAY_BUFFER, position.buffer);
@@ -5863,7 +5855,7 @@ class WebGLRenderer implements IRenderer
 
 					// normals
 
-					var normal = geometry.attributes["normal"];
+					var normal = untyped geometry.attributes["normal"];
 
 					if (attributes.normal >= 0 && normal != null) 
 					{
@@ -5936,7 +5928,7 @@ class WebGLRenderer implements IRenderer
 				this.statistics.calls++;
 				this.statistics.vertices += offsets[i].count;
 				// not really true, here vertices can be shared
-				this.statistics.faces += offsets[i].count / 3;
+				this.statistics.faces += Std.int(offsets[i].count / 3);
 
 			}
 		}
@@ -6109,7 +6101,7 @@ class WebGLRenderer implements IRenderer
 
 			this.statistics.calls++;
 			this.statistics.vertices += geometryGroup.__webglFaceCount;
-			this.statistics.faces += geometryGroup.__webglFaceCount / 3;
+			this.statistics.faces += Std.int(geometryGroup.__webglFaceCount / 3);
 
 			// render lines
 
@@ -6226,18 +6218,18 @@ class WebGLRenderer implements IRenderer
 
 			while (m < material.numSupportedMorphTargets) 
 			{
-				if (activeInfluenceIndices[m])
+				if (untyped activeInfluenceIndices[m] != null)
 				{
 					influenceIndex = activeInfluenceIndices[ m ][0];
 
 					gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphTargetsBuffers[influenceIndex]);
 
-					gl.vertexAttribPointer(attributes["morphTarget" + m], 3, gl.FLOAT, false, 0, 0);
+					gl.vertexAttribPointer(untyped attributes["morphTarget" + m], 3, gl.FLOAT, false, 0, 0);
 
 					if (material.morphNormals) 
 					{
 						gl.bindBuffer(gl.ARRAY_BUFFER, geometryGroup.__webglMorphNormalsBuffers[influenceIndex]);
-						gl.vertexAttribPointer(attributes["morphNormal" + m], 3, gl.FLOAT, false, 0, 0);
+						gl.vertexAttribPointer(untyped attributes["morphNormal" + m], 3, gl.FLOAT, false, 0, 0);
 					}
 
 					object.__webglMorphTargetInfluences[m] = influences[influenceIndex];
@@ -6245,11 +6237,11 @@ class WebGLRenderer implements IRenderer
 				}
 				else 
 				{
-					gl.vertexAttribPointer(attributes["morphTarget" + m], 3, gl.FLOAT, false, 0, 0);
+					gl.vertexAttribPointer(untyped attributes["morphTarget" + m], 3, gl.FLOAT, false, 0, 0);
 
 					if (material.morphNormals) 
 					{
-						gl.vertexAttribPointer(attributes["morphNormal" + m], 3, gl.FLOAT, false, 0, 0);
+						gl.vertexAttribPointer(untyped attributes["morphNormal" + m], 3, gl.FLOAT, false, 0, 0);
 					}
 
 					object.__webglMorphTargetInfluences[m] = 0;
