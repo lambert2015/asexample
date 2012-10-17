@@ -113,5 +113,4 @@ class Scene extends Object3D
 			this.__removeObject(object.children[c]);
 		}
 	}
-
 }

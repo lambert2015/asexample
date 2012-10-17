@@ -64,6 +64,7 @@ class Object3D
 	public var __webglActive:Bool;
 	
 	private var _vector:Vector3;
+	
 	public function new() 
 	{
 		id = Object3DCount++;
