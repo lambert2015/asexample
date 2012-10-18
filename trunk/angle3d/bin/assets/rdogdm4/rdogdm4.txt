@@ -1,0 +1,84 @@
+==============================================================================================
+Title                   : Epoch
+File Name               : rdogdm4.pk3
+Author                  : Reservoir DoG
+Release Date            : 3rd January 2002
+Email Address           : rdog@digitalarenas.com
+Web site                : http://rdog.digitalarenas.com
+Game Type               : 1v1 (designed for use with Challenge Pro Mode).
+			  [FFA and 2v2 also supported]
+
+----------------------------------------------------------------------------------------------
+
+
+Description             : A large interconnected Egyptian themed tourney map designed for use with CPMA. 
+
+Note To Reveiwers:	: Please note this map is designed specifically for 1v1 play with the Challenge Pro
+			  Arena (CPMA) mod and really should be evaluated as such where possible. Although 
+			  FFA and team modes are also supported with their own item layouts, this is more a
+			  courtesy for those who wish to play the map that way than an attempt to produce a
+			  multi-mode map. :) 
+
+==============================================================================================
+
+* MAP Information *
+
+New Textures            : Yes - see credits (below) *
+New Sounds              : No
+New Music               : No
+Bot Support             : Yes - optimised
+Weapons                 : 1v1: RL, RG, LG, PG, GL, SG
+			  FFA: 2xRL, RG, LG, PG, GL, 2xSG
+			  TEAM: RL, RG, LG, PG, GL, 2xSG
+Spawn points            : 10
+
+* Construction *
+
+Base                    : From scratch
+Construction Time       : Oct 2001 - Jan 2002
+Build programs          : Q3Map, BSPC, Photoshop, ACDSee, Editpad
+Compile Time            : ~20 minutes
+Total Brushes		: 1561
+Compile machine         : P3 600 / 192 MB / GeForce 32Mb DDR
+Editor used             : GTK Radiant 1.1
+
+
+Beta Testers: 		A big thankyou to the following people for all their help, suggestions, 
+			encouragement and advice:
+
+xfoo, kill1ng time, 4nt1, LoGiCaL, Sundown, Rork, Drexciyian, Hubster, arQon, gnghf, Raven, and
+everyone at The Burial Grounds and Quake3World Level Editing Forum who helped out.
+
+Special thanks to k1lling time and Ch@os for putting the beta's up on their servers.
+
+
+* Credits *
+
+* Texture set courtesy of 
+- Sock
+
+* Sand texture courtesy of
+- Lunaran
+
+* Teleporter model courtesy of
+- Stecki
+
+
+* Installation *
+- Simply unzip the contents of rdogdm4.zip to your Quake3/baseq3 folder. The map should
+then be available through the skirmish menu for tourney,ffa and team play.
+
+----------------------------------------------------------------------------------------------
+====================================================
+Distribution / Copyright / Permissions 
+
+Quake III Arena is a registered trademark of 
+id Software, Inc.
+
+This level may be electronically distributed only at 
+NO CHARGE to the recipient in its current state, MUST 
+include this .txt file, and may NOT be modified IN 
+ANY WAY. UNDER NO CIRCUMSTANCES IS THIS LEVEL TO BE 
+DISTRIBUTED ON CD-ROM WITHOUT PRIOR WRITTEN PERMISSION.
+
+====================================================

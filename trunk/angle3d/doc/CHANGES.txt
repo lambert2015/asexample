@@ -1,0 +1,93 @@
+2012-10-17:
+	初步添加约束模式支持，优化Shader管理模块
+2012-07-04:
+    sgsl中可以添加注释，语法为/**/
+2012-06-17:
+	简化Wireframe Shader，删除thickness VertexBuffer,合并到position1中
+	实现了骨骼动画的CPU以及GPU渲染，添加了骨骼动画运动测试
+	修正了一个sgsl中ArrayAccessNode里临时变量引用没有正确添加导致临时变量太早被释放的问题
+2012-06-01:
+	参考Ogre3d添加了BillboardSet，用于实现粒子效果
+2012-05-25:
+	粒子增加自身的颜色和透明度
+2012-05-24:
+	粒子添加自身的加速度
+	改进GPU粒子效果，粒子效果可实现是否循环，可分层分时间播放
+2012-05-22:
+	实现基本的GPU粒子效果，修正sgsl数组偏移部分错误
+	Spatial添加一个常用属性visible
+	Spatial添加了常用的x,y,z,scaleX,scaleY,scaleZ,(rotationX,rotationY,rotationZ还未添加)属性
+2012-04-05:
+	API优化，添加更多的get，set方法，让代码看起来更简洁
+2012-03-29:
+	精简Matrix4f,添加解析ms3d模型
+2012-03-26:
+	添加SubMesh类型，还有许多需要修改的地方   
+2012-03-24:
+	修正sgsl下AtomNode使用数组时获得的注册位置不正确的问题
+2012-03-23:
+	修改math下部分方法名，让其名称更统一
+2012-03-22:
+	修改sgsl，使其支持数组类型 uniform mat4 u_boneMatrixs[30] --需要测试是否正确
+	sgsl解析添加了一些语法判断
+	修正之前shader中的一些错误
+2012-03-20:
+	优化MD2模型解析，现在解析速度更快了
+	添加KeyframeAnimationGeometry
+	添加一个生成模型顶点法线线框模式的方法，用于测试法线是否正确
+2012-03-19:
+	简化Mesh部分，删除IndexBuffer,Mesh可以使用合并或者不合并方式
+	初步实现了关键帧动画，需要补齐API
+2012-03-17:
+	修改Shader中获取Attribute的方法，改用根据类型来获得，删除原来hack的方式
+	修改Technique中获得绑定Uniform的方式，原来的是有问题的，只是没遇到那种情况
+	修改LightType,MeshType类型为字符串
+2012-03-16:
+	修改了Mesh部分方法名称，去掉了一下不使用的方法和变量
+	setIndexBufferByVector--->setIndices
+	线框模型类都加了前缀Wireframe
+	Shader.uploadShader更改参数Context3D为IRenderer,这样可以传递更多信息
+	uploadShader改名为upload
+	setAttribute放到Renderer中
+	优化DefualtRenderer部分方法
+	精简了Mesh和Spatial，把一段时间内不会实现或者意义不大的方法删除
+2012-03-15:
+	简单添加了一个Max3DS模型解析
+2012-03-14:
+	添加glsl中常用的函数
+	添加MeshHelper，用于计算模型的顶点向量
+2012-03-13：
+	新加环境反射贴图材质，修正生成agal错误，修正uniform方法setVector3错误
+	修复RenderState部分的一些问题，天空体和其他物品一起存在时正常了
+	重写sgsl，采用更容易扩展的方式解析，并提供了从二进制代码生成agal的工具
+	新版sgsl主要新加了几个功能：
+	可添加自定义函数
+	临时变量可以在函数内定义
+2012-03-01:
+	转换sgsl到agal提到一个单独的类中，使代码更简洁
+2012-02-10:
+	花了一天时间，转换代码为as3,以后用as3开发。优化的话使用apparat
+2012-02-09:
+	调整Shader包位置，放入material包中,hgal放入material包中
+	重写Texture部分，简化代码，方便使用
+2012-02-08:
+	添加SkyBox，需要继续优化
+2012-02-07:
+	修正MotionPath问题，添加曲线绘制，优化Wireframe物品生成
+2012-01-06：
+	Hgal实现完整的条件编译，一个选项中可以包含多个条件
+	#ifa|b|c----只能全部是|或者&
+	#elseifd
+	#else
+	#end
+2011-12-14:
+	重写ShaderCompiler,不再需要使用AGALMiniAssembler
+2011-11-10:
+	重构Vector2D,Vector3D,Vector4D,Matrix44,Matrix33,修改命名方式(D-->f)，方便日后跨平台
+	不再使用原生Vector3D,改用自定义类，方便扩展。
+2011-10-11:
+	Shader和Material不再需要Context3D参数
+	简化Shader代码:Shader删除setTexture方法，请使用Material.setTexture
+	添加MotionPath，物品可以按照路径点行走
+2011-10-17:
+	CinematicTrack改名为CinematicMovie
