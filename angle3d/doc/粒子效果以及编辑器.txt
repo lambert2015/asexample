@@ -1,0 +1,15 @@
+参考Particle Universe的原理来制作粒子效果，以及编辑器
+
+只能借鉴部分原理，需要足够简化才行
+只需要实现BillboardRender部分即可，其他渲染模式暂时不考虑
+
+比如PU里面Affector也是Particle在Stage3D中估计实现不了
+
+目前准备实现的几点：
+Particle --- 只需要支持Billboard，可能需要多种方式，常用的一种是面向相机，还有面向相机的向上方向
+ParticleTechnique --- 
+ParticleSystem --- 可以包含多个ParticleTechnique
+ParticleEmitter --- 粒子发射器
+ParticleAffector --- 用于改变粒子的各种属性，大小，位置，移动速度等等
+ParticleObserver -- 观察者
+ParticleHandler -- 观察者触发的事件处理

@@ -1,0 +1,9 @@
+Sgsl TODO List:
+
+添加数组类型      uniform mat4 bones[32];类似于这种方式,mat4其实也算是一种数组 uniform vec4 wordMatrix[4];
+
+对方法的参数进行判断，看其是否正确
+
+实现纯数字数组 ?? 是否需要
+
+写一个简单的工具，用来检测所写的SGSL是否正确，并给出错误提示
