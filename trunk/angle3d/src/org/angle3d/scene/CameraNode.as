@@ -18,7 +18,7 @@ package org.angle3d.scene
 			super(name);
 			if (camera != null)
 			{
-				camControl.setCamera(camera);
+				camControl.camera = camera;
 			}
 		}
 
@@ -44,24 +44,24 @@ package org.angle3d.scene
 			return camControl.enabled;
 		}
 
-		public function setControlDir(controlDir:String):void
+		public function set controlDir(controlDir:String):void
 		{
-			camControl.setControlDir(controlDir);
+			camControl.controlDir = controlDir;
 		}
 
-		public function getControlDir():String
+		public function get controlDir():String
 		{
-			return camControl.getControlDir();
+			return camControl.controlDir;
 		}
 
 		public function setCamera(camera:Camera3D):void
 		{
-			camControl.setCamera(camera);
+			camControl.camera = camera;
 		}
 
 		public function getCamera():Camera3D
 		{
-			return camControl.getCamera();
+			return camControl.camera;
 		}
 	}
 }

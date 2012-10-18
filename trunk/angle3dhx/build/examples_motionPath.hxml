@@ -1,0 +1,6 @@
+-swf ../bin/MotionPathTest.swf
+-main examples.animation.MotionPathTest
+##-debug
+-swf-version 11
+-swf-header 800:600:60:cccccc
+-cp ../src

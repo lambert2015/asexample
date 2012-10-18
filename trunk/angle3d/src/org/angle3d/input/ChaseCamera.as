@@ -971,6 +971,12 @@ package org.angle3d.input
 			inputs.push(ChaseCamMoveRight);
 			inputManager.addListener(this, inputs);
 		}
+		
+		public function clone():Control
+		{
+			//todo
+			return null;
+		}
 	}
 }
 

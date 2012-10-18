@@ -1,0 +1,21 @@
+TODO:
+短期目标：
+Material和Shader系统重构(参考yogurt3d) --
+添加条件编译,一个Technique可以根据不同的编译条件获得不同的Shader---ok
+添加SkyBox  ------ 基本完成，部分需要修改
+修改Texture部分 ------- 参考了Away3D和Yogurt3D，实现基本的几种Texture
+资源管理重构，模型解析加载 --- start
+关键帧动画，骨骼动画
+修改Spatial类，添加更简单易懂的旋转方法，四元数调整角度不直观
+多光源光照
+
+TODO:由于haxe生成的swc不能转换get,set为原生方法，因此不要使用get,set
+
+	
+//长期目标	需要添加功能列表，优先级从高到低
+1、光照效果（包括各种常用Shader，比如：Phong,Gouraud,LightMap,Toon,Cubemap）
+2、各种常用形状，常用格式模型解析，线框渲染模式,Terrain
+2、关键帧动画和骨骼动画(JMonkeyEngine貌似未实现硬件骨骼动画，需要自己实现了)
+3、粒子系统
+4、物理引擎
+5、阴影以及postprocess

@@ -1,0 +1,6 @@
+-swf ../bin/WireframeTest.swf
+-main examples.shape.WireframeTest
+-debug
+-swf-version 11
+-swf-header 800:600:60:cccccc
+-cp ../src

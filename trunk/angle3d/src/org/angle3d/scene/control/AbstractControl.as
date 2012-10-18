@@ -77,9 +77,27 @@ package org.angle3d.scene.control
 
 		}
 
+		/**
+		 *  Default implementation of cloneForSpatial() that
+		 *  simply clones the control and sets the spatial.
+		 *  <pre>
+		 *  AbstractControl c = clone();
+		 *  c.spatial = null;
+		 *  c.setSpatial(spatial);
+		 *  </pre>
+		 *
+		 *  Controls that wish to be persisted must be Cloneable.
+		 */
 		public function cloneForSpatial(newSpatial:Spatial):Control
 		{
-			return null;
+			var c:Control = clone();
+            c.spatial = null;
+            return c;
+		}
+		
+		public function clone():Control
+		{
+			return new AbstractControl();
 		}
 	}
 }

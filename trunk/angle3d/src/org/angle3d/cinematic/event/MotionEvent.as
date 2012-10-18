@@ -395,6 +395,12 @@ package org.angle3d.cinematic.event
 		{
 			return traveledDistance;
 		}
+		
+		public function clone():Control
+		{
+			//todo
+			return null;
+		}
 	}
 }
 

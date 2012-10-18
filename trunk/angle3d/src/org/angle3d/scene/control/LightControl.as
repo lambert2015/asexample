@@ -26,8 +26,8 @@ package org.angle3d.scene.control
 		 */
 		public static const SpatialToLight : String = "spatialToLight";
 
-		private var light : Light;
-		private var controlDir : String;
+		private var mLight : Light;
+		private var mControlDir : String;
 
 		public function LightControl(light : Light = null, controlDir : String = "spatialToLight")
 		{
@@ -35,47 +35,47 @@ package org.angle3d.scene.control
 
 			if (light != null)
 			{
-				this.light = light;
+				this.mLight = light;
 			}
 
-			this.controlDir = controlDir;
+			this.mControlDir = controlDir;
 		}
 
-		public function setControlDir(dir : String) : void
+		public function set controlDir(dir : String) : void
 		{
-			this.controlDir = dir;
+			this.mControlDir = dir;
 		}
 
-		public function setLight(light : Light) : void
+		public function set light(light : Light) : void
 		{
 			if (light == null)
 			{
 				return;
 			}
-			this.light = light;
+			this.mLight = light;
 		}
 
-		public function getLight() : Light
+		public function get light() : Light
 		{
-			return light;
+			return mLight;
 		}
 
-		public function getControlDir() : String
+		public function get controlDir() : String
 		{
-			return controlDir;
+			return mControlDir;
 		}
 
 		override protected function controlUpdate(tpf : Number) : void
 		{
-			if (spatial != null && light != null)
+			if (spatial != null && mLight != null)
 			{
-				switch (controlDir)
+				switch (mControlDir)
 				{
 					case SpatialToLight:
-						_spatialToLight(light);
+						_spatialToLight(mLight);
 						break;
 					case LightToSpatial:
-						_lightToSpatial(light);
+						_lightToSpatial(mLight);
 						break;
 				}
 			}
@@ -136,7 +136,7 @@ package org.angle3d.scene.control
 
 		override public function cloneForSpatial(newSpatial : Spatial) : Control
 		{
-			var control : LightControl = new LightControl(this.light, this.controlDir);
+			var control : LightControl = new LightControl(this.mLight, this.mControlDir);
 			control.spatial = newSpatial;
 			control.enabled = enabled;
 			return control;

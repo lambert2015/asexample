@@ -57,6 +57,8 @@ package org.angle3d.scene.control
 		 * @param vp
 		 */
 		function render(rm:RenderManager, vp:ViewPort):void;
+		
+		function clone():Control;
 	}
 }
 

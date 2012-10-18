@@ -1,0 +1,37 @@
+package com.adobe.utils {
+
+	public class Register {
+		public var emitCode : uint;
+		public var name : String;
+		public var longName : String;
+		public var flags : uint;
+		public var range : uint;
+
+		public function Register(name : String, longName : String, emitCode : uint, range : uint, flags : uint) {
+			this.name = name;
+			this.longName = longName;
+			this.emitCode = emitCode;
+			this.range = range;
+			this.flags = flags;
+		}
+
+		/**
+		 * 是否能在fragment中使用
+		 */
+		public function isFragEnable() : Boolean {
+			return (flags & 0x20) != 0;
+		}
+
+		/**
+		 * 是否能在vertex中使用
+		 */
+		public function isVertEnable() : Boolean {
+			return (flags & 0x40) != 0;
+		}
+
+		public function toString() : String {
+			return "[Register name=\'" + name + "\', longName=\"" + longName + "\", emitCode=" + emitCode + ", range=" + range + ", flags=" + flags + "]";
+		}
+	}
+}
+

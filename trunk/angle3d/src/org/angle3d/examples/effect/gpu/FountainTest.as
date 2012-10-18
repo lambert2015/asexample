@@ -62,7 +62,7 @@ package org.angle3d.examples.effect.gpu
 			fountainShape.setAlpha(0.8,0.2);
 			fountainShape.setColor(0x44ccff, 0xccffff);
 			fountainShape.setAcceleration(new Vector3f(0, -4, 0));
-			fountainShape.setSize(0.3, 0.3);
+			fountainShape.setSize(0.5, 0.3);
 
 			particleSystem = new ParticleSystem("FountainSystem");
 			particleSystem.addShape(fountainShape);

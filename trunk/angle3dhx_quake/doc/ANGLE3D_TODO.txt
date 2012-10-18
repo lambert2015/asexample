@@ -1,0 +1,21 @@
+TODO:
+短期目标：
+1、使Material,Shader不依赖Context3D ----------- ok
+2、完成Cinematic  ------- need more test
+3、鼠标和键盘控制，方便测试用 ---------- need more test
+4、模型解析加载（先实现静态和关键帧动画加载）--- start
+4、线框渲染 -------- ok
+5、透明物品和不透明物品测试 -------- 
+5、关键帧动画
+6、多光源光照
+
+使用TempVars不知道速度会怎么样
+	
+	
+//长期目标	需要添加功能列表，优先级从高到低
+1、光照效果（包括各种常用Shader，比如：Phong,Gouraud,LightMap,Toon,Cubemap）
+2、各种常用形状，常用格式模型解析，线框渲染模式,Terrain
+2、关键帧动画和骨骼动画(JMonkeyEngine貌似未实现硬件骨骼动画，需要自己实现了)
+3、粒子系统
+4、物理引擎
+5、阴影以及postprocess

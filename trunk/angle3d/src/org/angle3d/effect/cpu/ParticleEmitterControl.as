@@ -52,6 +52,11 @@ package org.angle3d.effect.cpu
 		{
 			particleEmitter.renderFromControl(rm, vp);
 		}
+		
+		public function clone():Control
+		{
+			return new ParticleEmitterControl(this.particleEmitter);
+		}
 	}
 }
 

@@ -28,22 +28,22 @@ package org.angle3d.animation
 		/**
 		 * The skeleton of the model
 		 */
-		private var _skeleton:Skeleton;
+		private var mSkeleton:Skeleton;
 
 		/**
 		 * Used to track when a mesh was updated. Meshes are only updated
 		 * if they are visible in at least one camera.
 		 */
-		private var _wasMeshUpdated:Boolean;
+		private var mWasMeshUpdated:Boolean;
 
-		private var _mesh:SkinnedMesh;
+		private var mMesh:SkinnedMesh;
 
-		private var _material:Material;
+		private var mMaterial:Material;
 
-		private var _skinningMatrices:Vector.<Number>;
-		private var _numBones:int;
+		private var mSkinningMatrices:Vector.<Number>;
+		private var mNumBones:int;
 
-		private var _geometry:Geometry;
+		private var mGeometry:Geometry;
 
 		/**
 		 * Creates a skeleton control.
@@ -56,24 +56,24 @@ package org.angle3d.animation
 		{
 			super();
 
-			_wasMeshUpdated = false;
+			mWasMeshUpdated = false;
 
-			_geometry = geometry;
-			_mesh = _geometry.getMesh() as SkinnedMesh;
-			_skeleton = skeleton;
+			mGeometry = geometry;
+			mMesh = mGeometry.getMesh() as SkinnedMesh;
+			mSkeleton = skeleton;
 
-			_numBones = skeleton.numBones;
-			_skinningMatrices = new Vector.<Number>(Skeleton.MAX_BONE_COUNT * 12, true);
+			mNumBones = skeleton.numBones;
+			mSkinningMatrices = new Vector.<Number>(Skeleton.MAX_BONE_COUNT * 12, true);
 		}
 
 		public function getSkeleton():Skeleton
 		{
-			return _skeleton;
+			return mSkeleton;
 		}
 
 		override protected function controlRender(rm:RenderManager, vp:ViewPort):void
 		{
-			if (!_wasMeshUpdated)
+			if (!mWasMeshUpdated)
 			{
 				//CPU计算骨骼动画
 //				resetToBind(); // reset morph meshes to bind pose
@@ -88,42 +88,42 @@ package org.angle3d.animation
 //				}
 
 				//GPU 计算骨骼动画
-				var offsetMatrices:Vector.<Matrix4f> = _skeleton.computeSkinningMatrices();
+				var offsetMatrices:Vector.<Matrix4f> = mSkeleton.computeSkinningMatrices();
 				var mat:Matrix4f;
 				var i12:int;
-				for (var i:int = 0; i < _numBones; i++)
+				for (var i:int = 0; i < mNumBones; i++)
 				{
 					mat = offsetMatrices[i];
 
 					i12 = i * 12;
 
-					_skinningMatrices[i12] = mat.m00;
-					_skinningMatrices[i12 + 1] = mat.m01;
-					_skinningMatrices[i12 + 2] = mat.m02;
-					_skinningMatrices[i12 + 3] = mat.m03;
+					mSkinningMatrices[i12] = mat.m00;
+					mSkinningMatrices[i12 + 1] = mat.m01;
+					mSkinningMatrices[i12 + 2] = mat.m02;
+					mSkinningMatrices[i12 + 3] = mat.m03;
 
-					_skinningMatrices[i12 + 4] = mat.m10;
-					_skinningMatrices[i12 + 5] = mat.m11;
-					_skinningMatrices[i12 + 6] = mat.m12;
-					_skinningMatrices[i12 + 7] = mat.m13;
+					mSkinningMatrices[i12 + 4] = mat.m10;
+					mSkinningMatrices[i12 + 5] = mat.m11;
+					mSkinningMatrices[i12 + 6] = mat.m12;
+					mSkinningMatrices[i12 + 7] = mat.m13;
 
-					_skinningMatrices[i12 + 8] = mat.m20;
-					_skinningMatrices[i12 + 9] = mat.m21;
-					_skinningMatrices[i12 + 10] = mat.m22;
-					_skinningMatrices[i12 + 11] = mat.m23;
+					mSkinningMatrices[i12 + 8] = mat.m20;
+					mSkinningMatrices[i12 + 9] = mat.m21;
+					mSkinningMatrices[i12 + 10] = mat.m22;
+					mSkinningMatrices[i12 + 11] = mat.m23;
 				}
 
-				_material = _geometry.getMaterial();
-				if (_material != null)
-					_material.skinningMatrices = _skinningMatrices;
+				mMaterial = mGeometry.getMaterial();
+				if (mMaterial != null)
+					mMaterial.skinningMatrices = mSkinningMatrices;
 
-				_wasMeshUpdated = true;
+				mWasMeshUpdated = true;
 			}
 		}
 
 		public function getAttachmentsNode(boneName:String):Node
 		{
-			var b:Bone = _skeleton.getBoneByName(boneName);
+			var b:Bone = mSkeleton.getBoneByName(boneName);
 			if (b == null)
 			{
 				return null;
@@ -138,15 +138,15 @@ package org.angle3d.animation
 
 		override protected function controlUpdate(tpf:Number):void
 		{
-			_wasMeshUpdated = false;
+			mWasMeshUpdated = false;
 		}
 
 		private function resetToBind():void
 		{
-			var count:int = _mesh.subMeshList.length;
+			var count:int = mMesh.subMeshList.length;
 			for (var i:int = 0; i < count; i++)
 			{
-				var subMesh:SkinnedSubMesh = _mesh.subMeshList[i] as SkinnedSubMesh;
+				var subMesh:SkinnedSubMesh = mMesh.subMeshList[i] as SkinnedSubMesh;
 				
 				var buffer:VertexBuffer = subMesh.getVertexBuffer(BufferType.BIND_POSE_POSITION);
 				var posBuffer:VertexBuffer = subMesh.getVertexBuffer(BufferType.POSITION);

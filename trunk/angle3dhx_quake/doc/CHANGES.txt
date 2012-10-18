@@ -1,0 +1,11 @@
+2011-12-14: 
+	重写ShaderCompiler,不再需要使用AGALMiniAssembler
+2011-11-10:
+	重构Vector2D,Vector3D,Vector4D,Matrix44,Matrix33,修改命名方式，方便日后跨平台
+	不再使用原生Vector3D,改用自定义类，方便扩展。
+2011-10-11:
+	Shader和Material不再需要Context3D参数
+	简化Shader代码:Shader删除setTexture方法，请使用Material.setTexture
+	添加MotionPath，物品可以按照路径点行走
+2011-10-17:
+	CinematicTrack改名为CinematicMovie

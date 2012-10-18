@@ -1,0 +1,15 @@
+Shader重构
+灯光部分去掉AmbientLight(没啥作用，完全可以去掉)
+
+一个Technique可以根据条件的不同生成不同的Shader,每种Shader只需要生成一次即可
+
+条件应该只能是两种(一个是MeshType,一个是LightType)
+
+Material|--- Technique|--- Shader
+        |             |--- Shader
+		|             |--- Shader
+		|			   
+		|--- Technique|--- Shader
+                      |--- Shader
+		              |--- Shader		   
+	        

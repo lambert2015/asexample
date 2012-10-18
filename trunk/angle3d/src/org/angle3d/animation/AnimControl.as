@@ -47,9 +47,11 @@ package org.angle3d.animation
 			return mAnimationMap[name];
 		}
 		
-		public function getAnimationLength( name:String):Number {
+		public function getAnimationLength( name:String):Number 
+		{
 			var a:Animation = mAnimationMap.get(name);
-			if (a == null) {
+			if (a == null) 
+			{
 				throw new Error("The animation " + name
 					+ " does not exist in this AnimControl");
 			}
