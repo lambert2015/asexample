@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<flex-config>
+   <compiler locale="en_US" swf-version="15">
+		<define>
+			<name>CF::DEBUG</name>
+			<value>false</value>
+		</define>
+		<define>
+			<name>CF::RELEASE</name>
+			<value>!CF::DEBUG</value>
+		</define>
+	</compiler>
+	<metadata>
+		<title>Angle3D</title>
+		<description>http://www.angle3d.org</description>
+		<publisher>Angle3d Engine Corp.</publisher>
+		<creator>Angle3d Engine Corp.</creator>
+		<language>EN</language>
+   </metadata>
+</flex-config>
