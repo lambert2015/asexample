@@ -1,0 +1,24 @@
+-main ClassCollector
+-neko ClassCollector.n
+-cmd neko ClassCollector.n %lib% AllClass.hx -class -include org.angle3d
+
+--next
+
+-swf %dir%/angle3d_debug.swc
+AllClass
+-cp %lib%
+-debug
+-swf-version 11
+--no-inline
+--macro exclude('AllClass')
+
+--next
+
+-swf %dir%/angle3d_release.swc
+AllClass
+-cp %lib%
+--no-traces
+-swf-version 11
+--macro exclude('AllClass')
+##-cmd del AllClass.hx
+-cmd del ClassCollector.n

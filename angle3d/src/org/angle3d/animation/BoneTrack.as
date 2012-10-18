@@ -117,8 +117,10 @@ package org.angle3d.animation
 		 * @param rotations the rotation of the bone for each frame
 		 * @param scales the scale of the bone for each frame
 		 */
-		public function setKeyframes(times:Vector.<Number>, translations:Vector.<Number>,
-			rotations:Vector.<Number>, scales:Vector.<Number> = null):void
+		public function setKeyframes(times:Vector.<Number>, 
+									translations:Vector.<Number>,
+									rotations:Vector.<Number>, 
+									scales:Vector.<Number> = null):void
 		{
 
 			CF::DEBUG

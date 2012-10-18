@@ -26,18 +26,18 @@ package org.angle3d.scene.control
 		 */
 		public static const SpatialToCamera : String = "spatialToCamera";
 
-		private var camera : Camera3D;
-		private var controlDir : String;
+		private var mCamera : Camera3D;
+		private var mControlDir : String;
 
 		public function CameraControl(camera : Camera3D = null, controlDir : String = null)
 		{
 			super();
 
-			this.camera = camera;
+			this.mCamera = camera;
 
 			if (controlDir != null)
 			{
-				this.controlDir = controlDir;
+				this.mControlDir = controlDir;
 			}
 			else
 			{
@@ -45,44 +45,44 @@ package org.angle3d.scene.control
 			}
 		}
 
-		public function setControlDir(dir : String) : void
+		public function set controlDir(dir : String) : void
 		{
-			this.controlDir = dir;
+			this.mControlDir = dir;
 		}
 
-		public function setCamera(camera : Camera3D) : void
+		public function set camera(camera : Camera3D) : void
 		{
-			this.camera = camera;
+			this.mCamera = camera;
 		}
 
-		public function getCamera() : Camera3D
+		public function get camera() : Camera3D
 		{
-			return camera;
+			return mCamera;
 		}
 
-		public function getControlDir() : String
+		public function get controlDir() : String
 		{
-			return controlDir;
+			return mControlDir;
 		}
 
 		override protected function controlUpdate(tpf : Number) : void
 		{
-			if (spatial != null && camera != null)
+			if (spatial != null && mCamera != null)
 			{
-				switch (controlDir)
+				switch (mControlDir)
 				{
 					case SpatialToCamera:
-						camera.location = spatial.getWorldTranslation();
-						camera.rotation = spatial.getWorldRotation();
+						mCamera.location = spatial.getWorldTranslation();
+						mCamera.rotation = spatial.getWorldRotation();
 						break;
 					case CameraToSpatial:
 						// set the localtransform, so that the worldtransform would be equal to the camera's transform.
 						// Location:
-						var vecDiff : Vector3f = camera.location.subtract(spatial.getWorldTranslation());
+						var vecDiff : Vector3f = mCamera.location.subtract(spatial.getWorldTranslation());
 						vecDiff.addLocal(spatial.getTranslation());
 
 						// Rotation:
-						var worldDiff : Quaternion = camera.rotation.subtract(spatial.getWorldRotation());
+						var worldDiff : Quaternion = mCamera.rotation.subtract(spatial.getWorldRotation());
 						worldDiff.addLocal(spatial.getRotation());
 						spatial.setRotation(worldDiff);
 						break;
@@ -97,7 +97,7 @@ package org.angle3d.scene.control
 
 		override public function cloneForSpatial(newSpatial : Spatial) : Control
 		{
-			var control : CameraControl = new CameraControl(this.camera, this.controlDir);
+			var control : CameraControl = new CameraControl(this.mCamera, this.mControlDir);
 			control.spatial = newSpatial;
 			control.enabled = enabled;
 			return control;

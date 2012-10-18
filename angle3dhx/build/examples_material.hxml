@@ -1,0 +1,50 @@
+-swf ../bin/MaterialFillTest.swf
+-main examples.material.MaterialFillTest
+-debug
+-swf-version 11.2
+-swf-header 800:600:60:cccccc
+-cp ../src
+
+--next
+
+-swf ../bin/MaterialTextureTest.swf
+-main examples.material.MaterialTextureTest
+-debug
+-swf-version 11.2
+-swf-header 800:600:60:cccccc
+-cp ../src
+
+--next
+
+-swf ../bin/ATFTextureTest.swf
+-main examples.material.ATFTextureTest
+-debug
+-swf-version 11.2
+-swf-header 800:600:60:cccccc
+-cp ../src
+
+--next
+
+-swf ../bin/MaterialSkyBoxTest.swf
+-main examples.material.MaterialSkyBoxTest
+-debug
+-swf-version 11.2
+-swf-header 800:600:60:cccccc
+-cp ../src
+
+--next
+
+-swf ../bin/MaterialWireframeTest.swf
+-main examples.material.MaterialWireframeTest
+-swf-version 11
+-swf-header 800:600:60:cccccc
+-cp ../src
+
+--next
+
+-swf ../bin/MaterialTransparentTest.swf
+-main examples.material.MaterialTransparentTest
+-debug
+-swf-version 11
+-swf-header 800:600:60:cccccc
+-cp ../src

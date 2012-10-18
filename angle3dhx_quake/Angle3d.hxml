@@ -1,0 +1,7 @@
+-cp src
+-swf bin/Main.swf
+-swf-header 800:600:60:398ED5
+--flash-strict
+-swf-version 11.4
+-main quake3.Quake3Test
+-D advanced-telemetry

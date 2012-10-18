@@ -57,7 +57,7 @@ package org.angle3d.examples.effect.gpu
 
 			bulletShape = particleGenerator.createParticleShape("bulletShape", texture);
 			//bulletShape.setColor(0xffffff, 0xffffff);
-			bulletShape.setAlpha(1.0, 0);
+			bulletShape.setAlpha(1.0, 1.0);
 			bulletShape.setAcceleration(new Vector3f(0, -3, 0));
 			bulletShape.setSpriteSheet(0.05, 4, 4);
 			bulletShape.setSize(0.5, 0.5);

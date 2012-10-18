@@ -1,0 +1,6 @@
+-swf ../bin/ConditionTest.swf
+-main examples.condition.ConditionTest
+-debug
+-swf-version 11
+-swf-header 800:600:60:cccccc
+-cp ../src

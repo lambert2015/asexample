@@ -278,7 +278,7 @@ package org.angle3d.cinematic
 		public function bindCamera(cameraName : String, cam : Camera3D) : CameraNode
 		{
 			var node : CameraNode = new CameraNode(cameraName, cam);
-			node.setControlDir(CameraControl.SpatialToCamera);
+			node.controlDir = CameraControl.SpatialToCamera;
 			node.getCameraControl().enabled = false;
 			cameraMap[cameraName] = node;
 			scene.attachChild(node);

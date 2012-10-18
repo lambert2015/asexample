@@ -56,6 +56,11 @@ package org.angle3d.effect.gpu
 		public function render(rm : RenderManager, vp : ViewPort) : void
 		{
 		}
+		
+		public function clone():Control
+		{
+			return new ParticleSystemControl(this.particleSystem);
+		}
 	}
 }
 

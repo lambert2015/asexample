@@ -1,0 +1,13 @@
+-swf ../bin/TestBitVector.swf
+-main examples.speed.TestBitVector
+-swf-version 11
+-swf-header 800:600:60:cccccc
+-cp ../src
+
+--next
+
+-swf ../bin/TestFastMath.swf
+-main examples.speed.TestFastMath
+-swf-version 11
+-swf-header 800:600:60:cccccc
+-cp ../src

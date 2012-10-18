@@ -1,0 +1,24 @@
+2012-02-09:
+	调整Shader包位置，放入material包中,hgal放入material包中
+	重写Texture部分，简化代码，方便使用
+2012-02-08:
+	添加SkyBox，需要继续优化
+2012-02-07:
+	修正MotionPath问题，添加曲线绘制，优化Wireframe物品生成
+2012-01-06：
+    Hgal实现完整的条件编译，一个选项中可以包含多个条件
+	#if a|b|c ----只能全部是|或者&
+	#elseif d
+	#else
+	#end
+2011-12-14: 
+	重写ShaderCompiler,不再需要使用AGALMiniAssembler
+2011-11-10:
+	重构Vector2D,Vector3D,Vector4D,Matrix44,Matrix33,修改命名方式(D-->f)，方便日后跨平台
+	不再使用原生Vector3D,改用自定义类，方便扩展。
+2011-10-11:
+	Shader和Material不再需要Context3D参数
+	简化Shader代码:Shader删除setTexture方法，请使用Material.setTexture
+	添加MotionPath，物品可以按照路径点行走
+2011-10-17:
+	CinematicTrack改名为CinematicMovie
