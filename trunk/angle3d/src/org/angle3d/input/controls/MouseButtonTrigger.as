@@ -12,7 +12,7 @@ package org.angle3d.input.controls
 	 */
 	public class MouseButtonTrigger implements Trigger
 	{
-		protected var mouseButton:int;
+		public var mouseButton:int;
 
 		/**
 		 * Create a new <code>MouseButtonTrigger</code> to receive mouse button events.
@@ -29,11 +29,6 @@ package org.angle3d.input.controls
 		public function getName():String
 		{
 			return "Mouse Button " + mouseButton;
-		}
-
-		public function getMouseButton():int
-		{
-			return mouseButton;
 		}
 
 		public static function mouseButtonHash(mouseButton:int):int

@@ -6,42 +6,42 @@ package org.angle3d.scene
 
 	public class MorphGeometry extends Geometry
 	{
-		private var _morphMesh : MorphMesh;
+		private var mMorphMesh : MorphMesh;
 
-		private var _control : MorphControl;
+		private var mControl : MorphControl;
 
 		public function MorphGeometry(name : String, mesh : MorphMesh = null)
 		{
 			super(name, mesh);
 
-			_control = new MorphControl();
-			addControl(_control);
+			mControl = new MorphControl();
+			addControl(mControl);
 		}
 
 		public function setAnimationSpeed(speed : Number) : void
 		{
-			_control.setAnimationSpeed(speed);
+			mControl.setAnimationSpeed(speed);
 		}
 
 		public function playAnimation(animationName : String, loop : Boolean = true) : void
 		{
-			_control.playAnimation(animationName, loop);
+			mControl.playAnimation(animationName, loop);
 		}
 
 		public function stop() : void
 		{
-			_control.stop();
+			mControl.stop();
 		}
 
 		override public function setMesh(mesh : Mesh) : void
 		{
-			_morphMesh = mesh as MorphMesh;
+			mMorphMesh = mesh as MorphMesh;
 			super.setMesh(mesh);
 		}
 
 		public function get morphMesh() : MorphMesh
 		{
-			return _morphMesh;
+			return mMorphMesh;
 		}
 	}
 }

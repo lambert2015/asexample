@@ -17,17 +17,17 @@ package org.angle3d.light
 	 */
 	public class PointLight extends Light
 	{
-		private var _position : Vector3f;
+		private var mPosition : Vector3f;
 
-		private var _invRadius : Number;
+		private var mInvRadius : Number;
 
 		public function PointLight()
 		{
 			super(LightType.Point);
 
-			_position = new Vector3f();
-			_radius = 0;
-			_invRadius = 0;
+			mPosition = new Vector3f();
+			mRadius = 0;
+			mInvRadius = 0;
 		}
 
 		/**
@@ -39,7 +39,7 @@ package org.angle3d.light
 		 */
 		public function get position() : Vector3f
 		{
-			return _position;
+			return mPosition;
 		}
 
 		/**
@@ -49,21 +49,21 @@ package org.angle3d.light
 		 */
 		public function set position(value : Vector3f) : void
 		{
-			_position.copyFrom(value);
+			mPosition.copyFrom(value);
 		}
 
 		override public function set radius(value : Number) : void
 		{
 			Assert.assert(value >= 0, "Light radius cannot be negative");
 
-			_radius = value;
+			mRadius = value;
 			if (value != 0)
 			{
-				_invRadius = 1 / value;
+				mInvRadius = 1 / value;
 			}
 			else
 			{
-				_invRadius = 0;
+				mInvRadius = 0;
 			}
 		}
 
@@ -72,11 +72,11 @@ package org.angle3d.light
 			if (owner.worldBound != null)
 			{
 				var bv : BoundingVolume = owner.worldBound;
-				lastDistance = bv.distanceSquaredTo(_position);
+				lastDistance = bv.distanceSquaredTo(mPosition);
 			}
 			else
 			{
-				lastDistance = owner.getWorldTranslation().distanceSquared(_position);
+				lastDistance = owner.getWorldTranslation().distanceSquared(mPosition);
 			}
 		}
 
@@ -86,7 +86,7 @@ package org.angle3d.light
 		 */
 		public function get invRadius() : Number
 		{
-			return _invRadius;
+			return mInvRadius;
 		}
 	}
 }

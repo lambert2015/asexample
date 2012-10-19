@@ -22,7 +22,7 @@ package org.angle3d.scene
 		/**
 		 * This node's children.
 		 */
-		private var _children : Vector.<Spatial>;
+		private var mChildren : Vector.<Spatial>;
 
 		/**
 		 * Constructor instantiates a new <code>Node</code> with a default empty
@@ -40,15 +40,15 @@ package org.angle3d.scene
 		override protected function _init() : void
 		{
 			super._init();
-			_children = new Vector.<Spatial>();
+			mChildren = new Vector.<Spatial>();
 		}
 
 		override public function setMaterial(material : Material) : void
 		{
-			var numChildren : int = _children.length;
+			var numChildren : int = mChildren.length;
 			for (var i : int = 0; i < numChildren; i++)
 			{
-				_children[i].setMaterial(material);
+				mChildren[i].setMaterial(material);
 			}
 		}
 
@@ -61,7 +61,7 @@ package org.angle3d.scene
 		 */
 		public function get numChildren() : uint
 		{
-			return _children.length;
+			return mChildren.length;
 		}
 
 		override public function setTransformRefresh() : void
@@ -70,10 +70,10 @@ package org.angle3d.scene
 
 			//TODO 理解可能有误差
 
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				if (child.needTransformUpdate())
 				{
 					continue;
@@ -87,10 +87,10 @@ package org.angle3d.scene
 		{
 			super.setLightListRefresh();
 
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				if (child.needLightListUpdate())
 				{
 					continue;
@@ -107,10 +107,10 @@ package org.angle3d.scene
 			// for a node, the world bound is a combination of all it's children
 			// bounds
 			var resultBound : BoundingVolume = null;
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 
 				CF::DEBUG
 				{
@@ -128,22 +128,22 @@ package org.angle3d.scene
 					// set world bound to first non-null child world bound
 					if (child.worldBound != null)
 					{
-						resultBound = child.worldBound.clone(_worldBound);
+						resultBound = child.worldBound.clone(mWorldBound);
 					}
 				}
 			}
 
-			_worldBound = resultBound;
+			mWorldBound = resultBound;
 		}
 
 		override public function updateControls(tpf : Number) : void
 		{
 			super.updateControls(tpf);
 
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				child.updateControls(tpf);
 			}
 		}
@@ -161,10 +161,10 @@ package org.angle3d.scene
 				updateWorldTransforms();
 			}
 
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				child.updateGeometricState();
 			}
 
@@ -176,7 +176,7 @@ package org.angle3d.scene
 
 			CF::DEBUG
 			{
-				Assert.assert(_refreshFlags == 0, "refreshFlags == 0");
+				Assert.assert(mRefreshFlags == 0, "refreshFlags == 0");
 			}
 		}
 
@@ -203,7 +203,7 @@ package org.angle3d.scene
 				}
 
 				child.parent = this;
-				_children.push(child);
+				mChildren.push(child);
 
 				// XXX: Not entirely correct? Forces bound update up the
 				// tree stemming from the attached child. Also forces
@@ -240,7 +240,7 @@ package org.angle3d.scene
 					cParent.detachChild(child);
 				}
 
-				_children[index] = child;
+				mChildren[index] = child;
 				child.parent = this;
 				child.setTransformRefresh();
 				child.setLightListRefresh();
@@ -264,7 +264,7 @@ package org.angle3d.scene
 		{
 			if (child.parent == this)
 			{
-				var index : int = _children.indexOf(child);
+				var index : int = mChildren.indexOf(child);
 				if (index != -1)
 				{
 					detachChildAt(index);
@@ -287,10 +287,10 @@ package org.angle3d.scene
 		 */
 		public function detachChildByName(childName : String) : int
 		{
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				if (childName == child.name)
 				{
 					detachChildAt(i);
@@ -312,8 +312,8 @@ package org.angle3d.scene
 		 */
 		public function detachChildAt(index : int) : Spatial
 		{
-			var child : Spatial = _children[index];
-			_children.splice(index, 1);
+			var child : Spatial = mChildren[index];
+			mChildren.splice(index, 1);
 
 			if (child != null)
 			{
@@ -345,10 +345,10 @@ package org.angle3d.scene
 		 */
 		public function detachAllChildren() : void
 		{
-			var i : int = _children.length;
+			var i : int = mChildren.length;
 			while (--i >= 0)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				if (child != null)
 				{
 					child.parent = null;
@@ -363,7 +363,7 @@ package org.angle3d.scene
 				}
 			}
 
-			_children.length = 0;
+			mChildren.length = 0;
 
 			setBoundRefresh();
 
@@ -384,7 +384,7 @@ package org.angle3d.scene
 		 */
 		public function getChildIndex(sp : Spatial) : int
 		{
-			return _children.indexOf(sp);
+			return mChildren.indexOf(sp);
 		}
 
 		/**
@@ -394,9 +394,9 @@ package org.angle3d.scene
 		 */
 		public function swapChildren(index1 : int, index2 : int) : void
 		{
-			var child1 : Spatial = _children[index1];
-			_children[index1] = _children[index2];
-			_children[index2] = child1;
+			var child1 : Spatial = mChildren[index1];
+			mChildren[index1] = mChildren[index2];
+			mChildren[index2] = child1;
 		}
 
 		/**
@@ -409,7 +409,7 @@ package org.angle3d.scene
 		 */
 		public function getChildAt(index : int) : Spatial
 		{
-			return _children[index];
+			return mChildren[index];
 		}
 
 		/**
@@ -422,10 +422,10 @@ package org.angle3d.scene
 		 */
 		public function getChildByName(name : String) : Spatial
 		{
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				if (child.name == name)
 				{
 					return child;
@@ -453,15 +453,15 @@ package org.angle3d.scene
 		 */
 		public function hasChild(sp : Spatial) : Boolean
 		{
-			if (_children.indexOf(sp) != -1)
+			if (mChildren.indexOf(sp) != -1)
 			{
 				return true;
 			}
 
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				if (child is Node)
 				{
 					var node : Node = child as Node;
@@ -483,16 +483,16 @@ package org.angle3d.scene
 		 */
 		public function get children() : Vector.<Spatial>
 		{
-			return _children;
+			return mChildren;
 		}
 
 		override public function collideWith(other : Collidable, results : CollisionResults) : int
 		{
 			var total : int = 0;
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				total += child.collideWith(other, results);
 			}
 			return total;
@@ -500,30 +500,30 @@ package org.angle3d.scene
 
 		override public function setBound(bound : BoundingVolume) : void
 		{
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				child.setBound(bound != null ? bound.clone() : null);
 			}
 		}
 
 		override public function updateModelBound() : void
 		{
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				child.updateModelBound();
 			}
 		}
 
 		override public function depthFirstTraversal(visitor : SceneGraphVisitor) : void
 		{
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				child.depthFirstTraversal(visitor);
 			}
 			visitor.visit(this);
@@ -552,10 +552,10 @@ package org.angle3d.scene
 
 			node = super.clone(newName, cloneMaterial, node) as Node;
 
-			var cLength : int = _children.length;
+			var cLength : int = mChildren.length;
 			for (var i : int = 0; i < cLength; i++)
 			{
-				var child : Spatial = _children[i];
+				var child : Spatial = mChildren[i];
 				var childClone : Spatial = child.clone(newName, cloneMaterial);
 				node.attachChild(childClone);
 			}

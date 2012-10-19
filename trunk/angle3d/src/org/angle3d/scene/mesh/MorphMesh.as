@@ -11,21 +11,21 @@ package org.angle3d.scene.mesh
 	public class MorphMesh extends Mesh
 	{
 		//当前帧
-		private var _currentFrame : int = -1;
-		private var _nextFrame : int;
-		private var _totalFrame : int;
+		private var mCurrentFrame : int = -1;
+		private var mNextFrame : int;
+		private var mTotalFrame : int;
 
-		private var _animationMap : Dictionary;
+		private var mAnimationMap : Dictionary;
 
-		private var _useNormal : Boolean;
+		private var mUseNormal : Boolean;
 
 		public function MorphMesh()
 		{
 			super();
 
-			_type = MeshType.MT_MORPH_ANIMATION;
+			mType = MeshType.MT_MORPH_ANIMATION;
 
-			_animationMap = new Dictionary();
+			mAnimationMap = new Dictionary();
 		}
 
 		/**
@@ -33,46 +33,46 @@ package org.angle3d.scene.mesh
 		 */
 		public function get useNormal() : Boolean
 		{
-			return _useNormal;
+			return mUseNormal;
 		}
 
 		public function set useNormal(value : Boolean) : void
 		{
-			_useNormal = value;
+			mUseNormal = value;
 		}
 
 		public function set totalFrame(value : int) : void
 		{
-			_totalFrame = value;
+			mTotalFrame = value;
 		}
 
 		public function get totalFrame() : int
 		{
-			return _totalFrame;
+			return mTotalFrame;
 		}
 
 		public function addAnimation(name : String, start : int, end : int) : void
 		{
-			_animationMap[name] = new MorphData(name, start, end);
+			mAnimationMap[name] = new MorphData(name, start, end);
 		}
 
 		public function getAnimation(name : String) : MorphData
 		{
-			return _animationMap[name];
+			return mAnimationMap[name];
 		}
 
 		public function setFrame(curFrame : int, nextFrame : int) : void
 		{
-			if (_currentFrame == curFrame)
+			if (mCurrentFrame == curFrame)
 				return;
 
-			_currentFrame = curFrame;
-			_nextFrame = nextFrame;
+			mCurrentFrame = curFrame;
+			mNextFrame = nextFrame;
 
-			for (var i : int = 0, length : int = _subMeshList.length; i < length; i++)
+			for (var i : int = 0, length : int = mSubMeshList.length; i < length; i++)
 			{
-				var morphSubMesh : MorphSubMesh = _subMeshList[i] as MorphSubMesh;
-				morphSubMesh.setFrame(curFrame, nextFrame, _useNormal);
+				var morphSubMesh : MorphSubMesh = mSubMeshList[i] as MorphSubMesh;
+				morphSubMesh.setFrame(curFrame, nextFrame, mUseNormal);
 			}
 		}
 	}

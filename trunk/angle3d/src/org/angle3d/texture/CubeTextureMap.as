@@ -20,7 +20,7 @@ package org.angle3d.texture
 //TODO FIXME 为何CubeTexture必须要生成mipmap,否则报错
 	public class CubeTextureMap extends TextureMapBase
 	{
-		private var _bitmapDatas : Vector.<BitmapData>;
+		private var mBitmapDatas : Vector.<BitmapData>;
 
 		public function CubeTextureMap(posX : BitmapData, negX : BitmapData,
 			posY : BitmapData, negY : BitmapData,
@@ -28,19 +28,19 @@ package org.angle3d.texture
 		{
 			super(true);
 
-			_bitmapDatas = new Vector.<BitmapData>(6, true);
-			_bitmapDatas[0] = posX;
-			_bitmapDatas[1] = negX;
-			_bitmapDatas[2] = posY;
-			_bitmapDatas[3] = negY;
-			_bitmapDatas[4] = posZ;
-			_bitmapDatas[5] = negZ;
+			mBitmapDatas = new Vector.<BitmapData>(6, true);
+			mBitmapDatas[0] = posX;
+			mBitmapDatas[1] = negX;
+			mBitmapDatas[2] = posY;
+			mBitmapDatas[3] = negY;
+			mBitmapDatas[4] = posZ;
+			mBitmapDatas[5] = negZ;
 
 			CF::DEBUG
 			{
 				for (var i : int = 0; i < 6; i++)
 				{
-					testSize(_bitmapDatas[i]);
+					testSize(mBitmapDatas[i]);
 				}
 			}
 
@@ -59,16 +59,16 @@ package org.angle3d.texture
 
 		override protected function createTexture(context : Context3D) : TextureBase
 		{
-			return context.createCubeTexture(_width, Context3DTextureFormat.BGRA, optimizeForRenderToTexture);
+			return context.createCubeTexture(mWidth, Context3DTextureFormat.BGRA, optimizeForRenderToTexture);
 		}
 
 		override protected function uploadTexture() : void
 		{
-			var cubeTexture : CubeTexture = (_texture as CubeTexture);
+			var cubeTexture : CubeTexture = (mTexture as CubeTexture);
 
 			for (var i : int = 0; i < 6; i++)
 			{
-				MipmapGenerator.generateMipMapsCube(_bitmapDatas[i], cubeTexture, i, null, true);
+				MipmapGenerator.generateMipMapsCube(mBitmapDatas[i], cubeTexture, i, null, true);
 			}
 		}
 	}

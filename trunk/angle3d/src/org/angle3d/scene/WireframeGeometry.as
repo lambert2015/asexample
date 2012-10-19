@@ -13,7 +13,7 @@ package org.angle3d.scene
 		{
 			super(name, mesh);
 
-			this.material = new MaterialWireframe();
+			this.mMaterial = new MaterialWireframe();
 		}
 
 		override public function setMaterial(material : Material) : void
@@ -28,7 +28,7 @@ package org.angle3d.scene
 
 		public function get materialWireframe() : MaterialWireframe
 		{
-			return this.material as MaterialWireframe;
+			return this.mMaterial as MaterialWireframe;
 		}
 	}
 }

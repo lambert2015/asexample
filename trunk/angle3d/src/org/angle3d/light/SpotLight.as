@@ -22,36 +22,36 @@ package org.angle3d.light
 	 */
 	public class SpotLight extends Light
 	{
-		private var _position : Vector3f;
-		private var _direction : Vector3f;
+		private var mPosition : Vector3f;
+		private var mDirection : Vector3f;
 
-		private var _innerAngle : Number;
-		private var _outerAngle : Number;
-		private var _spotRange : Number;
-		private var _invSpotRange : Number;
-		private var _packedAngleCos : Number;
+		private var mInnerAngle : Number;
+		private var mOuterAngle : Number;
+		private var mSpotRange : Number;
+		private var mInvSpotRange : Number;
+		private var mPackedAngleCos : Number;
 
 		public function SpotLight()
 		{
 			super(LightType.Spot);
 
-			_position = new Vector3f();
-			_direction = new Vector3f(0, -1, 0);
+			mPosition = new Vector3f();
+			mDirection = new Vector3f(0, -1, 0);
 
-			_innerAngle = FastMath.PI / (4 * 8);
-			_outerAngle = FastMath.PI / (4 * 6);
-			_spotRange = 100;
-			_invSpotRange = 1 / 100;
-			_packedAngleCos = 0;
+			mInnerAngle = FastMath.PI / (4 * 8);
+			mOuterAngle = FastMath.PI / (4 * 6);
+			mSpotRange = 100;
+			mInvSpotRange = 1 / 100;
+			mPackedAngleCos = 0;
 			computePackedCos();
 		}
 
 		private function computePackedCos() : void
 		{
-			var innerCos : Number = Math.cos(_innerAngle);
-			var outerCos : Number = Math.cos(_outerAngle);
-			_packedAngleCos = int(innerCos * 1000);
-			_packedAngleCos += outerCos;
+			var innerCos : Number = Math.cos(mInnerAngle);
+			var outerCos : Number = Math.cos(mOuterAngle);
+			mPackedAngleCos = int(innerCos * 1000);
+			mPackedAngleCos += outerCos;
 		}
 
 		override public function computeLastDistance(owner : Spatial) : void
@@ -59,37 +59,37 @@ package org.angle3d.light
 			if (owner.worldBound != null)
 			{
 				var bv : BoundingVolume = owner.worldBound;
-				lastDistance = bv.distanceSquaredTo(_position);
+				lastDistance = bv.distanceSquaredTo(mPosition);
 			}
 			else
 			{
-				lastDistance = owner.getWorldTranslation().distanceSquared(_position);
+				lastDistance = owner.getWorldTranslation().distanceSquared(mPosition);
 			}
 		}
 
 		public function get direction() : Vector3f
 		{
-			return _direction;
+			return mDirection;
 		}
 
 		public function set direction(direction : Vector3f) : void
 		{
-			_direction.copyFrom(direction);
+			mDirection.copyFrom(direction);
 		}
 
 		public function get position() : Vector3f
 		{
-			return _position;
+			return mPosition;
 		}
 
 		public function set position(position : Vector3f) : void
 		{
-			_position.copyFrom(position);
+			mPosition.copyFrom(position);
 		}
 
 		public function getSpotRange() : Number
 		{
-			return _spotRange;
+			return mSpotRange;
 		}
 
 		/**
@@ -109,14 +109,14 @@ package org.angle3d.light
 		{
 			Assert.assert(value >= 0, "SpotLight range cannot be negative");
 
-			_spotRange = value;
+			mSpotRange = value;
 			if (value != 0)
 			{
-				_invSpotRange = 1 / value;
+				mInvSpotRange = 1 / value;
 			}
 			else
 			{
-				_invSpotRange = 0;
+				mInvSpotRange = 0;
 			}
 		}
 
@@ -126,7 +126,7 @@ package org.angle3d.light
 		 */
 		public function get invSpotRange() : Number
 		{
-			return _invSpotRange;
+			return mInvSpotRange;
 		}
 
 		/**
@@ -135,7 +135,7 @@ package org.angle3d.light
 		 */
 		public function get innerAngle() : Number
 		{
-			return _innerAngle;
+			return mInnerAngle;
 		}
 
 		/**
@@ -145,7 +145,7 @@ package org.angle3d.light
 		 */
 		public function set innerAngle(value : Number) : void
 		{
-			_innerAngle = value;
+			mInnerAngle = value;
 			computePackedCos();
 		}
 
@@ -155,7 +155,7 @@ package org.angle3d.light
 		 */
 		public function get outerAngle() : Number
 		{
-			return _outerAngle;
+			return mOuterAngle;
 		}
 
 		/**
@@ -166,7 +166,7 @@ package org.angle3d.light
 		 */
 		public function set outerAngle(value : Number) : void
 		{
-			_outerAngle = value;
+			mOuterAngle = value;
 			computePackedCos();
 		}
 
@@ -176,7 +176,7 @@ package org.angle3d.light
 		 */
 		public function get packedAngleCos() : Number
 		{
-			return _packedAngleCos;
+			return mPackedAngleCos;
 		}
 	}
 }

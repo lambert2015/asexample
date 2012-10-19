@@ -3,7 +3,6 @@ package org.angle3d.input
 	import flash.display.Stage;
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
-	
 	import org.angle3d.input.controls.ActionListener;
 	import org.angle3d.input.controls.AnalogListener;
 	import org.angle3d.input.controls.InputListener;
@@ -22,6 +21,7 @@ package org.angle3d.input
 	import org.angle3d.utils.Assert;
 	import org.angle3d.utils.DictionaryUtil;
 	import org.angle3d.utils.Logger;
+	
 
 	/**
 	 * The <code>InputManager</code> is responsible for converting input events

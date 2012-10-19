@@ -10,11 +10,11 @@ package org.angle3d.scene.mesh
 	 */
 	public class MorphSubMesh extends SubMesh
 	{
-		private var _totalFrame : int;
+		private var mTotalFrame : int;
 
-		private var _verticesList : Vector.<Vector.<Number>>;
+		private var mVerticesList : Vector.<Vector.<Number>>;
 
-		private var _normalList : Vector.<Vector.<Number>>;
+		private var mNormalList : Vector.<Vector.<Number>>;
 
 		public function MorphSubMesh()
 		{
@@ -23,8 +23,8 @@ package org.angle3d.scene.mesh
 			_merge = false;
 			_vertexBuffer3DMap = new Dictionary();
 
-			_verticesList = new Vector.<Vector.<Number>>();
-			_normalList = new Vector.<Vector.<Number>>();
+			mVerticesList = new Vector.<Vector.<Number>>();
+			mNormalList = new Vector.<Vector.<Number>>();
 		}
 
 		override public function set merge(value : Boolean) : void
@@ -34,48 +34,48 @@ package org.angle3d.scene.mesh
 
 		override public function validate() : void
 		{
-			_verticesList.fixed = true;
+			mVerticesList.fixed = true;
 
-			_normalList.length = _totalFrame;
-			_normalList.fixed = true;
+			mNormalList.length = mTotalFrame;
+			mNormalList.fixed = true;
 
 			updateBound();
 		}
 
 		public function set totalFrame(value : int) : void
 		{
-			_totalFrame = value;
+			mTotalFrame = value;
 		}
 
 		public function get totalFrame() : int
 		{
-			return _totalFrame;
+			return mTotalFrame;
 		}
 
 		public function getNormals(frame : int) : Vector.<Number>
 		{
 			//需要时再创建，解析模型时一起创建耗时有点久
-			if (_normalList[frame] == null)
+			if (mNormalList[frame] == null)
 			{
-				_normalList[frame] = MeshHelper.buildVertexNormals(_indices, getVertices(frame));
+				mNormalList[frame] = MeshHelper.buildVertexNormals(mIndices, getVertices(frame));
 			}
 
-			return _normalList[frame];
+			return mNormalList[frame];
 		}
 
 		public function addNormals(list : Vector.<Number>) : void
 		{
-			_normalList.push(list);
+			mNormalList.push(list);
 		}
 
 		public function getVertices(frame : int) : Vector.<Number>
 		{
-			return _verticesList[frame];
+			return mVerticesList[frame];
 		}
 
 		public function addVertices(vertices : Vector.<Number>) : void
 		{
-			_verticesList.push(vertices);
+			mVerticesList.push(vertices);
 		}
 
 		public function setFrame(curFrame : int, nextFrame : int, useNormal : Boolean) : void

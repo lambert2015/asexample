@@ -18,35 +18,35 @@ package org.angle3d.light
 		 */
 		public var lastDistance : Number;
 
-		private var _type : String;
+		private var mType : String;
 
 
-		protected var _color : Color;
+		protected var mColor : Color;
 
 		/**
 		 * 所有灯光都应该有个范围，超过范围的灯光就不起作用
 		 */
-		protected var _radius : Number;
+		protected var mRadius : Number;
 
 		/**
 		 * If light is disabled, it will not take effect.
 		 */
-		protected var _enabled : Boolean;
+		protected var mEnabled : Boolean;
 
 
 		public function Light(type : String)
 		{
-			_type = type;
+			mType = type;
 
 			lastDistance = -1;
 
-			_color = new Color(1, 1, 1, 1);
-			_enabled = true;
+			mColor = new Color(1, 1, 1, 1);
+			mEnabled = true;
 		}
 
 		public function get type() : String
 		{
-			return _type;
+			return mType;
 		}
 
 		/**
@@ -57,7 +57,7 @@ package org.angle3d.light
 		 */
 		public function get radius() : Number
 		{
-			return _radius;
+			return mRadius;
 		}
 
 		/**
@@ -74,7 +74,7 @@ package org.angle3d.light
 		 */
 		public function set radius(value : Number) : void
 		{
-			_radius = value;
+			mRadius = value;
 		}
 
 		/**
@@ -86,12 +86,12 @@ package org.angle3d.light
 		 */
 		private function get enabled() : Boolean
 		{
-			return _enabled;
+			return mEnabled;
 		}
 
 		private function set enabled(value : Boolean) : void
 		{
-			_enabled = value;
+			mEnabled = value;
 		}
 
 		/**
@@ -101,12 +101,12 @@ package org.angle3d.light
 		 */
 		public function set intensity(value : Number) : void
 		{
-			_color.a = value;
+			mColor.a = value;
 		}
 
 		public function get intensity() : Number
 		{
-			return _color.a;
+			return mColor.a;
 		}
 
 		/**
@@ -116,12 +116,12 @@ package org.angle3d.light
 		 */
 		public function set color(color : uint) : void
 		{
-			_color.setRGB(color);
+			mColor.setRGB(color);
 		}
 
 		public function get color() : uint
 		{
-			return _color.getColor();
+			return mColor.getColor();
 		}
 
 		/**

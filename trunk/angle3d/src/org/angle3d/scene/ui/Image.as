@@ -14,8 +14,8 @@ package org.angle3d.scene.ui
 	 */
 	public class Image extends Geometry
 	{
-		private var _width:Number;
-		private var _height:Number;
+		private var mWidth:Number;
+		private var mHeight:Number;
 
 		public function Image(name:String, flipY:Boolean)
 		{
@@ -27,9 +27,9 @@ package org.angle3d.scene.ui
 
 		public function setSize(width:Number, height:Number):void
 		{
-			_width = width;
-			_height = height;
-			setScaleXYZ(_width, _height, 1);
+			mWidth = width;
+			mHeight = height;
+			setScaleXYZ(mWidth, mHeight, 1);
 		}
 
 		public function setPosition(x:Number, y:Number):void
@@ -40,12 +40,12 @@ package org.angle3d.scene.ui
 
 		public function setTexture(texture:TextureMapBase, useAlpha:Boolean):void
 		{
-			if (material == null)
+			if (mMaterial == null)
 			{
-				material = new MaterialTexture(texture);
-				this.setMaterial(material);
+				mMaterial = new MaterialTexture(texture);
+				this.setMaterial(mMaterial);
 			}
-			(material as MaterialTexture).texture = texture;
+			(mMaterial as MaterialTexture).texture = texture;
 		}
 	}
 }

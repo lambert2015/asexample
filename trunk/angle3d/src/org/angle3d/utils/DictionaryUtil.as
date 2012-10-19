@@ -2,7 +2,7 @@ package org.angle3d.utils
 {
 	import flash.utils.Dictionary;
 
-	public class DictionaryUtil
+	public final class DictionaryUtil
 	{
 		public static function containKey(map:Dictionary, key:*):Boolean
 		{

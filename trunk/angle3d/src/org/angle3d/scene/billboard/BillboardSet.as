@@ -435,7 +435,7 @@ package org.angle3d.scene.billboard
 			mColorBuffer.updateData(mColors);
 			mTexCoordBuffer.updateData(mTexCoords);
 
-			mesh.validate();
+			mMesh.validate();
 			
 			mBillboardDataChanged = false;
 		}
@@ -977,16 +977,16 @@ package org.angle3d.scene.billboard
 			mColorBuffer = mSubMesh.getVertexBuffer(BufferType.COLOR);
 			mTexCoordBuffer = mSubMesh.getVertexBuffer(BufferType.TEXCOORD);
 			
-			mesh = new Mesh();
-			mesh.addSubMesh(mSubMesh);
-			this.setMesh(mesh);
+			mMesh = new Mesh();
+			mMesh.addSubMesh(mSubMesh);
+			this.setMesh(mMesh);
 		}
 		
 		private function _destroyBuffers():void
 		{
 			if(mSubMesh != null)
 			{
-				mesh.removeSubMesh(mSubMesh);
+				mMesh.removeSubMesh(mSubMesh);
 			}
 		}
 	}

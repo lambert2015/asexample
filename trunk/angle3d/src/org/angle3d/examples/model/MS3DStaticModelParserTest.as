@@ -1,9 +1,6 @@
 package org.angle3d.examples.model
 {
 	import flash.utils.Dictionary;
-	
-	import org.angle3d.utils.Stats;
-	
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.io.AssetManager;
 	import org.angle3d.io.parser.ms3d.MS3DParser;
@@ -12,9 +9,12 @@ package org.angle3d.examples.model
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.utils.Stats;
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.signals.LoaderSignal;
+	
+	
 
 	public class MS3DStaticModelParserTest extends SimpleApplication
 	{

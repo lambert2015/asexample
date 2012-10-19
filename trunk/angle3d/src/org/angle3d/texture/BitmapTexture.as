@@ -19,7 +19,7 @@ package org.angle3d.texture
 	 */
 	public class BitmapTexture extends TextureMap
 	{
-		private var _bitmapData : BitmapData;
+		private var mBitmapData : BitmapData;
 
 		public function BitmapTexture(bitmapData : BitmapData, mipmap : Boolean = false)
 		{
@@ -30,12 +30,12 @@ package org.angle3d.texture
 
 		public function getBitmapData() : BitmapData
 		{
-			return _bitmapData;
+			return mBitmapData;
 		}
 
 		public function setBitmapData(value : BitmapData) : void
 		{
-			if (value == _bitmapData)
+			if (value == mBitmapData)
 				return;
 
 			CF::DEBUG
@@ -48,19 +48,19 @@ package org.angle3d.texture
 
 			setSize(value.width, value.height);
 
-			_bitmapData = value;
+			mBitmapData = value;
 		}
 
 		override protected function uploadTexture() : void
 		{
-			var t : Texture = _texture as Texture;
-			if (_mipmap)
+			var t : Texture = mTexture as Texture;
+			if (mMipmap)
 			{
-				MipmapGenerator.generateMipMaps(_bitmapData, t, null, true);
+				MipmapGenerator.generateMipMaps(mBitmapData, t, null, true);
 			}
 			else
 			{
-				t.uploadFromBitmapData(_bitmapData);
+				t.uploadFromBitmapData(mBitmapData);
 			}
 		}
 	}
