@@ -11,57 +11,57 @@ package org.angle3d.scene
 
 	public class CameraNode extends Node
 	{
-		private var camControl:CameraControl;
+		private var mCamControl:CameraControl;
 
 		public function CameraNode(name:String, camera:Camera3D)
 		{
 			super(name);
 			if (camera != null)
 			{
-				camControl.camera = camera;
+				mCamControl.camera = camera;
 			}
 		}
 
 		public function getCameraControl():CameraControl
 		{
-			return camControl;
+			return mCamControl;
 		}
 
 		override protected function _init():void
 		{
 			super._init();
-			camControl = new CameraControl();
-			addControl(camControl);
+			mCamControl = new CameraControl();
+			addControl(mCamControl);
 		}
 
 		public function setEnabled(enabled:Boolean):void
 		{
-			camControl.enabled = enabled;
+			mCamControl.enabled = enabled;
 		}
 
 		public function isEnabled():Boolean
 		{
-			return camControl.enabled;
+			return mCamControl.enabled;
 		}
 
 		public function set controlDir(controlDir:String):void
 		{
-			camControl.controlDir = controlDir;
+			mCamControl.controlDir = controlDir;
 		}
 
 		public function get controlDir():String
 		{
-			return camControl.controlDir;
+			return mCamControl.controlDir;
 		}
 
 		public function setCamera(camera:Camera3D):void
 		{
-			camControl.camera = camera;
+			mCamControl.camera = camera;
 		}
 
 		public function getCamera():Camera3D
 		{
-			return camControl.camera;
+			return mCamControl.camera;
 		}
 	}
 }

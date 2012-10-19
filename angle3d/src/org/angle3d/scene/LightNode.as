@@ -11,13 +11,13 @@ package org.angle3d.scene
 	 */
 	public class LightNode extends Node
 	{
-		private var lightControl:LightControl;
+		private var mLightControl:LightControl;
 
 		public function LightNode(name:String, light:Light)
 		{
 			super(name);
-			lightControl = new LightControl(light);
-			addControl(lightControl);
+			mLightControl = new LightControl(light);
+			addControl(mLightControl);
 		}
 
 		/**
@@ -28,32 +28,32 @@ package org.angle3d.scene
 		 */
 		public function setEnabled(enabled:Boolean):void
 		{
-			lightControl.enabled = enabled;
+			mLightControl.enabled = enabled;
 		}
 
 		public function isEnabled():Boolean
 		{
-			return lightControl.enabled;
+			return mLightControl.enabled;
 		}
 
 		public function setControlDir(dir:String):void
 		{
-			lightControl.setControlDir(dir);
+			mLightControl.setControlDir(dir);
 		}
 
 		public function setLight(light:Light):void
 		{
-			lightControl.setLight(light);
+			mLightControl.setLight(light);
 		}
 
 		public function getControlDir():String
 		{
-			return lightControl.getControlDir();
+			return mLightControl.getControlDir();
 		}
 
 		public function getLight():Light
 		{
-			return lightControl.getLight();
+			return mLightControl.getLight();
 		}
 	}
 }

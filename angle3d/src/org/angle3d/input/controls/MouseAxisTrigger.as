@@ -12,8 +12,8 @@ package org.angle3d.input.controls
 	 */
 	public class MouseAxisTrigger implements Trigger
 	{
-		private var mouseAxis:int;
-		private var negative:Boolean;
+		public var mouseAxis:int;
+		public var negative:Boolean;
 
 		/**
 		 * Create a new <code>MouseAxisTrigger</code>.
@@ -43,16 +43,6 @@ package org.angle3d.input.controls
 					return "Mouse Wheel " + sign;
 			}
 			return "";
-		}
-
-		public function getMouseAxis():int
-		{
-			return mouseAxis;
-		}
-
-		public function isNegative():Boolean
-		{
-			return negative;
 		}
 
 		public static function mouseAxisHash(mouseAxis:int, negative:Boolean):int

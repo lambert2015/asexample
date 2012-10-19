@@ -1,7 +1,5 @@
 package org.angle3d.examples.model
 {
-	import org.angle3d.utils.Stats;
-	
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.material.MaterialFill;
 	import org.angle3d.material.MaterialTexture;
@@ -13,6 +11,8 @@ package org.angle3d.examples.model
 	import org.angle3d.scene.shape.Torus;
 	import org.angle3d.scene.shape.TorusKnot;
 	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.utils.Stats;
+	
 
 	public class ShapeTest extends SimpleApplication
 	{

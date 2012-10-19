@@ -25,11 +25,11 @@ package org.angle3d.scene.mesh
 		 * The bounding volume that contains the mesh entirely.
 		 * By default a BoundingBox (AABB).
 		 */
-		protected var _bound:BoundingVolume;
+		protected var mBound:BoundingVolume;
 
-		protected var _bufferMap:Dictionary; //<String,VertexBuffer>
+		protected var mBufferMap:Dictionary; //<String,VertexBuffer>
 
-		protected var _indices:Vector.<uint>;
+		protected var mIndices:Vector.<uint>;
 		protected var _indexBuffer3D:IndexBuffer3D;
 
 		protected var _merge:Boolean;
@@ -43,9 +43,9 @@ package org.angle3d.scene.mesh
 
 		public function SubMesh()
 		{
-			_bound = new BoundingBox();
+			mBound = new BoundingBox();
 
-			_bufferMap = new Dictionary();
+			mBufferMap = new Dictionary();
 
 			merge = false;
 		}
@@ -82,8 +82,8 @@ package org.angle3d.scene.mesh
 		{
 			if (_indexBuffer3D == null)
 			{
-				_indexBuffer3D = context.createIndexBuffer(_indices.length);
-				_indexBuffer3D.uploadFromVector(_indices, 0, _indices.length);
+				_indexBuffer3D = context.createIndexBuffer(mIndices.length);
+				_indexBuffer3D.uploadFromVector(mIndices, 0, mIndices.length);
 			}
 			return _indexBuffer3D;
 		}
@@ -171,7 +171,7 @@ package org.angle3d.scene.mesh
 			{
 				for (var j:int = 0; j < TYPES_SIZE; j++)
 				{
-					buffer = _bufferMap[TYPES[j]];
+					buffer = mBufferMap[TYPES[j]];
 					if (buffer != null)
 					{
 						data = buffer.getData();
@@ -197,7 +197,7 @@ package org.angle3d.scene.mesh
 
 			for (var j:int = 0; j < TYPES_SIZE; j++)
 			{
-				var buffer:VertexBuffer = _bufferMap[TYPES[j]];
+				var buffer:VertexBuffer = mBufferMap[TYPES[j]];
 				if (buffer != null)
 				{
 					count += buffer.components;
@@ -214,9 +214,9 @@ package org.angle3d.scene.mesh
 		public function updateBound():void
 		{
 			var vb:VertexBuffer = getVertexBuffer(BufferType.POSITION);
-			if (_bound != null && vb != null)
+			if (mBound != null && vb != null)
 			{
-				_bound.computeFromPoints(vb.getData());
+				mBound.computeFromPoints(vb.getData());
 			}
 		}
 
@@ -228,12 +228,12 @@ package org.angle3d.scene.mesh
 		 */
 		public function getBound():BoundingVolume
 		{
-			return _bound;
+			return mBound;
 		}
 
 		public function getVertexBuffer(type:String):VertexBuffer
 		{
-			return _bufferMap[type];
+			return mBufferMap[type];
 		}
 
 		public function setVertexBuffer(type:String, components:int, data:Vector.<Number>):void
@@ -243,11 +243,11 @@ package org.angle3d.scene.mesh
 				Assert.assert(data != null, "data can not be null");
 			}
 
-			var vb:VertexBuffer = _bufferMap[type];
+			var vb:VertexBuffer = mBufferMap[type];
 			if (vb == null)
 			{
 				vb = new VertexBuffer(type);
-				_bufferMap[type] = vb;
+				mBufferMap[type] = vb;
 			}
 
 			vb.setData(data, components);
@@ -273,7 +273,7 @@ package org.angle3d.scene.mesh
 
 		public function setIndices(indices:Vector.<uint>):void
 		{
-			_indices = indices;
+			mIndices = indices;
 
 			if (_indexBuffer3D != null)
 			{
@@ -284,19 +284,19 @@ package org.angle3d.scene.mesh
 
 		public function getIndices():Vector.<uint>
 		{
-			return _indices;
+			return mIndices;
 		}
 
 		public function getTriangle(index:int, tri:Triangle):void
 		{
 			var pb:VertexBuffer = getVertexBuffer(BufferType.POSITION);
-			if (pb != null && _indices != null)
+			if (pb != null && mIndices != null)
 			{
 				var vertices:Vector.<Number> = pb.getData();
 				var vertIndex:int = index * 3;
 				for (var i:int = 0; i < 3; i++)
 				{
-					BufferUtils.populateFromBuffer(tri.getPoint(i), vertices, _indices[vertIndex + i]);
+					BufferUtils.populateFromBuffer(tri.getPoint(i), vertices, mIndices[vertIndex + i]);
 				}
 			}
 		}

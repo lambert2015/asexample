@@ -2,7 +2,6 @@ package org.angle3d.input
 {
 
 	import flash.ui.Keyboard;
-
 	import org.angle3d.collision.MotionAllowedListener;
 	import org.angle3d.input.controls.ActionListener;
 	import org.angle3d.input.controls.AnalogListener;
@@ -15,6 +14,7 @@ package org.angle3d.input
 	import org.angle3d.math.Quaternion;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.renderer.Camera3D;
+
 
 	/**
 	 * A first person view camera controller.

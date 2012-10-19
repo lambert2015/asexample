@@ -844,8 +844,8 @@ package org.angle3d.effect.cpu
 
 			if (_worldSpace)
 			{
-				_worldTransform.transformVector(p.position, p.position);
-				_worldTransform.rotation.multiplyVector(p.velocity, p.velocity);
+				mWorldTransform.transformVector(p.position, p.position);
+				mWorldTransform.rotation.multiplyVector(p.velocity, p.velocity);
 					// TODO: Make scale relevant somehow??
 			}
 

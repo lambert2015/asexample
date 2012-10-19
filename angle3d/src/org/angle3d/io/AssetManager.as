@@ -17,11 +17,11 @@ package org.angle3d.io
 			return _instance;
 		}
 
-		private var _assetCache : Dictionary;
+		private var mAssetCache : Dictionary;
 
 		public function AssetManager()
 		{
-			_assetCache = new Dictionary();
+			mAssetCache = new Dictionary();
 		}
 
 		/**
@@ -36,7 +36,7 @@ package org.angle3d.io
 
 		public function getAsset(id : String) : *
 		{
-			return _assetCache[id];
+			return mAssetCache[id];
 		}
 
 		//TODO 最好还能完成资源的解析工作
@@ -45,7 +45,7 @@ package org.angle3d.io
 			//cache 资源
 			for (var i : * in assets)
 			{
-				_assetCache[i] = assets[i];
+				mAssetCache[i] = assets[i];
 			}
 
 

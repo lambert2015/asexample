@@ -12,13 +12,13 @@ package org.angle3d.light
 	 */
 	public class DirectionalLight extends Light
 	{
-		private var _direction : Vector3f;
+		private var mDirection : Vector3f;
 
 		public function DirectionalLight()
 		{
 			super(LightType.Directional);
 
-			_direction = new Vector3f(0, -1, 0);
+			mDirection = new Vector3f(0, -1, 0);
 		}
 
 		/**
@@ -30,7 +30,7 @@ package org.angle3d.light
 		 */
 		public function get direction() : Vector3f
 		{
-			return _direction;
+			return mDirection;
 		}
 
 		/**
@@ -43,8 +43,8 @@ package org.angle3d.light
 		 */
 		public function set direction(dir : Vector3f) : void
 		{
-			_direction.copyFrom(dir);
-			_direction.normalizeLocal();
+			mDirection.copyFrom(dir);
+			mDirection.normalizeLocal();
 		}
 
 		override public function computeLastDistance(owner : Spatial) : void

@@ -25,15 +25,15 @@ package org.angle3d.io.parser.ms3d
 
 	public class MS3DParser
 	{
-		private var _ms3dVertices:Vector.<MS3DVertex>;
-		private var _ms3dTriangles:Vector.<MS3DTriangle>;
-		private var _ms3dGroups:Vector.<MS3DGroup>;
-		private var _ms3dMaterials:Vector.<MS3DMaterial>;
+		private var mMs3dVertices:Vector.<MS3DVertex>;
+		private var mMs3dTriangles:Vector.<MS3DTriangle>;
+		private var mMs3dGroups:Vector.<MS3DGroup>;
+		private var mMs3dMaterials:Vector.<MS3DMaterial>;
 
-		private var _framesPerSecond:Number;
-		private var _ms3dJoints:Vector.<MS3DJoint>;
-		private var _numVertices:int;
-		private var _numFrames:int;
+		private var mFramesPerSecond:Number;
+		private var mMs3dJoints:Vector.<MS3DJoint>;
+		private var mNumVertices:int;
+		private var mNumFrames:int;
 
 		public function MS3DParser()
 		{
@@ -52,8 +52,8 @@ package org.angle3d.io.parser.ms3d
 
 			var mesh:Mesh = new Mesh();
 
-			var numTriangle:int = _ms3dTriangles.length;
-			var numGroups:int = _ms3dGroups.length;
+			var numTriangle:int = mMs3dTriangles.length;
+			var numGroups:int = mMs3dGroups.length;
 			for (var i:int = 0; i < numGroups; i++)
 			{
 				var subMesh:SubMesh = new SubMesh();
@@ -66,13 +66,13 @@ package org.angle3d.io.parser.ms3d
 				var triangle:MS3DTriangle;
 				for (var t:int = 0; t < numTriangle; t++)
 				{
-					triangle = _ms3dTriangles[t];
+					triangle = mMs3dTriangles[t];
 
 					if (triangle.groupIndex == i)
 					{
 						for (var j:int = 0; j < 3; j++)
 						{
-							var vertex:MS3DVertex = _ms3dVertices[triangle.indices[j]];
+							var vertex:MS3DVertex = mMs3dVertices[triangle.indices[j]];
 							var normal:Vector3f = triangle.normals[j];
 
 							vertices.push(vertex.x);
@@ -134,8 +134,8 @@ package org.angle3d.io.parser.ms3d
 
 			var mesh:SkinnedMesh = new SkinnedMesh();
 
-			var numTriangle:int = _ms3dTriangles.length;
-			var numGroups:int = _ms3dGroups.length;
+			var numTriangle:int = mMs3dTriangles.length;
+			var numGroups:int = mMs3dGroups.length;
 			for (var i:int = 0; i < numGroups; i++)
 			{
 				var subMesh:SkinnedSubMesh = new SkinnedSubMesh();
@@ -150,13 +150,13 @@ package org.angle3d.io.parser.ms3d
 				var triangle:MS3DTriangle;
 				for (var t:int = 0; t < numTriangle; t++)
 				{
-					triangle = _ms3dTriangles[t];
+					triangle = mMs3dTriangles[t];
 
 					if (triangle.groupIndex == i)
 					{
 						for (var j:int = 0; j < 3; j++)
 						{
-							var vertex:MS3DVertex = _ms3dVertices[triangle.indices[j]];
+							var vertex:MS3DVertex = mMs3dVertices[triangle.indices[j]];
 							var normal:Vector3f = triangle.normals[j];
 
 							vertices.push(vertex.x);
@@ -219,11 +219,11 @@ package org.angle3d.io.parser.ms3d
 			var bones:Vector.<Bone> = new Vector.<Bone>();
 			var tracks:Vector.<BoneTrack> = new Vector.<BoneTrack>();
 
-			var animation:Animation = new Animation("default", _numFrames);
+			var animation:Animation = new Animation("default", mNumFrames);
 
 			var q:Quaternion = new Quaternion();
 
-			var length:int = _ms3dJoints.length;
+			var length:int = mMs3dJoints.length;
 			var bone:Bone;
 			var joint:MS3DJoint;
 			var track:BoneTrack;
@@ -232,7 +232,7 @@ package org.angle3d.io.parser.ms3d
 				bone = new Bone("");
 				bones.push(bone);
 
-				joint = _ms3dJoints[i];
+				joint = mMs3dJoints[i];
 
 				bone.name = joint.name;
 				bone.parentName = joint.parentName;
@@ -249,7 +249,7 @@ package org.angle3d.io.parser.ms3d
 
 				//TODO 由于每个joint.positionKeys和rotationKeys数量不同，所以需要手工创建需要的部分（插值）
 				//为了方便，这里将只在关键帧出进行插值
-				for (var j:int = 0; j < _numFrames; j++)
+				for (var j:int = 0; j < mNumFrames; j++)
 				{
 					getKeyFramePositionAt(joint, j, position);
 					getKeyFrameRotationAt(joint, j, rotation);
@@ -289,7 +289,7 @@ package org.angle3d.io.parser.ms3d
 				posData = posKeyFrame.data;
 				store.setTo(posData[0], posData[1], posData[2]);
 			}
-			else if (time >= _numFrames)
+			else if (time >= mNumFrames)
 			{
 				posKeyFrame = positionKeys[positionKeys.length - 1];
 				posData = posKeyFrame.data;
@@ -347,7 +347,7 @@ package org.angle3d.io.parser.ms3d
 
 				store.fromAngles(rotData[0], rotData[1], rotData[2]);
 			}
-			else if (time >= _numFrames)
+			else if (time >= mNumFrames)
 			{
 				rotKeyFrame = rotKeys[rotKeys.length - 1];
 				rotData = rotKeyFrame.data;
@@ -398,9 +398,9 @@ package org.angle3d.io.parser.ms3d
 		private function readVertices(data:ByteArray):void
 		{
 			//顶点数
-			_numVertices = data.readUnsignedShort();
-			_ms3dVertices = new Vector.<MS3DVertex>(_numVertices, true);
-			for (var i:int = 0; i < _numVertices; i++)
+			mNumVertices = data.readUnsignedShort();
+			mMs3dVertices = new Vector.<MS3DVertex>(mNumVertices, true);
+			for (var i:int = 0; i < mNumVertices; i++)
 			{
 				var ms3dVertex:MS3DVertex = new MS3DVertex();
 				//unuse flag
@@ -411,7 +411,7 @@ package org.angle3d.io.parser.ms3d
 				ms3dVertex.bones[0] = data.readUnsignedByte();
 				//unuse
 				data.position += 1;
-				_ms3dVertices[i] = ms3dVertex;
+				mMs3dVertices[i] = ms3dVertex;
 			}
 		}
 
@@ -419,7 +419,7 @@ package org.angle3d.io.parser.ms3d
 		{
 			//triangles
 			var numTriangles:int = data.readUnsignedShort();
-			_ms3dTriangles = new Vector.<MS3DTriangle>(numTriangles, true);
+			mMs3dTriangles = new Vector.<MS3DTriangle>(numTriangles, true);
 			for (var i:int = 0; i < numTriangles; i++)
 			{
 				var triangle:MS3DTriangle = new MS3DTriangle();
@@ -447,14 +447,14 @@ package org.angle3d.io.parser.ms3d
 				data.position += 1;
 				triangle.groupIndex = data.readUnsignedByte();
 
-				_ms3dTriangles[i] = triangle;
+				mMs3dTriangles[i] = triangle;
 			}
 		}
 
 		private function readGroups(data:ByteArray):void
 		{
 			var numGroups:int = data.readUnsignedShort();
-			_ms3dGroups = new Vector.<MS3DGroup>(numGroups, true);
+			mMs3dGroups = new Vector.<MS3DGroup>(numGroups, true);
 			for (var i:int = 0; i < numGroups; i++)
 			{
 				var group:MS3DGroup = new MS3DGroup();
@@ -476,7 +476,7 @@ package org.angle3d.io.parser.ms3d
 				if (group.materialID == 255)
 					group.materialID = 0;
 
-				_ms3dGroups[i] = group;
+				mMs3dGroups[i] = group;
 			}
 		}
 
@@ -484,7 +484,7 @@ package org.angle3d.io.parser.ms3d
 		{
 			// materials
 			var numMaterials:int = data.readUnsignedShort();
-			_ms3dMaterials = new Vector.<MS3DMaterial>(numMaterials, true);
+			mMs3dMaterials = new Vector.<MS3DMaterial>(numMaterials, true);
 			for (var i:int = 0; i < numMaterials; i++)
 			{
 				var mat:MS3DMaterial = new MS3DMaterial();
@@ -502,7 +502,7 @@ package org.angle3d.io.parser.ms3d
 				mat.texture = data.readUTFBytes(128);
 				mat.alphaMap = data.readUTFBytes(128);
 
-				_ms3dMaterials[i] = mat;
+				mMs3dMaterials[i] = mat;
 			}
 		}
 
@@ -514,9 +514,9 @@ package org.angle3d.io.parser.ms3d
 				var subVersion:int = data.readInt();
 				if (subVersion == 1 || subVersion == 2)
 				{
-					for (var i:int = 0; i < _numVertices; i++)
+					for (var i:int = 0; i < mNumVertices; i++)
 					{
-						vertex = _ms3dVertices[i];
+						vertex = mMs3dVertices[i];
 
 						vertex.bones[1] = data.readByte();
 						vertex.bones[2] = data.readByte();
@@ -558,9 +558,9 @@ package org.angle3d.io.parser.ms3d
 		private function readJoints(data:ByteArray):void
 		{
 			//animation time
-			_framesPerSecond = data.readFloat();
-			if (_framesPerSecond < 1)
-				_framesPerSecond = 1.0;
+			mFramesPerSecond = data.readFloat();
+			if (mFramesPerSecond < 1)
+				mFramesPerSecond = 1.0;
 
 			var startTime:Number = data.readFloat();
 			CF::DEBUG
@@ -569,10 +569,10 @@ package org.angle3d.io.parser.ms3d
 			}
 
 			//动画帧数
-			_numFrames = data.readInt();
+			mNumFrames = data.readInt();
 
 			var numJoints:int = data.readUnsignedShort();
-			_ms3dJoints = new Vector.<MS3DJoint>(numJoints, true);
+			mMs3dJoints = new Vector.<MS3DJoint>(numJoints, true);
 			for (var i:int = 0; i < numJoints; i++)
 			{
 				//unuse flag
@@ -603,7 +603,7 @@ package org.angle3d.io.parser.ms3d
 				for (var j:int = 0; j < numKeyFramesRot; j++)
 				{
 					keyFrame = new MS3DKeyframe();
-					keyFrame.time = data.readFloat() * _framesPerSecond;
+					keyFrame.time = data.readFloat() * mFramesPerSecond;
 					keyFrame.data[0] = data.readFloat();
 					keyFrame.data[1] = data.readFloat();
 					keyFrame.data[2] = data.readFloat();
@@ -615,7 +615,7 @@ package org.angle3d.io.parser.ms3d
 				for (j = 0; j < numKeyFramesPos; j++)
 				{
 					keyFrame = new MS3DKeyframe();
-					keyFrame.time = data.readFloat() * _framesPerSecond;
+					keyFrame.time = data.readFloat() * mFramesPerSecond;
 					keyFrame.data[0] = data.readFloat();
 					keyFrame.data[1] = data.readFloat();
 					keyFrame.data[2] = data.readFloat();
@@ -623,7 +623,7 @@ package org.angle3d.io.parser.ms3d
 					joint.positionKeys[j] = keyFrame;
 				}
 
-				_ms3dJoints[i] = joint;
+				mMs3dJoints[i] = joint;
 			}
 		}
 

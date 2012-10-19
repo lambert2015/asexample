@@ -9,7 +9,7 @@ package org.angle3d.input.controls
 	 */
 	public class KeyTrigger implements Trigger
 	{
-		private var keyCode:int;
+		public var keyCode:int;
 
 		/**
 		 * Create a new <code>KeyTrigger</code> for the given keycode.
@@ -26,14 +26,13 @@ package org.angle3d.input.controls
 			return "KeyCode " + keyCode;
 		}
 
-		public function getKeyCode():int
-		{
-			return keyCode;
-		}
-
 		public static function keyHash(keyCode:int):int
 		{
-			Assert.assert(keyCode >= 0 && keyCode <= 255, "keycode must be between 0 and 255");
+			CF::DEBUG 
+			{
+				Assert.assert(keyCode >= 0 && keyCode <= 255, "keycode must be between 0 and 255");
+			}
+			
 			return keyCode & 0xff;
 		}
 

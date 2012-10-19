@@ -16,7 +16,7 @@ package org.angle3d.texture
 	 */
 	public class ATFTexture extends TextureMap
 	{
-		private var _byteArray : ByteArray;
+		private var mByteArray : ByteArray;
 
 		public function ATFTexture(data : ByteArray)
 		{
@@ -27,23 +27,23 @@ package org.angle3d.texture
 
 		public function getByteArray() : ByteArray
 		{
-			return _byteArray;
+			return mByteArray;
 		}
 
 		public function setByteArray(byte : ByteArray) : void
 		{
-			_byteArray = byte;
-			_byteArray.position = 0;
+			mByteArray = byte;
+			mByteArray.position = 0;
 
 			//check weather file if really is a compressed texture
-			var signature : String = _byteArray.readUTFBytes(3);
+			var signature : String = mByteArray.readUTFBytes(3);
 
 			CF::DEBUG
 			{
 				Assert.assert(signature == "ATF", "This ByteArray is not a atf file");
 			}
 
-			_byteArray.position += 3;
+			mByteArray.position += 3;
 
 			//Check if this is a CubeMap
 			var cubeMap : uint = byte.readUnsignedByte();
@@ -64,15 +64,15 @@ package org.angle3d.texture
 
 		override protected function uploadTexture() : void
 		{
-			var t : Texture = _texture as Texture;
+			var t : Texture = mTexture as Texture;
 
-			t.uploadCompressedTextureFromByteArray(_byteArray, 0);
+			t.uploadCompressedTextureFromByteArray(mByteArray, 0);
 		}
 
 		override protected function createTexture(context : Context3D) : TextureBase
 		{
 			//TODO 为何用Context3DTextureFormat.Compressed不行呢
-			return context.createTexture(_width, _height, Context3DTextureFormat.COMPRESSED, false);
+			return context.createTexture(mWidth, mHeight, Context3DTextureFormat.COMPRESSED, false);
 		}
 	}
 }

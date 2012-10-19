@@ -22,7 +22,7 @@ package org.angle3d.texture
 
 		override protected function createTexture(context:Context3D):TextureBase
 		{
-			return context.createTexture(_width, _height, Context3DTextureFormat.BGRA, optimizeForRenderToTexture);
+			return context.createTexture(mWidth, mHeight, Context3DTextureFormat.BGRA, optimizeForRenderToTexture);
 		}
 	}
 }

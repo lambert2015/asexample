@@ -1,18 +1,18 @@
 package org.angle3d.input
 {
-	import org.angle3d.math.Vector3f;
-
 	import org.angle3d.input.controls.ActionListener;
 	import org.angle3d.input.controls.AnalogListener;
 	import org.angle3d.input.controls.MouseAxisTrigger;
 	import org.angle3d.input.controls.MouseButtonTrigger;
 	import org.angle3d.input.controls.Trigger;
 	import org.angle3d.math.FastMath;
+	import org.angle3d.math.Vector3f;
 	import org.angle3d.renderer.Camera3D;
 	import org.angle3d.renderer.RenderManager;
 	import org.angle3d.renderer.ViewPort;
 	import org.angle3d.scene.control.Control;
 	import org.angle3d.scene.Spatial;
+
 
 	/**
 	 * A camera that follows a spatial and can turn around it by dragging the mouse

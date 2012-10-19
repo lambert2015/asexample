@@ -14,57 +14,57 @@ package org.angle3d.scene.mesh
 		 * The bounding volume that contains the mesh entirely.
 		 * By default a BoundingBox (AABB).
 		 */
-		protected var _bound : BoundingVolume;
+		protected var mBound : BoundingVolume;
 
-		protected var _boundDirty : Boolean;
+		protected var mBoundDirty : Boolean;
 
 		protected var collisionTree : CollisionData;
 
-		protected var _subMeshList : Vector.<SubMesh>;
+		protected var mSubMeshList : Vector.<SubMesh>;
 
-		protected var _type : String;
+		protected var mType : String;
 
 		public function Mesh()
 		{
-			_type = MeshType.MT_STATIC;
+			mType = MeshType.MT_STATIC;
 
-			_bound = new BoundingBox();
+			mBound = new BoundingBox();
 
-			_subMeshList = new Vector.<SubMesh>();
+			mSubMeshList = new Vector.<SubMesh>();
 		}
 
 		public function get type() : String
 		{
-			return _type;
+			return mType;
 		}
 
 		public function setSubMeshList(subMeshs : Vector.<SubMesh>) : void
 		{
-			_subMeshList = subMeshs;
-			_boundDirty = true;
+			mSubMeshList = subMeshs;
+			mBoundDirty = true;
 		}
 
 		public function addSubMesh(subMesh : SubMesh) : void
 		{
-			_subMeshList.push(subMesh);
+			mSubMeshList.push(subMesh);
 			subMesh.mesh = this;
 
-			_boundDirty = true;
+			mBoundDirty = true;
 		}
 		
 		public function removeSubMesh(subMesh:SubMesh):void
 		{
-			var index:int = _subMeshList.indexOf(subMesh);
+			var index:int = mSubMeshList.indexOf(subMesh);
 			if(index > -1)
 			{
-				_subMeshList.splice(index,1);
-				_boundDirty = true;
+				mSubMeshList.splice(index,1);
+				mBoundDirty = true;
 			}
 		}
 
 		public function get subMeshList() : Vector.<SubMesh>
 		{
-			return _subMeshList;
+			return mSubMeshList;
 		}
 
 		public function validate() : void
@@ -79,17 +79,17 @@ package org.angle3d.scene.mesh
 		 */
 		public function updateBound() : void
 		{
-			if (!_boundDirty)
+			if (!mBoundDirty)
 				return;
 
-			var length : int = _subMeshList.length;
+			var length : int = mSubMeshList.length;
 			for (var i : int = 0; i < length; i++)
 			{
-				var subMesh : SubMesh = _subMeshList[i];
-				_bound.mergeLocal(subMesh.getBound());
+				var subMesh : SubMesh = mSubMeshList[i];
+				mBound.mergeLocal(subMesh.getBound());
 			}
 
-			_boundDirty = false;
+			mBoundDirty = false;
 		}
 
 		/**
@@ -100,8 +100,8 @@ package org.angle3d.scene.mesh
 		 */
 		public function setBound(bound : BoundingVolume) : void
 		{
-			_bound = bound;
-			_boundDirty = false;
+			mBound = bound;
+			mBoundDirty = false;
 		}
 
 		/**
@@ -112,7 +112,7 @@ package org.angle3d.scene.mesh
 		 */
 		public function getBound() : BoundingVolume
 		{
-			return _bound;
+			return mBound;
 		}
 
 		/**

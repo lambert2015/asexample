@@ -10,61 +10,61 @@ package org.angle3d.texture
 
 	public class TextureMapBase
 	{
-		protected var _width:int;
-		protected var _height:int;
+		protected var mWidth:int;
+		protected var mHeight:int;
 
-		protected var _mipmap:Boolean;
+		protected var mMipmap:Boolean;
 
-		protected var _dirty:Boolean;
+		protected var mDirty:Boolean;
 
-		protected var _texture:TextureBase;
+		protected var mTexture:TextureBase;
 
-		protected var _optimizeForRenderToTexture:Boolean;
+		protected var mOptimizeForRenderToTexture:Boolean;
 
 		public function TextureMapBase(mipmap:Boolean = false)
 		{
-			_mipmap = mipmap;
-			_dirty = false;
-			_optimizeForRenderToTexture = false;
+			mMipmap = mipmap;
+			mDirty = false;
+			mOptimizeForRenderToTexture = false;
 		}
 
 		public function getTexture(context:Context3D):TextureBase
 		{
-			if (_texture == null || _dirty)
+			if (mTexture == null || mDirty)
 			{
-				if (_texture != null)
-					_texture.dispose();
+				if (mTexture != null)
+					mTexture.dispose();
 
-				_texture = createTexture(context);
+				mTexture = createTexture(context);
 				uploadTexture();
-				_dirty = false;
+				mDirty = false;
 			}
 
-			return _texture;
+			return mTexture;
 		}
 
 		public function setMipMap(value:Boolean):void
 		{
-			if (_mipmap != value)
+			if (mMipmap != value)
 			{
-				_mipmap = value;
-				_dirty = true;
+				mMipmap = value;
+				mDirty = true;
 			}
 		}
 
 		public function getMipMap():Boolean
 		{
-			return _mipmap;
+			return mMipmap;
 		}
 
 		public function get width():int
 		{
-			return _width;
+			return mWidth;
 		}
 
 		public function get height():int
 		{
-			return _height;
+			return mHeight;
 		}
 
 		/**
@@ -72,7 +72,7 @@ package org.angle3d.texture
 		 */
 		public function get optimizeForRenderToTexture():Boolean
 		{
-			return _optimizeForRenderToTexture;
+			return mOptimizeForRenderToTexture;
 		}
 
 		/**
@@ -80,25 +80,25 @@ package org.angle3d.texture
 		 */
 		public function set optimizeForRenderToTexture(value:Boolean):void
 		{
-			if (_optimizeForRenderToTexture != value)
+			if (mOptimizeForRenderToTexture != value)
 			{
-				_optimizeForRenderToTexture = value;
-				_dirty = true;
+				mOptimizeForRenderToTexture = value;
+				mDirty = true;
 			}
 		}
 
 		public function invalidateContent():void
 		{
-			_dirty = true;
+			mDirty = true;
 		}
 
 		public function dispose():void
 		{
-			if (_texture != null)
+			if (mTexture != null)
 			{
-				_texture.dispose();
-				_texture = null;
-				_dirty = false;
+				mTexture.dispose();
+				mTexture = null;
+				mDirty = false;
 			}
 		}
 
@@ -114,11 +114,11 @@ package org.angle3d.texture
 
 		protected function setSize(width:int, height:int):void
 		{
-			if (_width != width || _height != height)
+			if (mWidth != width || mHeight != height)
 				dispose();
 
-			_width = width;
-			_height = height;
+			mWidth = width;
+			mHeight = height;
 		}
 	}
 }

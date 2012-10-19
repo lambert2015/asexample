@@ -7,27 +7,27 @@ package org.angle3d.scene.mesh
 
 	public class VertexBuffer
 	{
-		private var _count : int;
+		private var mCount : int;
 
-		private var _dirty : Boolean;
+		private var mDirty : Boolean;
 
-		private var _type : String;
+		private var mType : String;
 
-		private var _data : Vector.<Number>;
+		private var mData : Vector.<Number>;
 
-		private var _components : int;
+		private var mComponents : int;
 
 		public function VertexBuffer(type : String)
 		{
-			_type = type;
+			mType = type;
 
-			_count = 0;
-			_dirty = true;
+			mCount = 0;
+			mDirty = true;
 		}
 
 		public function get components() : int
 		{
-			return _components;
+			return mComponents;
 		}
 
 		/**
@@ -37,27 +37,27 @@ package org.angle3d.scene.mesh
 		 */
 		public function setData(data : Vector.<Number>, components : int) : void
 		{
-			_data = data;
+			mData = data;
 
-			_components = components;
+			mComponents = components;
 
 			CF::DEBUG
 			{
-				Assert.assert(_components >= 1 && _components <= 4, "_components长度应该在1～4之间");
+				Assert.assert(mComponents >= 1 && mComponents <= 4, "_components长度应该在1～4之间");
 			}
 
-			_count = int(_data.length / _components);
+			mCount = int(mData.length / mComponents);
 
 			dirty = true;
 		}
 
 		public function updateData(data : Vector.<Number>) : void
 		{
-			_data = data;
+			mData = data;
 
 			CF::DEBUG
 			{
-				Assert.assert(int(_data.length / _components) == _count, "更新的数组长度应该和之前相同");
+				Assert.assert(int(mData.length / mComponents) == mCount, "更新的数组长度应该和之前相同");
 			}
 
 			dirty = true;
@@ -65,13 +65,13 @@ package org.angle3d.scene.mesh
 
 		public function getData() : Vector.<Number>
 		{
-			return _data;
+			return mData;
 		}
 
 		public function clean() : void
 		{
 			dirty = true;
-			_data = null;
+			mData = null;
 		}
 
 		/**
@@ -79,22 +79,22 @@ package org.angle3d.scene.mesh
 		 */
 		public function destroy() : void
 		{
-			_data = null;
+			mData = null;
 		}
 
 		public function get count() : int
 		{
-			return _count;
+			return mCount;
 		}
 
 		public function get type() : String
 		{
-			return _type;
+			return mType;
 		}
 
 		public function get dirty() : Boolean
 		{
-			return _dirty;
+			return mDirty;
 		}
 
 		/**
@@ -103,7 +103,7 @@ package org.angle3d.scene.mesh
 		 */
 		public function set dirty(value : Boolean) : void
 		{
-			_dirty = value;
+			mDirty = value;
 		}
 	}
 }
