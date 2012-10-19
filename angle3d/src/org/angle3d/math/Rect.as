@@ -3,20 +3,20 @@ package org.angle3d.math
 
 	public class Rect
 	{
-		private var _left : Number;
-		private var _right : Number;
-		private var _top : Number;
-		private var _bottom : Number;
+		private var mLeft : Number;
+		private var mRight : Number;
+		private var mTop : Number;
+		private var mBottom : Number;
 
-		private var _width : Number;
-		private var _height : Number;
+		private var mWidth : Number;
+		private var mHeight : Number;
 
 		public function Rect(left : Number, right : Number, bottom : Number, top : Number)
 		{
-			_left = left;
-			_right = right;
-			_bottom = bottom;
-			_top = top;
+			mLeft = left;
+			mRight = right;
+			mBottom = bottom;
+			mTop = top;
 
 			_computeWidth();
 			_computeHeight();
@@ -24,10 +24,10 @@ package org.angle3d.math
 
 		public function copyFrom(rect : Rect) : void
 		{
-			_left = rect.left;
-			_right = rect.right;
-			_bottom = rect.bottom;
-			_top = rect.top;
+			mLeft = rect.left;
+			mRight = rect.right;
+			mBottom = rect.bottom;
+			mTop = rect.top;
 
 			_computeWidth();
 			_computeHeight();
@@ -35,10 +35,10 @@ package org.angle3d.math
 
 		public function setTo(left : Number, right : Number, bottom : Number, top : Number) : void
 		{
-			_left = left;
-			_right = right;
-			_bottom = bottom;
-			_top = top;
+			mLeft = left;
+			mRight = right;
+			mBottom = bottom;
+			mTop = top;
 
 			_computeWidth();
 			_computeHeight();
@@ -46,75 +46,75 @@ package org.angle3d.math
 
 		public function clone() : Rect
 		{
-			return new Rect(_left, _right, _top, _right);
+			return new Rect(mLeft, mRight, mTop, mRight);
 		}
 
 		public function set left(value : Number) : void
 		{
-			_left = value;
+			mLeft = value;
 
 			_computeWidth();
 		}
 
 		public function set right(value : Number) : void
 		{
-			_right = value;
+			mRight = value;
 
 			_computeWidth();
 		}
 
 		public function set top(value : Number) : void
 		{
-			_top = value;
+			mTop = value;
 
 			_computeHeight();
 		}
 
 		public function set bottom(value : Number) : void
 		{
-			_bottom = value;
+			mBottom = value;
 
 			_computeHeight();
 		}
 
 		private function _computeWidth() : void
 		{
-			_width = _right - _left;
+			mWidth = mRight - mLeft;
 		}
 
 		private function _computeHeight() : void
 		{
-			_height = _top - _bottom;
+			mHeight = mTop - mBottom;
 		}
 
 		public function get left() : Number
 		{
-			return _left;
+			return mLeft;
 		}
 
 		public function get right() : Number
 		{
-			return _right;
+			return mRight;
 		}
 
 		public function get top() : Number
 		{
-			return _top;
+			return mTop;
 		}
 
 		public function get bottom() : Number
 		{
-			return _bottom;
+			return mBottom;
 		}
 
 		public function get width() : Number
 		{
-			return _width;
+			return mWidth;
 		}
 
 		public function get height() : Number
 		{
-			return _height;
+			return mHeight;
 		}
 	}
 }
