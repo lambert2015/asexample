@@ -37,10 +37,10 @@
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>E:\asexample\angle3d\src\org\angle3d\examples\model\MS3DSkinnedMeshTest.as</path-element>
+    <path-element>E:\asexample\angle3d\src\Test.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
-  <default-frame-rate>60</default-frame-rate>
+  <default-frame-rate>50</default-frame-rate>
   <default-size>
     <width>800</width>
     <height>600</height>
