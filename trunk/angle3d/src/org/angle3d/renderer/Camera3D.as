@@ -563,6 +563,7 @@ package org.angle3d.renderer
 		 * @param bound the bound to check for culling
 		 * @return See enums in <code>FrustumIntersect</code>
 		 */
+		//此函数很费时，需要进行优化
 		public function contains(bound : BoundingVolume) : int
 		{
 			if (bound == null)

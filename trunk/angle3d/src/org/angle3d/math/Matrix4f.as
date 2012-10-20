@@ -1315,9 +1315,9 @@ package org.angle3d.math
 		public function toUniform(result : Vector.<Number> = null, rowMajor : Boolean = true) : Vector.<Number>
 		{
 			if (result == null)
-				result = new Vector.<Number>();
+				result = new Vector.<Number>(16);
 			
-			result.length = 16;
+//			result.length = 16;
 
 			if (rowMajor)
 			{

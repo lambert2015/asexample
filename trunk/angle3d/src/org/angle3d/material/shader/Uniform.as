@@ -7,7 +7,6 @@ package org.angle3d.material.shader
 	import org.angle3d.math.Vector2f;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.math.Vector4f;
-	import org.angle3d.math.VectorUtil;
 
 	/**
 	 * andy
@@ -30,7 +29,7 @@ package org.angle3d.material.shader
 			
 			_size = int(_size / 4);
 
-			_data = new Vector.<Number>();
+			_data = new Vector.<Number>(_size*4,true);
 		}
 
 		override public function get size() : int
@@ -45,49 +44,49 @@ package org.angle3d.material.shader
 
 		public function setMatrix4(mat : Matrix4f) : void
 		{
-			if (_data.length > 16)
-			{
-				_data.length = 16;
-			}
+//			if (_data.length > 16)
+//			{
+//				_data.length = 16;
+//			}
 			mat.toUniform(_data);
 		}
 
 		public function setMatrix3(mat : Matrix3f) : void
 		{
-			if (_data.length > 12)
-			{
-				_data.length = 12;
-			}
+//			if (_data.length > 12)
+//			{
+//				_data.length = 12;
+//			}
 			mat.toUniform(_data);
 		}
 
 		public function setColor(c : Color) : void
 		{
-			_data.length = 4;
+//			_data.length = 4;
 			c.toUniform(_data);
 		}
 
 		public function setFloat(value : Number) : void
 		{
-			_data.length = 4;
+//			_data.length = 4;
 			_data[0] = value;
 		}
 
 		public function setVector2(vec : Vector2f) : void
 		{
-			_data.length = 4;
+//			_data.length = 4;
 			vec.toVector(_data);
 		}
 
 		public function setVector3(vec : Vector3f) : void
 		{
-			_data.length = 4;
+//			_data.length = 4;
 			vec.toVector(_data);
 		}
 		
 		public function setVector4(vec : Vector4f) : void
 		{
-			_data.length = 4;
+//			_data.length = 4;
 			vec.toVector(_data);
 		}
 

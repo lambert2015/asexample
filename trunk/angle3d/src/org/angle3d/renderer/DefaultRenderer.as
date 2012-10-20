@@ -163,6 +163,7 @@ package org.angle3d.renderer
 
 		}
 
+		//TODO 这里不应该经常调用，应该只在舞台大小变动时才修改，这些API很费时
 		public function setViewPort(x:int, y:int, width:int, height:int):void
 		{
 			_stage3D.x = x;
