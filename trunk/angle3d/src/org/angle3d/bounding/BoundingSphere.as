@@ -12,7 +12,6 @@ package org.angle3d.bounding
 	import org.angle3d.math.Transform;
 	import org.angle3d.math.Triangle;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.renderer.queue.NullComparator;
 
 	/**
 	 * <code>BoundingSphere</code> defines a sphere that defines a container for a

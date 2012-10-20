@@ -76,7 +76,7 @@ package org.angle3d.examples.model
 		
 		private function _loadError(signal:LoaderSignal):void
 		{
-		
+			trace(signal.numListeners);
 		}
 		
 		private var angle:Number = 0;
