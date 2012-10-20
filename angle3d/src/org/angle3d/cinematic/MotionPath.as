@@ -1,8 +1,6 @@
 package org.angle3d.cinematic
 {
 	import org.angle3d.cinematic.event.MotionEvent;
-	import org.angle3d.material.MaterialWireframe;
-	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Spline;
 	import org.angle3d.math.SplineType;
 	import org.angle3d.math.Vector2f;
