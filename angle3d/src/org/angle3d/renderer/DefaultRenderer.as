@@ -164,11 +164,21 @@ package org.angle3d.renderer
 		}
 
 		//TODO 这里不应该经常调用，应该只在舞台大小变动时才修改，这些API很费时
+		private var _oldContext3DWidth:int;
+		private var _oldContext3DHeight:int;
 		public function setViewPort(x:int, y:int, width:int, height:int):void
 		{
-			_stage3D.x = x;
-			_stage3D.y = y;
-			_context3D.configureBackBuffer(width, height, 0, true);
+			if (_stage3D.x != x)
+				_stage3D.x = x;
+			if (_stage3D.y != y)
+				_stage3D.y = y;
+			
+			if (_oldContext3DWidth != width || _oldContext3DHeight != height)
+			{
+				_oldContext3DWidth = width;
+				_oldContext3DHeight = height;
+				_context3D.configureBackBuffer(width, height, 0, true);
+			}
 		}
 
 		public function setClipRect(x:int, y:int, width:int, height:int):void
