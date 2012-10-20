@@ -13,7 +13,6 @@ package org.angle3d.bounding
 	import org.angle3d.math.Transform;
 	import org.angle3d.math.Triangle;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.scene.mesh.Mesh;
 	import org.angle3d.scene.mesh.SubMesh;
 	import org.angle3d.utils.Assert;
 
