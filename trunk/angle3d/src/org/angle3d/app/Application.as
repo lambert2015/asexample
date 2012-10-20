@@ -174,8 +174,8 @@ package org.angle3d.app
 			viewPort.setClearFlags(true, true, true);
 
 			guiCam = new Camera3D(width, height);
-			guiViewPort = renderManager.createPostView("Gui Default", guiCam);
-			guiViewPort.setClearFlags(false, false, false);
+			//guiViewPort = renderManager.createPostView("Gui Default", guiCam);
+			//guiViewPort.setClearFlags(false, false, false);
 		}
 
 		protected function _addedToStageHandler(e : Event) : void

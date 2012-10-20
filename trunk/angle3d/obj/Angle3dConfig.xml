@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2012/10/19'</value>
+      <value>'2012/10/20'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -37,7 +37,7 @@
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>D:\SVNSpace\molehill\asexample\angle3d\src\org\angle3d\examples\material\MaterialRefractionTest.as</path-element>
+    <path-element>D:\SVNSpace\molehill\asexample\angle3d\src\examples\model\MS3DSkinnedMeshTest.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
   <default-frame-rate>60</default-frame-rate>

@@ -935,6 +935,7 @@ package org.angle3d.renderer
 		 * @param vp
 		 * @param tpf
 		 */
+		//TODO 
 		public function renderViewPort(vp:ViewPort, tpf:Number):void
 		{
 			if (!vp.enabled)
@@ -1004,20 +1005,21 @@ package org.angle3d.renderer
 		 */
 		public function render(tpf:Number):void
 		{
-			var vLength:int = preViewPorts.length;
-			for (var i:int = 0; i < vLength; i++)
+			var i:int;
+			var size:int = preViewPorts.length;
+			for (i = 0; i < size; i++)
 			{
 				renderViewPort(preViewPorts[i], tpf);
 			}
 
-			vLength = viewPorts.length;
-			for (i = 0; i < viewPorts.length; i++)
+			size = viewPorts.length;
+			for (i = 0; i < size; i++)
 			{
 				renderViewPort(viewPorts[i], tpf);
 			}
 
-			vLength = postViewPorts.length;
-			for (i = 0; i < vLength; i++)
+			size = postViewPorts.length;
+			for (i = 0; i < size; i++)
 			{
 				renderViewPort(postViewPorts[i], tpf);
 			}
