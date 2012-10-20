@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="org/angle3d/examples/model/MS3DStaticModelParserTest.as" projectUUID="23c00e3a-64fa-4fe6-84c6-8a8e935cdba1" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="examples/animation/MotionPathTest.as" projectUUID="23c00e3a-64fa-4fe6-84c6-8a8e935cdba1" version="11">
   <compiler additionalCompilerArguments="-locale en_US&#13;&#10;-load-config+=..\obj\debug_config.xml&#10;-default-frame-rate 60&#10;-default-size 800 600" advancedTelemetry="true" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -32,10 +32,11 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="org/angle3d/examples/model/MS3DStaticModelParserTest.as"/>
-    <application path="org/angle3d/examples/model/MS3DSkinnedMeshTest.as"/>
-    <application path="org/angle3d/examples/effect/gpu/SnowTest.as"/>
-    <application path="org/angle3d/examples/material/MaterialReflectiveTest.as"/>
+    <application path="examples/animation/MotionPathTest.as"/>
+    <application path="examples/model/MS3DSkinnedMeshTest.as"/>
+    <application path="examples/model/MS3DStaticModelParserTest.as"/>
+    <application path="examples/effect/gpu/SnowTest.as"/>
+    <application path="examples/material/MaterialReflectiveTest.as"/>
   </applications>
   <modules/>
   <workers/>
