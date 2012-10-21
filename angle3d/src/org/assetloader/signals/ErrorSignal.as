@@ -17,7 +17,7 @@ package org.assetloader.signals
 
 		public function ErrorSignal(... valueClasses)
 		{
-			_signalType = ErrorSignal;
+			_signalType=ErrorSignal;
 			super(valueClasses);
 		}
 
@@ -30,8 +30,8 @@ package org.assetloader.signals
 		 */
 		override public function dispatch(... args):void
 		{
-			_type = args[1];
-			_message = args[2];
+			_type=args[1];
+			_message=args[2];
 
 			args.splice(1, 2);
 

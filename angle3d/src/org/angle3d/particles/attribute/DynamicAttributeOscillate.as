@@ -14,13 +14,13 @@ package org.angle3d.particles.attribute
 		{
 			super();
 
-			type = DynamicAttributeType.DAT_OSCILLATE;
+			type=DynamicAttributeType.DAT_OSCILLATE;
 
-			mOscillationType = OscillationType.OSCT_SINE;
-			mFrequency = 1.0;
-			mPhase = 0.0;
-			mBase = 0.0;
-			mAmplitude = 1.0;
+			mOscillationType=OscillationType.OSCT_SINE;
+			mFrequency=1.0;
+			mPhase=0.0;
+			mBase=0.0;
+			mAmplitude=1.0;
 		}
 
 		public function getOscillationType():int
@@ -30,7 +30,7 @@ package org.angle3d.particles.attribute
 
 		public function setOscillationType(value:int):void
 		{
-			mOscillationType = value;
+			mOscillationType=value;
 		}
 
 		public function getFrequency():Number
@@ -40,7 +40,7 @@ package org.angle3d.particles.attribute
 
 		public function setFrequency(value:Number):void
 		{
-			mFrequency = value;
+			mFrequency=value;
 		}
 
 		public function getPhase():Number
@@ -50,7 +50,7 @@ package org.angle3d.particles.attribute
 
 		public function setPhase(value:Number):void
 		{
-			mPhase = value;
+			mPhase=value;
 		}
 
 		public function getBase():Number
@@ -60,7 +60,7 @@ package org.angle3d.particles.attribute
 
 		public function setBase(value:Number):void
 		{
-			mBase = value;
+			mBase=value;
 		}
 
 		public function getAmplitude():Number
@@ -70,7 +70,7 @@ package org.angle3d.particles.attribute
 
 		public function setAmplitude(value:Number):void
 		{
-			mAmplitude = value;
+			mAmplitude=value;
 		}
 
 		override public function getValue(x:Number):Number
@@ -93,12 +93,12 @@ package org.angle3d.particles.attribute
 			if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_OSCILLATE)
 				return;
 
-			var dynAttr:DynamicAttributeOscillate = dynamicAttribute as DynamicAttributeOscillate;
-			dynAttr.mOscillationType = mOscillationType;
-			dynAttr.mFrequency = mFrequency;
-			dynAttr.mPhase = mPhase;
-			dynAttr.mBase = mBase;
-			dynAttr.mAmplitude = mAmplitude;
+			var dynAttr:DynamicAttributeOscillate=dynamicAttribute as DynamicAttributeOscillate;
+			dynAttr.mOscillationType=mOscillationType;
+			dynAttr.mFrequency=mFrequency;
+			dynAttr.mPhase=mPhase;
+			dynAttr.mBase=mBase;
+			dynAttr.mAmplitude=mAmplitude;
 		}
 	}
 }

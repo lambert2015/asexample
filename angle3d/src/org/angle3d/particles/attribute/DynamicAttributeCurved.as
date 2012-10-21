@@ -25,11 +25,11 @@ package org.angle3d.particles.attribute
 		 */
 		private var mControlPoints:Vector.<Vector2f>;
 
-		public function DynamicAttributeCurved(interpolationType:int = 0)
+		public function DynamicAttributeCurved(interpolationType:int=0)
 		{
 			super();
 
-			type = DynamicAttributeType.DAT_CURVED;
+			type=DynamicAttributeType.DAT_CURVED;
 		}
 
 		public function setInterpolationType(interpolationType:int):void
@@ -38,7 +38,7 @@ package org.angle3d.particles.attribute
 			{
 				// If switched to another InterpolationType, the already existing ControlPoints will be removed.
 				removeAllControlPoints();
-				mInterpolationType = interpolationType;
+				mInterpolationType=interpolationType;
 			}
 		}
 
@@ -59,9 +59,9 @@ package org.angle3d.particles.attribute
 					if (mControlPoints.length == 0)
 						return 0;
 
-					var cp1:Vector2f = _findNearestControlPoint(x);
-					var index:int = mControlPoints.indexOf(cp1) + 1;
-					var cp2:Vector2f = mControlPoints[index];
+					var cp1:Vector2f=_findNearestControlPoint(x);
+					var index:int=mControlPoints.indexOf(cp1) + 1;
+					var cp2:Vector2f=mControlPoints[index];
 					if (index != mControlPoints.length - 1)
 					{
 						// Calculate fraction: y = y1 + ((y2 - y1) * (x - x1)/(x2 - x1))
@@ -72,7 +72,7 @@ package org.angle3d.particles.attribute
 						return cp1.y;
 					}
 				}
-				break;
+					break;
 //				case InterpolationType.IT_SPLINE:
 //				{
 //					// Fit using spline
@@ -108,7 +108,7 @@ package org.angle3d.particles.attribute
 			//sort
 			//std::sort(mControlPoints.begin(), mControlPoints.end(), ControlPointSorter());
 
-			mRange = mControlPoints[mControlPoints.length - 1].x - mControlPoints[0].x;
+			mRange=mControlPoints[mControlPoints.length - 1].x - mControlPoints[0].x;
 
 //				if (mInterpolationType == InterpolationType.IT_SPLINE)
 //				{
@@ -129,16 +129,16 @@ package org.angle3d.particles.attribute
 		//-----------------------------------------------------------------------
 		public function removeAllControlPoints():void
 		{
-			mControlPoints.length = 0;
+			mControlPoints.length=0;
 		}
 
 		private function _findNearestControlPoint(x:Number):Vector2f
 		{
 			// Assume that the ControlPointList is not empty
-			var count:int = mControlPoints.length;
-			for (var i:int = 0; i < count; i++)
+			var count:int=mControlPoints.length;
+			for (var i:int=0; i < count; i++)
 			{
-				var cp:Vector2f = mControlPoints[i];
+				var cp:Vector2f=mControlPoints[i];
 				if (x < cp.x)
 				{
 					if (i == 0)
@@ -157,13 +157,13 @@ package org.angle3d.particles.attribute
 			if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_CURVED)
 				return;
 
-			var dynAttr:DynamicAttributeCurved = dynamicAttribute as DynamicAttributeCurved;
+			var dynAttr:DynamicAttributeCurved=dynamicAttribute as DynamicAttributeCurved;
 
-			dynAttr.mInterpolationType = mInterpolationType;
-			dynAttr.mSpline = mSpline;
-			dynAttr.mRange = mRange;
+			dynAttr.mInterpolationType=mInterpolationType;
+			dynAttr.mSpline=mSpline;
+			dynAttr.mRange=mRange;
 
-			dynAttr.mControlPoints = mControlPoints.concat();
+			dynAttr.mControlPoints=mControlPoints.concat();
 			dynAttr.processControlPoints();
 		}
 	}

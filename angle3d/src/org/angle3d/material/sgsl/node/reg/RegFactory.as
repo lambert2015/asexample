@@ -6,7 +6,7 @@ package org.angle3d.material.sgsl.node.reg
 
 	public class RegFactory
 	{
-		public static function create(name : String, regType : String, dataType : String, isArray : Boolean = false, arraySize : int = 0) : RegNode
+		public static function create(name:String, regType:String, dataType:String, isArray:Boolean=false, arraySize:int=0):RegNode
 		{
 			//简单的语法检查
 			CF::DEBUG
@@ -15,9 +15,7 @@ package org.angle3d.material.sgsl.node.reg
 				{
 					Assert.assert(arraySize > 0, "数组大小必须大于0");
 					Assert.assert(regType == RegType.UNIFORM, "只有Uniform才可以使用数组类型");
-					Assert.assert(dataType == DataType.VEC4 ||
-						dataType == DataType.MAT3 ||
-						dataType == DataType.MAT4, "数组类型只能使用vec4,mat3或者mat4");
+					Assert.assert(dataType == DataType.VEC4 || dataType == DataType.MAT3 || dataType == DataType.MAT4, "数组类型只能使用vec4,mat3或者mat4");
 				}
 
 //				if (dataType == DataType.MAT3 ||

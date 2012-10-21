@@ -9,11 +9,11 @@ package org.angle3d.material.shader
 	 */
 	public class AttributeVar extends ShaderVariable
 	{
-		public var index : int;
+		public var index:int;
 
-		public var format : String;
+		public var format:String;
 
-		public function AttributeVar(name : String, size : int)
+		public function AttributeVar(name:String, size:int)
 		{
 			super(name, size);
 		}

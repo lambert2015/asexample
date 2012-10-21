@@ -1,6 +1,6 @@
 package org.angle3d.io.parser
 {
-	
+
 
 	/**
 	 * ParserOptions objects provide properties and function references
@@ -12,25 +12,25 @@ package org.angle3d.io.parser
 	 */
 	public class ParserOptions
 	{
-		private var _loadTextures : Boolean = false;
+		private var _loadTextures:Boolean=false;
 
-		private var _loadMeshes : Boolean = true;
-		private var _loadSkins : Boolean = true;
-		private var _mergeMeshes : Boolean = false;
+		private var _loadMeshes:Boolean=true;
+		private var _loadSkins:Boolean=true;
+		private var _mergeMeshes:Boolean=false;
 
-		private var _keepStreamsDynamic : Boolean = true;
+		private var _keepStreamsDynamic:Boolean=true;
 
-		private var _loadFunction : Function; //= load;
-		private var _rewritePathFunction : Function = rewritePath;
+		private var _loadFunction:Function; //= load;
+		private var _rewritePathFunction:Function=rewritePath;
 
-		private var _replaceNodeFunction : Function; //= replaceNode;
+		private var _replaceNodeFunction:Function; //= replaceNode;
 
 		/**
 		 * If set to true, the LoaderGroup will load embed and/or external textures.
 		 * @return
 		 *
 		 */
-		public function get loadTextures() : Boolean
+		public function get loadTextures():Boolean
 		{
 			return _loadTextures;
 		}
@@ -40,7 +40,7 @@ package org.angle3d.io.parser
 		 * @return
 		 *
 		 */
-		public function get loadMeshes() : Boolean
+		public function get loadMeshes():Boolean
 		{
 			return _loadMeshes;
 		}
@@ -50,7 +50,7 @@ package org.angle3d.io.parser
 		 * @return
 		 *
 		 */
-		public function get loadSkins() : Boolean
+		public function get loadSkins():Boolean
 		{
 			return _loadSkins;
 		}
@@ -60,12 +60,12 @@ package org.angle3d.io.parser
 		 * @return
 		 *
 		 */
-		public function get mergeMeshes() : Boolean
+		public function get mergeMeshes():Boolean
 		{
 			return _mergeMeshes;
 		}
 
-		public function get keepStreamsDynamic() : Boolean
+		public function get keepStreamsDynamic():Boolean
 		{
 			return _keepStreamsDynamic;
 		}
@@ -83,7 +83,7 @@ package org.angle3d.io.parser
 		 * @return
 		 *
 		 */
-		public function get loadFunction() : Function
+		public function get loadFunction():Function
 		{
 			return _loadFunction;
 		}
@@ -101,7 +101,7 @@ package org.angle3d.io.parser
 		 * @return
 		 *
 		 */
-		public function get replaceNodeFunction() : Function
+		public function get replaceNodeFunction():Function
 		{
 			return _replaceNodeFunction;
 		}
@@ -119,58 +119,58 @@ package org.angle3d.io.parser
 		 * @return
 		 *
 		 */
-		public function get rewritePathFunction() : Function
+		public function get rewritePathFunction():Function
 		{
 			return _rewritePathFunction;
 		}
 
-		public function set loadTextures(value : Boolean) : void
+		public function set loadTextures(value:Boolean):void
 		{
-			_loadTextures = value;
+			_loadTextures=value;
 		}
 
-		public function set loadMeshes(value : Boolean) : void
+		public function set loadMeshes(value:Boolean):void
 		{
-			_loadMeshes = value;
+			_loadMeshes=value;
 		}
 
-		public function set mergeMeshes(value : Boolean) : void
+		public function set mergeMeshes(value:Boolean):void
 		{
-			_mergeMeshes = value;
+			_mergeMeshes=value;
 		}
 
-		public function set loadSkins(value : Boolean) : void
+		public function set loadSkins(value:Boolean):void
 		{
-			_loadSkins = value;
+			_loadSkins=value;
 		}
 
-		public function set keepStreamsDynamic(value : Boolean) : void
+		public function set keepStreamsDynamic(value:Boolean):void
 		{
-			_keepStreamsDynamic = value;
+			_keepStreamsDynamic=value;
 		}
 
 		/**
 		 * @param value The prototype of this function must be function(path : String) : IScene
 		 */
-		public function set loadFunction(value : Function) : void
+		public function set loadFunction(value:Function):void
 		{
-			_loadFunction = value;
+			_loadFunction=value;
 		}
 
 		/**
 		 * @param value The prototype of this function must be function(path : String) : String
 		 */
-		public function set rewritePathFunction(value : Function) : void
+		public function set rewritePathFunction(value:Function):void
 		{
-			_rewritePathFunction = value;
+			_rewritePathFunction=value;
 		}
 
 		/**
 		 * @param value The prototype of this function must be function(node : IScene) : IScene
 		 */
-		public function set replaceNodeFunction(value : Function) : void
+		public function set replaceNodeFunction(value:Function):void
 		{
-			_replaceNodeFunction = value;
+			_replaceNodeFunction=value;
 		}
 
 //		protected function load(request : URLRequest, options : ParserOptions = null) : LoaderGroup
@@ -178,7 +178,7 @@ package org.angle3d.io.parser
 //			return LoaderGroup.load(request, options);
 //		}
 
-		protected function rewritePath(path : String) : String
+		protected function rewritePath(path:String):String
 		{
 			return path;
 		}

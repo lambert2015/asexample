@@ -9,10 +9,10 @@ package org.osflash.signals.natives.base
 
 		public function get signals():TimerSignalSet
 		{
-			return _signals ||= new TimerSignalSet(this);
+			return _signals||=new TimerSignalSet(this);
 		}
 
-		public function SignalTimer(delay:Number, repeatCount:int = 0)
+		public function SignalTimer(delay:Number, repeatCount:int=0)
 		{
 			super(delay, repeatCount);
 		}

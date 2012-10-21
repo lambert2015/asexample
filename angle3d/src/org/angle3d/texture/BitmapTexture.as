@@ -4,7 +4,7 @@ package org.angle3d.texture
 
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
-	
+
 	import org.angle3d.utils.TextureUtil;
 
 	CF::DEBUG
@@ -19,41 +19,40 @@ package org.angle3d.texture
 	 */
 	public class BitmapTexture extends TextureMap
 	{
-		private var mBitmapData : BitmapData;
+		private var mBitmapData:BitmapData;
 
-		public function BitmapTexture(bitmapData : BitmapData, mipmap : Boolean = false)
+		public function BitmapTexture(bitmapData:BitmapData, mipmap:Boolean=false)
 		{
 			super(mipmap);
 
 			setBitmapData(bitmapData);
 		}
 
-		public function getBitmapData() : BitmapData
+		public function getBitmapData():BitmapData
 		{
 			return mBitmapData;
 		}
 
-		public function setBitmapData(value : BitmapData) : void
+		public function setBitmapData(value:BitmapData):void
 		{
 			if (value == mBitmapData)
 				return;
 
 			CF::DEBUG
 			{
-				Assert.assert(TextureUtil.isBitmapDataValid(value),
-					"Invalid bitmapData: Width and height must be power of 2 and cannot exceed 2048");
+				Assert.assert(TextureUtil.isBitmapDataValid(value), "Invalid bitmapData: Width and height must be power of 2 and cannot exceed 2048");
 			}
 
 			invalidateContent();
 
 			setSize(value.width, value.height);
 
-			mBitmapData = value;
+			mBitmapData=value;
 		}
 
-		override protected function uploadTexture() : void
+		override protected function uploadTexture():void
 		{
-			var t : Texture = mTexture as Texture;
+			var t:Texture=mTexture as Texture;
 			if (mMipmap)
 			{
 				MipmapGenerator.generateMipMaps(mBitmapData, t, null, true);

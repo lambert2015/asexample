@@ -4,7 +4,7 @@ package org.angle3d.material.sgsl
 	import flash.display3D.Context3DProfile;
 	import flash.utils.Dictionary;
 	import org.angle3d.utils.Logger;
-	
+
 	import org.angle3d.material.sgsl.node.FunctionNode;
 	import org.angle3d.material.sgsl.parser.SgslParser;
 
@@ -63,42 +63,42 @@ package org.angle3d.material.sgsl
 	 */
 	public class OpCodeManager
 	{
-		public static const OP_SCALAR : uint = 0x1;
-		public static const OP_INC_NEST : uint = 0x2;
-		public static const OP_DEC_NEST : uint = 0x4;
-		public static const OP_SPECIAL_TEX : uint = 0x8;
-		public static const OP_SPECIAL_MATRIX : uint = 0x10;
-		public static const OP_FRAG_ONLY : uint = 0x20;
-		public static const OP_VERT_ONLY : uint = 0x40;
-		public static const OP_NO_DEST : uint = 0x80;
+		public static const OP_SCALAR:uint=0x1;
+		public static const OP_INC_NEST:uint=0x2;
+		public static const OP_DEC_NEST:uint=0x4;
+		public static const OP_SPECIAL_TEX:uint=0x8;
+		public static const OP_SPECIAL_MATRIX:uint=0x10;
+		public static const OP_FRAG_ONLY:uint=0x20;
+		public static const OP_VERT_ONLY:uint=0x40;
+		public static const OP_NO_DEST:uint=0x80;
 
-		private var _opCodeMap : Dictionary; //<String,OpCode>
+		private var _opCodeMap:Dictionary; //<String,OpCode>
 
 		public var profile:String;
-		
+
 		public var version:int;
 
-		public var movCode : OpCode;
+		public var movCode:OpCode;
 
-		public var textureCode : OpCode;
+		public var textureCode:OpCode;
 
-		public var killCode : OpCode;
+		public var killCode:OpCode;
 
 		public function OpCodeManager(profile:String, version:int)
 		{
-			this.version = version;
-			this.profile = profile;
+			this.version=version;
+			this.profile=profile;
 			_initCodes();
 		}
 
-		public function isTexture(name : String) : Boolean
+		public function isTexture(name:String):Boolean
 		{
 			return _opCodeMap[name] == textureCode;
 		}
 
-		public function getCode(name : String) : OpCode
+		public function getCode(name:String):OpCode
 		{
-			CF::DEBUG 
+			CF::DEBUG
 			{
 				if (_opCodeMap[name] == null)
 				{
@@ -108,16 +108,16 @@ package org.angle3d.material.sgsl
 			return _opCodeMap[name];
 		}
 
-		public function containCode(name : String) : Boolean
+		public function containCode(name:String):Boolean
 		{
 			return _opCodeMap[name] != undefined;
 		}
 
-		private function _initCodes() : void
+		private function _initCodes():void
 		{
-			_opCodeMap = new Dictionary();
+			_opCodeMap=new Dictionary();
 
-			movCode = addCode(["mov"], 2, 0x00, 0);
+			movCode=addCode(["mov"], 2, 0x00, 0);
 			addCode(["add"], 3, 0x01, 0);
 			addCode(["sub", "subtract"], 3, 0x02, 0);
 			addCode(["mul", "multiply"], 3, 0x03, 0);
@@ -163,19 +163,19 @@ package org.angle3d.material.sgsl
 				addCode(["rep"], 1, 0x24, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
 				addCode(["erp"], 0, 0x25, OP_NO_DEST | OP_DEC_NEST);
 				addCode(["brk"], 0, 0x26, OP_NO_DEST);
-				
+
 				addCode(["sgn"], 2, 0x2b, 0);
 			}
-			
-			killCode = addCode(["kil", "kill", "discard"], 1, 0x27, OP_NO_DEST | OP_FRAG_ONLY);
-			textureCode = addCode(["texture2D", "textureCube"], 3, 0x28, OP_FRAG_ONLY | OP_SPECIAL_TEX);
-			
+
+			killCode=addCode(["kil", "kill", "discard"], 1, 0x27, OP_NO_DEST | OP_FRAG_ONLY);
+			textureCode=addCode(["texture2D", "textureCube"], 3, 0x28, OP_FRAG_ONLY | OP_SPECIAL_TEX);
+
 			//约束模式下不能使用
-			if(profile == Context3DProfile.BASELINE)
+			if (profile == Context3DProfile.BASELINE)
 			{
 				addCode(["sge", "greaterThanEqual", "step"], 3, 0x29, 0);
 				addCode(["slt", "lessThan"], 3, 0x2a, 0);
-				
+
 				addCode(["seq", "equal"], 3, 0x2c, 0);
 				addCode(["sne", "notEqual"], 3, 0x2d, 0);
 			}
@@ -186,14 +186,14 @@ package org.angle3d.material.sgsl
 		 * @param	name  原名
 		 * @param	nicknames 别名列表
 		 */
-		private function addCode(names : Array, numRegister : uint, emitCode : uint, flags : uint) : OpCode
+		private function addCode(names:Array, numRegister:uint, emitCode:uint, flags:uint):OpCode
 		{
-			var code : OpCode = new OpCode(names, numRegister, emitCode, flags);
+			var code:OpCode=new OpCode(names, numRegister, emitCode, flags);
 
-			var length : int = names.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=names.length;
+			for (var i:int=0; i < length; i++)
 			{
-				_opCodeMap[names[i]] = code;
+				_opCodeMap[names[i]]=code;
 			}
 
 			return code;

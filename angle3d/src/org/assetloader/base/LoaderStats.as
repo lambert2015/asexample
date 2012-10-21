@@ -12,41 +12,41 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
-		protected var _latency:Number = 0;
+		protected var _latency:Number=0;
 		/**
 		 * @private
 		 */
-		protected var _speed:Number = 0;
+		protected var _speed:Number=0;
 		/**
 		 * @private
 		 */
-		protected var _averageSpeed:Number = 0;
+		protected var _averageSpeed:Number=0;
 		/**
 		 * @private
 		 */
-		protected var _progress:Number = 0;
+		protected var _progress:Number=0;
 		/**
 		 * @private
 		 */
-		protected var _totalTime:Number = 0;
+		protected var _totalTime:Number=0;
 
 		/**
 		 * @private
 		 */
-		protected var _numOpened:int = 0;
+		protected var _numOpened:int=0;
 		/**
 		 * @private
 		 */
-		protected var _totalLatency:Number = 0;
+		protected var _totalLatency:Number=0;
 
 		/**
 		 * @private
 		 */
-		protected var _bytesLoaded:uint = 0;
+		protected var _bytesLoaded:uint=0;
 		/**
 		 * @private
 		 */
-		protected var _bytesTotal:uint = 0;
+		protected var _bytesTotal:uint=0;
 
 		/**
 		 * @private
@@ -70,13 +70,13 @@ package org.assetloader.base
 		 */
 		public function start():void
 		{
-			_startTime = getTimer();
+			_startTime=getTimer();
 
-			_latency = 0;
-			_speed = 0;
-			_averageSpeed = 0;
-			_progress = 0;
-			_totalTime = 0;
+			_latency=0;
+			_speed=0;
+			_averageSpeed=0;
+			_progress=0;
+			_totalTime=0;
 		}
 
 		/**
@@ -85,10 +85,10 @@ package org.assetloader.base
 		public function open():void
 		{
 			_numOpened++;
-			_openTime = getTimer();
+			_openTime=getTimer();
 
-			_totalLatency += _openTime - _startTime;
-			_latency = _totalLatency / _numOpened;
+			_totalLatency+=_openTime - _startTime;
+			_latency=_totalLatency / _numOpened;
 
 			update(0, 0);
 		}
@@ -100,7 +100,7 @@ package org.assetloader.base
 		{
 			update(_bytesTotal, _bytesTotal);
 
-			_totalTime = getTimer() - _startTime;
+			_totalTime=getTimer() - _startTime;
 		}
 
 		/**
@@ -108,25 +108,25 @@ package org.assetloader.base
 		 */
 		public function update(bytesLoaded:uint, bytesTotal:uint):void
 		{
-			_bytesTotal = bytesTotal;
+			_bytesTotal=bytesTotal;
 
 			if (bytesLoaded > 0)
 			{
-				var bytesDif:uint = bytesLoaded - _bytesLoaded;
-				_bytesLoaded = bytesLoaded;
+				var bytesDif:uint=bytesLoaded - _bytesLoaded;
+				_bytesLoaded=bytesLoaded;
 
-				_progress = (_bytesLoaded / _bytesTotal) * 100;
+				_progress=(_bytesLoaded / _bytesTotal) * 100;
 
-				var currentTime:int = getTimer();
-				var updateTimeDif:int = currentTime - _updateTime;
+				var currentTime:int=getTimer();
+				var updateTimeDif:int=currentTime - _updateTime;
 
 				if (updateTimeDif > 0)
 				{
-					_updateTime = currentTime;
-					_speed = (bytesDif / 1024) / (updateTimeDif / 1000);
+					_updateTime=currentTime;
+					_speed=(bytesDif / 1024) / (updateTimeDif / 1000);
 
-					var totalTimeDif:Number = (_updateTime - _openTime) / 1000;
-					_averageSpeed = (_bytesLoaded / 1024) / totalTimeDif;
+					var totalTimeDif:Number=(_updateTime - _openTime) / 1000;
+					_averageSpeed=(_bytesLoaded / 1024) / totalTimeDif;
 				}
 			}
 		}
@@ -136,21 +136,21 @@ package org.assetloader.base
 		 */
 		public function reset():void
 		{
-			_startTime = NaN;
-			_openTime = NaN;
-			_updateTime = NaN;
+			_startTime=NaN;
+			_openTime=NaN;
+			_updateTime=NaN;
 
-			_latency = 0;
-			_speed = 0;
-			_averageSpeed = 0;
-			_progress = 0;
-			_totalTime = 0;
+			_latency=0;
+			_speed=0;
+			_averageSpeed=0;
+			_progress=0;
+			_totalTime=0;
 
-			_bytesLoaded = 0;
-			_bytesTotal = 0;
+			_bytesLoaded=0;
+			_bytesTotal=0;
 
-			_numOpened = 0;
-			_totalLatency = 0;
+			_numOpened=0;
+			_totalLatency=0;
 		}
 
 		/**
@@ -214,7 +214,7 @@ package org.assetloader.base
 		 */
 		public function set bytesTotal(bytesTotal:uint):void
 		{
-			_bytesTotal = bytesTotal;
+			_bytesTotal=bytesTotal;
 		}
 	}
 }

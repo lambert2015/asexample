@@ -32,40 +32,40 @@ package org.angle3d.bounding
 		public var yExtent:Number;
 		public var zExtent:Number;
 
-		public function BoundingBox(center:Vector3f = null, extent:Vector3f = null)
+		public function BoundingBox(center:Vector3f=null, extent:Vector3f=null)
 		{
 			super(center);
 
 			if (extent != null)
 			{
-				xExtent = extent.x;
-				yExtent = extent.y;
-				zExtent = extent.z;
+				xExtent=extent.x;
+				yExtent=extent.y;
+				zExtent=extent.z;
 			}
 			else
 			{
-				xExtent = 0;
-				yExtent = 0;
-				zExtent = 0;
+				xExtent=0;
+				yExtent=0;
+				zExtent=0;
 			}
 		}
 
 		public function setExtent(x:Number, y:Number, z:Number):void
 		{
-			xExtent = x;
-			yExtent = y;
-			zExtent = z;
+			xExtent=x;
+			yExtent=y;
+			zExtent=z;
 		}
 
 		public function setMinMax(min:Vector3f, max:Vector3f):void
 		{
-			center.x = (max.x - min.x) * 0.5;
-			center.y = (max.y - min.y) * 0.5;
-			center.z = (max.z - min.z) * 0.5;
+			center.x=(max.x - min.x) * 0.5;
+			center.y=(max.y - min.y) * 0.5;
+			center.z=(max.z - min.z) * 0.5;
 
-			xExtent = FastMath.fabs(max.x - center.x);
-			yExtent = FastMath.fabs(max.y - center.y);
-			zExtent = FastMath.fabs(max.z - center.z);
+			xExtent=FastMath.fabs(max.x - center.x);
+			yExtent=FastMath.fabs(max.y - center.y);
+			zExtent=FastMath.fabs(max.z - center.z);
 		}
 
 		/**
@@ -95,30 +95,30 @@ package org.angle3d.bounding
 				Assert.assert(end - start > 0, "end should be greater than end");
 			}
 
-			var min:Vector3f = new Vector3f();
-			var max:Vector3f = new Vector3f();
+			var min:Vector3f=new Vector3f();
+			var max:Vector3f=new Vector3f();
 
-			var tri:Triangle = tris[start];
-			var point:Vector3f = tri.getPoint(0);
+			var tri:Triangle=tris[start];
+			var point:Vector3f=tri.getPoint(0);
 
 			min.copyFrom(point);
 			max.copyFrom(point);
 
-			for (var i:int = start; i < end; i++)
+			for (var i:int=start; i < end; i++)
 			{
-				tri = tris[i];
+				tri=tris[i];
 				Vector3f.checkMinMax(min, max, tri.getPoint(0));
 				Vector3f.checkMinMax(min, max, tri.getPoint(1));
 				Vector3f.checkMinMax(min, max, tri.getPoint(2));
 			}
 
-			center.x = (min.x + max.x) * 0.5;
-			center.y = (min.y + max.y) * 0.5;
-			center.z = (min.z + max.z) * 0.5;
+			center.x=(min.x + max.x) * 0.5;
+			center.y=(min.y + max.y) * 0.5;
+			center.z=(min.z + max.z) * 0.5;
 
-			xExtent = max.x - center.x;
-			yExtent = max.y - center.y;
-			zExtent = max.z - center.z;
+			xExtent=max.x - center.x;
+			yExtent=max.y - center.y;
+			zExtent=max.z - center.z;
 		}
 
 		public function computeFromMesh(indices:Vector.<int>, mesh:SubMesh, start:int, end:int):void
@@ -128,36 +128,36 @@ package org.angle3d.bounding
 				Assert.assert(end - start > 0, "end should be greater than end");
 			}
 
-			var min:Vector3f = new Vector3f();
-			var max:Vector3f = new Vector3f();
+			var min:Vector3f=new Vector3f();
+			var max:Vector3f=new Vector3f();
 
-			var tri:Triangle = new Triangle();
+			var tri:Triangle=new Triangle();
 			var point:Vector3f;
 
 			//初始化min,max
 			mesh.getTriangle(indices[start], tri);
-			point = tri.getPoint(0);
+			point=tri.getPoint(0);
 			min.copyFrom(point);
 			max.copyFrom(point);
 
-			for (var i:int = start; i < end; i++)
+			for (var i:int=start; i < end; i++)
 			{
 				mesh.getTriangle(indices[i], tri);
-				point = tri.getPoint(0);
+				point=tri.getPoint(0);
 				Vector3f.checkMinMax(min, max, point);
-				point = tri.getPoint(1);
+				point=tri.getPoint(1);
 				Vector3f.checkMinMax(min, max, point);
-				point = tri.getPoint(2);
+				point=tri.getPoint(2);
 				Vector3f.checkMinMax(min, max, point);
 			}
 
-			center.x = (min.x + max.x) * 0.5;
-			center.y = (min.y + max.y) * 0.5;
-			center.z = (min.z + max.z) * 0.5;
+			center.x=(min.x + max.x) * 0.5;
+			center.y=(min.y + max.y) * 0.5;
+			center.z=(min.z + max.z) * 0.5;
 
-			xExtent = max.x - center.x;
-			yExtent = max.y - center.y;
-			zExtent = max.z - center.z;
+			xExtent=max.x - center.x;
+			yExtent=max.y - center.y;
+			zExtent=max.z - center.z;
 		}
 
 		/**
@@ -173,45 +173,45 @@ package org.angle3d.bounding
 			if (points.length <= 2) // we need at least a 3 float vector
 				return;
 
-			var minX:Number = points[0];
-			var minY:Number = points[1];
-			var minZ:Number = points[2];
-			var maxX:Number = minX;
-			var maxY:Number = minY;
-			var maxZ:Number = minZ;
+			var minX:Number=points[0];
+			var minY:Number=points[1];
+			var minZ:Number=points[2];
+			var maxX:Number=minX;
+			var maxY:Number=minY;
+			var maxZ:Number=minZ;
 
-			var len:int = int(points.length / 3);
-			for (var i:int = 1; i < len; i++)
+			var len:int=int(points.length / 3);
+			for (var i:int=1; i < len; i++)
 			{
-				var i3:int = i * 3;
+				var i3:int=i * 3;
 
-				var px:Number = points[i3];
-				var py:Number = points[i3 + 1];
-				var pz:Number = points[i3 + 2];
+				var px:Number=points[i3];
+				var py:Number=points[i3 + 1];
+				var pz:Number=points[i3 + 2];
 
 				if (px < minX)
-					minX = px;
+					minX=px;
 				else if (px > maxX)
-					maxX = px;
+					maxX=px;
 
 				if (py < minY)
-					minY = py;
+					minY=py;
 				else if (py > maxY)
-					maxY = py;
+					maxY=py;
 
 				if (pz < minZ)
-					minZ = pz;
+					minZ=pz;
 				else if (pz > maxZ)
-					maxZ = pz;
+					maxZ=pz;
 			}
 
-			center.x = (minX + maxX) * 0.5;
-			center.y = (minY + maxY) * 0.5;
-			center.z = (minZ + maxZ) * 0.5;
+			center.x=(minX + maxX) * 0.5;
+			center.y=(minY + maxY) * 0.5;
+			center.z=(minZ + maxZ) * 0.5;
 
-			xExtent = maxX - center.x;
-			yExtent = maxY - center.y;
-			zExtent = maxZ - center.z;
+			xExtent=maxX - center.x;
+			yExtent=maxY - center.y;
+			zExtent=maxZ - center.z;
 		}
 
 		/**
@@ -227,71 +227,71 @@ package org.angle3d.bounding
 		 * @param result
 		 *            box to store result in
 		 */
-		override public function transform(trans:Transform, result:BoundingVolume = null):BoundingVolume
+		override public function transform(trans:Transform, result:BoundingVolume=null):BoundingVolume
 		{
 			var box:BoundingBox;
 			if (result == null || result.type != BoundingVolumeType.AABB)
 			{
-				box = new BoundingBox();
+				box=new BoundingBox();
 			}
 			else
 			{
-				box = result as BoundingBox;
+				box=result as BoundingBox;
 			}
 
 			center.multiply(trans.scale, box.center);
 			trans.rotation.multiplyVector(box.center, box.center);
 			box.center.addLocal(trans.translation);
 
-			var transMatrix:Matrix3f = new Matrix3f();
+			var transMatrix:Matrix3f=new Matrix3f();
 			transMatrix.setQuaternion(trans.rotation);
 			// Make the rotation matrix all positive to get the maximum x/y/z extent
 			transMatrix.abs();
 
-			var scale:Vector3f = trans.scale;
-			var tmp1:Vector3f = new Vector3f();
-			tmp1.x = xExtent * scale.x;
-			tmp1.y = yExtent * scale.y;
-			tmp1.z = zExtent * scale.z;
+			var scale:Vector3f=trans.scale;
+			var tmp1:Vector3f=new Vector3f();
+			tmp1.x=xExtent * scale.x;
+			tmp1.y=yExtent * scale.y;
+			tmp1.z=zExtent * scale.z;
 
-			var tmp2:Vector3f = transMatrix.multVec(tmp1);
+			var tmp2:Vector3f=transMatrix.multVec(tmp1);
 
 			// Assign the biggest rotations after scales.
-			box.xExtent = FastMath.fabs(tmp2.x);
-			box.yExtent = FastMath.fabs(tmp2.y);
-			box.zExtent = FastMath.fabs(tmp2.z);
+			box.xExtent=FastMath.fabs(tmp2.x);
+			box.yExtent=FastMath.fabs(tmp2.y);
+			box.zExtent=FastMath.fabs(tmp2.z);
 
 			return box;
 		}
 
-		override public function transformByMatrix(trans:Matrix4f, result:BoundingVolume = null):BoundingVolume
+		override public function transformByMatrix(trans:Matrix4f, result:BoundingVolume=null):BoundingVolume
 		{
 			var box:BoundingBox;
 			if (result == null || result.type != BoundingVolumeType.AABB)
 			{
-				box = new BoundingBox();
+				box=new BoundingBox();
 			}
 			else
 			{
-				box = result as BoundingBox;
+				box=result as BoundingBox;
 			}
 
-			var w:Number = trans.multProj(center, box.center);
+			var w:Number=trans.multProj(center, box.center);
 			box.center.scaleLocal(1 / w);
 
-			var transMatrix:Matrix3f = new Matrix3f();
+			var transMatrix:Matrix3f=new Matrix3f();
 			trans.toMatrix3f(transMatrix);
 
 			// Make the rotation matrix all positive to get the maximum x/y/z extent
 			transMatrix.abs();
 
-			var vect1:Vector3f = new Vector3f(xExtent, yExtent, zExtent);
+			var vect1:Vector3f=new Vector3f(xExtent, yExtent, zExtent);
 			transMatrix.multVecLocal(vect1);
 
 			// Assign the biggest rotations after scales.
-			box.xExtent = FastMath.fabs(vect1.x);
-			box.yExtent = FastMath.fabs(vect1.y);
-			box.zExtent = FastMath.fabs(vect1.z);
+			box.xExtent=FastMath.fabs(vect1.x);
+			box.yExtent=FastMath.fabs(vect1.y);
+			box.zExtent=FastMath.fabs(vect1.z);
 
 			return box;
 		}
@@ -310,10 +310,10 @@ package org.angle3d.bounding
 		 */
 		override public function whichSide(plane:Plane):int
 		{
-			var normal:Vector3f = plane.normal;
-			var radius:Number = FastMath.fabs(xExtent * normal.x) + FastMath.fabs(yExtent * normal.y) + FastMath.fabs(zExtent * normal.z);
+			var normal:Vector3f=plane.normal;
+			var radius:Number=FastMath.fabs(xExtent * normal.x) + FastMath.fabs(yExtent * normal.y) + FastMath.fabs(zExtent * normal.z);
 
-			var distance:Number = plane.pseudoDistance(center);
+			var distance:Number=plane.pseudoDistance(center);
 
 			//changed to < and > to prevent floating point precision problems
 			if (distance < -radius)
@@ -343,10 +343,10 @@ package org.angle3d.bounding
 			switch (volume.type)
 			{
 				case BoundingVolumeType.AABB:
-					var box:BoundingBox = volume as BoundingBox;
+					var box:BoundingBox=volume as BoundingBox;
 					return mergeToBoundingBox(box.center, box.xExtent, box.yExtent, box.zExtent);
 				case BoundingVolumeType.Sphere:
-					var sphere:BoundingSphere = volume as BoundingSphere;
+					var sphere:BoundingSphere=volume as BoundingSphere;
 					return mergeToBoundingBox(sphere.center, sphere.radius, sphere.radius, sphere.radius);
 				default:
 					return null;
@@ -369,56 +369,56 @@ package org.angle3d.bounding
 		 *            the resulting merged box.
 		 * @return the resulting merged box.
 		 */
-		public function mergeToBoundingBox(boxCenter:Vector3f, boxX:Number, boxY:Number, boxZ:Number, result:BoundingBox = null):BoundingBox
+		public function mergeToBoundingBox(boxCenter:Vector3f, boxX:Number, boxY:Number, boxZ:Number, result:BoundingBox=null):BoundingBox
 		{
 			if (result == null)
-				result = new BoundingBox();
+				result=new BoundingBox();
 
-			var vect1:Vector3f = new Vector3f();
-			vect1.x = center.x - xExtent;
+			var vect1:Vector3f=new Vector3f();
+			vect1.x=center.x - xExtent;
 			if (vect1.x > boxCenter.x - boxX)
 			{
-				vect1.x = boxCenter.x - boxX;
+				vect1.x=boxCenter.x - boxX;
 			}
 
-			vect1.y = center.y - yExtent;
+			vect1.y=center.y - yExtent;
 			if (vect1.y > boxCenter.y - boxY)
 			{
-				vect1.y = boxCenter.y - boxY;
+				vect1.y=boxCenter.y - boxY;
 			}
 
-			vect1.z = center.z - zExtent;
+			vect1.z=center.z - zExtent;
 			if (vect1.z > boxCenter.z - boxZ)
 			{
-				vect1.z = boxCenter.z - boxZ;
+				vect1.z=boxCenter.z - boxZ;
 			}
 
-			var vect2:Vector3f = new Vector3f();
-			vect2.x = center.x + xExtent;
+			var vect2:Vector3f=new Vector3f();
+			vect2.x=center.x + xExtent;
 			if (vect2.x < boxCenter.x + boxX)
 			{
-				vect2.x = boxCenter.x + boxX;
+				vect2.x=boxCenter.x + boxX;
 			}
 
-			vect2.y = center.y + yExtent;
+			vect2.y=center.y + yExtent;
 			if (vect2.y < boxCenter.y + boxY)
 			{
-				vect2.y = boxCenter.y + boxY;
+				vect2.y=boxCenter.y + boxY;
 			}
 
-			vect2.z = center.z + zExtent;
+			vect2.z=center.z + zExtent;
 			if (vect2.z < boxCenter.z + boxZ)
 			{
-				vect2.z = boxCenter.z + boxZ;
+				vect2.z=boxCenter.z + boxZ;
 			}
 
-			result.center.x = (vect2.x + vect1.x) * 0.5;
-			result.center.y = (vect2.y + vect1.y) * 0.5;
-			result.center.z = (vect2.z + vect1.z) * 0.5;
+			result.center.x=(vect2.x + vect1.x) * 0.5;
+			result.center.y=(vect2.y + vect1.y) * 0.5;
+			result.center.z=(vect2.z + vect1.z) * 0.5;
 
-			result.xExtent = vect2.x - vect1.x;
-			result.yExtent = vect2.y - vect1.y;
-			result.zExtent = vect2.z - vect1.z;
+			result.xExtent=vect2.x - vect1.x;
+			result.yExtent=vect2.y - vect1.y;
+			result.zExtent=vect2.z - vect1.z;
 
 			return result;
 		}
@@ -430,11 +430,11 @@ package org.angle3d.bounding
 			switch (volume.type)
 			{
 				case BoundingVolumeType.AABB:
-					var box:BoundingBox = volume as BoundingBox;
+					var box:BoundingBox=volume as BoundingBox;
 					mergeToBoundingBox(box.center, box.xExtent, box.yExtent, box.zExtent, this);
 					break;
 				case BoundingVolumeType.Sphere:
-					var sphere:BoundingSphere = volume as BoundingSphere;
+					var sphere:BoundingSphere=volume as BoundingSphere;
 					mergeToBoundingBox(sphere.center, sphere.radius, sphere.radius, sphere.radius, this);
 					break;
 			}
@@ -442,36 +442,36 @@ package org.angle3d.bounding
 
 		override public function copyFrom(volume:BoundingVolume):void
 		{
-			var box:BoundingBox = volume as BoundingBox;
+			var box:BoundingBox=volume as BoundingBox;
 
 			Assert.assert(box != null, "volume is not a BoundingBox");
 
 			this.center.copyFrom(box.center);
-			this.xExtent = box.xExtent;
-			this.yExtent = box.yExtent;
-			this.zExtent = box.zExtent;
-			this.checkPlane = box.checkPlane;
+			this.xExtent=box.xExtent;
+			this.yExtent=box.yExtent;
+			this.zExtent=box.zExtent;
+			this.checkPlane=box.checkPlane;
 		}
 
-		override public function clone(result:BoundingVolume = null):BoundingVolume
+		override public function clone(result:BoundingVolume=null):BoundingVolume
 		{
 			var box:BoundingBox;
 			if (result == null || !(result is BoundingBox))
 			{
-				box = new BoundingBox();
+				box=new BoundingBox();
 			}
 			else
 			{
-				box = result as BoundingBox;
+				box=result as BoundingBox;
 			}
 
-			box = super.clone(box) as BoundingBox;
+			box=super.clone(box) as BoundingBox;
 
 			box.center.copyFrom(center);
-			box.xExtent = xExtent;
-			box.yExtent = yExtent;
-			box.zExtent = zExtent;
-			box.checkPlane = checkPlane;
+			box.xExtent=xExtent;
+			box.yExtent=yExtent;
+			box.zExtent=zExtent;
+			box.checkPlane=checkPlane;
 			return box;
 		}
 
@@ -541,61 +541,61 @@ package org.angle3d.bounding
 		 */
 		override public function intersectsRay(ray:Ray):Boolean
 		{
-			var diff:Vector3f = ray.origin.subtract(center);
+			var diff:Vector3f=ray.origin.subtract(center);
 
 			var rhs:Number;
 
-			var fWdU:Array = [];
-			var fAWdU:Array = [];
-			var fDdU:Array = [];
-			var fADdU:Array = [];
-			var fAWxDdU:Array = [];
+			var fWdU:Array=[];
+			var fAWdU:Array=[];
+			var fDdU:Array=[];
+			var fADdU:Array=[];
+			var fAWxDdU:Array=[];
 
-			fWdU[0] = ray.direction.dot(Vector3f.X_AXIS);
-			fAWdU[0] = FastMath.fabs(fWdU[0]);
-			fDdU[0] = diff.dot(Vector3f.X_AXIS);
-			fADdU[0] = FastMath.fabs(fDdU[0]);
+			fWdU[0]=ray.direction.dot(Vector3f.X_AXIS);
+			fAWdU[0]=FastMath.fabs(fWdU[0]);
+			fDdU[0]=diff.dot(Vector3f.X_AXIS);
+			fADdU[0]=FastMath.fabs(fDdU[0]);
 			if (fADdU[0] > xExtent && fDdU[0] * fWdU[0] >= 0.0)
 			{
 				return false;
 			}
 
-			fWdU[1] = ray.direction.dot(Vector3f.Y_AXIS);
-			fAWdU[1] = FastMath.fabs(fWdU[1]);
-			fDdU[1] = diff.dot(Vector3f.Y_AXIS);
-			fADdU[1] = FastMath.fabs(fDdU[1]);
+			fWdU[1]=ray.direction.dot(Vector3f.Y_AXIS);
+			fAWdU[1]=FastMath.fabs(fWdU[1]);
+			fDdU[1]=diff.dot(Vector3f.Y_AXIS);
+			fADdU[1]=FastMath.fabs(fDdU[1]);
 			if (fADdU[1] > yExtent && fDdU[1] * fWdU[1] >= 0.0)
 			{
 				return false;
 			}
 
-			fWdU[2] = ray.direction.dot(Vector3f.Z_AXIS);
-			fAWdU[2] = FastMath.fabs(fWdU[2]);
-			fDdU[2] = diff.dot(Vector3f.Z_AXIS);
-			fADdU[2] = FastMath.fabs(fDdU[2]);
+			fWdU[2]=ray.direction.dot(Vector3f.Z_AXIS);
+			fAWdU[2]=FastMath.fabs(fWdU[2]);
+			fDdU[2]=diff.dot(Vector3f.Z_AXIS);
+			fADdU[2]=FastMath.fabs(fDdU[2]);
 			if (fADdU[2] > zExtent && fDdU[2] * fWdU[2] >= 0.0)
 			{
 				return false;
 			}
 
-			var wCrossD:Vector3f = ray.direction.cross(diff);
+			var wCrossD:Vector3f=ray.direction.cross(diff);
 
-			fAWxDdU[0] = FastMath.fabs(wCrossD.dot(Vector3f.X_AXIS));
-			rhs = yExtent * fAWdU[2] + zExtent * fAWdU[1];
+			fAWxDdU[0]=FastMath.fabs(wCrossD.dot(Vector3f.X_AXIS));
+			rhs=yExtent * fAWdU[2] + zExtent * fAWdU[1];
 			if (fAWxDdU[0] > rhs)
 			{
 				return false;
 			}
 
-			fAWxDdU[1] = FastMath.fabs(wCrossD.dot(Vector3f.Y_AXIS));
-			rhs = xExtent * fAWdU[2] + zExtent * fAWdU[0];
+			fAWxDdU[1]=FastMath.fabs(wCrossD.dot(Vector3f.Y_AXIS));
+			rhs=xExtent * fAWdU[2] + zExtent * fAWdU[0];
 			if (fAWxDdU[1] > rhs)
 			{
 				return false;
 			}
 
-			fAWxDdU[2] = FastMath.fabs(wCrossD.dot(Vector3f.Z_AXIS));
-			rhs = xExtent * fAWdU[1] + yExtent * fAWdU[0];
+			fAWxDdU[2]=FastMath.fabs(wCrossD.dot(Vector3f.Z_AXIS));
+			rhs=xExtent * fAWdU[1] + yExtent * fAWdU[0];
 			if (fAWxDdU[2] > rhs)
 			{
 				return false;
@@ -607,39 +607,39 @@ package org.angle3d.bounding
 		public function collideWithRay(ray:Ray, results:CollisionResults):int
 		{
 			var result:CollisionResult;
-			var diff:Vector3f = ray.origin.subtract(center);
-			var direction:Vector3f = ray.direction.clone();
+			var diff:Vector3f=ray.origin.subtract(center);
+			var direction:Vector3f=ray.direction.clone();
 
-			var t:Array = [0, Number.POSITIVE_INFINITY];
+			var t:Array=[0, Number.POSITIVE_INFINITY];
 
-			var saveT0:Number = t[0], saveT1:Number = t[1];
-			var notEntirelyClipped:Boolean = clip(direction.x, -diff.x - xExtent, t) && clip(-direction.x, diff.x - xExtent, t) && clip(direction.y, -diff.y - yExtent, t) && clip(-direction.y, diff.y - yExtent, t) && clip(direction.z, -diff.z - zExtent, t) && clip(-direction.z, diff.z - zExtent, t);
+			var saveT0:Number=t[0], saveT1:Number=t[1];
+			var notEntirelyClipped:Boolean=clip(direction.x, -diff.x - xExtent, t) && clip(-direction.x, diff.x - xExtent, t) && clip(direction.y, -diff.y - yExtent, t) && clip(-direction.y, diff.y - yExtent, t) && clip(direction.z, -diff.z - zExtent, t) && clip(-direction.z, diff.z - zExtent, t);
 
 			if (notEntirelyClipped && (t[0] != saveT0 || t[1] != saveT1))
 			{
 				if (t[1] > t[0])
 				{
-					var distances:Array = t;
+					var distances:Array=t;
 
-					var point0:Vector3f = ray.direction.clone();
+					var point0:Vector3f=ray.direction.clone();
 					point0.scaleAdd(distances[0], ray.origin);
 
-					var point1:Vector3f = ray.direction.clone();
+					var point1:Vector3f=ray.direction.clone();
 					point1.scaleAdd(distances[1], ray.origin);
 
-					result = new CollisionResult();
+					result=new CollisionResult();
 					result.setContactPointAndDistance(point0, distances[0]);
 					results.addCollision(result);
-					result = new CollisionResult();
+					result=new CollisionResult();
 					result.setContactPointAndDistance(point1, distances[1]);
 					results.addCollision(result);
 					return 2;
 				}
 
-				var point:Vector3f = ray.direction.clone();
+				var point:Vector3f=ray.direction.clone();
 				point.scaleAdd(t[0], ray.origin);
 
-				result = new CollisionResult();
+				result=new CollisionResult();
 				result.setContactPointAndDistance(point, t[0]);
 				results.addCollision(result);
 				return 1;
@@ -651,15 +651,15 @@ package org.angle3d.bounding
 		{
 			if (other is Ray)
 			{
-				var ray:Ray = other as Ray;
+				var ray:Ray=other as Ray;
 				return collideWithRay(ray, results);
 			}
 			else if (other is Triangle)
 			{
-				var t:Triangle = other as Triangle;
+				var t:Triangle=other as Triangle;
 				if (intersectsTriangle(t))
 				{
-					var r:CollisionResult = new CollisionResult();
+					var r:CollisionResult=new CollisionResult();
 					results.addCollision(r);
 					return 1;
 				}
@@ -697,49 +697,49 @@ package org.angle3d.bounding
 		override public function distanceToEdge(point:Vector3f):Number
 		{
 			// compute coordinates of point in box coordinate system
-			var closest:Vector3f = point.subtract(center);
+			var closest:Vector3f=point.subtract(center);
 
 			// project test point onto box
-			var sqrDistance:Number = 0.0;
+			var sqrDistance:Number=0.0;
 			var delta:Number;
 
 			if (closest.x < -xExtent)
 			{
-				delta = closest.x + xExtent;
-				sqrDistance += delta * delta;
-				closest.x = -xExtent;
+				delta=closest.x + xExtent;
+				sqrDistance+=delta * delta;
+				closest.x=-xExtent;
 			}
 			else if (closest.x > xExtent)
 			{
-				delta = closest.x - xExtent;
-				sqrDistance += delta * delta;
-				closest.x = xExtent;
+				delta=closest.x - xExtent;
+				sqrDistance+=delta * delta;
+				closest.x=xExtent;
 			}
 
 			if (closest.y < -yExtent)
 			{
-				delta = closest.y + yExtent;
-				sqrDistance += delta * delta;
-				closest.y = -yExtent;
+				delta=closest.y + yExtent;
+				sqrDistance+=delta * delta;
+				closest.y=-yExtent;
 			}
 			else if (closest.y > yExtent)
 			{
-				delta = closest.y - yExtent;
-				sqrDistance += delta * delta;
-				closest.y = yExtent;
+				delta=closest.y - yExtent;
+				sqrDistance+=delta * delta;
+				closest.y=yExtent;
 			}
 
 			if (closest.z < -zExtent)
 			{
-				delta = closest.z + zExtent;
-				sqrDistance += delta * delta;
-				closest.z = -zExtent;
+				delta=closest.z + zExtent;
+				sqrDistance+=delta * delta;
+				closest.z=-zExtent;
 			}
 			else if (closest.z > zExtent)
 			{
-				delta = closest.z - zExtent;
-				sqrDistance += delta * delta;
-				closest.z = zExtent;
+				delta=closest.z - zExtent;
+				sqrDistance+=delta * delta;
+				closest.z=zExtent;
 			}
 
 			return Math.sqrt(sqrDistance);
@@ -767,7 +767,7 @@ package org.angle3d.bounding
 				if (numer > denom * t[1])
 					return false;
 				if (numer > denom * t[0])
-					t[0] = numer / denom;
+					t[0]=numer / denom;
 				return true;
 			}
 			else if (denom < 0.0)
@@ -775,7 +775,7 @@ package org.angle3d.bounding
 				if (numer > denom * t[0])
 					return false;
 				if (numer > denom * t[1])
-					t[1] = numer / denom;
+					t[1]=numer / denom;
 				return true;
 			}
 			else
@@ -791,34 +791,34 @@ package org.angle3d.bounding
 		 *            where extent gets stored - null to return a new vector
 		 * @return store / new vector
 		 */
-		public function getExtent(result:Vector3f = null):Vector3f
+		public function getExtent(result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
 			result.setTo(xExtent, yExtent, zExtent);
 			return result;
 		}
 
-		public function getMin(result:Vector3f = null):Vector3f
+		public function getMin(result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			result.x = center.x - xExtent;
-			result.y = center.y - yExtent;
-			result.z = center.z - zExtent;
+			result.x=center.x - xExtent;
+			result.y=center.y - yExtent;
+			result.z=center.z - zExtent;
 			return result;
 		}
 
-		public function getMax(result:Vector3f = null):Vector3f
+		public function getMax(result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			result.x = center.x + xExtent;
-			result.y = center.y + yExtent;
-			result.z = center.z + zExtent;
+			result.x=center.x + xExtent;
+			result.y=center.y + yExtent;
+			result.z=center.z + zExtent;
 
 			return result;
 		}

@@ -14,17 +14,17 @@ package org.angle3d.scene.billboard
 
 		public function setTo(left:Number, right:Number, top:Number, bottom:Number):void
 		{
-			this.left = left;
-			this.right = right;
-			this.top = top;
-			this.bottom = bottom;
+			this.left=left;
+			this.right=right;
+			this.top=top;
+			this.bottom=bottom;
 		}
-		
+
 		public function get width():Number
 		{
 			return right - left;
 		}
-		
+
 		public function get height():Number
 		{
 			return bottom - top;

@@ -25,7 +25,7 @@ package org.assetloader.loaders
 		 */
 		protected var _loader:URLStream;
 
-		public function TextLoader(request:URLRequest, id:String = null)
+		public function TextLoader(request:URLRequest, id:String=null)
 		{
 			super(request, AssetType.TEXT, id);
 		}
@@ -36,7 +36,7 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(String);
+			_onComplete=new LoaderSignal(String);
 		}
 
 		/**
@@ -44,7 +44,7 @@ package org.assetloader.loaders
 		 */
 		override protected function constructLoader():IEventDispatcher
 		{
-			_loader = new URLStream();
+			_loader=new URLStream();
 			return _loader;
 		}
 
@@ -80,8 +80,8 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			super.destroy();
-			_loader = null;
-			_text = null;
+			_loader=null;
+			_text=null;
 		}
 
 		/**
@@ -89,12 +89,12 @@ package org.assetloader.loaders
 		 */
 		override protected function complete_handler(event:Event):void
 		{
-			var bytes:ByteArray = new ByteArray();
+			var bytes:ByteArray=new ByteArray();
 			_loader.readBytes(bytes);
 
-			_data = _text = bytes.toString();
+			_data=_text=bytes.toString();
 
-			var testResult:String = testData(_data);
+			var testResult:String=testData(_data);
 
 			if (testResult != "")
 			{

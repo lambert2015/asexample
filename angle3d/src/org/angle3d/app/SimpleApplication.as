@@ -30,20 +30,20 @@ package org.angle3d.app
 	 */
 	public class SimpleApplication extends Application implements ActionListener
 	{
-		public static const INPUT_MAPPING_EXIT : String = "SIMPLEAPP_Exit";
-		public static const INPUT_MAPPING_CAMERA_POS : String = "SIMPLEAPP_CameraPos";
+		public static const INPUT_MAPPING_EXIT:String="SIMPLEAPP_Exit";
+		public static const INPUT_MAPPING_CAMERA_POS:String="SIMPLEAPP_CameraPos";
 
-		protected var _scene : Node;
-		protected var _gui : Node;
+		protected var _scene:Node;
+		protected var _gui:Node;
 
-		protected var flyCam : FlyByCamera;
+		protected var flyCam:FlyByCamera;
 
-		public function SimpleApplication(sgslVersion:int = 1)
+		public function SimpleApplication(sgslVersion:int=1)
 		{
 			super(sgslVersion);
 		}
 
-		public function onAction(name : String, value : Boolean, tpf : Number) : void
+		public function onAction(name:String, value:Boolean, tpf:Number):void
 		{
 			if (!value)
 			{
@@ -58,13 +58,12 @@ package org.angle3d.app
 			{
 				if (cam != null)
 				{
-					var loc : Vector3f = cam.location;
-					var rot : Quaternion = cam.rotation;
+					var loc:Vector3f=cam.location;
+					var rot:Quaternion=cam.rotation;
 
 					CF::DEBUG
 					{
-						Logger.log("Camera Position: ("
-							+ loc.x + ", " + loc.y + ", " + loc.z + ")");
+						Logger.log("Camera Position: (" + loc.x + ", " + loc.y + ", " + loc.z + ")");
 						Logger.log("Camera Rotation: " + rot);
 						Logger.log("Camera Direction: " + cam.getDirection());
 					}
@@ -78,7 +77,7 @@ package org.angle3d.app
 		 * @return flyCam Camera object
 		 *
 		 */
-		public function getFlyByCamera() : FlyByCamera
+		public function getFlyByCamera():FlyByCamera
 		{
 			return flyCam;
 		}
@@ -88,7 +87,7 @@ package org.angle3d.app
 		 * @return guiNode Node object
 		 *
 		 */
-		public function get gui() : Node
+		public function get gui():Node
 		{
 			return _gui;
 		}
@@ -98,33 +97,33 @@ package org.angle3d.app
 		 * @return rootNode Node object
 		 *
 		 */
-		public function get scene() : Node
+		public function get scene():Node
 		{
 			return _scene;
 		}
 
-		override protected function initialize(width : int, height : int) : void
+		override protected function initialize(width:int, height:int):void
 		{
 			super.initialize(width, height);
 
-			_scene = new Node("Root Node");
+			_scene=new Node("Root Node");
 			viewPort.attachScene(_scene);
 
-			_gui = new Node("Gui Node");
-			_gui.localQueueBucket = QueueBucket.Gui;
-			_gui.localCullHint = CullHint.Never;
+			_gui=new Node("Gui Node");
+			_gui.localQueueBucket=QueueBucket.Gui;
+			_gui.localCullHint=CullHint.Never;
 			guiViewPort.attachScene(_gui);
 
 			if (inputManager != null)
 			{
-				flyCam = new FlyByCamera(cam);
+				flyCam=new FlyByCamera(cam);
 				flyCam.setMoveSpeed(1.0);
 				flyCam.setRotationSpeed(3.0);
 				flyCam.registerWithInput(inputManager);
 
 				inputManager.addSingleMapping(INPUT_MAPPING_CAMERA_POS, new KeyTrigger(Keyboard.C));
 
-				var arr : Array = [INPUT_MAPPING_CAMERA_POS];
+				var arr:Array=[INPUT_MAPPING_CAMERA_POS];
 
 				inputManager.addListener(this, arr);
 			}
@@ -133,7 +132,7 @@ package org.angle3d.app
 			simpleInitApp();
 		}
 
-		override public function update() : void
+		override public function update():void
 		{
 			super.update();
 
@@ -145,7 +144,7 @@ package org.angle3d.app
 
 			_scene.update(timePerFrame);
 			_gui.update(timePerFrame);
-			
+
 //			_scene.updateLogicalState(timePerFrame);
 //			_scene.updateGeometricState();
 //
@@ -162,17 +161,17 @@ package org.angle3d.app
 			stateManager.postRender();
 		}
 
-		public function simpleInitApp() : void
+		public function simpleInitApp():void
 		{
 			start();
 		}
 
-		public function simpleUpdate(tpf : Number) : void
+		public function simpleUpdate(tpf:Number):void
 		{
 
 		}
 
-		public function simpleRender(rm : RenderManager) : void
+		public function simpleRender(rm:RenderManager):void
 		{
 
 		}

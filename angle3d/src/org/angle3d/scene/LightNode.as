@@ -16,7 +16,7 @@ package org.angle3d.scene
 		public function LightNode(name:String, light:Light)
 		{
 			super(name);
-			mLightControl = new LightControl(light);
+			mLightControl=new LightControl(light);
 			addControl(mLightControl);
 		}
 
@@ -28,7 +28,7 @@ package org.angle3d.scene
 		 */
 		public function setEnabled(enabled:Boolean):void
 		{
-			mLightControl.enabled = enabled;
+			mLightControl.enabled=enabled;
 		}
 
 		public function isEnabled():Boolean

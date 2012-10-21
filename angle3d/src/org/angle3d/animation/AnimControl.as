@@ -1,8 +1,9 @@
 package org.angle3d.animation
 {
 	import flash.utils.Dictionary;
-	
+
 	import org.angle3d.scene.control.AbstractControl;
+	import org.angle3d.utils.Assert;
 	import org.angle3d.utils.TempVars;
 
 	/**
@@ -10,7 +11,6 @@ package org.angle3d.animation
 	 * of animation.
 	 *
 	 */
-	//TODO 事件改用AS3Signals
 	public class AnimControl extends AbstractControl
 	{
 
@@ -23,45 +23,44 @@ package org.angle3d.animation
 		 * Animation channels
 		 */
 		protected var mChannels:Vector.<AnimChannel>;
-		
-		protected var mNumchannels:int;
 
+		protected var mNumchannels:int;
 
 		public function AnimControl()
 		{
 			super();
 
-			mAnimationMap = new Dictionary();
+			mAnimationMap=new Dictionary();
 
-			mChannels = new Vector.<AnimChannel>();
+			mChannels=new Vector.<AnimChannel>();
 			mNumchannels=0;
 		}
 
 		public function addAnimation(name:String, animation:Animation):void
 		{
-			mAnimationMap[name] = animation;
+			mAnimationMap[name]=animation;
 		}
 
 		public function getAnimation(name:String):Animation
 		{
 			return mAnimationMap[name];
 		}
-		
-		public function getAnimationLength( name:String):Number 
+
+		public function getAnimationLength(name:String):Number
 		{
-			var a:Animation = mAnimationMap.get(name);
-			if (a == null) 
+			var a:Animation=mAnimationMap[name];
+
+			CF::DEBUG
 			{
-				throw new Error("The animation " + name
-					+ " does not exist in this AnimControl");
+				Assert.assert(a != null, "The animation " + name + " does not exist in this AnimControl");
 			}
-			
+
 			return a.time;
 		}
 
 		public function removeChannel(channel:AnimChannel):void
 		{
-			var index:int = mChannels.indexOf(channel);
+			var index:int=mChannels.indexOf(channel);
 			if (index > -1)
 			{
 				mChannels.splice(index, 1);
@@ -77,7 +76,7 @@ package org.angle3d.animation
 		 */
 		public function createChannel():AnimChannel
 		{
-			var channel:AnimChannel = new AnimChannel(this);
+			var channel:AnimChannel=new AnimChannel(this);
 			mChannels.push(channel);
 			mNumchannels++;
 			return channel;
@@ -88,15 +87,15 @@ package org.angle3d.animation
 		 */
 		override protected function controlUpdate(tpf:Number):void
 		{
-			if(mNumchannels > 0)
+			if (mNumchannels > 0)
 			{
-				var tempVars:TempVars = TempVars.getTempVars();
-				
-				for (var i:int = 0; i < mNumchannels; i++)
+				var tempVars:TempVars=TempVars.getTempVars();
+
+				for (var i:int=0; i < mNumchannels; i++)
 				{
 					mChannels[i].update(tpf, tempVars);
 				}
-				
+
 				//释放临时变量
 				tempVars.release();
 			}

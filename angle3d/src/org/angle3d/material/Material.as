@@ -14,107 +14,107 @@ package org.angle3d.material
 	 */
 	public class Material
 	{
-		private var mCullMode : String;
+		private var mCullMode:String;
 
-		private var mEmissiveColor : Color;
-		private var mAmbientColor : Color;
-		private var mDiffuseColor : Color;
-		private var mSpecularColor : Color;
+		private var mEmissiveColor:Color;
+		private var mAmbientColor:Color;
+		private var mDiffuseColor:Color;
+		private var mSpecularColor:Color;
 
-		private var mAlpha : Number;
+		private var mAlpha:Number;
 
-		private var _techniques : Vector.<Technique>;
+		private var _techniques:Vector.<Technique>;
 
 		public function Material()
 		{
-			_techniques = new Vector.<Technique>();
+			_techniques=new Vector.<Technique>();
 
-			mEmissiveColor = new Color(0, 0, 0, 1);
-			mAmbientColor = new Color(1, 1, 1, 0);
-			mDiffuseColor = new Color(1, 1, 1, 1);
-			mSpecularColor = new Color(1, 1, 1, 1);
+			mEmissiveColor=new Color(0, 0, 0, 1);
+			mAmbientColor=new Color(1, 1, 1, 0);
+			mDiffuseColor=new Color(1, 1, 1, 1);
+			mSpecularColor=new Color(1, 1, 1, 1);
 
-			mCullMode = Context3DTriangleFace.FRONT;
+			mCullMode=Context3DTriangleFace.FRONT;
 
-			mAlpha = 1.0;
+			mAlpha=1.0;
 		}
-		
+
 		public function set skinningMatrices(data:Vector.<Number>):void
 		{
 
 		}
 
-		public function set influence(value : Number) : void
+		public function set influence(value:Number):void
 		{
 
 		}
 
-		public function set cullMode(mode : String) : void
+		public function set cullMode(mode:String):void
 		{
 			if (mCullMode == mode)
 				return;
 
-			mCullMode = mode;
+			mCullMode=mode;
 
-			var size : int = _techniques.length;
-			for (var i : int = 0; i < size; i++)
+			var size:int=_techniques.length;
+			for (var i:int=0; i < size; i++)
 			{
-				_techniques[i].renderState.cullMode = mode;
+				_techniques[i].renderState.cullMode=mode;
 			}
 		}
 
-		public function get cullMode() : String
+		public function get cullMode():String
 		{
 			return mCullMode;
 		}
 
-		public function set doubleSide(value : Boolean) : void
+		public function set doubleSide(value:Boolean):void
 		{
 			if (value)
 			{
-				mCullMode = Context3DTriangleFace.NONE;
+				mCullMode=Context3DTriangleFace.NONE;
 			}
 
-			var size : int = _techniques.length;
-			for (var i : int = 0; i < size; i++)
+			var size:int=_techniques.length;
+			for (var i:int=0; i < size; i++)
 			{
-				_techniques[i].renderState.cullMode = mCullMode;
+				_techniques[i].renderState.cullMode=mCullMode;
 			}
 		}
 
-		public function get doubleSide() : Boolean
+		public function get doubleSide():Boolean
 		{
 			return mCullMode == Context3DTriangleFace.NONE;
 		}
 
-		public function getTechniques() : Vector.<Technique>
+		public function getTechniques():Vector.<Technique>
 		{
 			return _techniques;
 		}
 
-		public function getTechniqueAt(i : int) : Technique
+		public function getTechniqueAt(i:int):Technique
 		{
 			return _techniques[i];
 		}
 
-		public function addTechnique(t : Technique) : void
+		public function addTechnique(t:Technique):void
 		{
 			_techniques.push(t);
 		}
 
-		public function set alpha(alpha : Number) : void
+		public function set alpha(alpha:Number):void
 		{
-			mAlpha = FastMath.fclamp(alpha, 0.0, 1.0);
+			mAlpha=FastMath.fclamp(alpha, 0.0, 1.0);
 		}
 
-		public function get alpha() : Number
+		public function get alpha():Number
 		{
 			return mAlpha;
 		}
 
-		public function clone() : Material
+		public function clone():Material
 		{
-			var mat : Material = new Material();
+			var mat:Material=new Material();
 			return mat;
 		}
 	}

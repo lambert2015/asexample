@@ -1,7 +1,7 @@
 package org.angle3d.scene
 {
 	import flash.utils.getQualifiedClassName;
-	
+
 	import org.angle3d.bounding.BoundingBox;
 	import org.angle3d.bounding.BoundingVolume;
 	import org.angle3d.collision.Collidable;
@@ -38,53 +38,53 @@ package org.angle3d.scene
 		/**
 		 * Refresh flag types
 		 */
-		public static const RF_TRANSFORM : uint = 0x01;
-		public static const RF_BOUND : uint = 0x02;
-		public static const RF_LIGHTLIST : uint = 0x04;
+		public static const RF_TRANSFORM:uint=0x01;
+		public static const RF_BOUND:uint=0x02;
+		public static const RF_LIGHTLIST:uint=0x04;
 
 		/**
 		 * This spatial's name.
 		 */
-		public var name : String;
+		public var name:String;
 
-		public var queueDistance : Number;
+		public var queueDistance:Number;
 
-		protected var mCullHint : int;
+		protected var mCullHint:int;
 
 		/**
 		 * Spatial's bounding volume relative to the world.
 		 */
-		protected var mWorldBound : BoundingVolume;
+		protected var mWorldBound:BoundingVolume;
 
 
 		/**
 		 * LightList
 		 */
-		protected var mLocalLights : LightList;
-		protected var mWorldLights : LightList;
+		protected var mLocalLights:LightList;
+		protected var mWorldLights:LightList;
 
 		// scale values
-		protected var mFrustrumIntersects : int;
-		protected var mQueueBucket : int;
-		protected var mShadowMode : int;
+		protected var mFrustrumIntersects:int;
+		protected var mQueueBucket:int;
+		protected var mShadowMode:int;
 
 
-		protected var mLocalTransform : Transform;
-		protected var mWorldTransform : Transform;
+		protected var mLocalTransform:Transform;
+		protected var mWorldTransform:Transform;
 
-		protected var mControls : Vector.<Control>;
+		protected var mControls:Vector.<Control>;
 
 		/**
 		 * Spatial's parent, or null if it has none.
 		 */
-		private var mParent : Node;
+		private var mParent:Node;
 
 		/**
 		 * Refresh flags. Indicate what data of the spatial need to be
 		 * updated to reflect the correct state.
 		 */
-		protected var mRefreshFlags : uint;
-		
+		protected var mRefreshFlags:uint;
+
 		protected var mVisible:Boolean;
 
 
@@ -96,64 +96,64 @@ package org.angle3d.scene
 		 *            the name of the scene element. This is required for
 		 *            identification and comparision purposes.
 		 */
-		public function Spatial(name : String = "")
+		public function Spatial(name:String="")
 		{
-			this.name = name;
+			this.name=name;
 			_init();
 		}
-		
+
 		public function set visible(value:Boolean):void
 		{
-			mVisible = value;
+			mVisible=value;
 		}
-		
+
 		public function get visible():Boolean
 		{
 			return mVisible;
 		}
-		
+
 		/**
 		 * 是否真正可见
 		 * 自身可能是可见的，但是parent是不可见，所以还是不可见的
 		 */
 		public function get truelyVisible():Boolean
 		{
-			if(mParent == null)
+			if (mParent == null)
 				return mVisible;
-			
+
 			return mVisible && mParent.visible;
 		}
 
-		protected function _init() : void
+		protected function _init():void
 		{
-			mLocalTransform = new Transform();
-			mWorldTransform = new Transform();
+			mLocalTransform=new Transform();
+			mWorldTransform=new Transform();
 
-			mLocalLights = new LightList(this);
-			mWorldLights = new LightList(this);
+			mLocalLights=new LightList(this);
+			mWorldLights=new LightList(this);
 
-			mWorldBound = new BoundingBox();
+			mWorldBound=new BoundingBox();
 
-			mRefreshFlags = 0;
-			mRefreshFlags |= RF_BOUND;
+			mRefreshFlags=0;
+			mRefreshFlags|=RF_BOUND;
 
-			mCullHint = CullHint.Inherit;
-			mFrustrumIntersects = FrustumIntersect.Intersects;
-			mQueueBucket = QueueBucket.Inherit;
-			mShadowMode = ShadowMode.Inherit;
-			
-			mVisible = true;
+			mCullHint=CullHint.Inherit;
+			mFrustrumIntersects=FrustumIntersect.Intersects;
+			mQueueBucket=QueueBucket.Inherit;
+			mShadowMode=ShadowMode.Inherit;
 
-			queueDistance = Number.NEGATIVE_INFINITY;
+			mVisible=true;
 
-			mControls = new Vector.<Control>();
+			queueDistance=Number.NEGATIVE_INFINITY;
+
+			mControls=new Vector.<Control>();
 		}
 
 		/**
 		 * 是否需要更新LightList
 		 * @return
 		 */
-		public function needLightListUpdate() : Boolean
+		public function needLightListUpdate():Boolean
 		{
 			return (mRefreshFlags & RF_LIGHTLIST) != 0;
 		}
@@ -162,7 +162,7 @@ package org.angle3d.scene
 		 * 是否需要更新坐标
 		 * @return
 		 */
-		public function needTransformUpdate() : Boolean
+		public function needTransformUpdate():Boolean
 		{
 			return (mRefreshFlags & RF_TRANSFORM) != 0;
 		}
@@ -171,7 +171,7 @@ package org.angle3d.scene
 		 * 是否需要更新包围体
 		 * @return
 		 */
-		public function needBoundUpdate() : Boolean
+		public function needBoundUpdate():Boolean
 		{
 			return (mRefreshFlags & RF_BOUND) != 0;
 		}
@@ -180,37 +180,37 @@ package org.angle3d.scene
 		 * Indicate that the transform of this spatial has changed and that
 		 * a refresh is required.
 		 */
-		public function setTransformRefresh() : void
+		public function setTransformRefresh():void
 		{
-			mRefreshFlags |= RF_TRANSFORM;
+			mRefreshFlags|=RF_TRANSFORM;
 			setBoundRefresh();
 		}
 
-		public function setTransformUpdated() : void
+		public function setTransformUpdated():void
 		{
-			mRefreshFlags &= ~RF_TRANSFORM;
+			mRefreshFlags&=~RF_TRANSFORM;
 		}
 
-		public function setLightListRefresh() : void
+		public function setLightListRefresh():void
 		{
-			mRefreshFlags |= RF_LIGHTLIST;
+			mRefreshFlags|=RF_LIGHTLIST;
 		}
 
-		public function setLightListUpdated() : void
+		public function setLightListUpdated():void
 		{
-			mRefreshFlags &= ~RF_LIGHTLIST;
+			mRefreshFlags&=~RF_LIGHTLIST;
 		}
 
 		/**
 		 * Indicate that the bounding of this spatial has changed and that
 		 * a refresh is required.
 		 */
-		public function setBoundRefresh() : void
+		public function setBoundRefresh():void
 		{
-			mRefreshFlags |= RF_BOUND;
+			mRefreshFlags|=RF_BOUND;
 
 			// XXX: Replace with a recursive call?
-			var p : Spatial = parent;
+			var p:Spatial=parent;
 			while (p != null)
 			{
 				if (p.needBoundUpdate())
@@ -218,14 +218,14 @@ package org.angle3d.scene
 					return;
 				}
 
-				p.mRefreshFlags |= RF_BOUND;
-				p = p.parent;
+				p.mRefreshFlags|=RF_BOUND;
+				p=p.parent;
 			}
 		}
 
-		public function setBoundUpdated() : void
+		public function setBoundUpdated():void
 		{
-			mRefreshFlags &= ~RF_BOUND;
+			mRefreshFlags&=~RF_BOUND;
 		}
 
 		/**
@@ -239,17 +239,14 @@ package org.angle3d.scene
 		 * @return true if inside or intersecting camera frustum
 		 * (should be rendered), false if outside.
 		 */
-		public function checkCulling(cam : Camera3D) : Boolean
+		public function checkCulling(cam:Camera3D):Boolean
 		{
 			CF::DEBUG
 			{
-				Assert.assert(mRefreshFlags == 0, "Scene graph is not properly updated for rendering.\n"
-					+ "Make sure scene graph state was not changed after\n"
-					+ " rootNode.updateGeometricState() call. \n"
-					+ "Problem spatial name: " + name);
+				Assert.assert(mRefreshFlags == 0, "Scene graph is not properly updated for rendering.\n" + "Make sure scene graph state was not changed after\n" + " rootNode.updateGeometricState() call. \n" + "Problem spatial name: " + name);
 			}
 
-			var cm : int = cullHint;
+			var cm:int=cullHint;
 
 			CF::DEBUG
 			{
@@ -258,17 +255,17 @@ package org.angle3d.scene
 
 			if (cm == CullHint.Always)
 			{
-				lastFrustumIntersection = FrustumIntersect.Outside;
+				lastFrustumIntersection=FrustumIntersect.Outside;
 				return false;
 			}
 			else if (cm == CullHint.Never)
 			{
-				lastFrustumIntersection = FrustumIntersect.Intersects;
+				lastFrustumIntersection=FrustumIntersect.Intersects;
 				return true;
 			}
 
 			// check to see if we can cull this node
-			mFrustrumIntersects = (parent != null) ? parent.lastFrustumIntersection : FrustumIntersect.Intersects;
+			mFrustrumIntersects=(parent != null) ? parent.lastFrustumIntersection : FrustumIntersect.Intersects;
 
 			if (mFrustrumIntersects == FrustumIntersect.Intersects)
 			{
@@ -278,7 +275,7 @@ package org.angle3d.scene
 				}
 				else
 				{
-					mFrustrumIntersects = cam.contains(worldBound);
+					mFrustrumIntersects=cam.contains(worldBound);
 				}
 			}
 			return mFrustrumIntersects != FrustumIntersect.Outside;
@@ -292,7 +289,7 @@ package org.angle3d.scene
 		 *
 		 * @return The local light list
 		 */
-		public function getLocalLightList() : LightList
+		public function getLocalLightList():LightList
 		{
 			return mLocalLights;
 		}
@@ -304,7 +301,7 @@ package org.angle3d.scene
 		 *
 		 * @return The combined world light list
 		 */
-		public function getWorldLightList() : LightList
+		public function getWorldLightList():LightList
 		{
 			return mWorldLights;
 		}
@@ -315,7 +312,7 @@ package org.angle3d.scene
 		 *
 		 * @return the Spatial's world rotation matrix.
 		 */
-		public function getWorldRotation() : Quaternion
+		public function getWorldRotation():Quaternion
 		{
 			checkDoTransformUpdate();
 			return mWorldTransform.rotation;
@@ -327,7 +324,7 @@ package org.angle3d.scene
 		*
 		* @return the world's tranlsation vector.
 		*/
-		public function getWorldTranslation() : Vector3f
+		public function getWorldTranslation():Vector3f
 		{
 			checkDoTransformUpdate();
 			return mWorldTransform.translation;
@@ -339,7 +336,7 @@ package org.angle3d.scene
 		 *
 		 * @return the world's scale factor.
 		 */
-		public function getWorldScale() : Vector3f
+		public function getWorldScale():Vector3f
 		{
 			checkDoTransformUpdate();
 			return mWorldTransform.scale;
@@ -351,7 +348,7 @@ package org.angle3d.scene
 		*
 		* @return the world transform.
 		*/
-		public function getWorldTransform() : Transform
+		public function getWorldTransform():Transform
 		{
 			checkDoTransformUpdate();
 			return mWorldTransform;
@@ -364,23 +361,23 @@ package org.angle3d.scene
 		 * @param newUp
 		 *            the up vector to use - assumed to be a unit vector.
 		 */
-		public function rotateUpTo(newUp : Vector3f) : void
+		public function rotateUpTo(newUp:Vector3f):void
 		{
 			// First figure out the current up vector.
-			var upY : Vector3f = new Vector3f(0, 1, 0);
-			var rot : Quaternion = mLocalTransform.rotation;
+			var upY:Vector3f=new Vector3f(0, 1, 0);
+			var rot:Quaternion=mLocalTransform.rotation;
 			rot.multVecLocal(upY);
 
 			// get angle between vectors
-			var angle : Number = upY.angleBetween(newUp);
+			var angle:Number=upY.angleBetween(newUp);
 
 			// figure out rotation axis by taking cross product
 			upY.crossLocal(newUp);
-			var rotAxis : Vector3f = upY;
+			var rotAxis:Vector3f=upY;
 			rotAxis.normalizeLocal();
 
 			// Build a rotation quat and apply current local rotation.
-			var q : Quaternion = new Quaternion();
+			var q:Quaternion=new Quaternion();
 			q.fromAngleAxis(angle, rotAxis);
 			q.multiply(rot, rot);
 
@@ -400,11 +397,11 @@ package org.angle3d.scene
 		 *            a vector indicating the (local) up direction. (typically {0,
 		 *            1, 0} in jME.)
 		 */
-		public function lookAt(position : Vector3f, upVector : Vector3f) : void
+		public function lookAt(position:Vector3f, upVector:Vector3f):void
 		{
-			var worldTranslation : Vector3f = getWorldTranslation();
+			var worldTranslation:Vector3f=getWorldTranslation();
 
-			var dir : Vector3f = position.subtract(worldTranslation);
+			var dir:Vector3f=position.subtract(worldTranslation);
 			getRotation().lookAt(dir, upVector);
 
 			setTransformRefresh();
@@ -413,16 +410,16 @@ package org.angle3d.scene
 		/**
 		 * Should be overriden by Node and Geometry.
 		 */
-		public function updateWorldBound() : void
+		public function updateWorldBound():void
 		{
 			// the world bound of a leaf is the same as it's model bound
 			// for a node, the world bound is a combination of all it's children
 			// bounds
 			// -> handled by subpublic class
-			mRefreshFlags &= ~RF_BOUND;
+			mRefreshFlags&=~RF_BOUND;
 		}
 
-		protected function updateWorldLightList() : void
+		protected function updateWorldLightList():void
 		{
 			if (parent == null)
 			{
@@ -447,7 +444,7 @@ package org.angle3d.scene
 		 * Should only be called from updateGeometricState().
 		 * In most cases should not be subpublic classed.
 		 */
-		protected function updateWorldTransforms() : void
+		protected function updateWorldTransforms():void
 		{
 			if (parent == null)
 			{
@@ -469,7 +466,7 @@ package org.angle3d.scene
 		 * Computes the world transform of this Spatial in the most
 		 * efficient manner possible.
 		 */
-		public function checkDoTransformUpdate() : void
+		public function checkDoTransformUpdate():void
 		{
 			if (!needTransformUpdate())
 			{
@@ -484,12 +481,12 @@ package org.angle3d.scene
 			else
 			{
 				//TODO 此处未完全理解
-				var stack : Vector.<Spatial> = new Vector.<Spatial>();
-				var rootNode : Spatial = this;
-				var i : int = 0;
+				var stack:Vector.<Spatial>=new Vector.<Spatial>();
+				var rootNode:Spatial=this;
+				var i:int=0;
 				while (true)
 				{
-					var hisParent : Spatial = rootNode.parent;
+					var hisParent:Spatial=rootNode.parent;
 					if (hisParent == null)
 					{
 						rootNode.mWorldTransform.copyFrom(rootNode.mLocalTransform);
@@ -498,20 +495,20 @@ package org.angle3d.scene
 						break;
 					}
 
-					stack[i] = rootNode;
+					stack[i]=rootNode;
 
 					if (!hisParent.needTransformUpdate())
 					{
 						break;
 					}
 
-					rootNode = hisParent;
+					rootNode=hisParent;
 					i++;
 				}
 
 				while (i >= 0)
 				{
-					rootNode = stack[i];
+					rootNode=stack[i];
 					//rootNode.worldTransform.set(rootNode.localTransform);
 					//rootNode.worldTransform.combineWithParent(rootNode.parent.worldTransform);
 					//rootNode.setTransformUpdated();
@@ -525,7 +522,7 @@ package org.angle3d.scene
 		 * Computes this Spatial's world bounding volume in the most efficient
 		 * manner possible.
 		 */
-		public function checkDoBoundUpdate() : void
+		public function checkDoBoundUpdate():void
 		{
 			if (!needBoundUpdate())
 			{
@@ -537,11 +534,11 @@ package org.angle3d.scene
 			// Go to children recursively and update their bound
 			if (this is Node)
 			{
-				var node : Node = this as Node;
-				var length : int = node.numChildren;
-				for (var i : int = 0; i < length; i++)
+				var node:Node=this as Node;
+				var length:int=node.numChildren;
+				for (var i:int=0; i < length; i++)
 				{
-					var child : Spatial = node.getChildAt(i);
+					var child:Spatial=node.getChildAt(i);
 					child.checkDoBoundUpdate();
 				}
 			}
@@ -549,7 +546,7 @@ package org.angle3d.scene
 			// All children's bounds have been updated. Update my own now.
 			updateWorldBound();
 		}
-		
+
 		/**
 		 * Called when the Spatial is about to be rendered, to notify
 		 * controls attached to this Spatial using the Control.render() method.
@@ -560,10 +557,10 @@ package org.angle3d.scene
 		 * @see Spatial#addControl(org.angle3d.scene.control.Control)
 		 * @see Spatial#getControl(java.lang.Class)
 		 */
-		public function runControlRender(rm : RenderManager, vp : ViewPort) : void
+		public function runControlRender(rm:RenderManager, vp:ViewPort):void
 		{
-			var length : int = mControls.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=mControls.length;
+			for (var i:int=0; i < length; i++)
 			{
 				mControls[i].render(rm, vp);
 			}
@@ -575,7 +572,7 @@ package org.angle3d.scene
 		 *
 		 * @see Spatial#removeControl()
 		 */
-		public function addControl(control : Control) : void
+		public function addControl(control:Control):void
 		{
 			CF::DEBUG
 			{
@@ -583,7 +580,7 @@ package org.angle3d.scene
 			}
 
 			mControls.push(control);
-			control.spatial = this;
+			control.spatial=this;
 		}
 
 		/**
@@ -595,13 +592,13 @@ package org.angle3d.scene
 		 *
 		 * @see Spatial#addControl(org.angle3d.scene.control.Control)
 		 */
-		public function removeControl(control : Control) : Boolean
+		public function removeControl(control:Control):Boolean
 		{
-			var index : int = mControls.indexOf(control);
+			var index:int=mControls.indexOf(control);
 			if (index > -1)
 			{
 				mControls.splice(index, 1);
-				control.spatial = null;
+				control.spatial=null;
 				return true;
 			}
 			return false;
@@ -615,17 +612,17 @@ package org.angle3d.scene
 		 *
 		 * @see Spatial#addControl(org.angle3d.scene.control.Control)
 		 */
-		public function getControl(index : int) : Control
+		public function getControl(index:int):Control
 		{
 			return mControls[index];
 		}
-		
-		public function getControlByClass(cls:Class) : Control
+
+		public function getControlByClass(cls:Class):Control
 		{
-			var length : int = mControls.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=mControls.length;
+			for (var i:int=0; i < length; i++)
 			{
-				if(mControls[i] is cls)
+				if (mControls[i] is cls)
 				{
 					return mControls[i];
 				}
@@ -636,16 +633,16 @@ package org.angle3d.scene
 		/**
 		 * @return The number of controls attached to this Spatial.
 		 */
-		public function get numControls() : uint
+		public function get numControls():uint
 		{
 			return mControls.length;
 		}
 
-		public function get refreshFlags() : uint
+		public function get refreshFlags():uint
 		{
 			return mRefreshFlags;
 		}
-		
+
 		public function update(tpf:Number):void
 		{
 			updateControls(tpf);
@@ -660,10 +657,10 @@ package org.angle3d.scene
 		 *
 		 * @see Spatial#addControl(org.angle3d.scene.control.Control)
 		 */
-		public function updateControls(tpf : Number) : void
+		public function updateControls(tpf:Number):void
 		{
-			var length : int = mControls.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=mControls.length;
+			for (var i:int=0; i < length; i++)
 			{
 				mControls[i].update(tpf);
 			}
@@ -681,7 +678,7 @@ package org.angle3d.scene
 		 * @see Spatial#getWorldTransform()
 		 * @see Spatial#getWorldBound()
 		 */
-		public function updateGeometricState() : void
+		public function updateGeometricState():void
 		{
 			// assume that this Spatial is a leaf, a proper implementation
 			// for this method should be provided by Node.
@@ -719,7 +716,7 @@ package org.angle3d.scene
 		 *            where to write the result (null to create a new vector)
 		 * @return the result (store)
 		 */
-		public function localToWorld(inVec : Vector3f, result : Vector3f = null) : Vector3f
+		public function localToWorld(inVec:Vector3f, result:Vector3f=null):Vector3f
 		{
 			checkDoTransformUpdate();
 			return mWorldTransform.transformVector(inVec, result);
@@ -735,7 +732,7 @@ package org.angle3d.scene
 		 *            where to write the result
 		 * @return the result (store)
 		 */
-		public function worldToLocal(inVec : Vector3f, result : Vector3f = null) : Vector3f
+		public function worldToLocal(inVec:Vector3f, result:Vector3f=null):Vector3f
 		{
 			checkDoTransformUpdate();
 			return mWorldTransform.transformInverseVector(inVec, result);
@@ -747,7 +744,7 @@ package org.angle3d.scene
 		 *
 		 * @return the parent of this node.
 		 */
-		public function get parent() : Node
+		public function get parent():Node
 		{
 			return mParent;
 		}
@@ -760,9 +757,9 @@ package org.angle3d.scene
 		 * @param parent
 		 *            the parent of this node.
 		 */
-		public function set parent(parent : Node) : void
+		public function set parent(parent:Node):void
 		{
-			mParent = parent;
+			mParent=parent;
 		}
 
 		/**
@@ -770,7 +767,7 @@ package org.angle3d.scene
 		 *
 		 * @return true if it has a parent and performed the remove.
 		 */
-		public function removeFromParent() : Boolean
+		public function removeFromParent():Boolean
 		{
 			if (parent != null)
 			{
@@ -787,7 +784,7 @@ package org.angle3d.scene
 		 *            the ancestor object to look for.
 		 * @return true if the ancestor is found, false otherwise.
 		 */
-		public function hasAncestor(ancestor : Node) : Boolean
+		public function hasAncestor(ancestor:Node):Boolean
 		{
 			if (parent == null)
 			{
@@ -809,7 +806,7 @@ package org.angle3d.scene
 		 *
 		 * @return the local rotation of this node.
 		 */
-		public function getRotation() : Quaternion
+		public function getRotation():Quaternion
 		{
 			return mLocalTransform.rotation;
 		}
@@ -820,7 +817,7 @@ package org.angle3d.scene
 		 * @param rotation
 		 *            the new local rotation.
 		 */
-		public function setRotationByMatrix3f(rotation : Matrix3f) : void
+		public function setRotationByMatrix3f(rotation:Matrix3f):void
 		{
 			mLocalTransform.rotation.fromMatrix3f(rotation);
 			setTransformRefresh();
@@ -834,7 +831,7 @@ package org.angle3d.scene
 		 * @param quaternion
 		 *            the quaternion that defines the matrix.
 		 */
-		public function setRotation(quat : Quaternion) : void
+		public function setRotation(quat:Quaternion):void
 		{
 			mLocalTransform.setRotation(quat);
 			setTransformRefresh();
@@ -845,7 +842,7 @@ package org.angle3d.scene
 		 *
 		 * @return the local scale of this node.
 		 */
-		public function getScale() : Vector3f
+		public function getScale():Vector3f
 		{
 			return mLocalTransform.scale;
 		}
@@ -856,47 +853,47 @@ package org.angle3d.scene
 		 * @param localScale
 		 *            the new local scale, applied to x, y and z
 		 */
-		public function setScale(localScale : Vector3f) : void
+		public function setScale(localScale:Vector3f):void
 		{
 			mLocalTransform.setScale(localScale);
 			setTransformRefresh();
 		}
 
-		public function setScaleXYZ(x : Number, y : Number, z : Number) : void
+		public function setScaleXYZ(x:Number, y:Number, z:Number):void
 		{
 			mLocalTransform.setScaleXYZ(x, y, z);
 			setTransformRefresh();
 		}
 
-		public function set scaleX(value : Number) : void
+		public function set scaleX(value:Number):void
 		{
-			mLocalTransform.scale.x = value;
+			mLocalTransform.scale.x=value;
 			setTransformRefresh();
 		}
 
-		public function set scaleY(value : Number) : void
+		public function set scaleY(value:Number):void
 		{
-			mLocalTransform.scale.y = value;
+			mLocalTransform.scale.y=value;
 			setTransformRefresh();
 		}
 
-		public function set scaleZ(value : Number) : void
+		public function set scaleZ(value:Number):void
 		{
-			mLocalTransform.scale.z = value;
+			mLocalTransform.scale.z=value;
 			setTransformRefresh();
 		}
 
-		public function get scaleX() : Number
+		public function get scaleX():Number
 		{
 			return mLocalTransform.scale.x;
 		}
 
-		public function get scaleY() : Number
+		public function get scaleY():Number
 		{
 			return mLocalTransform.scale.y;
 		}
 
-		public function get scaleZ() : Number
+		public function get scaleZ():Number
 		{
 			return mLocalTransform.scale.z;
 		}
@@ -907,7 +904,7 @@ package org.angle3d.scene
 		 *
 		 * @return the local translation of this node.
 		 */
-		public function getTranslation() : Vector3f
+		public function getTranslation():Vector3f
 		{
 			return mLocalTransform.translation;
 		}
@@ -919,47 +916,47 @@ package org.angle3d.scene
 		 * @param localTranslation
 		 *            the local translation of this spatial.
 		 */
-		public function setTranslation(localTranslation : Vector3f) : void
+		public function setTranslation(localTranslation:Vector3f):void
 		{
 			mLocalTransform.setTranslation(localTranslation);
 			setTransformRefresh();
 		}
 
-		public function setTranslationXYZ(x : Number, y : Number, z : Number) : void
+		public function setTranslationXYZ(x:Number, y:Number, z:Number):void
 		{
 			mLocalTransform.setTranslationXYZ(x, y, z);
 			setTransformRefresh();
 		}
 
-		public function set x(value : Number) : void
+		public function set x(value:Number):void
 		{
-			mLocalTransform.translation.x = value;
+			mLocalTransform.translation.x=value;
 			setTransformRefresh();
 		}
 
-		public function set y(value : Number) : void
+		public function set y(value:Number):void
 		{
-			mLocalTransform.translation.y = value;
+			mLocalTransform.translation.y=value;
 			setTransformRefresh();
 		}
 
-		public function set z(value : Number) : void
+		public function set z(value:Number):void
 		{
-			mLocalTransform.translation.z = value;
+			mLocalTransform.translation.z=value;
 			setTransformRefresh();
 		}
 
-		public function get x() : Number
+		public function get x():Number
 		{
 			return mLocalTransform.translation.x;
 		}
 
-		public function get y() : Number
+		public function get y():Number
 		{
 			return mLocalTransform.translation.y;
 		}
 
-		public function get z() : Number
+		public function get z():Number
 		{
 			return mLocalTransform.translation.z;
 		}
@@ -968,7 +965,7 @@ package org.angle3d.scene
 		 * <code>setLocalTransform</code> sets the local transform of this
 		 * spatial.
 		 */
-		public function setTransform(t : Transform) : void
+		public function setTransform(t:Transform):void
 		{
 			mLocalTransform.copyFrom(t);
 			setTransformRefresh();
@@ -980,7 +977,7 @@ package org.angle3d.scene
 		 *
 		 * @return the local transform of this spatial.
 		 */
-		public function getTransform() : Transform
+		public function getTransform():Transform
 		{
 			return mLocalTransform;
 		}
@@ -991,7 +988,7 @@ package org.angle3d.scene
 		 *
 		 * @param material The material to set.
 		 */
-		public function setMaterial(material : Material) : void
+		public function setMaterial(material:Material):void
 		{
 
 		}
@@ -1002,7 +999,7 @@ package org.angle3d.scene
 		 *
 		 * @param light The light to add.
 		 */
-		public function addLight(light : Light) : void
+		public function addLight(light:Light):void
 		{
 			mLocalLights.addLight(light);
 			setLightListRefresh();
@@ -1014,7 +1011,7 @@ package org.angle3d.scene
 		 * @param light The light to remove.
 		 * @see Spatial#addLight(org.angle3d.light.Light)
 		 */
-		public function removeLight(light : Light) : void
+		public function removeLight(light:Light):void
 		{
 			mLocalLights.removeLight(light);
 			setLightListRefresh();
@@ -1025,7 +1022,7 @@ package org.angle3d.scene
 		 *
 		 * @return The spatial on which this method is called, e.g <code>this</code>.
 		 */
-		public function move(offset : Vector3f) : void
+		public function move(offset:Vector3f):void
 		{
 			mLocalTransform.translation.addLocal(offset);
 			setTransformRefresh();
@@ -1036,7 +1033,7 @@ package org.angle3d.scene
 		 *
 		 * @return The spatial on which this method is called, e.g <code>this</code>.
 		 */
-		public function scale(sc : Vector3f) : void
+		public function scale(sc:Vector3f):void
 		{
 			mLocalTransform.scale.multiplyLocal(sc);
 			setTransformRefresh();
@@ -1047,7 +1044,7 @@ package org.angle3d.scene
 		 *
 		 * @return The spatial on which this method is called, e.g <code>this</code>.
 		 */
-		public function rotate(rot : Quaternion) : void
+		public function rotate(rot:Quaternion):void
 		{
 			mLocalTransform.rotation.multiplyLocal(rot);
 			setTransformRefresh();
@@ -1059,10 +1056,10 @@ package org.angle3d.scene
 		 *
 		 * @return The spatial on which this method is called, e.g <code>this</code>.
 		 */
-		public function rotateAngles(xAngle : Number, yAngle : Number, zAngle : Number) : void
+		public function rotateAngles(xAngle:Number, yAngle:Number, zAngle:Number):void
 		{
-			var tempVars : TempVars = TempVars.getTempVars();
-			var q : Quaternion = tempVars.quat1;
+			var tempVars:TempVars=TempVars.getTempVars();
+			var q:Quaternion=tempVars.quat1;
 
 			q.fromAngles(xAngle, yAngle, zAngle);
 			mLocalTransform.rotation.multiplyLocal(q);
@@ -1075,10 +1072,10 @@ package org.angle3d.scene
 		 * Centers the spatial in the origin of the world bound.
 		 * @return The spatial on which this method is called, e.g <code>this</code>.
 		 */
-		public function center() : Spatial
+		public function center():Spatial
 		{
-			var worldTrans : Vector3f = getWorldTranslation();
-			var absTrans : Vector3f = worldTrans.subtract(worldBound.center);
+			var worldTrans:Vector3f=getWorldTranslation();
+			var absTrans:Vector3f=worldTrans.subtract(worldBound.center);
 			setTranslation(absTrans);
 			return this;
 		}
@@ -1089,7 +1086,7 @@ package org.angle3d.scene
 		 *
 		 * @return The spatial's current renderqueue mode.
 		 */
-		public function get queueBucket() : int
+		public function get queueBucket():int
 		{
 			if (mQueueBucket != QueueBucket.Inherit)
 			{
@@ -1112,7 +1109,7 @@ package org.angle3d.scene
 		 * @see Spatial#setShadowMode(org.angle3d.renderer.queue.RenderQueue.ShadowMode)
 		 * @see ShadowMode
 		 */
-		public function get shadowMode() : int
+		public function get shadowMode():int
 		{
 			if (mShadowMode != ShadowMode.Inherit)
 			{
@@ -1132,7 +1129,7 @@ package org.angle3d.scene
 		 * <code>updateModelBound</code> recalculates the bounding object for this
 		 * Spatial.
 		 */
-		public function updateModelBound() : void
+		public function updateModelBound():void
 		{
 
 		}
@@ -1143,7 +1140,7 @@ package org.angle3d.scene
 		 * @param modelBound
 		 *            the bounding object for this spatial.
 		 */
-		public function setBound(modelBound : BoundingVolume) : void
+		public function setBound(modelBound:BoundingVolume):void
 		{
 
 		}
@@ -1160,20 +1157,20 @@ package org.angle3d.scene
 		 *
 		 * @see Mesh#cloneForAnim()
 		 */
-		public function clone(newName : String, cloneMaterial : Boolean = true, result : Spatial = null) : Spatial
+		public function clone(newName:String, cloneMaterial:Boolean=true, result:Spatial=null):Spatial
 		{
 			if (result == null)
 			{
-				result = new Spatial(newName);
+				result=new Spatial(newName);
 			}
 
 			if (mWorldBound != null)
 			{
-				result.mWorldBound = mWorldBound.clone();
+				result.mWorldBound=mWorldBound.clone();
 			}
 
-			result.mWorldLights = mWorldLights.clone();
-			result.mLocalLights = mLocalLights.clone();
+			result.mWorldLights=mWorldLights.clone();
+			result.mLocalLights=mLocalLights.clone();
 
 			// Set the new owner of the light lists
 			result.mLocalLights.setOwner(result);
@@ -1185,20 +1182,20 @@ package org.angle3d.scene
 			result.mWorldTransform.copyFrom(mWorldTransform);
 			result.mLocalTransform.copyFrom(mLocalTransform);
 
-			result.parent = null;
+			result.parent=null;
 			result.setBoundRefresh();
 			result.setTransformRefresh();
 			result.setLightListRefresh();
 
-			var length : int = mControls.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=mControls.length;
+			for (var i:int=0; i < length; i++)
 			{
 				result.mControls.push(mControls[i].cloneForSpatial(result));
 			}
 			return result;
 		}
 
-		public function get worldBound() : BoundingVolume
+		public function get worldBound():BoundingVolume
 		{
 			checkDoBoundUpdate();
 			return mWorldBound;
@@ -1213,15 +1210,15 @@ package org.angle3d.scene
 		 *            one of CullHint.Dynamic, CullHint.Always, CullHint.Inherit or
 		 *            CullHint.Never
 		 */
-		public function set localCullHint(hint : int) : void
+		public function set localCullHint(hint:int):void
 		{
-			mCullHint = hint;
+			mCullHint=hint;
 		}
 
 		/**
 		 * @return the cullmode set on this Spatial
 		 */
-		public function get localCullHint() : int
+		public function get localCullHint():int
 		{
 			return mCullHint;
 		}
@@ -1231,7 +1228,7 @@ package org.angle3d.scene
 		 * @return the cull mode of this spatial, or if set to CullHint.Inherit,
 		 * the cullmode of it's parent.
 		 */
-		public function get cullHint() : int
+		public function get cullHint():int
 		{
 			if (mCullHint != CullHint.Inherit)
 			{
@@ -1256,9 +1253,9 @@ package org.angle3d.scene
 		 * @param queueBucket
 		 *            The bucket to use for this Spatial.
 		 */
-		public function set localQueueBucket(queueBucket : int) : void
+		public function set localQueueBucket(queueBucket:int):void
 		{
-			mQueueBucket = queueBucket;
+			mQueueBucket=queueBucket;
 		}
 
 		/**
@@ -1266,7 +1263,7 @@ package org.angle3d.scene
 		 *
 		 * @see Spatial#setQueueBucket(org.angle3d.renderer.queue.RenderQueue.Bucket)
 		 */
-		public function get localQueueBucket() : int
+		public function get localQueueBucket():int
 		{
 			return mQueueBucket;
 		}
@@ -1281,9 +1278,9 @@ package org.angle3d.scene
 		 *
 		 * @param shadowMode The local shadow mode to set.
 		 */
-		public function set localShadowMode(shadowMode : int) : void
+		public function set localShadowMode(shadowMode:int):void
 		{
-			mShadowMode = shadowMode;
+			mShadowMode=shadowMode;
 		}
 
 		/**
@@ -1291,7 +1288,7 @@ package org.angle3d.scene
 		 *
 		 * @see Spatial#setShadowMode(org.angle3d.renderer.queue.RenderQueue.ShadowMode)
 		 */
-		public function get localShadowMode() : int
+		public function get localShadowMode():int
 		{
 			return mShadowMode;
 		}
@@ -1304,7 +1301,7 @@ package org.angle3d.scene
 		 *
 		 * @return The spatial's last frustum intersection result.
 		 */
-		public function get lastFrustumIntersection() : int
+		public function get lastFrustumIntersection():int
 		{
 			return mFrustrumIntersects;
 		}
@@ -1318,12 +1315,12 @@ package org.angle3d.scene
 		 * @param intersects
 		 *            the new value
 		 */
-		public function set lastFrustumIntersection(intersects : int) : void
+		public function set lastFrustumIntersection(intersects:int):void
 		{
-			mFrustrumIntersects = intersects;
+			mFrustrumIntersects=intersects;
 		}
 
-		public function toString() : String
+		public function toString():String
 		{
 			return name + "(" + getQualifiedClassName(this) + ")";
 		}
@@ -1340,11 +1337,11 @@ package org.angle3d.scene
 		 *
 		 * @see Spatial#getWorldTransform()
 		 */
-		public function getLocalToWorldMatrix(result : Matrix4f = null) : Matrix4f
+		public function getLocalToWorldMatrix(result:Matrix4f=null):Matrix4f
 		{
 			if (result == null)
 			{
-				result = new Matrix4f();
+				result=new Matrix4f();
 			}
 			else
 			{
@@ -1362,7 +1359,7 @@ package org.angle3d.scene
 		 * Visit each scene graph element ordered by DFS
 		 * @param visitor
 		 */
-		public function depthFirstTraversal(visitor : SceneGraphVisitor) : void
+		public function depthFirstTraversal(visitor:SceneGraphVisitor):void
 		{
 
 		}
@@ -1389,7 +1386,7 @@ package org.angle3d.scene
 		//
 		//}
 
-		public function collideWith(other : Collidable, results : CollisionResults) : int
+		public function collideWith(other:Collidable, results:CollisionResults):int
 		{
 			return -1;
 		}

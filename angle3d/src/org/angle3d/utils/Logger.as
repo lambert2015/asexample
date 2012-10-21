@@ -1,8 +1,9 @@
 ﻿package org.angle3d.utils
 {
+
 	public class Logger
 	{
-		public static function log(message : Object) : void
+		public static function log(message:Object):void
 		{
 			CF::DEBUG
 			{
@@ -10,7 +11,7 @@
 			}
 		}
 
-		public static function warn(message : Object) : void
+		public static function warn(message:Object):void
 		{
 			CF::DEBUG
 			{

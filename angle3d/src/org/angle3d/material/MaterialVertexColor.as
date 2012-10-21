@@ -10,22 +10,22 @@ package org.angle3d.material
 	 */
 	public class MaterialVertexColor extends Material
 	{
-		private var _technique : TechniqueVertexColor;
+		private var _technique:TechniqueVertexColor;
 
 		public function MaterialVertexColor()
 		{
 			super();
 
-			_technique = new TechniqueVertexColor();
+			_technique=new TechniqueVertexColor();
 
 			addTechnique(_technique);
 		}
 
-		override public function set alpha(alpha : Number) : void
+		override public function set alpha(alpha:Number):void
 		{
 			_technique.setAlpha(alpha);
 
-			super.alpha = alpha;
+			super.alpha=alpha;
 		}
 	}
 }

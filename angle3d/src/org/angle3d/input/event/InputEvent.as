@@ -12,7 +12,7 @@ package org.angle3d.input.event
 
 		public function InputEvent()
 		{
-			consumed = false;
+			consumed=false;
 		}
 
 		/**
@@ -33,7 +33,7 @@ package org.angle3d.input.event
 		 */
 		public function setTime(time:int):void
 		{
-			this.time = time;
+			this.time=time;
 		}
 
 		/**
@@ -53,7 +53,7 @@ package org.angle3d.input.event
 		 */
 		public function setConsumed():void
 		{
-			this.consumed = true;
+			this.consumed=true;
 		}
 	}
 }

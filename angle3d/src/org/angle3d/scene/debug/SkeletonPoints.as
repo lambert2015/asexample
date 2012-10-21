@@ -20,33 +20,33 @@ package org.angle3d.scene.debug
 		public function SkeletonPoints(name:String, skeleton:Skeleton, radius:Number)
 		{
 			super(name);
-			this._skeleton = skeleton;
-			this._radius = radius;
+			this._skeleton=skeleton;
+			this._radius=radius;
 
-			material = new MaterialFill(0x00ff00);
-			material.technique.renderState.applyDepthTest = true;
-			material.technique.renderState.depthTest = true;
-			material.technique.renderState.compareMode = Context3DCompareMode.ALWAYS;
+			material=new MaterialFill(0x00ff00);
+			material.technique.renderState.applyDepthTest=true;
+			material.technique.renderState.depthTest=true;
+			material.technique.renderState.compareMode=Context3DCompareMode.ALWAYS;
 
-			points = new Vector.<SphereNode>();
+			points=new Vector.<SphereNode>();
 
-			var boneCount:int = _skeleton.numBones;
-			for (var i:int = 0; i < boneCount; i++)
+			var boneCount:int=_skeleton.numBones;
+			for (var i:int=0; i < boneCount; i++)
 			{
-				var node:SphereNode = new SphereNode("sphere" + i, radius, 8, 8);
+				var node:SphereNode=new SphereNode("sphere" + i, radius, 8, 8);
 				node.setMaterial(material);
 				this.attachChild(node);
-				points[i] = node;
+				points[i]=node;
 			}
 		}
 
 		public function updateGeometry():void
 		{
-			var boneCount:int = _skeleton.numBones;
-			for (var i:int = 0; i < boneCount; i++)
+			var boneCount:int=_skeleton.numBones;
+			for (var i:int=0; i < boneCount; i++)
 			{
-				var bone:Bone = _skeleton.getBoneAt(i);
-				var node:SphereNode = points[i];
+				var bone:Bone=_skeleton.getBoneAt(i);
+				var node:SphereNode=points[i];
 				node.setTranslation(bone.getModelSpacePosition());
 			}
 		}

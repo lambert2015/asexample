@@ -1,7 +1,6 @@
 package org.angle3d.light
 {
 
-	import org.angle3d.math.Color;
 	import org.angle3d.scene.Spatial;
 
 	/**
@@ -12,17 +11,17 @@ package org.angle3d.light
 	 */
 	public class LightList
 	{
-		private var mList : Vector.<Light>;
-		private var mOwner : Spatial;
+		private var mList:Vector.<Light>;
+		private var mOwner:Spatial;
 
 		/**
 		 * Creates a <code>LightList</code> for the given {@link Spatial}.
 		 *
 		 * @param owner The spatial owner
 		 */
-		public function LightList(owner : Spatial = null)
+		public function LightList(owner:Spatial=null)
 		{
-			mList = new Vector.<Light>();
+			mList=new Vector.<Light>();
 
 			setOwner(owner);
 		}
@@ -31,9 +30,9 @@ package org.angle3d.light
 		 * Set the owner of the LightList. Only used for cloning.
 		 * @param owner
 		 */
-		public function setOwner(owner : Spatial) : void
+		public function setOwner(owner:Spatial):void
 		{
-			this.mOwner = owner;
+			this.mOwner=owner;
 		}
 
 		/**
@@ -41,7 +40,7 @@ package org.angle3d.light
 		 *
 		 * @param l The light to add.
 		 */
-		public function addLight(l : Light) : void
+		public function addLight(l:Light):void
 		{
 			if (mList.indexOf(l) == -1)
 			{
@@ -54,7 +53,7 @@ package org.angle3d.light
 		 *
 		 * @param index
 		 */
-		public function removeLightAt(index : int) : void
+		public function removeLightAt(index:int):void
 		{
 			mList.splice(index, 1);
 		}
@@ -64,9 +63,9 @@ package org.angle3d.light
 		 *
 		 * @param l the light to remove
 		 */
-		public function removeLight(l : Light) : void
+		public function removeLight(l:Light):void
 		{
-			var index : int = mList.indexOf(l);
+			var index:int=mList.indexOf(l);
 			if (index > -1)
 			{
 				removeLightAt(index);
@@ -76,12 +75,12 @@ package org.angle3d.light
 		/**
 		 * @return The size of the list.
 		 */
-		public function getSize() : int
+		public function getSize():int
 		{
 			return mList.length;
 		}
 
-		public function getList() : Vector.<Light>
+		public function getList():Vector.<Light>
 		{
 			return mList;
 		}
@@ -90,7 +89,7 @@ package org.angle3d.light
 		 * @return the light at the given index.
 		 * @throws IndexOutOfBoundsException If the given index is outside bounds.
 		 */
-		public function getLightAt(index : int) : Light
+		public function getLightAt(index:int):Light
 		{
 			return mList[index];
 		}
@@ -98,9 +97,9 @@ package org.angle3d.light
 		/**
 		 * Resets list size to 0.
 		 */
-		public function clear() : void
+		public function clear():void
 		{
-			mList.length = 0;
+			mList.length=0;
 		}
 
 		/**
@@ -114,15 +113,15 @@ package org.angle3d.light
 		 *
 		 * @param transformChanged Whether the spatial's transform has changed
 		 */
-		public function sort(transformChanged : Boolean) : void
+		public function sort(transformChanged:Boolean):void
 		{
-			var listSize : int = mList.length;
+			var listSize:int=mList.length;
 			if (listSize > 1)
 			{
 				if (transformChanged)
 				{
 					// check distance of each light
-					for (var i : int = 0; i < listSize; i++)
+					for (var i:int=0; i < listSize; i++)
 					{
 						mList[i].computeLastDistance(mOwner);
 					}
@@ -133,7 +132,7 @@ package org.angle3d.light
 			mList.sort(_compare);
 		}
 
-		private function _compare(a : Light, b : Light) : int
+		private function _compare(a:Light, b:Light):int
 		{
 			if (a.lastDistance < b.lastDistance)
 			{
@@ -156,27 +155,28 @@ package org.angle3d.light
 		 * @param local
 		 * @param parent
 		 */
-		public function update(local : LightList, parent : LightList) : void
+		//TODO 优化，创建对象太多，这里垃圾回收有一次用了4ms
+		public function update(local:LightList, parent:LightList):void
 		{
 			// clear the list
 			clear();
 
 			//copy local LightList
-			mList = local.getList().slice();
+			mList=local.getList().slice();
 
 			// if the spatial has a parent node, add the lights
 			// from the parent list as well
 			if (parent != null)
 			{
-				mList = mList.concat(parent.getList());
+				mList=mList.concat(parent.getList());
 			}
 		}
 
-		public function clone() : LightList
+		public function clone():LightList
 		{
-			var lightList : LightList = new LightList();
-			lightList.mOwner = null;
-			lightList.mList = mList.slice();
+			var lightList:LightList=new LightList();
+			lightList.mOwner=null;
+			lightList.mList=mList.slice();
 			return lightList;
 		}
 	}

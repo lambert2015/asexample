@@ -27,7 +27,7 @@ package org.assetloader.loaders
 		 */
 		protected var _eventDispatcher:IEventDispatcher;
 
-		public function BaseLoader(request:URLRequest, type:String, id:String = null)
+		public function BaseLoader(request:URLRequest, type:String, id:String=null)
 		{
 			super(id || request.url, type, request);
 		}
@@ -39,10 +39,10 @@ package org.assetloader.loaders
 		{
 			if (!_invoked)
 			{
-				_invoked = true;
-				_stopped = false;
+				_invoked=true;
+				_stopped=false;
 
-				_eventDispatcher = constructLoader();
+				_eventDispatcher=constructLoader();
 
 				addListeners(_eventDispatcher);
 
@@ -52,7 +52,7 @@ package org.assetloader.loaders
 			}
 			else
 			{
-				_invoked = false;
+				_invoked=false;
 				stop();
 				start();
 			}
@@ -79,7 +79,7 @@ package org.assetloader.loaders
 		override public function stop():void
 		{
 			removeListeners(_eventDispatcher);
-			_eventDispatcher = null;
+			_eventDispatcher=null;
 
 			super.stop();
 		}
@@ -90,7 +90,7 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			removeListeners(_eventDispatcher);
-			_eventDispatcher = null;
+			_eventDispatcher=null;
 
 			super.destroy();
 		}
@@ -110,8 +110,8 @@ package org.assetloader.loaders
 			}
 			else
 			{
-				_inProgress = false;
-				_failed = true;
+				_inProgress=false;
+				_failed=true;
 				removeListeners(_eventDispatcher);
 				_onError.dispatch(this, event.type, event.text);
 			}
@@ -131,7 +131,7 @@ package org.assetloader.loaders
 		protected function open_handler(event:Event):void
 		{
 			_stats.open();
-			_inProgress = true;
+			_inProgress=true;
 			_onOpen.dispatch(this);
 		}
 
@@ -154,9 +154,9 @@ package org.assetloader.loaders
 
 			removeListeners(_eventDispatcher);
 
-			_inProgress = false;
-			_failed = false;
-			_loaded = true;
+			_inProgress=false;
+			_failed=false;
+			_loaded=true;
 			_onComplete.dispatch(this, _data);
 		}
 
@@ -204,18 +204,18 @@ package org.assetloader.loaders
 		 */
 		override public function setParam(id:String, value:*):void
 		{
-			var success:Boolean = true;
+			var success:Boolean=true;
 
 			switch (id)
 			{
 				case Param.BASE:
-					success = setBase(value);
+					success=setBase(value);
 					break;
 				case Param.PREVENT_CACHE:
 					setPreventCache(value);
 					break;
 				case Param.HEADERS:
-					_request.requestHeaders = value;
+					_request.requestHeaders=value;
 					break;
 			}
 
@@ -231,11 +231,11 @@ package org.assetloader.loaders
 			if (!value)
 				return false;
 
-			var urlParser:URLParser = new URLParser(_request.url);
+			var urlParser:URLParser=new URLParser(_request.url);
 
 			if (!urlParser.host)
 			{
-				_request.url = value + urlParser.url;
+				_request.url=value + urlParser.url;
 				return true;
 			}
 
@@ -247,29 +247,29 @@ package org.assetloader.loaders
 		 */
 		protected function setPreventCache(value:Boolean):void
 		{
-			var url:String = _request.url;
+			var url:String=_request.url;
 			if (value)
 			{
 				if (url.indexOf("ck=") == -1)
-					url += ((url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
+					url+=((url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
 			}
 			else if (url.indexOf("ck=") != -1)
 			{
-				var vrs:URLVariables = new URLVariables(url.slice(url.indexOf("?") + 1));
-				var cleanUrl:String = url.slice(0, url.indexOf("?"));
-				var cleanVrs:URLVariables = new URLVariables();
+				var vrs:URLVariables=new URLVariables(url.slice(url.indexOf("?") + 1));
+				var cleanUrl:String=url.slice(0, url.indexOf("?"));
+				var cleanVrs:URLVariables=new URLVariables();
 
 				for (var queryKey:String in vrs)
 				{
 					if (queryKey != "ck")
-						cleanVrs[queryKey] = vrs[queryKey];
+						cleanVrs[queryKey]=vrs[queryKey];
 				}
 
-				var queryString:String = cleanVrs.toString();
+				var queryString:String=cleanVrs.toString();
 
-				url = cleanUrl + ((queryString != "") ? "?" + queryString : "");
+				url=cleanUrl + ((queryString != "") ? "?" + queryString : "");
 			}
-			_request.url = url;
+			_request.url=url;
 		}
 	}
 }

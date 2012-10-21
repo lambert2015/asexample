@@ -6,10 +6,10 @@ package org.angle3d.effect.gpu.influencers.alpha
 	{
 		private var _alpha:Number;
 
-		public function DefaultAlphaInfluencer(alpha:Number = 1.0)
+		public function DefaultAlphaInfluencer(alpha:Number=1.0)
 		{
 			super();
-			_alpha = alpha;
+			_alpha=alpha;
 		}
 
 		public function getAlpha(index:int):Number

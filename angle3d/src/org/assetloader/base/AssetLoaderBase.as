@@ -49,7 +49,7 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
-		protected var _numConnections:int = 3;
+		protected var _numConnections:int=3;
 
 		/**
 		 * @private
@@ -72,16 +72,16 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
-		protected var _failOnError:Boolean = true;
+		protected var _failOnError:Boolean=true;
 
 		public function AssetLoaderBase(id:String)
 		{
-			_loaderMap = new Dictionary(true);
-			_data = _assetMap = new Dictionary(true);
-			_loaderFactory = new LoaderFactory();
-			_ids = [];
-			_loadedIds = [];
-			_failedIds = [];
+			_loaderMap=new Dictionary(true);
+			_data=_assetMap=new Dictionary(true);
+			_loaderFactory=new LoaderFactory();
+			_ids=[];
+			_loadedIds=[];
+			_failedIds=[];
 
 			super(id, AssetType.GROUP);
 		}
@@ -92,7 +92,7 @@ package org.assetloader.base
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onConfigLoaded = new LoaderSignal();
+			_onConfigLoaded=new LoaderSignal();
 		}
 
 		/**
@@ -104,9 +104,9 @@ package org.assetloader.base
 		 * @return
 		 *
 		 */
-		public function addFile(id:String, url:String, type:String = "AUTO", ... params):ILoader
+		public function addFile(id:String, url:String, type:String="AUTO", ... params):ILoader
 		{
-			var loader:ILoader = _loaderFactory.produce(id, type, new URLRequest(url), params);
+			var loader:ILoader=_loaderFactory.produce(id, type, new URLRequest(url), params);
 			addLoader(loader);
 			return loader;
 		}
@@ -119,25 +119,25 @@ package org.assetloader.base
 			if (hasLoader(loader.id))
 				throw new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINS_LOADER_WITH_ID(_id, loader.id));
 
-			_loaderMap[loader.id] = loader;
+			_loaderMap[loader.id]=loader;
 
 			_ids.push(loader.id);
-			_numLoaders = _ids.length;
+			_numLoaders=_ids.length;
 
 			if (loader.loaded)
 			{
 				_loadedIds.push(loader.id);
-				_numLoaded = _loadedIds.length;
-				_assetMap[loader.id] = loader.data;
+				_numLoaded=_loadedIds.length;
+				_assetMap[loader.id]=loader.data;
 			}
 			else if (loader.failed)
 			{
 				_failedIds.push(loader.id);
-				_numFailed = _failedIds.length;
+				_numFailed=_failedIds.length;
 			}
 
-			_failed = (_numFailed > 0);
-			_loaded = (_numLoaders == _numLoaded);
+			_failed=(_numFailed > 0);
+			_loaded=(_numLoaders == _numLoaded);
 
 			if (loader.getParam(Param.PRIORITY) == 0)
 				loader.setParam(Param.PRIORITY, -(_numLoaders - 1));
@@ -154,7 +154,7 @@ package org.assetloader.base
 		 */
 		public function remove(id:String):ILoader
 		{
-			var loader:ILoader = getLoader(id);
+			var loader:ILoader=getLoader(id);
 			if (loader)
 			{
 				_ids.splice(_ids.indexOf(id), 1);
@@ -163,16 +163,16 @@ package org.assetloader.base
 
 				if (loader.loaded)
 					_loadedIds.splice(_loadedIds.indexOf(id), 1);
-				_numLoaded = _loadedIds.length;
+				_numLoaded=_loadedIds.length;
 
 				if (loader.failed)
 					_failedIds.splice(_failedIds.indexOf(id), 1);
-				_numFailed = _failedIds.length;
+				_numFailed=_failedIds.length;
 
 				loader.onStart.remove(start_handler);
 				removeListeners(loader);
 
-				_numLoaders = _ids.length;
+				_numLoaders=_ids.length;
 			}
 
 			updateTotalBytes();
@@ -187,12 +187,12 @@ package org.assetloader.base
 		 */
 		override public function destroy():void
 		{
-			var idsCopy:Array = _ids.concat();
+			var idsCopy:Array=_ids.concat();
 			var loader:ILoader;
 
 			for each (var id:String in idsCopy)
 			{
-				loader = remove(id);
+				loader=remove(id);
 				loader.destroy();
 			}
 
@@ -207,15 +207,15 @@ package org.assetloader.base
 		 */
 		protected function updateTotalBytes():void
 		{
-			var bytesTotal:uint = 0;
+			var bytesTotal:uint=0;
 
 			for each (var loader:ILoader in _loaderMap)
 			{
 				if (!loader.getParam(Param.ON_DEMAND))
-					bytesTotal += loader.stats.bytesTotal;
+					bytesTotal+=loader.stats.bytesTotal;
 			}
 
-			_stats.bytesTotal = bytesTotal;
+			_stats.bytesTotal=bytesTotal;
 		}
 
 		/**
@@ -226,7 +226,7 @@ package org.assetloader.base
 			if (_configParser)
 				return _configParser;
 
-			_configParser = new XmlConfigParser();
+			_configParser=new XmlConfigParser();
 			return _configParser;
 		}
 
@@ -267,7 +267,7 @@ package org.assetloader.base
 			{
 				if (loader is AssetLoaderBase)
 				{
-					var assetloader:AssetLoaderBase = AssetLoaderBase(loader);
+					var assetloader:AssetLoaderBase=AssetLoaderBase(loader);
 					if (assetloader.hasLoader(id) || assetloader.hasCircularReference(id))
 						return true;
 				}
@@ -291,7 +291,7 @@ package org.assetloader.base
 
 		protected function start_handler(signal:LoaderSignal):void
 		{
-			var loader:ILoader = signal.loader;
+			var loader:ILoader=signal.loader;
 
 			loader.onStart.remove(start_handler);
 			loader.onStop.add(stop_handler);
@@ -301,7 +301,7 @@ package org.assetloader.base
 
 		protected function stop_handler(signal:LoaderSignal):void
 		{
-			var loader:ILoader = signal.loader;
+			var loader:ILoader=signal.loader;
 
 			loader.onStart.add(start_handler);
 			loader.onStop.remove(stop_handler);
@@ -314,7 +314,7 @@ package org.assetloader.base
 		 */
 		protected function error_handler(signal:ErrorSignal):void
 		{
-			_failed = true;
+			_failed=true;
 			_onError.dispatch(this, signal.type, signal.message);
 		}
 
@@ -332,15 +332,15 @@ package org.assetloader.base
 		 */
 		protected function progress_handler(signal:LoaderSignal):void
 		{
-			_inProgress = true;
+			_inProgress=true;
 
-			var bytesLoaded:uint = 0;
-			var bytesTotal:uint = 0;
+			var bytesLoaded:uint=0;
+			var bytesTotal:uint=0;
 
 			for each (var loader:ILoader in _loaderMap)
 			{
-				bytesLoaded += loader.stats.bytesLoaded;
-				bytesTotal += loader.stats.bytesTotal;
+				bytesLoaded+=loader.stats.bytesLoaded;
+				bytesTotal+=loader.stats.bytesTotal;
 			}
 
 			_stats.update(bytesLoaded, bytesTotal);
@@ -351,10 +351,10 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
-		protected function complete_handler(signal:LoaderSignal, data:* = null):void
+		protected function complete_handler(signal:LoaderSignal, data:*=null):void
 		{
-			_loaded = (_numLoaders == _numLoaded);
-			_inProgress = false;
+			_loaded=(_numLoaders == _numLoaded);
+			_inProgress=false;
 			_stats.done();
 
 			_onComplete.dispatch(this, data);
@@ -376,7 +376,7 @@ package org.assetloader.base
 		 */
 		public function set numConnections(value:int):void
 		{
-			_numConnections = value;
+			_numConnections=value;
 		}
 
 		/**
@@ -501,7 +501,7 @@ package org.assetloader.base
 		 */
 		public function set failOnError(value:Boolean):void
 		{
-			_failOnError = value;
+			_failOnError=value;
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//

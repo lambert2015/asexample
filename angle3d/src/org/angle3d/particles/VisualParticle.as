@@ -55,48 +55,48 @@ package org.angle3d.particles
 		{
 			super(ParticleType.PT_VISUAL);
 
-			mMarkedForEmission  = true; // Default is false, but visual particles are always emitted.
-			
-			originalColor = color = 0xFFFFFFFF;
+			mMarkedForEmission=true; // Default is false, but visual particles are always emitted.
+
+			originalColor=color=0xFFFFFFFF;
 			zRotation=0;
-			zRotationSpeed = 0;
-			ownDimensions = false;
-			width = height = depth = 1;
-			radius = 0.87;
-			
-			textureAnimationTimeStep = 0.1;
-			textureAnimationTimeStepCount = 0.1;
-			textureCoordsCurrent = 0;
-			textureAnimationDirectionUp = true;
+			zRotationSpeed=0;
+			ownDimensions=false;
+			width=height=depth=1;
+			radius=0.87;
+
+			textureAnimationTimeStep=0.1;
+			textureAnimationTimeStepCount=0.1;
+			textureCoordsCurrent=0;
+			textureAnimationDirectionUp=true;
 		}
-		
+
 		override public function _initForEmission():void
 		{
 			super._initForEmission();
-			textureAnimationTimeStep = 0.1;
-			textureAnimationTimeStepCount = 0.0;
-			textureCoordsCurrent = 0;
-			textureAnimationDirectionUp = true;
+			textureAnimationTimeStep=0.1;
+			textureAnimationTimeStepCount=0.0;
+			textureCoordsCurrent=0;
+			textureAnimationDirectionUp=true;
 		}
 
 		public function setOwnDimensions(newWidth:Number, newHeight:Number, newDepth:Number):void
 		{
-			ownDimensions = true;
+			ownDimensions=true;
 			if (newWidth)
-				width = newWidth;
+				width=newWidth;
 			if (newHeight)
-				height = newHeight;
+				height=newHeight;
 			if (newDepth)
-				depth = newDepth;
-			
+				depth=newDepth;
+
 			_calculateBoundingSphereRadius();
-			
+
 			parentEmitter.technique._notifyParticleResized();
 		}
 
 		public function _calculateBoundingSphereRadius():void
 		{
-			radius = 0.5 * Math.max(depth, Math.max(width, height)); // approximation
+			radius=0.5 * Math.max(depth, Math.max(width, height)); // approximation
 		}
 	}
 }

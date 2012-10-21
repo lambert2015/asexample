@@ -17,9 +17,9 @@ package org.angle3d.input.event
 		{
 			super();
 
-			this.keyCode = keyCode;
-			this.keyChar = keyChar;
-			this.pressed = pressed;
+			this.keyCode=keyCode;
+			this.keyChar=keyChar;
+			this.pressed=pressed;
 		}
 
 		/**
@@ -34,8 +34,8 @@ package org.angle3d.input.event
 
 		public function toString():String
 		{
-			var str:String = "Key(CODE=" + keyCode;
-			str = str + ", CHAR=" + keyChar;
+			var str:String="Key(CODE=" + keyCode;
+			str=str + ", CHAR=" + keyChar;
 
 			if (pressed)
 			{

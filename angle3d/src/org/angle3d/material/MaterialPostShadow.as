@@ -8,19 +8,20 @@ package org.angle3d.material
 	public class MaterialPostShadow extends Material
 	{
 		private var _postShadowTechnique:TechniquePostShadow;
+
 		public function MaterialPostShadow()
 		{
 			super();
-			
-			_postShadowTechnique = new TechniquePostShadow();
+
+			_postShadowTechnique=new TechniquePostShadow();
 			addTechnique(_postShadowTechnique);
 		}
-		
+
 		public function setTexture(texture:TextureMap):void
 		{
 			_postShadowTechnique.setTexture(texture);
 		}
-		
+
 		public function setLightViewProjection(matrix:Matrix4f):void
 		{
 			_postShadowTechnique.setLightViewProjection(matrix);

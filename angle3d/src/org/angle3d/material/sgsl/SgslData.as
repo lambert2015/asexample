@@ -1,7 +1,7 @@
 package org.angle3d.material.sgsl
 {
 	import flash.utils.Dictionary;
-	
+
 	import org.angle3d.material.sgsl.node.AgalNode;
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
 	import org.angle3d.material.sgsl.node.AtomNode;
@@ -47,30 +47,30 @@ package org.angle3d.material.sgsl
 
 		public function SgslData(shaderType:String)
 		{
-			this.shaderType = shaderType;
+			this.shaderType=shaderType;
 
-			_nodes = new Vector.<AgalNode>();
+			_nodes=new Vector.<AgalNode>();
 
-			_tempPool = new TempRegPool();
-			uniformPool = new UniformRegPool(shaderType);
-			varyingPool = new VaryingRegPool();
+			_tempPool=new TempRegPool();
+			uniformPool=new UniformRegPool(shaderType);
+			varyingPool=new VaryingRegPool();
 			if (shaderType == ShaderType.VERTEX)
 			{
-				attributePool = new AttributeRegPool();
+				attributePool=new AttributeRegPool();
 			}
 			else
 			{
-				texturePool = new TextureRegPool();
+				texturePool=new TextureRegPool();
 			}
 
-			_regsMap = new Dictionary();
-			var reg:OutputReg = new OutputReg();
-			_regsMap[reg.name] = reg;
+			_regsMap=new Dictionary();
+			var reg:OutputReg=new OutputReg();
+			_regsMap[reg.name]=reg;
 		}
 
 		public function clear():void
 		{
-			_nodes.length = 0;
+			_nodes.length=0;
 
 			_tempPool.clear();
 			uniformPool.clear();
@@ -84,9 +84,9 @@ package org.angle3d.material.sgsl
 				texturePool.clear();
 			}
 
-			_regsMap = new Dictionary();
-			var reg:OutputReg = new OutputReg();
-			_regsMap[reg.name] = reg;
+			_regsMap=new Dictionary();
+			var reg:OutputReg=new OutputReg();
+			_regsMap[reg.name]=reg;
 		}
 
 		public function get nodes():Vector.<AgalNode>
@@ -98,17 +98,17 @@ package org.angle3d.material.sgsl
 		{
 			var reg:LeafNode;
 
-			var children:Vector.<LeafNode> = node.children;
-			var cLength:int = children.length;
-			for (var i:int = 0; i < cLength; i++)
+			var children:Vector.<LeafNode>=node.children;
+			var cLength:int=children.length;
+			for (var i:int=0; i < cLength; i++)
 			{
-				reg = children[i];
+				reg=children[i];
 
 				if (reg is FunctionCallNode)
 				{
-					var regChildren:Vector.<LeafNode> = (reg as FunctionCallNode).children;
-					var rLength:int = regChildren.length;
-					for (var j:int = 0; j < rLength && j < 2; j++)
+					var regChildren:Vector.<LeafNode>=(reg as FunctionCallNode).children;
+					var rLength:int=regChildren.length;
+					for (var j:int=0; j < rLength && j < 2; j++)
 					{
 						if (regChildren[j] is ConstantNode)
 						{
@@ -152,11 +152,11 @@ package org.angle3d.material.sgsl
 				Assert.assert(shaderType == ShaderType.FRAGMENT, "shareWith只能在Fragment中调用");
 			}
 
-			var pool:VaryingRegPool = vertexData.varyingPool;
+			var pool:VaryingRegPool=vertexData.varyingPool;
 
-			var regs:Vector.<RegNode> = pool.getRegs();
-			var rLength:int = regs.length;
-			for (var i:int = 0; i < rLength; i++)
+			var regs:Vector.<RegNode>=pool.getRegs();
+			var rLength:int=regs.length;
+			for (var i:int=0; i < rLength; i++)
 			{
 				addReg(regs[i]);
 			}
@@ -220,7 +220,7 @@ package org.angle3d.material.sgsl
 				Assert.assert(_regsMap[reg.name] == undefined, reg.name + "变量名定义重复");
 			}
 
-			_regsMap[reg.name] = reg;
+			_regsMap[reg.name]=reg;
 		}
 
 		/**
@@ -265,7 +265,7 @@ package org.angle3d.material.sgsl
 
 
 			//添加所有临时变量到一个数组中
-			var tempList:Vector.<TempReg> = _getAllTempRegs();
+			var tempList:Vector.<TempReg>=_getAllTempRegs();
 			_registerTempReg(tempList);
 		}
 
@@ -278,7 +278,7 @@ package org.angle3d.material.sgsl
 			if (list.length > 0)
 			{
 				//取出第一个临时变量
-				var reg:TempReg = list.shift();
+				var reg:TempReg=list.shift();
 
 				//未注册的需要注册
 				if (!reg.registered)
@@ -304,11 +304,11 @@ package org.angle3d.material.sgsl
 		 */
 		private function _getAllTempRegs():Vector.<TempReg>
 		{
-			var tempList:Vector.<TempReg> = new Vector.<TempReg>();
-			var tLength:int = _nodes.length;
-			for (var i:int = 0; i < tLength; i++)
+			var tempList:Vector.<TempReg>=new Vector.<TempReg>();
+			var tLength:int=_nodes.length;
+			for (var i:int=0; i < tLength; i++)
 			{
-				tempList = tempList.concat(_checkNodeTempRegs(_nodes[i]));
+				tempList=tempList.concat(_checkNodeTempRegs(_nodes[i]));
 			}
 			return tempList;
 		}
@@ -319,7 +319,7 @@ package org.angle3d.material.sgsl
 			{
 				_addTempReg(leaf.name, list);
 
-				var access:AtomNode = (leaf as ArrayAccessNode).access;
+				var access:AtomNode=(leaf as ArrayAccessNode).access;
 				if (access != null)
 				{
 					_addTempReg(access.name, list);
@@ -333,7 +333,7 @@ package org.angle3d.material.sgsl
 
 		private function _addTempReg(name:String, list:Vector.<TempReg>):void
 		{
-			var reg:RegNode = getRegNode(name);
+			var reg:RegNode=getRegNode(name);
 			if (reg is TempReg)
 			{
 				list.push(reg as TempReg);
@@ -346,20 +346,20 @@ package org.angle3d.material.sgsl
 		 */
 		private function _checkNodeTempRegs(node:AgalNode):Vector.<TempReg>
 		{
-			var list:Vector.<TempReg> = new Vector.<TempReg>();
+			var list:Vector.<TempReg>=new Vector.<TempReg>();
 
 			var leaf:LeafNode;
 
-			var children:Vector.<LeafNode> = node.children;
-			var cLength:int = children.length;
-			for (var i:int = 0; i < cLength; i++)
+			var children:Vector.<LeafNode>=node.children;
+			var cLength:int=children.length;
+			for (var i:int=0; i < cLength; i++)
 			{
-				leaf = children[i];
+				leaf=children[i];
 				if (leaf is FunctionCallNode)
 				{
-					var leafChildren:Vector.<LeafNode> = (leaf as FunctionCallNode).children;
-					var rLength:int = leafChildren.length;
-					for (var j:int = 0; j < rLength && j < 2; j++)
+					var leafChildren:Vector.<LeafNode>=(leaf as FunctionCallNode).children;
+					var rLength:int=leafChildren.length;
+					for (var j:int=0; j < rLength && j < 2; j++)
 					{
 						_checkLeafTempReg(leafChildren[j], list);
 					}

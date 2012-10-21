@@ -10,12 +10,12 @@ package org.angle3d.material.sgsl.node.reg
 	 */
 	public class TextureReg extends RegNode
 	{
-		public function TextureReg(dataType:String,name:String)
+		public function TextureReg(dataType:String, name:String)
 		{
 			super(RegType.UNIFORM, dataType, name);
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
 			return new TextureReg(dataType, name);
 		}

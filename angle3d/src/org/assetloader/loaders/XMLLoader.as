@@ -16,10 +16,10 @@ package org.assetloader.loaders
 		 */
 		protected var _xml:XML;
 
-		public function XMLLoader(request:URLRequest, id:String = null)
+		public function XMLLoader(request:URLRequest, id:String=null)
 		{
 			super(request, id);
-			_type = AssetType.XML;
+			_type=AssetType.XML;
 		}
 
 		/**
@@ -28,7 +28,7 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(XML);
+			_onComplete=new LoaderSignal(XML);
 		}
 
 		/**
@@ -37,7 +37,7 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			super.destroy();
-			_xml = null;
+			_xml=null;
 		}
 
 		/**
@@ -49,7 +49,7 @@ package org.assetloader.loaders
 		{
 			try
 			{
-				_data = _xml = new XML(data);
+				_data=_xml=new XML(data);
 			}
 			catch (err:Error)
 			{

@@ -12,12 +12,12 @@ package org.angle3d.particles.attribute
 		{
 			super();
 
-			type = DynamicAttributeType.DAT_RANDOM;
+			type=DynamicAttributeType.DAT_RANDOM;
 		}
 
 		public function setMin(min:Number):void
 		{
-			mMin = min;
+			mMin=min;
 		}
 
 		public function getMin():Number
@@ -27,7 +27,7 @@ package org.angle3d.particles.attribute
 
 		public function setMax(max:Number):void
 		{
-			mMax = max;
+			mMax=max;
 		}
 
 		public function getMax():Number
@@ -37,8 +37,8 @@ package org.angle3d.particles.attribute
 
 		public function setMinMax(min:Number, max:Number):void
 		{
-			mMin = min;
-			mMax = max;
+			mMin=min;
+			mMax=max;
 		}
 
 		override public function getValue(x:Number):Number
@@ -51,9 +51,9 @@ package org.angle3d.particles.attribute
 			if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_RANDOM)
 				return;
 
-			var dynAttr:DynamicAttributeRandom = dynamicAttribute as DynamicAttributeRandom;
-			dynAttr.mMin = mMin;
-			dynAttr.mMax = mMax;
+			var dynAttr:DynamicAttributeRandom=dynamicAttribute as DynamicAttributeRandom;
+			dynAttr.mMin=mMin;
+			dynAttr.mMax=mMax;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package org.angle3d.material.sgsl.node
 {
+
 	/**
 	 * 预定义条件
 	 */
@@ -10,9 +11,9 @@ package org.angle3d.material.sgsl.node
 			super();
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
-			var node : PredefineNode = new PredefineNode();
+			var node:PredefineNode=new PredefineNode();
 			cloneChildren(node);
 			return node;
 		}
@@ -20,13 +21,13 @@ package org.angle3d.material.sgsl.node
 		/**
 		 * 符合条件
 		 */
-		public function isMatch(defines : Vector.<String>) : Boolean
+		public function isMatch(defines:Vector.<String>):Boolean
 		{
-			var subNode : PredefineSubNode;
-			var cLength : int = _children.length;
-			for (var i : int = 0; i < cLength; i++)
+			var subNode:PredefineSubNode;
+			var cLength:int=_children.length;
+			for (var i:int=0; i < cLength; i++)
 			{
-				subNode = _children[i] as PredefineSubNode;
+				subNode=_children[i] as PredefineSubNode;
 				if (subNode.isMatch(defines))
 				{
 					return true;
@@ -40,14 +41,14 @@ package org.angle3d.material.sgsl.node
 		 * @param defines
 		 * @return
 		 *
-		 */		
-		public function getMatchChildren(defines : Vector.<String>) : Vector.<LeafNode>
+		 */
+		public function getMatchChildren(defines:Vector.<String>):Vector.<LeafNode>
 		{
-			var subNode : PredefineSubNode;
-			var cLength : int = _children.length;
-			for (var i : int = 0; i < cLength; i++)
+			var subNode:PredefineSubNode;
+			var cLength:int=_children.length;
+			for (var i:int=0; i < cLength; i++)
 			{
-				subNode = _children[i] as PredefineSubNode;
+				subNode=_children[i] as PredefineSubNode;
 				//只执行最先符合条件的
 				if (subNode.isMatch(defines))
 				{
@@ -59,10 +60,10 @@ package org.angle3d.material.sgsl.node
 			return null;
 		}
 
-		override public function toString(level : int = 0) : String
+		override public function toString(level:int=0):String
 		{
-			var result : String = "";
-			result += getChildrenString(level - 1);
+			var result:String="";
+			result+=getChildrenString(level - 1);
 			return result;
 		}
 	}

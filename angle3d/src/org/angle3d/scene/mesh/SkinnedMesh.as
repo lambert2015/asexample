@@ -9,8 +9,8 @@ package org.angle3d.scene.mesh
 		public function SkinnedMesh()
 		{
 			super();
-			
-			mType = MeshType.MT_SKELETAL_ANIMATION;
+
+			mType=MeshType.MT_SKELETAL_ANIMATION;
 		}
 	}
 }

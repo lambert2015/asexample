@@ -4,14 +4,14 @@ package org.angle3d.material.sgsl
 
 	public class DataType
 	{
-		public static const FLOAT : String = "float";
-		public static const VEC2 : String = "vec2";
-		public static const VEC3 : String = "vec3";
-		public static const VEC4 : String = "vec4";
-		public static const MAT3 : String = "mat3";
-		public static const MAT4 : String = "mat4";
-		public static const SAMPLER2D : String = "sampler2D";
-		public static const SAMPLERCUBE : String = "samplerCube";
+		public static const FLOAT:String="float";
+		public static const VEC2:String="vec2";
+		public static const VEC3:String="vec3";
+		public static const VEC4:String="vec4";
+		public static const MAT3:String="mat3";
+		public static const MAT4:String="mat4";
+		public static const SAMPLER2D:String="sampler2D";
+		public static const SAMPLERCUBE:String="samplerCube";
 
 //		public static const SAMPLER3D : String = "sampler3D";
 
@@ -20,7 +20,7 @@ package org.angle3d.material.sgsl
 		 * @param	type
 		 * @return
 		 */
-		public static function isMat(dataType : String) : Boolean
+		public static function isMat(dataType:String):Boolean
 		{
 			return dataType == MAT3 || dataType == MAT4;
 		}
@@ -30,12 +30,12 @@ package org.angle3d.material.sgsl
 		 * @param	type
 		 * @return
 		 */
-		public static function isNeedOffset(dataType : String) : Boolean
+		public static function isNeedOffset(dataType:String):Boolean
 		{
 			return dataType == FLOAT || dataType == VEC2 || dataType == VEC3;
 		}
 
-		public static function getSize(dataType : String) : int
+		public static function getSize(dataType:String):int
 		{
 			switch (dataType)
 			{
@@ -67,7 +67,7 @@ package org.angle3d.material.sgsl
 		 * @param	varType
 		 * @return
 		 */
-		public static function getRegisterCount(dataType : String) : int
+		public static function getRegisterCount(dataType:String):int
 		{
 			switch (dataType)
 			{

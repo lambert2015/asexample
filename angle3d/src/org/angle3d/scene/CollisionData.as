@@ -14,10 +14,7 @@ package org.angle3d.scene
 	 */
 	public interface CollisionData extends Cloneable
 	{
-		function collideWith(other:Collidable,
-			worldMatrix:Matrix4f,
-			worldBound:BoundingVolume,
-			results:CollisionResults):int;
+		function collideWith(other:Collidable, worldMatrix:Matrix4f, worldBound:BoundingVolume, results:CollisionResults):int;
 
 	}
 }

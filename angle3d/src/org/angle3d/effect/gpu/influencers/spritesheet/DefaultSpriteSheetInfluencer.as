@@ -6,9 +6,9 @@ package org.angle3d.effect.gpu.influencers.spritesheet
 	{
 		private var _totalFrame:int;
 
-		public function DefaultSpriteSheetInfluencer(totalFrame:int = 1)
+		public function DefaultSpriteSheetInfluencer(totalFrame:int=1)
 		{
-			_totalFrame = totalFrame;
+			_totalFrame=totalFrame;
 		}
 
 		public function getTotalFrame():int

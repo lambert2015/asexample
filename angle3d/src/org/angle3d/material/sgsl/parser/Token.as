@@ -3,21 +3,21 @@
 
 	public class Token
 	{
-		public var name : String;
-		public var type : String;
+		public var name:String;
+		public var type:String;
 
-		public function Token(type : String, name : String)
+		public function Token(type:String, name:String)
 		{
-			this.type = type;
-			this.name = name;
+			this.type=type;
+			this.name=name;
 		}
 
-		public function equals(type : String, name : String) : Boolean
+		public function equals(type:String, name:String):Boolean
 		{
 			return (this.type == type && this.name == name);
 		}
 
-		public function equalsToken(token : Token) : Boolean
+		public function equalsToken(token:Token):Boolean
 		{
 			return (type == token.type && name == token.name);
 		}

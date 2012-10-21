@@ -12,17 +12,17 @@ package org.angle3d.material
 	{
 		private var _technique:TechniqueFill;
 
-		public function MaterialFill(color:uint = 0xFFFFF, alpha:Number = 1.0)
+		public function MaterialFill(color:uint=0xFFFFF, alpha:Number=1.0)
 		{
 			super();
 
-			_technique = new TechniqueFill(color);
+			_technique=new TechniqueFill(color);
 
 			addTechnique(_technique);
 
-			this.alpha = alpha;
+			this.alpha=alpha;
 		}
-		
+
 		public function get technique():TechniqueFill
 		{
 			return _technique;
@@ -30,19 +30,19 @@ package org.angle3d.material
 
 		override public function set influence(value:Number):void
 		{
-			_technique.influence = value;
+			_technique.influence=value;
 		}
 
 		override public function set alpha(alpha:Number):void
 		{
-			_technique.alpha = alpha;
+			_technique.alpha=alpha;
 
-			super.alpha = alpha;
+			super.alpha=alpha;
 		}
 
 		public function set color(color:uint):void
 		{
-			_technique.color = color;
+			_technique.color=color;
 		}
 
 		public function get color():uint

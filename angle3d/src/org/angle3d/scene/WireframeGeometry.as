@@ -9,14 +9,14 @@ package org.angle3d.scene
 	public class WireframeGeometry extends Geometry
 	{
 
-		public function WireframeGeometry(name : String, mesh : WireframeShape)
+		public function WireframeGeometry(name:String, mesh:WireframeShape)
 		{
 			super(name, mesh);
 
-			this.mMaterial = new MaterialWireframe();
+			this.mMaterial=new MaterialWireframe();
 		}
 
-		override public function setMaterial(material : Material) : void
+		override public function setMaterial(material:Material):void
 		{
 			CF::DEBUG
 			{
@@ -26,7 +26,7 @@ package org.angle3d.scene
 			super.setMaterial(material);
 		}
 
-		public function get materialWireframe() : MaterialWireframe
+		public function get materialWireframe():MaterialWireframe
 		{
 			return this.mMaterial as MaterialWireframe;
 		}

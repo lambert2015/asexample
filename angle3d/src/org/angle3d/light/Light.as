@@ -16,35 +16,35 @@ package org.angle3d.light
 		 * Used in LightList for caching the distance
 		 * to the owner spatial. Should be reset after the sorting.
 		 */
-		public var lastDistance : Number;
+		public var lastDistance:Number;
 
-		private var mType : String;
+		private var mType:String;
 
 
-		protected var mColor : Color;
+		protected var mColor:Color;
 
 		/**
 		 * 所有灯光都应该有个范围，超过范围的灯光就不起作用
 		 */
-		protected var mRadius : Number;
+		protected var mRadius:Number;
 
 		/**
 		 * If light is disabled, it will not take effect.
 		 */
-		protected var mEnabled : Boolean;
+		protected var mEnabled:Boolean;
 
 
-		public function Light(type : String)
+		public function Light(type:String)
 		{
-			mType = type;
+			mType=type;
 
-			lastDistance = -1;
+			lastDistance=-1;
 
-			mColor = new Color(1, 1, 1, 1);
-			mEnabled = true;
+			mColor=new Color(1, 1, 1, 1);
+			mEnabled=true;
 		}
 
-		public function get type() : String
+		public function get type():String
 		{
 			return mType;
 		}
@@ -55,7 +55,7 @@ package org.angle3d.light
 		 *
 		 * @return the radius of the light
 		 */
-		public function get radius() : Number
+		public function get radius():Number
 		{
 			return mRadius;
 		}
@@ -72,9 +72,9 @@ package org.angle3d.light
 		 * @param radius the radius of the light influence.
 		 *
 		 */
-		public function set radius(value : Number) : void
+		public function set radius(value:Number):void
 		{
-			mRadius = value;
+			mRadius=value;
 		}
 
 		/**
@@ -84,14 +84,14 @@ package org.angle3d.light
 		 *
 		 * @see Light#setEnabled(boolean)
 		 */
-		private function get enabled() : Boolean
+		private function get enabled():Boolean
 		{
 			return mEnabled;
 		}
 
-		private function set enabled(value : Boolean) : void
+		private function set enabled(value:Boolean):void
 		{
-			mEnabled = value;
+			mEnabled=value;
 		}
 
 		/**
@@ -99,12 +99,12 @@ package org.angle3d.light
 		 * @return Intensity of the light source.
 		 *
 		 */
-		public function set intensity(value : Number) : void
+		public function set intensity(value:Number):void
 		{
-			mColor.a = value;
+			mColor.a=value;
 		}
 
-		public function get intensity() : Number
+		public function get intensity():Number
 		{
 			return mColor.a;
 		}
@@ -114,12 +114,12 @@ package org.angle3d.light
 		 *
 		 * @param color the light color.
 		 */
-		public function set color(color : uint) : void
+		public function set color(color:uint):void
 		{
 			mColor.setRGB(color);
 		}
 
-		public function get color() : uint
+		public function get color():uint
 		{
 			return mColor.getColor();
 		}
@@ -127,7 +127,7 @@ package org.angle3d.light
 		/**
 		 * Used internally to compute the last distance value.
 		 */
-		public function computeLastDistance(owner : Spatial) : void
+		public function computeLastDistance(owner:Spatial):void
 		{
 
 		}

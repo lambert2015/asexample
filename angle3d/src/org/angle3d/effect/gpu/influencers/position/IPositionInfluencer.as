@@ -5,7 +5,7 @@ package org.angle3d.effect.gpu.influencers.position
 
 	/**
 	 * 控制粒子的初始出现位置
-	 * 
+	 *
 	 * 应该也确定包围盒
 	 */
 	public interface IPositionInfluencer extends IInfluencer

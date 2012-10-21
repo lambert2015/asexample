@@ -15,18 +15,18 @@ package org.angle3d.effect.cpu.shape
 
 		public function EmitterSphereShape(center:Vector3f, radius:Number)
 		{
-			_center = center.clone();
-			_radius = radius;
-			_radiusSquared = radius * radius;
+			_center=center.clone();
+			_radius=radius;
+			_radiusSquared=radius * radius;
 		}
 
 		public function getRandomPoint(store:Vector3f):void
 		{
 			do
 			{
-				store.x = (Math.random() * 2 - 1) * _radius;
-				store.y = (Math.random() * 2 - 1) * _radius;
-				store.z = (Math.random() * 2 - 1) * _radius;
+				store.x=(Math.random() * 2 - 1) * _radius;
+				store.y=(Math.random() * 2 - 1) * _radius;
+				store.z=(Math.random() * 2 - 1) * _radius;
 			} while (store.distanceSquared(_center) > _radiusSquared);
 		}
 

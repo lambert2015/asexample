@@ -50,23 +50,23 @@ package org.osflash.signals.natives.sets
 	{
 		protected var target:IEventDispatcher;
 
-		protected const _signals:Dictionary = new Dictionary();
+		protected const _signals:Dictionary=new Dictionary();
 
 		public function NativeSignalSet(target:IEventDispatcher)
 		{
-			this.target = target;
+			this.target=target;
 		}
 
 		/**
 		 * Lazily instantiates a NativeSignal
 		 * @throws ArgumentError <code>ArgumentError</code>: eventType must not be null.
 		 */
-		public function getNativeSignal(eventType:String, eventClass:Class = null):NativeSignal
+		public function getNativeSignal(eventType:String, eventClass:Class=null):NativeSignal
 		{
 			if (null == eventType)
 				throw new ArgumentError('eventType must not be null.');
 
-			return _signals[eventType] ||= new NativeSignal(target, eventType, eventClass || Event);
+			return _signals[eventType]||=new NativeSignal(target, eventType, eventClass || Event);
 		}
 
 		/**
@@ -75,10 +75,10 @@ package org.osflash.signals.natives.sets
 		public function get numListeners():int
 		{
 			// TODO : This is horrid, it's very expensive to call this if there is a lot of signals.
-			var count:int = 0;
+			var count:int=0;
 			for each (var signal:INativeDispatcher in _signals)
 			{
-				count += signal.numListeners;
+				count+=signal.numListeners;
 			}
 			return count;
 		}
@@ -89,10 +89,10 @@ package org.osflash.signals.natives.sets
 		public function get signals():Array
 		{
 			// TODO : This is horrid, it's very expensive to call this if there is a lot of signals.
-			var result:Array = [];
+			var result:Array=[];
 			for each (var signal:INativeDispatcher in _signals)
 			{
-				result[result.length] = signal;
+				result[result.length]=signal;
 			}
 			return result;
 		}

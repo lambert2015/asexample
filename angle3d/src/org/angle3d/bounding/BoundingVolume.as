@@ -19,14 +19,14 @@ package org.angle3d.bounding
 
 	public class BoundingVolume implements Collidable
 	{
-		protected var checkPlane : int;
+		protected var checkPlane:int;
 
-		public var center : Vector3f;
+		public var center:Vector3f;
 
-		public function BoundingVolume(center : Vector3f = null)
+		public function BoundingVolume(center:Vector3f=null)
 		{
-			this.checkPlane = 0;
-			this.center = new Vector3f();
+			this.checkPlane=0;
+			this.center=new Vector3f();
 			if (center != null)
 			{
 				this.center.copyFrom(center);
@@ -37,7 +37,7 @@ package org.angle3d.bounding
 		 * Grabs the checkplane we should check first.
 		 *
 		 */
-		public function getCheckPlane() : int
+		public function getCheckPlane():int
 		{
 			return checkPlane;
 		}
@@ -47,15 +47,15 @@ package org.angle3d.bounding
 		 *
 		 * @param value
 		 */
-		public function setCheckPlane(value : int) : void
+		public function setCheckPlane(value:int):void
 		{
-			checkPlane = value;
+			checkPlane=value;
 		}
 
 		/**
 		 * getType returns the type of bounding volume this is.
 		 */
-		public function get type() : int
+		public function get type():int
 		{
 			return BoundingVolumeType.NONE;
 		}
@@ -69,12 +69,12 @@ package org.angle3d.bounding
 		 *            the transform to affect the bound.
 		 * @return the new bounding volume.
 		 */
-		public function transform(trans : Transform, result : BoundingVolume = null) : BoundingVolume
+		public function transform(trans:Transform, result:BoundingVolume=null):BoundingVolume
 		{
 			return null;
 		}
 
-		public function transformByMatrix(trans : Matrix4f, result : BoundingVolume = null) : BoundingVolume
+		public function transformByMatrix(trans:Matrix4f, result:BoundingVolume=null):BoundingVolume
 		{
 			return null;
 		}
@@ -89,7 +89,7 @@ package org.angle3d.bounding
 		 *            the plane to check against this bounding volume.
 		 * @return the side on which this bounding volume lies.
 		 */
-		public function whichSide(plane : Plane) : int
+		public function whichSide(plane:Plane):int
 		{
 			return PlaneSide.None;
 		}
@@ -102,7 +102,7 @@ package org.angle3d.bounding
 		 * @param points
 		 *            the points to contain.
 		 */
-		public function computeFromPoints(points : Vector.<Number>) : void
+		public function computeFromPoints(points:Vector.<Number>):void
 		{
 
 		}
@@ -115,7 +115,7 @@ package org.angle3d.bounding
 		 *            the volume to combine.
 		 * @return the new merged bounding volume.
 		 */
-		public function merge(volume : BoundingVolume) : BoundingVolume
+		public function merge(volume:BoundingVolume):BoundingVolume
 		{
 			return null;
 		}
@@ -129,7 +129,7 @@ package org.angle3d.bounding
 		 *            the volume to combine.
 		 * @return this
 		 */
-		public function mergeLocal(volume : BoundingVolume) : void
+		public function mergeLocal(volume:BoundingVolume):void
 		{
 
 		}
@@ -143,11 +143,11 @@ package org.angle3d.bounding
 		 *            a new store is created.
 		 * @return the new BoundingVolume
 		 */
-		public function clone(result : BoundingVolume = null) : BoundingVolume
+		public function clone(result:BoundingVolume=null):BoundingVolume
 		{
 			if (result == null)
 			{
-				result = new BoundingVolume();
+				result=new BoundingVolume();
 			}
 
 			result.setCenter(this.center);
@@ -155,17 +155,17 @@ package org.angle3d.bounding
 			return result;
 		}
 
-		public function copyFrom(volume : BoundingVolume) : void
+		public function copyFrom(volume:BoundingVolume):void
 		{
 
 		}
 
-		public function getCenter() : Vector3f
+		public function getCenter():Vector3f
 		{
 			return center;
 		}
 
-		public function setCenter(newCenter : Vector3f) : void
+		public function setCenter(newCenter:Vector3f):void
 		{
 			center.copyFrom(newCenter);
 		}
@@ -178,7 +178,7 @@ package org.angle3d.bounding
 		 *            The point to get the distance to
 		 * @return distance
 		 */
-		public function distanceTo(t : Vector3f) : Number
+		public function distanceTo(t:Vector3f):Number
 		{
 			return center.distance(t);
 		}
@@ -191,7 +191,7 @@ package org.angle3d.bounding
 		 *            The point to get the distance to
 		 * @return distance
 		 */
-		public function distanceSquaredTo(t : Vector3f) : Number
+		public function distanceSquaredTo(t:Vector3f):Number
 		{
 			return center.distanceSquared(t);
 		}
@@ -204,7 +204,7 @@ package org.angle3d.bounding
 		 *            The point to get the distance to
 		 * @return distance
 		 */
-		public function distanceToEdge(point : Vector3f) : Number
+		public function distanceToEdge(point:Vector3f):Number
 		{
 			return Number.NEGATIVE_INFINITY;
 		}
@@ -218,7 +218,7 @@ package org.angle3d.bounding
 		 *            the second volume to test against.
 		 * @return true if this volume intersects the given volume.
 		 */
-		public function intersects(bv : BoundingVolume) : Boolean
+		public function intersects(bv:BoundingVolume):Boolean
 		{
 			return false;
 		}
@@ -230,7 +230,7 @@ package org.angle3d.bounding
 		 *            the ray to test.
 		 * @return true if this volume is intersected by a given ray.
 		 */
-		public function intersectsRay(ray : Ray) : Boolean
+		public function intersectsRay(ray:Ray):Boolean
 		{
 			return false;
 		}
@@ -243,7 +243,7 @@ package org.angle3d.bounding
 		 *            the bounding sphere to test against.
 		 * @return true if this volume intersects the given bounding sphere.
 		 */
-		public function intersectsSphere(bs : BoundingSphere) : Boolean
+		public function intersectsSphere(bs:BoundingSphere):Boolean
 		{
 			return false;
 		}
@@ -256,12 +256,12 @@ package org.angle3d.bounding
 		 *            the bounding box to test against.
 		 * @return true if this volume intersects the given bounding box.
 		 */
-		public function intersectsBoundingBox(bb : BoundingBox) : Boolean
+		public function intersectsBoundingBox(bb:BoundingBox):Boolean
 		{
 			return false;
 		}
 
-		public function intersectsTriangle(tri : Triangle) : Boolean
+		public function intersectsTriangle(tri:Triangle):Boolean
 		{
 			return false;
 		}
@@ -276,7 +276,7 @@ package org.angle3d.bounding
 		 *            the point to check
 		 * @return true if the point lies within this bounding volume.
 		 */
-		public function contains(point : Vector3f) : Boolean
+		public function contains(point:Vector3f):Boolean
 		{
 			return false;
 		}
@@ -286,17 +286,17 @@ package org.angle3d.bounding
 		 * @param point the point to check
 		 * @return true if the point lies within this bounding volume.
 		 */
-		public function intersectsPoint(point : Vector3f) : Boolean
+		public function intersectsPoint(point:Vector3f):Boolean
 		{
 			return false;
 		}
 
-		public function getVolume() : Number
+		public function getVolume():Number
 		{
 			return 0;
 		}
 
-		public function collideWith(other : Collidable, results : CollisionResults) : int
+		public function collideWith(other:Collidable, results:CollisionResults):int
 		{
 			return -1;
 		}

@@ -22,39 +22,39 @@ package org.angle3d.material.technique
 
 	public class TechniqueVertexColor extends Technique
 	{
-		private var _alpha : Vector.<Number>;
+		private var _alpha:Vector.<Number>;
 
 		public function TechniqueVertexColor()
 		{
 			super("VertexColorTechnique");
 
-			_renderState.applyDepthTest = true;
-			_renderState.depthTest = true;
-			_renderState.compareMode = Context3DCompareMode.LESS_EQUAL;
+			_renderState.applyDepthTest=true;
+			_renderState.depthTest=true;
+			_renderState.compareMode=Context3DCompareMode.LESS_EQUAL;
 
-			_renderState.applyBlendMode = false;
+			_renderState.applyBlendMode=false;
 
-			_alpha = new Vector.<Number>(4, true);
+			_alpha=new Vector.<Number>(4, true);
 		}
 
-		public function setAlpha(alpha : Number) : void
+		public function setAlpha(alpha:Number):void
 		{
-			_alpha[0] = FastMath.fclamp(alpha, 0.0, 1.0);
+			_alpha[0]=FastMath.fclamp(alpha, 0.0, 1.0);
 
 			if (_alpha[0] < 1)
 			{
-				_renderState.depthTest = false;
-				_renderState.applyBlendMode = true;
-				_renderState.blendMode = BlendMode.Alpha;
+				_renderState.depthTest=false;
+				_renderState.applyBlendMode=true;
+				_renderState.blendMode=BlendMode.Alpha;
 			}
 			else
 			{
-				_renderState.depthTest = true;
-				_renderState.applyBlendMode = false;
+				_renderState.depthTest=true;
+				_renderState.applyBlendMode=false;
 			}
 		}
 
-		public function getAlpha() : Number
+		public function getAlpha():Number
 		{
 			return _alpha[0];
 		}
@@ -63,12 +63,12 @@ package org.angle3d.material.technique
 		 * 更新Uniform属性
 		 * @param	shader
 		 */
-		override public function updateShader(shader : Shader) : void
+		override public function updateShader(shader:Shader):void
 		{
 			shader.getUniform(ShaderType.VERTEX, "u_alpha").setVector(_alpha);
 		}
 
-		override protected function getVertexSource(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -86,7 +86,7 @@ package org.angle3d.material.technique
 			    }]]>;
 		}
 
-		override protected function getFragmentSource(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 			   function main(){
@@ -94,20 +94,20 @@ package org.angle3d.material.technique
 			   }]]>;
 		}
 
-		override protected function getBindAttributes(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : Dictionary
+		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
 		{
-			var map : Dictionary = new Dictionary();
-			map[BufferType.POSITION] = "a_position";
-			map[BufferType.COLOR] = "a_color";
+			var map:Dictionary=new Dictionary();
+			map[BufferType.POSITION]="a_position";
+			map[BufferType.COLOR]="a_color";
 
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list : Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
-			list.fixed = true;
+			list.fixed=true;
 			return list;
 		}
 	}

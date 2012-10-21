@@ -9,7 +9,7 @@ package org.osflash.signals.natives.base
 
 		public function get signals():XMLSocketSignalSet
 		{
-			return _signals ||= new XMLSocketSignalSet(this);
+			return _signals||=new XMLSocketSignalSet(this);
 		}
 	}
 }

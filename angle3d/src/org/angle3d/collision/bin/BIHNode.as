@@ -22,9 +22,9 @@ package org.angle3d.collision.bin
 
 		public function BIHNode(left:int, right:int)
 		{
-			this.leftIndex = left;
-			this.rightIndex = right;
-			axis = 3; //indicates leaf
+			this.leftIndex=left;
+			this.rightIndex=right;
+			axis=3; //indicates leaf
 		}
 
 		public function getLeftChild():BIHNode
@@ -34,7 +34,7 @@ package org.angle3d.collision.bin
 
 		public function setLeftChild(left:BIHNode):void
 		{
-			this.left = left;
+			this.left=left;
 		}
 
 		public function getLeftPlane():Number
@@ -44,7 +44,7 @@ package org.angle3d.collision.bin
 
 		public function setLeftPlane(leftPlane:Number):void
 		{
-			this.leftPlane = leftPlane;
+			this.leftPlane=leftPlane;
 		}
 
 		public function getRightChild():BIHNode
@@ -54,7 +54,7 @@ package org.angle3d.collision.bin
 
 		public function setRightChild(right:BIHNode):void
 		{
-			this.right = right;
+			this.right=right;
 		}
 
 		public function getRightPlane():Number
@@ -64,7 +64,7 @@ package org.angle3d.collision.bin
 
 		public function setRightPlane(rightPlane:Number):void
 		{
-			this.rightPlane = rightPlane;
+			this.rightPlane=rightPlane;
 		}
 	}
 }

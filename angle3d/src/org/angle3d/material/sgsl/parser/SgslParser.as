@@ -43,24 +43,24 @@
 
 		public function exec(source:String):BranchNode
 		{
-			_shaderVarMap = new Dictionary();
+			_shaderVarMap=new Dictionary();
 
-			_tok = new Tokenizer(_cleanSource(source));
+			_tok=new Tokenizer(_cleanSource(source));
 			_tok.next();
 
-			var programNode:BranchNode = new BranchNode();
+			var programNode:BranchNode=new BranchNode();
 			parseProgram(programNode);
 			return programNode;
 		}
 
 		public function execFunctions(source:String):Vector.<FunctionNode>
 		{
-			_shaderVarMap = new Dictionary();
+			_shaderVarMap=new Dictionary();
 
-			_tok = new Tokenizer(_cleanSource(source));
+			_tok=new Tokenizer(_cleanSource(source));
 			_tok.next();
 
-			var result:Vector.<FunctionNode> = new Vector.<FunctionNode>();
+			var result:Vector.<FunctionNode>=new Vector.<FunctionNode>();
 
 			while (_tok.token.type != TokenType.EOF)
 			{
@@ -75,8 +75,8 @@
 		 */
 		private function _cleanSource(source:String):String
 		{
-			var result:String = source.replace(/\t+|\x20+/g, " ");
-			result = result.replace(/\r\n|\n/g, "");
+			var result:String=source.replace(/\t+|\x20+/g, " ");
+			result=result.replace(/\r\n|\n/g, "");
 			return result;
 		}
 
@@ -115,7 +115,7 @@
 
 		private function parseCondition():PredefineNode
 		{
-			var condition:PredefineNode = new PredefineNode();
+			var condition:PredefineNode=new PredefineNode();
 
 			condition.addChild(parseSubCondition());
 
@@ -138,7 +138,7 @@
 		{
 			_tok.accept(TokenType.CONDITION); //SKIP '#'
 
-			var subNode:PredefineSubNode = new PredefineSubNode(_tok.accept(TokenType.IDENTIFIER).name);
+			var subNode:PredefineSubNode=new PredefineSubNode(_tok.accept(TokenType.IDENTIFIER).name);
 
 			if (subNode.name == PredefineType.IFDEF || subNode.name == PredefineType.ELSEIF)
 			{
@@ -176,7 +176,7 @@
 
 			while (_tok.token.type != TokenType.RBRACE)
 			{
-				var t:Token = _tok.token;
+				var t:Token=_tok.token;
 				if (t.type == TokenType.REGISTER)
 				{
 					subNode.addChild(parseShaderVar());
@@ -209,7 +209,7 @@
 			// SKIP 'function'
 			_tok.accept(TokenType.FUNCTION);
 
-			var fn:FunctionNode = new FunctionNode(_tok.accept(TokenType.IDENTIFIER).name);
+			var fn:FunctionNode=new FunctionNode(_tok.accept(TokenType.IDENTIFIER).name);
 
 			//SKIP '('
 			_tok.accept(TokenType.LPAREN);
@@ -236,14 +236,14 @@
 
 			while (_tok.token.type != TokenType.RBRACE)
 			{
-				var type:String = _tok.token.type;
+				var type:String=_tok.token.type;
 				if (type == TokenType.CONDITION)
 				{
 					fn.addChild(parseCondition());
 				}
 				else if (type == TokenType.FUNCTION_RETURN)
 				{
-					fn.result = parseReturn();
+					fn.result=parseReturn();
 				}
 				else
 				{
@@ -262,18 +262,18 @@
 		 */
 		private function parseShaderVar():RegNode
 		{
-			var registerType:String = _tok.accept(TokenType.REGISTER).name;
-			var dataType:String = _tok.accept(TokenType.DATATYPE).name;
-			var name:String = _tok.accept(TokenType.IDENTIFIER).name;
+			var registerType:String=_tok.accept(TokenType.REGISTER).name;
+			var dataType:String=_tok.accept(TokenType.DATATYPE).name;
+			var name:String=_tok.accept(TokenType.IDENTIFIER).name;
 
 			//只有uniform可以使用数组定义，并且数组大小必须一开始就定义好
-			var isArray:Boolean = false;
-			var arraySize:int = 0;
+			var isArray:Boolean=false;
+			var arraySize:int=0;
 			if (_tok.token.type == TokenType.LBRACKET)
 			{
 				_tok.next(); //Skip "["
-				isArray = true;
-				arraySize = parseInt(_tok.accept(TokenType.NUMBER).name);
+				isArray=true;
+				arraySize=parseInt(_tok.accept(TokenType.NUMBER).name);
 				_tok.accept(TokenType.RBRACKET); //Skip "]"
 			}
 
@@ -287,7 +287,7 @@
 		{
 			_tok.accept(TokenType.FUNCTION_RETURN); //SKIP "return"
 
-			var node:LeafNode = parseExpression();
+			var node:LeafNode=parseExpression();
 
 			_tok.accept(TokenType.SEMI); //SKIP ";"
 
@@ -304,18 +304,18 @@
 		private function parseStatement(parent:BranchNode):void
 		{
 			var statement:AgalNode;
-			var t:String = _tok.token.type;
+			var t:String=_tok.token.type;
 			//临时变量定义
 			if (t == TokenType.DATATYPE)
 			{
-				var declarName:String = _tok.peek.name;
+				var declarName:String=_tok.peek.name;
 
 				parent.addChild(parseDeclaration());
 
 				// plain declaration
 				if (_tok.token.type != TokenType.SEMI)
 				{
-					statement = new AgalNode();
+					statement=new AgalNode();
 
 					statement.addChild(new AtomNode(declarName));
 
@@ -330,7 +330,7 @@
 			{
 				// function call
 
-				statement = new AgalNode();
+				statement=new AgalNode();
 
 				statement.addChild(parseFunctionCall());
 
@@ -338,7 +338,7 @@
 			}
 			else
 			{
-				statement = new AgalNode();
+				statement=new AgalNode();
 
 				//左侧的不能是方法调用，所以用parseAtomExpression
 				statement.addChild(parseAtomExpression() as AtomNode);
@@ -358,8 +358,8 @@
 		 */
 		private function parseParams():ParameterNode
 		{
-			var dataType:String = _tok.accept(TokenType.DATATYPE).name;
-			var name:String = _tok.accept(TokenType.IDENTIFIER).name;
+			var dataType:String=_tok.accept(TokenType.DATATYPE).name;
+			var name:String=_tok.accept(TokenType.IDENTIFIER).name;
 			return new ParameterNode(dataType, name);
 		}
 
@@ -368,8 +368,8 @@
 		 */
 		private function parseDeclaration():RegNode
 		{
-			var dataType:String = _tok.accept(TokenType.DATATYPE).name;
-			var name:String = _tok.accept(TokenType.IDENTIFIER).name;
+			var dataType:String=_tok.accept(TokenType.DATATYPE).name;
+			var name:String=_tok.accept(TokenType.IDENTIFIER).name;
 
 			return RegFactory.create(name, RegType.TEMP, dataType);
 		}
@@ -380,7 +380,7 @@
 		 */
 		private function parseFunctionCall():FunctionCallNode
 		{
-			var bn:FunctionCallNode = new FunctionCallNode(_tok.accept(TokenType.IDENTIFIER).name);
+			var bn:FunctionCallNode=new FunctionCallNode(_tok.accept(TokenType.IDENTIFIER).name);
 
 			_tok.accept(TokenType.LPAREN); // SKIP '('
 
@@ -429,26 +429,26 @@
 		{
 			var ret:LeafNode;
 
-			var type:String = _tok.token.type;
+			var type:String=_tok.token.type;
 			if (type == TokenType.IDENTIFIER)
 			{
-				var pType:String = _tok.peek.type;
+				var pType:String=_tok.peek.type;
 
 				if (pType == TokenType.LBRACKET)
 				{
 					//abc[efg]
-					ret = parseBracketExpression();
+					ret=parseBracketExpression();
 				}
 				else
 				{
 					// variable
-					ret = parseDotExpression();
+					ret=parseDotExpression();
 				}
 			}
 			// number literal
 			else if (type == TokenType.NUMBER)
 			{
-				ret = new ConstantNode(parseFloat(_tok.accept(TokenType.NUMBER).name));
+				ret=new ConstantNode(parseFloat(_tok.accept(TokenType.NUMBER).name));
 			}
 			else
 			{
@@ -460,12 +460,12 @@
 
 		private function parseDotExpression():AtomNode
 		{
-			var bn:AtomNode = new AtomNode(_tok.accept(TokenType.IDENTIFIER).name);
+			var bn:AtomNode=new AtomNode(_tok.accept(TokenType.IDENTIFIER).name);
 
 			if (_tok.token.type == TokenType.DOT)
 			{
 				_tok.next(); // SKIP 'dot'
-				bn.mask = _tok.accept(TokenType.IDENTIFIER).name;
+				bn.mask=_tok.accept(TokenType.IDENTIFIER).name;
 			}
 
 			return bn;
@@ -482,7 +482,7 @@
 		 */
 		private function parseBracketExpression():ArrayAccessNode
 		{
-			var bn:ArrayAccessNode = new ArrayAccessNode(_tok.accept(TokenType.IDENTIFIER).name);
+			var bn:ArrayAccessNode=new ArrayAccessNode(_tok.accept(TokenType.IDENTIFIER).name);
 
 			_tok.accept(TokenType.LBRACKET); // SKIP '['
 
@@ -492,7 +492,7 @@
 				{
 					if (_tok.token.type == TokenType.NUMBER)
 					{
-						bn.offset = parseInt(_tok.accept(TokenType.NUMBER).name);
+						bn.offset=parseInt(_tok.accept(TokenType.NUMBER).name);
 					}
 					else if (_tok.token.type == TokenType.PLUS)
 					{
@@ -500,7 +500,7 @@
 					}
 					else
 					{
-						bn.access = parseDotExpression();
+						bn.access=parseDotExpression();
 					}
 				}
 			}
@@ -511,7 +511,7 @@
 			if (_tok.token.type == TokenType.DOT)
 			{
 				_tok.next(); // SKIP "."
-				bn.mask = _tok.accept(TokenType.IDENTIFIER).name;
+				bn.mask=_tok.accept(TokenType.IDENTIFIER).name;
 			}
 
 			return bn;
@@ -522,13 +522,13 @@
 		 */
 		private function createAtomNode(name:String):AtomNode
 		{
-			var node:AtomNode = new AtomNode(name);
+			var node:AtomNode=new AtomNode(name);
 			return node;
 		}
 
 		private function createArrayAccessNode(name:String):ArrayAccessNode
 		{
-			var node:ArrayAccessNode = new ArrayAccessNode(name);
+			var node:ArrayAccessNode=new ArrayAccessNode(name);
 			return node;
 		}
 	}

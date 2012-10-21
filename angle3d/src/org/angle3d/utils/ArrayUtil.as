@@ -7,6 +7,7 @@ package org.angle3d.utils
 	 */
 	public class ArrayUtil
 	{
+
 		[Inline]
 		static public function contain(array:Array, item:*):Boolean
 		{
@@ -16,7 +17,7 @@ package org.angle3d.utils
 		[Inline]
 		static public function remove(array:Array, item:*):Boolean
 		{
-			var index:int = array.indexOf(item);
+			var index:int=array.indexOf(item);
 
 			if (index > -1)
 			{

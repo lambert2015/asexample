@@ -49,19 +49,19 @@ package org.angle3d.cinematic.event
 		 * @param	initialDuration 时间长度，秒为单位
 		 * @param	loopMode
 		 */
-		public function MotionEvent(spatial:Spatial, path:MotionPath, initialDuration:Number = 10, loopMode:int = 0)
+		public function MotionEvent(spatial:Spatial, path:MotionPath, initialDuration:Number=10, loopMode:int=0)
 		{
 			super(initialDuration, loopMode);
 
-			_direction = new Vector3f();
-			_directionType = DirectionType.None;
-			isControl = true;
-			currentValue = 0;
-			traveledDistance = 0;
+			_direction=new Vector3f();
+			_directionType=DirectionType.None;
+			isControl=true;
+			currentValue=0;
+			traveledDistance=0;
 
-			_spatial = spatial;
+			_spatial=spatial;
 			_spatial.addControl(this);
-			this.path = path;
+			this.path=path;
 		}
 
 		public function update(tpf:Number):void
@@ -76,11 +76,11 @@ package org.angle3d.cinematic.event
 		{
 			if (playState == PlayState.Playing)
 			{
-				time = time + (tpf * speed);
+				time=time + (tpf * speed);
 
 				if (loopMode == LoopMode.Loop && time < 0)
 				{
-					time = initialDuration;
+					time=initialDuration;
 				}
 
 				if ((time >= initialDuration || time < 0) && loopMode == LoopMode.DontLoop)
@@ -101,7 +101,7 @@ package org.angle3d.cinematic.event
 		override public function init(app:Application, cinematic:Cinematic):void
 		{
 			super.init(app, cinematic);
-			isControl = false;
+			isControl=false;
 		}
 
 		override public function setTime(time:Number):void
@@ -109,16 +109,16 @@ package org.angle3d.cinematic.event
 			super.setTime(time);
 
 			//computing traveled distance according to new time
-			traveledDistance = time * (path.getLength() / initialDuration);
+			traveledDistance=time * (path.getLength() / initialDuration);
 
-			var vars:TempVars = TempVars.getTempVars();
-			var temp:Vector3f = vars.vect1;
+			var vars:TempVars=TempVars.getTempVars();
+			var temp:Vector3f=vars.vect1;
 
 			//getting waypoint index and current value from new traveled distance
-			var v:Vector2f = path.getWayPointIndexForDistance(traveledDistance);
+			var v:Vector2f=path.getWayPointIndexForDistance(traveledDistance);
 
 			//setting values
-			_currentWayPoint = int(v.x);
+			_currentWayPoint=int(v.x);
 			setCurrentValue(v.y);
 
 			//interpolating new position
@@ -131,13 +131,13 @@ package org.angle3d.cinematic.event
 
 		override public function onUpdate(tpf:Number):void
 		{
-			traveledDistance = path.interpolatePath(time, this, tpf);
+			traveledDistance=path.interpolatePath(time, this, tpf);
 
 			computeTargetDirection();
 
 			if (currentValue >= 1.0)
 			{
-				currentValue = 0;
+				currentValue=0;
 				_currentWayPoint++;
 				path.triggerWayPointReach(_currentWayPoint, this);
 			}
@@ -146,7 +146,7 @@ package org.angle3d.cinematic.event
 			{
 				if (loopMode == LoopMode.Loop)
 				{
-					_currentWayPoint = 0;
+					_currentWayPoint=0;
 				}
 				else
 				{
@@ -169,7 +169,7 @@ package org.angle3d.cinematic.event
 			switch (_directionType)
 			{
 				case DirectionType.Path:
-					var q:Quaternion = new Quaternion();
+					var q:Quaternion=new Quaternion();
 					q.lookAt(_direction, Vector3f.Y_AXIS);
 					_spatial.setRotation(q);
 					break;
@@ -182,7 +182,7 @@ package org.angle3d.cinematic.event
 				case DirectionType.PathAndRotation:
 					if (rotation != null)
 					{
-						var q2:Quaternion = new Quaternion();
+						var q2:Quaternion=new Quaternion();
 						q2.lookAt(_direction, Vector3f.Y_AXIS);
 						q2.multiplyLocal(rotation);
 						_spatial.setRotation(q2);
@@ -207,27 +207,27 @@ package org.angle3d.cinematic.event
 		 */
 		public function cloneForSpatial(spatial:Spatial):Control
 		{
-			var control:MotionEvent = new MotionEvent(spatial, path);
-			control.playState = playState;
-			control._currentWayPoint = _currentWayPoint;
-			control.currentValue = currentValue;
-			control._direction = _direction.clone();
-			control.lookAt = lookAt.clone();
-			control.upVector = upVector.clone();
-			control.rotation = rotation.clone();
-			control.duration = duration;
-			control.initialDuration = initialDuration;
-			control.speed = speed;
-			control.duration = duration;
-			control.loopMode = loopMode;
-			control._directionType = _directionType;
+			var control:MotionEvent=new MotionEvent(spatial, path);
+			control.playState=playState;
+			control._currentWayPoint=_currentWayPoint;
+			control.currentValue=currentValue;
+			control._direction=_direction.clone();
+			control.lookAt=lookAt.clone();
+			control.upVector=upVector.clone();
+			control.rotation=rotation.clone();
+			control.duration=duration;
+			control.initialDuration=initialDuration;
+			control.speed=speed;
+			control.duration=duration;
+			control.loopMode=loopMode;
+			control._directionType=_directionType;
 
 			return control;
 		}
 
 		override public function onStop():void
 		{
-			_currentWayPoint = 0;
+			_currentWayPoint=0;
 		}
 
 		/**
@@ -245,7 +245,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function setCurrentValue(currentValue:Number):void
 		{
-			this.currentValue = currentValue;
+			this.currentValue=currentValue;
 		}
 
 		/**
@@ -263,7 +263,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function set currentWayPoint(currentWayPoint:int):void
 		{
-			_currentWayPoint = currentWayPoint;
+			_currentWayPoint=currentWayPoint;
 		}
 
 		/**
@@ -302,7 +302,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function set directionType(value:int):void
 		{
-			_directionType = value;
+			_directionType=value;
 		}
 
 		/**
@@ -313,8 +313,8 @@ package org.angle3d.cinematic.event
 		 */
 		public function setLookAt(lookAt:Vector3f, upVector:Vector3f):void
 		{
-			this.lookAt = lookAt;
-			this.upVector = upVector;
+			this.lookAt=lookAt;
+			this.upVector=upVector;
 		}
 
 		/**
@@ -335,7 +335,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function setRotation(rotation:Quaternion):void
 		{
-			this.rotation = rotation;
+			this.rotation=rotation;
 		}
 
 		/**
@@ -353,7 +353,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function setPath(path:MotionPath):void
 		{
-			this.path = path;
+			this.path=path;
 		}
 
 		public function set enabled(enabled:Boolean):void
@@ -379,7 +379,7 @@ package org.angle3d.cinematic.event
 
 		public function set spatial(spatial:Spatial):void
 		{
-			this._spatial = spatial;
+			this._spatial=spatial;
 		}
 
 		public function get spatial():Spatial
@@ -395,7 +395,7 @@ package org.angle3d.cinematic.event
 		{
 			return traveledDistance;
 		}
-		
+
 		public function clone():Control
 		{
 			//todo

@@ -7,25 +7,25 @@ package org.angle3d.scene.mesh
 
 	public class VertexBuffer
 	{
-		private var mCount : int;
+		private var mCount:int;
 
-		private var mDirty : Boolean;
+		private var mDirty:Boolean;
 
-		private var mType : String;
+		private var mType:String;
 
-		private var mData : Vector.<Number>;
+		private var mData:Vector.<Number>;
 
-		private var mComponents : int;
+		private var mComponents:int;
 
-		public function VertexBuffer(type : String)
+		public function VertexBuffer(type:String)
 		{
-			mType = type;
+			mType=type;
 
-			mCount = 0;
-			mDirty = true;
+			mCount=0;
+			mDirty=true;
 		}
 
-		public function get components() : int
+		public function get components():int
 		{
 			return mComponents;
 		}
@@ -35,64 +35,64 @@ package org.angle3d.scene.mesh
 		 * @param	data
 		 * @param	components
 		 */
-		public function setData(data : Vector.<Number>, components : int) : void
+		public function setData(data:Vector.<Number>, components:int):void
 		{
-			mData = data;
+			mData=data;
 
-			mComponents = components;
+			mComponents=components;
 
 			CF::DEBUG
 			{
 				Assert.assert(mComponents >= 1 && mComponents <= 4, "_components长度应该在1～4之间");
 			}
 
-			mCount = int(mData.length / mComponents);
+			mCount=int(mData.length / mComponents);
 
-			dirty = true;
+			dirty=true;
 		}
 
-		public function updateData(data : Vector.<Number>) : void
+		public function updateData(data:Vector.<Number>):void
 		{
-			mData = data;
+			mData=data;
 
 			CF::DEBUG
 			{
 				Assert.assert(int(mData.length / mComponents) == mCount, "更新的数组长度应该和之前相同");
 			}
 
-			dirty = true;
+			dirty=true;
 		}
 
-		public function getData() : Vector.<Number>
+		public function getData():Vector.<Number>
 		{
 			return mData;
 		}
 
-		public function clean() : void
+		public function clean():void
 		{
-			dirty = true;
-			mData = null;
+			dirty=true;
+			mData=null;
 		}
 
 		/**
 		 * 销毁
 		 */
-		public function destroy() : void
+		public function destroy():void
 		{
-			mData = null;
+			mData=null;
 		}
 
-		public function get count() : int
+		public function get count():int
 		{
 			return mCount;
 		}
 
-		public function get type() : String
+		public function get type():String
 		{
 			return mType;
 		}
 
-		public function get dirty() : Boolean
+		public function get dirty():Boolean
 		{
 			return mDirty;
 		}
@@ -101,9 +101,9 @@ package org.angle3d.scene.mesh
 		 * Internal use only. Indicates that the object has changed
 		 * and its state needs to be updated.
 		 */
-		public function set dirty(value : Boolean) : void
+		public function set dirty(value:Boolean):void
 		{
-			mDirty = value;
+			mDirty=value;
 		}
 	}
 }

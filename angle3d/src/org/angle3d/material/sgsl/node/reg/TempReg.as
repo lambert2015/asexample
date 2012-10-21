@@ -13,16 +13,16 @@ package org.angle3d.material.sgsl.node.reg
 		/**
 		 * 寄存器中的偏移量(0-3)
 		 */
-		public var offset : int;
+		public var offset:int;
 
-		public function TempReg(dataType : String, name : String)
+		public function TempReg(dataType:String, name:String)
 		{
 			super(RegType.TEMP, dataType, name);
 
-			offset = 0;
+			offset=0;
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
 			return new TempReg(dataType, name);
 		}

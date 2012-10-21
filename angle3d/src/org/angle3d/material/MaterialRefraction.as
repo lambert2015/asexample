@@ -11,7 +11,7 @@ package org.angle3d.material
 	//TODO 效果不正常，可能是refract函数有问题
 	public class MaterialRefraction extends Material
 	{
-		private var _technique : TechniqueRefraction;
+		private var _technique:TechniqueRefraction;
 
 		/**
 		 *
@@ -21,11 +21,11 @@ package org.angle3d.material
 		 * @param transmittance
 		 *
 		 */
-		public function MaterialRefraction(decalMap : TextureMapBase, environmentMap : CubeTextureMap, etaRatio : Number = 1.5, transmittance : Number = 0.5)
+		public function MaterialRefraction(decalMap:TextureMapBase, environmentMap:CubeTextureMap, etaRatio:Number=1.5, transmittance:Number=0.5)
 		{
 			super();
 
-			_technique = new TechniqueRefraction(decalMap, environmentMap, etaRatio, transmittance);
+			_technique=new TechniqueRefraction(decalMap, environmentMap, etaRatio, transmittance);
 			addTechnique(_technique);
 		}
 	}

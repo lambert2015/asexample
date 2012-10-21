@@ -19,11 +19,11 @@ package org.angle3d.renderer
 	//TODO 添加设置 antiAlias
 	public interface IRenderer
 	{
-		function get stage3D() : Stage3D;
+		function get stage3D():Stage3D;
 
-		function get context3D() : Context3D;
+		function get context3D():Context3D;
 
-		function setTextureAt(index : int, map : TextureMapBase) : void;
+		function setTextureAt(index:int, map:TextureMapBase):void;
 
 		/**
 		 * 设置着色器程序的常量输入。
@@ -37,12 +37,12 @@ package org.angle3d.renderer
 		 * @param numRegisters 要设置的常量数量。指定 -1（默认值），设置足够的寄存器以使用所有可用数据。
 		 *
 		 */
-		function setShaderConstants(shaderType : String, firstRegister : int, data : Vector.<Number>, numRegisters : int = -1) : void;
+		function setShaderConstants(shaderType:String, firstRegister:int, data:Vector.<Number>, numRegisters:int=-1):void;
 
 		/**
 		 * Invalidates the current rendering state.
 		 */
-		function invalidateState() : void;
+		function invalidateState():void;
 
 		/**
 		 * Clears certain channels of the currently bound framebuffer.
@@ -52,30 +52,30 @@ package org.angle3d.renderer
 		 * @param stencil True if to clear stencil buffer (if available, otherwise
 		 * ignored)
 		 */
-		function clearBuffers(color : Boolean, depth : Boolean, stencil : Boolean) : void;
+		function clearBuffers(color:Boolean, depth:Boolean, stencil:Boolean):void;
 
 		/**
 		 * Sets the background (aka clear) color.
 		 *
 		 * @param color The background color to set
 		 */
-		function setBackgroundColor(color : uint) : void;
+		function setBackgroundColor(color:uint):void;
 
 		/**
 		 * Applies the given {@link RenderState}, making the necessary
 		 * calls so that the state is applied.
 		 */
-		function applyRenderState(state : RenderState) : void;
+		function applyRenderState(state:RenderState):void;
 
 
-		function setDepthTest(depthMask : Boolean, passCompareMode : String) : void;
+		function setDepthTest(depthMask:Boolean, passCompareMode:String):void;
 
-		function setCulling(triangleFaceToCull : String) : void;
+		function setCulling(triangleFaceToCull:String):void;
 
 		/**
 		 * Called when a new frame has been rendered.
 		 */
-		function onFrame() : void;
+		function onFrame():void;
 
 		/**
 		 * Set the viewport location and resolution on the screen.
@@ -85,7 +85,7 @@ package org.angle3d.renderer
 		 * @param width Width of the viewport
 		 * @param height Height of the viewport
 		 */
-		function setViewPort(x : int, y : int, width : int, height : int) : void;
+		function setViewPort(x:int, y:int, width:int, height:int):void;
 
 		/**
 		 * Specifies a clipping rectangle.
@@ -97,18 +97,18 @@ package org.angle3d.renderer
 		 * @param width Width of the clip rect
 		 * @param height Height of the clip rect
 		 */
-		function setClipRect(x : int, y : int, width : int, height : int) : void;
+		function setClipRect(x:int, y:int, width:int, height:int):void;
 
 		/**
 		 * Clears the clipping rectangle set with
 		 * {@link #setClipRect(int, int, int, int) }.
 		 */
-		function clearClipRect() : void;
+		function clearClipRect():void;
 
 		/**
 		 * Sets the framebuffer that will be drawn to.
 		 */
-		function setFrameBuffer(fb : FrameBuffer) : void;
+		function setFrameBuffer(fb:FrameBuffer):void;
 
 		/**
 		 * Sets the shader to use for rendering.
@@ -118,7 +118,7 @@ package org.angle3d.renderer
 		 *
 		 * @param shader The shader to use for rendering.
 		 */
-		function setShader(shader : Shader) : void;
+		function setShader(shader:Shader):void;
 
 		/**
 		 * Renders <code>count</code> meshes, with the geometry data supplied.
@@ -128,19 +128,19 @@ package org.angle3d.renderer
 		 *
 		 * @param mesh The mesh to render
 		 */
-		function renderMesh(mesh : Mesh) : void;
+		function renderMesh(mesh:Mesh):void;
 
-		function renderShadow(mesh : Mesh, light : Light, cam : Camera3D) : void;
+		function renderShadow(mesh:Mesh, light:Light, cam:Camera3D):void;
 
 		/**
 		 * Synchronize graphics subsytem rendering
 		 */
-		function present() : void;
+		function present():void;
 
 		/**
 		 * Cleanup
 		 */
-		function cleanup() : void;
+		function cleanup():void;
 	}
 }
 

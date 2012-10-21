@@ -23,7 +23,7 @@ package org.angle3d.collision.bin
 
 		public function BIHTree(mesh:Mesh)
 		{
-			this.mesh = mesh;
+			this.mesh=mesh;
 		}
 
 		public function construct():void
@@ -32,10 +32,7 @@ package org.angle3d.collision.bin
 			//root = createNode(0, numTris - 1, sceneBbox, 0);
 		}
 
-		public function collideWith(other:Collidable,
-			worldMatrix:Matrix4f,
-			worldBound:BoundingVolume,
-			results:CollisionResults):int
+		public function collideWith(other:Collidable, worldMatrix:Matrix4f, worldBound:BoundingVolume, results:CollisionResults):int
 		{
 			return -1;
 		}

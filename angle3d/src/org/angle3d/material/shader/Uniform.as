@@ -16,33 +16,33 @@ package org.angle3d.material.shader
 	//uniform mat4 u_boneMatrix[32]
 	public class Uniform extends ShaderVariable
 	{
-		private var _data : Vector.<Number>;
+		private var _data:Vector.<Number>;
 
 		/**
 		 * Binding to a renderer value, or null if user-defined uniform
 		 */
-		private var _binding : int;
+		private var _binding:int;
 
-		public function Uniform(name : String, size : int)
+		public function Uniform(name:String, size:int)
 		{
 			super(name, size);
-			
-			_size = int(_size / 4);
 
-			_data = new Vector.<Number>(_size*4,true);
+			_size=int(_size / 4);
+
+			_data=new Vector.<Number>(_size * 4, true);
 		}
 
-		override public function get size() : int
+		override public function get size():int
 		{
 			return _size;
 		}
 
-		public function setVector(data : Vector.<Number>) : void
+		public function setVector(data:Vector.<Number>):void
 		{
-			_data = data.concat();
+			_data=data.concat();
 		}
 
-		public function setMatrix4(mat : Matrix4f) : void
+		public function setMatrix4(mat:Matrix4f):void
 		{
 //			if (_data.length > 16)
 //			{
@@ -51,7 +51,7 @@ package org.angle3d.material.shader
 			mat.toUniform(_data);
 		}
 
-		public function setMatrix3(mat : Matrix3f) : void
+		public function setMatrix3(mat:Matrix3f):void
 		{
 //			if (_data.length > 12)
 //			{
@@ -60,47 +60,47 @@ package org.angle3d.material.shader
 			mat.toUniform(_data);
 		}
 
-		public function setColor(c : Color) : void
+		public function setColor(c:Color):void
 		{
 //			_data.length = 4;
 			c.toUniform(_data);
 		}
 
-		public function setFloat(value : Number) : void
+		public function setFloat(value:Number):void
 		{
 //			_data.length = 4;
-			_data[0] = value;
+			_data[0]=value;
 		}
 
-		public function setVector2(vec : Vector2f) : void
+		public function setVector2(vec:Vector2f):void
 		{
 //			_data.length = 4;
 			vec.toVector(_data);
 		}
 
-		public function setVector3(vec : Vector3f) : void
-		{
-//			_data.length = 4;
-			vec.toVector(_data);
-		}
-		
-		public function setVector4(vec : Vector4f) : void
+		public function setVector3(vec:Vector3f):void
 		{
 //			_data.length = 4;
 			vec.toVector(_data);
 		}
 
-		public function get data() : Vector.<Number>
+		public function setVector4(vec:Vector4f):void
+		{
+//			_data.length = 4;
+			vec.toVector(_data);
+		}
+
+		public function get data():Vector.<Number>
 		{
 			return _data;
 		}
 
-		public function set binding(value : int) : void
+		public function set binding(value:int):void
 		{
-			_binding = value;
+			_binding=value;
 		}
 
-		public function get binding() : int
+		public function get binding():int
 		{
 			return _binding;
 		}

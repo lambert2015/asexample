@@ -13,7 +13,7 @@ package org.assetloader.base
 		 * <p>Use: All asset types.</p>
 		 * <p>Type: <code>String</code></p>
 		 */
-		public static const BASE:String = "BASE";
+		public static const BASE:String="BASE";
 
 		/**
 		 * Adds time stamp to url, which makes each call unique.
@@ -22,7 +22,7 @@ package org.assetloader.base
 		 * <p>Type: <code>Boolean</code></p>
 		 * <p>Default: false</p>
 		 */
-		public static const PREVENT_CACHE:String = "PREVENT_CACHE";
+		public static const PREVENT_CACHE:String="PREVENT_CACHE";
 
 		/**
 		 * Amount of times the loading is retried.
@@ -31,7 +31,7 @@ package org.assetloader.base
 		 * <p>Type: <code>uint</code></p>
 		 * <p>Default: 3</p>
 		 */
-		public static const RETRIES:String = "RETRIES";
+		public static const RETRIES:String="RETRIES";
 
 		/**
 		 * Amount of times the loading is retried.
@@ -43,7 +43,7 @@ package org.assetloader.base
 		 * This list is then sorted decendingly, thus thus asset's with higher priority are loaded first.</p>
 		 * <p>Children ILoader of IAssetLoader will NOT inherit this param.</p>
 		 */
-		public static const PRIORITY:String = "PRIORITY";
+		public static const PRIORITY:String="PRIORITY";
 
 		/**
 		 * Set true if you DON'T want the asset to from part of the loading queue.
@@ -54,7 +54,7 @@ package org.assetloader.base
 		 * <p>Default: false</p>
 		 * <p>Children ILoader of IAssetLoader will NOT inherit this param.</p>
 		 */
-		public static const ON_DEMAND:String = "ON_DEMAND";
+		public static const ON_DEMAND:String="ON_DEMAND";
 
 		/**
 		 * Sets the bytesTotal amount of the file, this will improve accuracy of the
@@ -67,7 +67,7 @@ package org.assetloader.base
 		 * <p>Default: 0</p>
 		 * <p>Children ILoader of IAssetLoader will NOT inherit this param.</p>
 		 */
-		public static const WEIGHT:String = "WEIGHT";
+		public static const WEIGHT:String="WEIGHT";
 
 		/**
 		 * Sets the <code>URLRequest</code>'s headers.
@@ -77,7 +77,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.net.URLRequestHeader
 		 */
-		public static const HEADERS:String = "HEADERS";
+		public static const HEADERS:String="HEADERS";
 
 		/**
 		 * <p>Use: DisplayObject, Image and Swf asset types.</p>
@@ -85,7 +85,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.system.LoaderContext
 		 */
-		public static const LOADER_CONTEXT:String = "LOADER_CONTEXT";
+		public static const LOADER_CONTEXT:String="LOADER_CONTEXT";
 
 		/**
 		 * Sets <code>BitmapData</code>'s transparentcy.
@@ -95,7 +95,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.display.BitmapData
 		 */
-		public static const TRANSPARENT:String = "TRANSPARENT";
+		public static const TRANSPARENT:String="TRANSPARENT";
 
 		/**
 		 * Sets <code>BitmapData</code>'s fill color.
@@ -105,7 +105,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.display.BitmapData
 		 */
-		public static const FILL_COLOR:String = "FILL_COLOR";
+		public static const FILL_COLOR:String="FILL_COLOR";
 
 		/**
 		 * Sets <code>BitmapData</code>'s matrix.
@@ -116,7 +116,7 @@ package org.assetloader.base
 		 * @see flash.geom.Matrix
 		 * @see flash.display.BitmapData
 		 */
-		public static const MATRIX:String = "MATRIX";
+		public static const MATRIX:String="MATRIX";
 
 		/**
 		 * Sets <code>BitmapData</code>'s color transform.
@@ -127,7 +127,7 @@ package org.assetloader.base
 		 * @see flash.geom.ColorTransform
 		 * @see flash.display.BitmapData
 		 */
-		public static const COLOR_TRANSFROM:String = "COLOR_TRANSFROM";
+		public static const COLOR_TRANSFROM:String="COLOR_TRANSFROM";
 
 		/**
 		 * Sets <code>BitmapData</code>'s blend mode.
@@ -138,7 +138,7 @@ package org.assetloader.base
 		 * @see flash.display.BlendMode
 		 * @see flash.display.BitmapData
 		 */
-		public static const BLEND_MODE:String = "BLEND_MODE";
+		public static const BLEND_MODE:String="BLEND_MODE";
 
 		/**
 		 * Sets <code>BitmapData</code>'s clipping rectangle.
@@ -149,7 +149,7 @@ package org.assetloader.base
 		 * @see flash.geom.Rectangle
 		 * @see flash.display.BitmapData
 		 */
-		public static const CLIP_RECTANGLE:String = "CLIP_RECTANGLE";
+		public static const CLIP_RECTANGLE:String="CLIP_RECTANGLE";
 
 		/**
 		 * Sets <code>Bitmap</code>'s pixel snapping.
@@ -159,7 +159,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.display.Bitmap
 		 */
-		public static const PIXEL_SNAPPING:String = "PIXEL_SNAPPING";
+		public static const PIXEL_SNAPPING:String="PIXEL_SNAPPING";
 
 		/**
 		 * Sets <code>Bitmap</code> and <code>BitmapData</code>'s smoothing property.
@@ -170,7 +170,7 @@ package org.assetloader.base
 		 * @see flash.display.Bitmap
 		 * @see flash.display.BitmapData
 		 */
-		public static const SMOOTHING:String = "SMOOTHING";
+		public static const SMOOTHING:String="SMOOTHING";
 
 		/**
 		 * Sets <code>Sound</code>'s load context.
@@ -180,7 +180,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.media.SoundLoaderContext
 		 */
-		public static const SOUND_LOADER_CONTEXT:String = "SOUND_LOADER_CONTEXT";
+		public static const SOUND_LOADER_CONTEXT:String="SOUND_LOADER_CONTEXT";
 
 		/**
 		 * If <code>NetStream</code> should load cross-domain policy file.
@@ -190,7 +190,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.net.NetStream
 		 */
-		public static const CHECK_POLICY_FILE:String = "CHECK_POLICY_FILE";
+		public static const CHECK_POLICY_FILE:String="CHECK_POLICY_FILE";
 
 		/**
 		 * Adds <code>NetStream</code> client callback <code>Object</code>.
@@ -200,7 +200,7 @@ package org.assetloader.base
 		 *
 		 * @see flash.net.NetStream
 		 */
-		public static const CLIENT:String = "CLIENT";
+		public static const CLIENT:String="CLIENT";
 
 		/**
 		 * Allows you to attach any object/instance to an ILoader.
@@ -208,7 +208,7 @@ package org.assetloader.base
 		 * <p>Use: All asset types.</p>
 		 * <p>Type: <code>Any Type</code></p>
 		 */
-		public static const USER_DATA:String = "USER_DATA";
+		public static const USER_DATA:String="USER_DATA";
 
 		/**
 		 * @private
@@ -226,8 +226,8 @@ package org.assetloader.base
 		 */
 		public function Param(id:String, value:*)
 		{
-			_id = id;
-			_value = value;
+			_id=id;
+			_value=value;
 		}
 
 		/**

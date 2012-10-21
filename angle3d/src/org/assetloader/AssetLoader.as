@@ -30,7 +30,7 @@ package org.assetloader
 		 */
 		protected var _onChildComplete:LoaderSignal;
 
-		public function AssetLoader(id:String = "PrimaryGroup")
+		public function AssetLoader(id:String="PrimaryGroup")
 		{
 			super(id);
 		}
@@ -41,9 +41,9 @@ package org.assetloader
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onChildOpen = new LoaderSignal(ILoader);
-			_onChildError = new ErrorSignal(ILoader);
-			_onChildComplete = new LoaderSignal(ILoader);
+			_onChildOpen=new LoaderSignal(ILoader);
+			_onChildError=new ErrorSignal(ILoader);
+			_onChildComplete=new LoaderSignal(ILoader);
 		}
 
 		/**
@@ -51,10 +51,10 @@ package org.assetloader
 		 */
 		public function addConfig(config:String):void
 		{
-			var urlParser:URLParser = new URLParser(config);
+			var urlParser:URLParser=new URLParser(config);
 			if (urlParser.isValid)
 			{
-				var loader:ILoader = _loaderFactory.produce("config", AssetType.TEXT, new URLRequest(config));
+				var loader:ILoader=_loaderFactory.produce("config", AssetType.TEXT, new URLRequest(config));
 				loader.setParam(Param.PREVENT_CACHE, true);
 
 				loader.onError.add(error_handler);
@@ -79,19 +79,19 @@ package org.assetloader
 		 */
 		override public function start():void
 		{
-			_data = _assetMap;
-			_invoked = true;
-			_stopped = false;
+			_data=_assetMap;
+			_invoked=true;
+			_stopped=false;
 
 			sortIdsByPriority();
 
 			if (numConnections == 0)
-				numConnections = _numLoaders;
+				numConnections=_numLoaders;
 
 			super.start();
 
-			var count:int = numConnections;
-			for (var k:int = 0; k < count; k++)
+			var count:int=numConnections;
+			for (var k:int=0; k < count; k++)
 			{
 				startNextLoader();
 			}
@@ -102,7 +102,7 @@ package org.assetloader
 		 */
 		public function startLoader(id:String):void
 		{
-			var loader:ILoader = getLoader(id);
+			var loader:ILoader=getLoader(id);
 			if (loader)
 				loader.start();
 
@@ -116,9 +116,9 @@ package org.assetloader
 		{
 			var loader:ILoader;
 
-			for (var i:int = 0; i < _numLoaders; i++)
+			for (var i:int=0; i < _numLoaders; i++)
 			{
-				loader = getLoader(_ids[i]);
+				loader=getLoader(_ids[i]);
 
 				if (!loader.loaded)
 					loader.stop();
@@ -135,19 +135,19 @@ package org.assetloader
 		 */
 		protected function sortIdsByPriority():void
 		{
-			var priorities:Array = [];
-			for (var i:int = 0; i < _numLoaders; i++)
+			var priorities:Array=[];
+			for (var i:int=0; i < _numLoaders; i++)
 			{
-				var loader:ILoader = getLoader(_ids[i]);
+				var loader:ILoader=getLoader(_ids[i]);
 				priorities.push(loader.getParam(Param.PRIORITY));
 			}
 
-			var sortedIndexs:Array = priorities.sort(Array.NUMERIC | Array.DESCENDING | Array.RETURNINDEXEDARRAY);
-			var idsCopy:Array = _ids.concat();
+			var sortedIndexs:Array=priorities.sort(Array.NUMERIC | Array.DESCENDING | Array.RETURNINDEXEDARRAY);
+			var idsCopy:Array=_ids.concat();
 
-			for (var j:int = 0; j < _numLoaders; j++)
+			for (var j:int=0; j < _numLoaders; j++)
 			{
-				_ids[j] = idsCopy[sortedIndexs[j]];
+				_ids[j]=idsCopy[sortedIndexs[j]];
 			}
 		}
 
@@ -159,10 +159,10 @@ package org.assetloader
 			if (_invoked)
 			{
 				var loader:ILoader;
-				var ON_DEMAND:String = Param.ON_DEMAND;
-				for (var i:int = 0; i < _numLoaders; i++)
+				var ON_DEMAND:String=Param.ON_DEMAND;
+				for (var i:int=0; i < _numLoaders; i++)
 				{
-					loader = getLoader(_ids[i]);
+					loader=getLoader(_ids[i]);
 
 					if (!loader.loaded && !loader.failed && !loader.getParam(ON_DEMAND))
 					{
@@ -181,7 +181,7 @@ package org.assetloader
 		 */
 		protected function checkForComplete(signal:LoaderSignal):void
 		{
-			var sum:int = _failOnError ? _numLoaded : _numLoaded + _numFailed;
+			var sum:int=_failOnError ? _numLoaded : _numLoaded + _numFailed;
 			if (sum == _numLoaders)
 				super.complete_handler(signal, _assetMap);
 			else
@@ -196,7 +196,7 @@ package org.assetloader
 		 */
 		override protected function open_handler(signal:LoaderSignal):void
 		{
-			_inProgress = true;
+			_inProgress=true;
 			_onChildOpen.dispatch(this, signal.loader);
 			super.open_handler(signal);
 		}
@@ -206,10 +206,10 @@ package org.assetloader
 		 */
 		override protected function error_handler(signal:ErrorSignal):void
 		{
-			var loader:ILoader = signal.loader;
+			var loader:ILoader=signal.loader;
 
 			_failedIds.push(loader.id);
-			_numFailed = _failedIds.length;
+			_numFailed=_failedIds.length;
 
 			_onChildError.dispatch(this, signal.type, signal.message, loader);
 			super.error_handler(signal);
@@ -223,15 +223,15 @@ package org.assetloader
 		/**
 		 * @private
 		 */
-		override protected function complete_handler(signal:LoaderSignal, data:* = null):void
+		override protected function complete_handler(signal:LoaderSignal, data:*=null):void
 		{
-			var loader:ILoader = signal.loader;
+			var loader:ILoader=signal.loader;
 
 			removeListeners(loader);
 
-			_assetMap[loader.id] = loader.data;
+			_assetMap[loader.id]=loader.data;
 			_loadedIds.push(loader.id);
-			_numLoaded = _loadedIds.length;
+			_numLoaded=_loadedIds.length;
 
 			_onChildComplete.dispatch(this, signal.loader);
 
@@ -243,7 +243,7 @@ package org.assetloader
 		 */
 		protected function configLoader_complete_handler(signal:LoaderSignal, data:*):void
 		{
-			var loader:ILoader = signal.loader;
+			var loader:ILoader=signal.loader;
 			loader.onComplete.remove(configLoader_complete_handler);
 			loader.onError.remove(error_handler);
 

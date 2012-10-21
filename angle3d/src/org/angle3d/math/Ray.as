@@ -34,12 +34,12 @@ package org.angle3d.math
 		 * @param origin the origin of the ray.
 		 * @param direction the direction the ray travels in.
 		 */
-		public function Ray(origin:Vector3f = null, direction:Vector3f = null)
+		public function Ray(origin:Vector3f=null, direction:Vector3f=null)
 		{
-			limit = Number.POSITIVE_INFINITY;
+			limit=Number.POSITIVE_INFINITY;
 
-			this.origin = new Vector3f();
-			this.direction = new Vector3f();
+			this.origin=new Vector3f();
+			this.direction=new Vector3f();
 
 			if (origin != null)
 			{
@@ -112,24 +112,23 @@ package org.angle3d.math
 		 * @param quad
 		 * @return true if ray intersects triangle
 		 */
-		public function intersects(v0:Vector3f, v1:Vector3f, v2:Vector3f,
-			result:Vector3f, doPlanar:Boolean, quad:Boolean):Boolean
+		public function intersects(v0:Vector3f, v1:Vector3f, v2:Vector3f, result:Vector3f, doPlanar:Boolean, quad:Boolean):Boolean
 		{
-			var diff:Vector3f = origin.subtract(v0);
-			var edge1:Vector3f = v1.subtract(v0);
-			var edge2:Vector3f = v2.subtract(v0);
-			var norm:Vector3f = edge1.cross(edge2);
+			var diff:Vector3f=origin.subtract(v0);
+			var edge1:Vector3f=v1.subtract(v0);
+			var edge2:Vector3f=v2.subtract(v0);
+			var norm:Vector3f=edge1.cross(edge2);
 
-			var dirDotNorm:Number = direction.dot(norm);
+			var dirDotNorm:Number=direction.dot(norm);
 			var sign:Number;
 			if (dirDotNorm > FastMath.FLT_EPSILON)
 			{
-				sign = 1;
+				sign=1;
 			}
 			else if (dirDotNorm < -FastMath.FLT_EPSILON)
 			{
-				sign = -1;
-				dirDotNorm = -dirDotNorm;
+				sign=-1;
+				dirDotNorm=-dirDotNorm;
 			}
 			else
 			{
@@ -137,18 +136,18 @@ package org.angle3d.math
 				return false;
 			}
 
-			edge2 = diff.cross(edge2);
-			var dirDotDiffxEdge2:Number = sign * direction.dot(edge2);
+			edge2=diff.cross(edge2);
+			var dirDotDiffxEdge2:Number=sign * direction.dot(edge2);
 			if (dirDotDiffxEdge2 >= 0.0)
 			{
 				edge1.crossLocal(diff);
-				var dirDotEdge1xDiff:Number = sign * direction.dot(edge1);
+				var dirDotEdge1xDiff:Number=sign * direction.dot(edge1);
 
 				if (dirDotEdge1xDiff >= 0.0)
 				{
 					if (!quad ? dirDotDiffxEdge2 + dirDotEdge1xDiff <= dirDotNorm : dirDotEdge1xDiff <= dirDotNorm)
 					{
-						var diffDotNorm:Number = -sign * diff.dot(norm);
+						var diffDotNorm:Number=-sign * diff.dot(norm);
 						if (diffDotNorm >= 0.0)
 						{
 							// ray intersects triangle
@@ -157,14 +156,14 @@ package org.angle3d.math
 								return true;
 
 							// else fill in.
-							var inv:Number = 1 / dirDotNorm;
-							var t:Number = diffDotNorm * inv;
+							var inv:Number=1 / dirDotNorm;
+							var t:Number=diffDotNorm * inv;
 							if (!doPlanar)
 							{
 								result.copyFrom(origin);
-								result.x += direction.x * t;
-								result.y += direction.y * t;
-								result.z += direction.z * t;
+								result.x+=direction.x * t;
+								result.y+=direction.y * t;
+								result.z+=direction.z * t;
 							}
 							else
 							{
@@ -173,8 +172,8 @@ package org.angle3d.math
 								// eg. texcoord s,t at intersection point:
 								// s = w0*s0 + w1*s1 + w2*s2;
 								// t = w0*t0 + w1*t1 + w2*t2;
-								var w1:Number = dirDotDiffxEdge2 * inv;
-								var w2:Number = dirDotEdge1xDiff * inv;
+								var w1:Number=dirDotDiffxEdge2 * inv;
+								var w2:Number=dirDotEdge1xDiff * inv;
 								//float w0 = 1.0f - w1 - w2;
 								result.setTo(t, w1, w2);
 							}
@@ -188,33 +187,33 @@ package org.angle3d.math
 
 		public function intersects2(v0:Vector3f, v1:Vector3f, v2:Vector3f):Number
 		{
-			var edge1X:Number = v1.x - v0.x;
-			var edge1Y:Number = v1.y - v0.y;
-			var edge1Z:Number = v1.z - v0.z;
+			var edge1X:Number=v1.x - v0.x;
+			var edge1Y:Number=v1.y - v0.y;
+			var edge1Z:Number=v1.z - v0.z;
 
-			var edge2X:Number = v2.x - v0.x;
-			var edge2Y:Number = v2.y - v0.y;
-			var edge2Z:Number = v2.z - v0.z;
+			var edge2X:Number=v2.x - v0.x;
+			var edge2Y:Number=v2.y - v0.y;
+			var edge2Z:Number=v2.z - v0.z;
 
-			var normX:Number = ((edge1Y * edge2Z) - (edge1Z * edge2Y));
-			var normY:Number = ((edge1Z * edge2X) - (edge1X * edge2Z));
-			var normZ:Number = ((edge1X * edge2Y) - (edge1Y * edge2X));
+			var normX:Number=((edge1Y * edge2Z) - (edge1Z * edge2Y));
+			var normY:Number=((edge1Z * edge2X) - (edge1X * edge2Z));
+			var normZ:Number=((edge1X * edge2Y) - (edge1Y * edge2X));
 
-			var dirDotNorm:Number = direction.x * normX + direction.y * normY + direction.z * normZ;
+			var dirDotNorm:Number=direction.x * normX + direction.y * normY + direction.z * normZ;
 
-			var diffX:Number = origin.x - v0.x;
-			var diffY:Number = origin.y - v0.y;
-			var diffZ:Number = origin.z - v0.z;
+			var diffX:Number=origin.x - v0.x;
+			var diffY:Number=origin.y - v0.y;
+			var diffZ:Number=origin.z - v0.z;
 
 			var sign:Number;
 			if (dirDotNorm > FastMath.FLT_EPSILON)
 			{
-				sign = 1;
+				sign=1;
 			}
 			else if (dirDotNorm < -FastMath.FLT_EPSILON)
 			{
-				sign = -1;
-				dirDotNorm = -dirDotNorm;
+				sign=-1;
+				dirDotNorm=-dirDotNorm;
 			}
 			else
 			{
@@ -222,31 +221,31 @@ package org.angle3d.math
 				return Number.POSITIVE_INFINITY;
 			}
 
-			var diffEdge2X:Number = ((diffY * edge2Z) - (diffZ * edge2Y));
-			var diffEdge2Y:Number = ((diffZ * edge2X) - (diffX * edge2Z));
-			var diffEdge2Z:Number = ((diffX * edge2Y) - (diffY * edge2X));
+			var diffEdge2X:Number=((diffY * edge2Z) - (diffZ * edge2Y));
+			var diffEdge2Y:Number=((diffZ * edge2X) - (diffX * edge2Z));
+			var diffEdge2Z:Number=((diffX * edge2Y) - (diffY * edge2X));
 
-			var dirDotDiffxEdge2:Number = sign * (direction.x * diffEdge2X + direction.y * diffEdge2Y + direction.z * diffEdge2Z);
+			var dirDotDiffxEdge2:Number=sign * (direction.x * diffEdge2X + direction.y * diffEdge2Y + direction.z * diffEdge2Z);
 
 			if (dirDotDiffxEdge2 >= 0.0)
 			{
-				diffEdge2X = ((edge1Y * diffZ) - (edge1Z * diffY));
-				diffEdge2Y = ((edge1Z * diffX) - (edge1X * diffZ));
-				diffEdge2Z = ((edge1X * diffY) - (edge1Y * diffX));
+				diffEdge2X=((edge1Y * diffZ) - (edge1Z * diffY));
+				diffEdge2Y=((edge1Z * diffX) - (edge1X * diffZ));
+				diffEdge2Z=((edge1X * diffY) - (edge1Y * diffX));
 
-				var dirDotEdge1xDiff:Number = sign * (direction.x * diffEdge2X + direction.y * diffEdge2Y + direction.z * diffEdge2Z);
+				var dirDotEdge1xDiff:Number=sign * (direction.x * diffEdge2X + direction.y * diffEdge2Y + direction.z * diffEdge2Z);
 
 				if (dirDotEdge1xDiff >= 0.0)
 				{
 					if (dirDotDiffxEdge2 + dirDotEdge1xDiff <= dirDotNorm)
 					{
-						var diffDotNorm:Number = -sign * (diffX * normX + diffY * normY + diffZ * normZ);
+						var diffDotNorm:Number=-sign * (diffX * normX + diffY * normY + diffZ * normZ);
 						if (diffDotNorm >= 0.0)
 						{
 							// ray intersects triangle
 							// fill in.
-							var inv:Number = 1 / dirDotNorm;
-							var t:Number = diffDotNorm * inv;
+							var inv:Number=1 / dirDotNorm;
+							var t:Number=diffDotNorm * inv;
 							return t;
 						}
 					}
@@ -291,13 +290,13 @@ package org.angle3d.math
 		 */
 		public function intersectsWherePlane(p:Plane, loc:Vector3f):Boolean
 		{
-			var denominator:Number = p.normal.dot(direction);
+			var denominator:Number=p.normal.dot(direction);
 
 			if (denominator > -FastMath.FLT_EPSILON && denominator < FastMath.FLT_EPSILON)
 				return false; // coplanar
 
-			var numerator:Number = -(p.normal.dot(origin) - p.constant);
-			var ratio:Number = numerator / denominator;
+			var numerator:Number=-(p.normal.dot(origin) - p.constant);
+			var ratio:Number=numerator / denominator;
 
 			if (ratio < FastMath.FLT_EPSILON)
 				return false; // intersects behind origin
@@ -311,20 +310,20 @@ package org.angle3d.math
 		{
 			if (other is BoundingVolume)
 			{
-				var bv:BoundingVolume = (other as BoundingVolume);
+				var bv:BoundingVolume=(other as BoundingVolume);
 				return bv.collideWith(this, results);
 			}
 			else if (other is AbstractTriangle)
 			{
-				var tri:AbstractTriangle = (other as AbstractTriangle);
-				var d:Number = intersects2(tri.getPoint1(), tri.getPoint2(), tri.getPoint3());
+				var tri:AbstractTriangle=(other as AbstractTriangle);
+				var d:Number=intersects2(tri.getPoint1(), tri.getPoint2(), tri.getPoint3());
 				if (isFinite(d) || isNaN(d))
 					return 0;
 
-				var point:Vector3f = direction.clone();
+				var point:Vector3f=direction.clone();
 				point.scaleAdd(d, origin);
 
-				var cr:CollisionResult = new CollisionResult();
+				var cr:CollisionResult=new CollisionResult();
 				cr.setContactPointAndDistance(point, d);
 				results.addCollision(cr);
 
@@ -342,9 +341,9 @@ package org.angle3d.math
 
 		public function distanceSquared(point:Vector3f):Number
 		{
-			var tempVb:Vector3f = new Vector3f();
-			var tempVa:Vector3f = point.subtract(origin);
-			var rayParam:Number = direction.dot(tempVa);
+			var tempVb:Vector3f=new Vector3f();
+			var tempVa:Vector3f=point.subtract(origin);
+			var rayParam:Number=direction.dot(tempVa);
 			if (rayParam > 0)
 			{
 				tempVb.copyFrom(direction);
@@ -353,10 +352,10 @@ package org.angle3d.math
 			else
 			{
 				tempVb.copyFrom(origin);
-				rayParam = 0.0;
+				rayParam=0.0;
 			}
 
-			tempVa = tempVb.subtract(point);
+			tempVa=tempVb.subtract(point);
 
 			return tempVa.lengthSquared;
 		}
@@ -400,7 +399,7 @@ package org.angle3d.math
 		 */
 		public function setLimit(limit:Number):void
 		{
-			this.limit = limit;
+			this.limit=limit;
 		}
 
 		/**

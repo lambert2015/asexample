@@ -11,10 +11,10 @@ package org.angle3d.effect.gpu.influencers.scale
 		private var _scale:Number;
 		private var _variation:Number;
 
-		public function DefaultScaleInfluencer(scale:Number = 1.0, variation:Number = 0.0)
+		public function DefaultScaleInfluencer(scale:Number=1.0, variation:Number=0.0)
 		{
-			_scale = scale;
-			_variation = variation;
+			_scale=scale;
+			_variation=variation;
 		}
 
 		public function getDefaultScale(index:int):Number

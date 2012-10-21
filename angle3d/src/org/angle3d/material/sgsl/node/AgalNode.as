@@ -11,23 +11,23 @@ package org.angle3d.material.sgsl.node
 			super();
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
-			var node : AgalNode = new AgalNode();
+			var node:AgalNode=new AgalNode();
 			cloneChildren(node);
 			return node;
 		}
 
-		override public function toString(level : int = 0) : String
+		override public function toString(level:int=0):String
 		{
-			var space : String = getSpace(level++);
-			var result : Array = [];
+			var space:String=getSpace(level++);
+			var result:Array=[];
 
-			var m : LeafNode;
-			var length : int = _children.length;
-			for (var i : int = 0; i < length; i++)
+			var m:LeafNode;
+			var length:int=_children.length;
+			for (var i:int=0; i < length; i++)
 			{
-				m = _children[i];
+				m=_children[i];
 				result.push(m.toString(level));
 			}
 

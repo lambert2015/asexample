@@ -10,56 +10,56 @@ package org.angle3d.material
 
 	public class MaterialTexture extends Material
 	{
-		private var _technique : TechniqueTexture;
+		private var _technique:TechniqueTexture;
 
-		public function MaterialTexture(texture : TextureMapBase, lightmap : TextureMapBase = null, useTexCoord2 : Boolean = false)
+		public function MaterialTexture(texture:TextureMapBase, lightmap:TextureMapBase=null, useTexCoord2:Boolean=false)
 		{
 			super();
 
-			_technique = new TechniqueTexture();
+			_technique=new TechniqueTexture();
 			addTechnique(_technique);
 
-			this.texture = texture;
-			this.lightmap = lightmap;
-			this.useTexCoord2 = useTexCoord2;
+			this.texture=texture;
+			this.lightmap=lightmap;
+			this.useTexCoord2=useTexCoord2;
 		}
-		
+
 		override public function set skinningMatrices(data:Vector.<Number>):void
 		{
-			_technique.skinningMatrices = data;
+			_technique.skinningMatrices=data;
 		}
 
-		override public function set influence(value : Number) : void
+		override public function set influence(value:Number):void
 		{
-			_technique.influence = value;
+			_technique.influence=value;
 		}
 
-		public function get technique() : TechniqueTexture
+		public function get technique():TechniqueTexture
 		{
 			return _technique;
 		}
 
-		public function set useTexCoord2(value : Boolean) : void
+		public function set useTexCoord2(value:Boolean):void
 		{
-			_technique.useTexCoord2 = value;
+			_technique.useTexCoord2=value;
 		}
 
-		public function set texture(value : TextureMapBase) : void
+		public function set texture(value:TextureMapBase):void
 		{
-			_technique.texture = value;
+			_technique.texture=value;
 		}
 
-		public function set lightmap(value : TextureMapBase) : void
+		public function set lightmap(value:TextureMapBase):void
 		{
-			_technique.lightmap = value;
+			_technique.lightmap=value;
 		}
 
-		public function get texture() : TextureMapBase
+		public function get texture():TextureMapBase
 		{
 			return _technique.texture;
 		}
 
-		public function get lightmap() : TextureMapBase
+		public function get lightmap():TextureMapBase
 		{
 			return _technique.lightmap;
 		}

@@ -15,7 +15,7 @@ package org.angle3d.material.sgsl.node.reg
 			super(RegType.VARYING, dataType, name);
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
 			return new VaryingReg(dataType, name);
 		}
