@@ -23,7 +23,7 @@ package org.angle3d.collision.bin
 
 		public function BIHTree(mesh:Mesh)
 		{
-			this.mesh=mesh;
+			this.mesh = mesh;
 		}
 
 		public function construct():void

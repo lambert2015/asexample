@@ -23,9 +23,9 @@ package org.angle3d.scene.mesh
 		 */
 		public static function populateFromBuffer(vector:Vector3f, buf:Vector.<Number>, index:int):void
 		{
-			vector.x=buf[index * 3];
-			vector.y=buf[index * 3 + 1];
-			vector.z=buf[index * 3 + 2];
+			vector.x = buf[index * 3];
+			vector.y = buf[index * 3 + 1];
+			vector.z = buf[index * 3 + 2];
 		}
 
 		/**
@@ -76,9 +76,9 @@ package org.angle3d.scene.mesh
 		 */
 		public static function copyInternal(buf:Vector.<Number>, fromPos:int, toPos:int, length:int):void
 		{
-			for (var i:int=0; i < length; i++)
+			for (var i:int = 0; i < length; i++)
 			{
-				buf[toPos + i]=buf[fromPos + i];
+				buf[toPos + i] = buf[fromPos + i];
 			}
 		}
 	}

@@ -35,15 +35,15 @@ package org.angle3d.material.shader
 		override public function validate():void
 		{
 			var att:AttributeVar;
-			var offset:int=0;
-			var length:int=_variables.length;
-			for (var i:int=0; i < length; i++)
+			var offset:int = 0;
+			var length:int = _variables.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				att=_variables[i] as AttributeVar;
-				att.index=i;
-				att.location=offset;
-				att.format=getFormat(att.size);
-				offset+=att.size;
+				att = _variables[i] as AttributeVar;
+				att.index = i;
+				att.location = offset;
+				att.format = getFormat(att.size);
+				offset += att.size;
 			}
 		}
 	}

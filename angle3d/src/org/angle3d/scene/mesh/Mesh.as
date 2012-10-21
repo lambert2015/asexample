@@ -26,11 +26,11 @@ package org.angle3d.scene.mesh
 
 		public function Mesh()
 		{
-			mType=MeshType.MT_STATIC;
+			mType = MeshType.MT_STATIC;
 
-			mBound=new BoundingBox();
+			mBound = new BoundingBox();
 
-			mSubMeshList=new Vector.<SubMesh>();
+			mSubMeshList = new Vector.<SubMesh>();
 		}
 
 		public function get type():String
@@ -40,25 +40,25 @@ package org.angle3d.scene.mesh
 
 		public function setSubMeshList(subMeshs:Vector.<SubMesh>):void
 		{
-			mSubMeshList=subMeshs;
-			mBoundDirty=true;
+			mSubMeshList = subMeshs;
+			mBoundDirty = true;
 		}
 
 		public function addSubMesh(subMesh:SubMesh):void
 		{
 			mSubMeshList.push(subMesh);
-			subMesh.mesh=this;
+			subMesh.mesh = this;
 
-			mBoundDirty=true;
+			mBoundDirty = true;
 		}
 
 		public function removeSubMesh(subMesh:SubMesh):void
 		{
-			var index:int=mSubMeshList.indexOf(subMesh);
+			var index:int = mSubMeshList.indexOf(subMesh);
 			if (index > -1)
 			{
 				mSubMeshList.splice(index, 1);
-				mBoundDirty=true;
+				mBoundDirty = true;
 			}
 		}
 
@@ -82,14 +82,14 @@ package org.angle3d.scene.mesh
 			if (!mBoundDirty)
 				return;
 
-			var length:int=mSubMeshList.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = mSubMeshList.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var subMesh:SubMesh=mSubMeshList[i];
+				var subMesh:SubMesh = mSubMeshList[i];
 				mBound.mergeLocal(subMesh.getBound());
 			}
 
-			mBoundDirty=false;
+			mBoundDirty = false;
 		}
 
 		/**
@@ -100,8 +100,8 @@ package org.angle3d.scene.mesh
 		 */
 		public function setBound(bound:BoundingVolume):void
 		{
-			mBound=bound;
-			mBoundDirty=false;
+			mBound = bound;
+			mBoundDirty = false;
 		}
 
 		/**
@@ -120,9 +120,9 @@ package org.angle3d.scene.mesh
 		 */
 		private function createCollisionData():void
 		{
-			var tree:BIHTree=new BIHTree(this);
+			var tree:BIHTree = new BIHTree(this);
 			tree.construct();
-			collisionTree=tree;
+			collisionTree = tree;
 		}
 
 		public function collideWith(other:Collidable, worldMatrix:Matrix4f, worldBound:BoundingVolume, results:CollisionResults):int

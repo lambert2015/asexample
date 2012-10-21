@@ -20,11 +20,11 @@ package org.angle3d.scene.shape
 		private var spline:Spline;
 		private var temp:Vector3f;
 
-		public function WireframeCurve(spline:Spline, nbSubSegments:int=0)
+		public function WireframeCurve(spline:Spline, nbSubSegments:int = 0)
 		{
 			super();
 
-			this.spline=spline;
+			this.spline = spline;
 
 			switch (spline.type)
 			{
@@ -45,16 +45,16 @@ package org.angle3d.scene.shape
 
 		private function createCatmullRomMesh(nbSubSegments:int):void
 		{
-			var points:Vector.<Vector3f>=spline.getControlPoints();
+			var points:Vector.<Vector3f> = spline.getControlPoints();
 			var point:Vector3f;
-			var start:Vector3f=new Vector3f();
-			var end:Vector3f=new Vector3f();
-			var cptCP:int=0;
-			var pLength:int=(points.length - 1);
-			for (var i:int=0; i < pLength; i++)
+			var start:Vector3f = new Vector3f();
+			var end:Vector3f = new Vector3f();
+			var cptCP:int = 0;
+			var pLength:int = (points.length - 1);
+			for (var i:int = 0; i < pLength; i++)
 			{
 				start.copyFrom(points[i]);
-				for (var j:int=1; j < nbSubSegments; j++)
+				for (var j:int = 1; j < nbSubSegments; j++)
 				{
 					spline.interpolate(j / nbSubSegments, cptCP, end);
 
@@ -85,13 +85,13 @@ package org.angle3d.scene.shape
 
 		private function createLinearMesh():void
 		{
-			var points:Vector.<Vector3f>=spline.getControlPoints();
+			var points:Vector.<Vector3f> = spline.getControlPoints();
 
-			var pLength:int=(points.length - 1);
-			for (var i:int=0; i < pLength; i++)
+			var pLength:int = (points.length - 1);
+			for (var i:int = 0; i < pLength; i++)
 			{
-				var p0:Vector3f=points[i];
-				var p1:Vector3f=points[i + 1];
+				var p0:Vector3f = points[i];
+				var p1:Vector3f = points[i + 1];
 				addSegment(new WireframeLineSet(p0.x, p0.y, p0.z, p1.x, p1.y, p1.z));
 			}
 			build();

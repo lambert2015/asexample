@@ -26,13 +26,13 @@ package org.angle3d.input.controls
 		{
 			Assert.assert(mouseAxis >= 0 && mouseAxis <= 2, "Mouse Axis must be between 0 and 2");
 
-			this.mouseAxis=mouseAxis;
-			this.negative=negative;
+			this.mouseAxis = mouseAxis;
+			this.negative = negative;
 		}
 
 		public function getName():String
 		{
-			var sign:String=negative ? "Negative" : "Positive";
+			var sign:String = negative ? "Negative" : "Positive";
 			switch (mouseAxis)
 			{
 				case MouseInput.AXIS_X:

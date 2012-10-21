@@ -12,9 +12,9 @@ package org.angle3d.effect.gpu.influencers.color
 
 		public function getColor(index:int, color:Color):Color
 		{
-			color.r=Math.random();
-			color.g=Math.random();
-			color.b=Math.random();
+			color.r = Math.random();
+			color.g = Math.random();
+			color.b = Math.random();
 			return color;
 		}
 	}

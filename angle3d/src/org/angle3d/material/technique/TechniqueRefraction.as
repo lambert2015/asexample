@@ -32,34 +32,34 @@ package org.angle3d.material.technique
 
 		private var _etaRatios:Vector.<Number>;
 
-		public function TechniqueRefraction(decalMap:TextureMapBase, environmentMap:CubeTextureMap, etaRatio:Number=1.5, transmittance:Number=0.5)
+		public function TechniqueRefraction(decalMap:TextureMapBase, environmentMap:CubeTextureMap, etaRatio:Number = 1.5, transmittance:Number = 0.5)
 		{
 			super("TechniqueReflective");
 
-			_renderState.applyCullMode=true;
-			_renderState.cullMode=Context3DTriangleFace.FRONT;
+			_renderState.applyCullMode = true;
+			_renderState.cullMode = Context3DTriangleFace.FRONT;
 
-			_renderState.applyDepthTest=true;
-			_renderState.depthTest=true;
-			_renderState.compareMode=Context3DCompareMode.LESS_EQUAL;
+			_renderState.applyDepthTest = true;
+			_renderState.depthTest = true;
+			_renderState.compareMode = Context3DCompareMode.LESS_EQUAL;
 
-			_renderState.applyBlendMode=false;
+			_renderState.applyBlendMode = false;
 
-			_etaRatios=new Vector.<Number>(4, true);
+			_etaRatios = new Vector.<Number>(4, true);
 
-			this.decalMap=decalMap;
-			this.environmentMap=environmentMap;
-			this.etaRatio=etaRatio;
-			this.transmittance=transmittance;
+			this.decalMap = decalMap;
+			this.environmentMap = environmentMap;
+			this.etaRatio = etaRatio;
+			this.transmittance = transmittance;
 		}
 
 		public function set etaRatio(value:Number):void
 		{
 //			if (value < 1.0)
 //				value = 1.0;
-			_etaRatios[0]=value;
-			_etaRatios[1]=value * value;
-			_etaRatios[2]=1.0 - _etaRatios[1];
+			_etaRatios[0] = value;
+			_etaRatios[1] = value * value;
+			_etaRatios[2] = 1.0 - _etaRatios[1];
 		}
 
 		public function get etaRatio():Number
@@ -72,9 +72,9 @@ package org.angle3d.material.technique
 		 */
 		public function set transmittance(value:Number):void
 		{
-			_transmittance=value;
+			_transmittance = value;
 			if (_transmittance < 0)
-				_transmittance=0;
+				_transmittance = 0;
 		}
 
 		public function get transmittance():Number
@@ -89,7 +89,7 @@ package org.angle3d.material.technique
 
 		public function set decalMap(value:TextureMapBase):void
 		{
-			_decalMap=value;
+			_decalMap = value;
 		}
 
 		public function get environmentMap():CubeTextureMap
@@ -99,18 +99,18 @@ package org.angle3d.material.technique
 
 		public function set environmentMap(value:CubeTextureMap):void
 		{
-			_environmentMap=value;
+			_environmentMap = value;
 		}
 
 		override public function updateShader(shader:Shader):void
 		{
 			shader.getUniform(ShaderType.VERTEX, "u_etaRatio").setVector(_etaRatios);
 			shader.getUniform(ShaderType.FRAGMENT, "u_transmittance").setFloat(_transmittance);
-			shader.getTextureVar("u_decalMap").textureMap=_decalMap;
-			shader.getTextureVar("u_environmentMap").textureMap=_environmentMap;
+			shader.getTextureVar("u_decalMap").textureMap = _decalMap;
+			shader.getTextureVar("u_environmentMap").textureMap = _environmentMap;
 		}
 
-		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -140,7 +140,7 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				
@@ -163,22 +163,22 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
-			var map:Dictionary=new Dictionary();
-			map[BufferType.POSITION]="a_position";
-			map[BufferType.TEXCOORD]="a_texCoord";
-			map[BufferType.NORMAL]="a_normal";
+			var map:Dictionary = new Dictionary();
+			map[BufferType.POSITION] = "a_position";
+			map[BufferType.TEXCOORD] = "a_texCoord";
+			map[BufferType.NORMAL] = "a_normal";
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_worldMatrix", UniformBinding.WorldMatrix));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_camPosition", UniformBinding.CameraPosition));
-			list.fixed=true;
+			list.fixed = true;
 			return list;
 		}
 	}

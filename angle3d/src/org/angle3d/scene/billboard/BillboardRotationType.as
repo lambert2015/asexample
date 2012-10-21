@@ -9,11 +9,11 @@ package org.angle3d.scene.billboard
 		/**
 		 * 顶点旋转
 		 */
-		public static const BBR_VERTEX:int=0;
+		public static const BBR_VERTEX:int = 0;
 
 		/**
 		 * 贴图坐标旋转
 		 */
-		public static const BBR_TEXCOORD:int=1;
+		public static const BBR_TEXCOORD:int = 1;
 	}
 }

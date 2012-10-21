@@ -31,7 +31,7 @@ package org.assetloader.utils
 		 * "getSprite('MyCustomSpriteAsset');" will result in the Inspector returing
 		 * a new Sprite instance of "com.domain.assets.MyCustomSpriteAsset".
 		 */
-		public var basePackage:String="";
+		public var basePackage:String = "";
 
 		/**
 		 * Constructor.
@@ -42,7 +42,7 @@ package org.assetloader.utils
 		 */
 		public function Inspector(displayObject:DisplayObject)
 		{
-			_domain=displayObject.loaderInfo.applicationDomain;
+			_domain = displayObject.loaderInfo.applicationDomain;
 		}
 
 		/**
@@ -50,7 +50,7 @@ package org.assetloader.utils
 		 */
 		public function destroy():void
 		{
-			_domain=null;
+			_domain = null;
 		}
 
 		/**
@@ -72,12 +72,12 @@ package org.assetloader.utils
 		 *
 		 * @return Class object matching package/name combo.
 		 */
-		public function getClass(classNameOrFullName:String, overrideBasePackage:String=null):Class
+		public function getClass(classNameOrFullName:String, overrideBasePackage:String = null):Class
 		{
-			var bp:String=overrideBasePackage || basePackage;
+			var bp:String = overrideBasePackage || basePackage;
 			if (!bp)
-				bp="";
-			var fullName:String=bp + ((bp == "") ? "" : ".") + classNameOrFullName;
+				bp = "";
+			var fullName:String = bp + ((bp == "") ? "" : ".") + classNameOrFullName;
 			if (_domain.hasDefinition(fullName))
 				return _domain.getDefinition(fullName) as Class;
 			return null;
@@ -91,9 +91,9 @@ package org.assetloader.utils
 		 * @param overrideBasePackage Override the basePackage, just for this call.
 		 * @see #getClass()
 		 */
-		public function getSprite(className:String, overrideBasePackage:String=null):Sprite
+		public function getSprite(className:String, overrideBasePackage:String = null):Sprite
 		{
-			var clazz:Class=getClass(className, overrideBasePackage);
+			var clazz:Class = getClass(className, overrideBasePackage);
 			if (clazz)
 				return new clazz() as Sprite;
 			return null;
@@ -106,9 +106,9 @@ package org.assetloader.utils
 		 * @param overrideBasePackage Override the basePackage, just for this call.
 		 * @see #getClass()
 		 */
-		public function getMovieClip(className:String, overrideBasePackage:String=null):MovieClip
+		public function getMovieClip(className:String, overrideBasePackage:String = null):MovieClip
 		{
-			var clazz:Class=getClass(className, overrideBasePackage);
+			var clazz:Class = getClass(className, overrideBasePackage);
 			if (clazz)
 				return new clazz() as MovieClip;
 			return null;
@@ -121,9 +121,9 @@ package org.assetloader.utils
 		 * @param overrideBasePackage Override the basePackage, just for this call.
 		 * @see #getClass()
 		 */
-		public function getFont(className:String, overrideBasePackage:String=null):Font
+		public function getFont(className:String, overrideBasePackage:String = null):Font
 		{
-			var clazz:Class=getClass(className, overrideBasePackage);
+			var clazz:Class = getClass(className, overrideBasePackage);
 			if (clazz)
 				return new clazz() as Font;
 			return null;
@@ -136,9 +136,9 @@ package org.assetloader.utils
 		 * @param overrideBasePackage Override the basePackage, just for this call.
 		 * @see #getClass()
 		 */
-		public function getSound(className:String, overrideBasePackage:String=null):Sound
+		public function getSound(className:String, overrideBasePackage:String = null):Sound
 		{
-			var clazz:Class=getClass(className, overrideBasePackage);
+			var clazz:Class = getClass(className, overrideBasePackage);
 			if (clazz)
 				return new clazz() as Sound;
 			return null;
@@ -151,9 +151,9 @@ package org.assetloader.utils
 		 * @param overrideBasePackage Override the basePackage, just for this call.
 		 * @see #getClass()
 		 */
-		public function getBitmapData(className:String, overrideBasePackage:String=null):BitmapData
+		public function getBitmapData(className:String, overrideBasePackage:String = null):BitmapData
 		{
-			var clazz:Class=getClass(className, overrideBasePackage);
+			var clazz:Class = getClass(className, overrideBasePackage);
 			if (clazz)
 				return new clazz(0, 0) as BitmapData;
 			return null;
@@ -166,9 +166,9 @@ package org.assetloader.utils
 		 * @param overrideBasePackage Override the basePackage, just for this call.
 		 * @see #getClass()
 		 */
-		public function getBitmap(className:String, overrideBasePackage:String=null):Bitmap
+		public function getBitmap(className:String, overrideBasePackage:String = null):Bitmap
 		{
-			var bitmapData:BitmapData=getBitmapData(className, overrideBasePackage);
+			var bitmapData:BitmapData = getBitmapData(className, overrideBasePackage);
 			if (bitmapData)
 				return new Bitmap(bitmapData);
 			return null;

@@ -11,18 +11,18 @@ package org.angle3d.material
 	{
 		private var _technique:TechniqueWireframe;
 
-		public function MaterialWireframe(color:uint=0xFF0000, thickness:Number=1.0)
+		public function MaterialWireframe(color:uint = 0xFF0000, thickness:Number = 1.0)
 		{
 			super();
 
-			_technique=new TechniqueWireframe(color, thickness);
+			_technique = new TechniqueWireframe(color, thickness);
 
 			addTechnique(_technique);
 		}
 
 		public function set thickness(thickness:Number):void
 		{
-			_technique.thickness=thickness;
+			_technique.thickness = thickness;
 		}
 
 		public function get thickness():Number
@@ -37,14 +37,14 @@ package org.angle3d.material
 
 		override public function set alpha(alpha:Number):void
 		{
-			_technique.alpha=alpha;
+			_technique.alpha = alpha;
 
-			super.alpha=alpha;
+			super.alpha = alpha;
 		}
 
 		public function set color(color:uint):void
 		{
-			_technique.color=color;
+			_technique.color = color;
 		}
 
 		public function get color():uint

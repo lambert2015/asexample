@@ -68,31 +68,31 @@ package org.angle3d.renderer
 		 */
 		public function RenderManager(renderer:IRenderer)
 		{
-			_renderer=renderer;
+			_renderer = renderer;
 			_init();
 		}
 
 		private function _init():void
 		{
-			_uniformBindingManager=new UniformBindingManager();
+			_uniformBindingManager = new UniformBindingManager();
 
-			preViewPorts=new Vector.<ViewPort>();
-			viewPorts=new Vector.<ViewPort>();
-			postViewPorts=new Vector.<ViewPort>();
+			preViewPorts = new Vector.<ViewPort>();
+			viewPorts = new Vector.<ViewPort>();
+			postViewPorts = new Vector.<ViewPort>();
 
-			_orthoMatrix=new Matrix4f();
+			_orthoMatrix = new Matrix4f();
 
-			_handleTranlucentBucket=false;
+			_handleTranlucentBucket = false;
 		}
 
 		public function setForcedMaterial(mat:Material):void
 		{
-			mForcedMaterial=mat;
+			mForcedMaterial = mat;
 		}
 
 		public function clearForcedMaterial():void
 		{
-			mForcedMaterial=null;
+			mForcedMaterial = null;
 		}
 
 		/**
@@ -105,8 +105,8 @@ package org.angle3d.renderer
 		 */
 		public function getPreView(viewName:String):ViewPort
 		{
-			var length:int=preViewPorts.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = preViewPorts.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				if (preViewPorts[i].name == viewName)
 				{
@@ -126,7 +126,7 @@ package org.angle3d.renderer
 		 */
 		public function removePreView(view:ViewPort):Boolean
 		{
-			var index:int=preViewPorts.indexOf(view);
+			var index:int = preViewPorts.indexOf(view);
 			if (index > -1)
 			{
 				preViewPorts.splice(index, 1);
@@ -145,8 +145,8 @@ package org.angle3d.renderer
 		 */
 		public function getMainView(viewName:String):ViewPort
 		{
-			var length:int=viewPorts.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = viewPorts.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				if (viewPorts[i].name == viewName)
 				{
@@ -166,8 +166,8 @@ package org.angle3d.renderer
 		 */
 		public function removeMainViewByName(viewName:String):Boolean
 		{
-			var length:int=viewPorts.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = viewPorts.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				if (viewPorts[i].name == viewName)
 				{
@@ -188,7 +188,7 @@ package org.angle3d.renderer
 		 */
 		public function removeMainView(view:ViewPort):Boolean
 		{
-			var index:int=viewPorts.indexOf(view);
+			var index:int = viewPorts.indexOf(view);
 			if (index > -1)
 			{
 				viewPorts.splice(index, 1);
@@ -207,8 +207,8 @@ package org.angle3d.renderer
 		 */
 		public function getPostView(viewName:String):ViewPort
 		{
-			var length:int=postViewPorts.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = postViewPorts.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				if (postViewPorts[i].name == viewName)
 				{
@@ -228,8 +228,8 @@ package org.angle3d.renderer
 		 */
 		public function removePostViewByName(viewName:String):Boolean
 		{
-			var pLength:int=postViewPorts.length;
-			for (var i:int=0; i < pLength; i++)
+			var pLength:int = postViewPorts.length;
+			for (var i:int = 0; i < pLength; i++)
 			{
 				if (postViewPorts[i].name == viewName)
 				{
@@ -250,7 +250,7 @@ package org.angle3d.renderer
 		 */
 		public function removePostView(view:ViewPort):Boolean
 		{
-			var index:int=postViewPorts.indexOf(view);
+			var index:int = postViewPorts.indexOf(view);
 			if (index > -1)
 			{
 				postViewPorts.splice(index, 1);
@@ -296,7 +296,7 @@ package org.angle3d.renderer
 		 */
 		public function createPreView(viewName:String, cam:Camera3D):ViewPort
 		{
-			var vp:ViewPort=new ViewPort(viewName, cam);
+			var vp:ViewPort = new ViewPort(viewName, cam);
 			preViewPorts.push(vp);
 			return vp;
 		}
@@ -309,7 +309,7 @@ package org.angle3d.renderer
 		 */
 		public function createMainView(viewName:String, cam:Camera3D):ViewPort
 		{
-			var vp:ViewPort=new ViewPort(viewName, cam);
+			var vp:ViewPort = new ViewPort(viewName, cam);
 			viewPorts.push(vp);
 			return vp;
 		}
@@ -321,7 +321,7 @@ package org.angle3d.renderer
 		 */
 		public function createPostView(viewName:String, cam:Camera3D):ViewPort
 		{
-			var vp:ViewPort=new ViewPort(viewName, cam);
+			var vp:ViewPort = new ViewPort(viewName, cam);
 			postViewPorts.push(vp);
 			return vp;
 		}
@@ -333,12 +333,12 @@ package org.angle3d.renderer
 				vp.camera.resize(w, h, true);
 			}
 
-			var processors:Vector.<SceneProcessor>=vp.processors;
-			var pLength:int=processors.length;
+			var processors:Vector.<SceneProcessor> = vp.processors;
+			var pLength:int = processors.length;
 			var processor:SceneProcessor;
-			for (var i:int=0; i < pLength; i++)
+			for (var i:int = 0; i < pLength; i++)
 			{
-				processor=processors[i];
+				processor = processors[i];
 				if (!processor.initialized)
 				{
 					processor.initialize(this, vp);
@@ -358,24 +358,24 @@ package org.angle3d.renderer
 		public function reshape(w:int, h:int):void
 		{
 			var vp:ViewPort;
-			var vLength:int=preViewPorts.length;
-			for (var i:int=0; i < vLength; i++)
+			var vLength:int = preViewPorts.length;
+			for (var i:int = 0; i < vLength; i++)
 			{
-				vp=preViewPorts[i];
+				vp = preViewPorts[i];
 				reshapeViewPort(vp, w, h);
 			}
 
-			vLength=viewPorts.length;
-			for (i=0; i < vLength; i++)
+			vLength = viewPorts.length;
+			for (i = 0; i < vLength; i++)
 			{
-				vp=viewPorts[i];
+				vp = viewPorts[i];
 				reshapeViewPort(vp, w, h);
 			}
 
-			vLength=postViewPorts.length;
-			for (i=0; i < vLength; i++)
+			vLength = postViewPorts.length;
+			for (i = 0; i < vLength; i++)
 			{
-				vp=postViewPorts[i];
+				vp = postViewPorts[i];
 				reshapeViewPort(vp, w, h);
 			}
 		}
@@ -418,7 +418,7 @@ package org.angle3d.renderer
 		 */
 		public function setHandleTranslucentBucket(handleTranslucentBucket:Boolean):void
 		{
-			this._handleTranlucentBucket=handleTranslucentBucket;
+			this._handleTranlucentBucket = handleTranslucentBucket;
 		}
 
 		/**
@@ -480,38 +480,38 @@ package org.angle3d.renderer
 			var mat:Material;
 			if (mForcedMaterial != null)
 			{
-				mat=mForcedMaterial;
+				mat = mForcedMaterial;
 			}
 			else
 			{
-				mat=geom.getMaterial();
+				mat = geom.getMaterial();
 			}
 
 			// for each technique in material
-			var techniques:Vector.<Technique>=mat.getTechniques();
+			var techniques:Vector.<Technique> = mat.getTechniques();
 			var shader:Shader;
-			var size:int=techniques.length;
-			for (var i:int=0; i < size; i++)
+			var size:int = techniques.length;
+			for (var i:int = 0; i < size; i++)
 			{
-				var technique:Technique=techniques[i];
-				var lightList:LightList=geom.getWorldLightList();
+				var technique:Technique = techniques[i];
+				var lightList:LightList = geom.getWorldLightList();
 
-				var mesh:Mesh=geom.getMesh();
+				var mesh:Mesh = geom.getMesh();
 				if (mesh == null)
 					continue;
 
-				var state:RenderState=technique.renderState;
+				var state:RenderState = technique.renderState;
 				//culling,blend mode .....
 				_renderer.applyRenderState(state);
 
-				var lightSize:int=lightList.getSize();
+				var lightSize:int = lightList.getSize();
 				if (technique.requiresLight && lightSize > 0)
 				{
-					for (var j:int=0; j < lightSize; j++)
+					for (var j:int = 0; j < lightSize; j++)
 					{
-						var light:Light=lightList.getLightAt(j);
+						var light:Light = lightList.getLightAt(j);
 
-						shader=technique.getShader(light.type, mesh.type);
+						shader = technique.getShader(light.type, mesh.type);
 
 						//需要更新绑定和用户自定义的Uniform，然后上传到GPU
 						updateShaderBinding(shader);
@@ -523,7 +523,7 @@ package org.angle3d.renderer
 				}
 				else
 				{
-					shader=technique.getShader(LightType.None, mesh.type);
+					shader = technique.getShader(LightType.None, mesh.type);
 
 					//需要更新绑定和用户自定义的Uniform，然后上传到GPU
 					updateShaderBinding(shader);
@@ -550,8 +550,8 @@ package org.angle3d.renderer
 		 */
 		public function renderGeometryList(gl:GeometryList):void
 		{
-			var size:int=gl.size;
-			for (var i:int=0; i < size; i++)
+			var size:int = gl.size;
+			for (var i:int = 0; i < size; i++)
 			{
 				renderGeometry(gl.getGeometry(i));
 			}
@@ -566,19 +566,19 @@ package org.angle3d.renderer
 		{
 			if (s is Node)
 			{
-				var n:Node=s as Node;
-				var children:Vector.<Spatial>=n.children;
-				var length:int=children.length;
-				for (var i:int=0; i < length; i++)
+				var n:Node = s as Node;
+				var children:Vector.<Spatial> = n.children;
+				var length:int = children.length;
+				for (var i:int = 0; i < length; i++)
 				{
 					renderShadow(children[i], rq);
 				}
 			}
 			else if (s is Geometry)
 			{
-				var gm:Geometry=s as Geometry;
+				var gm:Geometry = s as Geometry;
 
-				var shadowMode:int=s.shadowMode;
+				var shadowMode:int = s.shadowMode;
 				if (shadowMode != ShadowMode.Off && shadowMode != ShadowMode.Receive)
 				{
 					//forcing adding to shadow cast mode, culled objects doesn't have to be in the receiver queue
@@ -623,7 +623,7 @@ package org.angle3d.renderer
 
 			if (scene.parent == null)
 			{
-				vp.camera.planeState=PlaneSide.None;
+				vp.camera.planeState = PlaneSide.None;
 			}
 
 			// check culling first.
@@ -642,23 +642,23 @@ package org.angle3d.renderer
 			if (scene is Node)
 			{
 				//recurse for all children
-				var n:Node=scene as Node;
+				var n:Node = scene as Node;
 
-				var children:Vector.<Spatial>=n.children;
+				var children:Vector.<Spatial> = n.children;
 				//saving cam state for culling
-				var camState:int=vp.camera.planeState;
-				var cLength:int=children.length;
-				for (var i:int=0; i < cLength; i++)
+				var camState:int = vp.camera.planeState;
+				var cLength:int = children.length;
+				for (var i:int = 0; i < cLength; i++)
 				{
 					//restoring cam state before proceeding children recusively
-					vp.camera.planeState=camState;
+					vp.camera.planeState = camState;
 					renderScene(children[i], vp);
 				}
 			}
 			else if (scene is Geometry)
 			{
 				// add to the render queue
-				var gm:Geometry=scene as Geometry;
+				var gm:Geometry = scene as Geometry;
 
 				CF::DEBUG
 				{
@@ -668,7 +668,7 @@ package org.angle3d.renderer
 				vp.renderQueue.addToQueue(gm, gm.queueBucket);
 
 				//add to shadow queue if needed
-				var shadowMode:int=gm.shadowMode;
+				var shadowMode:int = gm.shadowMode;
 				if (shadowMode != ShadowMode.Off)
 				{
 					vp.renderQueue.addToShadowQueue(gm, shadowMode);
@@ -754,8 +754,8 @@ package org.angle3d.renderer
 		 */
 		private function renderViewPortQueues(vp:ViewPort, flush:Boolean):void
 		{
-			var queue:RenderQueue=vp.renderQueue;
-			var cam:Camera3D=vp.camera;
+			var queue:RenderQueue = vp.renderQueue;
+			var cam:Camera3D = vp.camera;
 
 			// render the sky, with depth range set to the farthest
 			//首先绘制天空体
@@ -778,7 +778,7 @@ package org.angle3d.renderer
 				queue.renderQueue(QueueBucket.Transparent, this, cam, flush);
 			}
 
-			var isParallelProjection:Boolean=cam.parallelProjection;
+			var isParallelProjection:Boolean = cam.parallelProjection;
 
 			//绘制GUI
 			if (!queue.isQueueEmpty(QueueBucket.Gui))
@@ -805,7 +805,7 @@ package org.angle3d.renderer
 		 */
 		public function renderTranslucentQueue(vp:ViewPort):void
 		{
-			var rq:RenderQueue=vp.renderQueue;
+			var rq:RenderQueue = vp.renderQueue;
 			if (!rq.isQueueEmpty(QueueBucket.Translucent) && _handleTranlucentBucket)
 			{
 				rq.renderQueue(QueueBucket.Translucent, this, vp.camera, true);
@@ -817,19 +817,19 @@ package org.angle3d.renderer
 			// this will make sure to update viewport only if needed
 			if (cam != this.camera || cam.isViewportChanged())
 			{
-				var rect:Rect=cam.viewPortRect;
+				var rect:Rect = cam.viewPortRect;
 
-				viewX=int(rect.left * cam.width);
-				viewY=int(rect.bottom * cam.height);
-				viewWidth=int(rect.width * cam.width);
-				viewHeight=int(rect.height * cam.height);
+				viewX = int(rect.left * cam.width);
+				viewY = int(rect.bottom * cam.height);
+				viewWidth = int(rect.width * cam.width);
+				viewHeight = int(rect.height * cam.height);
 
 				_uniformBindingManager.setViewPort(viewX, viewY, viewWidth, viewHeight);
 				_renderer.setViewPort(viewX, viewY, viewWidth, viewHeight);
 				_renderer.setClipRect(viewX, viewY, viewWidth, viewHeight);
 
 				cam.clearViewportChanged();
-				this.camera=cam;
+				this.camera = cam;
 			}
 
 			_orthoMatrix.makeIdentity();
@@ -884,8 +884,8 @@ package org.angle3d.renderer
 		{
 			setCamera(vp.camera, false);
 
-			var scenes:Vector.<Spatial>=vp.getScenes();
-			var i:int=scenes.length;
+			var scenes:Vector.<Spatial> = vp.getScenes();
+			var i:int = scenes.length;
 			while (i-- >= 0)
 			{
 				renderScene(scenes[i], vp);
@@ -940,12 +940,12 @@ package org.angle3d.renderer
 			if (!vp.enabled)
 				return;
 
-			var processors:Vector.<SceneProcessor>=vp.processors;
-			var pLength:int=processors.length;
+			var processors:Vector.<SceneProcessor> = vp.processors;
+			var pLength:int = processors.length;
 			var processor:SceneProcessor;
-			for (var i:int=0; i < pLength; i++)
+			for (var i:int = 0; i < pLength; i++)
 			{
-				processor=processors[i];
+				processor = processors[i];
 				if (!processor.initialized)
 				{
 					processor.initialize(this, vp);
@@ -967,24 +967,24 @@ package org.angle3d.renderer
 				_renderer.clearBuffers(vp.isClearColor(), vp.isClearDepth(), vp.isClearStencil());
 			}
 
-			var scenes:Vector.<Spatial>=vp.getScenes();
-			i=scenes.length;
+			var scenes:Vector.<Spatial> = vp.getScenes();
+			i = scenes.length;
 			while (i-- > 0)
 			{
 				renderScene(scenes[i], vp);
 			}
 
-			for (i=0; i < pLength; i++)
+			for (i = 0; i < pLength; i++)
 			{
-				processor=processors[i];
+				processor = processors[i];
 				processor.postQueue(vp.renderQueue);
 			}
 
 			flushQueue(vp);
 
-			for (i=0; i < pLength; i++)
+			for (i = 0; i < pLength; i++)
 			{
-				processor=processors[i];
+				processor = processors[i];
 				processor.postFrame(vp.frameBuffer);
 			}
 
@@ -1005,20 +1005,20 @@ package org.angle3d.renderer
 		public function render(tpf:Number):void
 		{
 			var i:int;
-			var size:int=preViewPorts.length;
-			for (i=0; i < size; i++)
+			var size:int = preViewPorts.length;
+			for (i = 0; i < size; i++)
 			{
 				renderViewPort(preViewPorts[i], tpf);
 			}
 
-			size=viewPorts.length;
-			for (i=0; i < size; i++)
+			size = viewPorts.length;
+			for (i = 0; i < size; i++)
 			{
 				renderViewPort(viewPorts[i], tpf);
 			}
 
-			size=postViewPorts.length;
-			for (i=0; i < size; i++)
+			size = postViewPorts.length;
+			for (i = 0; i < size; i++)
 			{
 				renderViewPort(postViewPorts[i], tpf);
 			}

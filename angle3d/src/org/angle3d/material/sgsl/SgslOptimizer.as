@@ -31,26 +31,26 @@
 		 */
 		public function exec(data:SgslData, tree:BranchNode, defines:Vector.<String>):void
 		{
-			var cloneTree:BranchNode=tree.clone() as BranchNode;
+			var cloneTree:BranchNode = tree.clone() as BranchNode;
 
 			//条件过滤
 			cloneTree.filter(defines);
 
-			var customFunctionMap:Dictionary=new Dictionary();
+			var customFunctionMap:Dictionary = new Dictionary();
 
 			var mainFunction:FunctionNode;
 
 			//保存所有自定义函数
-			var children:Vector.<LeafNode>=cloneTree.children;
-			var cLength:int=children.length;
-			for (var i:int=0; i < cLength; i++)
+			var children:Vector.<LeafNode> = cloneTree.children;
+			var cLength:int = children.length;
+			for (var i:int = 0; i < cLength; i++)
 			{
-				var child:LeafNode=children[i];
+				var child:LeafNode = children[i];
 				if (child is FunctionNode)
 				{
 					if (child.name == "main")
 					{
-						mainFunction=child as FunctionNode;
+						mainFunction = child as FunctionNode;
 					}
 					else
 					{
@@ -58,7 +58,7 @@
 						{
 							throw new Error("自定义函数" + child.name + "定义重复");
 						}
-						customFunctionMap[child.name]=child;
+						customFunctionMap[child.name] = child;
 					}
 				}
 				else
@@ -68,21 +68,21 @@
 			}
 
 			//复制系统自定义函数到字典中
-			var systemMap:Dictionary=ShaderManager.instance.getCustomFunctionMap();
+			var systemMap:Dictionary = ShaderManager.instance.getCustomFunctionMap();
 			for (var key:* in systemMap)
 			{
-				customFunctionMap[key]=systemMap[key];
+				customFunctionMap[key] = systemMap[key];
 			}
 
 			//替换main中自定义函数
 			mainFunction.replaceCustomFunction(customFunctionMap);
 
 			//找出mainFunction中的RegNode
-			children=mainFunction.children;
-			cLength=children.length;
-			for (i=0; i < cLength; i++)
+			children = mainFunction.children;
+			cLength = children.length;
+			for (i = 0; i < cLength; i++)
 			{
-				child=children[i];
+				child = children[i];
 				if (child is RegNode)
 				{
 					data.addReg(child as RegNode);

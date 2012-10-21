@@ -16,8 +16,8 @@ package org.angle3d.input.event
 		public function MouseWheelEvent(wheel:int, deltaWheel:int)
 		{
 			super();
-			this.wheel=wheel;
-			this.deltaWheel=deltaWheel;
+			this.wheel = wheel;
+			this.deltaWheel = deltaWheel;
 		}
 
 		public function toString():String

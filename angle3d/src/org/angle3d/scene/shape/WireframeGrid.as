@@ -11,9 +11,9 @@ package org.angle3d.scene.shape
 	public class WireframeGrid extends WireframeShape
 	{
 
-		public static const PLANE_XY:uint=0x01;
-		public static const PLANE_XZ:uint=0x02;
-		public static const PLANE_YZ:uint=0x04;
+		public static const PLANE_XY:uint = 0x01;
+		public static const PLANE_XZ:uint = 0x02;
+		public static const PLANE_YZ:uint = 0x04;
 
 		/**
 		 *
@@ -23,14 +23,14 @@ package org.angle3d.scene.shape
 		 * @param	color
 		 * @param	plane default all plane
 		 */
-		public function WireframeGrid(subDivision:int=10, gridSize:int=100, plane:uint=7)
+		public function WireframeGrid(subDivision:int = 10, gridSize:int = 100, plane:uint = 7)
 		{
 			super();
 
 			if (subDivision == 0)
-				subDivision=1;
+				subDivision = 1;
 			if (gridSize == 0)
-				gridSize=1;
+				gridSize = 1;
 
 			if ((plane & PLANE_XY) != 0)
 			{
@@ -52,9 +52,9 @@ package org.angle3d.scene.shape
 
 		private function addGrid(subDivision:int, gridSize:int, plane:uint):void
 		{
-			var bound:Number=gridSize * .5;
-			var step:Number=gridSize / subDivision;
-			var inc:Number=-bound;
+			var bound:Number = gridSize * .5;
+			var step:Number = gridSize / subDivision;
+			var inc:Number = -bound;
 			while (inc <= bound)
 			{
 				switch (plane)
@@ -73,7 +73,7 @@ package org.angle3d.scene.shape
 						break;
 				}
 
-				inc+=step;
+				inc += step;
 			}
 		}
 	}

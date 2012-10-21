@@ -23,10 +23,10 @@ package org.angle3d.bounding
 
 		public var center:Vector3f;
 
-		public function BoundingVolume(center:Vector3f=null)
+		public function BoundingVolume(center:Vector3f = null)
 		{
-			this.checkPlane=0;
-			this.center=new Vector3f();
+			this.checkPlane = 0;
+			this.center = new Vector3f();
 			if (center != null)
 			{
 				this.center.copyFrom(center);
@@ -49,7 +49,7 @@ package org.angle3d.bounding
 		 */
 		public function setCheckPlane(value:int):void
 		{
-			checkPlane=value;
+			checkPlane = value;
 		}
 
 		/**
@@ -69,12 +69,12 @@ package org.angle3d.bounding
 		 *            the transform to affect the bound.
 		 * @return the new bounding volume.
 		 */
-		public function transform(trans:Transform, result:BoundingVolume=null):BoundingVolume
+		public function transform(trans:Transform, result:BoundingVolume = null):BoundingVolume
 		{
 			return null;
 		}
 
-		public function transformByMatrix(trans:Matrix4f, result:BoundingVolume=null):BoundingVolume
+		public function transformByMatrix(trans:Matrix4f, result:BoundingVolume = null):BoundingVolume
 		{
 			return null;
 		}
@@ -143,11 +143,11 @@ package org.angle3d.bounding
 		 *            a new store is created.
 		 * @return the new BoundingVolume
 		 */
-		public function clone(result:BoundingVolume=null):BoundingVolume
+		public function clone(result:BoundingVolume = null):BoundingVolume
 		{
 			if (result == null)
 			{
-				result=new BoundingVolume();
+				result = new BoundingVolume();
 			}
 
 			result.setCenter(this.center);

@@ -18,8 +18,8 @@ package org.angle3d.renderer.queue
 
 		public function compare(o1:Geometry, o2:Geometry):int
 		{
-			var z1:Number=o1.getWorldTranslation().z;
-			var z2:Number=o2.getWorldTranslation().z;
+			var z1:Number = o1.getWorldTranslation().z;
+			var z2:Number = o2.getWorldTranslation().z;
 			if (z1 > z2)
 			{
 				return 1;

@@ -8,7 +8,7 @@ package org.angle3d.io.parser.ms3d
 
 		public function MS3DKeyframe()
 		{
-			data=new Vector.<Number>(3, true);
+			data = new Vector.<Number>(3, true);
 		}
 	}
 }

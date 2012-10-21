@@ -15,7 +15,7 @@ package org.angle3d.texture
 
 	public class TextureMap extends TextureMapBase
 	{
-		public function TextureMap(mipmap:Boolean=false)
+		public function TextureMap(mipmap:Boolean = false)
 		{
 			super(mipmap);
 		}

@@ -9,10 +9,10 @@ package org.angle3d.effect.gpu.influencers.birth
 	{
 		private var _scale:Number;
 
-		public function PerSecondBirthInfluencer(scale:Number=1.0)
+		public function PerSecondBirthInfluencer(scale:Number = 1.0)
 		{
 			super();
-			_scale=scale;
+			_scale = scale;
 		}
 
 		public function getBirth(index:int):Number

@@ -21,8 +21,8 @@ package org.angle3d.app.state
 
 		public function AbstractAppState()
 		{
-			mInitialized=false;
-			mEnabled=true;
+			mInitialized = false;
+			mEnabled = true;
 		}
 
 		/**
@@ -33,7 +33,7 @@ package org.angle3d.app.state
 		 */
 		public function initialize(stateManager:AppStateManager, app:Application):void
 		{
-			mInitialized=true;
+			mInitialized = true;
 		}
 
 		/**
@@ -54,7 +54,7 @@ package org.angle3d.app.state
 		 */
 		public function set enabled(value:Boolean):void
 		{
-			this.mEnabled=value;
+			this.mEnabled = value;
 		}
 
 		/**
@@ -120,7 +120,7 @@ package org.angle3d.app.state
 		 */
 		public function cleanup():void
 		{
-			mInitialized=false;
+			mInitialized = false;
 		}
 
 	}

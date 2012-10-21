@@ -8,10 +8,10 @@ package org.angle3d.effect.gpu.influencers.spin
 		private var _spin:Number;
 		private var _variation:Number;
 
-		public function DefaultSpinInfluencer(spin:Number=0, variation:Number=0.0)
+		public function DefaultSpinInfluencer(spin:Number = 0, variation:Number = 0.0)
 		{
-			_spin=spin;
-			_variation=variation;
+			_spin = spin;
+			_variation = variation;
 		}
 
 		public function getSpin(index:int):Number

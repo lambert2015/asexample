@@ -15,12 +15,12 @@ package org.angle3d.particles.attribute
 		{
 			super();
 
-			type=DynamicAttributeType.DAT_FIXED;
+			type = DynamicAttributeType.DAT_FIXED;
 		}
 
 		public function setValue(value:Number):void
 		{
-			mValue=value;
+			mValue = value;
 		}
 
 		override public function getValue(x:Number):Number
@@ -33,8 +33,8 @@ package org.angle3d.particles.attribute
 			if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_FIXED)
 				return;
 
-			var dynAttr:DynamicAttributeFixed=dynamicAttribute as DynamicAttributeFixed;
-			dynAttr.mValue=mValue;
+			var dynAttr:DynamicAttributeFixed = dynamicAttribute as DynamicAttributeFixed;
+			dynAttr.mValue = mValue;
 		}
 
 	}

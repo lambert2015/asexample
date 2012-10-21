@@ -57,25 +57,25 @@ package org.angle3d.app
 		protected var _context3DProfile:String;
 		protected var _sgslVersion:int;
 
-		public function Application(sgslVersion:int=1)
+		public function Application(sgslVersion:int = 1)
 		{
 			super();
 
-			_sgslVersion=sgslVersion;
+			_sgslVersion = sgslVersion;
 
-			inputEnabled=true;
-			oldTime=-1;
+			inputEnabled = true;
+			oldTime = -1;
 
 			this.addEventListener(Event.ADDED_TO_STAGE, _addedToStageHandler);
 		}
 
 		public function setSize(w:int, h:int):void
 		{
-			contextWidth=w;
-			contextHeight=h;
+			contextWidth = w;
+			contextHeight = h;
 
-			stage3D.x=0;
-			stage3D.y=0;
+			stage3D.x = 0;
+			stage3D.y = 0;
 			stage3D.context3D.configureBackBuffer(contextWidth, contextHeight, 0, true);
 
 			reshape(contextWidth, contextHeight);
@@ -106,14 +106,14 @@ package org.angle3d.app
 		{
 			if (oldTime <= -1)
 			{
-				timePerFrame=0;
-				oldTime=getTimer();
+				timePerFrame = 0;
+				oldTime = getTimer();
 				return;
 			}
 
-			var curTime:int=getTimer();
-			timePerFrame=(curTime - oldTime) * 0.001;
-			oldTime=curTime;
+			var curTime:int = getTimer();
+			timePerFrame = (curTime - oldTime) * 0.001;
+			oldTime = curTime;
 
 			if (inputEnabled)
 			{
@@ -141,13 +141,13 @@ package org.angle3d.app
 
 		protected function initInput():void
 		{
-			inputManager=new InputManager();
+			inputManager = new InputManager();
 			inputManager.initialize(stage);
 		}
 
 		protected function initStateManager():void
 		{
-			stateManager=new AppStateManager(this);
+			stateManager = new AppStateManager(this);
 		}
 
 		protected function initShaderManager():void
@@ -164,20 +164,20 @@ package org.angle3d.app
 		{
 			setSize(width, height);
 
-			cam=new Camera3D(width, height);
+			cam = new Camera3D(width, height);
 
 			cam.setFrustumPerspective(60, width / height, 1, 5000);
-			cam.location=new Vector3f(0, 0, 10);
+			cam.location = new Vector3f(0, 0, 10);
 			cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 
-			renderer=new DefaultRenderer(stage3D);
-			renderManager=new RenderManager(renderer);
+			renderer = new DefaultRenderer(stage3D);
+			renderManager = new RenderManager(renderer);
 
-			viewPort=renderManager.createMainView("Default", cam);
+			viewPort = renderManager.createMainView("Default", cam);
 			viewPort.setClearFlags(true, true, true);
 
-			guiCam=new Camera3D(width, height);
-			guiViewPort=renderManager.createPostView("Gui Default", guiCam);
+			guiCam = new Camera3D(width, height);
+			guiViewPort = renderManager.createPostView("Gui Default", guiCam);
 			guiViewPort.setClearFlags(false, false, false);
 		}
 
@@ -187,18 +187,18 @@ package org.angle3d.app
 
 			//StageProxy.stage = stage;
 
-			stage.scaleMode=StageScaleMode.NO_SCALE;
-			stage.align=StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 
 			initContext3D();
 		}
 
 		protected function initContext3D():void
 		{
-			stage3D=stage.stage3Ds[0];
+			stage3D = stage.stage3Ds[0];
 			stage3D.addEventListener(Event.CONTEXT3D_CREATE, _context3DCreateHandler);
 
-			_context3DProfile=Context3DProfile.BASELINE;
+			_context3DProfile = Context3DProfile.BASELINE;
 			stage3D.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.BASELINE);
 		}
 
@@ -207,12 +207,12 @@ package org.angle3d.app
 			CF::DEBUG
 			{
 				trace(stage3D.context3D.driverInfo);
-				stage3D.context3D.enableErrorChecking=true;
+				stage3D.context3D.enableErrorChecking = true;
 			}
 
 			if (isSoftware(stage3D.context3D.driverInfo))
 			{
-				_context3DProfile=Context3DProfile.BASELINE_CONSTRAINED;
+				_context3DProfile = Context3DProfile.BASELINE_CONSTRAINED;
 				stage3D.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.BASELINE_CONSTRAINED);
 			}
 			else

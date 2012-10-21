@@ -26,85 +26,85 @@ package org.angle3d.material.technique
 
 		private var _offsetVector:Vector.<Number>;
 
-		private var _beginColor:Color=new Color(1, 1, 1, 0);
-		private var _endColor:Color=new Color(0, 0, 0, 0);
-		private var _incrementColor:Color=new Color(0, 0, 0, 1);
-		private var _useColor:Boolean=false;
+		private var _beginColor:Color = new Color(1, 1, 1, 0);
+		private var _endColor:Color = new Color(0, 0, 0, 0);
+		private var _incrementColor:Color = new Color(0, 0, 0, 1);
+		private var _useColor:Boolean = false;
 
-		private var _curTime:Vector3f=new Vector3f(0, 0, 0);
-		private var _size:Vector3f=new Vector3f(1, 1, 0);
+		private var _curTime:Vector3f = new Vector3f(0, 0, 0);
+		private var _size:Vector3f = new Vector3f(1, 1, 0);
 
-		private var _loop:Boolean=true;
+		private var _loop:Boolean = true;
 
-		private var _useAcceleration:Boolean=false;
+		private var _useAcceleration:Boolean = false;
 		private var _acceleration:Vector3f;
 
 		/**
 		 * 是否自转
 		 */
-		private var _useSpin:Boolean=false;
+		private var _useSpin:Boolean = false;
 
 
-		private var _useSpriteSheet:Boolean=false;
-		private var _useAnimation:Boolean=false;
-		private var _spriteSheetData:Vector.<Number>=new Vector.<Number>(4, true);
+		private var _useSpriteSheet:Boolean = false;
+		private var _useAnimation:Boolean = false;
+		private var _spriteSheetData:Vector.<Number> = new Vector.<Number>(4, true);
 
-		private var _useLocalAcceleration:Boolean=false;
-		private var _useLocalColor:Boolean=false;
+		private var _useLocalAcceleration:Boolean = false;
+		private var _useLocalColor:Boolean = false;
 
-		private static const USE_ACCELERATION:String="USE_ACCELERATION";
-		private static const USE_LOCAL_ACCELERATION:String="USE_LOCAL_ACCELERATION";
+		private static const USE_ACCELERATION:String = "USE_ACCELERATION";
+		private static const USE_LOCAL_ACCELERATION:String = "USE_LOCAL_ACCELERATION";
 
-		private static const USE_SPRITESHEET:String="USE_SPRITESHEET";
-		private static const USE_ANIMATION:String="USE_ANIMATION";
+		private static const USE_SPRITESHEET:String = "USE_SPRITESHEET";
+		private static const USE_ANIMATION:String = "USE_ANIMATION";
 
-		private static const USE_COLOR:String="USE_COLOR";
+		private static const USE_COLOR:String = "USE_COLOR";
 
-		private static const USE_LOCAL_COLOR:String="USE_LOCAL_COLOR";
+		private static const USE_LOCAL_COLOR:String = "USE_LOCAL_COLOR";
 
-		private static const USE_SPIN:String="USE_SPIN";
+		private static const USE_SPIN:String = "USE_SPIN";
 
-		private static const NOT_LOOP:String="NOT_LOOP";
+		private static const NOT_LOOP:String = "NOT_LOOP";
 
 		public function TechniqueGPUParticle()
 		{
 			super("TechniqueGPUParticle");
 
-			_renderState.applyCullMode=true;
-			_renderState.cullMode=Context3DTriangleFace.FRONT;
+			_renderState.applyCullMode = true;
+			_renderState.cullMode = Context3DTriangleFace.FRONT;
 
-			_renderState.applyDepthTest=true;
-			_renderState.depthTest=false;
-			_renderState.compareMode=Context3DCompareMode.LESS_EQUAL;
+			_renderState.applyDepthTest = true;
+			_renderState.depthTest = false;
+			_renderState.compareMode = Context3DCompareMode.LESS_EQUAL;
 
-			_renderState.applyBlendMode=true;
-			_renderState.blendMode=BlendMode.AlphaAdditive;
+			_renderState.applyBlendMode = true;
+			_renderState.blendMode = BlendMode.AlphaAdditive;
 
-			_offsetVector=new Vector.<Number>(16, true);
-			_offsetVector[0]=-0.5;
-			_offsetVector[1]=-0.5;
-			_offsetVector[2]=0;
-			_offsetVector[3]=1;
+			_offsetVector = new Vector.<Number>(16, true);
+			_offsetVector[0] = -0.5;
+			_offsetVector[1] = -0.5;
+			_offsetVector[2] = 0;
+			_offsetVector[3] = 1;
 
-			_offsetVector[4]=0.5;
-			_offsetVector[5]=-0.5;
-			_offsetVector[6]=0;
-			_offsetVector[7]=1;
+			_offsetVector[4] = 0.5;
+			_offsetVector[5] = -0.5;
+			_offsetVector[6] = 0;
+			_offsetVector[7] = 1;
 
-			_offsetVector[8]=-0.5;
-			_offsetVector[9]=0.5;
-			_offsetVector[10]=0;
-			_offsetVector[11]=1;
+			_offsetVector[8] = -0.5;
+			_offsetVector[9] = 0.5;
+			_offsetVector[10] = 0;
+			_offsetVector[11] = 1;
 
-			_offsetVector[12]=0.5;
-			_offsetVector[13]=0.5;
-			_offsetVector[14]=0;
-			_offsetVector[15]=1;
+			_offsetVector[12] = 0.5;
+			_offsetVector[13] = 0.5;
+			_offsetVector[14] = 0;
+			_offsetVector[15] = 1;
 		}
 
 		public function set useLocalColor(value:Boolean):void
 		{
-			_useLocalColor=value;
+			_useLocalColor = value;
 		}
 
 		public function get useLocalColor():Boolean
@@ -114,7 +114,7 @@ package org.angle3d.material.technique
 
 		public function set useLocalAcceleration(value:Boolean):void
 		{
-			_useLocalAcceleration=value;
+			_useLocalAcceleration = value;
 		}
 
 		public function get useLocalAcceleration():Boolean
@@ -124,7 +124,7 @@ package org.angle3d.material.technique
 
 		public function setUseSpin(value:Boolean):void
 		{
-			_useSpin=value;
+			_useSpin = value;
 		}
 
 		public function getUseSpin():Boolean
@@ -134,7 +134,7 @@ package org.angle3d.material.technique
 
 		public function setLoop(value:Boolean):void
 		{
-			_loop=value;
+			_loop = value;
 		}
 
 		public function getLoop():Boolean
@@ -152,23 +152,23 @@ package org.angle3d.material.technique
 		public function setSpriteSheet(animDuration:Number, col:int, row:int):void
 		{
 			//每个图像持续时间
-			_spriteSheetData[0]=animDuration;
+			_spriteSheetData[0] = animDuration;
 
-			_useAnimation=animDuration > 0;
+			_useAnimation = animDuration > 0;
 
 			//列数
-			_spriteSheetData[1]=col;
+			_spriteSheetData[1] = col;
 			//行数
-			_spriteSheetData[2]=row;
+			_spriteSheetData[2] = row;
 			//总数
-			_spriteSheetData[3]=col * row;
+			_spriteSheetData[3] = col * row;
 
-			_useSpriteSheet=col > 1 || row > 1;
+			_useSpriteSheet = col > 1 || row > 1;
 		}
 
 		public function set curTime(value:Number):void
 		{
-			_curTime.x=value;
+			_curTime.x = value;
 		}
 
 		public function get curTime():Number
@@ -181,33 +181,33 @@ package org.angle3d.material.technique
 			_beginColor.setRGB(start);
 			_endColor.setRGB(end);
 
-			_incrementColor.r=_endColor.r - _beginColor.r;
-			_incrementColor.g=_endColor.g - _beginColor.g;
-			_incrementColor.b=_endColor.b - _beginColor.b;
+			_incrementColor.r = _endColor.r - _beginColor.r;
+			_incrementColor.g = _endColor.g - _beginColor.g;
+			_incrementColor.b = _endColor.b - _beginColor.b;
 
-			_useColor=true;
+			_useColor = true;
 		}
 
 		public function setAlpha(start:Number, end:Number):void
 		{
-			_beginColor.a=start;
-			_endColor.a=end;
-			_incrementColor.a=_endColor.a - _beginColor.a;
+			_beginColor.a = start;
+			_endColor.a = end;
+			_incrementColor.a = _endColor.a - _beginColor.a;
 
-			_useColor=true;
+			_useColor = true;
 		}
 
 		public function setSize(start:Number, end:Number):void
 		{
-			_size.x=start;
-			_size.y=end;
-			_size.z=end - start;
+			_size.x = start;
+			_size.y = end;
+			_size.z = end - start;
 		}
 
 		public function setAcceleration(acceleration:Vector3f):void
 		{
-			_acceleration=acceleration;
-			_useAcceleration=_acceleration != null && !_acceleration.isZero();
+			_acceleration = acceleration;
+			_useAcceleration = _acceleration != null && !_acceleration.isZero();
 		}
 
 		public function get texture():TextureMapBase
@@ -217,7 +217,7 @@ package org.angle3d.material.technique
 
 		public function set texture(value:TextureMapBase):void
 		{
-			_texture=value;
+			_texture = value;
 		}
 
 		/**
@@ -226,7 +226,7 @@ package org.angle3d.material.technique
 		 */
 		override public function updateShader(shader:Shader):void
 		{
-			shader.getTextureVar("s_texture").textureMap=_texture;
+			shader.getTextureVar("s_texture").textureMap = _texture;
 
 			//顶点偏移
 			shader.getUniform(ShaderType.VERTEX, "u_vertexOffset").setVector(_offsetVector);
@@ -254,7 +254,7 @@ package org.angle3d.material.technique
 		/**
 		 * u_size ---> x=beginSize,y=endSize,z= endSize - beginSize
 		 */
-		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return "attribute vec4 a_position;" + "attribute vec4 a_texCoord;" + "attribute vec4 a_velocity;" + "attribute vec4 a_lifeScaleSpin;" +
 
@@ -358,7 +358,7 @@ package org.angle3d.material.technique
 				"		v_texCoord = t_texCoord;" + "	}" + "	#else {" + "		v_texCoord = a_texCoord;" + "	}" + "}";
 		}
 
-		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 			
@@ -376,9 +376,9 @@ package org.angle3d.material.technique
 		}
 
 
-		override protected function getOption(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<Vector.<String>>
+		override protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
 		{
-			var results:Vector.<Vector.<String>>=super.getOption(lightType, meshType);
+			var results:Vector.<Vector.<String>> = super.getOption(lightType, meshType);
 			if (_useAcceleration)
 			{
 				results[0].push(USE_ACCELERATION);
@@ -423,9 +423,9 @@ package org.angle3d.material.technique
 			return results;
 		}
 
-		override protected function getKey(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
-			var result:Array=[_name, meshType];
+			var result:Array = [_name, meshType];
 
 			if (_useAcceleration)
 			{
@@ -469,30 +469,30 @@ package org.angle3d.material.technique
 			return result.join("_");
 		}
 
-		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
-			var map:Dictionary=new Dictionary();
-			map[BufferType.POSITION]="a_position";
-			map[BufferType.TEXCOORD]="a_texCoord";
-			map[BufferType.PARTICLE_VELOCITY]="a_velocity";
-			map[BufferType.PARTICLE_LIFE_SCALE_ANGLE]="a_lifeScaleSpin";
+			var map:Dictionary = new Dictionary();
+			map[BufferType.POSITION] = "a_position";
+			map[BufferType.TEXCOORD] = "a_texCoord";
+			map[BufferType.PARTICLE_VELOCITY] = "a_velocity";
+			map[BufferType.PARTICLE_LIFE_SCALE_ANGLE] = "a_lifeScaleSpin";
 			if (_useLocalAcceleration)
 			{
-				map[BufferType.PARTICLE_ACCELERATION]="a_acceleration";
+				map[BufferType.PARTICLE_ACCELERATION] = "a_acceleration";
 			}
 			if (_useLocalColor)
 			{
-				map[BufferType.COLOR]="a_color";
+				map[BufferType.COLOR] = "a_color";
 			}
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_invertViewMat", UniformBinding.ViewMatrixInverse));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_viewProjectionMat", UniformBinding.WorldViewProjectionMatrix));
-			list.fixed=true;
+			list.fixed = true;
 			return list;
 		}
 	}

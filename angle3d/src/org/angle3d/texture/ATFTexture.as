@@ -32,30 +32,30 @@ package org.angle3d.texture
 
 		public function setByteArray(byte:ByteArray):void
 		{
-			mByteArray=byte;
-			mByteArray.position=0;
+			mByteArray = byte;
+			mByteArray.position = 0;
 
 			//check weather file if really is a compressed texture
-			var signature:String=mByteArray.readUTFBytes(3);
+			var signature:String = mByteArray.readUTFBytes(3);
 
 			CF::DEBUG
 			{
 				Assert.assert(signature == "ATF", "This ByteArray is not a atf file");
 			}
 
-			mByteArray.position+=3;
+			mByteArray.position += 3;
 
 			//Check if this is a CubeMap
-			var cubeMap:uint=byte.readUnsignedByte();
-			cubeMap=cubeMap & 0x80;
+			var cubeMap:uint = byte.readUnsignedByte();
+			cubeMap = cubeMap & 0x80;
 
 			CF::DEBUG
 			{
 				Assert.assert(cubeMap != 0x80, "File is a CubeMap.");
 			}
 
-			var log2Width:uint=byte.readUnsignedByte();
-			var log2Height:uint=byte.readUnsignedByte();
+			var log2Width:uint = byte.readUnsignedByte();
+			var log2Height:uint = byte.readUnsignedByte();
 
 			invalidateContent();
 
@@ -64,7 +64,7 @@ package org.angle3d.texture
 
 		override protected function uploadTexture():void
 		{
-			var t:Texture=mTexture as Texture;
+			var t:Texture = mTexture as Texture;
 
 			t.uploadCompressedTextureFromByteArray(mByteArray, 0);
 		}

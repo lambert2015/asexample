@@ -23,7 +23,7 @@ package org.angle3d.utils
 
 		public static function getKeys(map:Dictionary):Array
 		{
-			var result:Array=[];
+			var result:Array = [];
 			for (var i:* in map)
 			{
 				result.push(i);

@@ -13,7 +13,7 @@ package org.angle3d.material.sgsl.pool
 
 		public function RegPool()
 		{
-			_regs=new Vector.<RegNode>();
+			_regs = new Vector.<RegNode>();
 		}
 
 		public function addReg(value:RegNode):void
@@ -31,13 +31,13 @@ package org.angle3d.material.sgsl.pool
 
 		public function clear():void
 		{
-			_regs.length=0;
+			_regs.length = 0;
 		}
 
 		public function arrange():void
 		{
-			var length:int=_regs.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = _regs.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				register(_regs[i]);
 			}

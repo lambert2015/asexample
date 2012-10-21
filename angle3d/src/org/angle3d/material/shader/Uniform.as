@@ -27,9 +27,9 @@ package org.angle3d.material.shader
 		{
 			super(name, size);
 
-			_size=int(_size / 4);
+			_size = int(_size / 4);
 
-			_data=new Vector.<Number>(_size * 4, true);
+			_data = new Vector.<Number>(_size * 4, true);
 		}
 
 		override public function get size():int
@@ -39,7 +39,7 @@ package org.angle3d.material.shader
 
 		public function setVector(data:Vector.<Number>):void
 		{
-			_data=data.concat();
+			_data = data.concat();
 		}
 
 		public function setMatrix4(mat:Matrix4f):void
@@ -69,7 +69,7 @@ package org.angle3d.material.shader
 		public function setFloat(value:Number):void
 		{
 //			_data.length = 4;
-			_data[0]=value;
+			_data[0] = value;
 		}
 
 		public function setVector2(vec:Vector2f):void
@@ -97,7 +97,7 @@ package org.angle3d.material.shader
 
 		public function set binding(value:int):void
 		{
-			_binding=value;
+			_binding = value;
 		}
 
 		public function get binding():int

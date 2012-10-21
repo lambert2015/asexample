@@ -18,7 +18,7 @@ package org.angle3d.light
 		{
 			super(LightType.Directional);
 
-			mDirection=new Vector3f(0, -1, 0);
+			mDirection = new Vector3f(0, -1, 0);
 		}
 
 		/**
@@ -49,7 +49,7 @@ package org.angle3d.light
 
 		override public function computeLastDistance(owner:Spatial):void
 		{
-			lastDistance=0; // directional lights are always closest to their owner
+			lastDistance = 0; // directional lights are always closest to their owner
 		}
 	}
 }

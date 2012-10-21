@@ -30,15 +30,15 @@ package org.angle3d.app
 	 */
 	public class SimpleApplication extends Application implements ActionListener
 	{
-		public static const INPUT_MAPPING_EXIT:String="SIMPLEAPP_Exit";
-		public static const INPUT_MAPPING_CAMERA_POS:String="SIMPLEAPP_CameraPos";
+		public static const INPUT_MAPPING_EXIT:String = "SIMPLEAPP_Exit";
+		public static const INPUT_MAPPING_CAMERA_POS:String = "SIMPLEAPP_CameraPos";
 
 		protected var _scene:Node;
 		protected var _gui:Node;
 
 		protected var flyCam:FlyByCamera;
 
-		public function SimpleApplication(sgslVersion:int=1)
+		public function SimpleApplication(sgslVersion:int = 1)
 		{
 			super(sgslVersion);
 		}
@@ -58,8 +58,8 @@ package org.angle3d.app
 			{
 				if (cam != null)
 				{
-					var loc:Vector3f=cam.location;
-					var rot:Quaternion=cam.rotation;
+					var loc:Vector3f = cam.location;
+					var rot:Quaternion = cam.rotation;
 
 					CF::DEBUG
 					{
@@ -106,24 +106,24 @@ package org.angle3d.app
 		{
 			super.initialize(width, height);
 
-			_scene=new Node("Root Node");
+			_scene = new Node("Root Node");
 			viewPort.attachScene(_scene);
 
-			_gui=new Node("Gui Node");
-			_gui.localQueueBucket=QueueBucket.Gui;
-			_gui.localCullHint=CullHint.Never;
+			_gui = new Node("Gui Node");
+			_gui.localQueueBucket = QueueBucket.Gui;
+			_gui.localCullHint = CullHint.Never;
 			guiViewPort.attachScene(_gui);
 
 			if (inputManager != null)
 			{
-				flyCam=new FlyByCamera(cam);
+				flyCam = new FlyByCamera(cam);
 				flyCam.setMoveSpeed(1.0);
 				flyCam.setRotationSpeed(3.0);
 				flyCam.registerWithInput(inputManager);
 
 				inputManager.addSingleMapping(INPUT_MAPPING_CAMERA_POS, new KeyTrigger(Keyboard.C));
 
-				var arr:Array=[INPUT_MAPPING_CAMERA_POS];
+				var arr:Array = [INPUT_MAPPING_CAMERA_POS];
 
 				inputManager.addListener(this, arr);
 			}

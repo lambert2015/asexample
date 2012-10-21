@@ -16,8 +16,8 @@ package org.angle3d.collision
 
 		public function CollisionResults()
 		{
-			results=new Vector.<CollisionResult>();
-			sorted=true;
+			results = new Vector.<CollisionResult>();
+			sorted = true;
 		}
 
 		/**
@@ -25,13 +25,13 @@ package org.angle3d.collision
 		 */
 		public function clear():void
 		{
-			results.length=0;
+			results.length = 0;
 		}
 
 		public function addCollision(c:CollisionResult):void
 		{
 			results.push(c);
-			sorted=false;
+			sorted = false;
 		}
 
 		public function get size():int
@@ -47,7 +47,7 @@ package org.angle3d.collision
 			if (!sorted)
 			{
 				results.sort(compareTo);
-				sorted=true;
+				sorted = true;
 			}
 
 			return results[0];
@@ -61,7 +61,7 @@ package org.angle3d.collision
 			if (!sorted)
 			{
 				results.sort(compareTo);
-				sorted=true;
+				sorted = true;
 			}
 
 			return results[results.length - 1];
@@ -75,7 +75,7 @@ package org.angle3d.collision
 			if (!sorted)
 			{
 				results.sort(compareTo);
-				sorted=true;
+				sorted = true;
 			}
 
 			return results[index];

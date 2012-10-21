@@ -38,7 +38,7 @@ package org.assetloader.core
 		 * @see #add()
 		 * @see #addLoader()
 		 */
-		function addFile(id:String, url:String, type:String="AUTO", ... params):ILoader;
+		function addFile(id:String, url:String, type:String = "AUTO", ... params):ILoader;
 
 		/**
 		 * Adds loader to loading queue.

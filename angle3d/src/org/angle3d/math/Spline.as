@@ -18,9 +18,9 @@ package org.angle3d.math
 
 		public function Spline()
 		{
-			controlPoints=new Vector.<Vector3f>();
-			curveTension=0.5;
-			_type=SplineType.CatmullRom;
+			controlPoints = new Vector.<Vector3f>();
+			curveTension = 0.5;
+			_type = SplineType.CatmullRom;
 		}
 
 		/**
@@ -38,14 +38,14 @@ package org.angle3d.math
 		 * @param curveTension the tension of the spline
 		 * @param cycle true if the spline cycle.
 		 */
-		public function createNormal(splineType:int, controlPoints:Vector.<Vector3f>, curveTension:Number=0.5, cycle:Boolean=false):void
+		public function createNormal(splineType:int, controlPoints:Vector.<Vector3f>, curveTension:Number = 0.5, cycle:Boolean = false):void
 		{
 			Assert.assert(splineType != SplineType.Nurb, "To create NURBS spline use createNURBS");
 
-			this._type=splineType;
+			this._type = splineType;
 			this.controlPoints.concat(controlPoints);
-			this.curveTension=curveTension;
-			this.cycle=cycle;
+			this.curveTension = curveTension;
+			this.cycle = cycle;
 
 			this.computeTotalLength();
 		}
@@ -59,22 +59,22 @@ package org.angle3d.math
 		public function createNURBS(controlPoints:Vector.<Vector4f>, nurbKnots:Vector.<Number>):void
 		{
 			//input data control
-			var length:int=(nurbKnots.length - 1);
-			for (var i:int=0; i < length; i++)
+			var length:int = (nurbKnots.length - 1);
+			for (var i:int = 0; i < length; i++)
 			{
 				Assert.assert(nurbKnots[i] <= nurbKnots[i + 1], "The knots values cannot decrease!");
 			}
 
 			//storing the data
-			_type=SplineType.Nurb;
-			this.weights=new Vector.<Number>(controlPoints.length);
-			this.knots=nurbKnots;
-			this.basisFunctionDegree=nurbKnots.length - weights.length;
-			for (i=0; i < controlPoints.length; i++)
+			_type = SplineType.Nurb;
+			this.weights = new Vector.<Number>(controlPoints.length);
+			this.knots = nurbKnots;
+			this.basisFunctionDegree = nurbKnots.length - weights.length;
+			for (i = 0; i < controlPoints.length; i++)
 			{
-				var cp:Vector4f=controlPoints[i];
+				var cp:Vector4f = controlPoints[i];
 				this.controlPoints.push(cp.toVector3f());
-				this.weights[i]=cp.w;
+				this.weights[i] = cp.w;
 			}
 			CurveAndSurfaceMath.prepareNurbsKnots(knots, basisFunctionDegree);
 			this.computeTotalLength();
@@ -84,14 +84,14 @@ package org.angle3d.math
 		{
 			if (CRcontrolPoints == null)
 			{
-				CRcontrolPoints=new Vector.<Vector3f>();
+				CRcontrolPoints = new Vector.<Vector3f>();
 			}
 			else
 			{
-				CRcontrolPoints.length=0;
+				CRcontrolPoints.length = 0;
 			}
 
-			var nb:int=list.length - 1;
+			var nb:int = list.length - 1;
 			if (cycle)
 			{
 				CRcontrolPoints.push(list[list.length - 2]);
@@ -101,7 +101,7 @@ package org.angle3d.math
 				CRcontrolPoints.push(list[0].subtract(list[1].subtract(list[0])));
 			}
 
-			for (var i:int=0; i < list.length; i++)
+			for (var i:int = 0; i < list.length; i++)
 			{
 				CRcontrolPoints.push(list[i]);
 			}
@@ -146,7 +146,7 @@ package org.angle3d.math
 		 */
 		public function removeControlPoint(controlPoint:Vector3f):void
 		{
-			var index:int=controlPoints.indexOf(controlPoint);
+			var index:int = controlPoints.indexOf(controlPoint);
 			if (index > -1)
 			{
 				controlPoints.splice(index, 1);
@@ -159,8 +159,8 @@ package org.angle3d.math
 
 		public function clearControlPoints():void
 		{
-			controlPoints.length=0;
-			totalLength=0;
+			controlPoints.length = 0;
+			totalLength = 0;
 		}
 
 		/**
@@ -168,26 +168,26 @@ package org.angle3d.math
 		 */
 		private function computeTotalLength():void
 		{
-			totalLength=0;
+			totalLength = 0;
 
-			var l:Number=0;
+			var l:Number = 0;
 			if (segmentsLength == null)
 			{
-				segmentsLength=new Vector.<Number>();
+				segmentsLength = new Vector.<Number>();
 			}
 			else
 			{
-				segmentsLength.length=0;
+				segmentsLength.length = 0;
 			}
 
 			if (_type == SplineType.Linear)
 			{
-				var cLength:int=(controlPoints.length - 1);
-				for (var i:int=0; i < cLength; i++)
+				var cLength:int = (controlPoints.length - 1);
+				for (var i:int = 0; i < cLength; i++)
 				{
-					l=controlPoints[i + 1].subtract(controlPoints[i]).length;
+					l = controlPoints[i + 1].subtract(controlPoints[i]).length;
 					segmentsLength.push(l);
-					totalLength+=l;
+					totalLength += l;
 				}
 			}
 			else if (_type == SplineType.Bezier)
@@ -210,15 +210,15 @@ package org.angle3d.math
 		 */
 		private function computeCatmulLength():void
 		{
-			var l:Number=0;
+			var l:Number = 0;
 			if (controlPoints.length > 1)
 			{
-				var cLength:int=(controlPoints.length - 1);
-				for (var i:int=0; i < cLength; i++)
+				var cLength:int = (controlPoints.length - 1);
+				for (var i:int = 0; i < cLength; i++)
 				{
-					l=CurveAndSurfaceMath.getCatmullRomP1toP2Length(CRcontrolPoints[i], CRcontrolPoints[i + 1], CRcontrolPoints[i + 2], CRcontrolPoints[i + 3], 0, 1, curveTension);
+					l = CurveAndSurfaceMath.getCatmullRomP1toP2Length(CRcontrolPoints[i], CRcontrolPoints[i + 1], CRcontrolPoints[i + 2], CRcontrolPoints[i + 3], 0, 1, curveTension);
 					segmentsLength.push(l);
-					totalLength+=l;
+					totalLength += l;
 				}
 			}
 		}
@@ -228,19 +228,19 @@ package org.angle3d.math
 		 */
 		private function computeBezierLength():void
 		{
-			var l:Number=0;
+			var l:Number = 0;
 			if (controlPoints.length > 1)
 			{
-				var i:int=0;
+				var i:int = 0;
 				while (i < controlPoints.length - 1)
 				{
-					l=CurveAndSurfaceMath.getBezierP1toP2Length(controlPoints[i], controlPoints[i + 1], controlPoints[i + 2], controlPoints[i + 3]);
+					l = CurveAndSurfaceMath.getBezierP1toP2Length(controlPoints[i], controlPoints[i + 1], controlPoints[i + 2], controlPoints[i + 3]);
 
 					segmentsLength.push(l);
 
-					totalLength+=l;
+					totalLength += l;
 
-					i+=3;
+					i += 3;
 				}
 			}
 		}
@@ -260,11 +260,11 @@ package org.angle3d.math
 		 * @param store a vector to store the result (use null to create a new one that will be returned by the method)
 		 * @return the position
 		 */
-		public function interpolate(value:Number, currentControlPoint:int, store:Vector3f=null):Vector3f
+		public function interpolate(value:Number, currentControlPoint:int, store:Vector3f = null):Vector3f
 		{
 			if (store == null)
 			{
-				store=new Vector3f();
+				store = new Vector3f();
 			}
 
 			switch (_type)
@@ -301,7 +301,7 @@ package org.angle3d.math
 		 */
 		public function setCurveTension(curveTension:Number):void
 		{
-			this.curveTension=curveTension;
+			this.curveTension = curveTension;
 			if (_type == SplineType.CatmullRom)
 			{
 				this.computeTotalLength();
@@ -328,19 +328,19 @@ package org.angle3d.math
 				{
 					if (this.cycle && !cycle)
 					{
-						controlPoints.length=(controlPoints.length - 1);
+						controlPoints.length = (controlPoints.length - 1);
 					}
 
 					if (!this.cycle && cycle)
 					{
 						controlPoints.push(controlPoints[0]);
 					}
-					this.cycle=cycle;
+					this.cycle = cycle;
 					this.computeTotalLength();
 				}
 				else
 				{
-					this.cycle=cycle;
+					this.cycle = cycle;
 				}
 			}
 		}
@@ -367,7 +367,7 @@ package org.angle3d.math
 		 */
 		public function set type(type:int):void
 		{
-			_type=type;
+			_type = type;
 			computeTotalLength();
 		}
 

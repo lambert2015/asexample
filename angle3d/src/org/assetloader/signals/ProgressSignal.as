@@ -9,32 +9,32 @@ package org.assetloader.signals
 		/**
 		 * @private
 		 */
-		protected var _latency:Number=0;
+		protected var _latency:Number = 0;
 		/**
 		 * @private
 		 */
-		protected var _speed:Number=0;
+		protected var _speed:Number = 0;
 		/**
 		 * @private
 		 */
-		protected var _averageSpeed:Number=0;
+		protected var _averageSpeed:Number = 0;
 		/**
 		 * @private
 		 */
-		protected var _progress:Number=0;
+		protected var _progress:Number = 0;
 
 		/**
 		 * @private
 		 */
-		protected var _bytesLoaded:uint=0;
+		protected var _bytesLoaded:uint = 0;
 		/**
 		 * @private
 		 */
-		protected var _bytesTotal:uint=0;
+		protected var _bytesTotal:uint = 0;
 
 		public function ProgressSignal(... valueClasses)
 		{
-			_signalType=ProgressSignal;
+			_signalType = ProgressSignal;
 			super(valueClasses);
 		}
 
@@ -51,12 +51,12 @@ package org.assetloader.signals
 		 */
 		override public function dispatch(... args):void
 		{
-			_latency=args[1];
-			_speed=args[2];
-			_averageSpeed=args[3];
-			_progress=args[4];
-			_bytesLoaded=args[5];
-			_bytesTotal=args[6];
+			_latency = args[1];
+			_speed = args[2];
+			_averageSpeed = args[3];
+			_progress = args[4];
+			_bytesLoaded = args[5];
+			_bytesTotal = args[6];
 
 			args.splice(1, 6);
 

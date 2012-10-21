@@ -18,7 +18,7 @@ package org.angle3d.animation
 	 */
 	public class AnimChannel
 	{
-		private static var DEFAULT_BLEND_TIME:Number=0.15;
+		private static var DEFAULT_BLEND_TIME:Number = 0.15;
 
 		private static function clampWrapTime(t:Number, max:Number, loopMode:int):Number
 		{
@@ -70,10 +70,10 @@ package org.angle3d.animation
 
 		public function AnimChannel(control:AnimControl)
 		{
-			blendAmount=1.0;
-			blendRate=0.0;
+			blendAmount = 1.0;
+			blendRate = 0.0;
 
-			this.control=control;
+			this.control = control;
 		}
 
 		/**
@@ -111,7 +111,7 @@ package org.angle3d.animation
 		 */
 		public function setLoopMode(mode:int):void
 		{
-			this.loopMode=mode;
+			this.loopMode = mode;
 		}
 
 		/**
@@ -133,7 +133,7 @@ package org.angle3d.animation
 		 */
 		public function setSpeed(speed:Number):void
 		{
-			this.speed=speed;
+			this.speed = speed;
 		}
 
 		/**
@@ -154,7 +154,7 @@ package org.angle3d.animation
 		 */
 		public function setTime(time:Number):void
 		{
-			this.time=FastMath.fclamp(time, 0, getAnimMaxTime());
+			this.time = FastMath.fclamp(time, 0, getAnimMaxTime());
 		}
 
 		/**
@@ -180,9 +180,9 @@ package org.angle3d.animation
 		 * with the old one. If zero, then no blending will occur and the new
 		 * animation will be applied instantly.
 		 */
-		public function playAnimation(name:String, loopMode:int, speed:Number=1.0, blendTime:Number=0.0):void
+		public function playAnimation(name:String, loopMode:int, speed:Number = 1.0, blendTime:Number = 0.0):void
 		{
-			var newAnimation:Animation=control.getAnimation(name);
+			var newAnimation:Animation = control.getAnimation(name);
 
 			CF::DEBUG
 			{
@@ -193,23 +193,23 @@ package org.angle3d.animation
 			if (animation != null && blendTime > 0)
 			{
 				// activate blending
-				blendFromAnimation=animation;
-				timeBlendFrom=time;
-				speedBlendFrom=speed;
-				loopModeBlendFrom=loopMode;
-				blendAmount=0;
-				blendRate=1 / blendTime;
+				blendFromAnimation = animation;
+				timeBlendFrom = time;
+				speedBlendFrom = speed;
+				loopModeBlendFrom = loopMode;
+				blendAmount = 0;
+				blendRate = 1 / blendTime;
 			}
 
-			animation=newAnimation;
-			time=0;
-			this.speed=speed;
-			this.loopMode=loopMode;
+			animation = newAnimation;
+			time = 0;
+			this.speed = speed;
+			this.loopMode = loopMode;
 		}
 
 		public function stopAnimation():void
 		{
-			animation=null;
+			animation = null;
 		}
 
 		public function update(tpf:Number, vars:TempVars):void
@@ -221,31 +221,31 @@ package org.angle3d.animation
 			{
 				blendFromAnimation.setTime(timeBlendFrom, 1 - blendAmount, control, this, vars);
 
-				timeBlendFrom+=tpf * speedBlendFrom;
-				timeBlendFrom=clampWrapTime(timeBlendFrom, blendFromAnimation.time, loopModeBlendFrom);
+				timeBlendFrom += tpf * speedBlendFrom;
+				timeBlendFrom = clampWrapTime(timeBlendFrom, blendFromAnimation.time, loopModeBlendFrom);
 				if (timeBlendFrom < 0)
 				{
-					timeBlendFrom=-timeBlendFrom;
-					speedBlendFrom=-speedBlendFrom;
+					timeBlendFrom = -timeBlendFrom;
+					speedBlendFrom = -speedBlendFrom;
 				}
 
-				blendAmount+=tpf * blendRate;
+				blendAmount += tpf * blendRate;
 				if (blendAmount > 1)
 				{
-					blendAmount=1;
-					blendFromAnimation=null;
+					blendAmount = 1;
+					blendFromAnimation = null;
 				}
 			}
 
 			animation.setTime(time, blendAmount, control, this, vars);
 
-			time+=tpf * speed;
+			time += tpf * speed;
 
-			time=clampWrapTime(time, animation.time, loopMode);
+			time = clampWrapTime(time, animation.time, loopMode);
 			if (time < 0)
 			{
-				time=-time;
-				speed=-speed;
+				time = -time;
+				speed = -speed;
 			}
 		}
 	}

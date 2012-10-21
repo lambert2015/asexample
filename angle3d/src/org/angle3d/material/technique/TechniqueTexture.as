@@ -34,22 +34,22 @@ package org.angle3d.material.technique
 		{
 			super("TechniqueTexture");
 
-			_useTexCoord2=false;
-			_texture=null;
-			_lightmap=null;
+			_useTexCoord2 = false;
+			_texture = null;
+			_lightmap = null;
 		}
 
 		public function set influence(value:Number):void
 		{
 			if (_influences == null)
-				_influences=new Vector.<Number>(4, true);
-			_influences[0]=1 - value;
-			_influences[1]=value;
+				_influences = new Vector.<Number>(4, true);
+			_influences[0] = 1 - value;
+			_influences[1] = value;
 		}
 
 		public function set skinningMatrices(data:Vector.<Number>):void
 		{
-			_skinningMatrices=data;
+			_skinningMatrices = data;
 		}
 
 		public function get influence():Number
@@ -59,7 +59,7 @@ package org.angle3d.material.technique
 
 		public function set useTexCoord2(value:Boolean):void
 		{
-			_useTexCoord2=value;
+			_useTexCoord2 = value;
 		}
 
 		public function get texture():TextureMapBase
@@ -69,7 +69,7 @@ package org.angle3d.material.technique
 
 		public function set texture(value:TextureMapBase):void
 		{
-			_texture=value;
+			_texture = value;
 		}
 
 		public function get lightmap():TextureMapBase
@@ -79,7 +79,7 @@ package org.angle3d.material.technique
 
 		public function set lightmap(value:TextureMapBase):void
 		{
-			_lightmap=value;
+			_lightmap = value;
 		}
 
 		/**
@@ -88,29 +88,29 @@ package org.angle3d.material.technique
 		 */
 		override public function updateShader(shader:Shader):void
 		{
-			shader.getTextureVar("s_texture").textureMap=_texture;
+			shader.getTextureVar("s_texture").textureMap = _texture;
 
 			if (_lightmap != null)
 			{
-				shader.getTextureVar("s_lightmap").textureMap=_lightmap;
+				shader.getTextureVar("s_lightmap").textureMap = _lightmap;
 			}
 
-			var uniform:Uniform=shader.getUniform(ShaderType.VERTEX, "u_influences");
+			var uniform:Uniform = shader.getUniform(ShaderType.VERTEX, "u_influences");
 			if (uniform != null)
 			{
 				uniform.setVector(_influences);
 			}
 
-			uniform=shader.getUniform(ShaderType.VERTEX, "u_boneMatrixs");
+			uniform = shader.getUniform(ShaderType.VERTEX, "u_boneMatrixs");
 			if (uniform != null)
 			{
 				uniform.setVector(_skinningMatrices);
 			}
 		}
 
-		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
-			var source:String="attribute vec3 a_position;" + "attribute vec2 a_texCoord;" +
+			var source:String = "attribute vec3 a_position;" + "attribute vec2 a_texCoord;" +
 
 				"varying vec4 v_texCoord;" +
 
@@ -134,7 +134,7 @@ package org.angle3d.material.technique
 			return source;
 		}
 
-		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 			
@@ -164,9 +164,9 @@ package org.angle3d.material.technique
 			    }]]>;
 		}
 
-		override protected function getOption(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<Vector.<String>>
+		override protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
 		{
-			var results:Vector.<Vector.<String>>=super.getOption(lightType, meshType);
+			var results:Vector.<Vector.<String>> = super.getOption(lightType, meshType);
 
 			if (_lightmap != null)
 			{
@@ -182,9 +182,9 @@ package org.angle3d.material.technique
 		}
 
 		//TODO 优化，key应该缓存，不需要每次都计算
-		override protected function getKey(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
-			_keys.length=0;
+			_keys.length = 0;
 			_keys.push(_name);
 			_keys.push(meshType);
 
@@ -199,35 +199,35 @@ package org.angle3d.material.technique
 			return _keys.join("_");
 		}
 
-		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
-			var map:Dictionary=new Dictionary();
-			map[BufferType.POSITION]="a_position";
-			map[BufferType.TEXCOORD]="a_texCoord";
+			var map:Dictionary = new Dictionary();
+			map[BufferType.POSITION] = "a_position";
+			map[BufferType.TEXCOORD] = "a_texCoord";
 
 			if (_lightmap != null && _useTexCoord2)
 			{
-				map[BufferType.TEXCOORD2]="a_texCoord2";
+				map[BufferType.TEXCOORD2] = "a_texCoord2";
 			}
 
 			if (meshType == MeshType.MT_MORPH_ANIMATION)
 			{
-				map[BufferType.POSITION1]="a_position1";
+				map[BufferType.POSITION1] = "a_position1";
 			}
 			else if (meshType == MeshType.MT_SKELETAL_ANIMATION)
 			{
-				map[BufferType.BONE_INDICES]="a_boneIndices";
-				map[BufferType.BONE_WEIGHTS]="a_boneWeights";
+				map[BufferType.BONE_INDICES] = "a_boneIndices";
+				map[BufferType.BONE_WEIGHTS] = "a_boneWeights";
 			}
 
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
-			list.fixed=true;
+			list.fixed = true;
 			return list;
 		}
 	}

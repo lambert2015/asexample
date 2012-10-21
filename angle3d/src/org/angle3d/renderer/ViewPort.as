@@ -65,22 +65,22 @@ package org.angle3d.renderer
 		 */
 		public function ViewPort(name:String, camera:Camera3D)
 		{
-			this.name=name;
-			this.camera=camera;
+			this.name = name;
+			this.camera = camera;
 			_init();
 		}
 
 		private function _init():void
 		{
-			renderQueue=new RenderQueue();
-			_sceneList=new Vector.<Spatial>();
-			_processors=new Vector.<SceneProcessor>();
-			_bgColor=new Color();
+			renderQueue = new RenderQueue();
+			_sceneList = new Vector.<Spatial>();
+			_processors = new Vector.<SceneProcessor>();
+			_bgColor = new Color();
 			_bgColor.setColor(0x0);
-			_clearDepth=false;
-			_clearColor=false;
-			_clearStencil=false;
-			_enabled=true;
+			_clearDepth = false;
+			_clearColor = false;
+			_clearStencil = false;
+			_enabled = true;
 		}
 
 		/**
@@ -122,7 +122,7 @@ package org.angle3d.renderer
 		 */
 		public function removeProcessor(processor:SceneProcessor):void
 		{
-			var index:int=_processors.indexOf(processor);
+			var index:int = _processors.indexOf(processor);
 			if (index != -1)
 			{
 				_processors.splice(index, 1);
@@ -151,7 +151,7 @@ package org.angle3d.renderer
 		 */
 		public function setClearDepth(clearDepth:Boolean):void
 		{
-			_clearDepth=clearDepth;
+			_clearDepth = clearDepth;
 		}
 
 		/**
@@ -175,7 +175,7 @@ package org.angle3d.renderer
 		 */
 		public function setClearColor(clearColor:Boolean):void
 		{
-			_clearColor=clearColor;
+			_clearColor = clearColor;
 		}
 
 		/**
@@ -199,7 +199,7 @@ package org.angle3d.renderer
 		 */
 		public function setClearStencil(clearStencil:Boolean):void
 		{
-			_clearStencil=clearStencil;
+			_clearStencil = clearStencil;
 		}
 
 		/**
@@ -215,9 +215,9 @@ package org.angle3d.renderer
 		 */
 		public function setClearFlags(color:Boolean, depth:Boolean, stencil:Boolean):void
 		{
-			_clearColor=color;
-			_clearDepth=depth;
-			_clearStencil=stencil;
+			_clearColor = color;
+			_clearDepth = depth;
+			_clearStencil = stencil;
 		}
 
 		/**
@@ -246,7 +246,7 @@ package org.angle3d.renderer
 		 */
 		public function set frameBuffer(out:FrameBuffer):void
 		{
-			_frameBuffer=out;
+			_frameBuffer = out;
 		}
 
 		/**
@@ -270,7 +270,7 @@ package org.angle3d.renderer
 		 */
 		public function detachScene(scene:Spatial):void
 		{
-			var index:int=_sceneList.indexOf(scene);
+			var index:int = _sceneList.indexOf(scene);
 			if (index != -1)
 			{
 				_sceneList.splice(index, 1);
@@ -284,7 +284,7 @@ package org.angle3d.renderer
 		 */
 		public function clearScenes():void
 		{
-			_sceneList.length=0;
+			_sceneList.length = 0;
 		}
 
 		/**
@@ -336,7 +336,7 @@ package org.angle3d.renderer
 		 */
 		public function set enabled(enabled:Boolean):void
 		{
-			_enabled=enabled;
+			_enabled = enabled;
 		}
 
 		/**

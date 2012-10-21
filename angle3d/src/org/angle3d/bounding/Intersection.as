@@ -17,13 +17,13 @@ package org.angle3d.bounding
 		{
 			minMax.setTo(x0, x0, 0);
 			if (x1 < minMax.x)
-				minMax.x=x1;
+				minMax.x = x1;
 			if (x1 > minMax.y)
-				minMax.y=x1;
+				minMax.y = x1;
 			if (x2 < minMax.x)
-				minMax.x=x2;
+				minMax.x = x2;
 			if (x2 > minMax.y)
-				minMax.y=x2;
+				minMax.y = x2;
 		}
 
 		public static function intersect(bbox:BoundingBox, v1:Vector3f, v2:Vector3f, v3:Vector3f):Boolean
@@ -44,134 +44,134 @@ package org.angle3d.bounding
 			var e1:Vector3f;
 			var e2:Vector3f;
 
-			var center:Vector3f=bbox.getCenter();
-			var extent:Vector3f=bbox.getExtent();
+			var center:Vector3f = bbox.getCenter();
+			var extent:Vector3f = bbox.getExtent();
 
 			//float min,max,p0,p1,p2,rad,fex,fey,fez;
 			//float normal[3]
 
 			// This is the fastest branch on Sun
 			// move everything so that the boxcenter is in (0,0,0)
-			tmp0=v1.subtract(center);
-			tmp1=v2.subtract(center);
-			tmp2=v3.subtract(center);
+			tmp0 = v1.subtract(center);
+			tmp1 = v2.subtract(center);
+			tmp2 = v3.subtract(center);
 
 			// compute triangle edges
-			e0=tmp1.subtract(tmp0); // tri edge 0
-			e1=tmp2.subtract(tmp1); // tri edge 1
-			e2=tmp0.subtract(tmp2); // tri edge 2
+			e0 = tmp1.subtract(tmp0); // tri edge 0
+			e1 = tmp2.subtract(tmp1); // tri edge 1
+			e2 = tmp0.subtract(tmp2); // tri edge 2
 
 			// Bullet 3:
 			// test the 9 tests first (this was faster)
 			var min:Number, max:Number;
 			var p0:Number, p1:Number, p2:Number, rad:Number;
-			var fex:Number=FastMath.fabs(e0.x);
-			var fey:Number=FastMath.fabs(e0.y);
-			var fez:Number=FastMath.fabs(e0.z);
+			var fex:Number = FastMath.fabs(e0.x);
+			var fey:Number = FastMath.fabs(e0.y);
+			var fez:Number = FastMath.fabs(e0.z);
 
 
 			//AXISTEST_X01(e0[Z], e0[Y], fez, fey);
-			p0=e0.z * tmp0.y - e0.y * tmp0.z;
-			p2=e0.z * tmp2.y - e0.y * tmp2.z;
-			min=Math.min(p0, p2);
-			max=Math.max(p0, p2);
-			rad=fez * extent.y + fey * extent.z;
+			p0 = e0.z * tmp0.y - e0.y * tmp0.z;
+			p2 = e0.z * tmp2.y - e0.y * tmp2.z;
+			min = Math.min(p0, p2);
+			max = Math.max(p0, p2);
+			rad = fez * extent.y + fey * extent.z;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 
 			//   AXISTEST_Y02(e0[Z], e0[X], fez, fex);
-			p0=-e0.z * tmp0.x + e0.x * tmp0.z;
-			p2=-e0.z * tmp2.x + e0.x * tmp2.z;
-			min=Math.min(p0, p2);
-			max=Math.max(p0, p2);
-			rad=fez * extent.x + fex * extent.z;
+			p0 = -e0.z * tmp0.x + e0.x * tmp0.z;
+			p2 = -e0.z * tmp2.x + e0.x * tmp2.z;
+			min = Math.min(p0, p2);
+			max = Math.max(p0, p2);
+			rad = fez * extent.x + fex * extent.z;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 
 			// AXISTEST_Z12(e0[Y], e0[X], fey, fex);
-			p1=e0.y * tmp1.x - e0.x * tmp1.y;
-			p2=e0.y * tmp2.x - e0.x * tmp2.y;
-			min=Math.min(p1, p2);
-			max=Math.max(p1, p2);
-			rad=fey * extent.x + fex * extent.y;
+			p1 = e0.y * tmp1.x - e0.x * tmp1.y;
+			p2 = e0.y * tmp2.x - e0.x * tmp2.y;
+			min = Math.min(p1, p2);
+			max = Math.max(p1, p2);
+			rad = fey * extent.x + fex * extent.y;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 
-			fex=FastMath.fabs(e1.x);
-			fey=FastMath.fabs(e1.y);
-			fez=FastMath.fabs(e1.z);
+			fex = FastMath.fabs(e1.x);
+			fey = FastMath.fabs(e1.y);
+			fez = FastMath.fabs(e1.z);
 
 			//AXISTEST_X01(e1[Z], e1[Y], fez, fey);
-			p0=e1.z * tmp0.y - e1.y * tmp0.z;
-			p2=e1.z * tmp2.y - e1.y * tmp2.z;
-			min=Math.min(p0, p2);
-			max=Math.max(p0, p2);
-			rad=fez * extent.y + fey * extent.z;
+			p0 = e1.z * tmp0.y - e1.y * tmp0.z;
+			p2 = e1.z * tmp2.y - e1.y * tmp2.z;
+			min = Math.min(p0, p2);
+			max = Math.max(p0, p2);
+			rad = fez * extent.y + fey * extent.z;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 
 			//   AXISTEST_Y02(e1[Z], e1[X], fez, fex);
-			p0=-e1.z * tmp0.x + e1.x * tmp0.z;
-			p2=-e1.z * tmp2.x + e1.x * tmp2.z;
-			min=Math.min(p0, p2);
-			max=Math.max(p0, p2);
-			rad=fez * extent.x + fex * extent.z;
+			p0 = -e1.z * tmp0.x + e1.x * tmp0.z;
+			p2 = -e1.z * tmp2.x + e1.x * tmp2.z;
+			min = Math.min(p0, p2);
+			max = Math.max(p0, p2);
+			rad = fez * extent.x + fex * extent.z;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 
 			// AXISTEST_Z0(e1[Y], e1[X], fey, fex);
-			p0=e1.y * tmp0.x - e1.x * tmp0.y;
-			p1=e1.y * tmp1.x - e1.x * tmp1.y;
-			min=Math.min(p0, p1);
-			max=Math.max(p0, p1);
-			rad=fey * extent.x + fex * extent.y;
+			p0 = e1.y * tmp0.x - e1.x * tmp0.y;
+			p1 = e1.y * tmp1.x - e1.x * tmp1.y;
+			min = Math.min(p0, p1);
+			max = Math.max(p0, p1);
+			rad = fey * extent.x + fex * extent.y;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 //
-			fex=FastMath.fabs(e2.x);
-			fey=FastMath.fabs(e2.y);
-			fez=FastMath.fabs(e2.z);
+			fex = FastMath.fabs(e2.x);
+			fey = FastMath.fabs(e2.y);
+			fez = FastMath.fabs(e2.z);
 
 			// AXISTEST_X2(e2[Z], e2[Y], fez, fey);
-			p0=e2.z * tmp0.y - e2.y * tmp0.z;
-			p1=e2.z * tmp1.y - e2.y * tmp1.z;
-			min=Math.min(p0, p1);
-			max=Math.max(p0, p1);
-			rad=fez * extent.y + fey * extent.z;
+			p0 = e2.z * tmp0.y - e2.y * tmp0.z;
+			p1 = e2.z * tmp1.y - e2.y * tmp1.z;
+			min = Math.min(p0, p1);
+			max = Math.max(p0, p1);
+			rad = fez * extent.y + fey * extent.z;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 
 			// AXISTEST_Y1(e2[Z], e2[X], fez, fex);
-			p0=-e2.z * tmp0.x + e2.x * tmp0.z;
-			p1=-e2.z * tmp1.x + e2.x * tmp1.z;
-			min=FastMath.fmin(p0, p1);
-			max=FastMath.fmax(p0, p1);
-			rad=fez * extent.x + fex * extent.y;
+			p0 = -e2.z * tmp0.x + e2.x * tmp0.z;
+			p1 = -e2.z * tmp1.x + e2.x * tmp1.z;
+			min = FastMath.fmin(p0, p1);
+			max = FastMath.fmax(p0, p1);
+			rad = fez * extent.x + fex * extent.y;
 			if (min > rad || max < -rad)
 			{
 				return false;
 			}
 
 			//AXISTEST_Z12(e2[Y], e2[X], fey, fex);
-			p1=e2.y * tmp1.x - e2.x * tmp1.y;
-			p2=e2.y * tmp2.x - e2.x * tmp2.y;
-			min=FastMath.fmin(p1, p2);
-			max=FastMath.fmax(p1, p2);
-			rad=fey * extent.x + fex * extent.y;
+			p1 = e2.y * tmp1.x - e2.x * tmp1.y;
+			p2 = e2.y * tmp2.x - e2.x * tmp2.y;
+			min = FastMath.fmin(p1, p2);
+			max = FastMath.fmax(p1, p2);
+			rad = fey * extent.x + fex * extent.y;
 			if (min > rad || max < -rad)
 			{
 				return false;
@@ -184,7 +184,7 @@ package org.angle3d.bounding
 			//  the triangle against the AABB
 
 
-			var minMax:Vector3f=new Vector3f();
+			var minMax:Vector3f = new Vector3f();
 
 			// test in X-direction
 			findMinMax(tmp0.x, tmp1.x, tmp2.x, minMax);
@@ -212,7 +212,7 @@ package org.angle3d.bounding
 			//  compute plane equation of triangle: normal * x + d = 0
 			// Vector3f normal = new Vector3f();
 			// e0.cross(e1, normal);
-			var p:Plane=new Plane();
+			var p:Plane = new Plane();
 			p.setPoints(v1, v2, v3);
 			if (bbox.whichSide(p) == PlaneSide.Negative)
 			{

@@ -17,9 +17,9 @@ package org.angle3d.cinematic
 
 		public function TimeLine()
 		{
-			map=new Dictionary();
-			keyFramesPerSeconds=30;
-			lastKeyFrameIndex=0;
+			map = new Dictionary();
+			keyFramesPerSeconds = 30;
+			lastKeyFrameIndex = 0;
 		}
 
 		public function getKeyFrameAtTime(time:Number):KeyFrame
@@ -39,11 +39,11 @@ package org.angle3d.cinematic
 
 		public function addKeyFrameAtIndex(keyFrameIndex:int, keyFrame:KeyFrame):void
 		{
-			map[keyFrameIndex]=keyFrame;
+			map[keyFrameIndex] = keyFrame;
 			keyFrame.setIndex(keyFrameIndex);
 			if (lastKeyFrameIndex < keyFrameIndex)
 			{
-				lastKeyFrameIndex=keyFrameIndex;
+				lastKeyFrameIndex = keyFrameIndex;
 			}
 		}
 
@@ -52,12 +52,12 @@ package org.angle3d.cinematic
 			delete map[keyFrameIndex];
 			if (lastKeyFrameIndex == keyFrameIndex)
 			{
-				var kf:KeyFrame=null;
-				var i:int=keyFrameIndex;
+				var kf:KeyFrame = null;
+				var i:int = keyFrameIndex;
 				while (kf == null && i >= 0)
 				{
-					kf=getKeyFrameAtIndex(i);
-					lastKeyFrameIndex=i;
+					kf = getKeyFrameAtIndex(i);
+					lastKeyFrameIndex = i;
 
 					i--;
 				}

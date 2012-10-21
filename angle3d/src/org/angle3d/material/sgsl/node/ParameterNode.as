@@ -11,7 +11,7 @@ package org.angle3d.material.sgsl.node
 		public function ParameterNode(dataType:String, name:String)
 		{
 			super(name);
-			this.dataType=dataType;
+			this.dataType = dataType;
 		}
 
 		override public function clone():LeafNode
@@ -19,7 +19,7 @@ package org.angle3d.material.sgsl.node
 			return new ParameterNode(dataType, name);
 		}
 
-		override public function toString(level:int=0):String
+		override public function toString(level:int = 0):String
 		{
 			return dataType + " " + name;
 		}

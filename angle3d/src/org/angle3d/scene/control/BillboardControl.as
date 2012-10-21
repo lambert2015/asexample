@@ -26,23 +26,23 @@ package org.angle3d.scene.control
 		public function BillboardControl()
 		{
 			super();
-			orient=new Matrix3f();
-			look=new Vector3f();
-			left=new Vector3f();
-			alignment=Alignment.Screen;
+			orient = new Matrix3f();
+			look = new Vector3f();
+			left = new Vector3f();
+			alignment = Alignment.Screen;
 		}
 
 		override public function cloneForSpatial(spatial:Spatial):Control
 		{
-			var control:BillboardControl=new BillboardControl();
-			control.alignment=alignment;
-			control.spatial=spatial;
+			var control:BillboardControl = new BillboardControl();
+			control.alignment = alignment;
+			control.spatial = spatial;
 			return control;
 		}
 
 		override protected function controlRender(rm:RenderManager, vp:ViewPort):void
 		{
-			var cam:Camera3D=vp.camera;
+			var cam:Camera3D = vp.camera;
 			rotateBillboard(cam);
 		}
 
@@ -83,7 +83,7 @@ package org.angle3d.scene.control
 			look.subtractLocal(spatial.getWorldTranslation());
 
 			// coopt left for our own purposes.
-			var xzp:Vector3f=left;
+			var xzp:Vector3f = left;
 			// The xzp vector is the projection of the look vector on the xz plane
 			xzp.setTo(look.x, 0, look.z);
 
@@ -95,7 +95,7 @@ package org.angle3d.scene.control
 
 			look.normalizeLocal();
 			xzp.normalizeLocal();
-			var cosp:Number=look.dot(xzp);
+			var cosp:Number = look.dot(xzp);
 
 			// compute the local orientation matrix for the billboard
 			orient.setValue(0, 0, xzp.z);
@@ -131,15 +131,15 @@ package org.angle3d.scene.control
 
 			orient.fromAxes(left, camera.getUp(), look);
 
-			var parent:Node=spatial.parent;
-			var rot:Quaternion=new Quaternion();
+			var parent:Node = spatial.parent;
+			var rot:Quaternion = new Quaternion();
 			rot.fromMatrix3f(orient);
 			if (parent != null)
 			{
-				var pRot:Quaternion=parent.getWorldRotation();
-				pRot=pRot.inverse();
+				var pRot:Quaternion = parent.getWorldRotation();
+				pRot = pRot.inverse();
 				pRot.multiplyLocal(rot);
-				rot=pRot;
+				rot = pRot;
 				rot.normalizeLocal();
 			}
 			spatial.setRotation(rot);
@@ -158,15 +158,15 @@ package org.angle3d.scene.control
 			// the camera. To do this, the camera must be inverse-transformed into
 			// the model space of the billboard.
 			look.copyFrom(camera.location).subtractLocal(spatial.getWorldTranslation());
-			var rotation:Quaternion=spatial.parent.getWorldRotation();
+			var rotation:Quaternion = spatial.parent.getWorldRotation();
 			rotation.multiplyVector(look, left); // coopt left for our own
 			// purposes.
-			left.x*=1.0 / spatial.getWorldScale().x;
-			left.y*=1.0 / spatial.getWorldScale().y;
-			left.z*=1.0 / spatial.getWorldScale().z;
+			left.x *= 1.0 / spatial.getWorldScale().x;
+			left.y *= 1.0 / spatial.getWorldScale().y;
+			left.z *= 1.0 / spatial.getWorldScale().z;
 
 			// squared length of the camera projection in the xz-plane
-			var lengthSquared:Number=left.x * left.x + left.z * left.z;
+			var lengthSquared:Number = left.x * left.x + left.z * left.z;
 			if (lengthSquared < FastMath.FLT_EPSILON)
 			{
 				// camera on the billboard axis, rotation not defined
@@ -174,12 +174,12 @@ package org.angle3d.scene.control
 			}
 
 			// unitize the projection
-			var invLength:Number=1 / Math.sqrt(lengthSquared);
+			var invLength:Number = 1 / Math.sqrt(lengthSquared);
 			if (axis.y == 1)
 			{
-				left.x*=invLength;
-				left.y=0.0;
-				left.z*=invLength;
+				left.x *= invLength;
+				left.y = 0.0;
+				left.z *= invLength;
 
 				// compute the local orientation matrix for the billboard
 				orient.setValue(0, 0, left.z);
@@ -194,9 +194,9 @@ package org.angle3d.scene.control
 			}
 			else if (axis.z == 1)
 			{
-				left.x*=invLength;
-				left.y*=invLength;
-				left.z=0.0;
+				left.x *= invLength;
+				left.y *= invLength;
+				left.z = 0.0;
 
 				// compute the local orientation matrix for the billboard
 				orient.setValue(0, 0, left.y);
@@ -222,10 +222,10 @@ package org.angle3d.scene.control
 			spatial.updateGeometricState();
 
 			// force world bound to update
-			var rootNode:Spatial=spatial;
+			var rootNode:Spatial = spatial;
 			while (rootNode.parent != null)
 			{
-				rootNode=rootNode.parent;
+				rootNode = rootNode.parent;
 			}
 			rootNode.checkDoBoundUpdate();
 		}
@@ -247,7 +247,7 @@ package org.angle3d.scene.control
 		 */
 		public function setAlignment(alignment:String):void
 		{
-			this.alignment=alignment;
+			this.alignment = alignment;
 		}
 	}
 }

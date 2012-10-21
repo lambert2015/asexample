@@ -10,11 +10,11 @@ package org.angle3d.scene
 
 		private var mControl:MorphControl;
 
-		public function MorphGeometry(name:String, mesh:MorphMesh=null)
+		public function MorphGeometry(name:String, mesh:MorphMesh = null)
 		{
 			super(name, mesh);
 
-			mControl=new MorphControl();
+			mControl = new MorphControl();
 			addControl(mControl);
 		}
 
@@ -23,7 +23,7 @@ package org.angle3d.scene
 			mControl.setAnimationSpeed(speed);
 		}
 
-		public function playAnimation(animationName:String, loop:Boolean=true):void
+		public function playAnimation(animationName:String, loop:Boolean = true):void
 		{
 			mControl.playAnimation(animationName, loop);
 		}
@@ -35,7 +35,7 @@ package org.angle3d.scene
 
 		override public function setMesh(mesh:Mesh):void
 		{
-			mMorphMesh=mesh as MorphMesh;
+			mMorphMesh = mesh as MorphMesh;
 			super.setMesh(mesh);
 		}
 

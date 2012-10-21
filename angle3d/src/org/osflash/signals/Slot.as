@@ -10,10 +10,10 @@ package org.osflash.signals
 	public class Slot implements ISlot
 	{
 		protected var _signal:IOnceSignal;
-		protected var _enabled:Boolean=true;
+		protected var _enabled:Boolean = true;
 		protected var _listener:Function;
-		protected var _once:Boolean=false;
-		protected var _priority:int=0;
+		protected var _once:Boolean = false;
+		protected var _priority:int = 0;
 		protected var _params:Array;
 
 		/**
@@ -27,12 +27,12 @@ package org.osflash.signals
 		 * @throws ArgumentError <code>ArgumentError</code>: Given listener is <code>null</code>.
 		 * @throws Error <code>Error</code>: Internal signal reference has not been set yet.
 		 */
-		public function Slot(listener:Function, signal:IOnceSignal, once:Boolean=false, priority:int=0)
+		public function Slot(listener:Function, signal:IOnceSignal, once:Boolean = false, priority:int = 0)
 		{
-			_listener=listener;
-			_once=once;
-			_signal=signal;
-			_priority=priority;
+			_listener = listener;
+			_once = once;
+			_signal = signal;
+			_priority = priority;
 
 			verifyListener(listener);
 		}
@@ -85,11 +85,11 @@ package org.osflash.signals
 			// Note: This could be expensive if we're after the fastest dispatch possible.
 			if (_params && _params.length)
 			{
-				valueObjects=valueObjects.concat(_params);
+				valueObjects = valueObjects.concat(_params);
 			}
 
 			// NOTE: simple ifs are faster than switch: http://jacksondunstan.com/articles/1007
-			const numValueObjects:int=valueObjects.length;
+			const numValueObjects:int = valueObjects.length;
 			if (numValueObjects == 0)
 			{
 				_listener();
@@ -128,7 +128,7 @@ package org.osflash.signals
 				throw new ArgumentError('Given listener is null.\nDid you want to set enabled to false instead?');
 
 			verifyListener(value);
-			_listener=value;
+			_listener = value;
 		}
 
 		/**
@@ -167,7 +167,7 @@ package org.osflash.signals
 
 		public function set enabled(value:Boolean):void
 		{
-			_enabled=value;
+			_enabled = value;
 		}
 
 		/**
@@ -180,7 +180,7 @@ package org.osflash.signals
 
 		public function set params(value:Array):void
 		{
-			_params=value;
+			_params = value;
 		}
 
 		/**

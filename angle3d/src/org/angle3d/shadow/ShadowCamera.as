@@ -14,15 +14,15 @@ package org.angle3d.shadow
 	 */
 	public class ShadowCamera
 	{
-		private var points:Vector.<Vector3f>=new Vector.<Vector3f>(8, true);
+		private var points:Vector.<Vector3f> = new Vector.<Vector3f>(8, true);
 		private var target:Light;
 
 		public function ShadowCamera(target:Light)
 		{
-			this.target=target;
-			for (var i:int=0; i < points.length; i++)
+			this.target = target;
+			for (var i:int = 0; i < points.length; i++)
 			{
-				points[i]=new Vector3f();
+				points[i] = new Vector3f();
 			}
 		}
 
@@ -33,17 +33,17 @@ package org.angle3d.shadow
 		{
 			if (target.type == LightType.Directional)
 			{
-				var dl:DirectionalLight=target as DirectionalLight;
-				lightCam.parallelProjection=true;
-				lightCam.location=Vector3f.ZERO;
+				var dl:DirectionalLight = target as DirectionalLight;
+				lightCam.parallelProjection = true;
+				lightCam.location = Vector3f.ZERO;
 				lightCam.lookAtDirection(dl.direction, Vector3f.Y_AXIS);
 				lightCam.setFrustum(-1, 1, -1, 1, 1, -1);
 			}
 			else
 			{
-				var pl:PointLight=target as PointLight;
-				lightCam.parallelProjection=false;
-				lightCam.location=pl.position;
+				var pl:PointLight = target as PointLight;
+				lightCam.parallelProjection = false;
+				lightCam.location = pl.position;
 				// direction will have to be calculated automatically
 				lightCam.setFrustumPerspective(45, 1, 1, 300);
 			}

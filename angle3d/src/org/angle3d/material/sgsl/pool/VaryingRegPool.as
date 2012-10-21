@@ -16,16 +16,16 @@ package org.angle3d.material.sgsl.pool
 		public function VaryingRegPool()
 		{
 			super();
-			_pool=new Vector.<int>(8, true);
+			_pool = new Vector.<int>(8, true);
 		}
 
 		override public function clear():void
 		{
 			super.clear();
 
-			for (var i:int=0; i < 8; i++)
+			for (var i:int = 0; i < 8; i++)
 			{
-				_pool[i]=0;
+				_pool[i] = 0;
 			}
 		}
 
@@ -41,15 +41,15 @@ package org.angle3d.material.sgsl.pool
 			}
 
 			//TODO 应该尽量避免传递Mat4,Mat3，大部分情况下没必要
-			var size:int=DataType.getRegisterCount(value.dataType);
-			for (var i:int=0; i < 8; i++)
+			var size:int = DataType.getRegisterCount(value.dataType);
+			for (var i:int = 0; i < 8; i++)
 			{
 				if (_pool[i] == 0)
 				{
-					value.index=i;
-					for (var j:int=0; j < size; j++)
+					value.index = i;
+					for (var j:int = 0; j < size; j++)
 					{
-						_pool[i + j]=1;
+						_pool[i + j] = 1;
 					}
 					return;
 				}

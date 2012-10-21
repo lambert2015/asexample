@@ -14,9 +14,9 @@ package org.osflash.signals.events
 		protected var _currentTarget:Object;
 		protected var _signal:IPrioritySignal;
 
-		public function GenericEvent(bubbles:Boolean=false)
+		public function GenericEvent(bubbles:Boolean = false)
 		{
-			_bubbles=bubbles;
+			_bubbles = bubbles;
 		}
 
 		/** @inheritDoc */
@@ -27,7 +27,7 @@ package org.osflash.signals.events
 
 		public function set signal(value:IPrioritySignal):void
 		{
-			_signal=value;
+			_signal = value;
 		}
 
 		/** @inheritDoc */
@@ -38,7 +38,7 @@ package org.osflash.signals.events
 
 		public function set target(value:Object):void
 		{
-			_target=value;
+			_target = value;
 		}
 
 		/** @inheritDoc */
@@ -49,7 +49,7 @@ package org.osflash.signals.events
 
 		public function set currentTarget(value:Object):void
 		{
-			_currentTarget=value;
+			_currentTarget = value;
 		}
 
 		/** @inheritDoc */
@@ -60,7 +60,7 @@ package org.osflash.signals.events
 
 		public function set bubbles(value:Boolean):void
 		{
-			_bubbles=value;
+			_bubbles = value;
 		}
 
 		/** @inheritDoc */

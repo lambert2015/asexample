@@ -21,7 +21,7 @@ package org.angle3d.animation
 		 * 一个Shader按目前方法最大能支持128/3 = 42个骨骼
 		 * 但是要考虑到透视矩阵以及一些其他功能，因此只定义最多32个
 		 */
-		public static const MAX_BONE_COUNT:int=32;
+		public static const MAX_BONE_COUNT:int = 32;
 
 		//
 		public var rootBone:Bone;
@@ -47,8 +47,8 @@ package org.angle3d.animation
 		 */
 		public function Skeleton(boneList:Vector.<Bone>)
 		{
-			this.mBoneList=boneList;
-			mNumBones=boneList.length;
+			this.mBoneList = boneList;
+			mNumBones = boneList.length;
 
 			createSkinningMatrices();
 
@@ -65,22 +65,22 @@ package org.angle3d.animation
 		 */
 		private function buildBoneTree():void
 		{
-			mBoneMap=new Dictionary();
-			for (var i:int=0; i < mNumBones; i++)
+			mBoneMap = new Dictionary();
+			for (var i:int = 0; i < mNumBones; i++)
 			{
-				mBoneMap[mBoneList[i].name]=mBoneList[i];
+				mBoneMap[mBoneList[i].name] = mBoneList[i];
 			}
 
 			for (var name:String in mBoneMap)
 			{
-				var bone:Bone=mBoneMap[name];
+				var bone:Bone = mBoneMap[name];
 				if (bone.parentName == "")
 				{
-					rootBone=bone;
+					rootBone = bone;
 				}
 				else
 				{
-					var parentBone:Bone=mBoneMap[bone.parentName];
+					var parentBone:Bone = mBoneMap[bone.parentName];
 					parentBone.addChild(bone);
 				}
 			}
@@ -117,10 +117,10 @@ package org.angle3d.animation
 
 		private function createSkinningMatrices():void
 		{
-			mSkinningMatrixes=new Vector.<Matrix4f>(mNumBones, true);
-			for (var i:int=0; i < mNumBones; i++)
+			mSkinningMatrixes = new Vector.<Matrix4f>(mNumBones, true);
+			for (var i:int = 0; i < mNumBones; i++)
 			{
-				mSkinningMatrixes[i]=new Matrix4f();
+				mSkinningMatrixes[i] = new Matrix4f();
 			}
 		}
 
@@ -195,7 +195,7 @@ package org.angle3d.animation
 		 */
 		public function getBoneIndexByName(name:String):int
 		{
-			var bone:Bone=mBoneList[name];
+			var bone:Bone = mBoneList[name];
 			return mBoneList.indexOf(bone);
 		}
 
@@ -205,9 +205,9 @@ package org.angle3d.animation
 		 */
 		public function computeSkinningMatrices():Vector.<Matrix4f>
 		{
-			var tempVar:TempVars=TempVars.getTempVars();
+			var tempVar:TempVars = TempVars.getTempVars();
 
-			for (var i:int=0; i < mNumBones; i++)
+			for (var i:int = 0; i < mNumBones; i++)
 			{
 				mBoneList[i].getOffsetTransform(mSkinningMatrixes[i], tempVar.quat1, tempVar.vect1, tempVar.vect2, tempVar.tempMat3);
 			}

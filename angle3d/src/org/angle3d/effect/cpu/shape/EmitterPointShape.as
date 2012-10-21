@@ -11,9 +11,9 @@ package org.angle3d.effect.cpu.shape
 	{
 		private var _point:Vector3f;
 
-		public function EmitterPointShape(vector:Vector3f=null)
+		public function EmitterPointShape(vector:Vector3f = null)
 		{
-			_point=new Vector3f(0, 0, 0);
+			_point = new Vector3f(0, 0, 0);
 
 			if (vector != null)
 				_point.copyFrom(vector);

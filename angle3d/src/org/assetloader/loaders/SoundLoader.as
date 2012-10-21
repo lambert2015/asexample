@@ -40,7 +40,7 @@ package org.assetloader.loaders
 		 */
 		protected var _isReady:Boolean;
 
-		public function SoundLoader(request:URLRequest, id:String=null)
+		public function SoundLoader(request:URLRequest, id:String = null)
 		{
 			super(request, AssetType.SOUND, id);
 		}
@@ -51,9 +51,9 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete=new LoaderSignal(Sound);
-			_onReady=new LoaderSignal(Sound);
-			_onId3=new LoaderSignal();
+			_onComplete = new LoaderSignal(Sound);
+			_onReady = new LoaderSignal(Sound);
+			_onId3 = new LoaderSignal();
 		}
 
 		/**
@@ -61,11 +61,11 @@ package org.assetloader.loaders
 		 */
 		override protected function constructLoader():IEventDispatcher
 		{
-			_sound=_data=new Sound();
+			_sound = _data = new Sound();
 
 			if (!_readyTimer)
 			{
-				_readyTimer=new Timer(50);
+				_readyTimer = new Timer(50);
 				_readyTimer.addEventListener(TimerEvent.TIMER, readyTimer_handler);
 			}
 			else
@@ -121,9 +121,9 @@ package org.assetloader.loaders
 			if (_readyTimer)
 				_readyTimer.removeEventListener(TimerEvent.TIMER, readyTimer_handler);
 
-			_sound=null;
-			_readyTimer=null;
-			_isReady=false;
+			_sound = null;
+			_readyTimer = null;
+			_isReady = false;
 		}
 
 		/**
@@ -153,7 +153,7 @@ package org.assetloader.loaders
 		{
 			if (!_isReady)
 			{
-				_isReady=true;
+				_isReady = true;
 				_onReady.dispatch(this, _sound);
 				_readyTimer.stop();
 			}
@@ -168,7 +168,7 @@ package org.assetloader.loaders
 			if (!_isReady && !_sound.isBuffering)
 			{
 				_onReady.dispatch(this, _sound);
-				_isReady=true;
+				_isReady = true;
 				_readyTimer.stop();
 			}
 		}

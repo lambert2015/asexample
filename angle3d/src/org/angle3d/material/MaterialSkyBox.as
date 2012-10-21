@@ -18,7 +18,7 @@ package org.angle3d.material
 		{
 			super();
 
-			_technique=new TechniqueSkyBox(cubeTexture);
+			_technique = new TechniqueSkyBox(cubeTexture);
 
 			addTechnique(_technique);
 		}

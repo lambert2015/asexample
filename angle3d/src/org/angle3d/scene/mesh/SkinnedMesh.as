@@ -10,7 +10,7 @@ package org.angle3d.scene.mesh
 		{
 			super();
 
-			mType=MeshType.MT_SKELETAL_ANIMATION;
+			mType = MeshType.MT_SKELETAL_ANIMATION;
 		}
 	}
 }

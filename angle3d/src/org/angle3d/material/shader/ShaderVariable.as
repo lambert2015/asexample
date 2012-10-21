@@ -15,14 +15,14 @@ package org.angle3d.material.shader
 
 		public function ShaderVariable(name:String, size:int)
 		{
-			_name=name;
-			_size=size;
-			_location=-1;
+			_name = name;
+			_size = size;
+			_location = -1;
 		}
 
 		public function set name(value:String):void
 		{
-			_name=value;
+			_name = value;
 		}
 
 		public function get name():String
@@ -32,7 +32,7 @@ package org.angle3d.material.shader
 
 		public function set size(value:int):void
 		{
-			_size=value;
+			_size = value;
 		}
 
 		public function get size():int
@@ -42,7 +42,7 @@ package org.angle3d.material.shader
 
 		public function set location(location:int):void
 		{
-			_location=location;
+			_location = location;
 		}
 
 		public function get location():int

@@ -19,10 +19,10 @@ package org.angle3d.renderer.queue
 
 		public function GeometryList(comparator:GeometryComparator)
 		{
-			_geometries=new Vector.<Geometry>();
-			_size=0;
+			_geometries = new Vector.<Geometry>();
+			_size = 0;
 
-			_comparator=comparator;
+			_comparator = comparator;
 		}
 
 		public function setCamera(cam:Camera3D):void
@@ -53,7 +53,7 @@ package org.angle3d.renderer.queue
 		 */
 		public function add(g:Geometry):void
 		{
-			_geometries[_size++]=g;
+			_geometries[_size++] = g;
 		}
 
 		/**
@@ -61,9 +61,9 @@ package org.angle3d.renderer.queue
 		 */
 		public function clear():void
 		{
-			_geometries.length=0;
+			_geometries.length = 0;
 
-			_size=0;
+			_size = 0;
 		}
 
 		/**

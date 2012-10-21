@@ -21,20 +21,20 @@ package org.angle3d.scene.ui
 		{
 			super(name, new Quad(1, 1, flipY));
 
-			this.localQueueBucket=QueueBucket.Gui;
-			this.localCullHint=CullHint.Never;
+			this.localQueueBucket = QueueBucket.Gui;
+			this.localCullHint = CullHint.Never;
 		}
 
 		public function setSize(width:Number, height:Number):void
 		{
-			mWidth=width;
-			mHeight=height;
+			mWidth = width;
+			mHeight = height;
 			setScaleXYZ(mWidth, mHeight, 1);
 		}
 
 		public function setPosition(x:Number, y:Number):void
 		{
-			var z:Number=this.getTranslation().z;
+			var z:Number = this.getTranslation().z;
 			this.setTranslationXYZ(x, y, z);
 		}
 
@@ -42,10 +42,10 @@ package org.angle3d.scene.ui
 		{
 			if (mMaterial == null)
 			{
-				mMaterial=new MaterialTexture(texture);
+				mMaterial = new MaterialTexture(texture);
 				this.setMaterial(mMaterial);
 			}
-			(mMaterial as MaterialTexture).texture=texture;
+			(mMaterial as MaterialTexture).texture = texture;
 		}
 	}
 }

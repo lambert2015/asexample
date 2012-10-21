@@ -19,10 +19,10 @@ package org.assetloader.loaders
 		 */
 		protected var _swf:Sprite;
 
-		public function SWFLoader(request:URLRequest, id:String=null)
+		public function SWFLoader(request:URLRequest, id:String = null)
 		{
 			super(request, id);
-			_type=AssetType.SWF;
+			_type = AssetType.SWF;
 		}
 
 		/**
@@ -31,8 +31,8 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onInit=new LoaderSignal();
-			_onComplete=new LoaderSignal(Sprite);
+			_onInit = new LoaderSignal();
+			_onComplete = new LoaderSignal(Sprite);
 		}
 
 		/**
@@ -47,7 +47,7 @@ package org.assetloader.loaders
 
 		protected function init_handler(event:Event):void
 		{
-			_data=_displayObject=_loader.content;
+			_data = _displayObject = _loader.content;
 
 			_onInit.dispatch(this, _data);
 		}
@@ -84,7 +84,7 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			super.destroy();
-			_swf=null;
+			_swf = null;
 		}
 
 		/**
@@ -94,14 +94,14 @@ package org.assetloader.loaders
 		 */
 		override protected function testData(data:DisplayObject):String
 		{
-			var errMsg:String="";
+			var errMsg:String = "";
 			try
 			{
-				_data=_swf=Sprite(data);
+				_data = _swf = Sprite(data);
 			}
 			catch (error:Error)
 			{
-				errMsg=error.message;
+				errMsg = error.message;
 			}
 			return errMsg;
 		}

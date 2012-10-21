@@ -21,12 +21,12 @@ package org.assetloader.signals
 		public function LoaderSignal(... valueClasses)
 		{
 			super();
-			_signalType||=LoaderSignal;
+			_signalType ||= LoaderSignal;
 
 			if (valueClasses.length == 1 && valueClasses[0] is Array)
-				valueClasses=valueClasses[0];
+				valueClasses = valueClasses[0];
 
-			this.valueClasses=[_signalType].concat.apply(null, valueClasses);
+			this.valueClasses = [_signalType].concat.apply(null, valueClasses);
 		}
 
 		/**
@@ -34,7 +34,7 @@ package org.assetloader.signals
 		 */
 		override public function dispatch(... args):void
 		{
-			_loader=args.shift();
+			_loader = args.shift();
 
 			super.dispatch.apply(null, [this].concat.apply(null, args));
 		}

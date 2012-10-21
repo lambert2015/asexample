@@ -30,15 +30,15 @@ package org.angle3d.animation
 		{
 			super();
 
-			mAnimationMap=new Dictionary();
+			mAnimationMap = new Dictionary();
 
-			mChannels=new Vector.<AnimChannel>();
-			mNumchannels=0;
+			mChannels = new Vector.<AnimChannel>();
+			mNumchannels = 0;
 		}
 
 		public function addAnimation(name:String, animation:Animation):void
 		{
-			mAnimationMap[name]=animation;
+			mAnimationMap[name] = animation;
 		}
 
 		public function getAnimation(name:String):Animation
@@ -48,7 +48,7 @@ package org.angle3d.animation
 
 		public function getAnimationLength(name:String):Number
 		{
-			var a:Animation=mAnimationMap[name];
+			var a:Animation = mAnimationMap[name];
 
 			CF::DEBUG
 			{
@@ -60,7 +60,7 @@ package org.angle3d.animation
 
 		public function removeChannel(channel:AnimChannel):void
 		{
-			var index:int=mChannels.indexOf(channel);
+			var index:int = mChannels.indexOf(channel);
 			if (index > -1)
 			{
 				mChannels.splice(index, 1);
@@ -76,7 +76,7 @@ package org.angle3d.animation
 		 */
 		public function createChannel():AnimChannel
 		{
-			var channel:AnimChannel=new AnimChannel(this);
+			var channel:AnimChannel = new AnimChannel(this);
 			mChannels.push(channel);
 			mNumchannels++;
 			return channel;
@@ -89,9 +89,9 @@ package org.angle3d.animation
 		{
 			if (mNumchannels > 0)
 			{
-				var tempVars:TempVars=TempVars.getTempVars();
+				var tempVars:TempVars = TempVars.getTempVars();
 
-				for (var i:int=0; i < mNumchannels; i++)
+				for (var i:int = 0; i < mNumchannels; i++)
 				{
 					mChannels[i].update(tpf, tempVars);
 				}

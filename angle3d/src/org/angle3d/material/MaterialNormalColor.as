@@ -16,14 +16,14 @@ package org.angle3d.material
 		{
 			super();
 
-			_technique=new TechniqueNormalColor();
+			_technique = new TechniqueNormalColor();
 
 			addTechnique(_technique);
 		}
 
 		override public function set influence(value:Number):void
 		{
-			_technique.influence=value;
+			_technique.influence = value;
 		}
 
 		public function get technique():TechniqueNormalColor

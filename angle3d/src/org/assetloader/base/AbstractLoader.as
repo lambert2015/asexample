@@ -113,13 +113,13 @@ package org.assetloader.base
 		 */
 		protected var _data:*;
 
-		public function AbstractLoader(id:String, type:String, request:URLRequest=null)
+		public function AbstractLoader(id:String, type:String, request:URLRequest = null)
 		{
-			_id=id;
-			_type=type;
-			_request=request;
+			_id = id;
+			_type = type;
+			_request = request;
 
-			_stats=new LoaderStats();
+			_stats = new LoaderStats();
 
 			initParams();
 			initSignals();
@@ -130,7 +130,7 @@ package org.assetloader.base
 		 */
 		protected function initParams():void
 		{
-			_params={};
+			_params = {};
 
 			setParam(Param.PRIORITY, 0);
 			setParam(Param.RETRIES, 3);
@@ -143,21 +143,21 @@ package org.assetloader.base
 		 */
 		protected function initSignals():void
 		{
-			_onError=new ErrorSignal();
-			_onHttpStatus=new HttpStatusSignal();
+			_onError = new ErrorSignal();
+			_onHttpStatus = new HttpStatusSignal();
 
-			_onOpen=new LoaderSignal();
-			_onProgress=new ProgressSignal();
-			_onComplete=new LoaderSignal();
+			_onOpen = new LoaderSignal();
+			_onProgress = new ProgressSignal();
+			_onComplete = new LoaderSignal();
 
-			_onAddedToParent=new LoaderSignal(IAssetLoader);
-			_onRemovedFromParent=new LoaderSignal(IAssetLoader);
+			_onAddedToParent = new LoaderSignal(IAssetLoader);
+			_onRemovedFromParent = new LoaderSignal(IAssetLoader);
 
 			_onAddedToParent.add(addedToParent_handler);
 			_onRemovedFromParent.add(removedFromParent_handler);
 
-			_onStart=new LoaderSignal();
-			_onStop=new LoaderSignal();
+			_onStart = new LoaderSignal();
+			_onStop = new LoaderSignal();
 		}
 
 		/**
@@ -174,8 +174,8 @@ package org.assetloader.base
 		 */
 		public function stop():void
 		{
-			_stopped=true;
-			_inProgress=false;
+			_stopped = true;
+			_inProgress = false;
 			_onStop.dispatch(this);
 		}
 
@@ -188,12 +188,12 @@ package org.assetloader.base
 
 			_stats.reset();
 
-			_data=null;
+			_data = null;
 
-			_invoked=false;
-			_inProgress=false;
-			_stopped=false;
-			_loaded=false;
+			_invoked = false;
+			_inProgress = false;
+			_stopped = false;
+			_loaded = false;
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//
@@ -207,7 +207,7 @@ package org.assetloader.base
 			if (_parent)
 				throw new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINED_BY_OTHER(_id, _parent.id));
 
-			_parent=parent;
+			_parent = parent;
 
 			// Inherit prevent cache from parent if undefinded
 			if (_params[Param.PREVENT_CACHE] == undefined)
@@ -223,7 +223,7 @@ package org.assetloader.base
 		 */
 		protected function removedFromParent_handler(signal:LoaderSignal, parent:IAssetLoader):void
 		{
-			_parent=null;
+			_parent = null;
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//
@@ -300,12 +300,12 @@ package org.assetloader.base
 		 */
 		public function setParam(id:String, value:*):void
 		{
-			_params[id]=value;
+			_params[id] = value;
 
 			switch (id)
 			{
 				case Param.WEIGHT:
-					_stats.bytesTotal=value;
+					_stats.bytesTotal = value;
 					break;
 			}
 		}

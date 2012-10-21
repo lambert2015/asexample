@@ -22,10 +22,10 @@ package org.angle3d.material.sgsl
 		 */
 		public function OpCode(names:Array, numRegister:uint, emitCode:uint, flags:uint)
 		{
-			this.names=names;
-			this.numRegister=numRegister;
-			this.emitCode=emitCode;
-			this.flags=flags;
+			this.names = names;
+			this.numRegister = numRegister;
+			this.emitCode = emitCode;
+			this.flags = flags;
 		}
 
 		/**

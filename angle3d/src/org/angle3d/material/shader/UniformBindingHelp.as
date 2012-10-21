@@ -15,9 +15,9 @@ package org.angle3d.material.shader
 
 		public function UniformBindingHelp(shaderType:String, name:String, bindType:int)
 		{
-			this.shaderType=shaderType;
-			this.name=name;
-			this.bindType=bindType;
+			this.shaderType = shaderType;
+			this.name = name;
+			this.bindType = bindType;
 		}
 	}
 }

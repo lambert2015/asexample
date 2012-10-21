@@ -19,9 +19,9 @@ package org.angle3d.light
 		 *
 		 * @param owner The spatial owner
 		 */
-		public function LightList(owner:Spatial=null)
+		public function LightList(owner:Spatial = null)
 		{
-			mList=new Vector.<Light>();
+			mList = new Vector.<Light>();
 
 			setOwner(owner);
 		}
@@ -32,7 +32,7 @@ package org.angle3d.light
 		 */
 		public function setOwner(owner:Spatial):void
 		{
-			this.mOwner=owner;
+			this.mOwner = owner;
 		}
 
 		/**
@@ -65,7 +65,7 @@ package org.angle3d.light
 		 */
 		public function removeLight(l:Light):void
 		{
-			var index:int=mList.indexOf(l);
+			var index:int = mList.indexOf(l);
 			if (index > -1)
 			{
 				removeLightAt(index);
@@ -99,7 +99,7 @@ package org.angle3d.light
 		 */
 		public function clear():void
 		{
-			mList.length=0;
+			mList.length = 0;
 		}
 
 		/**
@@ -115,13 +115,13 @@ package org.angle3d.light
 		 */
 		public function sort(transformChanged:Boolean):void
 		{
-			var listSize:int=mList.length;
+			var listSize:int = mList.length;
 			if (listSize > 1)
 			{
 				if (transformChanged)
 				{
 					// check distance of each light
-					for (var i:int=0; i < listSize; i++)
+					for (var i:int = 0; i < listSize; i++)
 					{
 						mList[i].computeLastDistance(mOwner);
 					}
@@ -162,21 +162,21 @@ package org.angle3d.light
 			clear();
 
 			//copy local LightList
-			mList=local.getList().slice();
+			mList = local.getList().slice();
 
 			// if the spatial has a parent node, add the lights
 			// from the parent list as well
 			if (parent != null)
 			{
-				mList=mList.concat(parent.getList());
+				mList = mList.concat(parent.getList());
 			}
 		}
 
 		public function clone():LightList
 		{
-			var lightList:LightList=new LightList();
-			lightList.mOwner=null;
-			lightList.mList=mList.slice();
+			var lightList:LightList = new LightList();
+			lightList.mOwner = null;
+			lightList.mList = mList.slice();
 			return lightList;
 		}
 	}

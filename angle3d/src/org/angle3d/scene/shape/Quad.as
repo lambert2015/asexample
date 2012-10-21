@@ -17,7 +17,7 @@ package org.angle3d.scene.shape
 		private var width:Number;
 		private var height:Number;
 
-		public function Quad(width:Number, height:Number, flipCoords:Boolean=false)
+		public function Quad(width:Number, height:Number, flipCoords:Boolean = false)
 		{
 			super();
 			updateGeometry(width, height, flipCoords);
@@ -33,40 +33,40 @@ package org.angle3d.scene.shape
 			return width;
 		}
 
-		public function updateGeometry(width:Number, height:Number, flipCoords:Boolean=false):void
+		public function updateGeometry(width:Number, height:Number, flipCoords:Boolean = false):void
 		{
-			this.width=width;
-			this.height=height;
+			this.width = width;
+			this.height = height;
 
-			var subMesh:SubMesh=new SubMesh();
+			var subMesh:SubMesh = new SubMesh();
 
-			var data:Vector.<Number>=Vector.<Number>([0.0, 0.0, 0.0, width, 0.0, 0.0, width, height, 0.0, 0.0, height, 0.0]);
+			var data:Vector.<Number> = Vector.<Number>([0.0, 0.0, 0.0, width, 0.0, 0.0, width, height, 0.0, 0.0, height, 0.0]);
 			subMesh.setVertexBuffer(BufferType.POSITION, 3, data);
 
 			if (flipCoords)
 			{
-				data=Vector.<Number>([0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0]);
+				data = Vector.<Number>([0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0]);
 			}
 			else
 			{
-				data=Vector.<Number>([0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]);
+				data = Vector.<Number>([0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]);
 			}
 			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, data);
 
-			data=Vector.<Number>([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]);
+			data = Vector.<Number>([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]);
 			subMesh.setVertexBuffer(BufferType.NORMAL, 3, data);
 
-			data=Vector.<Number>([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]);
+			data = Vector.<Number>([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]);
 			subMesh.setVertexBuffer(BufferType.COLOR, 3, data);
 
 			var indices:Vector.<uint>;
 			if (height < 0)
 			{
-				indices=Vector.<uint>([0, 2, 1, 0, 3, 2]);
+				indices = Vector.<uint>([0, 2, 1, 0, 3, 2]);
 			}
 			else
 			{
-				indices=Vector.<uint>([0, 1, 2, 0, 2, 3]);
+				indices = Vector.<uint>([0, 1, 2, 0, 2, 3]);
 			}
 
 			subMesh.setIndices(indices);

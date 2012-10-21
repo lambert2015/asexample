@@ -36,28 +36,28 @@ package org.angle3d.cinematic.event
 		protected var _onPauseSignal:CinematicSignal;
 		protected var _onStopSignal:CinematicSignal;
 
-		public function AbstractCinematicEvent(initialDuration:Number=10, mode:int=0)
+		public function AbstractCinematicEvent(initialDuration:Number = 10, mode:int = 0)
 		{
 			super();
 
-			this.loopMode=mode;
-			this.initialDuration=initialDuration;
-			duration=initialDuration / speed;
+			this.loopMode = mode;
+			this.initialDuration = initialDuration;
+			duration = initialDuration / speed;
 
-			speed=1;
-			playState=PlayState.Stopped;
-			time=0;
-			start=0;
-			elapsedTimePause=0;
+			speed = 1;
+			playState = PlayState.Stopped;
+			time = 0;
+			start = 0;
+			elapsedTimePause = 0;
 
 			_initSignals();
 		}
 
 		protected function _initSignals():void
 		{
-			_onStartSignal=new CinematicSignal();
-			_onPauseSignal=new CinematicSignal();
-			_onStopSignal=new CinematicSignal();
+			_onStartSignal = new CinematicSignal();
+			_onPauseSignal = new CinematicSignal();
+			_onStopSignal = new CinematicSignal();
 		}
 
 		public function get onStartSignal():CinematicSignal
@@ -79,9 +79,9 @@ package org.angle3d.cinematic.event
 		{
 			onPlay();
 
-			playState=PlayState.Playing;
+			playState = PlayState.Playing;
 
-			start=TimerUtil.getTimeInSeconds();
+			start = TimerUtil.getTimeInSeconds();
 
 			_onStartSignal.dispatch(this);
 		}
@@ -95,7 +95,7 @@ package org.angle3d.cinematic.event
 		{
 			if (playState == PlayState.Playing)
 			{
-				time=(elapsedTimePause + getTimer() - start) * speed;
+				time = (elapsedTimePause + getTimer() - start) * speed;
 
 				onUpdate(tpf);
 
@@ -119,9 +119,9 @@ package org.angle3d.cinematic.event
 		{
 			onStop();
 
-			time=0;
-			playState=PlayState.Stopped;
-			elapsedTimePause=0;
+			time = 0;
+			playState = PlayState.Stopped;
+			elapsedTimePause = 0;
 
 			_onStopSignal.dispatch(this);
 		}
@@ -135,8 +135,8 @@ package org.angle3d.cinematic.event
 		{
 			onPause();
 
-			playState=PlayState.Paused;
-			elapsedTimePause=time;
+			playState = PlayState.Paused;
+			elapsedTimePause = time;
 
 			_onPauseSignal.dispatch(this);
 		}
@@ -163,7 +163,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function setSpeed(speed:Number):void
 		{
-			this.speed=speed;
+			this.speed = speed;
 		}
 
 		/**
@@ -199,7 +199,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function setInitialDuration(initialDuration:Number):void
 		{
-			this.initialDuration=initialDuration;
+			this.initialDuration = initialDuration;
 		}
 
 		/**
@@ -219,7 +219,7 @@ package org.angle3d.cinematic.event
 		 */
 		public function setLoopMode(loopMode:int):void
 		{
-			this.loopMode=loopMode;
+			this.loopMode = loopMode;
 		}
 
 		public function init(app:Application, cinematic:Cinematic):void
@@ -233,10 +233,10 @@ package org.angle3d.cinematic.event
 		 */
 		public function setTime(time:Number):void
 		{
-			elapsedTimePause=time / speed;
+			elapsedTimePause = time / speed;
 			if (playState == PlayState.Playing)
 			{
-				start=getTimer();
+				start = getTimer();
 			}
 		}
 

@@ -12,7 +12,7 @@ package org.angle3d.effect.gpu.influencers
 
 		public function set generator(value:ParticleShapeGenerator):void
 		{
-			_generator=value;
+			_generator = value;
 		}
 
 		public function get generator():ParticleShapeGenerator

@@ -19,27 +19,27 @@ package org.angle3d.scene.debug
 		private var _points:SkeletonPoints;
 		private var _skeleton:Skeleton;
 
-		public function SkeletonDebugger(name:String, skeleton:Skeleton, radius:Number=1)
+		public function SkeletonDebugger(name:String, skeleton:Skeleton, radius:Number = 1)
 		{
 			super(name);
 
-			this._skeleton=skeleton;
-			_lines=new SkeletonLines(skeleton);
-			_points=new SkeletonPoints(name + "_points", skeleton, radius);
+			this._skeleton = skeleton;
+			_lines = new SkeletonLines(skeleton);
+			_points = new SkeletonPoints(name + "_points", skeleton, radius);
 
-			var lineGM:WireframeGeometry=new WireframeGeometry(name + "_lines", _lines);
-			var mat:MaterialWireframe=lineGM.getMaterial() as MaterialWireframe;
-			mat.technique.thickness=1;
-			mat.technique.renderState.applyDepthTest=true;
-			mat.technique.renderState.depthTest=true;
-			mat.technique.renderState.compareMode=Context3DCompareMode.ALWAYS;
+			var lineGM:WireframeGeometry = new WireframeGeometry(name + "_lines", _lines);
+			var mat:MaterialWireframe = lineGM.getMaterial() as MaterialWireframe;
+			mat.technique.thickness = 1;
+			mat.technique.renderState.applyDepthTest = true;
+			mat.technique.renderState.depthTest = true;
+			mat.technique.renderState.compareMode = Context3DCompareMode.ALWAYS;
 
 			//TODO 
 			//Opaque还得再加个层级
 
-			lineGM.localQueueBucket=QueueBucket.Transparent;
+			lineGM.localQueueBucket = QueueBucket.Transparent;
 
-			_points.localQueueBucket=QueueBucket.Transparent;
+			_points.localQueueBucket = QueueBucket.Transparent;
 
 			attachChild(lineGM);
 			attachChild(_points);

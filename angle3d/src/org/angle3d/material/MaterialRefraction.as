@@ -21,11 +21,11 @@ package org.angle3d.material
 		 * @param transmittance
 		 *
 		 */
-		public function MaterialRefraction(decalMap:TextureMapBase, environmentMap:CubeTextureMap, etaRatio:Number=1.5, transmittance:Number=0.5)
+		public function MaterialRefraction(decalMap:TextureMapBase, environmentMap:CubeTextureMap, etaRatio:Number = 1.5, transmittance:Number = 0.5)
 		{
 			super();
 
-			_technique=new TechniqueRefraction(decalMap, environmentMap, etaRatio, transmittance);
+			_technique = new TechniqueRefraction(decalMap, environmentMap, etaRatio, transmittance);
 			addTechnique(_technique);
 		}
 	}

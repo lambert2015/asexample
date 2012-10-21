@@ -7,9 +7,9 @@ package org.angle3d.effect.gpu.influencers.position
 	{
 		private var _point:Vector3f;
 
-		public function DefaultPositionInfluencer(point:Vector3f=null)
+		public function DefaultPositionInfluencer(point:Vector3f = null)
 		{
-			_point=point != null ? point.clone() : new Vector3f(0, 0, 0);
+			_point = point != null ? point.clone() : new Vector3f(0, 0, 0);
 		}
 
 		public function getPosition(index:int, vector3:Vector3f):Vector3f

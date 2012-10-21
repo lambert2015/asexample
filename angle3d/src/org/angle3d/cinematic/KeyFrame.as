@@ -12,13 +12,13 @@ package org.angle3d.cinematic
 
 		public function KeyFrame()
 		{
-			tracks=new Vector.<CinematicEvent>();
+			tracks = new Vector.<CinematicEvent>();
 		}
 
 		public function trigger():Vector.<CinematicEvent>
 		{
-			var length:int=tracks.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = tracks.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				tracks[i].play();
 			}
@@ -37,7 +37,7 @@ package org.angle3d.cinematic
 
 		public function setTracks(tracks:Vector.<CinematicEvent>):void
 		{
-			this.tracks=tracks;
+			this.tracks = tracks;
 		}
 
 		public function getIndex():int
@@ -47,7 +47,7 @@ package org.angle3d.cinematic
 
 		public function setIndex(index:int):void
 		{
-			this.index=index;
+			this.index = index;
 		}
 	}
 }

@@ -13,7 +13,7 @@ package org.assetloader.signals
 
 		public function HttpStatusSignal(... valueClasses)
 		{
-			_signalType=HttpStatusSignal;
+			_signalType = HttpStatusSignal;
 			super(valueClasses);
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.signals
 		 */
 		override public function dispatch(... args):void
 		{
-			_status=args.splice(1, 1)[0];
+			_status = args.splice(1, 1)[0];
 			super.dispatch.apply(null, args);
 		}
 

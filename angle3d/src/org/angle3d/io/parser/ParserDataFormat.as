@@ -9,12 +9,12 @@ package org.angle3d.io.parser
 		/**
 		 * Describes the format of a binary file.
 		 */
-		public static const BINARY:String="binary";
+		public static const BINARY:String = "binary";
 
 		/**
 		 * Describes the format of a plain text file.
 		 */
-		public static const PLAIN_TEXT:String="plainText";
+		public static const PLAIN_TEXT:String = "plainText";
 	}
 }
 

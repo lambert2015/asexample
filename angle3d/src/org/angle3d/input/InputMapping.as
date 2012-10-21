@@ -10,10 +10,10 @@ package org.angle3d.input
 
 		public function InputMapping(name:String)
 		{
-			this.name=name;
+			this.name = name;
 
-			this.triggers=new Array();
-			this.listeners=new Array();
+			this.triggers = new Array();
+			this.listeners = new Array();
 		}
 	}
 }

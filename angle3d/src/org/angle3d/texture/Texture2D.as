@@ -4,7 +4,7 @@ package org.angle3d.texture
 
 	public class Texture2D extends TextureMap
 	{
-		public function Texture2D(width:int, height:int, mipmap:Boolean=false)
+		public function Texture2D(width:int, height:int, mipmap:Boolean = false)
 		{
 			super(mipmap);
 

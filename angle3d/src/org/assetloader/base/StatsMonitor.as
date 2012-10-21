@@ -32,7 +32,7 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
-		protected var _ids:Array=[];
+		protected var _ids:Array = [];
 
 		/**
 		 * @private
@@ -49,12 +49,12 @@ package org.assetloader.base
 
 		public function StatsMonitor()
 		{
-			_loaders=[];
-			_stats=new LoaderStats();
+			_loaders = [];
+			_stats = new LoaderStats();
 
-			_onOpen=new LoaderSignal();
-			_onProgress=new ProgressSignal();
-			_onComplete=new LoaderSignal(ILoadStats);
+			_onOpen = new LoaderSignal();
+			_onProgress = new ProgressSignal();
+			_onComplete = new LoaderSignal(ILoadStats);
 		}
 
 		/**
@@ -72,7 +72,7 @@ package org.assetloader.base
 
 				_loaders.push(loader);
 				_ids.push(loader.id);
-				_numLoaders=_loaders.length;
+				_numLoaders = _loaders.length;
 				if (loader.loaded)
 					_numComplete++;
 			}
@@ -89,7 +89,7 @@ package org.assetloader.base
 		 */
 		public function remove(loader:ILoader):void
 		{
-			var index:int=_loaders.indexOf(loader);
+			var index:int = _loaders.indexOf(loader);
 			if (index != -1)
 			{
 				loader.onStart.remove(start_handler);
@@ -100,7 +100,7 @@ package org.assetloader.base
 
 				_loaders.splice(index, 1);
 				_ids.splice(index, 1);
-				_numLoaders=_loaders.length;
+				_numLoaders = _loaders.length;
 			}
 			else
 				throw new AssetLoaderError(AssetLoaderError.DOESNT_CONTAIN_LOADER);
@@ -120,9 +120,9 @@ package org.assetloader.base
 				removeListeners(loader);
 			}
 
-			_loaders=[];
-			_numLoaders=0;
-			_numComplete=0;
+			_loaders = [];
+			_numLoaders = 0;
+			_numComplete = 0;
 
 			_onOpen.removeAll();
 			_onProgress.removeAll();
@@ -180,8 +180,8 @@ package org.assetloader.base
 			var bytesTotal:uint;
 			for each (var loader:ILoader in _loaders)
 			{
-				bytesLoaded+=loader.stats.bytesLoaded;
-				bytesTotal+=loader.stats.bytesTotal;
+				bytesLoaded += loader.stats.bytesLoaded;
+				bytesTotal += loader.stats.bytesTotal;
 			}
 			_stats.update(bytesLoaded, bytesTotal);
 

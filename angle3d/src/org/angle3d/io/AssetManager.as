@@ -13,7 +13,7 @@ package org.angle3d.io
 		public static function getInstance():AssetManager
 		{
 			if (_instance == null)
-				_instance=new AssetManager();
+				_instance = new AssetManager();
 			return _instance;
 		}
 
@@ -21,7 +21,7 @@ package org.angle3d.io
 
 		public function AssetManager()
 		{
-			mAssetCache=new Dictionary();
+			mAssetCache = new Dictionary();
 		}
 
 		/**
@@ -29,7 +29,7 @@ package org.angle3d.io
 		 */
 		public function createLoader(id:String):AssetLoader
 		{
-			var loader:AssetLoader=new AssetLoader(id);
+			var loader:AssetLoader = new AssetLoader(id);
 			loader.onComplete.add(_loadComplete);
 			return loader;
 		}
@@ -45,7 +45,7 @@ package org.angle3d.io
 			//cache 资源
 			for (var i:* in assets)
 			{
-				mAssetCache[i]=assets[i];
+				mAssetCache[i] = assets[i];
 			}
 
 

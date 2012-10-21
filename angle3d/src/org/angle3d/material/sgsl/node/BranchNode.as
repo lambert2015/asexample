@@ -6,11 +6,11 @@ package org.angle3d.material.sgsl.node
 	{
 		protected var _children:Vector.<LeafNode>;
 
-		public function BranchNode(name:String="")
+		public function BranchNode(name:String = "")
 		{
 			super(name);
 
-			_children=new Vector.<LeafNode>();
+			_children = new Vector.<LeafNode>();
 		}
 
 		public function get numChildren():int
@@ -23,8 +23,8 @@ package org.angle3d.material.sgsl.node
 		 */
 		override public function renameLeafNode(map:Dictionary):void
 		{
-			var length:int=_children.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = _children.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				_children[i].renameLeafNode(map);
 			}
@@ -38,16 +38,16 @@ package org.angle3d.material.sgsl.node
 		override public function replaceLeafNode(paramMap:Dictionary):void
 		{
 			var child:LeafNode;
-			for (var i:int=0, length:int=_children.length; i < length; i++)
+			for (var i:int = 0, length:int = _children.length; i < length; i++)
 			{
-				child=_children[i];
+				child = _children[i];
 				child.replaceLeafNode(paramMap);
 			}
 		}
 
 		override public function clone():LeafNode
 		{
-			var node:BranchNode=new BranchNode(name);
+			var node:BranchNode = new BranchNode(name);
 			cloneChildren(node);
 			return node;
 		}
@@ -55,9 +55,9 @@ package org.angle3d.material.sgsl.node
 		protected function cloneChildren(branch:BranchNode):void
 		{
 			var m:LeafNode;
-			for (var i:int=0, length:int=_children.length; i < length; i++)
+			for (var i:int = 0, length:int = _children.length; i < length; i++)
 			{
-				m=_children[i];
+				m = _children[i];
 				branch.addChild(m.clone());
 			}
 		}
@@ -72,29 +72,29 @@ package org.angle3d.material.sgsl.node
 		{
 			if (defines == null)
 			{
-				defines=new Vector.<String>();
+				defines = new Vector.<String>();
 			}
 
-			var results:Vector.<LeafNode>=new Vector.<LeafNode>();
+			var results:Vector.<LeafNode> = new Vector.<LeafNode>();
 
 			var child:LeafNode;
 			var predefine:PredefineNode;
-			var cLength:int=_children.length;
-			for (var i:int=0; i < cLength; i++)
+			var cLength:int = _children.length;
+			for (var i:int = 0; i < cLength; i++)
 			{
-				child=_children[i];
+				child = _children[i];
 
 				//预定义条件
 				if (child is PredefineNode)
 				{
-					predefine=child as PredefineNode;
+					predefine = child as PredefineNode;
 					//符合条件则替换掉，否则忽略
 					if (predefine.isMatch(defines))
 					{
-						var subList:Vector.<LeafNode>=predefine.getMatchChildren(defines);
+						var subList:Vector.<LeafNode> = predefine.getMatchChildren(defines);
 						if (subList != null && subList.length > 0)
 						{
-							results=results.concat(subList);
+							results = results.concat(subList);
 						}
 					}
 				}
@@ -109,7 +109,7 @@ package org.angle3d.material.sgsl.node
 				}
 			}
 
-			_children=results;
+			_children = results;
 		}
 
 		public function addChild(node:LeafNode):void
@@ -119,7 +119,7 @@ package org.angle3d.material.sgsl.node
 
 		public function removeChild(node:LeafNode):void
 		{
-			var index:int=_children.indexOf(node);
+			var index:int = _children.indexOf(node);
 			if (index > -1)
 			{
 				_children.splice(index, 1);
@@ -128,8 +128,8 @@ package org.angle3d.material.sgsl.node
 
 		public function addChildren(list:Vector.<LeafNode>):void
 		{
-			var length:int=list.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = list.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				addChild(list[i]);
 			}
@@ -140,18 +140,18 @@ package org.angle3d.material.sgsl.node
 			return _children;
 		}
 
-		override public function toString(level:int=0):String
+		override public function toString(level:int = 0):String
 		{
-			var result:String="";
+			var result:String = "";
 
-			result=getSelfString(level) + getChildrenString(level);
+			result = getSelfString(level) + getChildrenString(level);
 
 			return result;
 		}
 
 		protected function getSelfString(level:int):String
 		{
-			var result:String=getSpace(level) + name + "\n";
+			var result:String = getSpace(level) + name + "\n";
 
 			return result;
 		}
@@ -159,13 +159,13 @@ package org.angle3d.material.sgsl.node
 		protected function getChildrenString(level:int):String
 		{
 			level++;
-			var result:String="";
+			var result:String = "";
 			var m:LeafNode;
-			var length:int=_children.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = _children.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				m=_children[i];
-				result+=m.toString(level);
+				m = _children[i];
+				result += m.toString(level);
 			}
 			return result;
 		}

@@ -24,32 +24,32 @@ package org.angle3d.material.shader
 		private var timer:Timer;
 		private var near:Number, far:Number;
 		private var viewX:int, viewY:int, viewWidth:int, viewHeight:int;
-		private var camUp:Vector3f=new Vector3f(), camLeft:Vector3f=new Vector3f(), camDir:Vector3f=new Vector3f(), camLoc:Vector3f=new Vector3f();
+		private var camUp:Vector3f = new Vector3f(), camLeft:Vector3f = new Vector3f(), camDir:Vector3f = new Vector3f(), camLoc:Vector3f = new Vector3f();
 
-		private var tmpMatrix:Matrix4f=new Matrix4f();
-		private var tmpMatrix3:Matrix3f=new Matrix3f();
+		private var tmpMatrix:Matrix4f = new Matrix4f();
+		private var tmpMatrix3:Matrix3f = new Matrix3f();
 
-		private var viewMatrix:Matrix4f=new Matrix4f();
-		private var projMatrix:Matrix4f=new Matrix4f();
-		private var viewProjMatrix:Matrix4f=new Matrix4f();
-		private var worldMatrix:Matrix4f=new Matrix4f();
+		private var viewMatrix:Matrix4f = new Matrix4f();
+		private var projMatrix:Matrix4f = new Matrix4f();
+		private var viewProjMatrix:Matrix4f = new Matrix4f();
+		private var worldMatrix:Matrix4f = new Matrix4f();
 
-		private var worldViewMatrix:Matrix4f=new Matrix4f();
-		private var worldViewProjMatrix:Matrix4f=new Matrix4f();
-		private var normalMatrix:Matrix3f=new Matrix3f();
+		private var worldViewMatrix:Matrix4f = new Matrix4f();
+		private var worldViewProjMatrix:Matrix4f = new Matrix4f();
+		private var normalMatrix:Matrix3f = new Matrix3f();
 
-		private var worldMatrixInv:Matrix4f=new Matrix4f();
-		private var viewMatrixInv:Matrix4f=new Matrix4f();
-		private var projMatrixInv:Matrix4f=new Matrix4f();
-		private var viewProjMatrixInv:Matrix4f=new Matrix4f();
-		private var worldViewMatrixInv:Matrix4f=new Matrix4f();
-		private var normalMatrixInv:Matrix3f=new Matrix3f();
-		private var worldViewProjMatrixInv:Matrix4f=new Matrix4f();
+		private var worldMatrixInv:Matrix4f = new Matrix4f();
+		private var viewMatrixInv:Matrix4f = new Matrix4f();
+		private var projMatrixInv:Matrix4f = new Matrix4f();
+		private var viewProjMatrixInv:Matrix4f = new Matrix4f();
+		private var worldViewMatrixInv:Matrix4f = new Matrix4f();
+		private var normalMatrixInv:Matrix3f = new Matrix3f();
+		private var worldViewProjMatrixInv:Matrix4f = new Matrix4f();
 
-		private var viewPort:Vector4f=new Vector4f();
-		private var resolution:Vector2f=new Vector2f();
-		private var resolutionInv:Vector2f=new Vector2f();
-		private var nearFar:Vector2f=new Vector2f();
+		private var viewPort:Vector4f = new Vector4f();
+		private var resolution:Vector2f = new Vector2f();
+		private var resolutionInv:Vector2f = new Vector2f();
+		private var nearFar:Vector2f = new Vector2f();
 
 		public function UniformBindingManager()
 		{
@@ -63,10 +63,10 @@ package org.angle3d.material.shader
 		public function updateUniformBindings(params:Vector.<Uniform>):void
 		{
 			// assums worldMatrix is properly set.
-			var pLength:int=params.length;
-			for (var i:int=0; i < pLength; i++)
+			var pLength:int = params.length;
+			for (var i:int = 0; i < pLength; i++)
 			{
-				var u:Uniform=params[i];
+				var u:Uniform = params[i];
 				switch (u.binding)
 				{
 					case UniformBinding.WorldMatrix:
@@ -91,7 +91,7 @@ package org.angle3d.material.shader
 						//tmpMatrix.copyFrom(viewMatrix);
 						//tmpMatrix.multLocal(worldMatrix);
 						tmpMatrix.copyAndMultLocal(viewMatrix, worldMatrix);
-						tmpMatrix3=tmpMatrix.toMatrix3f();
+						tmpMatrix3 = tmpMatrix.toMatrix3f();
 						tmpMatrix3.invertLocal();
 						tmpMatrix3.transposeLocal();
 						u.setMatrix3(tmpMatrix3);
@@ -133,7 +133,7 @@ package org.angle3d.material.shader
 						//tmpMatrix.copyFrom(viewMatrix);
 						//tmpMatrix.multLocal(worldMatrix);
 						tmpMatrix.copyAndMultLocal(viewMatrix, worldMatrix);
-						tmpMatrix3=tmpMatrix.toMatrix3f();
+						tmpMatrix3 = tmpMatrix.toMatrix3f();
 						tmpMatrix3.invertLocal();
 						tmpMatrix3.transposeLocal();
 						tmpMatrix3.invertLocal();
@@ -182,7 +182,7 @@ package org.angle3d.material.shader
 		 */
 		public function setTimer(timer:Timer):void
 		{
-			this.timer=timer;
+			this.timer = timer;
 		}
 
 		public function setCamera(cam:Camera3D, viewMatrix:Matrix4f, projMatrix:Matrix4f, viewProjMatrix:Matrix4f):void
@@ -196,16 +196,16 @@ package org.angle3d.material.shader
 			cam.getUp(camUp);
 			cam.getDirection(camDir);
 
-			near=cam.frustumNear;
-			far=cam.frustumFar;
+			near = cam.frustumNear;
+			far = cam.frustumFar;
 		}
 
 		public function setViewPort(viewX:int, viewY:int, viewWidth:int, viewHeight:int):void
 		{
-			this.viewX=viewX;
-			this.viewY=viewY;
-			this.viewWidth=viewWidth;
-			this.viewHeight=viewHeight;
+			this.viewX = viewX;
+			this.viewY = viewY;
+			this.viewWidth = viewWidth;
+			this.viewHeight = viewHeight;
 		}
 	}
 }

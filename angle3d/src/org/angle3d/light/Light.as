@@ -36,12 +36,12 @@ package org.angle3d.light
 
 		public function Light(type:String)
 		{
-			mType=type;
+			mType = type;
 
-			lastDistance=-1;
+			lastDistance = -1;
 
-			mColor=new Color(1, 1, 1, 1);
-			mEnabled=true;
+			mColor = new Color(1, 1, 1, 1);
+			mEnabled = true;
 		}
 
 		public function get type():String
@@ -74,7 +74,7 @@ package org.angle3d.light
 		 */
 		public function set radius(value:Number):void
 		{
-			mRadius=value;
+			mRadius = value;
 		}
 
 		/**
@@ -91,7 +91,7 @@ package org.angle3d.light
 
 		private function set enabled(value:Boolean):void
 		{
-			mEnabled=value;
+			mEnabled = value;
 		}
 
 		/**
@@ -101,7 +101,7 @@ package org.angle3d.light
 		 */
 		public function set intensity(value:Number):void
 		{
-			mColor.a=value;
+			mColor.a = value;
 		}
 
 		public function get intensity():Number

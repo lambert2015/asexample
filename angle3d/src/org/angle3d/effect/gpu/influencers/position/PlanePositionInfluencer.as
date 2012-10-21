@@ -10,35 +10,35 @@ package org.angle3d.effect.gpu.influencers.position
 	 */
 	public class PlanePositionInfluencer extends AbstractInfluencer implements IPositionInfluencer
 	{
-		public static const XZ:String="xz";
-		public static const XY:String="xy";
+		public static const XZ:String = "xz";
+		public static const XY:String = "xy";
 
 		private var _center:Vector3f;
 		private var _width:Number;
 		private var _height:Number;
 		private var _type:String;
 
-		public function PlanePositionInfluencer(center:Vector3f, width:Number, height:Number, type:String="xz")
+		public function PlanePositionInfluencer(center:Vector3f, width:Number, height:Number, type:String = "xz")
 		{
-			_center=center;
-			_width=width;
-			_height=height;
-			_type=type;
+			_center = center;
+			_width = width;
+			_height = height;
+			_type = type;
 		}
 
 		public function getPosition(index:int, store:Vector3f):Vector3f
 		{
 			if (_type == XZ)
 			{
-				store.x=_center.x + (Math.random() - 0.5) * _width;
-				store.y=_center.y;
-				store.z=_center.z + (Math.random() - 0.5) * _height;
+				store.x = _center.x + (Math.random() - 0.5) * _width;
+				store.y = _center.y;
+				store.z = _center.z + (Math.random() - 0.5) * _height;
 			}
 			else if (_type == XY)
 			{
-				store.x=_center.x + (Math.random() - 0.5) * _width;
-				store.y=_center.y + (Math.random() - 0.5) * _height;
-				store.z=_center.z;
+				store.x = _center.x + (Math.random() - 0.5) * _width;
+				store.y = _center.y + (Math.random() - 0.5) * _height;
+				store.z = _center.z;
 			}
 
 			return store;

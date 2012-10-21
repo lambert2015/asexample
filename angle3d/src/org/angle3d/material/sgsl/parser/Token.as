@@ -8,8 +8,8 @@
 
 		public function Token(type:String, name:String)
 		{
-			this.type=type;
-			this.name=name;
+			this.type = type;
+			this.name = name;
 		}
 
 		public function equals(type:String, name:String):Boolean

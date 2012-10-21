@@ -11,7 +11,7 @@ package org.angle3d.material.shader
 
 		public function ShaderVariableList()
 		{
-			_variables=new Vector.<ShaderVariable>();
+			_variables = new Vector.<ShaderVariable>();
 		}
 
 		public function addVariable(value:ShaderVariable):void
@@ -34,10 +34,10 @@ package org.angle3d.material.shader
 		public function validate():void
 		{
 			//默认是按照在数组中的顺序来设置location
-			var vLength:int=_variables.length;
-			for (var i:int=0; i < vLength; i++)
+			var vLength:int = _variables.length;
+			for (var i:int = 0; i < vLength; i++)
 			{
-				_variables[i].location=i;
+				_variables[i].location = i;
 			}
 		}
 
@@ -48,8 +48,8 @@ package org.angle3d.material.shader
 
 		public function getVariable(name:String):ShaderVariable
 		{
-			var length:int=_variables.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = _variables.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				if (_variables[i].name == name)
 				{

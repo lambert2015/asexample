@@ -59,7 +59,7 @@ package org.assetloader.loaders
 		 */
 		protected var _metaData:Object;
 
-		public function VideoLoader(request:URLRequest, id:String=null)
+		public function VideoLoader(request:URLRequest, id:String = null)
 		{
 			super(request, AssetType.VIDEO, id);
 		}
@@ -79,10 +79,10 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete=new LoaderSignal(NetStream);
-			_onNetStatus=new NetStatusSignal();
-			_onReady=new LoaderSignal(NetStream);
-			_onMetaData=new LoaderSignal(Object);
+			_onComplete = new LoaderSignal(NetStream);
+			_onNetStatus = new NetStatusSignal();
+			_onReady = new LoaderSignal(NetStream);
+			_onMetaData = new LoaderSignal(Object);
 		}
 
 		/**
@@ -90,16 +90,16 @@ package org.assetloader.loaders
 		 */
 		override protected function constructLoader():IEventDispatcher
 		{
-			_netConnection=new NetConnection();
+			_netConnection = new NetConnection();
 			_netConnection.connect(null);
 
-			_netStream=new NetStream(_netConnection);
-			_data=_netStream;
+			_netStream = new NetStream(_netConnection);
+			_data = _netStream;
 
-			_progressTimer=new Timer(50);
+			_progressTimer = new Timer(50);
 			_progressTimer.addEventListener(TimerEvent.TIMER, progressTimer_handler);
 
-			_netStream.client=getParam(Param.CLIENT);
+			_netStream.client = getParam(Param.CLIENT);
 
 			return _netStream;
 		}
@@ -158,10 +158,10 @@ package org.assetloader.loaders
 			if (_progressTimer)
 				_progressTimer.removeEventListener(TimerEvent.TIMER, progressTimer_handler);
 
-			_isReady=false;
-			_netConnection=null;
-			_netStream=null;
-			_metaData=null;
+			_isReady = false;
+			_netConnection = null;
+			_netStream = null;
+			_metaData = null;
 		}
 
 		/**
@@ -173,7 +173,7 @@ package org.assetloader.loaders
 			{
 				open_handler(new Event(Event.OPEN));
 
-				_isReady=true;
+				_isReady = true;
 				_onReady.dispatch(this, _netStream);
 			}
 			else if (_netStream.bytesLoaded != _stats.bytesTotal && _isReady)
@@ -190,7 +190,7 @@ package org.assetloader.loaders
 		 */
 		protected function netStatus_handler(event:NetStatusEvent):void
 		{
-			var code:String=event.info.code;
+			var code:String = event.info.code;
 
 			var errorEvent:ErrorEvent;
 
@@ -211,16 +211,16 @@ package org.assetloader.loaders
 				case "NetStream.Failed":
 				case "NetStream.Play.FileStructureInvalid":
 
-					errorEvent=new ErrorEvent(ErrorEvent.ERROR);
-					errorEvent.text=code;
+					errorEvent = new ErrorEvent(ErrorEvent.ERROR);
+					errorEvent.text = code;
 					error_handler(errorEvent);
 
 					break;
 
 				case "NetStream.Play.StreamNotFound":
 
-					errorEvent=new IOErrorEvent(IOErrorEvent.IO_ERROR);
-					errorEvent.text=code;
+					errorEvent = new IOErrorEvent(IOErrorEvent.IO_ERROR);
+					errorEvent.text = code;
 					error_handler(errorEvent);
 
 					break;
@@ -241,11 +241,11 @@ package org.assetloader.loaders
 				return;
 			}
 
-			_metaData={};
+			_metaData = {};
 
 			for (var key:String in data)
 			{
-				_metaData[key]=data[key];
+				_metaData[key] = data[key];
 			}
 
 			_netStream.pause();

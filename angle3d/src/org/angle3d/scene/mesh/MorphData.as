@@ -9,9 +9,9 @@ package org.angle3d.scene.mesh
 
 		public function MorphData(name:String, start:int, end:int)
 		{
-			this.name=name;
-			this.start=start;
-			this.end=end;
+			this.name = name;
+			this.start = start;
+			this.end = end;
 		}
 	}
 }

@@ -27,27 +27,27 @@ package org.angle3d.material.technique
 
 		private var _influences:Vector.<Number>;
 
-		public function TechniqueFill(color:uint=0xFFFFF)
+		public function TechniqueFill(color:uint = 0xFFFFF)
 		{
 			super("FillTechnique");
 
-			_renderState.applyDepthTest=true;
-			_renderState.depthTest=true;
-			_renderState.compareMode=Context3DCompareMode.LESS_EQUAL;
+			_renderState.applyDepthTest = true;
+			_renderState.depthTest = true;
+			_renderState.compareMode = Context3DCompareMode.LESS_EQUAL;
 
-			_renderState.applyBlendMode=false;
+			_renderState.applyBlendMode = false;
 
-			_color=new Color(0, 0, 0, 1);
+			_color = new Color(0, 0, 0, 1);
 
-			this.color=color;
+			this.color = color;
 		}
 
 		public function set influence(value:Number):void
 		{
 			if (_influences == null)
-				_influences=new Vector.<Number>(4, true);
-			_influences[0]=1 - value;
-			_influences[1]=value;
+				_influences = new Vector.<Number>(4, true);
+			_influences[0] = 1 - value;
+			_influences[1] = value;
 		}
 
 		public function get influence():Number
@@ -62,17 +62,17 @@ package org.angle3d.material.technique
 
 		public function set alpha(alpha:Number):void
 		{
-			_color.a=FastMath.fclamp(alpha, 0.0, 1.0);
+			_color.a = FastMath.fclamp(alpha, 0.0, 1.0);
 
 			if (alpha < 1)
 			{
-				_renderState.applyBlendMode=true;
-				_renderState.blendMode=BlendMode.Alpha;
+				_renderState.applyBlendMode = true;
+				_renderState.blendMode = BlendMode.Alpha;
 			}
 			else
 			{
-				_renderState.applyBlendMode=false;
-				_renderState.blendMode=BlendMode.Off;
+				_renderState.applyBlendMode = false;
+				_renderState.blendMode = BlendMode.Off;
 			}
 		}
 
@@ -94,14 +94,14 @@ package org.angle3d.material.technique
 		{
 			shader.getUniform(ShaderType.VERTEX, "u_color").setColor(_color);
 
-			var uniform:Uniform=shader.getUniform(ShaderType.VERTEX, "u_influences");
+			var uniform:Uniform = shader.getUniform(ShaderType.VERTEX, "u_influences");
 			if (uniform != null)
 			{
 				uniform.setVector(_influences);
 			}
 		}
 
-		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 			    attribute vec3 a_position;
@@ -132,7 +132,7 @@ package org.angle3d.material.technique
                 }]]>;
 		}
 
-		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
                function main(){
@@ -140,28 +140,28 @@ package org.angle3d.material.technique
                 }]]>;
 		}
 
-		override protected function getOption(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<Vector.<String>>
+		override protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
 		{
 			return super.getOption(lightType, meshType);
 		}
 
-		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
-			var map:Dictionary=new Dictionary();
-			map[BufferType.POSITION]="a_position";
+			var map:Dictionary = new Dictionary();
+			map[BufferType.POSITION] = "a_position";
 
 			if (meshType == MeshType.MT_MORPH_ANIMATION)
 			{
-				map[BufferType.POSITION1]="a_position1";
+				map[BufferType.POSITION1] = "a_position1";
 			}
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
-			list.fixed=true;
+			list.fixed = true;
 			return list;
 		}
 	}

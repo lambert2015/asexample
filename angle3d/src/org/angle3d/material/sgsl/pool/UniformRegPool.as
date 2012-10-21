@@ -30,13 +30,13 @@ package org.angle3d.material.sgsl.pool
 		{
 			super();
 
-			this.shaderType=shaderType;
+			this.shaderType = shaderType;
 
-			max=(shaderType == ShaderType.VERTEX) ? 128 : 28;
+			max = (shaderType == ShaderType.VERTEX) ? 128 : 28;
 
-			_pool=new Vector.<int>(max, true);
+			_pool = new Vector.<int>(max, true);
 
-			_constants=new Vector.<Number>();
+			_constants = new Vector.<Number>();
 		}
 
 		/**
@@ -65,16 +65,16 @@ package org.angle3d.material.sgsl.pool
 
 		public function getConstantIndex(value:Number):int
 		{
-			var index:int=_constants.indexOf(value);
+			var index:int = _constants.indexOf(value);
 			return int(index / 4);
 		}
 
 		public function getConstantMask(value:Number):String
 		{
-			var index:int=_constants.indexOf(value);
-			var register:int=int(index / 4);
-			var order:int=index - register * 4;
-			var str:String="xyzw";
+			var index:int = _constants.indexOf(value);
+			var register:int = int(index / 4);
+			var order:int = index - register * 4;
+			var str:String = "xyzw";
 			return str.substr(order, 1);
 		}
 
@@ -84,29 +84,29 @@ package org.angle3d.material.sgsl.pool
 		 */
 		public function getConstants():Vector.<Vector.<Number>>
 		{
-			var cLength:int=_constants.length;
+			var cLength:int = _constants.length;
 			if (cLength == 0)
 			{
 				return null;
 			}
 
-			var count:int=Math.ceil(cLength / 4);
-			var result:Vector.<Vector.<Number>>=new Vector.<Vector.<Number>>(count, true);
-			for (var i:int=0; i < count; i++)
+			var count:int = Math.ceil(cLength / 4);
+			var result:Vector.<Vector.<Number>> = new Vector.<Vector.<Number>>(count, true);
+			for (var i:int = 0; i < count; i++)
 			{
-				var list:Vector.<Number>=new Vector.<Number>(4, true);
-				for (var j:int=0; j < 4; j++)
+				var list:Vector.<Number> = new Vector.<Number>(4, true);
+				for (var j:int = 0; j < 4; j++)
 				{
 					if (i * 4 + j < cLength)
 					{
-						list[j]=_constants[j];
+						list[j] = _constants[j];
 					}
 					else //不足的部分用0填充
 					{
-						list[j]=0.0;
+						list[j] = 0.0;
 					}
 				}
-				result[i]=list;
+				result[i] = list;
 			}
 
 			return result;
@@ -118,18 +118,18 @@ package org.angle3d.material.sgsl.pool
 		private function registerConstants():void
 		{
 			//clear pool
-			for (var i:int=0; i < max; i++)
+			for (var i:int = 0; i < max; i++)
 			{
-				_pool[i]=0;
+				_pool[i] = 0;
 			}
 
-			var cLength:int=_constants.length;
+			var cLength:int = _constants.length;
 			if (cLength > 0)
 			{
-				var count:int=Math.ceil(cLength / 4);
-				for (i=0; i < count; i++)
+				var count:int = Math.ceil(cLength / 4);
+				for (i = 0; i < count; i++)
 				{
-					_pool[i]=1;
+					_pool[i] = 1;
 				}
 			}
 		}
@@ -138,12 +138,12 @@ package org.angle3d.material.sgsl.pool
 		{
 			super.clear();
 
-			for (var i:int=0; i < max; i++)
+			for (var i:int = 0; i < max; i++)
 			{
-				_pool[i]=0;
+				_pool[i] = 0;
 			}
 
-			_constants.length=0;
+			_constants.length = 0;
 		}
 
 		/**
@@ -152,22 +152,22 @@ package org.angle3d.material.sgsl.pool
 		 */
 		override public function register(value:RegNode):void
 		{
-			var uniformReg:UniformReg=value as UniformReg;
+			var uniformReg:UniformReg = value as UniformReg;
 
 			CF::DEBUG
 			{
 				Assert.assert(uniformReg != null && !uniformReg.registered, uniformReg.name + "不能注册多次");
 			}
 
-			var size:int=int(uniformReg.size / 4);
-			for (var i:int=0; i < max; i++)
+			var size:int = int(uniformReg.size / 4);
+			for (var i:int = 0; i < max; i++)
 			{
 				if (_pool[i] == 0)
 				{
-					uniformReg.index=i;
-					for (var j:int=0; j < size; j++)
+					uniformReg.index = i;
+					for (var j:int = 0; j < size; j++)
 					{
-						_pool[int(i + j)]=1;
+						_pool[int(i + j)] = 1;
 					}
 					return;
 				}
