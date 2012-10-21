@@ -14,13 +14,12 @@ package examples.scene
 	import org.angle3d.scene.shape.TorusKnot;
 	import org.angle3d.texture.BitmapTexture;
 
-	[SWF(width = "800", height = "600", frameRate = "60")]
 	//各种形状测试
 	public class BillboardTest extends SimpleApplication
 	{
 		private var angle:Number;
 
-		[Embed(source = "../embed/no-shader.png")]
+		[Embed(source = "../../../assets/embed/no-shader.png")]
 		private static var EmbedPositiveZ:Class;
 
 		public function BillboardTest()

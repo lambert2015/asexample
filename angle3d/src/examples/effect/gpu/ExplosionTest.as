@@ -32,7 +32,7 @@ package examples.effect.gpu
 	{
 		private var particleSystem:ParticleSystem;
 
-		[Embed(source = "../../embed/Explosion/Debris.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/Debris.png")]
 		private static var EMBED_SMOKE:Class;
 
 		public function ExplosionTest()

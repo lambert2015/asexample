@@ -32,10 +32,10 @@ package examples.effect.gpu
 		private var particleSystem:ParticleSystem;
 		private var bulletShape:ParticleShape;
 		
-		[Embed(source = "../../embed/spikey.png")]
+		[Embed(source = "../../../../assets/embed/spikey.png")]
 		private static var EMBED_DEBRIS:Class;
 		
-		[Embed(source = "../../embed/glow.png")]
+		[Embed(source = "../../../../assets/embed/glow.png")]
 		private static var EMBED_GLOW:Class;
 		public function CrazyFlash()
 		{

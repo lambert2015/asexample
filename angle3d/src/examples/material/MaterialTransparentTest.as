@@ -15,8 +15,6 @@ package examples.material
 	import org.angle3d.scene.shape.TorusKnot;
 	import org.angle3d.texture.BitmapTexture;
 
-	[SWF(width = "800", height = "600", frameRate = "60")]
-
 	/**
 	 * 需实现
 	 */
@@ -24,7 +22,7 @@ package examples.material
 	{
 		private var angle : Number;
 
-		[Embed(source = "../embed/no-shader.png")]
+		[Embed(source = "../../../assets/embed/no-shader.png")]
 		private static var EmbedPositiveZ : Class;
 
 		public function MaterialTransparentTest()

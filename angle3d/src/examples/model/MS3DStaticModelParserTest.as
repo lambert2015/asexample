@@ -1,6 +1,7 @@
 package examples.model
 {
 	import flash.utils.Dictionary;
+	
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.io.AssetManager;
 	import org.angle3d.io.parser.ms3d.MS3DParser;
@@ -24,8 +25,8 @@ package examples.model
 
 
 			var assetLoader : AssetLoader = AssetManager.getInstance().createLoader("ms3dLoader");
-			assetLoader.addFile("ninja", "assets/ms3d/ninja.ms3d", AssetType.BINARY);
-			assetLoader.addFile("ninjaSkin", "assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
+			assetLoader.addFile("ninja", "../assets/ms3d/ninja.ms3d", AssetType.BINARY);
+			assetLoader.addFile("ninjaSkin", "../assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.onError.add(_loadError);
 			assetLoader.start();
@@ -42,7 +43,7 @@ package examples.model
 
 			var parser : MS3DParser = new MS3DParser();
 
-			var geomtry : Geometry = parser.parseStaticMesh("ninja",assets["ninja"]);
+			var geomtry : Geometry = new Geometry("ninja",parser.parseStaticMesh(assets["ninja"]));
 			geomtry.setMaterial(material);
 			scene.attachChild(geomtry);
 			

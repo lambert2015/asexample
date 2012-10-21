@@ -28,7 +28,7 @@ package examples.effect.gpu
 		private var particleSystem:ParticleSystem;
 		private var fireShape:ParticleShape;
 
-		[Embed(source = "../../embed/smoke.png")]
+		[Embed(source = "../../../../assets/embed/smoke.png")]
 		private static var EMBED_SMOKE:Class;
 
 		public function FireTest()

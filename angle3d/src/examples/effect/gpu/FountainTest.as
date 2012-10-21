@@ -30,7 +30,7 @@ package examples.effect.gpu
 	{
 		private var particleSystem:ParticleSystem;
 
-		[Embed(source = "../../embed/water.png")]
+		[Embed(source = "../../../../assets/embed/water.png")]
 		private static var EMBED_SMOKE:Class;
 
 		public function FountainTest()

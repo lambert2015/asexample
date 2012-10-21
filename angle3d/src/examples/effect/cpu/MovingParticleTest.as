@@ -5,22 +5,18 @@ package examples.effect.cpu
 	
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.effect.cpu.ParticleEmitter;
-	import org.angle3d.material.Material;
 	import org.angle3d.material.MaterialCPUParticle;
-	import org.angle3d.material.MaterialTexture;
 	import org.angle3d.math.Color;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.scene.CullHint;
 	import org.angle3d.texture.BitmapTexture;
-	import org.angle3d.texture.TextureMap;
 
 	public class MovingParticleTest extends SimpleApplication
 	{
 		private var emit:ParticleEmitter;
 		private var angle:Number;
 
-		[Embed(source = "../../embed/smoke.png")]
+		[Embed(source = "../../../../assets/embed/smoke.png")]
 		private static var EMBED_SMOKE:Class;
 
 

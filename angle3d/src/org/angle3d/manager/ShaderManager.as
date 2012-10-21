@@ -25,9 +25,9 @@ package org.angle3d.manager
 			return _instance;
 		}
 		
-		public static function init(profile:String,context3D:Context3D):void
+		public static function init(context3D:Context3D,profile:String,version:int):void
 		{
-			_instance = new ShaderManager(profile,context3D);
+			_instance = new ShaderManager(context3D,profile,version);
 		}
 
 		private var mShaderMap : Dictionary; //<String,Shader>;
@@ -36,6 +36,7 @@ package org.angle3d.manager
 		
 		private var mContext3D:Context3D;
 		private var mProfile:String;
+		private var mVersion:int;
 		
 		private var mSgslParser:SgslParser;
 		private var mShaderCompiler : SgslCompiler;
@@ -43,16 +44,17 @@ package org.angle3d.manager
 		
 		private var mCustomFunctionMap : Dictionary;
 
-		public function ShaderManager(profile:String,context3D:Context3D)
+		public function ShaderManager(context3D:Context3D,profile:String,version:int)
 		{
-			mProfile = profile;
 			mContext3D = context3D;
+			mProfile = profile;
+			mVersion = version;
 			
 			mShaderMap = new Dictionary();
 			mProgramMap = new Dictionary();
 			mShaderRegisterCount = new Dictionary();
 
-			mOpCodeManager = new OpCodeManager(mProfile);
+			mOpCodeManager = new OpCodeManager(mProfile,version);
 			mSgslParser = new SgslParser();
 			mShaderCompiler = new SgslCompiler(mSgslParser,mOpCodeManager);
 			

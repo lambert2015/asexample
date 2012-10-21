@@ -31,25 +31,25 @@ package examples.effect.cpu
 		private var emit:ParticleEmitter;
 		private var angle:Number;
 
-		[Embed(source = "../../embed/Explosion/Debris.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/Debris.png")]
 		private static var EMBED_DEBRIS:Class;
 
-		[Embed(source = "../../embed/Explosion/flame.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/flame.png")]
 		private static var EMBED_FLAME:Class;
 
-		[Embed(source = "../../embed/Explosion/flash.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/flash.png")]
 		private static var EMBED_FLASH:Class;
 
-		[Embed(source = "../../embed/Explosion/roundspark.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/roundspark.png")]
 		private static var EMBED_ROUNDSPARK:Class;
 
-		[Embed(source = "../../embed/Explosion/shockwave.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/shockwave.png")]
 		private static var EMBED_SHOCKWAVE:Class;
 
-		[Embed(source = "../../embed/Explosion/smoketrail.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/smoketrail.png")]
 		private static var EMBED_SMOKETRAIL:Class;
 
-		[Embed(source = "../../embed/Explosion/spark.png")]
+		[Embed(source = "../../../../assets/embed/Explosion/spark.png")]
 		private static var EMBED_SPARK:Class;
 
 		private var flame:ParticleEmitter;

@@ -30,8 +30,8 @@ package examples.model
 			super();
 			
 			var assetLoader:AssetLoader = AssetManager.getInstance().createLoader("ms3dLoader");
-			assetLoader.addFile("ninja", "assets/ms3d/ninja.ms3d", AssetType.BINARY);
-			assetLoader.addFile("ninjaSkin", "assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
+			assetLoader.addFile("ninja", "../assets/ms3d/ninja.ms3d", AssetType.BINARY);
+			assetLoader.addFile("ninjaSkin", "../assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.onError.add(_loadError);
 			assetLoader.start();
@@ -39,13 +39,32 @@ package examples.model
 			this.addChild(new Stats());
 		}
 		
+		private var material:MaterialTexture;
 		private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
 		{
 			flyCam.setDragToRotate(true);
 			
-			var material:MaterialTexture = new MaterialTexture(new BitmapTexture(assets["ninjaSkin"].bitmapData));
+			material = new MaterialTexture(new BitmapTexture(assets["ninjaSkin"].bitmapData));
 			
 			var parser:MS3DParser = new MS3DParser();
+			
+			
+			for (var i:int = 0; i < 5; i++)
+			{
+				for (var j:int = 0; j < 5; j++)
+				{
+					var node:Node = createNinja(parser,assets);
+					node.setTranslationXYZ((i-3) * 15, 0, (j-3)*15);
+					scene.attachChild(node);
+				}
+			}
+			
+			cam.location.setTo(0, 15, -100);
+			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		}
+		
+		private function createNinja(parser:MS3DParser,assets:Dictionary):Node
+		{
 			var ninjaNode:Node = parser.parseSkinnedMesh("ninja", assets["ninja"]);
 			ninjaNode.setMaterial(material);
 			
@@ -65,13 +84,10 @@ package examples.model
 			var channel:AnimChannel = animControl.createChannel();
 			channel.playAnimation("default", LoopMode.Cycle, 10);
 			
-			var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
-			ninjaNode.attachChild(skeletonDebugger);
+			//var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
+			//ninjaNode.attachChild(skeletonDebugger);
 			
-			scene.attachChild(ninjaNode);
-			
-			cam.location.setTo(0, 15, -35);
-			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+			return ninjaNode;
 		}
 		
 		private function _loadError(signal:LoaderSignal):void

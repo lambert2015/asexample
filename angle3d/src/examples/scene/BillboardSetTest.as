@@ -22,7 +22,7 @@ package examples.scene
 		private var billboardSet:BillboardSet;
 		private var angle:Number;
 
-		[Embed(source = "../embed/no-shader.png")]
+		[Embed(source = "../../../assets/embed/no-shader.png")]
 		private static var EmbedPositiveZ:Class;
 
 		public function BillboardSetTest()

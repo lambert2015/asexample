@@ -11,6 +11,7 @@ package org.angle3d.app
 	import org.angle3d.scene.CullHint;
 	import org.angle3d.scene.Node;
 	import org.angle3d.utils.Logger;
+	import org.angle3d.material.sgsl.SgslVersion;
 
 	/**
 	 * <code>SimpleApplication</code> extends the {@link com.jme3.app.Application}
@@ -37,10 +38,9 @@ package org.angle3d.app
 
 		protected var flyCam : FlyByCamera;
 
-		public function SimpleApplication()
+		public function SimpleApplication(sgslVersion:int = 1)
 		{
-			super();
-
+			super(sgslVersion);
 		}
 
 		public function onAction(name : String, value : Boolean, tpf : Number) : void

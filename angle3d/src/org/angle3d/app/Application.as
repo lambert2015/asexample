@@ -55,10 +55,13 @@ package org.angle3d.app
 		protected var oldTime : int;
 		
 		protected var _context3DProfile:String;
+		protected var _sgslVersion:int;
 
-		public function Application()
+		public function Application(sgslVersion:int = 1)
 		{
 			super();
+			
+			_sgslVersion = sgslVersion;
 
 			inputEnabled = true;
 			oldTime = -1;
@@ -149,7 +152,7 @@ package org.angle3d.app
 		
 		protected function initShaderManager() : void
 		{
-			ShaderManager.init(_context3DProfile,stage3D.context3D);
+			ShaderManager.init(stage3D.context3D, _context3DProfile, _sgslVersion);
 		}
 
 		/**
@@ -174,8 +177,8 @@ package org.angle3d.app
 			viewPort.setClearFlags(true, true, true);
 
 			guiCam = new Camera3D(width, height);
-			//guiViewPort = renderManager.createPostView("Gui Default", guiCam);
-			//guiViewPort.setClearFlags(false, false, false);
+			guiViewPort = renderManager.createPostView("Gui Default", guiCam);
+			guiViewPort.setClearFlags(false, false, false);
 		}
 
 		protected function _addedToStageHandler(e : Event) : void

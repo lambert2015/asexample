@@ -1,16 +1,11 @@
 package examples.effect.gpu
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
-	
-	import org.angle3d.utils.Stats;
 	
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.effect.gpu.ParticleShape;
 	import org.angle3d.effect.gpu.ParticleShapeGenerator;
 	import org.angle3d.effect.gpu.ParticleSystem;
-	import org.angle3d.effect.gpu.influencers.alpha.RandomAlphaInfluencer;
 	import org.angle3d.effect.gpu.influencers.angle.DefaultAngleInfluencer;
 	import org.angle3d.effect.gpu.influencers.color.RandomColorInfluencer;
 	import org.angle3d.effect.gpu.influencers.life.DefaultLifeInfluencer;
@@ -18,13 +13,10 @@ package examples.effect.gpu
 	import org.angle3d.effect.gpu.influencers.scale.DefaultScaleInfluencer;
 	import org.angle3d.effect.gpu.influencers.spin.DefaultSpinInfluencer;
 	import org.angle3d.effect.gpu.influencers.velocity.DefaultVelocityInfluencer;
-	import org.angle3d.material.BlendMode;
-	import org.angle3d.material.MaterialGPUParticle;
 	import org.angle3d.math.FastMath;
-	import org.angle3d.math.Matrix3f;
-	import org.angle3d.math.Quaternion;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.utils.Stats;
 
 	/**
 	 * 下雪测试
@@ -35,7 +27,7 @@ package examples.effect.gpu
 		private var snowShape:ParticleShape;
 		private var angle:Number = 0;
 
-		[Embed(source = "../../embed/snow.png")]
+		[Embed(source = "../../../../assets/embed/snow.png")]
 		private static var EMBED_SNOW:Class;
 
 		public function SnowTest()
