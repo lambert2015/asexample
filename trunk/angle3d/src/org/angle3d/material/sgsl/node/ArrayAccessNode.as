@@ -4,56 +4,56 @@ package org.angle3d.material.sgsl.node
 
 	public class ArrayAccessNode extends AtomNode
 	{
-		public var access : AtomNode;
-		public var offset : int;
+		public var access:AtomNode;
+		public var offset:int;
 
-		public function ArrayAccessNode(name : String)
+		public function ArrayAccessNode(name:String)
 		{
 			super(name);
-			access = null;
-			offset = 0;
+			access=null;
+			offset=0;
 		}
 
-		override public function isRelative() : Boolean
+		override public function isRelative():Boolean
 		{
 			return access != null;
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
-			var node : ArrayAccessNode = new ArrayAccessNode(name);
+			var node:ArrayAccessNode=new ArrayAccessNode(name);
 			if (access != null)
 			{
-				node.access = access.clone() as AtomNode;
+				node.access=access.clone() as AtomNode;
 			}
-			node.offset = offset;
-			node.mask = mask;
+			node.offset=offset;
+			node.mask=mask;
 			return node;
 		}
 
-		override public function toString(level : int = 0) : String
+		override public function toString(level:int=0):String
 		{
-			var out : String = this.name + "[";
+			var out:String=this.name + "[";
 
 			if (access != null)
 			{
-				out += access.toString(level);
+				out+=access.toString(level);
 			}
 
 			if (offset >= 0)
 			{
 				if (access != null)
 				{
-					out += " + ";
+					out+=" + ";
 				}
-				out += offset.toString();
+				out+=offset.toString();
 			}
 
-			out += "]";
+			out+="]";
 
 			if (mask != "")
 			{
-				out += "." + mask;
+				out+="." + mask;
 			}
 
 			return out;

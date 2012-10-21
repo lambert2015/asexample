@@ -17,7 +17,7 @@ package org.angle3d.scene.control
 
 		public function AbstractControl()
 		{
-			enabled = true;
+			_enabled=true;
 		}
 
 		public function set spatial(value:Spatial):void
@@ -27,7 +27,7 @@ package org.angle3d.scene.control
 				throw new Error("This control has already been added to a Spatial");
 			}
 
-			_spatial = value;
+			_spatial=value;
 		}
 
 		public function get spatial():Spatial
@@ -37,7 +37,7 @@ package org.angle3d.scene.control
 
 		public function set enabled(value:Boolean):void
 		{
-			_enabled = value;
+			_enabled=value;
 		}
 
 		public function get enabled():Boolean
@@ -90,11 +90,11 @@ package org.angle3d.scene.control
 		 */
 		public function cloneForSpatial(newSpatial:Spatial):Control
 		{
-			var c:Control = clone();
-            c.spatial = null;
-            return c;
+			var c:Control=clone();
+			c.spatial=null;
+			return c;
 		}
-		
+
 		public function clone():Control
 		{
 			return new AbstractControl();

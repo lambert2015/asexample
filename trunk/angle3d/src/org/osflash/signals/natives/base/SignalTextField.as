@@ -9,7 +9,7 @@ package org.osflash.signals.natives.base
 
 		public function get signals():TextFieldSignalSet
 		{
-			return _signals ||= new TextFieldSignalSet(this);
+			return _signals||=new TextFieldSignalSet(this);
 		}
 	}
 }

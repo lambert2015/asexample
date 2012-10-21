@@ -32,14 +32,14 @@
 		 * @param constant
 		 *            the constant of the plane.
 		 */
-		public function Plane(normal:Vector3f = null, constant:Number = 0.)
+		public function Plane(normal:Vector3f=null, constant:Number=0.)
 		{
-			this.normal = new Vector3f();
+			this.normal=new Vector3f();
 			if (normal != null)
 			{
 				this.normal.copyFrom(normal);
 			}
-			this.constant = constant;
+			this.constant=constant;
 		}
 
 		/**
@@ -63,29 +63,29 @@
 		 */
 		public function setConstant(constant:Number):void
 		{
-			this.constant = constant;
+			this.constant=constant;
 		}
 
-		public function getClosestPoint(point:Vector3f, result:Vector3f = null):Vector3f
+		public function getClosestPoint(point:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
 			{
-				result = new Vector3f();
+				result=new Vector3f();
 			}
-			var t:Number = (constant - normal.dot(point)) / normal.dot(normal);
+			var t:Number=(constant - normal.dot(point)) / normal.dot(normal);
 			result.copyFrom(normal);
 			result.scaleAdd(t, point);
 			return result;
 		}
 
-		public function reflect(point:Vector3f, result:Vector3f = null):Vector3f
+		public function reflect(point:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
 			{
-				result = new Vector3f();
+				result=new Vector3f();
 			}
 
-			var d:Number = pseudoDistance(point);
+			var d:Number=pseudoDistance(point);
 			result.copyFrom(normal);
 			result.negate();
 			result.scaleAdd(d * 2.0, point);
@@ -118,7 +118,7 @@
 		 */
 		public function whichSide(point:Vector3f):int
 		{
-			var dis:Number = pseudoDistance(point);
+			var dis:Number=pseudoDistance(point);
 			if (dis < 0)
 			{
 				return PlaneSide.Negative;
@@ -135,7 +135,7 @@
 
 		public function isOnPlane(point:Vector3f):Boolean
 		{
-			var dist:Number = pseudoDistance(point);
+			var dist:Number=pseudoDistance(point);
 			if (dist < FastMath.FLT_EPSILON && dist > -FastMath.FLT_EPSILON)
 			{
 				return true;
@@ -172,10 +172,10 @@
 			normal.copyFrom(v2);
 			normal.subtractLocal(v1);
 
-			normal = normal.cross(v3.subtract(v1));
+			normal=normal.cross(v3.subtract(v1));
 			normal.normalizeLocal();
 
-			constant = normal.dot(v1);
+			constant=normal.dot(v1);
 		}
 
 		/**
@@ -187,7 +187,7 @@
 		public function setOriginNormal(origin:Vector3f, normal:Vector3f):void
 		{
 			this.normal.copyFrom(normal);
-			this.constant = normal.dot(origin);
+			this.constant=normal.dot(origin);
 		}
 
 		/**
@@ -207,7 +207,7 @@
 		public function copyFrom(other:Plane):void
 		{
 			this.normal.copyFrom(other.normal);
-			this.constant = other.constant;
+			this.constant=other.constant;
 		}
 
 		public function clone():Plane

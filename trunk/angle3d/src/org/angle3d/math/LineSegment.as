@@ -32,10 +32,10 @@ package org.angle3d.math
 		 */
 		public var extent:Number;
 
-		public function LineSegment(origin:Vector3f = null, direction:Vector3f = null, extent:Number = 1.0)
+		public function LineSegment(origin:Vector3f=null, direction:Vector3f=null, extent:Number=1.0)
 		{
-			this.origin = new Vector3f();
-			this.direction = new Vector3f();
+			this.origin=new Vector3f();
+			this.direction=new Vector3f();
 
 			if (origin != null)
 			{
@@ -47,7 +47,7 @@ package org.angle3d.math
 				this.direction.copyFrom(direction);
 			}
 
-			this.extent = extent;
+			this.extent=extent;
 		}
 
 		/**
@@ -56,13 +56,13 @@ package org.angle3d.math
 		 */
 		public function setStartEnd(start:Vector3f, end:Vector3f):void
 		{
-			this.origin.x = (start.x + end.x) * 0.5;
-			this.origin.y = (start.y + end.y) * 0.5;
-			this.origin.z = (start.z + end.z) * 0.5;
+			this.origin.x=(start.x + end.x) * 0.5;
+			this.origin.y=(start.y + end.y) * 0.5;
+			this.origin.z=(start.z + end.z) * 0.5;
 
 			end.subtract(start, this.direction);
 
-			this.extent = direction.length * 0.5;
+			this.extent=direction.length * 0.5;
 
 			this.direction.normalizeLocal();
 		}
@@ -71,15 +71,15 @@ package org.angle3d.math
 		{
 			this.origin.copyFrom(ls.origin);
 			this.direction.copyFrom(ls.direction);
-			this.extent = ls.extent;
+			this.extent=ls.extent;
 		}
 
 		public function distanceSquared(point:Vector3f):Number
 		{
-			var compVec1:Vector3f = new Vector3f();
+			var compVec1:Vector3f=new Vector3f();
 
 			point.subtract(origin, compVec1);
-			var segmentParameter:Number = direction.dot(compVec1);
+			var segmentParameter:Number=direction.dot(compVec1);
 
 			if (-extent < segmentParameter)
 			{
@@ -103,7 +103,7 @@ package org.angle3d.math
 
 			compVec1.subtractLocal(point);
 
-			var len:Number = compVec1.lengthSquared;
+			var len:Number=compVec1.lengthSquared;
 
 			return len;
 		}
@@ -114,11 +114,11 @@ package org.angle3d.math
 		}
 
 		// P+e*D
-		public function getPositiveEnd(store:Vector3f = null):Vector3f
+		public function getPositiveEnd(store:Vector3f=null):Vector3f
 		{
 			if (store == null)
 			{
-				store = new Vector3f();
+				store=new Vector3f();
 			}
 
 			direction.scale(extent, store);
@@ -128,11 +128,11 @@ package org.angle3d.math
 
 
 		// P-e*D
-		public function getNegativeEnd(store:Vector3f = null):Vector3f
+		public function getNegativeEnd(store:Vector3f=null):Vector3f
 		{
 			if (store == null)
 			{
-				store = new Vector3f();
+				store=new Vector3f();
 			}
 
 			direction.scale(extent, store);
@@ -150,7 +150,7 @@ package org.angle3d.math
 		 * that contains this LineSegment.</p><p>This function accepts an error parameter, which
 		 * is added to the extent of the bounding box.</p>
 		 */
-		public function isPointInsideBounds(point:Vector3f, error:Number = 0.0001):Boolean
+		public function isPointInsideBounds(point:Vector3f, error:Number=0.0001):Boolean
 		{
 			if (FastMath.fabs(point.x - origin.x) > FastMath.fabs(direction.x * extent) + error)
 			{

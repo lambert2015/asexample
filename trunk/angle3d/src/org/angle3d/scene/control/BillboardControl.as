@@ -18,31 +18,31 @@ package org.angle3d.scene.control
 
 	public class BillboardControl extends AbstractControl
 	{
-		private var orient : Matrix3f;
-		private var look : Vector3f;
-		private var left : Vector3f;
-		private var alignment : String;
+		private var orient:Matrix3f;
+		private var look:Vector3f;
+		private var left:Vector3f;
+		private var alignment:String;
 
 		public function BillboardControl()
 		{
 			super();
-			orient = new Matrix3f();
-			look = new Vector3f();
-			left = new Vector3f();
-			alignment = Alignment.Screen;
+			orient=new Matrix3f();
+			look=new Vector3f();
+			left=new Vector3f();
+			alignment=Alignment.Screen;
 		}
 
-		override public function cloneForSpatial(spatial : Spatial) : Control
+		override public function cloneForSpatial(spatial:Spatial):Control
 		{
-			var control : BillboardControl = new BillboardControl();
-			control.alignment = alignment;
-			control.spatial = spatial;
+			var control:BillboardControl=new BillboardControl();
+			control.alignment=alignment;
+			control.spatial=spatial;
 			return control;
 		}
 
-		override protected function controlRender(rm : RenderManager, vp : ViewPort) : void
+		override protected function controlRender(rm:RenderManager, vp:ViewPort):void
 		{
-			var cam : Camera3D = vp.camera;
+			var cam:Camera3D=vp.camera;
 			rotateBillboard(cam);
 		}
 
@@ -52,7 +52,7 @@ package org.angle3d.scene.control
 		 * @param cam
 		 *            Camera
 		 */
-		private function rotateBillboard(cam : Camera3D) : void
+		private function rotateBillboard(cam:Camera3D):void
 		{
 			switch (alignment)
 			{
@@ -77,13 +77,13 @@ package org.angle3d.scene.control
 		 * @param camera
 		 *            Camera
 		 */
-		private function rotateCameraAligned(camera : Camera3D) : void
+		private function rotateCameraAligned(camera:Camera3D):void
 		{
 			look.copyFrom(camera.location);
 			look.subtractLocal(spatial.getWorldTranslation());
 
 			// coopt left for our own purposes.
-			var xzp : Vector3f = left;
+			var xzp:Vector3f=left;
 			// The xzp vector is the projection of the look vector on the xz plane
 			xzp.setTo(look.x, 0, look.z);
 
@@ -95,7 +95,7 @@ package org.angle3d.scene.control
 
 			look.normalizeLocal();
 			xzp.normalizeLocal();
-			var cosp : Number = look.dot(xzp);
+			var cosp:Number=look.dot(xzp);
 
 			// compute the local orientation matrix for the billboard
 			orient.setValue(0, 0, xzp.z);
@@ -121,7 +121,7 @@ package org.angle3d.scene.control
 		 * @param camera
 		 *            Camera
 		 */
-		private function rotateScreenAligned(camera : Camera3D) : void
+		private function rotateScreenAligned(camera:Camera3D):void
 		{
 			// coopt diff for our in direction:
 			look.copyFrom(camera.getDirection()).negateLocal();
@@ -131,15 +131,15 @@ package org.angle3d.scene.control
 
 			orient.fromAxes(left, camera.getUp(), look);
 
-			var parent : Node = spatial.parent;
-			var rot : Quaternion = new Quaternion();
+			var parent:Node=spatial.parent;
+			var rot:Quaternion=new Quaternion();
 			rot.fromMatrix3f(orient);
 			if (parent != null)
 			{
-				var pRot : Quaternion = parent.getWorldRotation();
-				pRot = pRot.inverse();
+				var pRot:Quaternion=parent.getWorldRotation();
+				pRot=pRot.inverse();
 				pRot.multiplyLocal(rot);
-				rot = pRot;
+				rot=pRot;
 				rot.normalizeLocal();
 			}
 			spatial.setRotation(rot);
@@ -152,21 +152,21 @@ package org.angle3d.scene.control
 		 * @param camera
 		 *            Camera
 		 */
-		private function rotateAxial(camera : Camera3D, axis : Vector3f) : void
+		private function rotateAxial(camera:Camera3D, axis:Vector3f):void
 		{
 			// Compute the additional rotation required for the billboard to face
 			// the camera. To do this, the camera must be inverse-transformed into
 			// the model space of the billboard.
 			look.copyFrom(camera.location).subtractLocal(spatial.getWorldTranslation());
-			var rotation : Quaternion = spatial.parent.getWorldRotation();
+			var rotation:Quaternion=spatial.parent.getWorldRotation();
 			rotation.multiplyVector(look, left); // coopt left for our own
 			// purposes.
-			left.x *= 1.0 / spatial.getWorldScale().x;
-			left.y *= 1.0 / spatial.getWorldScale().y;
-			left.z *= 1.0 / spatial.getWorldScale().z;
+			left.x*=1.0 / spatial.getWorldScale().x;
+			left.y*=1.0 / spatial.getWorldScale().y;
+			left.z*=1.0 / spatial.getWorldScale().z;
 
 			// squared length of the camera projection in the xz-plane
-			var lengthSquared : Number = left.x * left.x + left.z * left.z;
+			var lengthSquared:Number=left.x * left.x + left.z * left.z;
 			if (lengthSquared < FastMath.FLT_EPSILON)
 			{
 				// camera on the billboard axis, rotation not defined
@@ -174,12 +174,12 @@ package org.angle3d.scene.control
 			}
 
 			// unitize the projection
-			var invLength : Number = 1 / Math.sqrt(lengthSquared);
+			var invLength:Number=1 / Math.sqrt(lengthSquared);
 			if (axis.y == 1)
 			{
-				left.x *= invLength;
-				left.y = 0.0;
-				left.z *= invLength;
+				left.x*=invLength;
+				left.y=0.0;
+				left.z*=invLength;
 
 				// compute the local orientation matrix for the billboard
 				orient.setValue(0, 0, left.z);
@@ -194,9 +194,9 @@ package org.angle3d.scene.control
 			}
 			else if (axis.z == 1)
 			{
-				left.x *= invLength;
-				left.y *= invLength;
-				left.z = 0.0;
+				left.x*=invLength;
+				left.y*=invLength;
+				left.z=0.0;
 
 				// compute the local orientation matrix for the billboard
 				orient.setValue(0, 0, left.y);
@@ -216,16 +216,16 @@ package org.angle3d.scene.control
 			fixRefreshFlags();
 		}
 
-		private function fixRefreshFlags() : void
+		private function fixRefreshFlags():void
 		{
 			// force transforms to update below this node
 			spatial.updateGeometricState();
 
 			// force world bound to update
-			var rootNode : Spatial = spatial;
+			var rootNode:Spatial=spatial;
 			while (rootNode.parent != null)
 			{
-				rootNode = rootNode.parent;
+				rootNode=rootNode.parent;
 			}
 			rootNode.checkDoBoundUpdate();
 		}
@@ -235,7 +235,7 @@ package org.angle3d.scene.control
 		 *
 		 * @return The alignment of rotation, AxialY, AxialZ, Camera or Screen.
 		 */
-		public function getAlignment() : String
+		public function getAlignment():String
 		{
 			return alignment;
 		}
@@ -245,9 +245,9 @@ package org.angle3d.scene.control
 		 * be Camera, Screen, AxialY, or AxialZ. Invalid alignments will
 		 * assume no billboard rotation.
 		 */
-		public function setAlignment(alignment : String) : void
+		public function setAlignment(alignment:String):void
 		{
-			this.alignment = alignment;
+			this.alignment=alignment;
 		}
 	}
 }

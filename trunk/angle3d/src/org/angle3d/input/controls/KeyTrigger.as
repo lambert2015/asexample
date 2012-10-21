@@ -18,7 +18,7 @@ package org.angle3d.input.controls
 		 */
 		public function KeyTrigger(keyCode:int)
 		{
-			this.keyCode = keyCode;
+			this.keyCode=keyCode;
 		}
 
 		public function getName():String
@@ -28,11 +28,11 @@ package org.angle3d.input.controls
 
 		public static function keyHash(keyCode:int):int
 		{
-			CF::DEBUG 
+			CF::DEBUG
 			{
 				Assert.assert(keyCode >= 0 && keyCode <= 255, "keycode must be between 0 and 255");
 			}
-			
+
 			return keyCode & 0xff;
 		}
 

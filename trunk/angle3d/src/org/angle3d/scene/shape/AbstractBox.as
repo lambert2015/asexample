@@ -17,19 +17,19 @@ package org.angle3d.scene.shape
 	 */
 	public class AbstractBox extends Mesh
 	{
-		public var center : Vector3f;
+		public var center:Vector3f;
 
-		public var xExtent : Number;
-		public var yExtent : Number;
-		public var zExtent : Number;
+		public var xExtent:Number;
+		public var yExtent:Number;
+		public var zExtent:Number;
 
-		protected var subMesh : SubMesh;
+		protected var subMesh:SubMesh;
 
 		public function AbstractBox()
 		{
 			super();
 
-			center = new Vector3f(0, 0, 0);
+			center=new Vector3f(0, 0, 0);
 		}
 
 		/**
@@ -37,25 +37,18 @@ package org.angle3d.scene.shape
 		 *
 		 * @return a newly created array of vertex vectors.
 		 */
-		protected function computeVertices() : Vector.<Vector3f>
+		protected function computeVertices():Vector.<Vector3f>
 		{
-			var cx : Number = center.x;
-			var cy : Number = center.y;
-			var cz : Number = center.z;
-			return Vector.<Vector3f>([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent),
-				new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent),
-				new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent),
-				new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent),
-				new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent),
-				new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent),
-				new Vector3f(cx + xExtent, cy + yExtent, cz + zExtent),
-				new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
+			var cx:Number=center.x;
+			var cy:Number=center.y;
+			var cz:Number=center.z;
+			return Vector.<Vector3f>([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
 		}
 
 		/**
 		 * Convert the indices into the list of vertices that define the box's geometry.
 		 */
-		protected function duUpdateGeometryIndices() : void
+		protected function duUpdateGeometryIndices():void
 		{
 
 		}
@@ -63,7 +56,7 @@ package org.angle3d.scene.shape
 		/**
 		 * Update the normals of each of the box's planes.
 		 */
-		protected function duUpdateGeometryNormals() : void
+		protected function duUpdateGeometryNormals():void
 		{
 
 		}
@@ -71,7 +64,7 @@ package org.angle3d.scene.shape
 		/**
 		 * Update the colors of each of the box's planes.
 		 */
-		protected function duUpdateGeometryColors() : void
+		protected function duUpdateGeometryColors():void
 		{
 
 		}
@@ -82,7 +75,7 @@ package org.angle3d.scene.shape
 		 * It's a one-to-one ratio, where each plane of the box has it's own copy
 		 * of the texture. That is, the texture is repeated one time for each face.
 		 */
-		protected function duUpdateGeometryTextures() : void
+		protected function duUpdateGeometryTextures():void
 		{
 
 		}
@@ -92,7 +85,7 @@ package org.angle3d.scene.shape
 		 * <p>
 		 * These eight points are determined from the minimum and maximum point.
 		 */
-		protected function duUpdateGeometryVertices() : void
+		protected function duUpdateGeometryVertices():void
 		{
 
 		}
@@ -103,9 +96,9 @@ package org.angle3d.scene.shape
 		 * For example, if you call {@code getXExtent().x = 5.0f} then you will
 		 * need to call this method afterwards in order to update the box.
 		 */
-		public function updateGeometry() : void
+		public function updateGeometry():void
 		{
-			subMesh = new SubMesh();
+			subMesh=new SubMesh();
 			duUpdateGeometryVertices();
 			duUpdateGeometryTextures();
 			duUpdateGeometryNormals();
@@ -125,12 +118,12 @@ package org.angle3d.scene.shape
 		 * @param y the y extent of the box, in each directions.
 		 * @param z the z extent of the box, in each directions.
 		 */
-		public function updateGeometryByXYZ(center : Vector3f, x : Number, y : Number, z : Number) : void
+		public function updateGeometryByXYZ(center:Vector3f, x:Number, y:Number, z:Number):void
 		{
 			this.center.copyFrom(center);
-			this.xExtent = x;
-			this.yExtent = y;
-			this.zExtent = z;
+			this.xExtent=x;
+			this.yExtent=y;
+			this.zExtent=z;
 			updateGeometry();
 		}
 
@@ -143,9 +136,9 @@ package org.angle3d.scene.shape
 		 * @param minPoint the new minimum point of the box.
 		 * @param maxPoint the new maximum point of the box.
 		 */
-		public function updateGeometryByMinMax(min : Vector3f, max : Vector3f) : void
+		public function updateGeometryByMinMax(min:Vector3f, max:Vector3f):void
 		{
-			this.center = max.subtract(min, this.center);
+			this.center=max.subtract(min, this.center);
 			updateGeometryByXYZ(center, max.x - center.x, max.y - center.y, max.z - center.z);
 		}
 	}

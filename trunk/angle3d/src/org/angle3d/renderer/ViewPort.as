@@ -33,23 +33,23 @@ package org.angle3d.renderer
 
 	public class ViewPort
 	{
-		public var name : String;
+		public var name:String;
 
-		public var camera : Camera3D;
+		public var camera:Camera3D;
 
-		public var renderQueue : RenderQueue;
+		public var renderQueue:RenderQueue;
 
-		private var _sceneList : Vector.<Spatial>;
-		private var _processors : Vector.<SceneProcessor>;
+		private var _sceneList:Vector.<Spatial>;
+		private var _processors:Vector.<SceneProcessor>;
 
-		private var _frameBuffer : FrameBuffer;
+		private var _frameBuffer:FrameBuffer;
 
-		private var _bgColor : Color;
-		private var _clearDepth : Boolean;
-		private var _clearColor : Boolean;
-		private var _clearStencil : Boolean;
+		private var _bgColor:Color;
+		private var _clearDepth:Boolean;
+		private var _clearColor:Boolean;
+		private var _clearStencil:Boolean;
 
-		private var _enabled : Boolean;
+		private var _enabled:Boolean;
 
 		/**
 		 * Create a new viewport. User code should generally use these methods instead:<br>
@@ -63,24 +63,24 @@ package org.angle3d.renderer
 		 * @param cam The camera through which the viewport is rendered. The camera
 		 * cannot be swapped to a different one after creating the viewport.
 		 */
-		public function ViewPort(name : String, camera : Camera3D)
+		public function ViewPort(name:String, camera:Camera3D)
 		{
-			this.name = name;
-			this.camera = camera;
+			this.name=name;
+			this.camera=camera;
 			_init();
 		}
 
-		private function _init() : void
+		private function _init():void
 		{
-			renderQueue = new RenderQueue();
-			_sceneList = new Vector.<Spatial>();
-			_processors = new Vector.<SceneProcessor>();
-			_bgColor = new Color();
+			renderQueue=new RenderQueue();
+			_sceneList=new Vector.<Spatial>();
+			_processors=new Vector.<SceneProcessor>();
+			_bgColor=new Color();
 			_bgColor.setColor(0x0);
-			_clearDepth = false;
-			_clearColor = false;
-			_clearStencil = false;
-			_enabled = true;
+			_clearDepth=false;
+			_clearColor=false;
+			_clearStencil=false;
+			_enabled=true;
 		}
 
 		/**
@@ -91,7 +91,7 @@ package org.angle3d.renderer
 		 *
 		 * @see #addProcessor(org.angle3d.post.SceneProcessor)
 		 */
-		public function get processors() : Vector.<SceneProcessor>
+		public function get processors():Vector.<SceneProcessor>
 		{
 			return _processors;
 		}
@@ -106,7 +106,7 @@ package org.angle3d.renderer
 		 *
 		 * @see SceneProcessor
 		 */
-		public function addProcessor(processor : SceneProcessor) : void
+		public function addProcessor(processor:SceneProcessor):void
 		{
 			_processors.push(processor);
 		}
@@ -120,9 +120,9 @@ package org.angle3d.renderer
 		 *
 		 * @see SceneProcessor
 		 */
-		public function removeProcessor(processor : SceneProcessor) : void
+		public function removeProcessor(processor:SceneProcessor):void
 		{
-			var index : int = _processors.indexOf(processor);
+			var index:int=_processors.indexOf(processor);
 			if (index != -1)
 			{
 				_processors.splice(index, 1);
@@ -137,7 +137,7 @@ package org.angle3d.renderer
 		 *
 		 * @see #setClearDepth(boolean)
 		 */
-		public function isClearDepth() : Boolean
+		public function isClearDepth():Boolean
 		{
 			return _clearDepth;
 		}
@@ -149,9 +149,9 @@ package org.angle3d.renderer
 		 *
 		 * @param clearDepth Enable/disable depth buffer clearing.
 		 */
-		public function setClearDepth(clearDepth : Boolean) : void
+		public function setClearDepth(clearDepth:Boolean):void
 		{
-			_clearDepth = clearDepth;
+			_clearDepth=clearDepth;
 		}
 
 		/**
@@ -161,7 +161,7 @@ package org.angle3d.renderer
 		 *
 		 * @see #setClearColor(boolean)
 		 */
-		public function isClearColor() : Boolean
+		public function isClearColor():Boolean
 		{
 			return _clearColor;
 		}
@@ -173,9 +173,9 @@ package org.angle3d.renderer
 		 *
 		 * @param clearDepth Enable/disable color buffer clearing.
 		 */
-		public function setClearColor(clearColor : Boolean) : void
+		public function setClearColor(clearColor:Boolean):void
 		{
-			_clearColor = clearColor;
+			_clearColor=clearColor;
 		}
 
 		/**
@@ -185,7 +185,7 @@ package org.angle3d.renderer
 		 *
 		 * @see #setClearStencil(boolean)
 		 */
-		public function isClearStencil() : Boolean
+		public function isClearStencil():Boolean
 		{
 			return _clearStencil;
 		}
@@ -197,9 +197,9 @@ package org.angle3d.renderer
 		 *
 		 * @param clearDepth Enable/disable stencil buffer clearing.
 		 */
-		public function setClearStencil(clearStencil : Boolean) : void
+		public function setClearStencil(clearStencil:Boolean):void
 		{
-			_clearStencil = clearStencil;
+			_clearStencil=clearStencil;
 		}
 
 		/**
@@ -213,11 +213,11 @@ package org.angle3d.renderer
 		 * @see #setClearDepth(boolean)
 		 * @see #setClearStencil(boolean)
 		 */
-		public function setClearFlags(color : Boolean, depth : Boolean, stencil : Boolean) : void
+		public function setClearFlags(color:Boolean, depth:Boolean, stencil:Boolean):void
 		{
-			_clearColor = color;
-			_clearDepth = depth;
-			_clearStencil = stencil;
+			_clearColor=color;
+			_clearDepth=depth;
+			_clearStencil=stencil;
 		}
 
 		/**
@@ -229,7 +229,7 @@ package org.angle3d.renderer
 		 *
 		 * @see #setOutputFrameBuffer(org.angle3d.texture.FrameBuffer)
 		 */
-		public function get frameBuffer() : FrameBuffer
+		public function get frameBuffer():FrameBuffer
 		{
 			return _frameBuffer;
 		}
@@ -244,9 +244,9 @@ package org.angle3d.renderer
 		 * @param out The framebuffer to render scenes to, or null if to render
 		 * to the screen.
 		 */
-		public function set frameBuffer(out : FrameBuffer) : void
+		public function set frameBuffer(out:FrameBuffer):void
 		{
-			_frameBuffer = out;
+			_frameBuffer=out;
 		}
 
 		/**
@@ -256,7 +256,7 @@ package org.angle3d.renderer
 		 *
 		 * @see Spatial
 		 */
-		public function attachScene(scene : Spatial) : void
+		public function attachScene(scene:Spatial):void
 		{
 			_sceneList.push(scene);
 		}
@@ -268,9 +268,9 @@ package org.angle3d.renderer
 		 *
 		 * @see #attachScene(org.angle3d.scene.Spatial)
 		 */
-		public function detachScene(scene : Spatial) : void
+		public function detachScene(scene:Spatial):void
 		{
-			var index : int = _sceneList.indexOf(scene);
+			var index:int=_sceneList.indexOf(scene);
 			if (index != -1)
 			{
 				_sceneList.splice(index, 1);
@@ -282,9 +282,9 @@ package org.angle3d.renderer
 		 *
 		 * @see #attachScene(org.angle3d.scene.Spatial)
 		 */
-		public function clearScenes() : void
+		public function clearScenes():void
 		{
-			_sceneList.length = 0;
+			_sceneList.length=0;
 		}
 
 		/**
@@ -294,7 +294,7 @@ package org.angle3d.renderer
 		 *
 		 * @see #attachScene(org.angle3d.scene.Spatial)
 		 */
-		public function getScenes() : Vector.<Spatial>
+		public function getScenes():Vector.<Spatial>
 		{
 			return _sceneList;
 		}
@@ -309,7 +309,7 @@ package org.angle3d.renderer
 		 *
 		 * @param background the background color.
 		 */
-		public function setBackgroundColor(color : uint) : void
+		public function setBackgroundColor(color:uint):void
 		{
 			_bgColor.setColor(color);
 		}
@@ -321,7 +321,7 @@ package org.angle3d.renderer
 		 *
 		 * @see #setBackgroundColor(org.angle3d.math.Color)
 		 */
-		public function getBackgroundColor() : uint
+		public function getBackgroundColor():uint
 		{
 			return _bgColor.getColor();
 		}
@@ -334,9 +334,9 @@ package org.angle3d.renderer
 		 *
 		 * @param enable If the viewport should be disabled or enabled.
 		 */
-		public function set enabled(enabled : Boolean) : void
+		public function set enabled(enabled:Boolean):void
 		{
-			_enabled = enabled;
+			_enabled=enabled;
 		}
 
 		/**
@@ -344,7 +344,7 @@ package org.angle3d.renderer
 		 * @return true if the viewport is enabled, false otherwise.
 		 * @see #setEnabled(boolean)
 		 */
-		public function get enabled() : Boolean
+		public function get enabled():Boolean
 		{
 			return _enabled;
 		}

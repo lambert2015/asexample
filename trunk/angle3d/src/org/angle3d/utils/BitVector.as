@@ -23,9 +23,9 @@
 		 */
 		public function BitVector(size:int)
 		{
-			_bits = null;
-			_bitSize = 0;
-			_arrSize = 0;
+			_bits=null;
+			_bitSize=0;
+			_arrSize=0;
 
 			resize(size);
 		}
@@ -36,7 +36,7 @@
 		 */
 		public function free():void
 		{
-			_bits = null;
+			_bits=null;
 		}
 
 		/**
@@ -54,9 +54,9 @@
 		 */
 		public function size():int
 		{
-			var c:int = 0;
-			for (var i:int = 0; i < _arrSize; i++)
-				c += getOneCount(_bits[i]);
+			var c:int=0;
+			for (var i:int=0; i < _arrSize; i++)
+				c+=getOneCount(_bits[i]);
 			return c;
 		}
 
@@ -66,11 +66,11 @@
 		 */
 		public static function getOneCount(x:int):int
 		{
-			x -= ((x >> 1) & 0x55555555);
-			x = (((x >> 2) & 0x33333333) + (x & 0x33333333));
-			x = (((x >> 4) + x) & 0x0f0f0f0f);
-			x += (x >> 8);
-			x += (x >> 16);
+			x-=((x >> 1) & 0x55555555);
+			x=(((x >> 2) & 0x33333333) + (x & 0x33333333));
+			x=(((x >> 4) + x) & 0x0f0f0f0f);
+			x+=(x >> 8);
+			x+=(x >> 16);
 			return (x & 0x0000003f);
 		}
 
@@ -104,8 +104,8 @@
 		{
 			Assert.assert(i < capacity(), "i index out of range " + i);
 
-			var p:int = i >> 5;
-			_bits[p] = _bits[p] | (1 << (i & 31));
+			var p:int=i >> 5;
+			_bits[p]=_bits[p] | (1 << (i & 31));
 		}
 
 		/**
@@ -117,8 +117,8 @@
 		{
 			Assert.assert(i < capacity(), "i index out of range " + i);
 
-			var p:int = i >> 5;
-			_bits[p] = _bits[p] & (~(1 << (i & 31)));
+			var p:int=i >> 5;
+			_bits[p]=_bits[p] & (~(1 << (i & 31)));
 		}
 
 		/**
@@ -127,8 +127,8 @@
 		 */
 		public function clearAll():void
 		{
-			for (var i:int = 0; i < _arrSize; i++)
-				_bits[i] = 0;
+			for (var i:int=0; i < _arrSize; i++)
+				_bits[i]=0;
 		}
 
 		/**
@@ -137,8 +137,8 @@
 		 */
 		public function setAll():void
 		{
-			for (var i:int = 0; i < _arrSize; i++)
-				_bits[i] = 1;
+			for (var i:int=0; i < _arrSize; i++)
+				_bits[i]=1;
 		}
 
 		/**
@@ -153,20 +153,20 @@
 			Assert.assert(min >= 0 && min <= max && max < _bitSize, "min/max out of range " + min + "/" + max);
 
 			var i:int;
-			var n:int = max - min;
+			var n:int=max - min;
 			if (n < 32)
-				for (i = min; i < max; i++)
+				for (i=min; i < max; i++)
 				{
 					clear(i);
 				}
 			else
 			{
-				var r:int = n & 31;
-				for (i = min; i < (max - r) >> 5; i++)
+				var r:int=n & 31;
+				for (i=min; i < (max - r) >> 5; i++)
 				{
-					_bits[i] = 0;
+					_bits[i]=0;
 				}
-				for (i = (max - r); i < max; i++)
+				for (i=(max - r); i < max; i++)
 				{
 					clear(i);
 				}
@@ -185,22 +185,22 @@
 			Assert.assert(min >= 0 && min <= max && max < _bitSize, "min/max out of range " + min + "/" + max);
 
 			var i:int;
-			var n:int = max - min;
+			var n:int=max - min;
 			if (n < 32)
 			{
-				for (i = min; i < max; i++)
+				for (i=min; i < max; i++)
 				{
 					set(i);
 				}
 			}
 			else
 			{
-				var r:int = n & 31;
-				for (i = min; i < (max - r) >> 5; i++)
+				var r:int=n & 31;
+				for (i=min; i < (max - r) >> 5; i++)
 				{
-					_bits[i] = -1;
+					_bits[i]=-1;
 				}
-				for (i = (max - r); i < max; i++)
+				for (i=(max - r); i < max; i++)
 				{
 					set(i);
 				}
@@ -229,42 +229,42 @@
 
 			var t:Vector.<int>;
 
-			var newSize:int = x >> 5;
+			var newSize:int=x >> 5;
 			if ((x & 31) > 0)
 				newSize++;
 
 			if (_bits == null)
 			{
-				_bits = new Vector.<int>(newSize, true);
-				for (var i:int = 0; i < newSize; i++)
+				_bits=new Vector.<int>(newSize, true);
+				for (var i:int=0; i < newSize; i++)
 				{
-					_bits[i] = 0;
+					_bits[i]=0;
 				}
 			}
 			else if (newSize < _arrSize)
 			{
-				t = new Vector.<int>(newSize, true);
-				for (i = 0; i < newSize; i++)
+				t=new Vector.<int>(newSize, true);
+				for (i=0; i < newSize; i++)
 				{
-					t[i] = _bits[i];
+					t[i]=_bits[i];
 				}
-				_bits = t;
+				_bits=t;
 			}
 			else
 			{
 				if (_arrSize != newSize)
 				{
-					t = new Vector.<int>(newSize, true);
-					for (i = 0; i < newSize; i++)
+					t=new Vector.<int>(newSize, true);
+					for (i=0; i < newSize; i++)
 					{
-						t[i] = _bits[i];
+						t[i]=_bits[i];
 					}
-					_bits = t;
+					_bits=t;
 				}
 			}
 
-			_bitSize = x;
-			_arrSize = newSize;
+			_bitSize=x;
+			_arrSize=newSize;
 		}
 
 		/**
@@ -273,11 +273,11 @@
 		 */
 		public function clone():BitVector
 		{
-			var result:BitVector = new BitVector(_bitSize);
-			var t:Vector.<int> = result._bits;
-			for (var i:int = 0; i < _arrSize; i++)
+			var result:BitVector=new BitVector(_bitSize);
+			var t:Vector.<int>=result._bits;
+			for (var i:int=0; i < _arrSize; i++)
 			{
-				t[i] = _bits[i];
+				t[i]=_bits[i];
 			}
 			return result;
 		}

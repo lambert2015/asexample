@@ -7,9 +7,9 @@ package org.angle3d.material.shader
 	 */
 	public class ShaderVarType
 	{
-		public static const ATTRIBUTE:int = 0;
-		public static const UNIFORM:int = 1;
-		public static const TEXTURE:int = 2;
+		public static const ATTRIBUTE:int=0;
+		public static const UNIFORM:int=1;
+		public static const TEXTURE:int=2;
 	}
 }
 

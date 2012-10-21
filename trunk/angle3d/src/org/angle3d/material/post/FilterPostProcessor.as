@@ -12,11 +12,11 @@ package org.angle3d.material.post
 
 	public class FilterPostProcessor implements SceneProcessor
 	{
-		private var _initialized : Boolean;
+		private var _initialized:Boolean;
 
 		public function FilterPostProcessor()
 		{
-			_initialized = false;
+			_initialized=false;
 		}
 
 		/**
@@ -25,16 +25,16 @@ package org.angle3d.material.post
 		 * @param rm The render manager to which the SP was added to
 		 * @param vp The viewport to which the SP is assigned
 		 */
-		public function initialize(rm : RenderManager, vp : ViewPort) : void
+		public function initialize(rm:RenderManager, vp:ViewPort):void
 		{
-			_initialized = true;
+			_initialized=true;
 		}
 
 		/**
 		 * Called when the resolution of the viewport has been changed.
 		 * @param vp
 		 */
-		public function reshape(vp : ViewPort, w : int, h : int) : void
+		public function reshape(vp:ViewPort, w:int, h:int):void
 		{
 
 		}
@@ -43,7 +43,7 @@ package org.angle3d.material.post
 		 * @return True if initialize() has been called on this SceneProcessor,
 		 * false if otherwise.
 		 */
-		public function get initialized() : Boolean
+		public function get initialized():Boolean
 		{
 			return false;
 		}
@@ -53,7 +53,7 @@ package org.angle3d.material.post
 		 *
 		 * @param tpf Time per frame
 		 */
-		public function preFrame(tpf : Number) : void
+		public function preFrame(tpf:Number):void
 		{
 
 		}
@@ -63,7 +63,7 @@ package org.angle3d.material.post
 		 *
 		 * @param rq The render queue
 		 */
-		public function postQueue(rq : RenderQueue) : void
+		public function postQueue(rq:RenderQueue):void
 		{
 
 		}
@@ -73,7 +73,7 @@ package org.angle3d.material.post
 		 *
 		 * @param out The FB to which the scene was rendered.
 		 */
-		public function postFrame(out : FrameBuffer) : void
+		public function postFrame(out:FrameBuffer):void
 		{
 
 		}
@@ -81,7 +81,7 @@ package org.angle3d.material.post
 		/**
 		 * Called when the SP is removed from the RM.
 		 */
-		public function cleanup() : void
+		public function cleanup():void
 		{
 
 		}

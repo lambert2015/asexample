@@ -16,10 +16,10 @@ package org.assetloader.loaders
 		 */
 		protected var _styleSheet:StyleSheet;
 
-		public function CSSLoader(request:URLRequest, id:String = null)
+		public function CSSLoader(request:URLRequest, id:String=null)
 		{
 			super(request, id);
-			_type = AssetType.CSS;
+			_type=AssetType.CSS;
 		}
 
 		/**
@@ -28,7 +28,7 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(StyleSheet);
+			_onComplete=new LoaderSignal(StyleSheet);
 		}
 
 		/**
@@ -37,7 +37,7 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			super.destroy();
-			_styleSheet = null;
+			_styleSheet=null;
 		}
 
 		/**
@@ -47,16 +47,16 @@ package org.assetloader.loaders
 		 */
 		override protected function testData(data:String):String
 		{
-			var errMsg:String = "";
+			var errMsg:String="";
 			try
 			{
-				_styleSheet = new StyleSheet();
+				_styleSheet=new StyleSheet();
 				_styleSheet.parseCSS(data);
-				_data = _styleSheet;
+				_data=_styleSheet;
 			}
 			catch (err:Error)
 			{
-				errMsg = err.message;
+				errMsg=err.message;
 			}
 
 			return errMsg;

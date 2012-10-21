@@ -16,13 +16,13 @@ package org.angle3d.collision.bin
 
 		public function BIHTriangle(p1:Vector3f, p2:Vector3f, p3:Vector3f)
 		{
-			pointa = p1.clone();
-			pointb = p2.clone();
-			pointc = p3.clone();
-			center = new Vector3f();
-			center.x = (pointa.x + pointb.x + pointc.x) / 3;
-			center.y = (pointa.y + pointb.y + pointc.y) / 3;
-			center.z = (pointa.z + pointb.z + pointc.z) / 3;
+			pointa=p1.clone();
+			pointb=p2.clone();
+			pointc=p3.clone();
+			center=new Vector3f();
+			center.x=(pointa.x + pointb.x + pointc.x) / 3;
+			center.y=(pointa.y + pointb.y + pointc.y) / 3;
+			center.z=(pointa.z + pointb.z + pointc.z) / 3;
 		}
 
 		public function getPoint1():Vector3f

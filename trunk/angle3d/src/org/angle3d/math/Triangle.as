@@ -22,13 +22,13 @@ package org.angle3d.math
 		private var projection:Number;
 		private var index:int;
 
-		public function Triangle(p1:Vector3f = null, p2:Vector3f = null, p3:Vector3f = null)
+		public function Triangle(p1:Vector3f=null, p2:Vector3f=null, p3:Vector3f=null)
 		{
 			super();
 
-			pointA = new Vector3f();
-			pointB = new Vector3f();
-			pointC = new Vector3f();
+			pointA=new Vector3f();
+			pointB=new Vector3f();
+			pointC=new Vector3f();
 
 			if (p1 != null && p2 != null && p3 != null)
 			{
@@ -106,7 +106,7 @@ package org.angle3d.math
 		{
 			if (center == null)
 			{
-				center = pointA.clone();
+				center=pointA.clone();
 			}
 			else
 			{
@@ -126,7 +126,7 @@ package org.angle3d.math
 		{
 			if (normal == null)
 			{
-				normal = pointB.clone();
+				normal=pointB.clone();
 			}
 			else
 			{
@@ -156,7 +156,7 @@ package org.angle3d.math
 		 */
 		public function setCenter(center:Vector3f):void
 		{
-			this.center = center;
+			this.center=center;
 		}
 
 		/**
@@ -180,7 +180,7 @@ package org.angle3d.math
 		 */
 		public function setNormal(normal:Vector3f):void
 		{
-			this.normal = normal;
+			this.normal=normal;
 		}
 
 		/**
@@ -198,7 +198,7 @@ package org.angle3d.math
 		 */
 		public function setProjection(projection:Number):void
 		{
-			this.projection = projection;
+			this.projection=projection;
 		}
 
 		/**
@@ -216,14 +216,14 @@ package org.angle3d.math
 		 */
 		public function setIndex(index:int):void
 		{
-			this.index = index;
+			this.index=index;
 		}
 
-		public static function computeTriangleNormal(v1:Vector3f, v2:Vector3f, v3:Vector3f, store:Vector3f = null):Vector3f
+		public static function computeTriangleNormal(v1:Vector3f, v2:Vector3f, v3:Vector3f, store:Vector3f=null):Vector3f
 		{
 			if (store == null)
 			{
-				store = v2.clone();
+				store=v2.clone();
 			}
 			else
 			{

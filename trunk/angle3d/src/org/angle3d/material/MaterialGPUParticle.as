@@ -17,42 +17,42 @@ package org.angle3d.material
 		{
 			super();
 
-			_technique = new TechniqueGPUParticle();
+			_technique=new TechniqueGPUParticle();
 			addTechnique(_technique);
 
-			this.texture = texture;
+			this.texture=texture;
 		}
-		
+
 		public function set useLocalColor(value:Boolean):void
 		{
-			_technique.useLocalColor = value;
+			_technique.useLocalColor=value;
 		}
-		
+
 		public function get useLocalColor():Boolean
 		{
 			return _technique.useLocalColor;
 		}
-		
+
 		public function set useLocalAcceleration(value:Boolean):void
 		{
-			_technique.useLocalAcceleration = value;
+			_technique.useLocalAcceleration=value;
 		}
-		
+
 		public function get useLocalAcceleration():Boolean
 		{
 			return _technique.useLocalAcceleration;
 		}
-		
+
 		public function set blendMode(mode:int):void
 		{
-			_technique.renderState.blendMode = mode;
+			_technique.renderState.blendMode=mode;
 		}
-		
+
 		public function set loop(value:Boolean):void
 		{
 			_technique.setLoop(value);
 		}
-		
+
 		public function get loop():Boolean
 		{
 			return _technique.getLoop();
@@ -65,7 +65,7 @@ package org.angle3d.material
 		{
 			_technique.setUseSpin(value);
 		}
-		
+
 		public function get useSpin():Boolean
 		{
 			return _technique.getUseSpin();
@@ -73,12 +73,12 @@ package org.angle3d.material
 
 		public function reset():void
 		{
-			_technique.curTime = 0;
+			_technique.curTime=0;
 		}
-		
+
 		public function update(tpf:Number):void
 		{
-			_technique.curTime += tpf;
+			_technique.curTime+=tpf;
 		}
 
 		public function setAcceleration(acceleration:Vector3f):void
@@ -102,7 +102,7 @@ package org.angle3d.material
 		{
 			_technique.setColor(start, end);
 		}
-		
+
 		public function setAlpha(start:Number, end:Number):void
 		{
 			_technique.setAlpha(start, end);
@@ -124,7 +124,7 @@ package org.angle3d.material
 
 		public function set texture(value:TextureMapBase):void
 		{
-			_technique.texture = value;
+			_technique.texture=value;
 		}
 
 

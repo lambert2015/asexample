@@ -14,8 +14,8 @@ package org.angle3d.particles
 
 		public function ParticleSystem()
 		{
-			_techniques = new Vector.<ParticleTechnique>();
-			_numTechniques = 0;
+			_techniques=new Vector.<ParticleTechnique>();
+			_numTechniques=0;
 		}
 
 		public function addTechnique(technique:ParticleTechnique):void
@@ -26,7 +26,7 @@ package org.angle3d.particles
 
 		public function removeTechnique(technique:ParticleTechnique):void
 		{
-			var index:int = _techniques.indexOf(technique);
+			var index:int=_techniques.indexOf(technique);
 			if (index > -1)
 			{
 				_techniques.splice(index, 1);
@@ -41,7 +41,7 @@ package org.angle3d.particles
 
 		public function getTechnique(name:String):ParticleTechnique
 		{
-			for (var i:int = 0; i < _numTechniques; i++)
+			for (var i:int=0; i < _numTechniques; i++)
 			{
 				if (_techniques[i].name == name)
 				{
@@ -71,15 +71,15 @@ package org.angle3d.particles
 
 		}
 
-		/** 
+		/**
 		 * Starts the particle system and stops after a period of time.
 		 */
-		public function start(stopTime:int = -1):void
+		public function start(stopTime:int=-1):void
 		{
 
 		}
 
-		/** 
+		/**
 		 * Stops the particle system.
 		 * Only if a particle system has been attached to a SceneNode and started it can be stopped.
 		 */
@@ -87,15 +87,15 @@ package org.angle3d.particles
 		{
 
 		}
-		
+
 		public function pause():void
 		{
-			
+
 		}
-		
+
 		public function resume():void
 		{
-			
+
 		}
 	}
 }

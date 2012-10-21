@@ -13,34 +13,34 @@ package org.angle3d.renderer.queue
 	 */
 	public class GeometryList
 	{
-		private var _geometries : Vector.<Geometry>;
-		private var _comparator : GeometryComparator;
-		private var _size : uint;
+		private var _geometries:Vector.<Geometry>;
+		private var _comparator:GeometryComparator;
+		private var _size:uint;
 
-		public function GeometryList(comparator : GeometryComparator)
+		public function GeometryList(comparator:GeometryComparator)
 		{
-			_geometries = new Vector.<Geometry>();
-			_size = 0;
+			_geometries=new Vector.<Geometry>();
+			_size=0;
 
-			_comparator = comparator;
+			_comparator=comparator;
 		}
 
-		public function setCamera(cam : Camera3D) : void
+		public function setCamera(cam:Camera3D):void
 		{
 			_comparator.setCamera(cam);
 		}
 
-		public function get size() : int
+		public function get size():int
 		{
 			return _size;
 		}
 
-		public function get isEmpty() : Boolean
+		public function get isEmpty():Boolean
 		{
 			return _size == 0;
 		}
 
-		public function getGeometry(i : int) : Geometry
+		public function getGeometry(i:int):Geometry
 		{
 			return _geometries[i];
 		}
@@ -51,25 +51,26 @@ package org.angle3d.renderer.queue
 		 * @param g
 		 *            The geometry to add.
 		 */
-		public function add(g : Geometry) : void
+		public function add(g:Geometry):void
 		{
-			_geometries[_size++] = g;
+			_geometries[_size++]=g;
 		}
 
 		/**
 		 * Resets list size to 0.
 		 */
-		public function clear() : void
+		public function clear():void
 		{
-			_geometries.length = 0;
+			_geometries.length=0;
 
-			_size = 0;
+			_size=0;
 		}
 
 		/**
 		 * Sorts the elements in the list according to their Comparator.
 		 */
-		public function sort() : void
+		//TODO 需要优化，目前排序时间有点长
+		public function sort():void
 		{
 			if (_size > 1)
 			{

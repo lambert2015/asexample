@@ -49,7 +49,7 @@ package org.angle3d.particles.affectors
 
 		public function setAffectSpecialisation(value:int):void
 		{
-			mAffectSpecialisation = value;
+			mAffectSpecialisation=value;
 		}
 
 		/** Perform initialisation actions.
@@ -59,13 +59,13 @@ package org.angle3d.particles.affectors
 		 actions.
 		 */
 		public function _prepare(particleTechnique:ParticleTechnique):void
-		{ 
+		{
 		}
 
 		/** Reverse the actions from the _prepare.
 		 */
 		public function _unprepare(particleTechnique:ParticleTechnique):void
-		{ 
+		{
 		}
 
 		/** Perform activities when a ParticleAffector is started.
@@ -141,7 +141,7 @@ package org.angle3d.particles.affectors
 		 * @param timeElapsed The number of seconds which have elapsed since the last call.
 		 * @param firstParticle Determines whether the ParticleAffector encounters the first particle of all active particles.
 		 */
-		public function _processParticle(technique:ParticleTechnique, particle:Particle,timeElapsed:Number, firstParticle:Boolean):void
+		public function _processParticle(technique:ParticleTechnique, particle:Particle, timeElapsed:Number, firstParticle:Boolean):void
 		{
 		}
 
@@ -153,7 +153,7 @@ package org.angle3d.particles.affectors
 		{
 		}
 
-		/** 
+		/**
 		 * Affect a particle.
 		 */
 		public function affect(technique:ParticleTechnique, particle:Particle, timeElapsed:Number):void
@@ -179,7 +179,7 @@ package org.angle3d.particles.affectors
 		{
 		}
 
-		/** 
+		/**
 		 * Return the list with emitters to exclude.
 		 */
 		public function getEmittersToExclude():Vector.<String>

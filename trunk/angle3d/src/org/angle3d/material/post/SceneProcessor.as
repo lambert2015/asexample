@@ -20,46 +20,46 @@ package org.angle3d.material.post
 		 * @param rm The render manager to which the SP was added to
 		 * @param vp The viewport to which the SP is assigned
 		 */
-		function initialize(rm : RenderManager, vp : ViewPort) : void;
+		function initialize(rm:RenderManager, vp:ViewPort):void;
 
 		/**
 		 * @return True if initialize() has been called on this SceneProcessor,
 		 * false if otherwise.
 		 */
-		function get initialized() : Boolean;
+		function get initialized():Boolean;
 
 		/**
 		 * Called when the resolution of the viewport has been changed.
 		 * @param vp
 		 */
-		function reshape(vp : ViewPort, w : int, h : int) : void;
+		function reshape(vp:ViewPort, w:int, h:int):void;
 
-		
+
 		/**
 		 * Called before a frame
 		 *
 		 * @param tpf Time per frame
 		 */
-		function preFrame(tpf : Number) : void;
+		function preFrame(tpf:Number):void;
 
 		/**
 		 * Called after the scene graph has been queued, but before it is flushed.
 		 *
 		 * @param rq The render queue
 		 */
-		function postQueue(rq : RenderQueue) : void;
+		function postQueue(rq:RenderQueue):void;
 
 		/**
 		 * Called after a frame has been rendered and the queue flushed.
 		 *
 		 * @param out The FB to which the scene was rendered.
 		 */
-		function postFrame(out : FrameBuffer) : void;
+		function postFrame(out:FrameBuffer):void;
 
 		/**
 		 * Called when the SP is removed from the RM.
 		 */
-		function cleanup() : void;
+		function cleanup():void;
 	}
 }
 

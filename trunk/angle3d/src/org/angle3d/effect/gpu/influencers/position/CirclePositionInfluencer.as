@@ -16,20 +16,20 @@ package org.angle3d.effect.gpu.influencers.position
 
 		public function CirclePositionInfluencer(center:Vector3f, radius:Number, startAngle:Number)
 		{
-			_center = center;
-			_radius = radius;
-			_startAngle = startAngle;
+			_center=center;
+			_radius=radius;
+			_startAngle=startAngle;
 		}
 
 		public function getPosition(index:int, store:Vector3f):Vector3f
 		{
-			var _perAngle:Number = Math.PI * 2 / _generator.perSecondParticleCount;
-			
-			index = index % _generator.perSecondParticleCount;
+			var _perAngle:Number=Math.PI * 2 / _generator.perSecondParticleCount;
 
-			store.x = _center.x + Math.sin(index * _perAngle) * _radius;
-			store.y = _center.y;
-			store.z = _center.z + Math.cos(index * _perAngle) * _radius;
+			index=index % _generator.perSecondParticleCount;
+
+			store.x=_center.x + Math.sin(index * _perAngle) * _radius;
+			store.y=_center.y;
+			store.z=_center.z + Math.cos(index * _perAngle) * _radius;
 
 			return store;
 		}

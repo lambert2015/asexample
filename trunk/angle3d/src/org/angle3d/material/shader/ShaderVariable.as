@@ -7,45 +7,45 @@ package org.angle3d.material.shader
 	 */
 	public class ShaderVariable
 	{
-		protected var _name : String;
+		protected var _name:String;
 
-		protected var _location : int;
+		protected var _location:int;
 
-		protected var _size : int;
+		protected var _size:int;
 
-		public function ShaderVariable(name : String, size : int)
+		public function ShaderVariable(name:String, size:int)
 		{
-			_name = name;
-			_size = size;
-			_location = -1;
+			_name=name;
+			_size=size;
+			_location=-1;
 		}
 
-		public function set name(value : String) : void
+		public function set name(value:String):void
 		{
-			_name = value;
+			_name=value;
 		}
 
-		public function get name() : String
+		public function get name():String
 		{
 			return _name;
 		}
 
-		public function set size(value : int) : void
+		public function set size(value:int):void
 		{
-			_size = value;
+			_size=value;
 		}
 
-		public function get size() : int
+		public function get size():int
 		{
 			return _size;
 		}
 
-		public function set location(location : int) : void
+		public function set location(location:int):void
 		{
-			_location = location;
+			_location=location;
 		}
 
-		public function get location() : int
+		public function get location():int
 		{
 			return _location;
 		}

@@ -25,15 +25,15 @@ package org.angle3d.animation
 
 		public function Animation(name:String, time:Number)
 		{
-			this.name = name;
-			this.time = time;
+			this.name=name;
+			this.time=time;
 
-			tracks = new Vector.<Track>();
+			tracks=new Vector.<Track>();
 		}
 
 		public function setTracks(tracks:Vector.<Track>):void
 		{
-			this.tracks = tracks;
+			this.tracks=tracks;
 		}
 
 		public function addTrack(track:Track):void
@@ -56,8 +56,8 @@ package org.angle3d.animation
 			if (tracks == null)
 				return;
 
-			var length:int = tracks.length;
-			for (var i:int = 0; i < length; i++)
+			var length:int=tracks.length;
+			for (var i:int=0; i < length; i++)
 			{
 				tracks[i].setCurrentTime(time, blendWeight, control, channel, vars);
 			}
@@ -69,12 +69,12 @@ package org.angle3d.animation
 		 */
 		public function clone(newName:String):Animation
 		{
-			var result:Animation = new Animation(newName, this.time);
-			result.tracks = new Vector.<Track>();
-			var length:int = tracks.length;
-			for (var i:int = 0; i < length; i++)
+			var result:Animation=new Animation(newName, this.time);
+			result.tracks=new Vector.<Track>();
+			var length:int=tracks.length;
+			for (var i:int=0; i < length; i++)
 			{
-				result.tracks[i] = tracks[i].clone();
+				result.tracks[i]=tracks[i].clone();
 			}
 			return result;
 		}

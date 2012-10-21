@@ -22,72 +22,72 @@ package org.angle3d.light
 	 */
 	public class SpotLight extends Light
 	{
-		private var mPosition : Vector3f;
-		private var mDirection : Vector3f;
+		private var mPosition:Vector3f;
+		private var mDirection:Vector3f;
 
-		private var mInnerAngle : Number;
-		private var mOuterAngle : Number;
-		private var mSpotRange : Number;
-		private var mInvSpotRange : Number;
-		private var mPackedAngleCos : Number;
+		private var mInnerAngle:Number;
+		private var mOuterAngle:Number;
+		private var mSpotRange:Number;
+		private var mInvSpotRange:Number;
+		private var mPackedAngleCos:Number;
 
 		public function SpotLight()
 		{
 			super(LightType.Spot);
 
-			mPosition = new Vector3f();
-			mDirection = new Vector3f(0, -1, 0);
+			mPosition=new Vector3f();
+			mDirection=new Vector3f(0, -1, 0);
 
-			mInnerAngle = FastMath.PI / (4 * 8);
-			mOuterAngle = FastMath.PI / (4 * 6);
-			mSpotRange = 100;
-			mInvSpotRange = 1 / 100;
-			mPackedAngleCos = 0;
+			mInnerAngle=FastMath.PI / (4 * 8);
+			mOuterAngle=FastMath.PI / (4 * 6);
+			mSpotRange=100;
+			mInvSpotRange=1 / 100;
+			mPackedAngleCos=0;
 			computePackedCos();
 		}
 
-		private function computePackedCos() : void
+		private function computePackedCos():void
 		{
-			var innerCos : Number = Math.cos(mInnerAngle);
-			var outerCos : Number = Math.cos(mOuterAngle);
-			mPackedAngleCos = int(innerCos * 1000);
-			mPackedAngleCos += outerCos;
+			var innerCos:Number=Math.cos(mInnerAngle);
+			var outerCos:Number=Math.cos(mOuterAngle);
+			mPackedAngleCos=int(innerCos * 1000);
+			mPackedAngleCos+=outerCos;
 		}
 
-		override public function computeLastDistance(owner : Spatial) : void
+		override public function computeLastDistance(owner:Spatial):void
 		{
 			if (owner.worldBound != null)
 			{
-				var bv : BoundingVolume = owner.worldBound;
-				lastDistance = bv.distanceSquaredTo(mPosition);
+				var bv:BoundingVolume=owner.worldBound;
+				lastDistance=bv.distanceSquaredTo(mPosition);
 			}
 			else
 			{
-				lastDistance = owner.getWorldTranslation().distanceSquared(mPosition);
+				lastDistance=owner.getWorldTranslation().distanceSquared(mPosition);
 			}
 		}
 
-		public function get direction() : Vector3f
+		public function get direction():Vector3f
 		{
 			return mDirection;
 		}
 
-		public function set direction(direction : Vector3f) : void
+		public function set direction(direction:Vector3f):void
 		{
 			mDirection.copyFrom(direction);
 		}
 
-		public function get position() : Vector3f
+		public function get position():Vector3f
 		{
 			return mPosition;
 		}
 
-		public function set position(position : Vector3f) : void
+		public function set position(position:Vector3f):void
 		{
 			mPosition.copyFrom(position);
 		}
 
-		public function getSpotRange() : Number
+		public function getSpotRange():Number
 		{
 			return mSpotRange;
 		}
@@ -105,18 +105,18 @@ package org.angle3d.light
 		 *
 		 * @throws IllegalArgumentException If spotRange is negative
 		 */
-		public function set spotRange(value : Number) : void
+		public function set spotRange(value:Number):void
 		{
 			Assert.assert(value >= 0, "SpotLight range cannot be negative");
 
-			mSpotRange = value;
+			mSpotRange=value;
 			if (value != 0)
 			{
-				mInvSpotRange = 1 / value;
+				mInvSpotRange=1 / value;
 			}
 			else
 			{
-				mInvSpotRange = 0;
+				mInvSpotRange=0;
 			}
 		}
 
@@ -124,7 +124,7 @@ package org.angle3d.light
 		 * for internal use only
 		 * @return the inverse of the spot range
 		 */
-		public function get invSpotRange() : Number
+		public function get invSpotRange():Number
 		{
 			return mInvSpotRange;
 		}
@@ -133,7 +133,7 @@ package org.angle3d.light
 		 * returns the spot inner angle
 		 * @return the spot inner angle
 		 */
-		public function get innerAngle() : Number
+		public function get innerAngle():Number
 		{
 			return mInnerAngle;
 		}
@@ -143,9 +143,9 @@ package org.angle3d.light
 		 * This angle is the angle between the spot direction axis and the inner border of the cone of influence.
 		 * @param spotInnerAngle
 		 */
-		public function set innerAngle(value : Number) : void
+		public function set innerAngle(value:Number):void
 		{
-			mInnerAngle = value;
+			mInnerAngle=value;
 			computePackedCos();
 		}
 
@@ -153,7 +153,7 @@ package org.angle3d.light
 		 * returns the spot outer angle
 		 * @return the spot outer angle
 		 */
-		public function get outerAngle() : Number
+		public function get outerAngle():Number
 		{
 			return mOuterAngle;
 		}
@@ -164,9 +164,9 @@ package org.angle3d.light
 		 * this should be greater than the inner angle or the result will be unexpected.
 		 * @param spotOuterAngle
 		 */
-		public function set outerAngle(value : Number) : void
+		public function set outerAngle(value:Number):void
 		{
-			mOuterAngle = value;
+			mOuterAngle=value;
 			computePackedCos();
 		}
 
@@ -174,7 +174,7 @@ package org.angle3d.light
 		 * for internal use only
 		 * @return the cosines of the inner and outter angle packed in a float
 		 */
-		public function get packedAngleCos() : Number
+		public function get packedAngleCos():Number
 		{
 			return mPackedAngleCos;
 		}

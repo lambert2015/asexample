@@ -16,23 +16,23 @@ package org.angle3d.effect.cpu.shape
 
 		public function EmitterBoxShape(min:Vector3f, max:Vector3f)
 		{
-			_min = min.clone();
-			_max = max.clone();
-			_size = max.subtract(min);
+			_min=min.clone();
+			_max=max.clone();
+			_size=max.subtract(min);
 		}
 
 		public function getRandomPoint(store:Vector3f):void
 		{
-			store.x = _min.x + _size.x * Math.random();
-			store.y = _min.y + _size.y * Math.random();
-			store.z = _min.z + _size.z * Math.random();
+			store.x=_min.x + _size.x * Math.random();
+			store.y=_min.y + _size.y * Math.random();
+			store.z=_min.z + _size.z * Math.random();
 		}
 
 		public function getRandomPointAndNormal(store:Vector3f, normal:Vector3f):void
 		{
-			store.x = _min.x + _size.x * Math.random();
-			store.y = _min.y + _size.y * Math.random();
-			store.z = _min.z + _size.z * Math.random();
+			store.x=_min.x + _size.x * Math.random();
+			store.y=_min.y + _size.y * Math.random();
+			store.z=_min.z + _size.z * Math.random();
 		}
 
 		public function clone():EmitterShape

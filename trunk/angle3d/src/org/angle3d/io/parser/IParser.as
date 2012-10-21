@@ -7,6 +7,6 @@ package org.angle3d.io.parser
 	{
 		//function get data() : Vector.<IScene>;
 
-		function parse(data : ByteArray, options : ParserOptions) : Boolean;
+		function parse(data:ByteArray, options:ParserOptions):Boolean;
 	}
 }

@@ -11,8 +11,8 @@ package org.angle3d.particles
 	 */
 	public class Particle implements IParticle
 	{
-		public static const DEFAULT_TTL:Number = 10.0;
-		public static const DEFAULT_MASS:Number = 1.0;
+		public static const DEFAULT_TTL:Number=10.0;
+		public static const DEFAULT_MASS:Number=1.0;
 
 		/**
 		 * Pointer to emitter that has emitted the particle.
@@ -107,30 +107,30 @@ package org.angle3d.particles
 
 		public function Particle(type:int)
 		{
-			particleType = type;
-			
-			mMarkedForEmission = false;
-			position = new Vector3f();
-			mDerivedPosition = new Vector3f();
-			direction = new Vector3f();
-			timeToLive = DEFAULT_TTL;
-			totalTimeToLive = DEFAULT_TTL;
-			timeFraction = 0.0;
-			particleType = ParticleType.PT_VISUAL;
+			particleType=type;
 
-			mass = DEFAULT_MASS;
-			mEventFlags = 0;
-			mEnabled = true;
-			mFreezed = false;
-			mOriginalEnabled = true;
-			mOriginalEnabledSet = false;
-			originalPosition = new Vector3f();
-			latestPosition = new Vector3f();
-			originalDirection = new Vector3f();
-			originalDirectionLength = 0.0;
-			originalScaledDirectionLength = 0.0;
-			originalVelocity = 0.0;
-			parentEmitter = null;
+			mMarkedForEmission=false;
+			position=new Vector3f();
+			mDerivedPosition=new Vector3f();
+			direction=new Vector3f();
+			timeToLive=DEFAULT_TTL;
+			totalTimeToLive=DEFAULT_TTL;
+			timeFraction=0.0;
+			particleType=ParticleType.PT_VISUAL;
+
+			mass=DEFAULT_MASS;
+			mEventFlags=0;
+			mEnabled=true;
+			mFreezed=false;
+			mOriginalEnabled=true;
+			mOriginalEnabledSet=false;
+			originalPosition=new Vector3f();
+			latestPosition=new Vector3f();
+			originalDirection=new Vector3f();
+			originalDirectionLength=0.0;
+			originalScaledDirectionLength=0.0;
+			originalVelocity=0.0;
+			parentEmitter=null;
 		}
 
 		public function _isMarkedForEmission():Boolean
@@ -140,23 +140,23 @@ package org.angle3d.particles
 
 		public function _setMarkedForEmission(markedForEmission:Boolean):void
 		{
-			mMarkedForEmission = markedForEmission;
+			mMarkedForEmission=markedForEmission;
 		}
 
 		/** Perform initialising activities as soon as the particle is emitted.
 		 */
 		public function _initForEmission():void
 		{
-			mEventFlags = 0;
-			timeFraction = 0.0;
-			
+			mEventFlags=0;
+			timeFraction=0.0;
+
 			/*	Note, that this flag must only be set as soon as the particle is emitted. As soon as the particle has
 			been moved once, the flag must be removed again.
 			*/
 			addEventFlags(ParticleEventFlags.PEF_EMITTED);
-			
+
 			// Reset freeze flag
-			mFreezed = false;
+			mFreezed=false;
 
 		}
 
@@ -171,12 +171,12 @@ package org.angle3d.particles
 		 */
 		public function setEnabled(enabled:Boolean):void
 		{
-			mEnabled = enabled;
+			mEnabled=enabled;
 			if (!mOriginalEnabledSet)
 			{
 				// Only one time is permitted
-				mOriginalEnabled = enabled;
-				mOriginalEnabledSet = true;
+				mOriginalEnabled=enabled;
+				mOriginalEnabledSet=true;
 			}
 		}
 
@@ -186,8 +186,8 @@ package org.angle3d.particles
 		 */
 		public function _setOriginalEnabled(originalEnabled:Boolean):void
 		{
-			mOriginalEnabled = originalEnabled;
-			mOriginalEnabledSet = true;
+			mOriginalEnabled=originalEnabled;
+			mOriginalEnabledSet=true;
 		}
 
 		/** Returns the original 'enabled' value of the particle
@@ -210,14 +210,14 @@ package org.angle3d.particles
 		 */
 		public function setFreezed(freezed:Boolean):void
 		{
-			mFreezed = freezed;
+			mFreezed=freezed;
 		}
 
 		/** Sets the event flags.
 		 */
 		public function setEventFlags(flags:uint):void
 		{
-			mEventFlags = flags;
+			mEventFlags=flags;
 		}
 
 		/** As setEventFlags, except the flags passed as parameters are appended to the
@@ -225,14 +225,14 @@ package org.angle3d.particles
 		 */
 		public function addEventFlags(flags:uint):void
 		{
-			mEventFlags |= flags;
+			mEventFlags|=flags;
 		}
 
 		/** The flags passed as parameters are removed from the existing flags.
 		 */
 		public function removeEventFlags(flags:uint):void
 		{
-			mEventFlags &= ~flags;
+			mEventFlags&=~flags;
 		}
 
 		/** Return the event flags.
@@ -259,7 +259,7 @@ package org.angle3d.particles
 		public function _process(technique:ParticleTechnique, timeElapsed:Number):void
 		{
 			// Calculate the time fraction, because it is used in different other components
-			timeFraction = (totalTimeToLive - timeToLive) / totalTimeToLive;
+			timeFraction=(totalTimeToLive - timeToLive) / totalTimeToLive;
 		}
 
 		/** Calculates the velocity, based on the direction vector.
@@ -280,24 +280,24 @@ package org.angle3d.particles
 		public function copyAttributesTo(particle:Particle):void
 		{
 			// Copy attributes
-			particle.position = position;
-			particle.originalPosition = originalPosition;
-			particle.mDerivedPosition = mDerivedPosition;
-			particle.direction = direction;
-			particle.originalDirection = originalDirection;
-			particle.originalDirectionLength = originalDirectionLength;
-			particle.originalScaledDirectionLength = originalScaledDirectionLength;
-			particle.originalVelocity = originalVelocity;
-			particle.mass = mass;
-			particle.timeToLive = timeToLive;
-			particle.totalTimeToLive = totalTimeToLive;
-			particle.mEventFlags = mEventFlags;
-			particle.mMarkedForEmission = mMarkedForEmission;
-			particle.mEnabled = mEnabled;
-			particle.mOriginalEnabled = mOriginalEnabled;
-			particle.mOriginalEnabledSet = mOriginalEnabledSet;
-			particle.mFreezed = mFreezed;
-			particle.timeFraction = timeFraction;
+			particle.position=position;
+			particle.originalPosition=originalPosition;
+			particle.mDerivedPosition=mDerivedPosition;
+			particle.direction=direction;
+			particle.originalDirection=originalDirection;
+			particle.originalDirectionLength=originalDirectionLength;
+			particle.originalScaledDirectionLength=originalScaledDirectionLength;
+			particle.originalVelocity=originalVelocity;
+			particle.mass=mass;
+			particle.timeToLive=timeToLive;
+			particle.totalTimeToLive=totalTimeToLive;
+			particle.mEventFlags=mEventFlags;
+			particle.mMarkedForEmission=mMarkedForEmission;
+			particle.mEnabled=mEnabled;
+			particle.mOriginalEnabled=mOriginalEnabled;
+			particle.mOriginalEnabledSet=mOriginalEnabledSet;
+			particle.mFreezed=mFreezed;
+			particle.timeFraction=timeFraction;
 		}
 	}
 }

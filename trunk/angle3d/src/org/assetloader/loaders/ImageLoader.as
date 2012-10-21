@@ -23,10 +23,10 @@ package org.assetloader.loaders
 		 */
 		protected var _bitmap:Bitmap;
 
-		public function ImageLoader(request:URLRequest, id:String = null)
+		public function ImageLoader(request:URLRequest, id:String=null)
 		{
 			super(request, id);
-			_type = AssetType.IMAGE;
+			_type=AssetType.IMAGE;
 		}
 
 		/**
@@ -35,7 +35,7 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(Bitmap);
+			_onComplete=new LoaderSignal(Bitmap);
 		}
 
 		/**
@@ -51,7 +51,7 @@ package org.assetloader.loaders
 			catch (error:Error)
 			{
 			}
-			_bitmap = null;
+			_bitmap=null;
 		}
 
 		/**
@@ -61,17 +61,17 @@ package org.assetloader.loaders
 		 */
 		override protected function testData(data:DisplayObject):String
 		{
-			var errMsg:String = "";
+			var errMsg:String="";
 			try
 			{
-				_bitmapData = new BitmapData(_loader.contentLoaderInfo.width, _loader.contentLoaderInfo.height, getParam(Param.TRANSPARENT) || true, getParam(Param.FILL_COLOR) || 0x0);
+				_bitmapData=new BitmapData(_loader.contentLoaderInfo.width, _loader.contentLoaderInfo.height, getParam(Param.TRANSPARENT) || true, getParam(Param.FILL_COLOR) || 0x0);
 				_bitmapData.draw(data, getParam(Param.MATRIX), getParam(Param.COLOR_TRANSFROM), getParam(Param.BLEND_MODE), getParam(Param.CLIP_RECTANGLE), getParam(Param.SMOOTHING) || false);
 
-				_data = _bitmap = new Bitmap(_bitmapData, getParam(Param.PIXEL_SNAPPING) || "auto", getParam(Param.SMOOTHING) || false);
+				_data=_bitmap=new Bitmap(_bitmapData, getParam(Param.PIXEL_SNAPPING) || "auto", getParam(Param.SMOOTHING) || false);
 			}
 			catch (err:Error)
 			{
-				errMsg = err.message;
+				errMsg=err.message;
 			}
 
 			return errMsg;

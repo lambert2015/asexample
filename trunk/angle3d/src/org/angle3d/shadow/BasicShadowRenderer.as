@@ -42,25 +42,25 @@ package org.angle3d.shadow
 
 		public function BasicShadowRenderer(size:int)
 		{
-			shadowMap = new Texture2D(size, size);
-			shadowFB = new FrameBuffer(shadowMap, true);
+			shadowMap=new Texture2D(size, size);
+			shadowFB=new FrameBuffer(shadowMap, true);
 
-			shadowCam = new Camera3D(size, size);
+			shadowCam=new Camera3D(size, size);
 
-			preshadowMat = new MaterialPreShadow();
-			postshadowMat = new MaterialPostShadow();
+			preshadowMat=new MaterialPreShadow();
+			postshadowMat=new MaterialPostShadow();
 			postshadowMat.setTexture(shadowMap);
 
-			picture = new Image("ShadowMap", false);
+			picture=new Image("ShadowMap", false);
 			picture.setTexture(shadowMap, false);
 
-			noOccluders = false;
-			points = new Vector.<Vector3f>(8, true);
-			for (var i:int = 0; i < 8; i++)
+			noOccluders=false;
+			points=new Vector.<Vector3f>(8, true);
+			for (var i:int=0; i < 8; i++)
 			{
-				points[i] = new Vector3f();
+				points[i]=new Vector3f();
 			}
-			mDirection = new Vector3f();
+			mDirection=new Vector3f();
 		}
 
 		public function getDirection():Vector3f
@@ -80,8 +80,8 @@ package org.angle3d.shadow
 
 		public function initialize(rm:RenderManager, vp:ViewPort):void
 		{
-			renderManager = rm;
-			viewPort = vp;
+			renderManager=rm;
+			viewPort=vp;
 
 			reshape(vp, vp.camera.width, vp.camera.height);
 		}
@@ -122,22 +122,22 @@ package org.angle3d.shadow
 
 		public function postQueue(rq:RenderQueue):void
 		{
-			var occluders:GeometryList = rq.getShadowQueueContent(ShadowMode.Cast);
+			var occluders:GeometryList=rq.getShadowQueueContent(ShadowMode.Cast);
 
-			noOccluders = (occluders.size == 0);
+			noOccluders=(occluders.size == 0);
 			if (noOccluders)
 			{
 				return;
 			}
 
-			var receivers:GeometryList = rq.getShadowQueueContent(ShadowMode.Receive);
+			var receivers:GeometryList=rq.getShadowQueueContent(ShadowMode.Receive);
 
 			//update frustum points based on current camera
-			var viewCam:Camera3D = viewPort.camera;
+			var viewCam:Camera3D=viewPort.camera;
 			ShadowUtil.updateFrustumPoints(viewCam, viewCam.frustumNear, viewCam.frustumFar, 1.0, points);
 
-			var frustaCenter:Vector3f = new Vector3f();
-			for (var i:int = 0; i < 8; i++)
+			var frustaCenter:Vector3f=new Vector3f();
+			for (var i:int=0; i < 8; i++)
 			{
 				frustaCenter.addLocal(points[i]);
 			}
@@ -145,19 +145,19 @@ package org.angle3d.shadow
 
 			// update light direction
 			shadowCam.setProjectionMatrix(null);
-			shadowCam.parallelProjection = true;
+			shadowCam.parallelProjection=true;
 
 
 			shadowCam.lookAtDirection(mDirection, Vector3f.Y_AXIS);
 			shadowCam.update();
-			shadowCam.location = frustaCenter;
+			shadowCam.location=frustaCenter;
 			shadowCam.update();
 			shadowCam.updateViewProjection();
 
 			// render shadow casters to shadow map
 			ShadowUtil.updateShadowCamera(occluders, receivers, shadowCam, points);
 
-			var r:IRenderer = renderManager.getRenderer();
+			var r:IRenderer=renderManager.getRenderer();
 			renderManager.setCamera(shadowCam, false);
 			renderManager.setForcedMaterial(preshadowMat);
 

@@ -9,7 +9,7 @@ package org.osflash.signals.natives.base
 
 		public function get signals():InteractiveObjectSignalSet
 		{
-			return _signals ||= new InteractiveObjectSignalSet(this);
+			return _signals||=new InteractiveObjectSignalSet(this);
 		}
 	}
 }

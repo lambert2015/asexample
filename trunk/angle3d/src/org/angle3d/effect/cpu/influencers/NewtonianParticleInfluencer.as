@@ -21,13 +21,13 @@ package org.angle3d.effect.cpu.influencers
 		public function NewtonianParticleInfluencer()
 		{
 			super();
-			this.velocityVariation = 0.0;
+			this.velocityVariation=0.0;
 		}
 
 		override public function influenceParticle(particle:Particle, emitterShape:EmitterShape):void
 		{
 			emitterShape.getRandomPointAndNormal(particle.position, particle.velocity);
-			
+
 			// influencing the particle's velocity
 			if (surfaceTangentFactor == 0.0)
 			{
@@ -40,16 +40,16 @@ package org.angle3d.effect.cpu.influencers
 				if (surfaceTangentRotation != 0.0)
 				{
 					// rotating the tangent
-					var m:Matrix3f = new Matrix3f();
+					var m:Matrix3f=new Matrix3f();
 					m.fromAngleNormalAxis(FastMath.PI * surfaceTangentRotation, particle.velocity);
-					temp = m.multVec(temp);
+					temp=m.multVec(temp);
 				}
 				// applying normal factor (this must be done first)
 				particle.velocity.scaleLocal(normalVelocity);
 				// adding tangent vector
 				particle.velocity.addLocal(temp);
 			}
-			
+
 			if (velocityVariation != 0.0)
 			{
 				this.applyVelocityVariation(particle);
@@ -72,7 +72,7 @@ package org.angle3d.effect.cpu.influencers
 		 */
 		public function setNormalVelocity(normalVelocity:Number):void
 		{
-			this.normalVelocity = normalVelocity;
+			this.normalVelocity=normalVelocity;
 		}
 
 		/**
@@ -82,7 +82,7 @@ package org.angle3d.effect.cpu.influencers
 		 */
 		public function setSurfaceTangentFactor(surfaceTangentFactor:Number):void
 		{
-			this.surfaceTangentFactor = surfaceTangentFactor;
+			this.surfaceTangentFactor=surfaceTangentFactor;
 		}
 
 		/**
@@ -101,7 +101,7 @@ package org.angle3d.effect.cpu.influencers
 		 */
 		public function setSurfaceTangentRotation(surfaceTangentRotation:Number):void
 		{
-			this.surfaceTangentRotation = surfaceTangentRotation;
+			this.surfaceTangentRotation=surfaceTangentRotation;
 		}
 
 		/**
@@ -121,12 +121,12 @@ package org.angle3d.effect.cpu.influencers
 
 		override public function clone():IParticleInfluencer
 		{
-			var result:NewtonianParticleInfluencer = new NewtonianParticleInfluencer();
+			var result:NewtonianParticleInfluencer=new NewtonianParticleInfluencer();
 			result.initialVelocity.copyFrom(initialVelocity);
-			result.normalVelocity = normalVelocity;
-			result.velocityVariation = velocityVariation;
-			result.surfaceTangentFactor = surfaceTangentFactor;
-			result.surfaceTangentRotation = surfaceTangentRotation;
+			result.normalVelocity=normalVelocity;
+			result.velocityVariation=velocityVariation;
+			result.surfaceTangentFactor=surfaceTangentFactor;
+			result.surfaceTangentRotation=surfaceTangentRotation;
 			return result;
 		}
 	}

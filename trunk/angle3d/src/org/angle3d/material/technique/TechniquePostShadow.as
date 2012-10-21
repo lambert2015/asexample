@@ -1,7 +1,7 @@
 package org.angle3d.material.technique
 {
 	import flash.utils.Dictionary;
-	
+
 	import org.angle3d.light.LightType;
 	import org.angle3d.material.shader.Shader;
 	import org.angle3d.material.shader.ShaderType;
@@ -17,41 +17,38 @@ package org.angle3d.material.technique
 	{
 		private var _lightViewProjection:Matrix4f;
 		private var _texture:TextureMap;
-		
+
 		private var _biasMat:Matrix4f;
-		
+
 		public function TechniquePostShadow()
 		{
 			super("TechniquePostShadow");
-			
-			_lightViewProjection = new Matrix4f();
-			
-			_biasMat = new Matrix4f([0.5, 0.0, 0.0, 0.0,
-				0.0, 0.5, 0.0, 0.0,
-				0.0, 0.0, 0.5, 0.0,
-				0.5, 0.5, 0.5, 1.0]);
+
+			_lightViewProjection=new Matrix4f();
+
+			_biasMat=new Matrix4f([0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.5, 0.5, 1.0]);
 		}
-		
+
 		public function setTexture(texture:TextureMap):void
 		{
-			_texture = texture;
+			_texture=texture;
 		}
-		
+
 		public function setLightViewProjection(matrix:Matrix4f):void
 		{
 			_lightViewProjection.copyFrom(matrix);
 		}
-		
+
 		/**
 		 * 更新Uniform属性
 		 * @param	shader
 		 */
-		override public function updateShader(shader : Shader) : void
+		override public function updateShader(shader:Shader):void
 		{
-			shader.getTextureVar("u_diffuseMap").textureMap = _texture;
+			shader.getTextureVar("u_diffuseMap").textureMap=_texture;
 		}
-		
-		override protected function getVertexSource(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+
+		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -72,8 +69,8 @@ package org.angle3d.material.technique
 					v_projCoord = m44(t_coord,u_BiasMatrix);
 				}]]>;
 		}
-		
-		override protected function getFragmentSource(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+
+		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				uniform sampler2D u_ShadowMap;
@@ -85,26 +82,26 @@ package org.angle3d.material.technique
 					output = t_diffuseColor;
 				}]]>;
 		}
-		
-		override protected function getKey(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+
+		override protected function getKey(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
-			var result : Array = [_name, meshType];
+			var result:Array=[_name, meshType];
 			return result.join("_");
 		}
-		
-		override protected function getBindAttributes(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : Dictionary
+
+		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
 		{
-			var map : Dictionary = new Dictionary();
-			map[BufferType.POSITION] = "a_position";
-			map[BufferType.TEXCOORD] = "a_texCoord";
+			var map:Dictionary=new Dictionary();
+			map[BufferType.POSITION]="a_position";
+			map[BufferType.TEXCOORD]="a_texCoord";
 			return map;
 		}
-		
-		override protected function getBindUniforms(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : Vector.<UniformBindingHelp>
+
+		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list : Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
-			list.fixed = true;
+			list.fixed=true;
 			return list;
 		}
 	}

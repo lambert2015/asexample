@@ -33,12 +33,12 @@ package org.osflash.signals.natives
 		 * @param	eventType The type of Event permitted to be dispatched from this signal. Corresponds to Event.type.
 		 * @param	eventClass An optional class reference that enables an event type check in dispatch(). Defaults to flash.events.Event if omitted.
 		 */
-		public function NativeSignal(target:IEventDispatcher = null, eventType:String = "", eventClass:Class = null)
+		public function NativeSignal(target:IEventDispatcher=null, eventType:String="", eventClass:Class=null)
 		{
-			slots = SlotList.NIL;
-			this.target = target;
-			this.eventType = eventType;
-			this.eventClass = eventClass;
+			slots=SlotList.NIL;
+			this.target=target;
+			this.eventType=eventType;
+			this.eventClass=eventClass;
 		}
 
 		/** @inheritDoc */
@@ -49,7 +49,7 @@ package org.osflash.signals.natives
 
 		public function set eventType(value:String):void
 		{
-			_eventType = value;
+			_eventType=value;
 		}
 
 		/** @inheritDoc */
@@ -60,8 +60,8 @@ package org.osflash.signals.natives
 
 		public function set eventClass(value:Class):void
 		{
-			_eventClass = value || Event;
-			_valueClasses = [_eventClass];
+			_eventClass=value || Event;
+			_valueClasses=[_eventClass];
 		}
 
 		/** @inheritDoc */
@@ -73,7 +73,7 @@ package org.osflash.signals.natives
 
 		public function set valueClasses(value:Array):void
 		{
-			eventClass = value && value.length > 0 ? value[0] : null;
+			eventClass=value && value.length > 0 ? value[0] : null;
 		}
 
 		/** @inheritDoc */
@@ -94,7 +94,7 @@ package org.osflash.signals.natives
 				return;
 			if (_target)
 				removeAll();
-			_target = value;
+			_target=value;
 		}
 
 		/**
@@ -114,7 +114,7 @@ package org.osflash.signals.natives
 		 * @throws ArgumentError <code>ArgumentError</code>: Given listener is <code>null</code>.
 		 * @throws ArgumentError <code>ArgumentError</code>: Target object cannot be <code>null</code>.
 		 */
-		public function addWithPriority(listener:Function, priority:int = 0):ISlot
+		public function addWithPriority(listener:Function, priority:int=0):ISlot
 		{
 			return registerListenerWithPriority(listener, false, priority);
 		}
@@ -136,7 +136,7 @@ package org.osflash.signals.natives
 		 * @throws ArgumentError <code>ArgumentError</code>: Given listener is <code>null</code>.
 		 * @throws ArgumentError <code>ArgumentError</code>: Target object cannot be <code>null</code>.
 		 */
-		public function addOnceWithPriority(listener:Function, priority:int = 0):ISlot
+		public function addOnceWithPriority(listener:Function, priority:int=0):ISlot
 		{
 			return registerListenerWithPriority(listener, true, priority);
 		}
@@ -144,24 +144,24 @@ package org.osflash.signals.natives
 		/** @inheritDoc */
 		public function remove(listener:Function):ISlot
 		{
-			const slot:ISlot = slots.find(listener);
+			const slot:ISlot=slots.find(listener);
 			if (!slot)
 				return null;
 			_target.removeEventListener(_eventType, slot.execute1);
-			slots = slots.filterNot(listener);
+			slots=slots.filterNot(listener);
 			return slot;
 		}
 
 		/** @inheritDoc */
 		public function removeAll():void
 		{
-			var slotsToProcess:SlotList = slots;
+			var slotsToProcess:SlotList=slots;
 			while (slotsToProcess.nonEmpty)
 			{
 				target.removeEventListener(_eventType, slotsToProcess.head.execute1);
-				slotsToProcess = slotsToProcess.tail;
+				slotsToProcess=slotsToProcess.tail;
 			}
-			slots = SlotList.NIL;
+			slots=SlotList.NIL;
 		}
 
 		/**
@@ -210,16 +210,16 @@ package org.osflash.signals.natives
 			return target.dispatchEvent(event);
 		}
 
-		protected function registerListenerWithPriority(listener:Function, once:Boolean = false, priority:int = 0):ISlot
+		protected function registerListenerWithPriority(listener:Function, once:Boolean=false, priority:int=0):ISlot
 		{
 			if (!target)
 				throw new ArgumentError('Target object cannot be null.');
 
 			if (registrationPossible(listener, once))
 			{
-				const slot:ISlot = new Slot(listener, this, once, priority);
+				const slot:ISlot=new Slot(listener, this, once, priority);
 				// Not necessary to insertWithPriority() because the target takes care of ordering.
-				slots = slots.prepend(slot);
+				slots=slots.prepend(slot);
 				_target.addEventListener(_eventType, slot.execute1, false, priority);
 				return slot;
 			}
@@ -232,7 +232,7 @@ package org.osflash.signals.natives
 			if (!slots.nonEmpty)
 				return true;
 
-			const existingSlot:ISlot = slots.find(listener);
+			const existingSlot:ISlot=slots.find(listener);
 			if (existingSlot)
 			{
 				if (existingSlot.once != once)

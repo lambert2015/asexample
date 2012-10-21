@@ -5,9 +5,9 @@ package org.angle3d.particles.emitters
 	public class ParticleEmitter
 	{
 		public var technique:ParticleTechnique;
-		
+
 		public var name:String;
-		
+
 		public function ParticleEmitter()
 		{
 		}

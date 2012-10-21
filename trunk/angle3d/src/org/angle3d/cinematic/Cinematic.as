@@ -21,41 +21,41 @@ package org.angle3d.cinematic
 
 	public class Cinematic extends AbstractCinematicEvent implements AppState
 	{
-		private var scene : Node;
-		private var timeLine : TimeLine;
-		private var lastFetchedKeyFrame : int;
-		private var cinematicEvents : Vector.<CinematicEvent>;
-		private var cameraMap : Dictionary; //<String,CameraNode>;
-		private var currentCam : CameraNode;
-		private var initialized : Boolean;
-		private var scheduledPause : int;
+		private var scene:Node;
+		private var timeLine:TimeLine;
+		private var lastFetchedKeyFrame:int;
+		private var cinematicEvents:Vector.<CinematicEvent>;
+		private var cameraMap:Dictionary; //<String,CameraNode>;
+		private var currentCam:CameraNode;
+		private var initialized:Boolean;
+		private var scheduledPause:int;
 
-		public function Cinematic(scene : Node, initialDuration : Number = 10, loopMode : int = 0)
+		public function Cinematic(scene:Node, initialDuration:Number=10, loopMode:int=0)
 		{
 			super(initialDuration, loopMode);
 
-			timeLine = new TimeLine();
-			lastFetchedKeyFrame = -1;
-			cinematicEvents = new Vector.<CinematicEvent>();
-			cameraMap = new Dictionary();
-			initialized = false;
-			scheduledPause = -1;
+			timeLine=new TimeLine();
+			lastFetchedKeyFrame=-1;
+			cinematicEvents=new Vector.<CinematicEvent>();
+			cameraMap=new Dictionary();
+			initialized=false;
+			scheduledPause=-1;
 
-			this.scene = scene;
+			this.scene=scene;
 		}
 
-		override public function onPlay() : void
+		override public function onPlay():void
 		{
 			if (isInitialized())
 			{
-				scheduledPause = -1;
+				scheduledPause=-1;
 				//enableCurrentCam(true);
 				if (playState == PlayState.Paused)
 				{
-					var length : int = cinematicEvents.length;
-					for (var i : int = 0; i < length; i++)
+					var length:int=cinematicEvents.length;
+					for (var i:int=0; i < length; i++)
 					{
-						var ct : CinematicEvent = cinematicEvents[i];
+						var ct:CinematicEvent=cinematicEvents[i];
 						if (ct.getPlayState() == PlayState.Paused)
 						{
 							ct.play();
@@ -65,26 +65,26 @@ package org.angle3d.cinematic
 			}
 		}
 
-		override public function onStop() : void
+		override public function onStop():void
 		{
-			time = 0;
-			lastFetchedKeyFrame = -1;
-			var length : int = cinematicEvents.length;
-			for (var i : int = 0; i < length; i++)
+			time=0;
+			lastFetchedKeyFrame=-1;
+			var length:int=cinematicEvents.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var ct : CinematicEvent = cinematicEvents[i];
+				var ct:CinematicEvent=cinematicEvents[i];
 				ct.setTime(0);
 				ct.stop();
 			}
 			enableCurrentCam(false);
 		}
 
-		override public function onPause() : void
+		override public function onPause():void
 		{
-			var length : int = cinematicEvents.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=cinematicEvents.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var ct : CinematicEvent = cinematicEvents[i];
+				var ct:CinematicEvent=cinematicEvents[i];
 				if (ct.getPlayState() == PlayState.Playing)
 				{
 					ct.pause();
@@ -93,31 +93,31 @@ package org.angle3d.cinematic
 			//enableCurrentCam(false);
 		}
 
-		override public function setSpeed(speed : Number) : void
+		override public function setSpeed(speed:Number):void
 		{
 			super.setSpeed(speed);
-			var length : int = cinematicEvents.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=cinematicEvents.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var ct : CinematicEvent = cinematicEvents[i];
+				var ct:CinematicEvent=cinematicEvents[i];
 				ct.setSpeed(speed);
 			}
 		}
 
-		public function initialize(stateManager : AppStateManager, app : Application) : void
+		public function initialize(stateManager:AppStateManager, app:Application):void
 		{
 			init(app, this);
-			var length : int = cinematicEvents.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=cinematicEvents.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var ct : CinematicEvent = cinematicEvents[i];
+				var ct:CinematicEvent=cinematicEvents[i];
 				ct.init(app, this);
 			}
 
-			initialized = true;
+			initialized=true;
 		}
 
-		public function set enabled(value : Boolean) : void
+		public function set enabled(value:Boolean):void
 		{
 			if (value)
 			{
@@ -125,21 +125,21 @@ package org.angle3d.cinematic
 			}
 		}
 
-		public function get enabled() : Boolean
+		public function get enabled():Boolean
 		{
 			return playState == PlayState.Playing;
 		}
 
-		public function stateAttached(stateManager : AppStateManager) : void
+		public function stateAttached(stateManager:AppStateManager):void
 		{
 		}
 
-		public function stateDetached(stateManager : AppStateManager) : void
+		public function stateDetached(stateManager:AppStateManager):void
 		{
 			stop();
 		}
 
-		public function update(tpf : Number) : void
+		public function update(tpf:Number):void
 		{
 			if (isInitialized())
 			{
@@ -147,16 +147,16 @@ package org.angle3d.cinematic
 			}
 		}
 
-		private function step() : void
+		private function step():void
 		{
 			if (playState != PlayState.Playing)
 			{
 				play();
-				scheduledPause = 2;
+				scheduledPause=2;
 			}
 		}
 
-		override public function onUpdate(tpf : Number) : void
+		override public function onUpdate(tpf:Number):void
 		{
 			if (scheduledPause >= 0)
 			{
@@ -167,20 +167,20 @@ package org.angle3d.cinematic
 				scheduledPause--;
 			}
 
-			var length : int = cinematicEvents.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=cinematicEvents.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var ct : CinematicEvent = cinematicEvents[i];
+				var ct:CinematicEvent=cinematicEvents[i];
 				ct.internalUpdate(tpf);
 			}
 
-			var keyFrameIndex : int = timeLine.getKeyFrameIndexFromTime(time);
+			var keyFrameIndex:int=timeLine.getKeyFrameIndexFromTime(time);
 
 			//iterate to make sure every key frame is triggered
-			i = lastFetchedKeyFrame + 1;
+			i=lastFetchedKeyFrame + 1;
 			while (i <= keyFrameIndex)
 			{
-				var keyFrame : KeyFrame = timeLine.getKeyFrameAtIndex(i);
+				var keyFrame:KeyFrame=timeLine.getKeyFrameAtIndex(i);
 				if (keyFrame != null)
 				{
 					keyFrame.trigger();
@@ -189,31 +189,31 @@ package org.angle3d.cinematic
 				i++;
 			}
 
-			lastFetchedKeyFrame = keyFrameIndex;
+			lastFetchedKeyFrame=keyFrameIndex;
 		}
 
-		override public function setTime(time : Number) : void
+		override public function setTime(time:Number):void
 		{
 			//stopping all events
 			onStop();
 
 			super.setTime(time);
 
-			var keyFrameIndex : int = timeLine.getKeyFrameIndexFromTime(time);
+			var keyFrameIndex:int=timeLine.getKeyFrameIndexFromTime(time);
 
 			//triggering all the event from start to "time" 
 			//then computing timeOffset for each event
-			for (var i : int = 0; i < (keyFrameIndex + 1); i++)
+			for (var i:int=0; i < (keyFrameIndex + 1); i++)
 			{
-				var keyFrame : KeyFrame = timeLine.getKeyFrameAtIndex(i);
+				var keyFrame:KeyFrame=timeLine.getKeyFrameAtIndex(i);
 				if (keyFrame != null)
 				{
-					var tracks : Vector.<CinematicEvent> = keyFrame.getTracks();
-					var length : int = tracks.length;
-					for (var j : int = 0; j < length; j++)
+					var tracks:Vector.<CinematicEvent>=keyFrame.getTracks();
+					var length:int=tracks.length;
+					for (var j:int=0; j < length; j++)
 					{
-						var track : CinematicEvent = tracks[j];
-						var t : Number = time - timeLine.getKeyFrameTime(keyFrame);
+						var track:CinematicEvent=tracks[j];
+						var t:Number=time - timeLine.getKeyFrameTime(keyFrame);
 						if (t >= 0 && (t <= track.getInitialDuration() || track.getLoopMode() != LoopMode.DontLoop))
 						{
 							track.play();
@@ -223,19 +223,19 @@ package org.angle3d.cinematic
 				}
 			}
 
-			lastFetchedKeyFrame = keyFrameIndex;
+			lastFetchedKeyFrame=keyFrameIndex;
 			if (playState != PlayState.Playing)
 			{
 				pause();
 			}
 		}
 
-		public function addTrack(timeStamp : Number, track : CinematicEvent) : KeyFrame
+		public function addTrack(timeStamp:Number, track:CinematicEvent):KeyFrame
 		{
-			var keyFrame : KeyFrame = timeLine.getKeyFrameAtTime(timeStamp);
+			var keyFrame:KeyFrame=timeLine.getKeyFrameAtTime(timeStamp);
 			if (keyFrame == null)
 			{
-				keyFrame = new KeyFrame();
+				keyFrame=new KeyFrame();
 				timeLine.addKeyFrameAtTime(timeStamp, keyFrame);
 			}
 
@@ -244,78 +244,78 @@ package org.angle3d.cinematic
 			return keyFrame;
 		}
 
-		public function render(rm : RenderManager) : void
+		public function render(rm:RenderManager):void
 		{
 		}
 
-		public function postRender() : void
+		public function postRender():void
 		{
 		}
 
-		public function cleanup() : void
+		public function cleanup():void
 		{
 
 		}
 
-		public function fitDuration() : void
+		public function fitDuration():void
 		{
-			var kf : KeyFrame = timeLine.getKeyFrameAtTime(timeLine.getLastKeyFrameIndex());
-			var d : Number = 0;
-			var tracks : Vector.<CinematicEvent> = kf.getTracks();
-			var length : int = tracks.length;
-			for (var i : int = 0; i < length; i++)
+			var kf:KeyFrame=timeLine.getKeyFrameAtTime(timeLine.getLastKeyFrameIndex());
+			var d:Number=0;
+			var tracks:Vector.<CinematicEvent>=kf.getTracks();
+			var length:int=tracks.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var ck : CinematicEvent = tracks[i];
+				var ck:CinematicEvent=tracks[i];
 				if (d < (ck.getDuration() * ck.getSpeed()))
 				{
-					d = (ck.getDuration() * ck.getSpeed());
+					d=(ck.getDuration() * ck.getSpeed());
 				}
 			}
 
-			initialDuration = d;
+			initialDuration=d;
 		}
 
-		public function bindCamera(cameraName : String, cam : Camera3D) : CameraNode
+		public function bindCamera(cameraName:String, cam:Camera3D):CameraNode
 		{
-			var node : CameraNode = new CameraNode(cameraName, cam);
-			node.controlDir = CameraControl.SpatialToCamera;
-			node.getCameraControl().enabled = false;
-			cameraMap[cameraName] = node;
+			var node:CameraNode=new CameraNode(cameraName, cam);
+			node.controlDir=CameraControl.SpatialToCamera;
+			node.getCameraControl().enabled=false;
+			cameraMap[cameraName]=node;
 			scene.attachChild(node);
 			return node;
 		}
 
-		public function getCamera(cameraName : String) : CameraNode
+		public function getCamera(cameraName:String):CameraNode
 		{
 			return cameraMap[cameraName];
 		}
 
-		private function enableCurrentCam(enabled : Boolean) : void
+		private function enableCurrentCam(enabled:Boolean):void
 		{
 			if (currentCam != null)
 			{
-				currentCam.getControl(0).enabled = enabled;
+				currentCam.getControl(0).enabled=enabled;
 			}
 		}
 
-		public function setActiveCamera(cameraName : String) : void
+		public function setActiveCamera(cameraName:String):void
 		{
 			enableCurrentCam(false);
-			currentCam = cameraMap[cameraName];
+			currentCam=cameraMap[cameraName];
 			enableCurrentCam(true);
 		}
 
-		public function setScene(scene : Node) : void
+		public function setScene(scene:Node):void
 		{
-			this.scene = scene;
+			this.scene=scene;
 		}
 
-		public function getScene() : Node
+		public function getScene():Node
 		{
 			return this.scene;
 		}
 
-		public function isInitialized() : Boolean
+		public function isInitialized():Boolean
 		{
 			return this.initialized;
 		}

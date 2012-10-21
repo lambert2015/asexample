@@ -19,8 +19,8 @@ package org.angle3d.math
 		/**
 		 * Represents the identity quaternion rotation (0, 0, 0, 1).
 		 */
-		public static const IDENTITY:Quaternion = new Quaternion();
-		public static const ZERO:Quaternion = new Quaternion(0, 0, 0, 0);
+		public static const IDENTITY:Quaternion=new Quaternion();
+		public static const ZERO:Quaternion=new Quaternion(0, 0, 0, 0);
 
 		/**
 		 * the x value of the vector.
@@ -42,12 +42,12 @@ package org.angle3d.math
 		 */
 		public var w:Number;
 
-		public function Quaternion(x:Number = 0, y:Number = 0, z:Number = 0, w:Number = 1)
+		public function Quaternion(x:Number=0, y:Number=0, z:Number=0, w:Number=1)
 		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
-			this.w = w;
+			this.x=x;
+			this.y=y;
+			this.z=z;
+			this.w=w;
 		}
 
 		/**
@@ -67,19 +67,19 @@ package org.angle3d.math
 		[Inline]
 		public final function setTo(x:Number, y:Number, z:Number, w:Number):void
 		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
-			this.w = w;
+			this.x=x;
+			this.y=y;
+			this.z=z;
+			this.w=w;
 		}
 
 		[Inline]
 		public final function copyFrom(q:Quaternion):void
 		{
-			x = q.x;
-			y = q.y;
-			z = q.z;
-			w = q.w;
+			x=q.x;
+			y=q.y;
+			z=q.z;
+			w=q.w;
 		}
 
 		[Inline]
@@ -109,25 +109,25 @@ package org.angle3d.math
 			var angle:Number;
 			var sinY:Number, sinZ:Number, sinX:Number, cosY:Number, cosZ:Number, cosX:Number;
 
-			angle = zAngle * 0.5;
-			sinZ = Math.sin(angle);
-			cosZ = Math.cos(angle);
-			angle = yAngle * 0.5;
-			sinY = Math.sin(angle);
-			cosY = Math.cos(angle);
-			angle = xAngle * 0.5;
-			sinX = Math.sin(angle);
-			cosX = Math.cos(angle);
+			angle=zAngle * 0.5;
+			sinZ=Math.sin(angle);
+			cosZ=Math.cos(angle);
+			angle=yAngle * 0.5;
+			sinY=Math.sin(angle);
+			cosY=Math.cos(angle);
+			angle=xAngle * 0.5;
+			sinX=Math.sin(angle);
+			cosX=Math.cos(angle);
 
-			var cosYXcosZ:Number = cosY * cosZ;
-			var sinYXsinZ:Number = sinY * sinZ;
-			var cosYXsinZ:Number = cosY * sinZ;
-			var sinYXcosZ:Number = sinY * cosZ;
+			var cosYXcosZ:Number=cosY * cosZ;
+			var sinYXsinZ:Number=sinY * sinZ;
+			var cosYXsinZ:Number=cosY * sinZ;
+			var sinYXcosZ:Number=sinY * cosZ;
 
-			x = (cosYXcosZ * sinX + sinYXsinZ * cosX);
-			y = (sinYXcosZ * cosX + cosYXsinZ * sinX);
-			z = (cosYXsinZ * cosX - sinYXcosZ * sinX);
-			w = (cosYXcosZ * cosX - sinYXsinZ * sinX);
+			x=(cosYXcosZ * sinX + sinYXsinZ * cosX);
+			y=(sinYXcosZ * cosX + cosYXsinZ * sinX);
+			z=(cosYXsinZ * cosX - sinYXcosZ * sinX);
+			w=(cosYXcosZ * cosX - sinYXsinZ * sinX);
 
 			normalizeLocal();
 		}
@@ -135,8 +135,8 @@ package org.angle3d.math
 		[Inline]
 		public final function makeIdentity():void
 		{
-			x = y = z = 0;
-			w = 1;
+			x=y=z=0;
+			w=1;
 		}
 
 		/**
@@ -158,35 +158,35 @@ package org.angle3d.math
 		 *            you want a new float[] to be created
 		 * @return the float[] in which the angles are stored.
 		 */
-		public function toAngle(result:Vector3f = null):Vector3f
+		public function toAngle(result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			var sqw:Number = w * w;
-			var sqx:Number = x * x;
-			var sqy:Number = y * y;
-			var sqz:Number = z * z;
-			var unit:Number = sqx + sqy + sqz + sqw; // if normalized is one, otherwise
+			var sqw:Number=w * w;
+			var sqx:Number=x * x;
+			var sqy:Number=y * y;
+			var sqz:Number=z * z;
+			var unit:Number=sqx + sqy + sqz + sqw; // if normalized is one, otherwise
 			// is correction factor
-			var test:Number = x * y + z * w;
+			var test:Number=x * y + z * w;
 			if (test > 0.499 * unit) // singularity at north pole
 			{
-				result.y = 2 * Math.atan2(x, w);
-				result.z = FastMath.HALF_PI;
-				result.x = 0;
+				result.y=2 * Math.atan2(x, w);
+				result.z=FastMath.HALF_PI;
+				result.x=0;
 			}
 			else if (test < -0.499 * unit) // singularity at south pole
 			{
-				result.y = -2 * Math.atan2(x, w);
-				result.z = -FastMath.HALF_PI;
-				result.x = 0;
+				result.y=-2 * Math.atan2(x, w);
+				result.z=-FastMath.HALF_PI;
+				result.x=0;
 			}
 			else
 			{
-				result.y = Math.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw); // roll or heading 
-				result.z = Math.asin(2 * test / unit); // pitch or attitude
-				result.x = Math.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw); // yaw or bank
+				result.y=Math.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw); // roll or heading 
+				result.z=Math.asin(2 * test / unit); // pitch or attitude
+				result.x=Math.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw); // yaw or bank
 			}
 			return result;
 		}
@@ -201,35 +201,35 @@ package org.angle3d.math
 		 *            you want a new float[] to be created
 		 * @return the float[] in which the angles are stored.
 		 */
-		public function toAngles(result:Vector.<Number> = null):Vector.<Number>
+		public function toAngles(result:Vector.<Number>=null):Vector.<Number>
 		{
 			if (result == null)
-				result = new Vector.<Number>();
+				result=new Vector.<Number>();
 
-			var sqw:Number = w * w;
-			var sqx:Number = x * x;
-			var sqy:Number = y * y;
-			var sqz:Number = z * z;
-			var unit:Number = sqx + sqy + sqz + sqw; // if normalized is one, otherwise
+			var sqw:Number=w * w;
+			var sqx:Number=x * x;
+			var sqy:Number=y * y;
+			var sqz:Number=z * z;
+			var unit:Number=sqx + sqy + sqz + sqw; // if normalized is one, otherwise
 			// is correction factor
-			var test:Number = x * y + z * w;
+			var test:Number=x * y + z * w;
 			if (test > 0.499 * unit) // singularity at north pole
 			{
-				result[1] = 2 * Math.atan2(x, w);
-				result[2] = FastMath.HALF_PI;
-				result[0] = 0;
+				result[1]=2 * Math.atan2(x, w);
+				result[2]=FastMath.HALF_PI;
+				result[0]=0;
 			}
 			else if (test < -0.499 * unit) // singularity at south pole
 			{
-				result[1] = -2 * Math.atan2(x, w);
-				result[2] = -FastMath.HALF_PI;
-				result[0] = 0;
+				result[1]=-2 * Math.atan2(x, w);
+				result[2]=-FastMath.HALF_PI;
+				result[0]=0;
 			}
 			else
 			{
-				result[1] = Math.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw); // roll or heading 
-				result[2] = Math.asin(2 * test / unit); // pitch or attitude
-				result[0] = Math.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw); // yaw or bank
+				result[1]=Math.atan2(2 * y * w - 2 * x * z, sqx - sqy - sqz + sqw); // roll or heading 
+				result[2]=Math.asin(2 * test / unit); // pitch or attitude
+				result[0]=Math.atan2(2 * x * w - 2 * y * z, -sqx + sqy - sqz + sqw); // yaw or bank
 			}
 			return result;
 		}
@@ -252,44 +252,44 @@ package org.angle3d.math
 
 			// the trace is the sum of the diagonal elements; see
 			// http://mathworld.wolfram.com/MatrixTrace.html
-			var t:Number = mat.m00 + mat.m11 + mat.m22;
+			var t:Number=mat.m00 + mat.m11 + mat.m22;
 
 			// we protect the division by s by ensuring that s>=1
 			if (t >= 0) // |w| >= .5
 			{
-				s = Math.sqrt(t + 1); // |s|>=1 ...
-				w = 0.5 * s;
-				s = 0.5 / s; // so this division isn't bad
-				x = (mat.m21 - mat.m12) * s;
-				y = (mat.m02 - mat.m20) * s;
-				z = (mat.m10 - mat.m01) * s;
+				s=Math.sqrt(t + 1); // |s|>=1 ...
+				w=0.5 * s;
+				s=0.5 / s; // so this division isn't bad
+				x=(mat.m21 - mat.m12) * s;
+				y=(mat.m02 - mat.m20) * s;
+				z=(mat.m10 - mat.m01) * s;
 			}
 			else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
 			{
-				s = Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
-				x = s * 0.5; // |x| >= .5
-				s = 0.5 / s;
-				y = (mat.m10 + mat.m01) * s;
-				z = (mat.m02 + mat.m20) * s;
-				w = (mat.m21 - mat.m12) * s;
+				s=Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
+				x=s * 0.5; // |x| >= .5
+				s=0.5 / s;
+				y=(mat.m10 + mat.m01) * s;
+				z=(mat.m02 + mat.m20) * s;
+				w=(mat.m21 - mat.m12) * s;
 			}
 			else if (mat.m11 > mat.m22)
 			{
-				s = Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
-				y = s * 0.5; // |y| >= .5
-				s = 0.5 / s;
-				x = (mat.m10 + mat.m01) * s;
-				z = (mat.m21 + mat.m12) * s;
-				w = (mat.m02 - mat.m20) * s;
+				s=Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
+				y=s * 0.5; // |y| >= .5
+				s=0.5 / s;
+				x=(mat.m10 + mat.m01) * s;
+				z=(mat.m21 + mat.m12) * s;
+				w=(mat.m02 - mat.m20) * s;
 			}
 			else
 			{
-				s = Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
-				z = s * 0.5; // |z| >= .5
-				s = 0.5 / s;
-				x = (mat.m02 + mat.m20) * s;
-				y = (mat.m21 + mat.m12) * s;
-				w = (mat.m10 - mat.m01) * s;
+				s=Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
+				z=s * 0.5; // |z| >= .5
+				s=0.5 / s;
+				x=(mat.m02 + mat.m20) * s;
+				y=(mat.m21 + mat.m12) * s;
+				w=(mat.m10 - mat.m01) * s;
 			}
 		}
 
@@ -303,44 +303,44 @@ package org.angle3d.math
 
 			// the trace is the sum of the diagonal elements; see
 			// http://mathworld.wolfram.com/MatrixTrace.html
-			var t:Number = mat.m00 + mat.m11 + mat.m22;
+			var t:Number=mat.m00 + mat.m11 + mat.m22;
 
 			// we protect the division by s by ensuring that s>=1
 			if (t >= 0) // |w| >= .5
 			{
-				s = Math.sqrt(t + 1); // |s|>=1 ...
-				w = 0.5 * s;
-				s = 0.5 / s; // so this division isn't bad
-				x = (mat.m21 - mat.m12) * s;
-				y = (mat.m02 - mat.m20) * s;
-				z = (mat.m10 - mat.m01) * s;
+				s=Math.sqrt(t + 1); // |s|>=1 ...
+				w=0.5 * s;
+				s=0.5 / s; // so this division isn't bad
+				x=(mat.m21 - mat.m12) * s;
+				y=(mat.m02 - mat.m20) * s;
+				z=(mat.m10 - mat.m01) * s;
 			}
 			else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
 			{
-				s = Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
-				x = s * 0.5; // |x| >= .5
-				s = 0.5 / s;
-				y = (mat.m10 + mat.m01) * s;
-				z = (mat.m02 + mat.m20) * s;
-				w = (mat.m21 - mat.m12) * s;
+				s=Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
+				x=s * 0.5; // |x| >= .5
+				s=0.5 / s;
+				y=(mat.m10 + mat.m01) * s;
+				z=(mat.m02 + mat.m20) * s;
+				w=(mat.m21 - mat.m12) * s;
 			}
 			else if (mat.m11 > mat.m22)
 			{
-				s = Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
-				y = s * 0.5; // |y| >= .5
-				s = 0.5 / s;
-				x = (mat.m10 + mat.m01) * s;
-				z = (mat.m21 + mat.m12) * s;
-				w = (mat.m02 - mat.m20) * s;
+				s=Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
+				y=s * 0.5; // |y| >= .5
+				s=0.5 / s;
+				x=(mat.m10 + mat.m01) * s;
+				z=(mat.m21 + mat.m12) * s;
+				w=(mat.m02 - mat.m20) * s;
 			}
 			else
 			{
-				s = Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
-				z = s * 0.5; // |z| >= .5
-				s = 0.5 / s;
-				x = (mat.m02 + mat.m20) * s;
-				y = (mat.m21 + mat.m12) * s;
-				w = (mat.m10 - mat.m01) * s;
+				s=Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
+				z=s * 0.5; // |z| >= .5
+				s=0.5 / s;
+				x=(mat.m02 + mat.m20) * s;
+				y=(mat.m21 + mat.m12) * s;
+				w=(mat.m10 - mat.m01) * s;
 			}
 		}
 
@@ -352,81 +352,81 @@ package org.angle3d.math
 		 *            The Matrix3f to store the result in.
 		 * @return the rotation matrix representation of this quaternion.
 		 */
-		public function toMatrix3f(result:Matrix3f = null):Matrix3f
+		public function toMatrix3f(result:Matrix3f=null):Matrix3f
 		{
 			if (result == null)
-				result = new Matrix3f();
+				result=new Matrix3f();
 
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number=x * x + y * y + z * z + w * w;
 
 			// we explicitly test norm against one here, saving a division
 			// at the cost of a test and branch.  Is it worth it?
-			var s:Number = (norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
+			var s:Number=(norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
 
 			// compute xs/ys/zs first to save 6 multiplications, since xs/ys/zs
 			// will be used 2-4 times each.
-			var xs:Number = x * s;
-			var ys:Number = y * s;
-			var zs:Number = z * s;
-			var xx:Number = x * xs;
-			var xy:Number = x * ys;
-			var xz:Number = x * zs;
-			var xw:Number = w * xs;
-			var yy:Number = y * ys;
-			var yz:Number = y * zs;
-			var yw:Number = w * ys;
-			var zz:Number = z * zs;
-			var zw:Number = w * zs;
+			var xs:Number=x * s;
+			var ys:Number=y * s;
+			var zs:Number=z * s;
+			var xx:Number=x * xs;
+			var xy:Number=x * ys;
+			var xz:Number=x * zs;
+			var xw:Number=w * xs;
+			var yy:Number=y * ys;
+			var yz:Number=y * zs;
+			var yw:Number=w * ys;
+			var zz:Number=z * zs;
+			var zw:Number=w * zs;
 
 			// using s=2/norm (instead of 1/norm) saves 9 multiplications by 2 here
-			result.m00 = 1 - (yy + zz);
-			result.m01 = (xy - zw);
-			result.m02 = (xz + yw);
-			result.m10 = (xy + zw);
-			result.m11 = 1 - (xx + zz);
-			result.m12 = (yz - xw);
-			result.m20 = (xz - yw);
-			result.m21 = (yz + xw);
-			result.m22 = 1 - (xx + yy);
+			result.m00=1 - (yy + zz);
+			result.m01=(xy - zw);
+			result.m02=(xz + yw);
+			result.m10=(xy + zw);
+			result.m11=1 - (xx + zz);
+			result.m12=(yz - xw);
+			result.m20=(xz - yw);
+			result.m21=(yz + xw);
+			result.m22=1 - (xx + yy);
 
 			return result;
 		}
 
-		public function toMatrix4f(result:Matrix4f = null):Matrix4f
+		public function toMatrix4f(result:Matrix4f=null):Matrix4f
 		{
 			if (result == null)
-				result = new Matrix4f();
+				result=new Matrix4f();
 
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number=x * x + y * y + z * z + w * w;
 			// we explicitly test norm against one here, saving a division
 			// at the cost of a test and branch.  Is it worth it?
-			var s:Number = (norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
+			var s:Number=(norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
 
 			// compute xs/ys/zs first to save 6 multiplications, since xs/ys/zs
 			// will be used 2-4 times each.
-			var xs:Number = x * s;
-			var ys:Number = y * s;
-			var zs:Number = z * s;
-			var xx:Number = x * xs;
-			var xy:Number = x * ys;
-			var xz:Number = x * zs;
-			var xw:Number = w * xs;
-			var yy:Number = y * ys;
-			var yz:Number = y * zs;
-			var yw:Number = w * ys;
-			var zz:Number = z * zs;
-			var zw:Number = w * zs;
+			var xs:Number=x * s;
+			var ys:Number=y * s;
+			var zs:Number=z * s;
+			var xx:Number=x * xs;
+			var xy:Number=x * ys;
+			var xz:Number=x * zs;
+			var xw:Number=w * xs;
+			var yy:Number=y * ys;
+			var yz:Number=y * zs;
+			var yw:Number=w * ys;
+			var zz:Number=z * zs;
+			var zw:Number=w * zs;
 
 			// using s=2/norm (instead of 1/norm) saves 9 multiplications by 2 here
-			result.m00 = 1 - (yy + zz);
-			result.m01 = (xy - zw);
-			result.m02 = (xz + yw);
-			result.m10 = (xy + zw);
-			result.m11 = 1 - (xx + zz);
-			result.m12 = (yz - xw);
-			result.m20 = (xz - yw);
-			result.m21 = (yz + xw);
-			result.m22 = 1 - (xx + yy);
+			result.m00=1 - (yy + zz);
+			result.m01=(xy - zw);
+			result.m02=(xz + yw);
+			result.m10=(xy + zw);
+			result.m11=1 - (xx + zz);
+			result.m12=(yz - xw);
+			result.m20=(xz - yw);
+			result.m21=(yz + xw);
+			result.m22=1 - (xx + yy);
 
 			return result;
 		}
@@ -443,43 +443,43 @@ package org.angle3d.math
 		 *            is created.
 		 * @return the column specified by the index.
 		 */
-		public function getRotationColumn(i:int, result:Vector3f = null):Vector3f
+		public function getRotationColumn(i:int, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number=x * x + y * y + z * z + w * w;
 			if (norm != 1.0)
 			{
-				norm = 1 / Math.sqrt(norm);
+				norm=1 / Math.sqrt(norm);
 			}
 
-			var xx:Number = x * x * norm;
-			var xy:Number = x * y * norm;
-			var xz:Number = x * z * norm;
-			var xw:Number = x * w * norm;
-			var yy:Number = y * y * norm;
-			var yz:Number = y * z * norm;
-			var yw:Number = y * w * norm;
-			var zz:Number = z * z * norm;
-			var zw:Number = z * w * norm;
+			var xx:Number=x * x * norm;
+			var xy:Number=x * y * norm;
+			var xz:Number=x * z * norm;
+			var xw:Number=x * w * norm;
+			var yy:Number=y * y * norm;
+			var yz:Number=y * z * norm;
+			var yw:Number=y * w * norm;
+			var zz:Number=z * z * norm;
+			var zw:Number=z * w * norm;
 
 			switch (i)
 			{
 				case 0:
-					result.x = 1 - 2 * (yy + zz);
-					result.y = 2 * (xy + zw);
-					result.z = 2 * (xz - yw);
+					result.x=1 - 2 * (yy + zz);
+					result.y=2 * (xy + zw);
+					result.z=2 * (xz - yw);
 					break;
 				case 1:
-					result.x = 2 * (xy - zw);
-					result.y = 1 - 2 * (xx + zz);
-					result.z = 2 * (yz + xw);
+					result.x=2 * (xy - zw);
+					result.y=1 - 2 * (xx + zz);
+					result.z=2 * (yz + xw);
 					break;
 				case 2:
-					result.x = 2 * (xz + yw);
-					result.y = 2 * (yz - xw);
-					result.z = 1 - 2 * (xx + yy);
+					result.x=2 * (xz + yw);
+					result.y=2 * (yz - xw);
+					result.z=1 - 2 * (xx + yy);
 					break;
 				default:
 					throw new Error("Invalid column index. " + i);
@@ -506,12 +506,12 @@ package org.angle3d.math
 			}
 			else
 			{
-				var halfAngle:Number = 0.5 * angle;
-				var sinAngle:Number = Math.sin(halfAngle);
-				x = sinAngle * axis.x;
-				y = sinAngle * axis.y;
-				z = sinAngle * axis.z;
-				w = Math.cos(halfAngle);
+				var halfAngle:Number=0.5 * angle;
+				var sinAngle:Number=Math.sin(halfAngle);
+				x=sinAngle * axis.x;
+				y=sinAngle * axis.y;
+				z=sinAngle * axis.z;
+				w=Math.cos(halfAngle);
 			}
 		}
 
@@ -525,29 +525,29 @@ package org.angle3d.math
 		 *            the object we'll store the computed axis in.
 		 * @return the angle of rotation in radians.
 		 */
-		public function toAngleAxis(result:Vector3f = null):Number
+		public function toAngleAxis(result:Vector3f=null):Number
 		{
-			var sqrLength:Number = x * x + y * y + z * z;
+			var sqrLength:Number=x * x + y * y + z * z;
 			var angle:Number;
 			if (sqrLength == 0.0)
 			{
-				angle = 0;
+				angle=0;
 				if (result != null)
 				{
-					result.x = 1.0;
-					result.y = 0.0;
-					result.z = 0.0;
+					result.x=1.0;
+					result.y=0.0;
+					result.z=0.0;
 				}
 			}
 			else
 			{
-				angle = 2.0 * Math.acos(w);
+				angle=2.0 * Math.acos(w);
 				if (result != null)
 				{
-					var invLength:Number = 1.0 / Math.sqrt(sqrLength);
-					result.x = x * invLength;
-					result.y = y * invLength;
-					result.z = z * invLength;
+					var invLength:Number=1.0 / Math.sqrt(sqrLength);
+					result.x=x * invLength;
+					result.y=y * invLength;
+					result.z=z * invLength;
 				}
 			}
 			return angle;
@@ -603,7 +603,7 @@ package org.angle3d.math
 		 * }
 		 *
 		 */
-		public function slerp(q1:Quaternion, q2:Quaternion, interp:Number, epsilon:Number = 0.05):void
+		public function slerp(q1:Quaternion, q2:Quaternion, interp:Number, epsilon:Number=0.05):void
 		{
 			if (interp <= 0 || q1.equals(q2))
 			{
@@ -617,47 +617,47 @@ package org.angle3d.math
 			}
 
 
-			var q1x:Number = q1.x, q1y:Number = q1.y, q1z:Number = q1.z, q1w:Number = q1.w;
-			var q2x:Number = q2.x, q2y:Number = q2.y, q2z:Number = q2.z, q2w:Number = q2.w;
+			var q1x:Number=q1.x, q1y:Number=q1.y, q1z:Number=q1.z, q1w:Number=q1.w;
+			var q2x:Number=q2.x, q2y:Number=q2.y, q2z:Number=q2.z, q2w:Number=q2.w;
 
 			//var result : Number = q1.dot(q2);
-			var result:Number = q1x * q2x + q1y * q2y + q1z * q2z + q1w * q2w;
+			var result:Number=q1x * q2x + q1y * q2y + q1z * q2z + q1w * q2w;
 			if (result < 0.0)
 			{
 				// Negate the second quaternion and the result of the dot product
-				q2x = -q2x;
-				q2y = -q2y;
-				q2z = -q2z;
-				q2w = -q2w;
-				result = -result;
+				q2x=-q2x;
+				q2y=-q2y;
+				q2z=-q2z;
+				q2w=-q2w;
+				result=-result;
 			}
 
 			// Set the first and second scale for the interpolation
-			var scale0:Number = 1 - interp;
-			var scale1:Number = interp;
+			var scale0:Number=1 - interp;
+			var scale1:Number=interp;
 
 			// Check if the angle between the 2 quaternions was big enough to
 			// warrant such calculations
 			if (result < 1.0 - epsilon) // Get the angle between the 2 quaternions,
 			{
 				// and then store the sin() of that angle
-				var theta:Number = Math.acos(result);
-				var invSinTheta:Number = 1.0 / Math.sin(theta);
+				var theta:Number=Math.acos(result);
+				var invSinTheta:Number=1.0 / Math.sin(theta);
 
-				var interpTheta:Number = interp * theta;
+				var interpTheta:Number=interp * theta;
 
 				// Calculate the scale for q1 and q2, according to the angle and
 				// it's sine value
-				scale0 = Math.sin(theta - interpTheta) * invSinTheta;
-				scale1 = Math.sin(interpTheta) * invSinTheta;
+				scale0=Math.sin(theta - interpTheta) * invSinTheta;
+				scale1=Math.sin(interpTheta) * invSinTheta;
 			}
 
 			// Calculate the x, y, z and w values for the quaternion by using a special
 			// form of linear interpolation for quaternions.
-			this.x = (scale0 * q1x) + (scale1 * q2x);
-			this.y = (scale0 * q1y) + (scale1 * q2y);
-			this.z = (scale0 * q1z) + (scale1 * q2z);
-			this.w = (scale0 * q1w) + (scale1 * q2w);
+			this.x=(scale0 * q1x) + (scale1 * q2x);
+			this.y=(scale0 * q1y) + (scale1 * q2y);
+			this.z=(scale0 * q1z) + (scale1 * q2z);
+			this.w=(scale0 * q1w) + (scale1 * q2w);
 		}
 
 		/**
@@ -668,16 +668,16 @@ package org.angle3d.math
 		 */
 		public function nlerp(q1:Quaternion, q2:Quaternion, blend:Number):void
 		{
-			var blendI:Number = 1.0 - blend;
+			var blendI:Number=1.0 - blend;
 			if (q1.dot(q2) < 0.0)
 			{
-				blend = -blend;
+				blend=-blend;
 			}
 
-			x = blendI * q1.x + blend * q2.x;
-			y = blendI * q1.y + blend * q2.y;
-			z = blendI * q1.z + blend * q2.z;
-			w = blendI * q1.w + blend * q2.w;
+			x=blendI * q1.x + blend * q2.x;
+			y=blendI * q1.y + blend * q2.y;
+			z=blendI * q1.z + blend * q2.z;
+			w=blendI * q1.w + blend * q2.w;
 
 			normalizeLocal();
 		}
@@ -707,10 +707,10 @@ package org.angle3d.math
 		[Inline]
 		public final function addLocal(q:Quaternion):void
 		{
-			this.x += q.x;
-			this.y += q.y;
-			this.z += q.z;
-			this.w += q.w;
+			this.x+=q.x;
+			this.y+=q.y;
+			this.z+=q.z;
+			this.w+=q.w;
 		}
 
 		/**
@@ -739,10 +739,10 @@ package org.angle3d.math
 		[Inline]
 		public final function subtractLocal(q:Quaternion):void
 		{
-			this.x -= q.x;
-			this.y -= q.y;
-			this.z -= q.z;
-			this.w -= q.w;
+			this.x-=q.x;
+			this.y-=q.y;
+			this.z-=q.z;
+			this.w-=q.w;
 		}
 
 		/**
@@ -757,32 +757,32 @@ package org.angle3d.math
 		/**
 		 * 注意：四元数相乘不符合乘法交换律  q * p != p * q
 		 */
-		public function multiply(q:Quaternion, result:Quaternion = null):Quaternion
+		public function multiply(q:Quaternion, result:Quaternion=null):Quaternion
 		{
 			if (result == null)
 			{
-				result = new Quaternion();
+				result=new Quaternion();
 			}
 
-			var tw:Number = w, tx:Number = x, ty:Number = y, tz:Number = z;
-			var qw:Number = q.w, qx:Number = q.x, qy:Number = q.y, qz:Number = q.z;
+			var tw:Number=w, tx:Number=x, ty:Number=y, tz:Number=z;
+			var qw:Number=q.w, qx:Number=q.x, qy:Number=q.y, qz:Number=q.z;
 
-			result.x = tx * qw + ty * qz - tz * qy + tw * qx;
-			result.y = -tx * qz + ty * qw + tz * qx + tw * qy;
-			result.z = tx * qy - ty * qx + tz * qw + tw * qz;
-			result.w = -tx * qx - ty * qy - tz * qz + tw * qw;
+			result.x=tx * qw + ty * qz - tz * qy + tw * qx;
+			result.y=-tx * qz + ty * qw + tz * qx + tw * qy;
+			result.z=tx * qy - ty * qx + tz * qw + tw * qz;
+			result.w=-tx * qx - ty * qy - tz * qz + tw * qw;
 			return result;
 		}
 
 		public function multiplyLocal(q:Quaternion):void
 		{
-			var tw:Number = w, tx:Number = x, ty:Number = y, tz:Number = z;
-			var qw:Number = q.w, qx:Number = q.x, qy:Number = q.y, qz:Number = q.z;
+			var tw:Number=w, tx:Number=x, ty:Number=y, tz:Number=z;
+			var qw:Number=q.w, qx:Number=q.x, qy:Number=q.y, qz:Number=q.z;
 
-			x = tx * qw + ty * qz - tz * qy + tw * qx;
-			y = -tx * qz + ty * qw + tz * qx + tw * qy;
-			z = tx * qy - ty * qx + tz * qw + tw * qz;
-			w = -tx * qx - ty * qy - tz * qz + tw * qw;
+			x=tx * qw + ty * qz - tz * qy + tw * qx;
+			y=-tx * qz + ty * qw + tz * qx + tw * qy;
+			z=tx * qy - ty * qx + tz * qw + tw * qz;
+			w=-tx * qx - ty * qy - tz * qz + tw * qw;
 		}
 
 		/**
@@ -794,14 +794,14 @@ package org.angle3d.math
 		 */
 		public function apply(matrix:Matrix3f):void
 		{
-			var oldX:Number = x, oldY:Number = y, oldZ:Number = z, oldW:Number = w;
+			var oldX:Number=x, oldY:Number=y, oldZ:Number=z, oldW:Number=w;
 			fromMatrix3f(matrix);
-			var tempX:Number = x, tempY:Number = y, tempZ:Number = z, tempW:Number = w;
+			var tempX:Number=x, tempY:Number=y, tempZ:Number=z, tempW:Number=w;
 
-			x = oldX * tempW + oldY * tempZ - oldZ * tempY + oldW * tempX;
-			y = -oldX * tempZ + oldY * tempW + oldZ * tempX + oldW * tempY;
-			z = oldX * tempY - oldY * tempX + oldZ * tempW + oldW * tempZ;
-			w = -oldX * tempX - oldY * tempY - oldZ * tempZ + oldW * tempW;
+			x=oldX * tempW + oldY * tempZ - oldZ * tempY + oldW * tempX;
+			y=-oldX * tempZ + oldY * tempW + oldZ * tempX + oldW * tempY;
+			z=oldX * tempY - oldY * tempX + oldZ * tempW + oldW * tempZ;
+			w=-oldX * tempX - oldY * tempY - oldZ * tempZ + oldW * tempW;
 		}
 
 		/**
@@ -818,7 +818,7 @@ package org.angle3d.math
 		 */
 		public function fromAxes(xAxis:Vector3f, yAxis:Vector3f, zAxis:Vector3f):void
 		{
-			var m:Matrix3f = new Matrix3f([xAxis.x, yAxis.x, zAxis.x, xAxis.y, yAxis.y, zAxis.y, xAxis.z, yAxis.z, zAxis.z]);
+			var m:Matrix3f=new Matrix3f([xAxis.x, yAxis.x, zAxis.x, xAxis.y, yAxis.y, zAxis.y, xAxis.z, yAxis.z, zAxis.z]);
 			fromMatrix3f(m);
 		}
 
@@ -833,10 +833,10 @@ package org.angle3d.math
 		 */
 		public function toAxes(axis:Vector.<Vector3f>):void
 		{
-			var tempMat:Matrix3f = toMatrix3f();
-			axis[0] = tempMat.copyColumnTo(0, axis[0]);
-			axis[1] = tempMat.copyColumnTo(1, axis[1]);
-			axis[2] = tempMat.copyColumnTo(2, axis[2]);
+			var tempMat:Matrix3f=toMatrix3f();
+			axis[0]=tempMat.copyColumnTo(0, axis[0]);
+			axis[1]=tempMat.copyColumnTo(1, axis[1]);
+			axis[2]=tempMat.copyColumnTo(2, axis[2]);
 		}
 
 		/**
@@ -857,29 +857,29 @@ package org.angle3d.math
 		 * uuv *= 2.0f;
 		 * return v + uv + uuv;
 		 */
-		public function multiplyVector(v:Vector3f, result:Vector3f = null):Vector3f
+		public function multiplyVector(v:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			var vx:Number = v.x, vy:Number = v.y, vz:Number = v.z;
+			var vx:Number=v.x, vy:Number=v.y, vz:Number=v.z;
 
-			var xx:Number = x * x;
-			var yy:Number = y * y;
-			var zz:Number = z * z;
-			var ww:Number = w * w;
+			var xx:Number=x * x;
+			var yy:Number=y * y;
+			var zz:Number=z * z;
+			var ww:Number=w * w;
 
-			var x2:Number = x * 2;
-			var y2:Number = y * 2;
-			var z2:Number = z * 2;
-			var w2:Number = w * 2;
+			var x2:Number=x * 2;
+			var y2:Number=y * 2;
+			var z2:Number=z * 2;
+			var w2:Number=w * 2;
 
 			var tempX:Number, tempY:Number;
-			tempX = ww * vx + y2 * w * vz - z2 * w * vy + xx * vx + y2 * x * vy + z2 * x * vz - zz * vx - yy * vx;
-			tempY = x2 * y * vx + yy * vy + z2 * y * vz + w2 * z * vx - zz * vy + ww * vy - x2 * w * vz - xx * vy;
-			result.z = x2 * z * vx + y2 * z * vy + zz * vz - w2 * y * vx - yy * vz + w2 * x * vy - xx * vz + ww * vz;
-			result.x = tempX;
-			result.y = tempY;
+			tempX=ww * vx + y2 * w * vz - z2 * w * vy + xx * vx + y2 * x * vy + z2 * x * vz - zz * vx - yy * vx;
+			tempY=x2 * y * vx + yy * vy + z2 * y * vz + w2 * z * vx - zz * vy + ww * vy - x2 * w * vz - xx * vy;
+			result.z=x2 * z * vx + y2 * z * vy + zz * vz - w2 * y * vx - yy * vz + w2 * x * vy - xx * vz + ww * vz;
+			result.x=tempX;
+			result.y=tempY;
 
 			return result;
 		}
@@ -887,24 +887,24 @@ package org.angle3d.math
 		//TODO 优化
 		public function multVecLocal(vec:Vector3f):void
 		{
-			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
+			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
 
-			var xx:Number = x * x;
-			var yy:Number = y * y;
-			var zz:Number = z * z;
-			var ww:Number = w * w;
+			var xx:Number=x * x;
+			var yy:Number=y * y;
+			var zz:Number=z * z;
+			var ww:Number=w * w;
 
-			var x2:Number = x * 2;
-			var y2:Number = y * 2;
-			var z2:Number = z * 2;
-			var w2:Number = w * 2;
+			var x2:Number=x * 2;
+			var y2:Number=y * 2;
+			var z2:Number=z * 2;
+			var w2:Number=w * 2;
 
 			var tempX:Number, tempY:Number;
-			tempX = ww * vx + y2 * w * vz - z2 * w * vy + xx * vx + y2 * x * vy + z2 * x * vz - zz * vx - yy * vx;
-			tempY = x2 * y * vx + yy * vy + z2 * y * vz + w2 * z * vx - zz * vy + ww * vy - x2 * w * vz - xx * vy;
-			vec.z = x2 * z * vx + y2 * z * vy + zz * vz - w2 * y * vx - yy * vz + w2 * x * vy - xx * vz + ww * vz;
-			vec.x = tempX;
-			vec.y = tempY;
+			tempX=ww * vx + y2 * w * vz - z2 * w * vy + xx * vx + y2 * x * vy + z2 * x * vz - zz * vx - yy * vx;
+			tempY=x2 * y * vx + yy * vy + z2 * y * vz + w2 * z * vx - zz * vy + ww * vy - x2 * w * vz - xx * vy;
+			vec.z=x2 * z * vx + y2 * z * vy + zz * vz - w2 * y * vx - yy * vz + w2 * x * vy - xx * vz + ww * vz;
+			vec.x=tempX;
+			vec.y=tempY;
 		}
 
 		/**
@@ -931,10 +931,10 @@ package org.angle3d.math
 		[Inline]
 		public final function scaleLocal(value:Number):void
 		{
-			x *= value;
-			y *= value;
-			z *= value;
-			w *= value;
+			x*=value;
+			y*=value;
+			z*=value;
+			w*=value;
 		}
 
 		/**
@@ -968,18 +968,18 @@ package org.angle3d.math
 		 */
 		public function normalizeLocal():Quaternion
 		{
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number=x * x + y * y + z * z + w * w;
 			if (norm == 0)
 			{
-				x = y = z = w = 0.0;
+				x=y=z=w=0.0;
 			}
 			else
 			{
-				norm = 1 / Math.sqrt(norm);
-				x *= norm;
-				y *= norm;
-				z *= norm;
-				w *= norm;
+				norm=1 / Math.sqrt(norm);
+				x*=norm;
+				y*=norm;
+				z*=norm;
+				w*=norm;
 			}
 
 			return this;
@@ -988,7 +988,7 @@ package org.angle3d.math
 		[Inline]
 		public final function zero():void
 		{
-			x = y = z = w = 0;
+			x=y=z=w=0;
 		}
 
 		/**
@@ -1001,10 +1001,10 @@ package org.angle3d.math
 		 */
 		public function inverse():Quaternion
 		{
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number=x * x + y * y + z * z + w * w;
 			if (norm > 0.0)
 			{
-				var invNorm:Number = 1.0 / norm;
+				var invNorm:Number=1.0 / norm;
 				return new Quaternion(-x * invNorm, -y * invNorm, -z * invNorm, w * invNorm);
 			}
 			// return an invalid result to flag the error
@@ -1029,14 +1029,14 @@ package org.angle3d.math
 		 */
 		public function inverseLocal():void
 		{
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number=x * x + y * y + z * z + w * w;
 			if (norm > 0.0)
 			{
-				norm = 1.0 / norm;
-				x *= -norm;
-				y *= -norm;
-				z *= -norm;
-				w *= norm;
+				norm=1.0 / norm;
+				x*=-norm;
+				y*=-norm;
+				z*=-norm;
+				w*=norm;
 			}
 		}
 
@@ -1046,9 +1046,9 @@ package org.angle3d.math
 		[Inline]
 		public final function uintInverseLocal():void
 		{
-			x = -x;
-			y = -y;
-			z = -z;
+			x=-x;
+			y=-y;
+			z=-z;
 		}
 
 		/**
@@ -1058,10 +1058,10 @@ package org.angle3d.math
 		[Inline]
 		public final function negate():void
 		{
-			x *= -1;
-			y *= -1;
-			z *= -1;
-			w *= -1;
+			x*=-1;
+			y*=-1;
+			z*=-1;
+			w*=-1;
 		}
 
 		/**
@@ -1078,7 +1078,7 @@ package org.angle3d.math
 		 */
 		public function lookAt(direction:Vector3f, up:Vector3f):void
 		{
-			var tVars:TempVars = TempVars.getTempVars();
+			var tVars:TempVars=TempVars.getTempVars();
 
 			tVars.vect3.copyFrom(direction).normalizeLocal();
 			tVars.vect1.copyFrom(up).crossLocal(direction).normalizeLocal();

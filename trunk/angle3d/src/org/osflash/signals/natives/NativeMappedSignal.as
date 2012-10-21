@@ -19,7 +19,7 @@ package org.osflash.signals.natives
 		/**
 		 * @default is null, no mapping will occur
 		 */
-		private var _mappingFunction:Function = null;
+		private var _mappingFunction:Function=null;
 
 		/*open for extension but closed for modifications*/
 		protected function get mappingFunction():Function
@@ -30,17 +30,17 @@ package org.osflash.signals.natives
 		/**
 		 * Creates a new NativeMappedSignal instance to map/transform a native Event,
 	   * relayed from an IEventDispatcher, into other forms of data,
-		  * which are dispatched to all listeners.
+				* which are dispatched to all listeners.
 		 *
 		 * @param	target	An object that implements the flash.events.IEventDispatcher interface.
 		 * @param	eventType The event string name that would normally be passed to IEventDispatcher.addEventListener().
 		 * @param 	eventClass An optional class reference that enables an event type check in dispatch().
 		 * @param	mappedTypes an optional list of types that enables the checking of the types mapped from an Event.
 		 */
-		public function NativeMappedSignal(target:IEventDispatcher, eventType:String, eventClass:Class = null, ... mappedTypes)
+		public function NativeMappedSignal(target:IEventDispatcher, eventType:String, eventClass:Class=null, ... mappedTypes)
 		{
 			super(target, eventType, eventClass);
-			valueClasses = mappedTypes;
+			valueClasses=mappedTypes;
 		}
 
 		/**
@@ -53,7 +53,7 @@ package org.osflash.signals.natives
 
 		override public function set eventClass(value:Class):void
 		{
-			_eventClass = value;
+			_eventClass=value;
 		}
 
 		/**
@@ -62,9 +62,9 @@ package org.osflash.signals.natives
 		 */
 		override public function set valueClasses(value:Array):void
 		{
-			_valueClasses = value ? value.slice() : [];
+			_valueClasses=value ? value.slice() : [];
 
-			for (var i:int = _valueClasses.length; i--; )
+			for (var i:int=_valueClasses.length; i--; )
 			{
 				if (!(_valueClasses[i] is Class))
 				{
@@ -126,7 +126,7 @@ package org.osflash.signals.natives
 		{
 			if (objectListOrFunction.length == 1 && objectListOrFunction[0] is Function)
 			{
-				_mappingFunction = objectListOrFunction[0] as Function;
+				_mappingFunction=objectListOrFunction[0] as Function;
 
 				if (_mappingFunction.length > 1)
 				{
@@ -135,7 +135,7 @@ package org.osflash.signals.natives
 			}
 			else
 			{
-				_mappingFunction = function():Object
+				_mappingFunction=function():Object
 				{
 					return objectListOrFunction;
 				};
@@ -185,20 +185,20 @@ package org.osflash.signals.natives
 		override public function dispatchEvent(event:Event):Boolean
 		{
 			//TODO: this is only required for backwards compatibility
-			const mappedData:Object = mapEvent(event);
-			const numValueClasses:int = valueClasses.length;
+			const mappedData:Object=mapEvent(event);
+			const numValueClasses:int=valueClasses.length;
 
 			if (mappedData is Array)
 			{
-				const valueObjects:Array = mappedData as Array;
+				const valueObjects:Array=mappedData as Array;
 
 				var valueObject:Object;
 				var valueClass:Class;
 
-				for (var i:int = 0; i < numValueClasses; i++)
+				for (var i:int=0; i < numValueClasses; i++)
 				{
-					valueObject = valueObjects[i];
-					valueClass = valueClasses[i];
+					valueObject=valueObjects[i];
+					valueClass=valueClasses[i];
 
 					if (valueObject === null || valueObject is valueClass)
 						continue;
@@ -220,8 +220,8 @@ package org.osflash.signals.natives
 
 		override protected function onNativeEvent(event:Event):void
 		{
-			const mappedData:Object = mapEvent(event);
-			var slotsToProcess:SlotList = slots;
+			const mappedData:Object=mapEvent(event);
+			var slotsToProcess:SlotList=slots;
 
 			if (mappedData is Array)
 			{
@@ -230,17 +230,17 @@ package org.osflash.signals.natives
 					while (slotsToProcess.nonEmpty)
 					{
 						slotsToProcess.head.execute1(mappedData);
-						slotsToProcess = slotsToProcess.tail;
+						slotsToProcess=slotsToProcess.tail;
 					}
 				}
 				else
 				{
-					const mappedDataArray:Array = mappedData as Array;
+					const mappedDataArray:Array=mappedData as Array;
 
 					while (slotsToProcess.nonEmpty)
 					{
 						slotsToProcess.head.execute(mappedDataArray);
-						slotsToProcess = slotsToProcess.tail;
+						slotsToProcess=slotsToProcess.tail;
 					}
 				}
 			}
@@ -249,7 +249,7 @@ package org.osflash.signals.natives
 				while (slotsToProcess.nonEmpty)
 				{
 					slotsToProcess.head.execute1(mappedData);
-					slotsToProcess = slotsToProcess.tail;
+					slotsToProcess=slotsToProcess.tail;
 				}
 			}
 		}

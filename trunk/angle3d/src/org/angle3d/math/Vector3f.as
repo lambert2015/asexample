@@ -1,43 +1,37 @@
 package org.angle3d.math
 {
-	import org.angle3d.utils.Assert;
+
 
 	public class Vector3f
 	{
-		public static const ZERO : Vector3f = new Vector3f(0, 0, 0);
-		public static const X_AXIS : Vector3f = new Vector3f(1, 0, 0);
-		public static const Y_AXIS : Vector3f = new Vector3f(0, 1, 0);
-		public static const Z_AXIS : Vector3f = new Vector3f(0, 0, 1);
-		public static const UNIT_SCALE : Vector3f = new Vector3f(1, 1, 1);
+		public static const ZERO:Vector3f=new Vector3f(0, 0, 0);
+		public static const X_AXIS:Vector3f=new Vector3f(1, 0, 0);
+		public static const Y_AXIS:Vector3f=new Vector3f(0, 1, 0);
+		public static const Z_AXIS:Vector3f=new Vector3f(0, 0, 1);
+		public static const UNIT_SCALE:Vector3f=new Vector3f(1, 1, 1);
 
-		public static const NAN : Vector3f = new Vector3f(NaN, NaN, NaN);
+		public static const NAN:Vector3f=new Vector3f(NaN, NaN, NaN);
 
-		public static const POSITIVE_INFINITY : Vector3f = new Vector3f(
-			Number.POSITIVE_INFINITY,
-			Number.POSITIVE_INFINITY,
-			Number.POSITIVE_INFINITY);
-		public static const NEGATIVE_INFINITY : Vector3f = new Vector3f(
-			Number.NEGATIVE_INFINITY,
-			Number.NEGATIVE_INFINITY,
-			Number.NEGATIVE_INFINITY);
+		public static const POSITIVE_INFINITY:Vector3f=new Vector3f(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+		public static const NEGATIVE_INFINITY:Vector3f=new Vector3f(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
 
-		public static function checkMinMax(min : Vector3f, max : Vector3f, point : Vector3f) : void
+		public static function checkMinMax(min:Vector3f, max:Vector3f, point:Vector3f):void
 		{
 			if (point.x < min.x)
-				min.x = point.x;
+				min.x=point.x;
 			if (point.x > max.x)
-				max.x = point.x;
+				max.x=point.x;
 			if (point.y < min.y)
-				min.y = point.y;
+				min.y=point.y;
 			if (point.y > max.y)
-				max.y = point.y;
+				max.y=point.y;
 			if (point.z < min.z)
-				min.z = point.z;
+				min.z=point.z;
 			if (point.z > max.z)
-				max.z = point.z;
+				max.z=point.z;
 		}
 
-		public static function isValidVector(vector : Vector3f) : Boolean
+		public static function isValidVector(vector:Vector3f):Boolean
 		{
 			if (vector == null)
 				return false;
@@ -54,32 +48,32 @@ package org.angle3d.math
 		/**
 		 * the x value of the vector.
 		 */
-		public var x : Number;
+		public var x:Number;
 
 		/**
 		 * the y value of the vector.
 		 */
-		public var y : Number;
+		public var y:Number;
 
 		/**
 		 * the z value of the vector.
 		 */
-		public var z : Number;
+		public var z:Number;
 
 
-		public function Vector3f(x : Number = 0, y : Number = 0, z : Number = 0)
+		public function Vector3f(x:Number=0, y:Number=0, z:Number=0)
 		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
+			this.x=x;
+			this.y=y;
+			this.z=z;
 		}
 
 		[Inline]
-		public final function copyFrom(other : Vector3f) : Vector3f
+		public final function copyFrom(other:Vector3f):Vector3f
 		{
-			this.x = other.x;
-			this.y = other.y;
-			this.z = other.z;
+			this.x=other.x;
+			this.y=other.y;
+			this.z=other.z;
 
 			return this;
 		}
@@ -91,11 +85,12 @@ package org.angle3d.math
 		 * @return
 		 *
 		 */
-		public function copyAdd(copyVec : Vector3f, addVec : Vector3f) : Vector3f
+		[Inline]
+		public final function copyAdd(copyVec:Vector3f, addVec:Vector3f):Vector3f
 		{
-			this.x = copyVec.x + addVec.x;
-			this.y = copyVec.y + addVec.y;
-			this.z = copyVec.z + addVec.z;
+			this.x=copyVec.x + addVec.x;
+			this.y=copyVec.y + addVec.y;
+			this.z=copyVec.z + addVec.z;
 
 			return this;
 		}
@@ -113,14 +108,14 @@ package org.angle3d.math
 		 * @return this vector
 		 */
 		[Inline]
-		public final function setTo(x : Number, y : Number, z : Number) : void
+		public final function setTo(x:Number, y:Number, z:Number):void
 		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
+			this.x=x;
+			this.y=y;
+			this.z=z;
 		}
 
-		public function getValueAt(index : int) : Number
+		public function getValueAt(index:int):Number
 		{
 			CF::DEBUG
 			{
@@ -151,23 +146,23 @@ package org.angle3d.math
 		 *            the vector to add to this.
 		 * @return the resultant vector.
 		 */
-		public function add(vec : Vector3f, result : Vector3f = null) : Vector3f
+		public function add(vec:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			result.x = x + vec.x;
-			result.y = y + vec.y;
-			result.z = z + vec.z;
+			result.x=x + vec.x;
+			result.y=y + vec.y;
+			result.z=z + vec.z;
 			return result;
 		}
 
 		[Inline]
-		public final function addLocal(vec : Vector3f) : Vector3f
+		public final function addLocal(vec:Vector3f):Vector3f
 		{
-			x += vec.x;
-			y += vec.y;
-			z += vec.z;
+			x+=vec.x;
+			y+=vec.y;
+			z+=vec.z;
 			return this;
 		}
 
@@ -181,23 +176,23 @@ package org.angle3d.math
 		 *            the vector to subtract from this vector.
 		 * @return the result vector.
 		 */
-		public function subtract(vec : Vector3f, result : Vector3f = null) : Vector3f
+		public function subtract(vec:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			result.x = x - vec.x;
-			result.y = y - vec.y;
-			result.z = z - vec.z;
+			result.x=x - vec.x;
+			result.y=y - vec.y;
+			result.z=z - vec.z;
 			return result;
 		}
 
 		[Inline]
-		public final function subtractLocal(vec : Vector3f) : Vector3f
+		public final function subtractLocal(vec:Vector3f):Vector3f
 		{
-			x -= vec.x;
-			y -= vec.y;
-			z -= vec.z;
+			x-=vec.x;
+			y-=vec.y;
+			z-=vec.z;
 			return this;
 		}
 
@@ -211,11 +206,11 @@ package org.angle3d.math
 		 * @param add
 		 *            the value to add
 		 */
-		public function scaleAdd(scalar : Number, addVec : Vector3f) : void
+		public function scaleAdd(scalar:Number, addVec:Vector3f):void
 		{
-			x = x * scalar + addVec.x;
-			y = y * scalar + addVec.y;
-			z = z * scalar + addVec.z;
+			x=x * scalar + addVec.x;
+			y=y * scalar + addVec.y;
+			z=z * scalar + addVec.z;
 		}
 
 		/**
@@ -227,32 +222,32 @@ package org.angle3d.math
 		 *            the vector to dot with this vector.
 		 * @return the resultant dot product of this vector and a given vector.
 		 */
-		public function dot(vec : Vector3f) : Number
+		public function dot(vec:Vector3f):Number
 		{
 			return x * vec.x + y * vec.y + z * vec.z;
 		}
 
-		public function cross(vec : Vector3f, result : Vector3f = null) : Vector3f
+		public function cross(vec:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			result.x = (y * vec.z - z * vec.y);
-			result.y = (z * vec.x - x * vec.z);
-			result.z = (x * vec.y - y * vec.x);
+			result.x=(y * vec.z - z * vec.y);
+			result.y=(z * vec.x - x * vec.z);
+			result.z=(x * vec.y - y * vec.x);
 
 			return result;
 		}
 
-		public function crossLocal(vec : Vector3f) : Vector3f
+		public function crossLocal(vec:Vector3f):Vector3f
 		{
-			var tx : Number = this.x;
-			var ty : Number = this.y;
-			var tz : Number = this.z;
+			var tx:Number=this.x;
+			var ty:Number=this.y;
+			var tz:Number=this.z;
 
-			this.x = ty * vec.z - tz * vec.y;
-			this.y = tz * vec.x - tx * vec.z;
-			this.z = tx * vec.y - ty * vec.x;
+			this.x=ty * vec.z - tz * vec.y;
+			this.y=tz * vec.x - tx * vec.z;
+			this.z=tx * vec.y - ty * vec.x;
 
 			return this;
 		}
@@ -264,7 +259,7 @@ package org.angle3d.math
 		 * @return true if this vector is a unit vector (length() ~= 1),
 		 * or false otherwise.
 		 */
-		public function isUnitVector(roundError : Number = 0.01) : Boolean
+		public function isUnitVector(roundError:Number=0.01):Boolean
 		{
 			return FastMath.nearEqual(length, 1.0, roundError);
 		}
@@ -273,7 +268,7 @@ package org.angle3d.math
 		 * <code>length</code> calculates the magnitude of this vector.
 		 *
 		 */
-		public function get length() : Number
+		public function get length():Number
 		{
 			return Math.sqrt(x * x + y * y + z * z);
 		}
@@ -283,7 +278,7 @@ package org.angle3d.math
 		 * magnitude of the vector.
 		 *
 		 */
-		public function get lengthSquared() : Number
+		public function get lengthSquared():Number
 		{
 			return x * x + y * y + z * z;
 		}
@@ -295,11 +290,11 @@ package org.angle3d.math
 		 * @param v the second vector to determine the distance squared.
 		 * @return the distance squared between the two vectors.
 		 */
-		public function distanceSquared(v : Vector3f) : Number
+		public function distanceSquared(v:Vector3f):Number
 		{
-			var dx : Number = x - v.x;
-			var dy : Number = y - v.y;
-			var dz : Number = z - v.z;
+			var dx:Number=x - v.x;
+			var dy:Number=y - v.y;
+			var dz:Number=z - v.z;
 			return (dx * dx + dy * dy + dz * dz);
 		}
 
@@ -310,63 +305,66 @@ package org.angle3d.math
 		 * @param v the second vector to determine the distance.
 		 * @return the distance between the two vectors.
 		 */
-		public function distance(v : Vector3f) : Number
+		public function distance(v:Vector3f):Number
 		{
-			var dx : Number = x - v.x;
-			var dy : Number = y - v.y;
-			var dz : Number = z - v.z;
+			var dx:Number=x - v.x;
+			var dy:Number=y - v.y;
+			var dz:Number=z - v.z;
 			return Math.sqrt(dx * dx + dy * dy + dz * dz);
 		}
 
-		public function scale(scalar : Number, result : Vector3f = null) : Vector3f
+		public function scale(scalar:Number, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			result.x = x * scalar;
-			result.y = y * scalar;
-			result.z = z * scalar;
+			result.x=x * scalar;
+			result.y=y * scalar;
+			result.z=z * scalar;
 			return result;
 		}
 
-		public function scaleLocal(scalar : Number) : Vector3f
+		public function scaleLocal(scalar:Number):Vector3f
 		{
-			x *= scalar;
-			y *= scalar;
-			z *= scalar;
+			x*=scalar;
+			y*=scalar;
+			z*=scalar;
 			return this;
 		}
 
-		public function multiply(vec : Vector3f, result : Vector3f = null) : Vector3f
+		public function multiply(vec:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			result.x = x * vec.x;
-			result.y = y * vec.y;
-			result.z = z * vec.z;
+			result.x=x * vec.x;
+			result.y=y * vec.y;
+			result.z=z * vec.z;
 			return result;
 		}
 
-		public function multiplyLocal(vec : Vector3f) : void
+		[Inline]
+		public final function multiplyLocal(vec:Vector3f):void
 		{
-			x *= vec.x;
-			y *= vec.y;
-			z *= vec.z;
+			x*=vec.x;
+			y*=vec.y;
+			z*=vec.z;
 		}
 
-		public function divideLocal(scalar : Vector3f) : void
+		[Inline]
+		public final function divideLocal(scalar:Vector3f):void
 		{
-			x /= scalar.x;
-			y /= scalar.y;
-			z /= scalar.z;
+			x/=scalar.x;
+			y/=scalar.y;
+			z/=scalar.z;
 		}
 
-		public function negateLocal() : void
+		[Inline]
+		public final function negateLocal():void
 		{
-			x = -x;
-			y = -y;
-			z = -z;
+			x=-x;
+			y=-y;
+			z=-z;
 		}
 
 		/**
@@ -376,7 +374,8 @@ package org.angle3d.math
 		 *
 		 * @return the negated vector.
 		 */
-		public function negate() : Vector3f
+		[Inline]
+		public final function negate():Vector3f
 		{
 			return new Vector3f(-x, -y, -z);
 		}
@@ -386,17 +385,16 @@ package org.angle3d.math
 		 *
 		 * @return unit vector of this vector.
 		 */
-		public function normalizeLocal() : Vector3f
+		public function normalizeLocal():void
 		{
-			var len : Number = x * x + y * y + z * z;
-			if (len != 1 && len != 0)
+			var len:Number=x * x + y * y + z * z;
+			if (len != 0)
 			{
-				len = 1.0 / Math.sqrt(len);
-				x *= len;
-				y *= len;
-				z *= len;
+				len=1.0 / Math.sqrt(len);
+				x*=len;
+				y*=len;
+				z*=len;
 			}
-			return this;
 		}
 
 		/**
@@ -405,11 +403,12 @@ package org.angle3d.math
 		 * in this vector.
 		 * @param other
 		 */
-		public function maxLocal(other : Vector3f) : void
+		[Inline]
+		public final function maxLocal(other:Vector3f):void
 		{
-			x = other.x > x ? other.x : x;
-			y = other.y > y ? other.y : y;
-			z = other.z > z ? other.z : z;
+			x=other.x > x ? other.x : x;
+			y=other.y > y ? other.y : y;
+			z=other.z > z ? other.z : z;
 		}
 
 		/**
@@ -418,22 +417,15 @@ package org.angle3d.math
 		 * in this vector.
 		 * @param other
 		 */
-		public function minLocal(other : Vector3f) : void
+		[Inline]
+		public final function minLocal(other:Vector3f):void
 		{
-			x = other.x < x ? other.x : x;
-			y = other.y < y ? other.y : y;
-			z = other.z < z ? other.z : z;
+			x=other.x < x ? other.x : x;
+			y=other.y < y ? other.y : y;
+			z=other.z < z ? other.z : z;
 		}
 
-		/**
-		 * <code>zero</code> resets this vector's data to zero internally.
-		 */
-		public function zero() : void
-		{
-			x = y = z = 0;
-		}
-
-		public function isZero() : Boolean
+		public function isZero():Boolean
 		{
 			return (x == 0 && y == 0 && z == 0);
 		}
@@ -445,36 +437,37 @@ package org.angle3d.math
 		 * @param otherVector a unit vector to find the angle against
 		 * @return the angle in radians.
 		 */
-		public function angleBetween(vec : Vector3f) : Number
+		public function angleBetween(vec:Vector3f):Number
 		{
 			return Math.acos(x * vec.x + y * vec.y + z * vec.z);
 		}
 
-		public function lerp(v1 : Vector3f, v2 : Vector3f, interp : Number) : void
+		[Inline]
+		public final function lerp(v1:Vector3f, v2:Vector3f, interp:Number):void
 		{
-			var t : Number = 1 - interp;
-			this.x = t * v1.x + interp * v2.x;
-			this.y = t * v1.y + interp * v2.y;
-			this.z = t * v1.z + interp * v2.z;
+			var t:Number=1 - interp;
+			this.x=t * v1.x + interp * v2.x;
+			this.y=t * v1.y + interp * v2.y;
+			this.z=t * v1.z + interp * v2.z;
 		}
 
-		public function clone() : Vector3f
+		public function clone():Vector3f
 		{
 			return new Vector3f(x, y, z);
 		}
 
-		public function toVector(vec : Vector.<Number> = null) : Vector.<Number>
+		public function toVector(vec:Vector.<Number>=null):Vector.<Number>
 		{
 			if (vec == null)
-				vec = new Vector.<Number>();
+				vec=new Vector.<Number>();
 
-			vec[0] = x;
-			vec[1] = y;
-			vec[2] = z;
+			vec[0]=x;
+			vec[1]=y;
+			vec[2]=z;
 			return vec;
 		}
 
-		public function toString() : String
+		public function toString():String
 		{
 			return "Vector3f(" + x + ", " + y + ", " + z + ")";
 		}

@@ -17,17 +17,17 @@ package org.angle3d.light
 	 */
 	public class PointLight extends Light
 	{
-		private var mPosition : Vector3f;
+		private var mPosition:Vector3f;
 
-		private var mInvRadius : Number;
+		private var mInvRadius:Number;
 
 		public function PointLight()
 		{
 			super(LightType.Point);
 
-			mPosition = new Vector3f();
-			mRadius = 0;
-			mInvRadius = 0;
+			mPosition=new Vector3f();
+			mRadius=0;
+			mInvRadius=0;
 		}
 
 		/**
@@ -37,7 +37,7 @@ package org.angle3d.light
 		 *
 		 * @see PointLight#setPosition(org.angle3d.math.Vector3f)
 		 */
-		public function get position() : Vector3f
+		public function get position():Vector3f
 		{
 			return mPosition;
 		}
@@ -47,36 +47,36 @@ package org.angle3d.light
 		 *
 		 * @param position the world space position of the light.
 		 */
-		public function set position(value : Vector3f) : void
+		public function set position(value:Vector3f):void
 		{
 			mPosition.copyFrom(value);
 		}
 
-		override public function set radius(value : Number) : void
+		override public function set radius(value:Number):void
 		{
 			Assert.assert(value >= 0, "Light radius cannot be negative");
 
-			mRadius = value;
+			mRadius=value;
 			if (value != 0)
 			{
-				mInvRadius = 1 / value;
+				mInvRadius=1 / value;
 			}
 			else
 			{
-				mInvRadius = 0;
+				mInvRadius=0;
 			}
 		}
 
-		override public function computeLastDistance(owner : Spatial) : void
+		override public function computeLastDistance(owner:Spatial):void
 		{
 			if (owner.worldBound != null)
 			{
-				var bv : BoundingVolume = owner.worldBound;
-				lastDistance = bv.distanceSquaredTo(mPosition);
+				var bv:BoundingVolume=owner.worldBound;
+				lastDistance=bv.distanceSquaredTo(mPosition);
 			}
 			else
 			{
-				lastDistance = owner.getWorldTranslation().distanceSquared(mPosition);
+				lastDistance=owner.getWorldTranslation().distanceSquared(mPosition);
 			}
 		}
 
@@ -84,7 +84,7 @@ package org.angle3d.light
 		 * for internal use only
 		 * @return the inverse of the radius
 		 */
-		public function get invRadius() : Number
+		public function get invRadius():Number
 		{
 			return mInvRadius;
 		}

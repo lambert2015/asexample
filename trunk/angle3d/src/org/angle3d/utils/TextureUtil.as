@@ -5,7 +5,7 @@ package org.angle3d.utils
 
 	public class TextureUtil
 	{
-		private static var MAX_SIZE:int = 2048;
+		private static var MAX_SIZE:int=2048;
 
 		public static function isBitmapDataValid(bitmapData:BitmapData):Boolean
 		{
@@ -27,13 +27,13 @@ package org.angle3d.utils
 
 		public static function getBestPowerOf2(value:int):int
 		{
-			var p:int = 1;
+			var p:int=1;
 
 			while (p < value)
-				p <<= 1;
+				p<<=1;
 
 			if (p > MAX_SIZE)
-				p = MAX_SIZE;
+				p=MAX_SIZE;
 
 			return p;
 		}

@@ -11,48 +11,48 @@ package org.angle3d.effect.cpu
 	 */
 	public class ParticleEmitterControl implements Control
 	{
-		private var particleEmitter : ParticleEmitter;
+		private var particleEmitter:ParticleEmitter;
 
-		public function ParticleEmitterControl(parentEmitter : ParticleEmitter)
+		public function ParticleEmitterControl(parentEmitter:ParticleEmitter)
 		{
-			this.particleEmitter = parentEmitter;
+			this.particleEmitter=parentEmitter;
 		}
 
-		public function cloneForSpatial(spatial : Spatial) : Control
+		public function cloneForSpatial(spatial:Spatial):Control
 		{
 			return this;
 		}
 
-		public function set spatial(spatial : Spatial) : void
+		public function set spatial(spatial:Spatial):void
 		{
 
 		}
 
-		public function get spatial() : Spatial
+		public function get spatial():Spatial
 		{
 			return null;
 		}
 
-		public function set enabled(enabled : Boolean) : void
+		public function set enabled(enabled:Boolean):void
 		{
-			particleEmitter.enabled = enabled;
+			particleEmitter.enabled=enabled;
 		}
 
-		public function get enabled() : Boolean
+		public function get enabled():Boolean
 		{
 			return particleEmitter.enabled;
 		}
 
-		public function update(tpf : Number) : void
+		public function update(tpf:Number):void
 		{
 			particleEmitter.updateFromControl(tpf);
 		}
 
-		public function render(rm : RenderManager, vp : ViewPort) : void
+		public function render(rm:RenderManager, vp:ViewPort):void
 		{
 			particleEmitter.renderFromControl(rm, vp);
 		}
-		
+
 		public function clone():Control
 		{
 			return new ParticleEmitterControl(this.particleEmitter);

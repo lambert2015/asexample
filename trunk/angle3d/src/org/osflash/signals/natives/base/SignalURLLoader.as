@@ -9,7 +9,7 @@ package org.osflash.signals.natives.base
 
 		public function get signals():URLLoaderSignalSet
 		{
-			return _signals ||= new URLLoaderSignalSet(this);
+			return _signals||=new URLLoaderSignalSet(this);
 		}
 	}
 }

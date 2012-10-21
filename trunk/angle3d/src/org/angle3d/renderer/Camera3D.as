@@ -37,102 +37,102 @@ package org.angle3d.renderer
 	public class Camera3D extends Frustum
 	{
 		/** The camera's name. */
-		public var name : String;
+		public var name:String;
 
-		public var width : int;
-		public var height : int;
-		
+		public var width:int;
+		public var height:int;
+
 		/**
 		 * Camera's location
 		 */
-		protected var mLocation : Vector3f;
+		protected var mLocation:Vector3f;
 		/**
 		 * The orientation of the camera.
 		 */
-		protected var mRotation : Quaternion;
+		protected var mRotation:Quaternion;
 
 		//view port coordinates
-		protected var mViewPortRect : Rect;
+		protected var mViewPortRect:Rect;
 
-		protected var mViewPortChanged : Boolean;
+		protected var mViewPortChanged:Boolean;
 
-		protected var mViewMatrix : Matrix4f;
-		protected var mViewProjectionMatrix : Matrix4f;
+		protected var mViewMatrix:Matrix4f;
+		protected var mViewProjectionMatrix:Matrix4f;
 		protected var mProjectionMatrixOverride:Matrix4f;
 
-		protected var mGuiBounding : BoundingBox;
-		
+		protected var mGuiBounding:BoundingBox;
+
 		/**
 		 * A mask value set during contains() that allows fast culling of a Node's
 		 * children.
 		 */
-		protected var mPlaneState : int;
+		protected var mPlaneState:int;
 
-		public function Camera3D(width : int, height : int)
+		public function Camera3D(width:int, height:int)
 		{
 			super();
-			
-			this.width = width;
-			this.height = height;
+
+			this.width=width;
+			this.height=height;
 
 			onFrustumChange();
 			onViewPortChange();
 		}
 
-		override protected function _init() : void
+		override protected function _init():void
 		{
 			super._init();
-			
-			mViewPortChanged = true;
 
-			mViewMatrix = new Matrix4f();
-			mViewProjectionMatrix = new Matrix4f();
+			mViewPortChanged=true;
 
-			mGuiBounding = new BoundingBox();
+			mViewMatrix=new Matrix4f();
+			mViewProjectionMatrix=new Matrix4f();
 
-			mLocation = new Vector3f();
-			mRotation = new Quaternion();
+			mGuiBounding=new BoundingBox();
 
-			mViewPortRect = new Rect(0.0, 1.0, 0.0, 1.0);
+			mLocation=new Vector3f();
+			mRotation=new Quaternion();
+
+			mViewPortRect=new Rect(0.0, 1.0, 0.0, 1.0);
 		}
 
-		public function copyFrom(cam : Camera3D) : void
+		public function copyFrom(cam:Camera3D):void
 		{
 			mLocation.copyFrom(cam.mLocation);
 			mRotation.copyFrom(cam.mRotation);
 
-			mFrustumNear = cam.mFrustumNear;
-			mFrustumFar = cam.mFrustumFar;
+			mFrustumNear=cam.mFrustumNear;
+			mFrustumFar=cam.mFrustumFar;
 			mFrustumRect.copyFrom(cam.mFrustumRect);
 
-			mCoeffLeft[0] = cam.mCoeffLeft[0];
-			mCoeffLeft[1] = cam.mCoeffLeft[1];
-			mCoeffRight[0] = cam.mCoeffRight[0];
-			mCoeffRight[1] = cam.mCoeffRight[1];
-			mCoeffBottom[0] = cam.mCoeffBottom[0];
-			mCoeffBottom[1] = cam.mCoeffBottom[1];
-			mCoeffTop[0] = cam.mCoeffTop[0];
-			mCoeffTop[1] = cam.mCoeffTop[1];
+			mCoeffLeft[0]=cam.mCoeffLeft[0];
+			mCoeffLeft[1]=cam.mCoeffLeft[1];
+			mCoeffRight[0]=cam.mCoeffRight[0];
+			mCoeffRight[1]=cam.mCoeffRight[1];
+			mCoeffBottom[0]=cam.mCoeffBottom[0];
+			mCoeffBottom[1]=cam.mCoeffBottom[1];
+			mCoeffTop[0]=cam.mCoeffTop[0];
+			mCoeffTop[1]=cam.mCoeffTop[1];
 
 			mViewPortRect.copyFrom(cam.mViewPortRect);
 
-			this.width = cam.width;
-			this.height = cam.height;
+			this.width=cam.width;
+			this.height=cam.height;
 
-			this.mPlaneState = cam.mPlaneState;
-			this.mViewPortChanged = cam.mViewPortChanged;
-			for (var i : int = 0; i < FRUSTUM_PLANES; i++)
+			this.mPlaneState=cam.mPlaneState;
+			this.mViewPortChanged=cam.mViewPortChanged;
+			for (var i:int=0; i < FRUSTUM_PLANES; i++)
 			{
 				mWorldPlanes[i].normal.copyFrom(cam.mWorldPlanes[i].normal);
-				mWorldPlanes[i].constant = cam.mWorldPlanes[i].constant;
+				mWorldPlanes[i].constant=cam.mWorldPlanes[i].constant;
 			}
 
-			this.mParallelProjection = cam.mParallelProjection;
+			this.mParallelProjection=cam.mParallelProjection;
 			if (cam.mProjectionMatrixOverride != null)
 			{
 				if (mProjectionMatrixOverride == null)
 				{
-					mProjectionMatrixOverride = cam.mProjectionMatrixOverride.clone();
+					mProjectionMatrixOverride=cam.mProjectionMatrixOverride.clone();
 				}
 				else
 				{
@@ -141,7 +141,7 @@ package org.angle3d.renderer
 			}
 			else
 			{
-				this.mProjectionMatrixOverride = null;
+				this.mProjectionMatrixOverride=null;
 			}
 			this.mViewMatrix.copyFrom(cam.mViewMatrix);
 			this.mProjectionMatrix.copyFrom(cam.mProjectionMatrix);
@@ -150,14 +150,14 @@ package org.angle3d.renderer
 			this.mGuiBounding.copyFrom(cam.mGuiBounding);
 		}
 
-		public function clone(newName : String) : Camera3D
+		public function clone(newName:String):Camera3D
 		{
-			var cam : Camera3D = new Camera3D(width, height);
-			cam.name = newName;
-			cam.mViewPortChanged = true;
-			cam.mPlaneState = PlaneSide.None;
+			var cam:Camera3D=new Camera3D(width, height);
+			cam.name=newName;
+			cam.mViewPortChanged=true;
+			cam.mPlaneState=PlaneSide.None;
 
-			for (var i : int = 0; i < FRUSTUM_PLANES; i++)
+			for (var i:int=0; i < FRUSTUM_PLANES; i++)
 			{
 				cam.mWorldPlanes[i].copyFrom(mWorldPlanes[i]);
 			}
@@ -167,13 +167,13 @@ package org.angle3d.renderer
 
 			if (mProjectionMatrixOverride != null)
 			{
-				cam.mProjectionMatrixOverride = mProjectionMatrixOverride.clone();
+				cam.mProjectionMatrixOverride=mProjectionMatrixOverride.clone();
 			}
 
 			cam.mViewMatrix.copyFrom(mViewMatrix);
 			cam.mProjectionMatrix.copyFrom(mProjectionMatrix);
 			cam.mViewProjectionMatrix.copyFrom(mViewProjectionMatrix);
-			cam.mGuiBounding = mGuiBounding.clone() as BoundingBox;
+			cam.mGuiBounding=mGuiBounding.clone() as BoundingBox;
 
 			cam.update();
 
@@ -194,17 +194,17 @@ package org.angle3d.renderer
 		 * @param clipPlane the plane
 		 * @param side the side the camera stands from the plane
 		 */
-		public function setClipPlane(clipPlane : Plane, side : int = -1) : void
+		public function setClipPlane(clipPlane:Plane, side:int=-1):void
 		{
 			if (side <= -1)
 			{
-				side = clipPlane.whichSide(mLocation);
+				side=clipPlane.whichSide(mLocation);
 			}
 
-			var sideFactor : Number = 1.0;
+			var sideFactor:Number=1.0;
 			if (side == PlaneSide.Negative)
 			{
-				sideFactor = -1.0;
+				sideFactor=-1.0;
 			}
 
 			//we are on the other side of the plane no need to clip anymore.
@@ -213,34 +213,34 @@ package org.angle3d.renderer
 				return;
 			}
 
-			var newProjectionMatrix : Matrix4f = mProjectionMatrix.clone();
-			var ivm : Matrix4f = mViewMatrix.clone();
+			var newProjectionMatrix:Matrix4f=mProjectionMatrix.clone();
+			var ivm:Matrix4f=mViewMatrix.clone();
 
-			var point : Vector3f = clipPlane.normal.clone();
+			var point:Vector3f=clipPlane.normal.clone();
 			point.scaleLocal(clipPlane.constant);
 
-			var pp : Vector3f = ivm.multVec(point);
-			var pn : Vector3f = ivm.multNormal(clipPlane.normal);
+			var pp:Vector3f=ivm.multVec(point);
+			var pn:Vector3f=ivm.multNormal(clipPlane.normal);
 
-			var clipPlaneV : Vector4f = new Vector4f();
-			clipPlaneV.x = pn.x * sideFactor;
-			clipPlaneV.y = pn.y * sideFactor;
-			clipPlaneV.z = pn.z * sideFactor;
-			clipPlaneV.w = -pp.dot(pn) * sideFactor;
+			var clipPlaneV:Vector4f=new Vector4f();
+			clipPlaneV.x=pn.x * sideFactor;
+			clipPlaneV.y=pn.y * sideFactor;
+			clipPlaneV.z=pn.z * sideFactor;
+			clipPlaneV.w=-pp.dot(pn) * sideFactor;
 
-			var v : Vector4f = new Vector4f();
-			v.x = (FastMath.signum(clipPlaneV.x) + newProjectionMatrix.m02) / newProjectionMatrix.m00;
-			v.y = (FastMath.signum(clipPlaneV.y) + newProjectionMatrix.m12) / newProjectionMatrix.m11;
-			v.z = -1.0;
-			v.w = (1.0 + newProjectionMatrix.m22) / newProjectionMatrix.m23;
+			var v:Vector4f=new Vector4f();
+			v.x=(FastMath.signum(clipPlaneV.x) + newProjectionMatrix.m02) / newProjectionMatrix.m00;
+			v.y=(FastMath.signum(clipPlaneV.y) + newProjectionMatrix.m12) / newProjectionMatrix.m11;
+			v.z=-1.0;
+			v.w=(1.0 + newProjectionMatrix.m22) / newProjectionMatrix.m23;
 
-			var dot : Number = clipPlaneV.dot(v);
-			var c : Vector4f = clipPlaneV.scale(2.0 / dot);
+			var dot:Number=clipPlaneV.dot(v);
+			var c:Vector4f=clipPlaneV.scale(2.0 / dot);
 
-			newProjectionMatrix.m20 = c.x - newProjectionMatrix.m30;
-			newProjectionMatrix.m21 = c.y - newProjectionMatrix.m31;
-			newProjectionMatrix.m22 = c.z - newProjectionMatrix.m32;
-			newProjectionMatrix.m23 = c.w - newProjectionMatrix.m33;
+			newProjectionMatrix.m20=c.x - newProjectionMatrix.m30;
+			newProjectionMatrix.m21=c.y - newProjectionMatrix.m31;
+			newProjectionMatrix.m22=c.z - newProjectionMatrix.m32;
+			newProjectionMatrix.m23=c.w - newProjectionMatrix.m33;
 			setProjectionMatrix(newProjectionMatrix);
 		}
 
@@ -255,16 +255,16 @@ package org.angle3d.renderer
 		 * @param fixAspect If true, the camera's aspect ratio will be recomputed.
 		 * Recomputing the aspect ratio requires changing the frustum values.
 		 */
-		public function resize(width : int, height : int, fixAspect : Boolean = true) : void
+		public function resize(width:int, height:int, fixAspect:Boolean=true):void
 		{
-			this.width = width;
-			this.height = height;
+			this.width=width;
+			this.height=height;
 			onViewPortChange();
 
 			if (fixAspect)
 			{
-				mFrustumRect.right = mFrustumRect.top * width / height;
-				mFrustumRect.left = -mFrustumRect.right;
+				mFrustumRect.right=mFrustumRect.top * width / height;
+				mFrustumRect.left=-mFrustumRect.right;
 				onFrustumChange();
 			}
 		}
@@ -275,7 +275,7 @@ package org.angle3d.renderer
 		 * @return the position of the camera.
 		 * @see Camera#getLocation()
 		 */
-		public function get location() : Vector3f
+		public function get location():Vector3f
 		{
 			return mLocation;
 		}
@@ -285,7 +285,7 @@ package org.angle3d.renderer
 		 *
 		 * @return the rotation of the camera.
 		 */
-		public function get rotation() : Quaternion
+		public function get rotation():Quaternion
 		{
 			return mRotation;
 		}
@@ -297,7 +297,7 @@ package org.angle3d.renderer
 		 * @return the direction the camera is facing.
 		 * @see Camera#getDirection()
 		 */
-		public function getDirection(result : Vector3f = null) : Vector3f
+		public function getDirection(result:Vector3f=null):Vector3f
 		{
 			return mRotation.getRotationColumn(2, result);
 		}
@@ -308,7 +308,7 @@ package org.angle3d.renderer
 		 * @return the left axis of the camera.
 		 * @see Camera#getLeft()
 		 */
-		public function getLeft(result : Vector3f = null) : Vector3f
+		public function getLeft(result:Vector3f=null):Vector3f
 		{
 			return mRotation.getRotationColumn(0, result);
 		}
@@ -319,11 +319,11 @@ package org.angle3d.renderer
 		 * @return the up axis of the camera.
 		 * @see Camera#getUp()
 		 */
-		public function getUp(result : Vector3f = null) : Vector3f
+		public function getUp(result:Vector3f=null):Vector3f
 		{
 			return mRotation.getRotationColumn(1, result);
 		}
-		
+
 		/**
 		 * <code>getPlaneState</code> returns the state of the frustum planes. So
 		 * checks can be made as to which frustum plane has been examined for
@@ -331,20 +331,20 @@ package org.angle3d.renderer
 		 *
 		 * @return the current plane state int.
 		 */
-		public function get planeState() : int
+		public function get planeState():int
 		{
 			return mPlaneState;
 		}
-		
+
 		/**
 		 * <code>setPlaneState</code> sets the state to keep track of tested
 		 * planes for culling.
 		 *
 		 * @param planeState the updated state.
 		 */
-		public function set planeState(planeState : int) : void
+		public function set planeState(planeState:int):void
 		{
-			mPlaneState = planeState;
+			mPlaneState=planeState;
 		}
 
 		/**
@@ -353,7 +353,7 @@ package org.angle3d.renderer
 		 * @param location the position of the camera.
 		 * @see Camera#setLocation(com.jme.math.Vector3f)
 		 */
-		public function set location(location : Vector3f) : void
+		public function set location(location:Vector3f):void
 		{
 			mLocation.copyFrom(location);
 			onFrameChange();
@@ -370,7 +370,7 @@ package org.angle3d.renderer
 		 *
 		 * @param rotation the rotation of this camera
 		 */
-		public function set rotation(rotation : Quaternion) : void
+		public function set rotation(rotation:Quaternion):void
 		{
 			mRotation.copyFrom(rotation);
 			onFrameChange();
@@ -382,7 +382,7 @@ package org.angle3d.renderer
 		 *
 		 * @param direction the direction this camera is facing.
 		 */
-		public function lookAtDirection(direction : Vector3f, upVector : Vector3f) : void
+		public function lookAtDirection(direction:Vector3f, upVector:Vector3f):void
 		{
 			mRotation.lookAt(direction, upVector);
 			onFrameChange();
@@ -397,7 +397,7 @@ package org.angle3d.renderer
 		 * @param direction the direction the camera is facing.
 		 * @see Camera#setAxes(com.jme.math.Vector3f,com.jme.math.Vector3f,com.jme.math.Vector3f)
 		 */
-		public function setAxes(left : Vector3f, up : Vector3f, direction : Vector3f) : void
+		public function setAxes(left:Vector3f, up:Vector3f, direction:Vector3f):void
 		{
 			mRotation.fromAxes(left, up, direction);
 			onFrameChange();
@@ -409,7 +409,7 @@ package org.angle3d.renderer
 		 *
 		 * @param axes the matrix that defines the orientation of the camera.
 		 */
-		public function setAxesFromQuat(axes : Quaternion) : void
+		public function setAxesFromQuat(axes:Quaternion):void
 		{
 			mRotation.copyFrom(axes);
 			onFrameChange();
@@ -418,7 +418,7 @@ package org.angle3d.renderer
 		/**
 		 * normalizes the camera vectors.
 		 */
-		public function normalize() : void
+		public function normalize():void
 		{
 			mRotation.normalizeLocal();
 			onFrameChange();
@@ -432,7 +432,7 @@ package org.angle3d.renderer
 		 * @param up        the up axis of the camera.
 		 * @param direction the facing of the camera.
 		 */
-		public function setFrame(location : Vector3f, left : Vector3f, up : Vector3f, direction : Vector3f) : void
+		public function setFrame(location:Vector3f, left:Vector3f, up:Vector3f, direction:Vector3f):void
 		{
 			mLocation.copyFrom(location);
 			mRotation.fromAxes(left, up, direction);
@@ -447,7 +447,7 @@ package org.angle3d.renderer
 		* @param axes
 		*            the orientation of the camera.
 		*/
-		public function setFrameFromQuat(location : Vector3f, axes : Quaternion) : void
+		public function setFrameFromQuat(location:Vector3f, axes:Quaternion):void
 		{
 			mLocation.copyFrom(location);
 			mRotation.copyFrom(axes);
@@ -465,19 +465,19 @@ package org.angle3d.renderer
 		 * @param upVector a normalized vector indicating the up direction of the world.
 		 */
 		//TODO 优化
-		public function lookAt(pos : Vector3f, upVector : Vector3f) : void
+		public function lookAt(pos:Vector3f, upVector:Vector3f):void
 		{
-			var newDirection : Vector3f = pos.subtract(mLocation);
+			var newDirection:Vector3f=pos.subtract(mLocation);
 			newDirection.normalizeLocal();
 
-			var newUp : Vector3f = upVector.clone();
+			var newUp:Vector3f=upVector.clone();
 			newUp.normalizeLocal();
 			if (newUp.isZero())
 			{
 				newUp.setTo(0, 1, 0);
 			}
 
-			var newLeft : Vector3f = newUp.cross(newDirection);
+			var newLeft:Vector3f=newUp.cross(newDirection);
 			newLeft.normalizeLocal();
 			if (newLeft.isZero())
 			{
@@ -492,7 +492,7 @@ package org.angle3d.renderer
 			}
 
 			newUp.copyFrom(newDirection);
-			newUp = newUp.cross(newLeft);
+			newUp=newUp.cross(newLeft);
 			newUp.normalizeLocal();
 
 			mRotation.fromAxes(newLeft, newUp, newDirection);
@@ -507,14 +507,14 @@ package org.angle3d.renderer
 		 *
 		 * @see Camera#update()
 		 */
-		public function update() : void
+		public function update():void
 		{
 			onFrustumChange();
 			onViewPortChange();
 			onFrameChange();
 		}
 
-		public function get viewPortRect() : Rect
+		public function get viewPortRect():Rect
 		{
 			return mViewPortRect;
 		}
@@ -527,7 +527,7 @@ package org.angle3d.renderer
 		 * @param bottom the bottom boundary of the viewport (default: 0)
 		 * @param top    the top boundary of the viewport (default: 1)
 		 */
-		public function setViewPortRect(left : Number, right : Number, bottom : Number, top : Number) : void
+		public function setViewPortRect(left:Number, right:Number, bottom:Number, top:Number):void
 		{
 			mViewPortRect.setTo(left, right, bottom, top);
 			onViewPortChange();
@@ -539,7 +539,7 @@ package org.angle3d.renderer
 		 * @param pos The position to compute a distance to.
 		 * @return Distance from the far plane to the point.
 		 */
-		public function distanceToNearPlane(pos : Vector3f) : Number
+		public function distanceToNearPlane(pos:Vector3f):Number
 		{
 			return mWorldPlanes[NEAR_PLANE].pseudoDistance(pos);
 		}
@@ -564,17 +564,17 @@ package org.angle3d.renderer
 		 * @return See enums in <code>FrustumIntersect</code>
 		 */
 		//此函数很费时，需要进行优化
-		public function contains(bound : BoundingVolume) : int
+		public function contains(bound:BoundingVolume):int
 		{
 			if (bound == null)
 			{
 				return FrustumIntersect.Inside;
 			}
 
-			var mask : int;
-			var rVal : int = FrustumIntersect.Inside;
+			var mask:int;
+			var rVal:int=FrustumIntersect.Inside;
 
-			var planeCounter : int = FRUSTUM_PLANES;
+			var planeCounter:int=FRUSTUM_PLANES;
 			while (planeCounter-- > 0)
 			{
 				if (planeCounter == bound.getCheckPlane())
@@ -582,12 +582,12 @@ package org.angle3d.renderer
 					continue; // we have already checked this plane at first iteration
 				}
 
-				var planeId : int = (planeCounter == FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
+				var planeId:int=(planeCounter == FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
 
-				mask = 1 << planeId;
+				mask=1 << planeId;
 				if ((mPlaneState & mask) == 0)
 				{
-					var side : int = bound.whichSide(mWorldPlanes[planeId]);
+					var side:int=bound.whichSide(mWorldPlanes[planeId]);
 
 					if (side == PlaneSide.Negative)
 					{
@@ -599,11 +599,11 @@ package org.angle3d.renderer
 					{
 						//object is visible on *this* plane, so mark this plane
 						//so that we don't check it for sub nodes.
-						mPlaneState |= mask;
+						mPlaneState|=mask;
 					}
 					else
 					{
-						rVal = FrustumIntersect.Intersects;
+						rVal=FrustumIntersect.Intersects;
 							//TODO 直接返回就可以了吧？
 					}
 				}
@@ -621,7 +621,7 @@ package org.angle3d.renderer
 		 * @param bound the bound to check for culling
 		 * @return True if the camera contains the gui element bounding volume.
 		 */
-		public function containsGui(bound : BoundingVolume) : Boolean
+		public function containsGui(bound:BoundingVolume):Boolean
 		{
 			return mGuiBounding.intersects(bound);
 		}
@@ -632,7 +632,7 @@ package org.angle3d.renderer
 		 * This matrix is usually defined by the position and
 		 * orientation of the camera.
 		 */
-		public function getViewMatrix() : Matrix4f
+		public function getViewMatrix():Matrix4f
 		{
 			return mViewMatrix;
 		}
@@ -644,9 +644,9 @@ package org.angle3d.renderer
 		 *
 		 * @param projMatrix
 		 */
-		public function setProjectionMatrix(mat : Matrix4f) : void
+		public function setProjectionMatrix(mat:Matrix4f):void
 		{
-			mProjectionMatrixOverride = mat;
+			mProjectionMatrixOverride=mat;
 			updateViewProjection();
 		}
 
@@ -656,7 +656,7 @@ package org.angle3d.renderer
 		 * This matrix is usually defined by the viewport and perspective settings
 		 * of the camera.
 		 */
-		public function getProjectionMatrix() : Matrix4f
+		public function getProjectionMatrix():Matrix4f
 		{
 			if (mProjectionMatrixOverride != null)
 			{
@@ -669,17 +669,17 @@ package org.angle3d.renderer
 		/**
 		 * Updates the view projection matrix.
 		 */
-		public function updateViewProjection() : void
+		public function updateViewProjection():void
 		{
 			if (mProjectionMatrixOverride != null)
 			{
-				mProjectionMatrixOverride.mult(mViewMatrix,mViewProjectionMatrix);
+				mProjectionMatrixOverride.mult(mViewMatrix, mViewProjectionMatrix);
 //				mViewProjectionMatrix.copyFrom(mProjectionMatrixOverride);
 //				mViewProjectionMatrix.multLocal(mViewMatrix);
 			}
 			else
 			{
-				mProjectionMatrix.mult(mViewMatrix,mViewProjectionMatrix);
+				mProjectionMatrix.mult(mViewMatrix, mViewProjectionMatrix);
 //				mViewProjectionMatrix.copyFrom(mProjectionMatrix);
 //				mViewProjectionMatrix.multLocal(mViewMatrix);
 			}
@@ -690,7 +690,7 @@ package org.angle3d.renderer
 		 * matrix. This matrix is required for rendering an object. It is
 		 * precomputed so as to not compute it every time an object is rendered.
 		 */
-		public function getViewProjectionMatrix() : Matrix4f
+		public function getViewProjectionMatrix():Matrix4f
 		{
 			return mViewProjectionMatrix;
 		}
@@ -700,7 +700,7 @@ package org.angle3d.renderer
 		 * has been changed. This is needed in the renderer so that the proper
 		 * viewport can be set-up.
 		 */
-		public function isViewportChanged() : Boolean
+		public function isViewportChanged():Boolean
 		{
 			return mViewPortChanged;
 		}
@@ -709,95 +709,95 @@ package org.angle3d.renderer
 		 * Clears the viewport changed flag once it has been updated inside
 		 * the renderer.
 		 */
-		public function clearViewportChanged() : void
+		public function clearViewportChanged():void
 		{
-			mViewPortChanged = false;
+			mViewPortChanged=false;
 		}
 
 		/**
 		 * Called when the viewport has been changed.
 		 */
-		public function onViewPortChange() : void
+		public function onViewPortChange():void
 		{
-			mViewPortChanged = true;
+			mViewPortChanged=true;
 			updateGuiBounding();
 		}
 
-		private function updateGuiBounding() : void
+		private function updateGuiBounding():void
 		{
-			var sx : Number = width * mViewPortRect.left;
-			var ex : Number = width * mViewPortRect.right;
-			var sy : Number = height * mViewPortRect.bottom;
-			var ey : Number = height * mViewPortRect.top;
-			var xExtent : Number = Math.max(0, (ex - sx) * 0.5);
-			var yExtent : Number = Math.max(0, (ey - sy) * 0.5);
+			var sx:Number=width * mViewPortRect.left;
+			var ex:Number=width * mViewPortRect.right;
+			var sy:Number=height * mViewPortRect.bottom;
+			var ey:Number=height * mViewPortRect.top;
+			var xExtent:Number=Math.max(0, (ex - sx) * 0.5);
+			var yExtent:Number=Math.max(0, (ey - sy) * 0.5);
 
 			mGuiBounding.setCenter(new Vector3f(sx + xExtent, sy + yExtent, 0));
-			mGuiBounding.xExtent = xExtent;
-			mGuiBounding.yExtent = yExtent;
-			mGuiBounding.zExtent = Number.MAX_VALUE;
+			mGuiBounding.xExtent=xExtent;
+			mGuiBounding.yExtent=yExtent;
+			mGuiBounding.zExtent=Number.MAX_VALUE;
 		}
 
 		/**
 		 * <code>onFrameChange</code> updates the view frame of the camera.
 		 */
-		override public function onFrameChange() : void
+		override public function onFrameChange():void
 		{
-			var vars : TempVars = TempVars.getTempVars();
+			var vars:TempVars=TempVars.getTempVars();
 
-			var left : Vector3f = getLeft(vars.vect1);
-			var direction : Vector3f = getDirection(vars.vect2);
-			var up : Vector3f = getUp(vars.vect3);
+			var left:Vector3f=getLeft(vars.vect1);
+			var direction:Vector3f=getDirection(vars.vect2);
+			var up:Vector3f=getUp(vars.vect3);
 
-			var dirDotLocation : Number = direction.dot(mLocation);
+			var dirDotLocation:Number=direction.dot(mLocation);
 
 			// left plane
-			var plane : Plane = mWorldPlanes[LEFT_PLANE];
-			var normal : Vector3f = plane.normal;
-			normal.x = left.x * mCoeffLeft[0] + direction.x * mCoeffLeft[1];
-			normal.y = left.y * mCoeffLeft[0] + direction.y * mCoeffLeft[1];
-			normal.z = left.z * mCoeffLeft[0] + direction.z * mCoeffLeft[1];
-			plane.constant = mLocation.dot(normal);
+			var plane:Plane=mWorldPlanes[LEFT_PLANE];
+			var normal:Vector3f=plane.normal;
+			normal.x=left.x * mCoeffLeft[0] + direction.x * mCoeffLeft[1];
+			normal.y=left.y * mCoeffLeft[0] + direction.y * mCoeffLeft[1];
+			normal.z=left.z * mCoeffLeft[0] + direction.z * mCoeffLeft[1];
+			plane.constant=mLocation.dot(normal);
 
 			// right plane
-			plane = mWorldPlanes[RIGHT_PLANE];
-			normal = plane.normal;
-			normal.x = left.x * mCoeffRight[0] + direction.x * mCoeffRight[1];
-			normal.y = left.y * mCoeffRight[0] + direction.y * mCoeffRight[1];
-			normal.z = left.z * mCoeffRight[0] + direction.z * mCoeffRight[1];
-			plane.constant = mLocation.dot(normal);
+			plane=mWorldPlanes[RIGHT_PLANE];
+			normal=plane.normal;
+			normal.x=left.x * mCoeffRight[0] + direction.x * mCoeffRight[1];
+			normal.y=left.y * mCoeffRight[0] + direction.y * mCoeffRight[1];
+			normal.z=left.z * mCoeffRight[0] + direction.z * mCoeffRight[1];
+			plane.constant=mLocation.dot(normal);
 
 			// bottom plane
-			plane = mWorldPlanes[BOTTOM_PLANE];
-			normal = plane.normal;
-			normal.x = up.x * mCoeffBottom[0] + direction.x * mCoeffBottom[1];
-			normal.y = up.y * mCoeffBottom[0] + direction.y * mCoeffBottom[1];
-			normal.z = up.z * mCoeffBottom[0] + direction.z * mCoeffBottom[1];
-			plane.constant = mLocation.dot(normal);
+			plane=mWorldPlanes[BOTTOM_PLANE];
+			normal=plane.normal;
+			normal.x=up.x * mCoeffBottom[0] + direction.x * mCoeffBottom[1];
+			normal.y=up.y * mCoeffBottom[0] + direction.y * mCoeffBottom[1];
+			normal.z=up.z * mCoeffBottom[0] + direction.z * mCoeffBottom[1];
+			plane.constant=mLocation.dot(normal);
 
 			// top plane
-			plane = mWorldPlanes[TOP_PLANE];
-			normal = plane.normal;
-			normal.x = up.x * mCoeffTop[0] + direction.x * mCoeffTop[1];
-			normal.y = up.y * mCoeffTop[0] + direction.y * mCoeffTop[1];
-			normal.z = up.z * mCoeffTop[0] + direction.z * mCoeffTop[1];
-			plane.constant = mLocation.dot(normal);
+			plane=mWorldPlanes[TOP_PLANE];
+			normal=plane.normal;
+			normal.x=up.x * mCoeffTop[0] + direction.x * mCoeffTop[1];
+			normal.y=up.y * mCoeffTop[0] + direction.y * mCoeffTop[1];
+			normal.z=up.z * mCoeffTop[0] + direction.z * mCoeffTop[1];
+			plane.constant=mLocation.dot(normal);
 
 			if (parallelProjection)
 			{
-				mWorldPlanes[LEFT_PLANE].constant += mFrustumRect.left;
-				mWorldPlanes[RIGHT_PLANE].constant -= mFrustumRect.right;
-				mWorldPlanes[TOP_PLANE].constant -= mFrustumRect.top;
-				mWorldPlanes[BOTTOM_PLANE].constant += mFrustumRect.bottom;
+				mWorldPlanes[LEFT_PLANE].constant+=mFrustumRect.left;
+				mWorldPlanes[RIGHT_PLANE].constant-=mFrustumRect.right;
+				mWorldPlanes[TOP_PLANE].constant-=mFrustumRect.top;
+				mWorldPlanes[BOTTOM_PLANE].constant+=mFrustumRect.bottom;
 			}
 
 			// far plane
 			mWorldPlanes[FAR_PLANE].normal.setTo(-direction.x, -direction.y, -direction.z);
-			mWorldPlanes[FAR_PLANE].constant = -(dirDotLocation + mFrustumFar);
+			mWorldPlanes[FAR_PLANE].constant=-(dirDotLocation + mFrustumFar);
 
 			// near plane
 			mWorldPlanes[NEAR_PLANE].normal.setTo(direction.x, direction.y, direction.z);
-			mWorldPlanes[NEAR_PLANE].constant = dirDotLocation + mFrustumNear;
+			mWorldPlanes[NEAR_PLANE].constant=dirDotLocation + mFrustumNear;
 
 			mViewMatrix.fromFrame(mLocation, direction, up, left);
 
@@ -809,19 +809,16 @@ package org.angle3d.renderer
 		/**
 		 * @see Camera#getWorldCoordinates
 		 */
-		public function getWorldCoordinates(screenPos : Vector2f, zPos : Number, result : Vector3f = null) : Vector3f
+		public function getWorldCoordinates(screenPos:Vector2f, zPos:Number, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			var inverseMat : Matrix4f = mViewProjectionMatrix.invert();
+			var inverseMat:Matrix4f=mViewProjectionMatrix.invert();
 
-			result.setTo(
-				(screenPos.x / width - mViewPortRect.left) / mViewPortRect.width * 2 - 1,
-				(screenPos.y / height - mViewPortRect.bottom) / mViewPortRect.height * 2 - 1,
-				zPos * 2 - 1);
+			result.setTo((screenPos.x / width - mViewPortRect.left) / mViewPortRect.width * 2 - 1, (screenPos.y / height - mViewPortRect.bottom) / mViewPortRect.height * 2 - 1, zPos * 2 - 1);
 
-			var w : Number = inverseMat.multProj(result, result);
+			var w:Number=inverseMat.multProj(result, result);
 			result.scaleLocal(1 / w);
 
 			return result;
@@ -832,17 +829,17 @@ package org.angle3d.renderer
 		 *
 		 * @see Camera#getScreenCoordinates(Vector3f, Vector3f)
 		 */
-		public function getScreenCoordinates(worldPos : Vector3f, result : Vector3f = null) : Vector3f
+		public function getScreenCoordinates(worldPos:Vector3f, result:Vector3f=null):Vector3f
 		{
 			if (result == null)
-				result = new Vector3f();
+				result=new Vector3f();
 
-			var w : Number = mViewProjectionMatrix.multProj(worldPos, result);
+			var w:Number=mViewProjectionMatrix.multProj(worldPos, result);
 			result.scaleLocal(1 / w);
 
-			result.x = ((result.x + 1) * mViewPortRect.width * 0.5 + mViewPortRect.left) * width;
-			result.y = ((result.y + 1) * mViewPortRect.height * 0.5 + mViewPortRect.bottom) * height;
-			result.z = (result.z + 1) * 0.5;
+			result.x=((result.x + 1) * mViewPortRect.width * 0.5 + mViewPortRect.left) * width;
+			result.y=((result.y + 1) * mViewPortRect.height * 0.5 + mViewPortRect.bottom) * height;
+			result.z=(result.z + 1) * 0.5;
 
 			return result;
 		}

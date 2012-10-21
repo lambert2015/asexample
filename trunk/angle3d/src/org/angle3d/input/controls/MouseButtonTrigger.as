@@ -23,7 +23,7 @@ package org.angle3d.input.controls
 		public function MouseButtonTrigger(mouseButton:int)
 		{
 			Assert.assert(mouseButton >= 0, "mouseButton > 0");
-			this.mouseButton = mouseButton;
+			this.mouseButton=mouseButton;
 		}
 
 		public function getName():String

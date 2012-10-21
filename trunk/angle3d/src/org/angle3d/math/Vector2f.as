@@ -7,17 +7,17 @@ package org.angle3d.math
 	 */
 	public class Vector2f
 	{
-		public static const ZERO : Vector2f = new Vector2f(0, 0);
-		public static const UNIT : Vector2f = new Vector2f(1, 1);
+		public static const ZERO:Vector2f=new Vector2f(0, 0);
+		public static const UNIT:Vector2f=new Vector2f(1, 1);
 
 		/**
 		 * the x value of the vector.
 		 */
-		public var x : Number;
+		public var x:Number;
 		/**
 		 * the y value of the vector.
 		 */
-		public var y : Number;
+		public var y:Number;
 
 		/**
 		 * Creates a Vector2 with the given initial x and y values.
@@ -27,37 +27,37 @@ package org.angle3d.math
 		 * @param y
 		 *            The y value of this Vector2.
 		 */
-		public function Vector2f(x : Number = 0, y : Number = 0)
+		public function Vector2f(x:Number=0, y:Number=0)
 		{
-			this.x = x;
-			this.y = y;
+			this.x=x;
+			this.y=y;
 		}
 
 		[Inline]
-		public final function setTo(x : Number, y : Number) : void
+		public final function setTo(x:Number, y:Number):void
 		{
-			this.x = x;
-			this.y = y;
+			this.x=x;
+			this.y=y;
 		}
 
 		[Inline]
-		public final function copyFrom(other : Vector2f) : void
+		public final function copyFrom(other:Vector2f):void
 		{
-			this.x = other.x;
-			this.y = other.y;
+			this.x=other.x;
+			this.y=other.y;
 		}
 
 		[Inline]
-		public final function add(vec : Vector2f) : Vector2f
+		public final function add(vec:Vector2f):Vector2f
 		{
 			return new Vector2f(x + vec.x, y + vec.y);
 		}
 
 		[Inline]
-		public final function addLocal(vec : Vector2f) : void
+		public final function addLocal(vec:Vector2f):void
 		{
-			x += vec.x;
-			y += vec.y;
+			x+=vec.x;
+			y+=vec.y;
 		}
 
 		/**
@@ -70,22 +70,22 @@ package org.angle3d.math
 		 * @return the result vector.
 		 */
 		[Inline]
-		public final function subtract(vec : Vector2f, result : Vector2f = null) : Vector2f
+		public final function subtract(vec:Vector2f, result:Vector2f=null):Vector2f
 		{
 			if (result == null)
 			{
-				result = new Vector2f();
+				result=new Vector2f();
 			}
-			result.x = x - vec.x;
-			result.y = y - vec.y;
+			result.x=x - vec.x;
+			result.y=y - vec.y;
 			return result;
 		}
 
 		[Inline]
-		public final function subtractLocal(vec : Vector2f) : void
+		public final function subtractLocal(vec:Vector2f):void
 		{
-			x -= vec.x;
-			y -= vec.y;
+			x-=vec.x;
+			y-=vec.y;
 		}
 
 		/**
@@ -97,7 +97,7 @@ package org.angle3d.math
 		 * @return the resultant dot product of this vector and a given vector.
 		 */
 		[Inline]
-		public final function dot(vec : Vector2f) : Number
+		public final function dot(vec:Vector2f):Number
 		{
 			return x * vec.x + y * vec.y;
 		}
@@ -111,23 +111,23 @@ package org.angle3d.math
 		 * @return the cross product vector.
 		 */
 		[Inline]
-		public final function cross(v : Vector2f) : Vector2f
+		public final function cross(v:Vector2f):Vector2f
 		{
 			return new Vector2f(0, determinant(v));
 		}
 
 		[Inline]
-		public final function determinant(v : Vector2f) : Number
+		public final function determinant(v:Vector2f):Number
 		{
 			return (x * v.y) - (y * v.x);
 		}
 
 		[Inline]
-		public final function lerp(v1 : Vector2f, v2 : Vector2f, interp : Number) : void
+		public final function lerp(v1:Vector2f, v2:Vector2f, interp:Number):void
 		{
-			var t : Number = 1 - interp;
-			this.x = t * v1.x + interp * v2.x;
-			this.y = t * v1.y + interp * v2.y;
+			var t:Number=1 - interp;
+			this.x=t * v1.x + interp * v2.x;
+			this.y=t * v1.y + interp * v2.y;
 		}
 
 		/**
@@ -138,7 +138,7 @@ package org.angle3d.math
 		 *            the vector to check
 		 * @return true or false as stated above.
 		 */
-		public static function isValidVector(vector : Vector2f) : Boolean
+		public static function isValidVector(vector:Vector2f):Boolean
 		{
 			if (vector == null)
 				return false;
@@ -158,7 +158,7 @@ package org.angle3d.math
 		 * @return the length or magnitude of the vector.
 		 */
 		[Inline]
-		public final function get length() : Number
+		public final function get length():Number
 		{
 			return Math.sqrt(x * x + y * y);
 		}
@@ -170,7 +170,7 @@ package org.angle3d.math
 		 * @return the magnitude squared of the vector.
 		 */
 		[Inline]
-		public final function get lengthSquared() : Number
+		public final function get lengthSquared():Number
 		{
 			return x * x + y * y;
 		}
@@ -183,10 +183,10 @@ package org.angle3d.math
 		 * @return the distance squared between the two vectors.
 		 */
 		[Inline]
-		public final function distanceSquared(v : Vector2f) : Number
+		public final function distanceSquared(v:Vector2f):Number
 		{
-			var dx : Number = x - v.x;
-			var dy : Number = y - v.y;
+			var dx:Number=x - v.x;
+			var dy:Number=y - v.y;
 			return (dx * dx + dy * dy);
 		}
 
@@ -198,7 +198,7 @@ package org.angle3d.math
 		 * @return the distance between the two vectors.
 		 */
 		[Inline]
-		public final function distance(v : Vector2f) : Number
+		public final function distance(v:Vector2f):Number
 		{
 			return Math.sqrt(distanceSquared(v));
 		}
@@ -211,14 +211,14 @@ package org.angle3d.math
 		 *            the value to multiply this vector by.
 		 * @return the new vector.
 		 */
-		public function scale(scalar : Number, result : Vector2f = null) : Vector2f
+		public function scale(scalar:Number, result:Vector2f=null):Vector2f
 		{
 			if (null == result)
 			{
-				result = new Vector2f();
+				result=new Vector2f();
 			}
-			result.x = x * scalar;
-			result.y = y * scalar;
+			result.x=x * scalar;
+			result.y=y * scalar;
 			return result;
 		}
 
@@ -231,23 +231,23 @@ package org.angle3d.math
 		 * @return this
 		 */
 		[Inline]
-		public final function scaleBy(scalar : Number) : void
+		public final function scaleBy(scalar:Number):void
 		{
-			x *= scalar;
-			y *= scalar;
+			x*=scalar;
+			y*=scalar;
 		}
 
 		[Inline]
-		public final function divide(scalar : Number) : Vector2f
+		public final function divide(scalar:Number):Vector2f
 		{
 			return new Vector2f(x / scalar, y / scalar);
 		}
 
 		[Inline]
-		public final function divideBy(scalar : Number) : void
+		public final function divideBy(scalar:Number):void
 		{
-			x /= scalar;
-			y /= scalar;
+			x/=scalar;
+			y/=scalar;
 		}
 
 		/**
@@ -257,7 +257,7 @@ package org.angle3d.math
 		 * @return the negated vector.
 		 */
 		[Inline]
-		public final function negate() : Vector2f
+		public final function negate():Vector2f
 		{
 			return new Vector2f(-x, -y);
 		}
@@ -268,10 +268,10 @@ package org.angle3d.math
 		 * @return this.
 		 */
 		[Inline]
-		public final function negateLocal() : void
+		public final function negateLocal():void
 		{
-			x = -x;
-			y = -y;
+			x=-x;
+			y=-y;
 		}
 
 		/**
@@ -280,26 +280,26 @@ package org.angle3d.math
 		 * @return unit vector of this vector.
 		 */
 		[Inline]
-		public final function normalizeLocal() : void
+		public final function normalizeLocal():void
 		{
-			var len : Number = length;
+			var len:Number=length;
 			if (len != 0)
 			{
-				len = 1 / len;
-				x *= len;
-				y *= len;
+				len=1 / len;
+				x*=len;
+				y*=len;
 			}
 		}
 
-		public function getNormalize() : Vector2f
+		public function getNormalize():Vector2f
 		{
-			var result : Vector2f = clone();
-			var d : Number = length;
+			var result:Vector2f=clone();
+			var d:Number=length;
 			if (d != 0)
 			{
-				d = 1 / d;
-				result.x = x * d;
-				result.y = y * d;
+				d=1 / d;
+				result.x=x * d;
+				result.y=y * d;
 			}
 			return result;
 		}
@@ -315,9 +315,9 @@ package org.angle3d.math
 		 * @return the angle in radians.
 		 */
 		[Inline]
-		public final function angleBetween(other : Vector2f) : Number
+		public final function angleBetween(other:Vector2f):Number
 		{
-			var angle : Number = Math.atan2(other.y, other.x) - Math.atan2(y, x);
+			var angle:Number=Math.atan2(other.y, other.x) - Math.atan2(y, x);
 			return angle;
 		}
 
@@ -329,49 +329,49 @@ package org.angle3d.math
 		 * @return the angle in radians. [-pi, pi)
 		 */
 		[Inline]
-		public final function getAngle() : Number
+		public final function getAngle():Number
 		{
 			return Math.atan2(y, x);
 		}
 
-		public function rotateAroundOrigin(angle : Number, cw : Boolean = false) : void
+		public function rotateAroundOrigin(angle:Number, cw:Boolean=false):void
 		{
 			if (cw)
-				angle = -angle;
+				angle=-angle;
 
-			var ang_cos : Number = Math.cos(angle);
-			var ang_sin : Number = Math.sin(angle);
+			var ang_cos:Number=Math.cos(angle);
+			var ang_sin:Number=Math.sin(angle);
 
-			var nx : Number = ang_cos * x - ang_sin * y;
-			var ny : Number = ang_sin * x + ang_cos * y;
+			var nx:Number=ang_cos * x - ang_sin * y;
+			var ny:Number=ang_sin * x + ang_cos * y;
 
-			x = nx;
-			y = ny;
+			x=nx;
+			y=ny;
 		}
 
 		/**
 		 * <code>zero</code> resets this vector's data to zero internally.
 		 */
 		[Inline]
-		public final function zero() : void
+		public final function zero():void
 		{
-			x = y = 0;
+			x=y=0;
 		}
 
 		[Inline]
-		public final function clone() : Vector2f
+		public final function clone():Vector2f
 		{
 			return new Vector2f(x, y);
 		}
 
-		public function toVector(vec : Vector.<Number> = null) : Vector.<Number>
+		public function toVector(vec:Vector.<Number>=null):Vector.<Number>
 		{
 			if (vec == null)
 			{
-				vec = new Vector.<Number>();
+				vec=new Vector.<Number>();
 			}
-			vec[0] = x;
-			vec[1] = y;
+			vec[0]=x;
+			vec[1]=y;
 			return vec;
 		}
 
@@ -382,7 +382,7 @@ package org.angle3d.math
 		 *
 		 * @return the string representation of this vector.
 		 */
-		public function toString() : String
+		public function toString():String
 		{
 			return "Vector2f(" + x + "," + y + ")";
 		}

@@ -8,6 +8,6 @@ package org.angle3d.effect.gpu.influencers.velocity
 	 */
 	public interface IVelocityInfluencer extends IInfluencer
 	{
-		function getVelocity(index:int,store:Vector3f):Vector3f;
+		function getVelocity(index:int, store:Vector3f):Vector3f;
 	}
 }

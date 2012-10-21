@@ -10,14 +10,14 @@ package org.angle3d.cinematic.event
 		protected var channel:AnimChannel;
 		protected var animationName:String;
 		protected var modelName:String;
-		
-		public function AnimationEvent(model:Spatial,animationName:String,initialDuration:Number=10, mode:int=0)
+
+		public function AnimationEvent(model:Spatial, animationName:String, initialDuration:Number=10, mode:int=0)
 		{
 			super(initialDuration, mode);
-			
-			modelName = model.name;
-			this.animationName = animationName;
-			initialDuration = (model.getControlByClass(AnimControl) as AnimControl).getAnimationLength(animationName);
+
+			modelName=model.name;
+			this.animationName=animationName;
+			initialDuration=(model.getControlByClass(AnimControl) as AnimControl).getAnimationLength(animationName);
 		}
 	}
 }

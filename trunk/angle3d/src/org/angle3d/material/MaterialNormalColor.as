@@ -10,23 +10,23 @@ package org.angle3d.material
 	 */
 	public class MaterialNormalColor extends Material
 	{
-		private var _technique : TechniqueNormalColor;
+		private var _technique:TechniqueNormalColor;
 
 		public function MaterialNormalColor()
 		{
 			super();
 
-			_technique = new TechniqueNormalColor();
+			_technique=new TechniqueNormalColor();
 
 			addTechnique(_technique);
 		}
 
-		override public function set influence(value : Number) : void
+		override public function set influence(value:Number):void
 		{
-			_technique.influence = value;
+			_technique.influence=value;
 		}
 
-		public function get technique() : TechniqueNormalColor
+		public function get technique():TechniqueNormalColor
 		{
 			return _technique;
 		}

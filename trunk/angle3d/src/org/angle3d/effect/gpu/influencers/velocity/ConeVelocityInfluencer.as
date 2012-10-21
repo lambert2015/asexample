@@ -12,19 +12,19 @@ package org.angle3d.effect.gpu.influencers.velocity
 
 		public function ConeVelocityInfluencer(speed:Number)
 		{
-			_speed = speed;
+			_speed=speed;
 
-			_temp = new Vector3f();
+			_temp=new Vector3f();
 		}
 
 		public function getVelocity(index:int, store:Vector3f):Vector3f
 		{
-			var degree1:Number = Math.random() * Math.PI * 2;
-			var degree2:Number = Math.PI * 80 / 180 + Math.random() * Math.PI * 5 / 180;
+			var degree1:Number=Math.random() * Math.PI * 2;
+			var degree2:Number=Math.PI * 80 / 180 + Math.random() * Math.PI * 5 / 180;
 
-			store.x = _speed * Math.sin(degree1) * Math.cos(degree2);
-			store.y = _speed * Math.sin(degree2);
-			store.z = _speed * Math.cos(degree1) * Math.cos(degree2);
+			store.x=_speed * Math.sin(degree1) * Math.cos(degree2);
+			store.y=_speed * Math.sin(degree2);
+			store.z=_speed * Math.cos(degree1) * Math.cos(degree2);
 
 			return store;
 		}

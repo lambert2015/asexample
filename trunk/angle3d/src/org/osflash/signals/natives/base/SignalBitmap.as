@@ -12,7 +12,7 @@ package org.osflash.signals.natives.base
 
 		public function get signals():DisplayObjectSignalSet
 		{
-			return _signals ||= new DisplayObjectSignalSet(this);
+			return _signals||=new DisplayObjectSignalSet(this);
 		}
 	}
 }

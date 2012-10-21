@@ -1,6 +1,6 @@
 package org.angle3d.texture
 {
-	
+
 
 	/**
 	 * <p>
@@ -42,12 +42,12 @@ package org.angle3d.texture
 		public var antiAlias:int;
 		public var surfaceSelector:int;
 
-		public function FrameBuffer(texture:TextureMapBase, enableDepthAndStencil:Boolean = false, antiAlias:int = 0, surfaceSelector:int = 0)
+		public function FrameBuffer(texture:TextureMapBase, enableDepthAndStencil:Boolean=false, antiAlias:int=0, surfaceSelector:int=0)
 		{
-			this.texture = texture;
-			this.enableDepthAndStencil = enableDepthAndStencil;
-			this.antiAlias = antiAlias;
-			this.surfaceSelector = surfaceSelector;
+			this.texture=texture;
+			this.enableDepthAndStencil=enableDepthAndStencil;
+			this.antiAlias=antiAlias;
+			this.surfaceSelector=surfaceSelector;
 		}
 	}
 }

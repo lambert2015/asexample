@@ -4,7 +4,7 @@ package org.angle3d.manager
 	import flash.display3D.Context3D;
 	import flash.display3D.Program3D;
 	import flash.utils.Dictionary;
-	
+
 	import org.angle3d.material.sgsl.OpCodeManager;
 	import org.angle3d.material.sgsl.SgslCompiler;
 	import org.angle3d.material.sgsl.node.FunctionNode;
@@ -18,54 +18,54 @@ package org.angle3d.manager
 	 */
 	public class ShaderManager
 	{
-		public static var _instance : ShaderManager;
-		
+		public static var _instance:ShaderManager;
+
 		public static function get instance():ShaderManager
 		{
 			return _instance;
 		}
-		
-		public static function init(context3D:Context3D,profile:String,version:int):void
+
+		public static function init(context3D:Context3D, profile:String, version:int):void
 		{
-			_instance = new ShaderManager(context3D,profile,version);
+			_instance=new ShaderManager(context3D, profile, version);
 		}
 
-		private var mShaderMap : Dictionary; //<String,Shader>;
-		private var mProgramMap : Dictionary; //<String,Program3D>;
-		private var mShaderRegisterCount : Dictionary; //<String,int>;
-		
+		private var mShaderMap:Dictionary; //<String,Shader>;
+		private var mProgramMap:Dictionary; //<String,Program3D>;
+		private var mShaderRegisterCount:Dictionary; //<String,int>;
+
 		private var mContext3D:Context3D;
 		private var mProfile:String;
 		private var mVersion:int;
-		
+
 		private var mSgslParser:SgslParser;
-		private var mShaderCompiler : SgslCompiler;
+		private var mShaderCompiler:SgslCompiler;
 		private var mOpCodeManager:OpCodeManager;
-		
-		private var mCustomFunctionMap : Dictionary;
 
-		public function ShaderManager(context3D:Context3D,profile:String,version:int)
+		private var mCustomFunctionMap:Dictionary;
+
+		public function ShaderManager(context3D:Context3D, profile:String, version:int)
 		{
-			mContext3D = context3D;
-			mProfile = profile;
-			mVersion = version;
-			
-			mShaderMap = new Dictionary();
-			mProgramMap = new Dictionary();
-			mShaderRegisterCount = new Dictionary();
+			mContext3D=context3D;
+			mProfile=profile;
+			mVersion=version;
 
-			mOpCodeManager = new OpCodeManager(mProfile,version);
-			mSgslParser = new SgslParser();
-			mShaderCompiler = new SgslCompiler(mSgslParser,mOpCodeManager);
-			
+			mShaderMap=new Dictionary();
+			mProgramMap=new Dictionary();
+			mShaderRegisterCount=new Dictionary();
+
+			mOpCodeManager=new OpCodeManager(mProfile, version);
+			mSgslParser=new SgslParser();
+			mShaderCompiler=new SgslCompiler(mSgslParser, mOpCodeManager);
+
 			_initCustomFunctions();
 		}
-		
-		public function getCustomFunctionMap() : Dictionary
+
+		public function getCustomFunctionMap():Dictionary
 		{
 			return mCustomFunctionMap;
 		}
-		
+
 		/**
 		 * 编译自定义函数
 		 *
@@ -88,11 +88,11 @@ package org.angle3d.manager
 		//			return mul(t_result,t_bool);  //乘以t_bool就会出现结果不正确，为什么？
 		//		}
 		//TODO 约束模式有几个函数用不了，需要自己自定义这几个函数
-		private function _initCustomFunctions() : void
+		private function _initCustomFunctions():void
 		{
-			mCustomFunctionMap = new Dictionary();
-			
-			var source : String = <![CDATA[
+			mCustomFunctionMap=new Dictionary();
+
+			var source:String=<![CDATA[
 				/* common help function */
 
 				/*#ifdef(CONSTRAINED){
@@ -193,34 +193,34 @@ package org.angle3d.manager
 				
 				}
 				]]>;
-			
-			var functionList : Vector.<FunctionNode> = mSgslParser.execFunctions(source);
-			
-			var fLength : int = functionList.length;
-			for (var i : int = 0; i < fLength; i++)
+
+			var functionList:Vector.<FunctionNode>=mSgslParser.execFunctions(source);
+
+			var fLength:int=functionList.length;
+			for (var i:int=0; i < fLength; i++)
 			{
 				functionList[i].renameTempVar();
-				mCustomFunctionMap[functionList[i].name] = functionList[i];
+				mCustomFunctionMap[functionList[i].name]=functionList[i];
 			}
-			
-			for (i = 0; i < fLength; i++)
+
+			for (i=0; i < fLength; i++)
 			{
 				functionList[i].replaceCustomFunction(mCustomFunctionMap);
 			}
 		}
 
-		
+
 		public function get opCodeManager():OpCodeManager
 		{
 			return mOpCodeManager;
 		}
 
-		public function isRegistered(key : String) : Boolean
+		public function isRegistered(key:String):Boolean
 		{
 			return mShaderMap[key] != undefined;
 		}
 
-		public function getShader(key : String) : Shader
+		public function getShader(key:String):Shader
 		{
 			return mShaderMap[key];
 		}
@@ -231,25 +231,24 @@ package org.angle3d.manager
 		 * @param	sources Array<String>
 		 * @param	conditions Array<Array<String>>
 		 */
-		public function registerShader(key : String, sources : Array, conditions : Vector.<Vector.<String>> = null) : Shader
+		public function registerShader(key:String, sources:Array, conditions:Vector.<Vector.<String>>=null):Shader
 		{
-			var shader : Shader = mShaderMap[key];
+			var shader:Shader=mShaderMap[key];
 			if (shader == null)
 			{
-				shader = mShaderCompiler.complie(sources, conditions);
-				shader.name = key;
-				mShaderMap[key] = shader;
+				shader=mShaderCompiler.complie(sources, conditions);
+				shader.name=key;
+				mShaderMap[key]=shader;
 			}
 
 			//使用次数+1
-			if (mShaderRegisterCount[key] != undefined &&
-				!isNaN(mShaderRegisterCount[key]))
+			if (mShaderRegisterCount[key] != undefined && !isNaN(mShaderRegisterCount[key]))
 			{
-				mShaderRegisterCount[key] += 1;
+				mShaderRegisterCount[key]+=1;
 			}
 			else
 			{
-				mShaderRegisterCount[key] = 1;
+				mShaderRegisterCount[key]=1;
 			}
 
 			CF::DEBUG
@@ -264,20 +263,20 @@ package org.angle3d.manager
 		 * 注销一个Shader,Shader引用为0时销毁对应的Progame3D
 		 * @param	key
 		 */
-		public function unregisterShader(key : String) : void
+		public function unregisterShader(key:String):void
 		{
 			if (mProgramMap[key] == undefined)
 			{
 				return;
 			}
 
-			var registerCount : int = mShaderRegisterCount[key];
+			var registerCount:int=mShaderRegisterCount[key];
 			if (registerCount == 1)
 			{
 				delete mShaderMap[key];
 				delete mShaderRegisterCount[key];
 
-				var program : Program3D = mProgramMap[key];
+				var program:Program3D=mProgramMap[key];
 				if (program != null)
 				{
 					program.dispose();
@@ -286,7 +285,7 @@ package org.angle3d.manager
 			}
 			else
 			{
-				mShaderRegisterCount[key] = registerCount - 1;
+				mShaderRegisterCount[key]=registerCount - 1;
 
 				CF::DEBUG
 				{
@@ -295,19 +294,19 @@ package org.angle3d.manager
 			}
 		}
 
-		public function getProgram(key : String) : Program3D
+		public function getProgram(key:String):Program3D
 		{
 			if (mProgramMap[key] == undefined)
 			{
-				var shader : Shader = mShaderMap[key];
+				var shader:Shader=mShaderMap[key];
 				if (shader == null)
 				{
 					return null;
 				}
 
-				var program : Program3D = mContext3D.createProgram();
+				var program:Program3D=mContext3D.createProgram();
 				program.upload(shader.vertexData, shader.fragmentData);
-				mProgramMap[key] = program;
+				mProgramMap[key]=program;
 			}
 			return mProgramMap[key];
 		}

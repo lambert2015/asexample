@@ -22,7 +22,7 @@ package org.osflash.signals
 	public class OnceSignal implements IOnceSignal
 	{
 		protected var _valueClasses:Array; // of Class
-		protected var slots:SlotList = SlotList.NIL;
+		protected var slots:SlotList=SlotList.NIL;
 
 		/**
 		 * Creates a Signal instance to dispatch value objects.
@@ -38,7 +38,7 @@ package org.osflash.signals
 		public function OnceSignal(... valueClasses)
 		{
 			// Cannot use super.apply(null, valueClasses), so allow the subclass to call super(valueClasses).
-			this.valueClasses = (valueClasses.length == 1 && valueClasses[0] is Array) ? valueClasses[0] : valueClasses;
+			this.valueClasses=(valueClasses.length == 1 && valueClasses[0] is Array) ? valueClasses[0] : valueClasses;
 		}
 
 		/**
@@ -54,8 +54,8 @@ package org.osflash.signals
 		public function set valueClasses(value:Array):void
 		{
 			// Clone so the Array cannot be affected from outside.
-			_valueClasses = value ? value.slice() : [];
-			for (var i:int = _valueClasses.length; i--; )
+			_valueClasses=value ? value.slice() : [];
+			for (var i:int=_valueClasses.length; i--; )
 			{
 				if (!(_valueClasses[i] is Class))
 				{
@@ -83,18 +83,18 @@ package org.osflash.signals
 		/** @inheritDoc */
 		public function remove(listener:Function):ISlot
 		{
-			const slot:ISlot = slots.find(listener);
+			const slot:ISlot=slots.find(listener);
 			if (!slot)
 				return null;
 
-			slots = slots.filterNot(listener);
+			slots=slots.filterNot(listener);
 			return slot;
 		}
 
 		/** @inheritDoc */
 		public function removeAll():void
 		{
-			slots = SlotList.NIL;
+			slots=SlotList.NIL;
 		}
 
 		/**
@@ -106,8 +106,8 @@ package org.osflash.signals
 		{
 
 			// If valueClasses is empty, value objects are not type-checked. 
-			const numValueClasses:int = _valueClasses.length;
-			const numValueObjects:int = valueObjects.length;
+			const numValueClasses:int=_valueClasses.length;
+			const numValueObjects:int=valueObjects.length;
 
 			// Cannot dispatch fewer objects than declared classes.
 			if (numValueObjects < numValueClasses)
@@ -116,7 +116,7 @@ package org.osflash.signals
 			}
 
 			// Cannot dispatch differently typed objects than declared classes.
-			for (var i:int = 0; i < numValueClasses; i++)
+			for (var i:int=0; i < numValueClasses; i++)
 			{
 				// Optimized for the optimistic case that values are correct.
 				if (valueObjects[i] is _valueClasses[i] || valueObjects[i] === null)
@@ -126,23 +126,23 @@ package org.osflash.signals
 			}
 
 			// Broadcast to listeners.
-			var slotsToProcess:SlotList = slots;
+			var slotsToProcess:SlotList=slots;
 			if (slotsToProcess.nonEmpty)
 			{
 				while (slotsToProcess.nonEmpty)
 				{
 					slotsToProcess.head.execute(valueObjects);
-					slotsToProcess = slotsToProcess.tail;
+					slotsToProcess=slotsToProcess.tail;
 				}
 			}
 		}
 
-		protected function registerListener(listener:Function, once:Boolean = false):ISlot
+		protected function registerListener(listener:Function, once:Boolean=false):ISlot
 		{
 			if (registrationPossible(listener, once))
 			{
-				const newSlot:ISlot = new Slot(listener, this, once);
-				slots = slots.prepend(newSlot);
+				const newSlot:ISlot=new Slot(listener, this, once);
+				slots=slots.prepend(newSlot);
 				return newSlot;
 			}
 
@@ -154,7 +154,7 @@ package org.osflash.signals
 			if (!slots.nonEmpty)
 				return true;
 
-			const existingSlot:ISlot = slots.find(listener);
+			const existingSlot:ISlot=slots.find(listener);
 			if (!existingSlot)
 				return true;
 

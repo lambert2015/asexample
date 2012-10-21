@@ -4,7 +4,7 @@ package org.angle3d.scene.mesh
 	import flash.display3D.IndexBuffer3D;
 	import flash.display3D.VertexBuffer3D;
 	import flash.utils.Dictionary;
-	
+
 	import org.angle3d.bounding.BoundingBox;
 	import org.angle3d.bounding.BoundingVolume;
 	import org.angle3d.math.Triangle;
@@ -20,7 +20,7 @@ package org.angle3d.scene.mesh
 	public class SubMesh
 	{
 		public var mesh:Mesh;
-		
+
 		/**
 		 * The bounding volume that contains the mesh entirely.
 		 * By default a BoundingBox (AABB).
@@ -43,11 +43,11 @@ package org.angle3d.scene.mesh
 
 		public function SubMesh()
 		{
-			mBound = new BoundingBox();
+			mBound=new BoundingBox();
 
-			mBufferMap = new Dictionary();
+			mBufferMap=new Dictionary();
 
-			merge = false;
+			merge=false;
 		}
 
 		public function validate():void
@@ -65,15 +65,15 @@ package org.angle3d.scene.mesh
 
 		public function set merge(value:Boolean):void
 		{
-			_merge = value;
+			_merge=value;
 			if (!_merge)
 			{
-				_vertexBuffer3DMap = new Dictionary();
+				_vertexBuffer3DMap=new Dictionary();
 
 				if (_vertexBuffer3D != null)
 				{
 					_vertexBuffer3D.dispose();
-					_vertexBuffer3D = null;
+					_vertexBuffer3D=null;
 				}
 			}
 		}
@@ -82,7 +82,7 @@ package org.angle3d.scene.mesh
 		{
 			if (_indexBuffer3D == null)
 			{
-				_indexBuffer3D = context.createIndexBuffer(mIndices.length);
+				_indexBuffer3D=context.createIndexBuffer(mIndices.length);
 				_indexBuffer3D.uploadFromVector(mIndices, 0, mIndices.length);
 			}
 			return _indexBuffer3D;
@@ -100,56 +100,56 @@ package org.angle3d.scene.mesh
 			{
 				if (_vertexBuffer3D == null)
 				{
-					var vertCount:int = getVertexCount();
-					_vertexData = getCombineData();
-					_vertexBuffer3D = context.createVertexBuffer(vertCount, _getData32PerVertex());
+					var vertCount:int=getVertexCount();
+					_vertexData=getCombineData();
+					_vertexBuffer3D=context.createVertexBuffer(vertCount, _getData32PerVertex());
 					_vertexBuffer3D.uploadFromVector(_vertexData, 0, vertCount);
 				}
 				return _vertexBuffer3D;
 			}
 
 			if (_vertexBuffer3DMap == null)
-				_vertexBuffer3DMap = new Dictionary();
+				_vertexBuffer3DMap=new Dictionary();
 
 			var buffer3D:VertexBuffer3D;
 			var buffer:VertexBuffer;
 
-			buffer = getVertexBuffer(type);
+			buffer=getVertexBuffer(type);
 			//buffer更改过数据，需要重新上传数据
 			if (buffer.dirty)
 			{
-				vertCount = getVertexCount();
+				vertCount=getVertexCount();
 
-				buffer3D = _vertexBuffer3DMap[type];
+				buffer3D=_vertexBuffer3DMap[type];
 				if (buffer3D == null)
 				{
-					buffer3D = context.createVertexBuffer(vertCount, buffer.components);
-					_vertexBuffer3DMap[type] = buffer3D;
+					buffer3D=context.createVertexBuffer(vertCount, buffer.components);
+					_vertexBuffer3DMap[type]=buffer3D;
 				}
 
 				buffer3D.uploadFromVector(buffer.getData(), 0, vertCount);
 
-				buffer.dirty = false;
+				buffer.dirty=false;
 			}
 			else
 			{
-				buffer3D = _vertexBuffer3DMap[type];
+				buffer3D=_vertexBuffer3DMap[type];
 				if (buffer3D == null)
 				{
-					vertCount = getVertexCount();
-					buffer3D = context.createVertexBuffer(vertCount, buffer.components);
-					_vertexBuffer3DMap[type] = buffer3D;
+					vertCount=getVertexCount();
+					buffer3D=context.createVertexBuffer(vertCount, buffer.components);
+					_vertexBuffer3DMap[type]=buffer3D;
 
 					buffer3D.uploadFromVector(buffer.getData(), 0, vertCount);
 				}
 			}
-			
+
 			return buffer3D;
 		}
 
 		public function getVertexCount():int
 		{
-			var pb:VertexBuffer = getVertexBuffer(BufferType.POSITION);
+			var pb:VertexBuffer=getVertexBuffer(BufferType.POSITION);
 			if (pb != null)
 				return pb.count;
 			return 0;
@@ -157,26 +157,26 @@ package org.angle3d.scene.mesh
 
 		protected function getCombineData():Vector.<Number>
 		{
-			var vertCount:int = getVertexCount();
+			var vertCount:int=getVertexCount();
 
-			var TYPES:Array = BufferType.VERTEX_TYPES;
-			var TYPES_SIZE:int = TYPES.length;
+			var TYPES:Array=BufferType.VERTEX_TYPES;
+			var TYPES_SIZE:int=TYPES.length;
 
-			var result:Vector.<Number> = new Vector.<Number>();
+			var result:Vector.<Number>=new Vector.<Number>();
 
 			var buffer:VertexBuffer;
 			var comps:int;
 			var data:Vector.<Number>;
-			for (var i:int = 0; i < vertCount; i++)
+			for (var i:int=0; i < vertCount; i++)
 			{
-				for (var j:int = 0; j < TYPES_SIZE; j++)
+				for (var j:int=0; j < TYPES_SIZE; j++)
 				{
-					buffer = mBufferMap[TYPES[j]];
+					buffer=mBufferMap[TYPES[j]];
 					if (buffer != null)
 					{
-						data = buffer.getData();
-						comps = buffer.components;
-						for (var k:int = 0; k < comps; k++)
+						data=buffer.getData();
+						comps=buffer.components;
+						for (var k:int=0; k < comps; k++)
 						{
 							result.push(data[i * comps + k]);
 						}
@@ -184,23 +184,23 @@ package org.angle3d.scene.mesh
 				}
 			}
 
-			result.fixed = true;
+			result.fixed=true;
 			return result;
 		}
 
 		private function _getData32PerVertex():int
 		{
-			var count:int = 0;
+			var count:int=0;
 
-			var TYPES:Array = BufferType.VERTEX_TYPES;
-			var TYPES_SIZE:int = TYPES.length;
+			var TYPES:Array=BufferType.VERTEX_TYPES;
+			var TYPES_SIZE:int=TYPES.length;
 
-			for (var j:int = 0; j < TYPES_SIZE; j++)
+			for (var j:int=0; j < TYPES_SIZE; j++)
 			{
-				var buffer:VertexBuffer = mBufferMap[TYPES[j]];
+				var buffer:VertexBuffer=mBufferMap[TYPES[j]];
 				if (buffer != null)
 				{
-					count += buffer.components;
+					count+=buffer.components;
 				}
 			}
 			return count;
@@ -213,7 +213,7 @@ package org.angle3d.scene.mesh
 		 */
 		public function updateBound():void
 		{
-			var vb:VertexBuffer = getVertexBuffer(BufferType.POSITION);
+			var vb:VertexBuffer=getVertexBuffer(BufferType.POSITION);
 			if (mBound != null && vb != null)
 			{
 				mBound.computeFromPoints(vb.getData());
@@ -243,11 +243,11 @@ package org.angle3d.scene.mesh
 				Assert.assert(data != null, "data can not be null");
 			}
 
-			var vb:VertexBuffer = mBufferMap[type];
+			var vb:VertexBuffer=mBufferMap[type];
 			if (vb == null)
 			{
-				vb = new VertexBuffer(type);
-				mBufferMap[type] = vb;
+				vb=new VertexBuffer(type);
+				mBufferMap[type]=vb;
 			}
 
 			vb.setData(data, components);
@@ -257,7 +257,7 @@ package org.angle3d.scene.mesh
 				if (_vertexBuffer3D != null)
 				{
 					_vertexBuffer3D.dispose();
-					_vertexBuffer3D = null;
+					_vertexBuffer3D=null;
 				}
 			}
 //			else
@@ -273,12 +273,12 @@ package org.angle3d.scene.mesh
 
 		public function setIndices(indices:Vector.<uint>):void
 		{
-			mIndices = indices;
+			mIndices=indices;
 
 			if (_indexBuffer3D != null)
 			{
 				_indexBuffer3D.dispose();
-				_indexBuffer3D = null;
+				_indexBuffer3D=null;
 			}
 		}
 
@@ -289,12 +289,12 @@ package org.angle3d.scene.mesh
 
 		public function getTriangle(index:int, tri:Triangle):void
 		{
-			var pb:VertexBuffer = getVertexBuffer(BufferType.POSITION);
+			var pb:VertexBuffer=getVertexBuffer(BufferType.POSITION);
 			if (pb != null && mIndices != null)
 			{
-				var vertices:Vector.<Number> = pb.getData();
-				var vertIndex:int = index * 3;
-				for (var i:int = 0; i < 3; i++)
+				var vertices:Vector.<Number>=pb.getData();
+				var vertIndex:int=index * 3;
+				for (var i:int=0; i < 3; i++)
 				{
 					BufferUtils.populateFromBuffer(tri.getPoint(i), vertices, mIndices[vertIndex + i]);
 				}

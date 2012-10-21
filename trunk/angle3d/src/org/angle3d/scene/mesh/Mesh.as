@@ -14,60 +14,60 @@ package org.angle3d.scene.mesh
 		 * The bounding volume that contains the mesh entirely.
 		 * By default a BoundingBox (AABB).
 		 */
-		protected var mBound : BoundingVolume;
+		protected var mBound:BoundingVolume;
 
-		protected var mBoundDirty : Boolean;
+		protected var mBoundDirty:Boolean;
 
-		protected var collisionTree : CollisionData;
+		protected var collisionTree:CollisionData;
 
-		protected var mSubMeshList : Vector.<SubMesh>;
+		protected var mSubMeshList:Vector.<SubMesh>;
 
-		protected var mType : String;
+		protected var mType:String;
 
 		public function Mesh()
 		{
-			mType = MeshType.MT_STATIC;
+			mType=MeshType.MT_STATIC;
 
-			mBound = new BoundingBox();
+			mBound=new BoundingBox();
 
-			mSubMeshList = new Vector.<SubMesh>();
+			mSubMeshList=new Vector.<SubMesh>();
 		}
 
-		public function get type() : String
+		public function get type():String
 		{
 			return mType;
 		}
 
-		public function setSubMeshList(subMeshs : Vector.<SubMesh>) : void
+		public function setSubMeshList(subMeshs:Vector.<SubMesh>):void
 		{
-			mSubMeshList = subMeshs;
-			mBoundDirty = true;
+			mSubMeshList=subMeshs;
+			mBoundDirty=true;
 		}
 
-		public function addSubMesh(subMesh : SubMesh) : void
+		public function addSubMesh(subMesh:SubMesh):void
 		{
 			mSubMeshList.push(subMesh);
-			subMesh.mesh = this;
+			subMesh.mesh=this;
 
-			mBoundDirty = true;
+			mBoundDirty=true;
 		}
-		
+
 		public function removeSubMesh(subMesh:SubMesh):void
 		{
-			var index:int = mSubMeshList.indexOf(subMesh);
-			if(index > -1)
+			var index:int=mSubMeshList.indexOf(subMesh);
+			if (index > -1)
 			{
-				mSubMeshList.splice(index,1);
-				mBoundDirty = true;
+				mSubMeshList.splice(index, 1);
+				mBoundDirty=true;
 			}
 		}
 
-		public function get subMeshList() : Vector.<SubMesh>
+		public function get subMeshList():Vector.<SubMesh>
 		{
 			return mSubMeshList;
 		}
 
-		public function validate() : void
+		public function validate():void
 		{
 			updateBound();
 		}
@@ -77,19 +77,19 @@ package org.angle3d.scene.mesh
 		 * The method does nothing if the mesh has no Position buffer.
 		 * It is expected that the position buffer is a float buffer with 3 components.
 		 */
-		public function updateBound() : void
+		public function updateBound():void
 		{
 			if (!mBoundDirty)
 				return;
 
-			var length : int = mSubMeshList.length;
-			for (var i : int = 0; i < length; i++)
+			var length:int=mSubMeshList.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var subMesh : SubMesh = mSubMeshList[i];
+				var subMesh:SubMesh=mSubMeshList[i];
 				mBound.mergeLocal(subMesh.getBound());
 			}
 
-			mBoundDirty = false;
+			mBoundDirty=false;
 		}
 
 		/**
@@ -98,10 +98,10 @@ package org.angle3d.scene.mesh
 		 *
 		 * @param modelBound The model bound to set
 		 */
-		public function setBound(bound : BoundingVolume) : void
+		public function setBound(bound:BoundingVolume):void
 		{
-			mBound = bound;
-			mBoundDirty = false;
+			mBound=bound;
+			mBoundDirty=false;
 		}
 
 		/**
@@ -110,7 +110,7 @@ package org.angle3d.scene.mesh
 		 *
 		 * @return the bounding volume of this mesh
 		 */
-		public function getBound() : BoundingVolume
+		public function getBound():BoundingVolume
 		{
 			return mBound;
 		}
@@ -118,15 +118,14 @@ package org.angle3d.scene.mesh
 		/**
 		 * Generates a collision tree for the mesh.
 		 */
-		private function createCollisionData() : void
+		private function createCollisionData():void
 		{
-			var tree : BIHTree = new BIHTree(this);
+			var tree:BIHTree=new BIHTree(this);
 			tree.construct();
-			collisionTree = tree;
+			collisionTree=tree;
 		}
 
-		public function collideWith(other : Collidable, worldMatrix : Matrix4f,
-			worldBound : BoundingVolume, results : CollisionResults) : int
+		public function collideWith(other:Collidable, worldMatrix:Matrix4f, worldBound:BoundingVolume, results:CollisionResults):int
 		{
 			if (collisionTree == null)
 			{

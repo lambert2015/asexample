@@ -8,8 +8,8 @@ package org.angle3d.light
 
 	public class ShadowType
 	{
-		public static const NONE:int = 0;
-		public static const HARDWARE:int = 1;
+		public static const NONE:int=0;
+		public static const HARDWARE:int=1;
 	}
 }
 

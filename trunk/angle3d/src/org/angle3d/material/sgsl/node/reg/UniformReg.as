@@ -14,26 +14,26 @@ package org.angle3d.material.sgsl.node.reg
 		/**
 		 * 是否是数组
 		 */
-		public var isArray : Boolean;
+		public var isArray:Boolean;
 
 		/**
 		 * 数组大小
 		 */
-		public var arraySize : int;
+		public var arraySize:int;
 
-		public function UniformReg(dataType : String, name : String, isArray : Boolean = false, arraySize : int = 0)
+		public function UniformReg(dataType:String, name:String, isArray:Boolean=false, arraySize:int=0)
 		{
 			super(RegType.UNIFORM, dataType, name);
-			this.isArray = isArray;
-			this.arraySize = arraySize;
+			this.isArray=isArray;
+			this.arraySize=arraySize;
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
 			return new UniformReg(dataType, name, isArray, arraySize);
 		}
 
-		override public function get size() : uint
+		override public function get size():uint
 		{
 			if (isArray)
 			{

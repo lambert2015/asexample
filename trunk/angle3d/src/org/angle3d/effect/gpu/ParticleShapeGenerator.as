@@ -59,9 +59,9 @@ package org.angle3d.effect.gpu
 		{
 			super();
 
-			_numParticles = numParticles;
-			_totalLife = totalLife;
-			_perSecondParticleCount = int(_numParticles / _totalLife);
+			_numParticles=numParticles;
+			_totalLife=totalLife;
+			_perSecondParticleCount=int(_numParticles / _totalLife);
 
 			setPositionInfluencer(new DefaultPositionInfluencer());
 			setVelocityInfluencer(new EmptyVelocityInfluencer());
@@ -90,141 +90,141 @@ package org.angle3d.effect.gpu
 
 		public function setPositionInfluencer(influencer:IPositionInfluencer):void
 		{
-			_positionInfluencer = influencer;
-			_positionInfluencer.generator = this;
+			_positionInfluencer=influencer;
+			_positionInfluencer.generator=this;
 		}
 
 		public function setVelocityInfluencer(influencer:IVelocityInfluencer):void
 		{
-			_velocityInfluencer = influencer;
-			_velocityInfluencer.generator = this;
+			_velocityInfluencer=influencer;
+			_velocityInfluencer.generator=this;
 		}
 
 		public function setBirthInfluencer(influencer:IBirthInfluencer):void
 		{
-			_birthInfluencer = influencer;
-			_birthInfluencer.generator = this;
+			_birthInfluencer=influencer;
+			_birthInfluencer.generator=this;
 		}
 
 		public function setLifeInfluencer(influencer:ILifeInfluencer):void
 		{
-			_lifeInfluencer = influencer;
-			_lifeInfluencer.generator = this;
+			_lifeInfluencer=influencer;
+			_lifeInfluencer.generator=this;
 		}
 
 		public function setScaleInfluencer(influencer:IScaleInfluencer):void
 		{
-			_scaleInfluencer = influencer;
-			_scaleInfluencer.generator = this;
+			_scaleInfluencer=influencer;
+			_scaleInfluencer.generator=this;
 		}
 
 		public function setSpriteSheetInfluencer(influencer:ISpriteSheetInfluencer):void
 		{
-			_spriteSheetInfluencer = influencer;
-			_spriteSheetInfluencer.generator = this;
+			_spriteSheetInfluencer=influencer;
+			_spriteSheetInfluencer.generator=this;
 		}
 
 		public function setAngleInfluencer(influencer:IAngleInfluencer):void
 		{
-			_angleInfluencer = influencer;
-			_angleInfluencer.generator = this;
+			_angleInfluencer=influencer;
+			_angleInfluencer.generator=this;
 		}
 
 		public function setSpinInfluencer(influencer:ISpinInfluencer):void
 		{
-			_spinInfluencer = influencer;
-			_spinInfluencer.generator = this;
+			_spinInfluencer=influencer;
+			_spinInfluencer.generator=this;
 		}
 
 		public function setAccelerationInfluencer(influencer:IAccelerationInfluencer):void
 		{
-			_accelerationInfluencer = influencer;
-			_accelerationInfluencer.generator = this;
+			_accelerationInfluencer=influencer;
+			_accelerationInfluencer.generator=this;
 		}
-		
+
 		public function setColorInfluencer(influencer:IColorInfluencer):void
 		{
-			_colorInfluencer = influencer;
-			_colorInfluencer.generator = this;
+			_colorInfluencer=influencer;
+			_colorInfluencer.generator=this;
 		}
-		
+
 		public function setAlphaInfluencer(influencer:IAlphaInfluencer):void
 		{
-			_alphaInfluencer = influencer;
-			_alphaInfluencer.generator = this;
+			_alphaInfluencer=influencer;
+			_alphaInfluencer.generator=this;
 		}
 
 		public function createParticleShape(name:String, texture:TextureMapBase):ParticleShape
 		{
-			var shape:ParticleShape = new ParticleShape(name, texture, _totalLife);
-			shape.useLocalAcceleration = _accelerationInfluencer != null;
-			shape.useLocalColor = _colorInfluencer != null || _alphaInfluencer != null;
-			
-			var mesh:Mesh = new Mesh();
+			var shape:ParticleShape=new ParticleShape(name, texture, _totalLife);
+			shape.useLocalAcceleration=_accelerationInfluencer != null;
+			shape.useLocalColor=_colorInfluencer != null || _alphaInfluencer != null;
 
-			var subMesh:SubMesh = new SubMesh();
+			var mesh:Mesh=new Mesh();
 
-			var _vertices:Vector.<Number> = new Vector.<Number>();
-			var _indices:Vector.<uint> = new Vector.<uint>();
-			var _texCoords:Vector.<Number> = new Vector.<Number>();
+			var subMesh:SubMesh=new SubMesh();
 
-			var _velocities:Vector.<Number> = new Vector.<Number>();
-			var _lifeScaleAngles:Vector.<Number> = new Vector.<Number>();
+			var _vertices:Vector.<Number>=new Vector.<Number>();
+			var _indices:Vector.<uint>=new Vector.<uint>();
+			var _texCoords:Vector.<Number>=new Vector.<Number>();
+
+			var _velocities:Vector.<Number>=new Vector.<Number>();
+			var _lifeScaleAngles:Vector.<Number>=new Vector.<Number>();
 
 			if (shape.useLocalAcceleration)
 			{
-				var _accelerationList:Vector.<Number> = new Vector.<Number>();
-				var _acceleration:Vector3f = new Vector3f();
-			}
-			
-			if(shape.useLocalColor)
-			{
-				var _colorList:Vector.<Number> = new Vector.<Number>();
-				var _color:Color = new Color(0,0,0,1);
+				var _accelerationList:Vector.<Number>=new Vector.<Number>();
+				var _acceleration:Vector3f=new Vector3f();
 			}
 
-			var _pos:Vector3f = new Vector3f();
-			var _velocity:Vector3f = new Vector3f();
-			var totalFrame:int = _spriteSheetInfluencer.getTotalFrame();
-
-			for (var i:int = 0; i < _numParticles; i++)
+			if (shape.useLocalColor)
 			{
-				var id4:int = i * 4;
-				var id6:int = i * 6;
-				var id16:int = i * 16;
-				var id12:int = i * 12;
+				var _colorList:Vector.<Number>=new Vector.<Number>();
+				var _color:Color=new Color(0, 0, 0, 1);
+			}
+
+			var _pos:Vector3f=new Vector3f();
+			var _velocity:Vector3f=new Vector3f();
+			var totalFrame:int=_spriteSheetInfluencer.getTotalFrame();
+
+			for (var i:int=0; i < _numParticles; i++)
+			{
+				var id4:int=i * 4;
+				var id6:int=i * 6;
+				var id16:int=i * 16;
+				var id12:int=i * 12;
 
 				// triangle 1
-				_indices[id6 + 0] = id4 + 1;
-				_indices[id6 + 1] = id4 + 0;
-				_indices[id6 + 2] = id4 + 2;
+				_indices[id6 + 0]=id4 + 1;
+				_indices[id6 + 1]=id4 + 0;
+				_indices[id6 + 2]=id4 + 2;
 
 				// triangle 2
-				_indices[id6 + 3] = id4 + 1;
-				_indices[id6 + 4] = id4 + 2;
-				_indices[id6 + 5] = id4 + 3;
+				_indices[id6 + 3]=id4 + 1;
+				_indices[id6 + 4]=id4 + 2;
+				_indices[id6 + 5]=id4 + 3;
 
-				var curFrame:int = _spriteSheetInfluencer.getDefaultFrame();
+				var curFrame:int=_spriteSheetInfluencer.getDefaultFrame();
 
-				_texCoords[id16 + 0] = 0;
-				_texCoords[id16 + 1] = 1;
-				_texCoords[id16 + 2] = totalFrame;
-				_texCoords[id16 + 3] = curFrame;
+				_texCoords[id16 + 0]=0;
+				_texCoords[id16 + 1]=1;
+				_texCoords[id16 + 2]=totalFrame;
+				_texCoords[id16 + 3]=curFrame;
 
-				_texCoords[id16 + 4] = 1;
-				_texCoords[id16 + 5] = 1;
-				_texCoords[id16 + 6] = totalFrame;
-				_texCoords[id16 + 7] = curFrame;
+				_texCoords[id16 + 4]=1;
+				_texCoords[id16 + 5]=1;
+				_texCoords[id16 + 6]=totalFrame;
+				_texCoords[id16 + 7]=curFrame;
 
-				_texCoords[id16 + 8] = 0;
-				_texCoords[id16 + 9] = 0;
-				_texCoords[id16 + 10] = totalFrame;
-				_texCoords[id16 + 11] = curFrame;
+				_texCoords[id16 + 8]=0;
+				_texCoords[id16 + 9]=0;
+				_texCoords[id16 + 10]=totalFrame;
+				_texCoords[id16 + 11]=curFrame;
 
-				_texCoords[id16 + 12] = 1;
-				_texCoords[id16 + 13] = 0;
-				_texCoords[id16 + 14] = totalFrame;
-				_texCoords[id16 + 15] = curFrame;
+				_texCoords[id16 + 12]=1;
+				_texCoords[id16 + 13]=0;
+				_texCoords[id16 + 14]=totalFrame;
+				_texCoords[id16 + 15]=curFrame;
 
 				_positionInfluencer.getPosition(i, _pos);
 				_velocityInfluencer.getVelocity(i, _velocity);
@@ -233,76 +233,76 @@ package org.angle3d.effect.gpu
 				{
 					_accelerationInfluencer.getAcceleration(_velocity, _acceleration);
 				}
-				
+
 				//使用粒子颜色
-				if(shape.useLocalColor)
+				if (shape.useLocalColor)
 				{
-					if(_colorInfluencer != null)
+					if (_colorInfluencer != null)
 					{
-						_colorInfluencer.getColor(i,_color);
+						_colorInfluencer.getColor(i, _color);
 					}
 					else
 					{
-						_color.setTo(0,0,0);
+						_color.setTo(0, 0, 0);
 					}
-					
-					if(_alphaInfluencer != null)
+
+					if (_alphaInfluencer != null)
 					{
-						_color.a = _alphaInfluencer.getAlpha(i);
+						_color.a=_alphaInfluencer.getAlpha(i);
 					}
 					else
 					{
-						_color.a = 1;
+						_color.a=1;
 					}
 				}
 
-				var spin:Number = _spinInfluencer.getSpin(i);
+				var spin:Number=_spinInfluencer.getSpin(i);
 
-				var birthTime:Number = _birthInfluencer.getBirth(i);
-				var life:Number = _lifeInfluencer.getLife(i);
-				var scale:Number = _scaleInfluencer.getDefaultScale(i);
-				var angle:Number = _angleInfluencer.getDefaultAngle(i);
+				var birthTime:Number=_birthInfluencer.getBirth(i);
+				var life:Number=_lifeInfluencer.getLife(i);
+				var scale:Number=_scaleInfluencer.getDefaultScale(i);
+				var angle:Number=_angleInfluencer.getDefaultAngle(i);
 
-				var uniformIndex:int = 0;
-				for (var j:int = 0; j < 4; j++)
+				var uniformIndex:int=0;
+				for (var j:int=0; j < 4; j++)
 				{
-					var id16j4:int = id16 + j * 4;
-					var id12j3:int = id12 + j * 3;
+					var id16j4:int=id16 + j * 4;
+					var id12j3:int=id12 + j * 3;
 
-					_vertices[id16j4 + 0] = _pos.x;
-					_vertices[id16j4 + 1] = _pos.y;
-					_vertices[id16j4 + 2] = _pos.z;
-					_vertices[id16j4 + 3] = uniformIndex++;
+					_vertices[id16j4 + 0]=_pos.x;
+					_vertices[id16j4 + 1]=_pos.y;
+					_vertices[id16j4 + 2]=_pos.z;
+					_vertices[id16j4 + 3]=uniformIndex++;
 
 					//位移速度
-					_velocities[id16j4 + 0] = _velocity.x;
-					_velocities[id16j4 + 1] = _velocity.y;
-					_velocities[id16j4 + 2] = _velocity.z;
+					_velocities[id16j4 + 0]=_velocity.x;
+					_velocities[id16j4 + 1]=_velocity.y;
+					_velocities[id16j4 + 2]=_velocity.z;
 					//旋转速度
-					_velocities[id16j4 + 3] = spin;
+					_velocities[id16j4 + 3]=spin;
 
 					//出生时间
-					_lifeScaleAngles[id16j4 + 0] = birthTime;
+					_lifeScaleAngles[id16j4 + 0]=birthTime;
 					//生命时间
-					_lifeScaleAngles[id16j4 + 1] = life;
+					_lifeScaleAngles[id16j4 + 1]=life;
 					//默认缩放
-					_lifeScaleAngles[id16j4 + 2] = scale;
+					_lifeScaleAngles[id16j4 + 2]=scale;
 					//默认旋转角度
-					_lifeScaleAngles[id16j4 + 3] = angle;
+					_lifeScaleAngles[id16j4 + 3]=angle;
 
 					if (shape.useLocalAcceleration)
 					{
-						_accelerationList[id12j3 + 0] = _acceleration.x;
-						_accelerationList[id12j3 + 1] = _acceleration.y;
-						_accelerationList[id12j3 + 2] = _acceleration.z;
+						_accelerationList[id12j3 + 0]=_acceleration.x;
+						_accelerationList[id12j3 + 1]=_acceleration.y;
+						_accelerationList[id12j3 + 2]=_acceleration.z;
 					}
-					
-					if(shape.useLocalColor)
+
+					if (shape.useLocalColor)
 					{
-						_colorList[id16j4 + 0] = _color.r;
-						_colorList[id16j4 + 1] = _color.g;
-						_colorList[id16j4 + 2] = _color.b;
-						_colorList[id16j4 + 3] = _color.a;
+						_colorList[id16j4 + 0]=_color.r;
+						_colorList[id16j4 + 1]=_color.g;
+						_colorList[id16j4 + 2]=_color.b;
+						_colorList[id16j4 + 3]=_color.a;
 					}
 				}
 			}

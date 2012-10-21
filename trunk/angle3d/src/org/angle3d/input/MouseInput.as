@@ -13,24 +13,24 @@ package org.angle3d.input
 	 */
 	public class MouseInput implements Input
 	{
-		public static const AXIS_X:int = 0;
-		public static const AXIS_Y:int = 1;
-		public static const AXIS_WHEEL:int = 2;
+		public static const AXIS_X:int=0;
+		public static const AXIS_Y:int=1;
+		public static const AXIS_WHEEL:int=2;
 
 		/**
 		 * Left mouse button.
 		 */
-		public static const BUTTON_LEFT:int = 0;
+		public static const BUTTON_LEFT:int=0;
 
 		/**
 		 * Right mouse button.
 		 */
-		public static const BUTTON_RIGHT:int = 1;
+		public static const BUTTON_RIGHT:int=1;
 
 		/**
 		 * Middle mouse button.
 		 */
-		public static const BUTTON_MIDDLE:int = 2;
+		public static const BUTTON_MIDDLE:int=2;
 
 		private var _stage:Stage;
 
@@ -45,15 +45,15 @@ package org.angle3d.input
 
 		public function MouseInput()
 		{
-			curX = 0;
-			curY = 0;
-			dx = 0;
-			dy = 0;
-			wheelDelta = 0;
-			wheel = 0;
+			curX=0;
+			curY=0;
+			dx=0;
+			dy=0;
+			wheelDelta=0;
+			wheel=0;
 
-			_stage = null;
-			_listener = null;
+			_stage=null;
+			_listener=null;
 		}
 
 		/**
@@ -71,7 +71,7 @@ package org.angle3d.input
 		*/
 		public function initialize(stage:Stage):void
 		{
-			_stage = stage;
+			_stage=stage;
 
 			if (_stage != null)
 			{
@@ -80,45 +80,45 @@ package org.angle3d.input
 				_stage.addEventListener(MouseEvent.MOUSE_UP, _onMouseUp);
 				_stage.addEventListener(MouseEvent.MOUSE_MOVE, _onMouseMove);
 
-				curX = _stage.mouseX;
-				curY = _stage.mouseY;
+				curX=_stage.mouseX;
+				curY=_stage.mouseY;
 			}
 		}
 
 		private function _onMouseDown(e:MouseEvent):void
 		{
-			var evt:MouseButtonEvent = new MouseButtonEvent(true, e.stageX, e.stageY);
+			var evt:MouseButtonEvent=new MouseButtonEvent(true, e.stageX, e.stageY);
 			evt.setTime(getTimer());
 			_listener.onMouseButtonEvent(evt);
 		}
 
 		private function _onMouseUp(e:MouseEvent):void
 		{
-			var evt:MouseButtonEvent = new MouseButtonEvent(false, e.stageX, e.stageY);
+			var evt:MouseButtonEvent=new MouseButtonEvent(false, e.stageX, e.stageY);
 			evt.setTime(getTimer());
 			_listener.onMouseButtonEvent(evt);
 		}
 
 		private function _onMouseMove(e:MouseEvent):void
 		{
-			dx = e.stageX - curX;
-			dy = e.stageY - curY;
-			curX = e.stageX;
-			curY = e.stageY;
+			dx=e.stageX - curX;
+			dy=e.stageY - curY;
+			curX=e.stageX;
+			curY=e.stageY;
 
 			//Lib.trace("_onMouseMove dx : "+dx);
 
-			var evt:MouseMotionEvent = new MouseMotionEvent(curX, curY, dx, dy);
+			var evt:MouseMotionEvent=new MouseMotionEvent(curX, curY, dx, dy);
 			evt.setTime(getTimer());
 			_listener.onMouseMotionEvent(evt);
 		}
 
 		private function _onMouseWheel(e:MouseEvent):void
 		{
-			wheelDelta = e.delta;
-			wheel += wheelDelta;
+			wheelDelta=e.delta;
+			wheel+=wheelDelta;
 
-			var evt:MouseWheelEvent = new MouseWheelEvent(wheel, wheelDelta);
+			var evt:MouseWheelEvent=new MouseWheelEvent(wheel, wheelDelta);
 			evt.setTime(getTimer());
 			_listener.onMouseWheelEvent(evt);
 		}
@@ -145,7 +145,7 @@ package org.angle3d.input
 				_stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _onMouseWheel);
 				_stage.removeEventListener(MouseEvent.MOUSE_UP, _onMouseUp);
 				_stage.removeEventListener(MouseEvent.MOUSE_MOVE, _onMouseMove);
-				_stage = null;
+				_stage=null;
 			}
 		}
 
@@ -167,7 +167,7 @@ package org.angle3d.input
 		 */
 		public function setInputListener(listener:RawInputListener):void
 		{
-			this._listener = listener;
+			this._listener=listener;
 		}
 
 		/**

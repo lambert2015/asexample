@@ -25,41 +25,41 @@ package org.angle3d.material.technique
 	 */
 	public class TechniqueReflective extends Technique
 	{
-		private var _influences : Vector.<Number>;
+		private var _influences:Vector.<Number>;
 
-		private var _decalMap : TextureMapBase;
+		private var _decalMap:TextureMapBase;
 
-		private var _environmentMap : CubeTextureMap;
+		private var _environmentMap:CubeTextureMap;
 
-		private var _reflectivity : Number;
+		private var _reflectivity:Number;
 
-		public function TechniqueReflective(decalMap : TextureMapBase, environmentMap : CubeTextureMap, reflectivity : Number = 0.5)
+		public function TechniqueReflective(decalMap:TextureMapBase, environmentMap:CubeTextureMap, reflectivity:Number=0.5)
 		{
 			super("TechniqueReflective");
 
-			_renderState.applyCullMode = true;
-			_renderState.cullMode = Context3DTriangleFace.FRONT;
+			_renderState.applyCullMode=true;
+			_renderState.cullMode=Context3DTriangleFace.FRONT;
 
-			_renderState.applyDepthTest = true;
-			_renderState.depthTest = true;
-			_renderState.compareMode = Context3DCompareMode.LESS_EQUAL;
+			_renderState.applyDepthTest=true;
+			_renderState.depthTest=true;
+			_renderState.compareMode=Context3DCompareMode.LESS_EQUAL;
 
-			_renderState.applyBlendMode = false;
+			_renderState.applyBlendMode=false;
 
-			this.decalMap = decalMap;
-			this.environmentMap = environmentMap;
-			this.reflectivity = reflectivity;
+			this.decalMap=decalMap;
+			this.environmentMap=environmentMap;
+			this.reflectivity=reflectivity;
 		}
 
-		public function set influence(value : Number) : void
+		public function set influence(value:Number):void
 		{
 			if (_influences == null)
-				_influences = new Vector.<Number>(4, true);
-			_influences[0] = 1 - value;
-			_influences[1] = value;
+				_influences=new Vector.<Number>(4, true);
+			_influences[0]=1 - value;
+			_influences[1]=value;
 		}
 
-		public function get influence() : Number
+		public function get influence():Number
 		{
 			return _influences[1];
 		}
@@ -67,52 +67,52 @@ package org.angle3d.material.technique
 		/**
 		 * 反射率，一般应该设置在0~1之间
 		 */
-		public function set reflectivity(value : Number) : void
+		public function set reflectivity(value:Number):void
 		{
-			_reflectivity = value;
+			_reflectivity=value;
 			if (_reflectivity < 0)
-				_reflectivity = 0;
+				_reflectivity=0;
 		}
 
-		public function get reflectivity() : Number
+		public function get reflectivity():Number
 		{
 			return _reflectivity;
 		}
 
-		public function get decalMap() : TextureMapBase
+		public function get decalMap():TextureMapBase
 		{
 			return _decalMap;
 		}
 
-		public function set decalMap(value : TextureMapBase) : void
+		public function set decalMap(value:TextureMapBase):void
 		{
-			_decalMap = value;
+			_decalMap=value;
 		}
 
-		public function get environmentMap() : CubeTextureMap
+		public function get environmentMap():CubeTextureMap
 		{
 			return _environmentMap;
 		}
 
-		public function set environmentMap(value : CubeTextureMap) : void
+		public function set environmentMap(value:CubeTextureMap):void
 		{
-			_environmentMap = value;
+			_environmentMap=value;
 		}
 
-		override public function updateShader(shader : Shader) : void
+		override public function updateShader(shader:Shader):void
 		{
 			shader.getUniform(ShaderType.FRAGMENT, "u_reflectivity").setFloat(_reflectivity);
-			shader.getTextureVar("u_decalMap").textureMap = _decalMap;
-			shader.getTextureVar("u_environmentMap").textureMap = _environmentMap;
+			shader.getTextureVar("u_decalMap").textureMap=_decalMap;
+			shader.getTextureVar("u_environmentMap").textureMap=_environmentMap;
 
-			var uniform : Uniform = shader.getUniform(ShaderType.VERTEX, "u_influences");
+			var uniform:Uniform=shader.getUniform(ShaderType.VERTEX, "u_influences");
 			if (uniform != null)
 			{
 				uniform.setVector(_influences);
 			}
 		}
 
-		override protected function getVertexSource(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -169,7 +169,7 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getFragmentSource(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 			    
@@ -192,33 +192,33 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getKey(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : String
+		override protected function getKey(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
 		{
-			var result : Array = [_name, meshType];
+			var result:Array=[_name, meshType];
 			return result.join("_");
 		}
 
-		override protected function getBindAttributes(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : Dictionary
+		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
 		{
-			var map : Dictionary = new Dictionary();
-			map[BufferType.POSITION] = "a_position";
-			map[BufferType.TEXCOORD] = "a_texCoord";
-			map[BufferType.NORMAL] = "a_normal";
+			var map:Dictionary=new Dictionary();
+			map[BufferType.POSITION]="a_position";
+			map[BufferType.TEXCOORD]="a_texCoord";
+			map[BufferType.NORMAL]="a_normal";
 			if (meshType == MeshType.MT_MORPH_ANIMATION)
 			{
-				map[BufferType.POSITION1] = "a_position1";
-				map[BufferType.NORMAL1] = "a_normal1";
+				map[BufferType.POSITION1]="a_position1";
+				map[BufferType.NORMAL1]="a_normal1";
 			}
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType : String = LightType.None, meshType : String = MeshType.MT_STATIC) : Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list : Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_worldMatrix", UniformBinding.WorldMatrix));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_camPosition", UniformBinding.CameraPosition));
-			list.fixed = true;
+			list.fixed=true;
 			return list;
 		}
 	}

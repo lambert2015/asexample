@@ -16,18 +16,18 @@ package org.angle3d.animation
 		 * @param control The control which the track should effect
 		 * @param channel The channel which the track should effect
 		 */
-		function setCurrentTime(time : Number, weight : Number, control : AnimControl, channel : AnimChannel, vars : TempVars) : void;
+		function setCurrentTime(time:Number, weight:Number, control:AnimControl, channel:AnimChannel, vars:TempVars):void;
 
 		/**
 		 * @return the time of the track
 		 */
-		function get totalTime() : Number;
+		function get totalTime():Number;
 
 		/**
 		 * This method creates a clone of the current object.
 		 * @return a clone of the current object
 		 */
-		function clone() : Track;
+		function clone():Track;
 	}
 }
 

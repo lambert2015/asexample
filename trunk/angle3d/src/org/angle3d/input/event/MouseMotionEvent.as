@@ -18,10 +18,10 @@ package org.angle3d.input.event
 		public function MouseMotionEvent(x:Number, y:Number, dx:Number, dy:Number)
 		{
 			super();
-			this.x = x;
-			this.y = y;
-			this.dx = dx;
-			this.dy = dy;
+			this.x=x;
+			this.y=y;
+			this.dx=dx;
+			this.dy=dy;
 		}
 
 		public function toString():String

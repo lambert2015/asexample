@@ -7,7 +7,7 @@ package org.angle3d.effect.gpu.influencers.angle
 		public function EmptyAngleInfluencer()
 		{
 		}
-		
+
 		public function getDefaultAngle(index:int):Number
 		{
 			return 0;

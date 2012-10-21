@@ -12,50 +12,50 @@ package org.angle3d.collision
 
 	public class CollisionResult
 	{
-		public var distance : Number;
+		public var distance:Number;
 
-		private var geometry : Geometry;
-		private var contactPoint : Vector3f;
-		private var contactNormal : Vector3f;
+		private var geometry:Geometry;
+		private var contactPoint:Vector3f;
+		private var contactNormal:Vector3f;
 
-		private var triangleIndex : int;
+		private var triangleIndex:int;
 
 		public function CollisionResult()
 		{
 
 		}
 
-		public function setContactPointAndDistance(contactPoint : Vector3f, distance : Number) : void
+		public function setContactPointAndDistance(contactPoint:Vector3f, distance:Number):void
 		{
-			this.contactPoint = contactPoint;
-			this.distance = distance;
+			this.contactPoint=contactPoint;
+			this.distance=distance;
 		}
 
-		public function setGeometry(geom : Geometry) : void
+		public function setGeometry(geom:Geometry):void
 		{
-			this.geometry = geom;
+			this.geometry=geom;
 		}
 
-		public function setContactNormal(norm : Vector3f) : void
+		public function setContactNormal(norm:Vector3f):void
 		{
-			this.contactNormal = norm;
+			this.contactNormal=norm;
 		}
 
-		public function setContactPoint(point : Vector3f) : void
+		public function setContactPoint(point:Vector3f):void
 		{
-			this.contactPoint = point;
+			this.contactPoint=point;
 		}
 
-		public function setTriangleIndex(index : int) : void
+		public function setTriangleIndex(index:int):void
 		{
-			this.triangleIndex = index;
+			this.triangleIndex=index;
 		}
 
-		public function getTriangle(store : Triangle = null) : Triangle
+		public function getTriangle(store:Triangle=null):Triangle
 		{
 			if (store == null)
 			{
-				store = new Triangle();
+				store=new Triangle();
 			}
 
 //			var m:Mesh = geometry.getMesh();
@@ -65,22 +65,22 @@ package org.angle3d.collision
 			return store;
 		}
 
-		public function getContactPoint() : Vector3f
+		public function getContactPoint():Vector3f
 		{
 			return contactPoint;
 		}
 
-		public function getContactNormal() : Vector3f
+		public function getContactNormal():Vector3f
 		{
 			return contactNormal;
 		}
 
-		public function getGeometry() : Geometry
+		public function getGeometry():Geometry
 		{
 			return geometry;
 		}
 
-		public function getTriangleIndex() : int
+		public function getTriangleIndex():int
 		{
 			return triangleIndex;
 		}

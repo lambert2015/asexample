@@ -18,23 +18,23 @@ package org.angle3d.scene
 	 */
 	public class Geometry extends Spatial
 	{
-		protected var mMesh : Mesh;
+		protected var mMesh:Mesh;
 
-		protected var mMaterial : Material;
+		protected var mMaterial:Material;
 
 		/**
 		* When true, the geometry's transform will not be applied.
 		*/
-		protected var mIgnoreTransform : Boolean;
+		protected var mIgnoreTransform:Boolean;
 
-		protected var mCachedWorldMat : Matrix4f;
+		protected var mCachedWorldMat:Matrix4f;
 
-		public function Geometry(name : String, mesh : Mesh = null)
+		public function Geometry(name:String, mesh:Mesh=null)
 		{
 			super(name);
 
-			mIgnoreTransform = false;
-			mCachedWorldMat = new Matrix4f();
+			mIgnoreTransform=false;
+			mCachedWorldMat=new Matrix4f();
 
 			setMesh(mesh);
 		}
@@ -44,7 +44,7 @@ package org.angle3d.scene
 		 *
 		 * @see Geometry#setIgnoreTransform(boolean)
 		 */
-		public function isIgnoreTransform() : Boolean
+		public function isIgnoreTransform():Boolean
 		{
 			return mIgnoreTransform;
 		}
@@ -52,9 +52,9 @@ package org.angle3d.scene
 		/**
 		 * @param ignoreTransform If true, the geometry's transform will not be applied.
 		 */
-		public function setIgnoreTransform(value : Boolean) : void
+		public function setIgnoreTransform(value:Boolean):void
 		{
-			mIgnoreTransform = value;
+			mIgnoreTransform=value;
 		}
 
 		/**
@@ -63,14 +63,14 @@ package org.angle3d.scene
 		 * @param mesh the mesh to use for this geometry
 		 *
 		 */
-		public function setMesh(mesh : Mesh) : void
+		public function setMesh(mesh:Mesh):void
 		{
 			if (mesh == null)
 			{
 				return;
 			}
 
-			this.mMesh = mesh;
+			this.mMesh=mesh;
 			setBoundRefresh();
 		}
 
@@ -81,7 +81,7 @@ package org.angle3d.scene
 		 *
 		 * @see #setMesh(org.angle3d.scene.Mesh)
 		 */
-		public function getMesh() : Mesh
+		public function getMesh():Mesh
 		{
 			return mMesh;
 		}
@@ -91,9 +91,9 @@ package org.angle3d.scene
 		 *
 		 * @param material the material to use for this geometry
 		 */
-		override public function setMaterial(material : Material) : void
+		override public function setMaterial(material:Material):void
 		{
-			this.mMaterial = material;
+			this.mMaterial=material;
 		}
 
 		/**
@@ -103,7 +103,7 @@ package org.angle3d.scene
 		 *
 		 * @see #setMaterial(org.angle3d.material.Material)
 		 */
-		public function getMaterial() : Material
+		public function getMaterial():Material
 		{
 			return mMaterial;
 		}
@@ -111,7 +111,7 @@ package org.angle3d.scene
 		/**
 		 * @return The bounding volume of the mesh, in model space.
 		 */
-		public function getModelBound() : BoundingVolume
+		public function getModelBound():BoundingVolume
 		{
 			return mMesh.getBound();
 		}
@@ -120,7 +120,7 @@ package org.angle3d.scene
 		 * Updates the bounding volume of the mesh. Should be called when the
 		 * mesh has been modified.
 		 */
-		override public function updateModelBound() : void
+		override public function updateModelBound():void
 		{
 			mMesh.updateBound();
 			setBoundRefresh();
@@ -133,7 +133,7 @@ package org.angle3d.scene
 		 *
 		 * @see com.jme.scene.Spatial#updateWorldBound()
 		 */
-		override public function updateWorldBound() : void
+		override public function updateWorldBound():void
 		{
 			super.updateWorldBound();
 
@@ -148,16 +148,16 @@ package org.angle3d.scene
 				{
 					// we do not transform the model bound by the world transform,
 					// just use the model bound as-is
-					mWorldBound = mMesh.getBound().clone(mWorldBound);
+					mWorldBound=mMesh.getBound().clone(mWorldBound);
 				}
 				else
 				{
-					mWorldBound = mMesh.getBound().transform(mWorldTransform, mWorldBound);
+					mWorldBound=mMesh.getBound().transform(mWorldTransform, mWorldBound);
 				}
 			}
 		}
 
-		override protected function updateWorldTransforms() : void
+		override protected function updateWorldTransforms():void
 		{
 			super.updateWorldTransforms();
 
@@ -171,7 +171,7 @@ package org.angle3d.scene
 		 * Recomputes the matrix returned by {@link Geometry#getWorldMatrix() }.
 		 * This will require a localized transform update for this geometry.
 		 */
-		public function computeWorldMatrix() : void
+		public function computeWorldMatrix():void
 		{
 			// Force a local update of the geometry's transform
 			checkDoTransformUpdate();
@@ -182,8 +182,8 @@ package org.angle3d.scene
 			mCachedWorldMat.setTranslation(mWorldTransform.translation);
 
 			//TODO 优化这里
-			var tempVars : TempVars = TempVars.getTempVars();
-			var scaleMat : Matrix4f = tempVars.tempMat4;
+			var tempVars:TempVars=TempVars.getTempVars();
+			var scaleMat:Matrix4f=tempVars.tempMat4;
 			scaleMat.makeIdentity();
 			scaleMat.scaleVecLocal(mWorldTransform.scale);
 			mCachedWorldMat.multLocal(scaleMat);
@@ -197,7 +197,7 @@ package org.angle3d.scene
 		 * In order to receive updated values, you must call {@link Geometry#computeWorldMatrix() }
 		 * before using this method.
 		 */
-		public function getWorldMatrix() : Matrix4f
+		public function getWorldMatrix():Matrix4f
 		{
 			return mCachedWorldMat;
 		}
@@ -210,14 +210,14 @@ package org.angle3d.scene
 		 *
 		 * @param modelBound The model bound to set
 		 */
-		override public function setBound(bound : BoundingVolume) : void
+		override public function setBound(bound:BoundingVolume):void
 		{
-			mWorldBound = null;
+			mWorldBound=null;
 			mMesh.setBound(bound);
 			setBoundRefresh();
 		}
 
-		override public function collideWith(other : Collidable, results : CollisionResults) : int
+		override public function collideWith(other:Collidable, results:CollisionResults):int
 		{
 			// Force bound to update
 			checkDoBoundUpdate();
@@ -233,10 +233,10 @@ package org.angle3d.scene
 			{
 				// NOTE: BIHTree in mesh already checks collision with the
 				// mesh's bound
-				var prevSize : int = results.size;
-				var added : int = mMesh.collideWith(other, mCachedWorldMat, mWorldBound, results);
-				var newSize : int = results.size;
-				for (var i : int = prevSize; i < newSize; i++)
+				var prevSize:int=results.size;
+				var added:int=mMesh.collideWith(other, mCachedWorldMat, mWorldBound, results);
+				var newSize:int=results.size;
+				for (var i:int=prevSize; i < newSize; i++)
 				{
 					results.getCollisionDirect(i).setGeometry(this);
 				}
@@ -245,7 +245,7 @@ package org.angle3d.scene
 			return 0;
 		}
 
-		override public function depthFirstTraversal(visitor : SceneGraphVisitor) : void
+		override public function depthFirstTraversal(visitor:SceneGraphVisitor):void
 		{
 			visitor.visit(this);
 		}
@@ -255,30 +255,30 @@ package org.angle3d.scene
 		//
 		//}
 
-		override public function clone(newName : String, cloneMaterial : Boolean = true, result : Spatial = null) : Spatial
+		override public function clone(newName:String, cloneMaterial:Boolean=true, result:Spatial=null):Spatial
 		{
-			var geom : Geometry;
+			var geom:Geometry;
 			if (result == null)
 			{
-				geom = new Geometry(newName);
+				geom=new Geometry(newName);
 			}
 			else
 			{
-				geom = result as Geometry;
+				geom=result as Geometry;
 			}
 
-			geom = super.clone(newName, cloneMaterial, geom) as Geometry;
+			geom=super.clone(newName, cloneMaterial, geom) as Geometry;
 
 			geom.mCachedWorldMat.copyFrom(mCachedWorldMat);
 			if (mMaterial != null)
 			{
 				if (cloneMaterial)
 				{
-					geom.mMaterial = mMaterial.clone();
+					geom.mMaterial=mMaterial.clone();
 				}
 				else
 				{
-					geom.mMaterial = mMaterial;
+					geom.mMaterial=mMaterial;
 				}
 			}
 

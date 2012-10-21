@@ -16,9 +16,9 @@ package org.angle3d.input.event
 		{
 			super();
 
-			this.pressed = pressed;
-			this.x = x;
-			this.y = y;
+			this.pressed=pressed;
+			this.x=x;
+			this.y=y;
 		}
 
 		/**

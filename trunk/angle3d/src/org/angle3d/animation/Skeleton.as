@@ -21,20 +21,20 @@ package org.angle3d.animation
 		 * 一个Shader按目前方法最大能支持128/3 = 42个骨骼
 		 * 但是要考虑到透视矩阵以及一些其他功能，因此只定义最多32个
 		 */
-		public static const MAX_BONE_COUNT:int = 32;
-		
+		public static const MAX_BONE_COUNT:int=32;
+
 		//
-		public var rootBone : Bone;
-		
-		private var mNumBones : int;
-		private var mBoneList : Vector.<Bone>;
-		private var mBoneMap : Dictionary;
+		public var rootBone:Bone;
+
+		private var mNumBones:int;
+		private var mBoneList:Vector.<Bone>;
+		private var mBoneMap:Dictionary;
 
 		/**
 		 * Contains the skinning matrices, multiplying it by a vertex effected by a bone
 		 * will cause it to go to the animated position.
 		 */
-		private var mSkinningMatrixes : Vector.<Matrix4f>;
+		private var mSkinningMatrixes:Vector.<Matrix4f>;
 
 		/**
 		 * Creates a skeleton from a bone list.
@@ -45,16 +45,16 @@ package org.angle3d.animation
 		 *
 		 * @param boneList The list of bones to manage by this Skeleton
 		 */
-		public function Skeleton(boneList : Vector.<Bone>)
+		public function Skeleton(boneList:Vector.<Bone>)
 		{
-			this.mBoneList = boneList;
-			mNumBones = boneList.length;
-			
+			this.mBoneList=boneList;
+			mNumBones=boneList.length;
+
 			createSkinningMatrices();
 
 			buildBoneTree();
 		}
-		
+
 		public function get numBones():int
 		{
 			return mNumBones;
@@ -63,33 +63,33 @@ package org.angle3d.animation
 		/**
 		 * 建立骨骼树结构，查找每个骨骼的父类
 		 */
-		private function buildBoneTree() : void
+		private function buildBoneTree():void
 		{
-			mBoneMap = new Dictionary();
-			for (var i : int = 0; i < mNumBones; i++)
+			mBoneMap=new Dictionary();
+			for (var i:int=0; i < mNumBones; i++)
 			{
-				mBoneMap[mBoneList[i].name] = mBoneList[i];
+				mBoneMap[mBoneList[i].name]=mBoneList[i];
 			}
 
-			for (var name : String in mBoneMap)
+			for (var name:String in mBoneMap)
 			{
-				var bone : Bone = mBoneMap[name];
+				var bone:Bone=mBoneMap[name];
 				if (bone.parentName == "")
 				{
-					rootBone = bone;
+					rootBone=bone;
 				}
 				else
 				{
-					var parentBone : Bone = mBoneMap[bone.parentName];
+					var parentBone:Bone=mBoneMap[bone.parentName];
 					parentBone.addChild(bone);
 				}
 			}
-			
+
 			rootBone.update();
 			rootBone.setBindingPose();
 		}
 
-		public function copy(source : Skeleton) : void
+		public function copy(source:Skeleton):void
 		{
 			//this.boneList = source.boneList.concat();
 			//
@@ -115,12 +115,12 @@ package org.angle3d.animation
 			//}
 		}
 
-		private function createSkinningMatrices() : void
+		private function createSkinningMatrices():void
 		{
-			mSkinningMatrixes = new Vector.<Matrix4f>(mNumBones, true);
-			for (var i : int = 0; i < mNumBones; i++)
+			mSkinningMatrixes=new Vector.<Matrix4f>(mNumBones, true);
+			for (var i:int=0; i < mNumBones; i++)
 			{
-				mSkinningMatrixes[i] = new Matrix4f();
+				mSkinningMatrixes[i]=new Matrix4f();
 			}
 		}
 
@@ -128,7 +128,7 @@ package org.angle3d.animation
 		 * Updates world transforms for all bones in this skeleton.
 		 * Typically called after setting local animation transforms.
 		 */
-		public function update() : void
+		public function update():void
 		{
 			rootBone.update();
 		}
@@ -136,7 +136,7 @@ package org.angle3d.animation
 		/**
 		 * Saves the current skeleton state as it's binding pose.
 		 */
-		public function setBindingPose() : void
+		public function setBindingPose():void
 		{
 			rootBone.setBindingPose();
 		}
@@ -144,7 +144,7 @@ package org.angle3d.animation
 		/**
 		 * Reset the skeleton to bind pose.
 		 */
-		public function reset() : void
+		public function reset():void
 		{
 			rootBone.reset();
 		}
@@ -152,7 +152,7 @@ package org.angle3d.animation
 		/**
 		 * Reset the skeleton to bind pose and updates the bones
 		 */
-		public function resetAndUpdate() : void
+		public function resetAndUpdate():void
 		{
 			rootBone.reset();
 			rootBone.update();
@@ -163,7 +163,7 @@ package org.angle3d.animation
 		 * @param index
 		 * @return
 		 */
-		public function getBoneAt(index : int) : Bone
+		public function getBoneAt(index:int):Bone
 		{
 			return mBoneList[index];
 		}
@@ -173,7 +173,7 @@ package org.angle3d.animation
 		 * @param name
 		 * @return
 		 */
-		public function getBoneByName(name : String) : Bone
+		public function getBoneByName(name:String):Bone
 		{
 			return mBoneMap[name];
 		}
@@ -183,7 +183,7 @@ package org.angle3d.animation
 		 * @param bone
 		 * @return
 		 */
-		public function getBoneIndex(bone : Bone) : int
+		public function getBoneIndex(bone:Bone):int
 		{
 			return mBoneList.indexOf(bone);
 		}
@@ -193,9 +193,9 @@ package org.angle3d.animation
 		 * @param name
 		 * @return
 		 */
-		public function getBoneIndexByName(name : String) : int
+		public function getBoneIndexByName(name:String):int
 		{
-			var bone : Bone = mBoneList[name];
+			var bone:Bone=mBoneList[name];
 			return mBoneList.indexOf(bone);
 		}
 
@@ -203,14 +203,13 @@ package org.angle3d.animation
 		 * Compute the skining matrices for each bone of the skeleton that
 		 * would be used to transform vertices of associated meshes
 		 */
-		public function computeSkinningMatrices() : Vector.<Matrix4f>
+		public function computeSkinningMatrices():Vector.<Matrix4f>
 		{
-			var tempVar : TempVars = TempVars.getTempVars();
+			var tempVar:TempVars=TempVars.getTempVars();
 
-			for (var i : int = 0; i < mNumBones; i++)
+			for (var i:int=0; i < mNumBones; i++)
 			{
-				mBoneList[i].getOffsetTransform(mSkinningMatrixes[i],
-					tempVar.quat1, tempVar.vect1, tempVar.vect2, tempVar.tempMat3);
+				mBoneList[i].getOffsetTransform(mSkinningMatrixes[i], tempVar.quat1, tempVar.vect1, tempVar.vect2, tempVar.tempMat3);
 			}
 
 			tempVar.release();

@@ -12,13 +12,13 @@ package org.angle3d.utils
 		 */
 		public static function splitAndTrim(str:String, p:String):Array
 		{
-			var result:Array = [];
+			var result:Array=[];
 
-			var list:Array = str.split(p);
-			var length:int = list.length;
-			for (var i:int = 0; i < length; i++)
+			var list:Array=str.split(p);
+			var length:int=list.length;
+			for (var i:int=0; i < length; i++)
 			{
-				var s:String = list[i];
+				var s:String=list[i];
 				//非空行
 				if (s != "")
 				{

@@ -20,7 +20,7 @@ package org.angle3d.signals
 		 */
 		override public function dispatch(... args):void
 		{
-			_cinematicEvent = args[0];
+			_cinematicEvent=args[0];
 
 			super.dispatch.apply(null, [this]);
 		}

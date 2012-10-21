@@ -15,48 +15,48 @@ package org.angle3d.material.sgsl.node
 	 */
 	public class FunctionNode extends BranchNode
 	{
-		public static var TEPM_VAR_COUNT : int = 0;
+		public static var TEPM_VAR_COUNT:int=0;
 
-		public static function getTempName(name : String, funcName : String) : String
+		public static function getTempName(name:String, funcName:String):String
 		{
 			return name + "_" + funcName + "_" + (TEPM_VAR_COUNT++);
 		}
 
-		private var _params : Vector.<ParameterNode>;
+		private var _params:Vector.<ParameterNode>;
 
-		private var _needReplace : Boolean = true;
+		private var _needReplace:Boolean=true;
 
 		//函数返回值
-		public var result : LeafNode;
+		public var result:LeafNode;
 
-		public function FunctionNode(name : String)
+		public function FunctionNode(name:String)
 		{
 			super(name);
 
-			_params = new Vector.<ParameterNode>();
+			_params=new Vector.<ParameterNode>();
 		}
 
 		/**
 		 * 需要替换自定义函数
 		 */
-		public function get needReplace() : Boolean
+		public function get needReplace():Boolean
 		{
 			return _needReplace;
 		}
 
-		public function renameTempVar() : void
+		public function renameTempVar():void
 		{
-			var map : Dictionary = new Dictionary();
+			var map:Dictionary=new Dictionary();
 
-			var child : LeafNode;
-			var cLength : int = _children.length;
-			for (var i : int = 0; i < cLength; i++)
+			var child:LeafNode;
+			var cLength:int=_children.length;
+			for (var i:int=0; i < cLength; i++)
 			{
-				child = _children[i];
+				child=_children[i];
 				if (child is RegNode)
 				{
-					map[child.name] = getTempName(child.name, this.name);
-					child.name = map[child.name];
+					map[child.name]=getTempName(child.name, this.name);
+					child.name=map[child.name];
 				}
 				else
 				{
@@ -75,45 +75,45 @@ package org.angle3d.material.sgsl.node
 		 * 替换自定义函数
 		 * @param map 自定义函数Map <functionName,fcuntionNode>
 		 */
-		public function replaceCustomFunction(functionMap : Dictionary) : void
+		public function replaceCustomFunction(functionMap:Dictionary):void
 		{
 			if (!_needReplace)
 				return;
 
 			//children
-			var newChildren : Vector.<LeafNode> = new Vector.<LeafNode>();
+			var newChildren:Vector.<LeafNode>=new Vector.<LeafNode>();
 
-			var child : LeafNode;
-			var agalNode : AgalNode;
-			var callNode : FunctionCallNode;
+			var child:LeafNode;
+			var agalNode:AgalNode;
+			var callNode:FunctionCallNode;
 
-			var cLength : int = _children.length;
-			for (var i : int = 0; i < cLength; i++)
+			var cLength:int=_children.length;
+			for (var i:int=0; i < cLength; i++)
 			{
-				child = _children[i];
+				child=_children[i];
 
 				if (child is AgalNode)
 				{
-					agalNode = child as AgalNode;
+					agalNode=child as AgalNode;
 
 					if (agalNode.numChildren == 1)
 					{
-						callNode = agalNode.children[0] as FunctionCallNode;
+						callNode=agalNode.children[0] as FunctionCallNode;
 					}
 					else
 					{
-						callNode = agalNode.children[1] as FunctionCallNode;
+						callNode=agalNode.children[1] as FunctionCallNode;
 					}
 
 					if (isCustomFunctionCall(callNode, functionMap))
 					{
-						var customFunc : FunctionNode = callNode.cloneCustomFunction(functionMap);
+						var customFunc:FunctionNode=callNode.cloneCustomFunction(functionMap);
 						//复制customFunc的children到这里
-						newChildren = newChildren.concat(customFunc.children);
+						newChildren=newChildren.concat(customFunc.children);
 						//如果自定义函数有返回值，用返回值替换agalNode.children[1]
 						if (customFunc.result != null && agalNode.numChildren > 1)
 						{
-							agalNode.children[1] = customFunc.result;
+							agalNode.children[1]=customFunc.result;
 							newChildren.push(agalNode);
 						}
 					}
@@ -129,33 +129,33 @@ package org.angle3d.material.sgsl.node
 			}
 
 			//check returnNode
-			callNode = result as FunctionCallNode;
+			callNode=result as FunctionCallNode;
 			if (isCustomFunctionCall(callNode, functionMap))
 			{
-				customFunc = callNode.cloneCustomFunction(functionMap);
+				customFunc=callNode.cloneCustomFunction(functionMap);
 				//复制customFunc的children到这里
-				newChildren = newChildren.concat(customFunc.children);
+				newChildren=newChildren.concat(customFunc.children);
 				//如果自定义函数有返回值，这时应该用返回值替换函数的returnNode
 				if (customFunc.result != null)
 				{
-					result = customFunc.result;
+					result=customFunc.result;
 				}
 			}
 
-			_children = newChildren;
+			_children=newChildren;
 
-			_needReplace = false;
+			_needReplace=false;
 		}
 
 		/**
 		 * 是否是自定义函数调用,检查自已定义的函数和系统默认自定义的函数
 		 */
-		private function isCustomFunctionCall(node : FunctionCallNode, functionMap : Dictionary) : Boolean
+		private function isCustomFunctionCall(node:FunctionCallNode, functionMap:Dictionary):Boolean
 		{
 			return node != null && (functionMap[node.name] != undefined);
 		}
 
-		override public function replaceLeafNode(paramMap : Dictionary) : void
+		override public function replaceLeafNode(paramMap:Dictionary):void
 		{
 			super.replaceLeafNode(paramMap);
 
@@ -167,26 +167,26 @@ package org.angle3d.material.sgsl.node
 			renameTempVar();
 		}
 
-		override public function clone() : LeafNode
+		override public function clone():LeafNode
 		{
-			var node : FunctionNode = new FunctionNode(name);
-			node._needReplace = _needReplace;
+			var node:FunctionNode=new FunctionNode(name);
+			node._needReplace=_needReplace;
 
 			if (result != null)
 			{
-				node.result = result.clone();
+				node.result=result.clone();
 			}
 
-			var i : int;
+			var i:int;
 
 			cloneChildren(node);
 
 			//clone Param
-			var m : ParameterNode;
-			var pLength : int = _params.length;
-			for (i = 0; i < pLength; i++)
+			var m:ParameterNode;
+			var pLength:int=_params.length;
+			for (i=0; i < pLength; i++)
 			{
-				m = _params[i];
+				m=_params[i];
 				node.addParam(m.clone() as ParameterNode);
 			}
 
@@ -198,44 +198,44 @@ package org.angle3d.material.sgsl.node
 		 * @return
 		 *
 		 */
-		public function isMainFunction() : Boolean
+		public function isMainFunction():Boolean
 		{
 			return this.name == "main";
 		}
 
-		public function addParam(param : ParameterNode) : void
+		public function addParam(param:ParameterNode):void
 		{
 			_params.push(param);
 		}
 
-		public function getParams() : Vector.<ParameterNode>
+		public function getParams():Vector.<ParameterNode>
 		{
 			return _params;
 		}
 
-		override public function toString(level : int = 0) : String
+		override public function toString(level:int=0):String
 		{
-			var output : String = "";
+			var output:String="";
 
-			output = getSpace(level) + "function " + name + "(";
+			output=getSpace(level) + "function " + name + "(";
 
-			var paramStrings : Array = [];
-			var length : int = _params.length;
-			for (var i : int = 0; i < length; i++)
+			var paramStrings:Array=[];
+			var length:int=_params.length;
+			for (var i:int=0; i < length; i++)
 			{
 				paramStrings.push(_params[i].name);
 			}
 
-			output += paramStrings.join(",") + ")\n";
+			output+=paramStrings.join(",") + ")\n";
 
-			var space : String = getSpace(level);
-			output += space + "{\n";
-			output += getChildrenString(level);
+			var space:String=getSpace(level);
+			output+=space + "{\n";
+			output+=getChildrenString(level);
 			if (result != null)
 			{
-				output += getSpace(level + 1) + "return " + result.toString(level) + ";\n";
+				output+=getSpace(level + 1) + "return " + result.toString(level) + ";\n";
 			}
-			output += space + "}\n";
+			output+=space + "}\n";
 			return output;
 		}
 	}

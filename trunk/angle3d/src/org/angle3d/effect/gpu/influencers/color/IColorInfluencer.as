@@ -8,6 +8,6 @@ package org.angle3d.effect.gpu.influencers.color
 	 */
 	public interface IColorInfluencer extends IInfluencer
 	{
-		function getColor(index:int,color:Color):Color;
+		function getColor(index:int, color:Color):Color;
 	}
 }

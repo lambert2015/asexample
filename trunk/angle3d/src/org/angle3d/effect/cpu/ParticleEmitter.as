@@ -45,8 +45,8 @@ package org.angle3d.effect.cpu
 	//TODO 包围盒大小应该初步确定，以后就不更改大小
 	public class ParticleEmitter extends Geometry
 	{
-		private static var DEFAULT_SHAPE:EmitterShape = new EmitterPointShape();
-		private static var DEFAULT_INFLUENCER:IParticleInfluencer = new DefaultParticleInfluencer();
+		private static var DEFAULT_SHAPE:EmitterShape=new EmitterPointShape();
+		private static var DEFAULT_INFLUENCER:IParticleInfluencer=new DefaultParticleInfluencer();
 
 		private var _enabled:Boolean;
 
@@ -99,53 +99,53 @@ package org.angle3d.effect.cpu
 
 		private function init():void
 		{
-			_enabled = true;
+			_enabled=true;
 
-			_shape = new EmitterPointShape();
-			_particleInfluencer = new DefaultParticleInfluencer();
+			_shape=new EmitterPointShape();
+			_particleInfluencer=new DefaultParticleInfluencer();
 
-			_particlesPerSec = 20;
-			_timeDifference = 0;
-			_lowLife = 3;
-			_highLife = 7;
-			_gravity = new Vector3f(0.0, 0.1, 0.0);
-			_rotateSpeed = 0;
+			_particlesPerSec=20;
+			_timeDifference=0;
+			_lowLife=3;
+			_highLife=7;
+			_gravity=new Vector3f(0.0, 0.1, 0.0);
+			_rotateSpeed=0;
 
-			_faceNormal = new Vector3f(NaN, NaN, NaN);
-			_imagesX = 1;
-			_imagesY = 1;
+			_faceNormal=new Vector3f(NaN, NaN, NaN);
+			_imagesX=1;
+			_imagesY=1;
 
-			_startColor = new Color(0.4, 0.4, 0.4);
-			_endColor = new Color(0.1, 0.1, 0.1);
+			_startColor=new Color(0.4, 0.4, 0.4);
+			_endColor=new Color(0.1, 0.1, 0.1);
 
-			_startAlpha = 0.5;
-			_endAlpha = 0.0;
+			_startAlpha=0.5;
+			_endAlpha=0.0;
 
-			_startSize = 0.2;
-			_endSize = 2;
-			_worldSpace = true;
+			_startSize=0.2;
+			_endSize=2;
+			_worldSpace=true;
 
-			temp = new Vector3f();
+			temp=new Vector3f();
 
 			// ignore world transform, unless user sets inLocalSpace
 			setIgnoreTransform(true);
 
 			// particles neither receive nor cast shadows
-			localShadowMode = ShadowMode.Off;
+			localShadowMode=ShadowMode.Off;
 
 			// particles are usually transparent
-			localQueueBucket = QueueBucket.Transparent;
+			localQueueBucket=QueueBucket.Transparent;
 
-			_control = new ParticleEmitterControl(this);
+			_control=new ParticleEmitterControl(this);
 			addControl(_control);
 
-			_particleMesh = new ParticleCPUMesh();
+			_particleMesh=new ParticleCPUMesh();
 			setMesh(_particleMesh);
 		}
 
 		public function setShape(shape:EmitterShape):void
 		{
-			_shape = shape;
+			_shape=shape;
 		}
 
 		public function getShape():EmitterShape
@@ -163,7 +163,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function set particleInfluencer(influencer:IParticleInfluencer):void
 		{
-			_particleInfluencer = influencer;
+			_particleInfluencer=influencer;
 		}
 
 		/**
@@ -206,7 +206,7 @@ package org.angle3d.effect.cpu
 		public function set inWorldSpace(worldSpace:Boolean):void
 		{
 			setIgnoreTransform(worldSpace);
-			_worldSpace = worldSpace;
+			_worldSpace=worldSpace;
 		}
 
 		/**
@@ -230,17 +230,17 @@ package org.angle3d.effect.cpu
 		 */
 		public function setNumParticles(numParticles:int):void
 		{
-			_particles = new Vector.<Particle>(numParticles, true);
-			for (var i:int = 0; i < numParticles; i++)
+			_particles=new Vector.<Particle>(numParticles, true);
+			for (var i:int=0; i < numParticles; i++)
 			{
-				_particles[i] = new Particle();
+				_particles[i]=new Particle();
 			}
 
 			//We have to reinit the mesh's buffers with the new size
 			_particleMesh.initParticleData(this, numParticles);
 			_particleMesh.setImagesXY(_imagesX, _imagesY);
-			_firstUnUsed = 0;
-			_lastUsed = -1;
+			_firstUnUsed=0;
+			_lastUsed=-1;
 		}
 
 		public function getNumParticles():int
@@ -303,7 +303,7 @@ package org.angle3d.effect.cpu
 			}
 			else
 			{
-				this._faceNormal = faceNormal;
+				this._faceNormal=faceNormal;
 			}
 		}
 
@@ -328,7 +328,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setRotateSpeed(rotateSpeed:Number):void
 		{
-			this._rotateSpeed = rotateSpeed;
+			this._rotateSpeed=rotateSpeed;
 		}
 
 		/**
@@ -354,7 +354,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setRandomAngle(randomAngle:Boolean):void
 		{
-			this._randomAngle = randomAngle;
+			this._randomAngle=randomAngle;
 		}
 
 		/**
@@ -389,7 +389,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function set randomImage(randomImage:Boolean):void
 		{
-			_randomImage = randomImage;
+			_randomImage=randomImage;
 		}
 
 		/**
@@ -415,7 +415,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setFacingVelocity(followVelocity:Boolean):void
 		{
-			this._facingVelocity = followVelocity;
+			this._facingVelocity=followVelocity;
 		}
 
 		/**
@@ -469,7 +469,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setEndSize(endSize:Number):void
 		{
-			this._endSize = endSize;
+			this._endSize=endSize;
 		}
 
 		/**
@@ -516,7 +516,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setHighLife(highLife:Number):void
 		{
-			this._highLife = highLife;
+			this._highLife=highLife;
 		}
 
 		/**
@@ -542,7 +542,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setImagesX(imagesX:int):void
 		{
-			this._imagesX = imagesX;
+			this._imagesX=imagesX;
 			_particleMesh.setImagesXY(this._imagesX, this._imagesY);
 		}
 
@@ -568,7 +568,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setImagesY(imagesY:int):void
 		{
-			this._imagesY = imagesY;
+			this._imagesY=imagesY;
 			_particleMesh.setImagesXY(this._imagesX, this._imagesY);
 		}
 
@@ -594,7 +594,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setLowLife(lowLife:Number):void
 		{
-			this._lowLife = lowLife;
+			this._lowLife=lowLife;
 		}
 
 		/**
@@ -620,7 +620,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setParticlesPerSec(particlesPerSec:int):void
 		{
-			this._particlesPerSec = particlesPerSec;
+			this._particlesPerSec=particlesPerSec;
 		}
 
 		/**
@@ -656,7 +656,7 @@ package org.angle3d.effect.cpu
 
 		public function setStartAlpha(alpha:Number):void
 		{
-			_startAlpha = alpha;
+			_startAlpha=alpha;
 		}
 
 		public function getEndAlpha():Number
@@ -666,7 +666,7 @@ package org.angle3d.effect.cpu
 
 		public function setEndAlpha(alpha:Number):void
 		{
-			_endAlpha = alpha;
+			_endAlpha=alpha;
 		}
 
 		/**
@@ -692,7 +692,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function setStartSize(startSize:Number):void
 		{
-			this._startSize = startSize;
+			this._startSize=startSize;
 		}
 
 		/**
@@ -704,12 +704,12 @@ package org.angle3d.effect.cpu
 			// Force world transform to update
 			checkDoTransformUpdate();
 
-			var vars:TempVars = TempVars.getTempVars();
+			var vars:TempVars=TempVars.getTempVars();
 
-			var bbox:BoundingBox = this.getMesh().getBound() as BoundingBox;
+			var bbox:BoundingBox=this.getMesh().getBound() as BoundingBox;
 
-			var min:Vector3f = vars.vect1;
-			var max:Vector3f = vars.vect2;
+			var min:Vector3f=vars.vect1;
+			var max:Vector3f=vars.vect2;
 
 			bbox.getMin(min);
 			bbox.getMax(max);
@@ -739,8 +739,8 @@ package org.angle3d.effect.cpu
 		 */
 		public function killAllParticles():void
 		{
-			var len:int = _particles.length;
-			for (var i:int = 0; i < len; i++)
+			var len:int=_particles.length;
+			for (var i:int=0; i < len; i++)
 			{
 				if (_particles[i].life > 0)
 				{
@@ -770,7 +770,7 @@ package org.angle3d.effect.cpu
 		 */
 		public function set enabled(enabled:Boolean):void
 		{
-			this._enabled = enabled;
+			this._enabled=enabled;
 		}
 
 		/**
@@ -803,7 +803,7 @@ package org.angle3d.effect.cpu
 		 * @param rm
 		 * @param vp
 		 */
-		private var _inverseRotation:Matrix3f = new Matrix3f();
+		private var _inverseRotation:Matrix3f=new Matrix3f();
 
 		public function renderFromControl(rm:RenderManager, vp:ViewPort):void
 		{
@@ -811,7 +811,7 @@ package org.angle3d.effect.cpu
 
 			if (!_worldSpace)
 			{
-				_inverseRotation = getWorldRotation().toMatrix3f(_inverseRotation).invertLocal();
+				_inverseRotation=getWorldRotation().toMatrix3f(_inverseRotation).invertLocal();
 			}
 
 			_particleMesh.updateParticleData(_particles, vp.camera, _inverseRotation);
@@ -822,23 +822,23 @@ package org.angle3d.effect.cpu
 		 */
 		private function emitParticle(min:Vector3f, max:Vector3f):Particle
 		{
-			var idx:uint = _lastUsed + 1;
+			var idx:uint=_lastUsed + 1;
 			if (idx >= _particles.length)
 			{
 				return null;
 			}
 
-			var p:Particle = _particles[idx];
+			var p:Particle=_particles[idx];
 
 			if (_randomImage)
 			{
-				p.frame = int(Math.random() * _imagesY) * _imagesX + int(Math.random() * _imagesX);
+				p.frame=int(Math.random() * _imagesY) * _imagesX + int(Math.random() * _imagesX);
 			}
 
-			p.totalLife = _lowLife + Math.random() * (_highLife - _lowLife);
-			p.life = p.totalLife;
-			p.color = _startColor.getColor();
-			p.size = _startSize;
+			p.totalLife=_lowLife + Math.random() * (_highLife - _lowLife);
+			p.life=p.totalLife;
+			p.color=_startColor.getColor();
+			p.size=_startSize;
 
 			_particleInfluencer.influenceParticle(p, _shape);
 
@@ -851,27 +851,27 @@ package org.angle3d.effect.cpu
 
 			if (_randomAngle)
 			{
-				p.angle = Math.random() * FastMath.TWO_PI;
+				p.angle=Math.random() * FastMath.TWO_PI;
 			}
 
 			if (_rotateSpeed != 0)
 			{
-				p.spin = _rotateSpeed * (0.2 + (Math.random() * 2 - 1) * .8);
+				p.spin=_rotateSpeed * (0.2 + (Math.random() * 2 - 1) * .8);
 			}
 
 			// Computing bounding volume
-			temp.x = p.position.x + p.size;
-			temp.y = p.position.y + p.size;
-			temp.z = p.position.z + p.size;
+			temp.x=p.position.x + p.size;
+			temp.y=p.position.y + p.size;
+			temp.z=p.position.z + p.size;
 			max.maxLocal(temp);
 
-			temp.x = p.position.x - p.size;
-			temp.y = p.position.y - p.size;
-			temp.z = p.position.z - p.size;
+			temp.x=p.position.x - p.size;
+			temp.y=p.position.y - p.size;
+			temp.z=p.position.z - p.size;
 			min.minLocal(temp);
 
 			++_lastUsed;
-			_firstUnUsed = idx + 1;
+			_firstUnUsed=idx + 1;
 			return p;
 		}
 
@@ -880,7 +880,7 @@ package org.angle3d.effect.cpu
 		 */
 		private function freeParticle(idx:int):void
 		{
-			var p:Particle = _particles[idx];
+			var p:Particle=_particles[idx];
 			p.reset();
 
 			if (idx == _lastUsed)
@@ -893,75 +893,75 @@ package org.angle3d.effect.cpu
 
 			if (idx < _firstUnUsed)
 			{
-				_firstUnUsed = idx;
+				_firstUnUsed=idx;
 			}
 		}
 
 		private function swap(idx1:int, idx2:int):void
 		{
-			var p1:Particle = _particles[idx1];
-			_particles[idx1] = _particles[idx2];
-			_particles[idx2] = p1;
+			var p1:Particle=_particles[idx1];
+			_particles[idx1]=_particles[idx2];
+			_particles[idx2]=p1;
 		}
 
 		/**
 		 * 每次循环都更新粒子信息
 		 */
-		private var _tColor:Color = new Color();
+		private var _tColor:Color=new Color();
 
 		/**
-		 * 
+		 *
 		 * @param p
 		 * @param tpf
 		 * @param min
 		 * @param max
-		 * 
-		 */		
+		 *
+		 */
 		private function updateParticle(p:Particle, tpf:Number, min:Vector3f, max:Vector3f):void
 		{
 			// applying gravity
-			p.velocity.x -= _gravity.x * tpf;
-			p.velocity.y -= _gravity.y * tpf;
-			p.velocity.z -= _gravity.z * tpf;
+			p.velocity.x-=_gravity.x * tpf;
+			p.velocity.y-=_gravity.y * tpf;
+			p.velocity.z-=_gravity.z * tpf;
 
-			p.position.x += p.velocity.x * tpf;
-			p.position.y += p.velocity.y * tpf;
-			p.position.z += p.velocity.z * tpf;
+			p.position.x+=p.velocity.x * tpf;
+			p.position.y+=p.velocity.y * tpf;
+			p.position.z+=p.velocity.z * tpf;
 
 
 			_tColor.setColor(p.color);
 
 			// affecting color, size and angle
-			var interp:Number = (p.totalLife - p.life) / p.totalLife;
+			var interp:Number=(p.totalLife - p.life) / p.totalLife;
 
 			_tColor.lerp(_startColor, _endColor, interp);
-			p.color = _tColor.getColor();
-			p.alpha = FastMath.lerp(_startAlpha, _endAlpha, interp);
-			p.size = FastMath.lerp(_startSize, _endSize, interp);
-			p.angle += p.spin * tpf;
+			p.color=_tColor.getColor();
+			p.alpha=FastMath.lerp(_startAlpha, _endAlpha, interp);
+			p.size=FastMath.lerp(_startSize, _endSize, interp);
+			p.angle+=p.spin * tpf;
 
 			if (!_randomImage)
 			{
-				p.frame = int(interp * _imagesX * _imagesY);
+				p.frame=int(interp * _imagesX * _imagesY);
 			}
 
 			// Computing bounding volume
 			//var vec:Vector3f = new Vector3f(p.size, p.size, p.size);
 			//temp.copyFrom(p.position).addLocal(vec);
-			temp.x = p.position.x + p.size;
-			temp.y = p.position.y + p.size;
-			temp.z = p.position.z + p.size;
+			temp.x=p.position.x + p.size;
+			temp.y=p.position.y + p.size;
+			temp.z=p.position.z + p.size;
 			max.maxLocal(temp);
 
 			//temp.copyFrom(p.position).subtractLocal(vec);
-			temp.x = p.position.x - p.size;
-			temp.y = p.position.y - p.size;
-			temp.z = p.position.z - p.size;
+			temp.x=p.position.x - p.size;
+			temp.y=p.position.y - p.size;
+			temp.z=p.position.z - p.size;
 			min.minLocal(temp);
 		}
 
-		private var _tMin:Vector3f = new Vector3f();
-		private var _tMax:Vector3f = new Vector3f();
+		private var _tMin:Vector3f=new Vector3f();
+		private var _tMax:Vector3f=new Vector3f();
 
 		private function updateParticleState(tpf:Number):void
 		{
@@ -972,10 +972,10 @@ package org.angle3d.effect.cpu
 			_tMax.copyFrom(Vector3f.NEGATIVE_INFINITY);
 
 			var p:Particle;
-			var numPaticle:int = _particles.length;
-			for (var i:int = 0; i < numPaticle; i++)
+			var numPaticle:int=_particles.length;
+			for (var i:int=0; i < numPaticle; i++)
 			{
-				p = _particles[i];
+				p=_particles[i];
 
 				// particle is dead
 				if (p.life == 0)
@@ -983,7 +983,7 @@ package org.angle3d.effect.cpu
 					continue;
 				}
 
-				p.life -= tpf;
+				p.life-=tpf;
 				if (p.life <= 0)
 				{
 					this.freeParticle(i);
@@ -997,22 +997,22 @@ package org.angle3d.effect.cpu
 					this.swap(_firstUnUsed, i);
 					if (i == _lastUsed)
 					{
-						_lastUsed = _firstUnUsed;
+						_lastUsed=_firstUnUsed;
 					}
 					_firstUnUsed++;
 				}
 			}
 
 			// Spawns particles within the tpf timeslot with proper age
-			var interval:Number = 1.0 / _particlesPerSec;
-			tpf += _timeDifference;
+			var interval:Number=1.0 / _particlesPerSec;
+			tpf+=_timeDifference;
 			while (tpf > interval)
 			{
-				tpf -= interval;
-				p = emitParticle(_tMin, _tMax);
+				tpf-=interval;
+				p=emitParticle(_tMin, _tMax);
 				if (p != null)
 				{
-					p.life -= tpf;
+					p.life-=tpf;
 					if (p.life <= 0)
 					{
 						freeParticle(_lastUsed);
@@ -1023,9 +1023,9 @@ package org.angle3d.effect.cpu
 					}
 				}
 			}
-			_timeDifference = tpf;
+			_timeDifference=tpf;
 
-			var bbox:BoundingBox = this.getMesh().getBound() as BoundingBox;
+			var bbox:BoundingBox=this.getMesh().getBound() as BoundingBox;
 			bbox.setMinMax(_tMin, _tMax);
 			this.setBoundRefresh();
 		}

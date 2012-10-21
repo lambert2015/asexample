@@ -18,84 +18,84 @@ package org.angle3d.cinematic.event
 	 */
 	public class AbstractCinematicEvent implements CinematicEvent
 	{
-		protected var playState : int;
-		protected var speed : Number;
-		protected var initialDuration : Number;
-		protected var duration : Number;
-		protected var loopMode : int;
-		protected var time : Number;
+		protected var playState:int;
+		protected var speed:Number;
+		protected var initialDuration:Number;
+		protected var duration:Number;
+		protected var loopMode:int;
+		protected var time:Number;
 
-		protected var start : Number;
+		protected var start:Number;
 
 		/**
 		 * the last time the event was paused
 		 */
-		protected var elapsedTimePause : Number;
+		protected var elapsedTimePause:Number;
 
-		protected var _onStartSignal : CinematicSignal;
-		protected var _onPauseSignal : CinematicSignal;
-		protected var _onStopSignal : CinematicSignal;
+		protected var _onStartSignal:CinematicSignal;
+		protected var _onPauseSignal:CinematicSignal;
+		protected var _onStopSignal:CinematicSignal;
 
-		public function AbstractCinematicEvent(initialDuration : Number = 10, mode : int = 0)
+		public function AbstractCinematicEvent(initialDuration:Number=10, mode:int=0)
 		{
 			super();
 
-			this.loopMode = mode;
-			this.initialDuration = initialDuration;
-			duration = initialDuration / speed;
+			this.loopMode=mode;
+			this.initialDuration=initialDuration;
+			duration=initialDuration / speed;
 
-			speed = 1;
-			playState = PlayState.Stopped;
-			time = 0;
-			start = 0;
-			elapsedTimePause = 0;
+			speed=1;
+			playState=PlayState.Stopped;
+			time=0;
+			start=0;
+			elapsedTimePause=0;
 
 			_initSignals();
 		}
 
-		protected function _initSignals() : void
+		protected function _initSignals():void
 		{
-			_onStartSignal = new CinematicSignal();
-			_onPauseSignal = new CinematicSignal();
-			_onStopSignal = new CinematicSignal();
+			_onStartSignal=new CinematicSignal();
+			_onPauseSignal=new CinematicSignal();
+			_onStopSignal=new CinematicSignal();
 		}
 
-		public function get onStartSignal() : CinematicSignal
+		public function get onStartSignal():CinematicSignal
 		{
 			return _onStartSignal;
 		}
 
-		public function get onPauseSignal() : CinematicSignal
+		public function get onPauseSignal():CinematicSignal
 		{
 			return _onPauseSignal;
 		}
 
-		public function get onStopSignal() : CinematicSignal
+		public function get onStopSignal():CinematicSignal
 		{
 			return _onStopSignal;
 		}
 
-		public function play() : void
+		public function play():void
 		{
 			onPlay();
 
-			playState = PlayState.Playing;
+			playState=PlayState.Playing;
 
-			start = TimerUtil.getTimeInSeconds();
+			start=TimerUtil.getTimeInSeconds();
 
 			_onStartSignal.dispatch(this);
 		}
 
-		public function onPlay() : void
+		public function onPlay():void
 		{
 
 		}
 
-		public function internalUpdate(tpf : Number) : void
+		public function internalUpdate(tpf:Number):void
 		{
 			if (playState == PlayState.Playing)
 			{
-				time = (elapsedTimePause + getTimer() - start) * speed;
+				time=(elapsedTimePause + getTimer() - start) * speed;
 
 				onUpdate(tpf);
 
@@ -107,7 +107,7 @@ package org.angle3d.cinematic.event
 
 		}
 
-		public function onUpdate(tpf : Number) : void
+		public function onUpdate(tpf:Number):void
 		{
 
 		}
@@ -115,33 +115,33 @@ package org.angle3d.cinematic.event
 		/**
 		 * stops the animation, next time play() is called the animation will start from the begining.
 		 */
-		public function stop() : void
+		public function stop():void
 		{
 			onStop();
 
-			time = 0;
-			playState = PlayState.Stopped;
-			elapsedTimePause = 0;
+			time=0;
+			playState=PlayState.Stopped;
+			elapsedTimePause=0;
 
 			_onStopSignal.dispatch(this);
 		}
 
-		public function onStop() : void
+		public function onStop():void
 		{
 
 		}
 
-		public function pause() : void
+		public function pause():void
 		{
 			onPause();
 
-			playState = PlayState.Paused;
-			elapsedTimePause = time;
+			playState=PlayState.Paused;
+			elapsedTimePause=time;
 
 			_onPauseSignal.dispatch(this);
 		}
 
-		public function onPause() : void
+		public function onPause():void
 		{
 
 		}
@@ -150,7 +150,7 @@ package org.angle3d.cinematic.event
 		 * returns the actual duration of the animtion (initialDuration/speed)
 		 * @return
 		 */
-		public function getDuration() : Number
+		public function getDuration():Number
 		{
 			return initialDuration / speed;
 		}
@@ -161,16 +161,16 @@ package org.angle3d.cinematic.event
 		 * At speed = 2 the animation will last initialDuraiton/2...
 		 * @param speed
 		 */
-		public function setSpeed(speed : Number) : void
+		public function setSpeed(speed:Number):void
 		{
-			this.speed = speed;
+			this.speed=speed;
 		}
 
 		/**
 		 * returns the speed of the animation.
 		 * @return
 		 */
-		public function getSpeed() : Number
+		public function getSpeed():Number
 		{
 			return speed;
 		}
@@ -179,7 +179,7 @@ package org.angle3d.cinematic.event
 		 * Returns the current playstate of the animation
 		 * @return
 		 */
-		public function getPlayState() : int
+		public function getPlayState():int
 		{
 			return playState;
 		}
@@ -188,7 +188,7 @@ package org.angle3d.cinematic.event
 		 * returns the initial duration of the animation at speed = 1 in seconds.
 		 * @return
 		 */
-		public function getInitialDuration() : Number
+		public function getInitialDuration():Number
 		{
 			return initialDuration;
 		}
@@ -197,9 +197,9 @@ package org.angle3d.cinematic.event
 		 * Sets the duration of the antionamtion at speed = 1 in seconds
 		 * @param initialDuration
 		 */
-		public function setInitialDuration(initialDuration : Number) : void
+		public function setInitialDuration(initialDuration:Number):void
 		{
-			this.initialDuration = initialDuration;
+			this.initialDuration=initialDuration;
 		}
 
 		/**
@@ -207,7 +207,7 @@ package org.angle3d.cinematic.event
 		 * @see LoopMode
 		 * @return
 		 */
-		public function getLoopMode() : int
+		public function getLoopMode():int
 		{
 			return loopMode;
 		}
@@ -217,12 +217,12 @@ package org.angle3d.cinematic.event
 		 * @see LoopMode
 		 * @param loopMode
 		 */
-		public function setLoopMode(loopMode : int) : void
+		public function setLoopMode(loopMode:int):void
 		{
-			this.loopMode = loopMode;
+			this.loopMode=loopMode;
 		}
 
-		public function init(app : Application, cinematic : Cinematic) : void
+		public function init(app:Application, cinematic:Cinematic):void
 		{
 
 		}
@@ -231,12 +231,12 @@ package org.angle3d.cinematic.event
 		 * When this method is invoked, the event should fast forward to the given time according tim 0 is the start of the event.
 		 * @param time the time to fast forward to
 		 */
-		public function setTime(time : Number) : void
+		public function setTime(time:Number):void
 		{
-			elapsedTimePause = time / speed;
+			elapsedTimePause=time / speed;
 			if (playState == PlayState.Playing)
 			{
-				start = getTimer();
+				start=getTimer();
 			}
 		}
 
@@ -244,7 +244,7 @@ package org.angle3d.cinematic.event
 		 * 已运行时间(秒)
 		 * @return
 		 */
-		public function getTime() : Number
+		public function getTime():Number
 		{
 			return time;
 		}

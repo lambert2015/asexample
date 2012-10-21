@@ -17,7 +17,7 @@ package org.angle3d.effect.gpu
 
 		//生命
 		private var _totalLife:Number;
-		
+
 		private var _gpuMaterial:MaterialGPUParticle;
 
 		/**
@@ -28,40 +28,40 @@ package org.angle3d.effect.gpu
 		 * @param startTime 开始时间
 		 *
 		 */
-		public function ParticleShape(name:String, texture:TextureMapBase, totalLife:Number, startTime:Number = 0)
+		public function ParticleShape(name:String, texture:TextureMapBase, totalLife:Number, startTime:Number=0)
 		{
 			super(name);
 
-			_startTime = startTime;
-			_totalLife = totalLife;
+			_startTime=startTime;
+			_totalLife=totalLife;
 
-			_gpuMaterial = new MaterialGPUParticle(texture);
+			_gpuMaterial=new MaterialGPUParticle(texture);
 			setMaterial(_gpuMaterial);
-			localShadowMode = ShadowMode.Off;
-			localQueueBucket = QueueBucket.Transparent;
+			localShadowMode=ShadowMode.Off;
+			localQueueBucket=QueueBucket.Transparent;
 
-			loop = true;
-			_currentTime = 0;
+			loop=true;
+			_currentTime=0;
 		}
-		
+
 		/**
 		 * 使用粒子单独加速度
 		 */
 		public function set useLocalAcceleration(value:Boolean):void
 		{
-			_gpuMaterial.useLocalAcceleration = value;
+			_gpuMaterial.useLocalAcceleration=value;
 		}
-		
+
 		public function get useLocalAcceleration():Boolean
 		{
 			return _gpuMaterial.useLocalAcceleration;
 		}
-		
+
 		public function set useLocalColor(value:Boolean):void
 		{
-			_gpuMaterial.useLocalColor = value;
+			_gpuMaterial.useLocalColor=value;
 		}
-		
+
 		public function get useLocalColor():Boolean
 		{
 			return _gpuMaterial.useLocalColor;
@@ -69,7 +69,7 @@ package org.angle3d.effect.gpu
 
 		public function set blendMode(mode:int):void
 		{
-			_gpuMaterial.blendMode = mode;
+			_gpuMaterial.blendMode=mode;
 		}
 
 		/**
@@ -77,7 +77,7 @@ package org.angle3d.effect.gpu
 		 */
 		public function set useSpin(value:Boolean):void
 		{
-			_gpuMaterial.useSpin = value;
+			_gpuMaterial.useSpin=value;
 		}
 
 		public function get useSpin():Boolean
@@ -122,7 +122,7 @@ package org.angle3d.effect.gpu
 
 		public function set loop(value:Boolean):void
 		{
-			_gpuMaterial.loop = value;
+			_gpuMaterial.loop=value;
 		}
 
 		public function get loop():Boolean
@@ -132,14 +132,14 @@ package org.angle3d.effect.gpu
 
 		public function reset():void
 		{
-			_currentTime = 0;
+			_currentTime=0;
 			_gpuMaterial.reset();
-			visible = false;
+			visible=false;
 		}
 
 		public function set startTime(value:Number):void
 		{
-			_startTime = value;
+			_startTime=value;
 		}
 
 		public function get startTime():Number
@@ -157,7 +157,7 @@ package org.angle3d.effect.gpu
 		 */
 		public function updateMaterial(tpf:Number):void
 		{
-			_currentTime += tpf;
+			_currentTime+=tpf;
 			_gpuMaterial.update(tpf);
 		}
 	}
