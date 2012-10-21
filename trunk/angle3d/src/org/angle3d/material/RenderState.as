@@ -43,17 +43,17 @@ package org.angle3d.material
 		public static var ADDITIONAL:RenderState;
 
 		{
-			DEFAULT=new RenderState();
+			DEFAULT = new RenderState();
 
-			NULL=new RenderState();
-			NULL.cullMode=Context3DTriangleFace.NONE;
-			NULL.depthTest=false;
+			NULL = new RenderState();
+			NULL.cullMode = Context3DTriangleFace.NONE;
+			NULL.depthTest = false;
 
-			ADDITIONAL=new RenderState();
-			ADDITIONAL.applyCullMode=false;
-			ADDITIONAL.applyDepthTest=false;
-			ADDITIONAL.applyColorWrite=false;
-			ADDITIONAL.applyBlendMode=false;
+			ADDITIONAL = new RenderState();
+			ADDITIONAL.applyCullMode = false;
+			ADDITIONAL.applyDepthTest = false;
+			ADDITIONAL.applyColorWrite = false;
+			ADDITIONAL.applyBlendMode = false;
 		}
 
 		public var cullMode:String;
@@ -71,19 +71,19 @@ package org.angle3d.material
 
 		public function RenderState()
 		{
-			cullMode=Context3DTriangleFace.FRONT;
-			applyCullMode=true;
+			cullMode = Context3DTriangleFace.FRONT;
+			applyCullMode = true;
 
-			compareMode=Context3DCompareMode.LESS_EQUAL;
+			compareMode = Context3DCompareMode.LESS_EQUAL;
 
-			depthTest=true;
-			applyDepthTest=true;
+			depthTest = true;
+			applyDepthTest = true;
 
-			colorWrite=true;
-			applyColorWrite=true;
+			colorWrite = true;
+			applyColorWrite = true;
 
-			blendMode=BlendMode.Off;
-			applyBlendMode=false;
+			blendMode = BlendMode.Off;
+			applyBlendMode = false;
 		}
 
 		/**
@@ -97,8 +97,8 @@ package org.angle3d.material
 		 */
 		public function setColorWrite(colorWrite:Boolean):void
 		{
-			applyColorWrite=true;
-			this.colorWrite=colorWrite;
+			applyColorWrite = true;
+			this.colorWrite = colorWrite;
 		}
 
 		/**
@@ -115,8 +115,8 @@ package org.angle3d.material
 		 */
 		public function setCullMode(cullMode:String):void
 		{
-			applyCullMode=true;
-			this.cullMode=cullMode;
+			applyCullMode = true;
+			this.cullMode = cullMode;
 		}
 
 		/**
@@ -135,8 +135,8 @@ package org.angle3d.material
 		 */
 		public function setBlendMode(blendMode:int):void
 		{
-			applyBlendMode=true;
-			this.blendMode=blendMode;
+			applyBlendMode = true;
+			this.blendMode = blendMode;
 		}
 
 		/**
@@ -151,8 +151,8 @@ package org.angle3d.material
 		 */
 		public function setDepthTest(depthTest:Boolean):void
 		{
-			applyDepthTest=true;
-			this.depthTest=depthTest;
+			applyDepthTest = true;
+			this.depthTest = depthTest;
 		}
 
 		/**
@@ -185,40 +185,40 @@ package org.angle3d.material
 
 			if (additionalState.applyCullMode)
 			{
-				state.cullMode=additionalState.cullMode;
+				state.cullMode = additionalState.cullMode;
 			}
 			else
 			{
-				state.cullMode=cullMode;
+				state.cullMode = cullMode;
 			}
 
 			if (additionalState.applyDepthTest)
 			{
-				state.depthTest=additionalState.depthTest;
+				state.depthTest = additionalState.depthTest;
 			}
 			else
 			{
-				state.depthTest=depthTest;
+				state.depthTest = depthTest;
 			}
 
-			state.compareMode=compareMode;
+			state.compareMode = compareMode;
 
 			if (additionalState.applyColorWrite)
 			{
-				state.colorWrite=additionalState.colorWrite;
+				state.colorWrite = additionalState.colorWrite;
 			}
 			else
 			{
-				state.colorWrite=colorWrite;
+				state.colorWrite = colorWrite;
 			}
 
 			if (additionalState.applyBlendMode)
 			{
-				state.blendMode=additionalState.blendMode;
+				state.blendMode = additionalState.blendMode;
 			}
 			else
 			{
-				state.blendMode=blendMode;
+				state.blendMode = blendMode;
 			}
 
 			return state;
@@ -226,16 +226,16 @@ package org.angle3d.material
 
 		public function clone():RenderState
 		{
-			var result:RenderState=new RenderState();
-			result.cullMode=this.cullMode;
-			result.applyCullMode=this.applyCullMode;
-			result.depthTest=this.depthTest;
-			result.applyDepthTest=this.applyDepthTest;
-			result.compareMode=this.compareMode;
-			result.colorWrite=this.colorWrite;
-			result.applyColorWrite=this.applyColorWrite;
-			result.blendMode=this.blendMode;
-			result.applyBlendMode=this.applyBlendMode;
+			var result:RenderState = new RenderState();
+			result.cullMode = this.cullMode;
+			result.applyCullMode = this.applyCullMode;
+			result.depthTest = this.depthTest;
+			result.applyDepthTest = this.applyDepthTest;
+			result.compareMode = this.compareMode;
+			result.colorWrite = this.colorWrite;
+			result.applyColorWrite = this.applyColorWrite;
+			result.blendMode = this.blendMode;
+			result.applyBlendMode = this.applyBlendMode;
 			return result;
 		}
 

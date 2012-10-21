@@ -16,7 +16,7 @@ package org.angle3d.material.technique
 			super(name);
 		}
 
-		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -32,7 +32,7 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				uniform sampler2D u_diffuseMap;
@@ -44,25 +44,25 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getKey(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
-			var result:Array=[_name, meshType];
+			var result:Array = [_name, meshType];
 			return result.join("_");
 		}
 
-		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
-			var map:Dictionary=new Dictionary();
-			map[BufferType.POSITION]="a_position";
-			map[BufferType.TEXCOORD]="a_texCoord";
+			var map:Dictionary = new Dictionary();
+			map[BufferType.POSITION] = "a_position";
+			map[BufferType.TEXCOORD] = "a_texCoord";
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
-			list.fixed=true;
+			list.fixed = true;
 			return list;
 		}
 	}

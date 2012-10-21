@@ -13,7 +13,7 @@ package org.angle3d.scene
 		{
 			super(name, mesh);
 
-			this.mMaterial=new MaterialWireframe();
+			this.mMaterial = new MaterialWireframe();
 		}
 
 		override public function setMaterial(material:Material):void

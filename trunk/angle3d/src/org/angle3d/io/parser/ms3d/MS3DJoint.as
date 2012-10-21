@@ -14,8 +14,8 @@ package org.angle3d.io.parser.ms3d
 
 		public function MS3DJoint()
 		{
-			rotation=new Vector3f();
-			translation=new Vector3f();
+			rotation = new Vector3f();
+			translation = new Vector3f();
 		}
 	}
 }

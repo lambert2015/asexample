@@ -15,7 +15,7 @@ package org.angle3d.effect.cpu
 
 		public function ParticleEmitterControl(parentEmitter:ParticleEmitter)
 		{
-			this.particleEmitter=parentEmitter;
+			this.particleEmitter = parentEmitter;
 		}
 
 		public function cloneForSpatial(spatial:Spatial):Control
@@ -35,7 +35,7 @@ package org.angle3d.effect.cpu
 
 		public function set enabled(enabled:Boolean):void
 		{
-			particleEmitter.enabled=enabled;
+			particleEmitter.enabled = enabled;
 		}
 
 		public function get enabled():Boolean

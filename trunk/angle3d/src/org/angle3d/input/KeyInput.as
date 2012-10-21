@@ -17,8 +17,8 @@ package org.angle3d.input
 
 		public function KeyInput()
 		{
-			_stage=null;
-			_listener=null;
+			_stage = null;
+			_listener = null;
 		}
 
 		/**
@@ -26,7 +26,7 @@ package org.angle3d.input
 		*/
 		public function initialize(stage:Stage):void
 		{
-			_stage=stage;
+			_stage = stage;
 
 			if (_stage != null)
 			{
@@ -39,7 +39,7 @@ package org.angle3d.input
 		{
 			if (_listener != null)
 			{
-				var evt:KeyInputEvent=new KeyInputEvent(e.keyCode, String.fromCharCode(e.keyCode), true);
+				var evt:KeyInputEvent = new KeyInputEvent(e.keyCode, String.fromCharCode(e.keyCode), true);
 				evt.setTime(getTimer());
 				_listener.onKeyEvent(evt);
 			}
@@ -49,7 +49,7 @@ package org.angle3d.input
 		{
 			if (_listener != null)
 			{
-				var evt:KeyInputEvent=new KeyInputEvent(e.keyCode, String.fromCharCode(e.keyCode), false);
+				var evt:KeyInputEvent = new KeyInputEvent(e.keyCode, String.fromCharCode(e.keyCode), false);
 				evt.setTime(getTimer());
 				_listener.onKeyEvent(evt);
 			}
@@ -75,7 +75,7 @@ package org.angle3d.input
 			{
 				_stage.removeEventListener(KeyboardEvent.KEY_DOWN, _onKeyDown);
 				_stage.removeEventListener(KeyboardEvent.KEY_UP, _onKeyUp);
-				_stage=null;
+				_stage = null;
 			}
 
 		}
@@ -98,7 +98,7 @@ package org.angle3d.input
 		 */
 		public function setInputListener(listener:RawInputListener):void
 		{
-			_listener=listener;
+			_listener = listener;
 		}
 
 		/**

@@ -13,7 +13,7 @@ package org.assetloader.signals
 
 		public function NetStatusSignal(... valueClasses)
 		{
-			_signalType=NetStatusSignal;
+			_signalType = NetStatusSignal;
 			super(valueClasses);
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.signals
 		 */
 		override public function dispatch(... args):void
 		{
-			_info=args.splice(1, 1)[0];
+			_info = args.splice(1, 1)[0];
 			super.dispatch.apply(null, args);
 		}
 

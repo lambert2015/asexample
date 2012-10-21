@@ -4,8 +4,8 @@ package org.angle3d.material.shader
 
 	final public class ShaderType
 	{
-		public static const VERTEX:String=Context3DProgramType.VERTEX;
-		public static const FRAGMENT:String=Context3DProgramType.FRAGMENT;
+		public static const VERTEX:String = Context3DProgramType.VERTEX;
+		public static const FRAGMENT:String = Context3DProgramType.FRAGMENT;
 	}
 }
 

@@ -21,11 +21,11 @@ package org.angle3d.texture
 
 		protected var mOptimizeForRenderToTexture:Boolean;
 
-		public function TextureMapBase(mipmap:Boolean=false)
+		public function TextureMapBase(mipmap:Boolean = false)
 		{
-			mMipmap=mipmap;
-			mDirty=false;
-			mOptimizeForRenderToTexture=false;
+			mMipmap = mipmap;
+			mDirty = false;
+			mOptimizeForRenderToTexture = false;
 		}
 
 		public function getTexture(context:Context3D):TextureBase
@@ -35,9 +35,9 @@ package org.angle3d.texture
 				if (mTexture != null)
 					mTexture.dispose();
 
-				mTexture=createTexture(context);
+				mTexture = createTexture(context);
 				uploadTexture();
-				mDirty=false;
+				mDirty = false;
 			}
 
 			return mTexture;
@@ -47,8 +47,8 @@ package org.angle3d.texture
 		{
 			if (mMipmap != value)
 			{
-				mMipmap=value;
-				mDirty=true;
+				mMipmap = value;
+				mDirty = true;
 			}
 		}
 
@@ -82,14 +82,14 @@ package org.angle3d.texture
 		{
 			if (mOptimizeForRenderToTexture != value)
 			{
-				mOptimizeForRenderToTexture=value;
-				mDirty=true;
+				mOptimizeForRenderToTexture = value;
+				mDirty = true;
 			}
 		}
 
 		public function invalidateContent():void
 		{
-			mDirty=true;
+			mDirty = true;
 		}
 
 		public function dispose():void
@@ -97,8 +97,8 @@ package org.angle3d.texture
 			if (mTexture != null)
 			{
 				mTexture.dispose();
-				mTexture=null;
-				mDirty=false;
+				mTexture = null;
+				mDirty = false;
 			}
 		}
 
@@ -117,8 +117,8 @@ package org.angle3d.texture
 			if (mWidth != width || mHeight != height)
 				dispose();
 
-			mWidth=width;
-			mHeight=height;
+			mWidth = width;
+			mHeight = height;
 		}
 	}
 }

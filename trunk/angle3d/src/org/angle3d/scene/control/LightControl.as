@@ -19,31 +19,31 @@ package org.angle3d.scene.control
 		 * Means, that the Light's transform is "copied"
 		 * to the Transform of the Spatial.
 		 */
-		public static const LightToSpatial:String="lightToSpatial";
+		public static const LightToSpatial:String = "lightToSpatial";
 		/**
 		 * Means, that the Spatial's transform is "copied"
 		 * to the Transform of the light.
 		 */
-		public static const SpatialToLight:String="spatialToLight";
+		public static const SpatialToLight:String = "spatialToLight";
 
 		private var mLight:Light;
 		private var mControlDir:String;
 
-		public function LightControl(light:Light=null, controlDir:String="spatialToLight")
+		public function LightControl(light:Light = null, controlDir:String = "spatialToLight")
 		{
 			super();
 
 			if (light != null)
 			{
-				this.mLight=light;
+				this.mLight = light;
 			}
 
-			this.mControlDir=controlDir;
+			this.mControlDir = controlDir;
 		}
 
 		public function set controlDir(dir:String):void
 		{
-			this.mControlDir=dir;
+			this.mControlDir = dir;
 		}
 
 		public function set light(light:Light):void
@@ -52,7 +52,7 @@ package org.angle3d.scene.control
 			{
 				return;
 			}
-			this.mLight=light;
+			this.mLight = light;
 		}
 
 		public function get light():Light
@@ -85,15 +85,15 @@ package org.angle3d.scene.control
 		{
 			if (light is PointLight)
 			{
-				var pl:PointLight=light as PointLight;
-				pl.position=spatial.getWorldTranslation();
+				var pl:PointLight = light as PointLight;
+				pl.position = spatial.getWorldTranslation();
 			}
 
 			if (light is DirectionalLight)
 			{
-				var dl:DirectionalLight=light as DirectionalLight;
+				var dl:DirectionalLight = light as DirectionalLight;
 				//TODO 这里是不是传错了
-				var p:Vector3f=dl.direction;
+				var p:Vector3f = dl.direction;
 				p.copyFrom(spatial.getWorldTranslation());
 					//p.scaleBy( -1);
 			}
@@ -112,16 +112,16 @@ package org.angle3d.scene.control
 			var vecDiff:Vector3f;
 			if (light is PointLight)
 			{
-				var pLight:PointLight=light as PointLight;
+				var pLight:PointLight = light as PointLight;
 
-				vecDiff=pLight.position.subtract(spatial.getWorldTranslation());
+				vecDiff = pLight.position.subtract(spatial.getWorldTranslation());
 				vecDiff.addLocal(spatial.getTranslation());
 				spatial.setTranslation(vecDiff);
 			}
 			else if (light is DirectionalLight)
 			{
-				var dLight:DirectionalLight=light as DirectionalLight;
-				vecDiff=dLight.direction.clone();
+				var dLight:DirectionalLight = light as DirectionalLight;
+				vecDiff = dLight.direction.clone();
 				vecDiff.scaleLocal(-1);
 				vecDiff.subtractLocal(spatial.getWorldTranslation());
 				vecDiff.addLocal(spatial.getTranslation());
@@ -136,9 +136,9 @@ package org.angle3d.scene.control
 
 		override public function cloneForSpatial(newSpatial:Spatial):Control
 		{
-			var control:LightControl=new LightControl(this.mLight, this.mControlDir);
-			control.spatial=newSpatial;
-			control.enabled=enabled;
+			var control:LightControl = new LightControl(this.mLight, this.mControlDir);
+			control.spatial = newSpatial;
+			control.enabled = enabled;
 			return control;
 		}
 	}

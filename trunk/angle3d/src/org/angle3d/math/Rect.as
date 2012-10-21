@@ -13,10 +13,10 @@ package org.angle3d.math
 
 		public function Rect(left:Number, right:Number, bottom:Number, top:Number)
 		{
-			mLeft=left;
-			mRight=right;
-			mBottom=bottom;
-			mTop=top;
+			mLeft = left;
+			mRight = right;
+			mBottom = bottom;
+			mTop = top;
 
 			_computeWidth();
 			_computeHeight();
@@ -24,10 +24,10 @@ package org.angle3d.math
 
 		public function copyFrom(rect:Rect):void
 		{
-			mLeft=rect.left;
-			mRight=rect.right;
-			mBottom=rect.bottom;
-			mTop=rect.top;
+			mLeft = rect.left;
+			mRight = rect.right;
+			mBottom = rect.bottom;
+			mTop = rect.top;
 
 			_computeWidth();
 			_computeHeight();
@@ -35,10 +35,10 @@ package org.angle3d.math
 
 		public function setTo(left:Number, right:Number, bottom:Number, top:Number):void
 		{
-			mLeft=left;
-			mRight=right;
-			mBottom=bottom;
-			mTop=top;
+			mLeft = left;
+			mRight = right;
+			mBottom = bottom;
+			mTop = top;
 
 			_computeWidth();
 			_computeHeight();
@@ -51,40 +51,40 @@ package org.angle3d.math
 
 		public function set left(value:Number):void
 		{
-			mLeft=value;
+			mLeft = value;
 
 			_computeWidth();
 		}
 
 		public function set right(value:Number):void
 		{
-			mRight=value;
+			mRight = value;
 
 			_computeWidth();
 		}
 
 		public function set top(value:Number):void
 		{
-			mTop=value;
+			mTop = value;
 
 			_computeHeight();
 		}
 
 		public function set bottom(value:Number):void
 		{
-			mBottom=value;
+			mBottom = value;
 
 			_computeHeight();
 		}
 
 		private function _computeWidth():void
 		{
-			mWidth=mRight - mLeft;
+			mWidth = mRight - mLeft;
 		}
 
 		private function _computeHeight():void
 		{
-			mHeight=mTop - mBottom;
+			mHeight = mTop - mBottom;
 		}
 
 		public function get left():Number

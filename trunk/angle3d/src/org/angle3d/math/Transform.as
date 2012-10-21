@@ -12,11 +12,11 @@ package org.angle3d.math
 		public var translation:Vector3f;
 		public var scale:Vector3f;
 
-		public function Transform(trans:Vector3f=null, rot:Quaternion=null, scale:Vector3f=null)
+		public function Transform(trans:Vector3f = null, rot:Quaternion = null, scale:Vector3f = null)
 		{
-			this.rotation=new Quaternion();
-			this.translation=new Vector3f();
-			this.scale=new Vector3f(1, 1, 1);
+			this.rotation = new Quaternion();
+			this.translation = new Vector3f();
+			this.scale = new Vector3f(1, 1, 1);
 
 			if (trans != null)
 			{
@@ -107,10 +107,10 @@ package org.angle3d.math
 			translation.addLocal(parent.translation);
 		}
 
-		public function transformVector(inVec:Vector3f, result:Vector3f=null):Vector3f
+		public function transformVector(inVec:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
 			// multiply with scale first, then rotate, finally translate
 			if (result != inVec)
@@ -123,26 +123,26 @@ package org.angle3d.math
 			return result;
 		}
 
-		public function transformInverseVector(inVec:Vector3f, result:Vector3f=null):Vector3f
+		public function transformInverseVector(inVec:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
 			// The author of this code should look above and take the inverse of that
 			// But for some reason, they didnt ..
 			// in.subtract(translation, store).divideLocal(scale);
 			// rot.inverse().mult(store, store);
 
-			result.x=inVec.x - translation.x;
-			result.y=inVec.y - translation.y;
-			result.z=inVec.z - translation.z;
+			result.x = inVec.x - translation.x;
+			result.y = inVec.y - translation.y;
+			result.z = inVec.z - translation.z;
 
-			var inverseRot:Quaternion=rotation.inverse();
+			var inverseRot:Quaternion = rotation.inverse();
 			inverseRot.multVecLocal(result);
 
-			result.x/=scale.x;
-			result.y/=scale.y;
-			result.z/=scale.z;
+			result.x /= scale.x;
+			result.y /= scale.y;
+			result.z /= scale.z;
 
 			return result;
 		}
@@ -166,7 +166,7 @@ package org.angle3d.math
 
 		public function clone():Transform
 		{
-			var result:Transform=new Transform();
+			var result:Transform = new Transform();
 			result.copyFrom(this);
 			return result;
 		}

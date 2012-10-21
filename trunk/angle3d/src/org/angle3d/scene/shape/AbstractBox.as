@@ -29,7 +29,7 @@ package org.angle3d.scene.shape
 		{
 			super();
 
-			center=new Vector3f(0, 0, 0);
+			center = new Vector3f(0, 0, 0);
 		}
 
 		/**
@@ -39,9 +39,9 @@ package org.angle3d.scene.shape
 		 */
 		protected function computeVertices():Vector.<Vector3f>
 		{
-			var cx:Number=center.x;
-			var cy:Number=center.y;
-			var cz:Number=center.z;
+			var cx:Number = center.x;
+			var cy:Number = center.y;
+			var cz:Number = center.z;
 			return Vector.<Vector3f>([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
 		}
 
@@ -98,7 +98,7 @@ package org.angle3d.scene.shape
 		 */
 		public function updateGeometry():void
 		{
-			subMesh=new SubMesh();
+			subMesh = new SubMesh();
 			duUpdateGeometryVertices();
 			duUpdateGeometryTextures();
 			duUpdateGeometryNormals();
@@ -121,9 +121,9 @@ package org.angle3d.scene.shape
 		public function updateGeometryByXYZ(center:Vector3f, x:Number, y:Number, z:Number):void
 		{
 			this.center.copyFrom(center);
-			this.xExtent=x;
-			this.yExtent=y;
-			this.zExtent=z;
+			this.xExtent = x;
+			this.yExtent = y;
+			this.zExtent = z;
 			updateGeometry();
 		}
 
@@ -138,7 +138,7 @@ package org.angle3d.scene.shape
 		 */
 		public function updateGeometryByMinMax(min:Vector3f, max:Vector3f):void
 		{
-			this.center=max.subtract(min, this.center);
+			this.center = max.subtract(min, this.center);
 			updateGeometryByXYZ(center, max.x - center.x, max.y - center.y, max.z - center.z);
 		}
 	}

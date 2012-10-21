@@ -72,8 +72,8 @@ package org.angle3d.renderer
 		{
 			super();
 
-			this.width=width;
-			this.height=height;
+			this.width = width;
+			this.height = height;
 
 			onFrustumChange();
 			onViewPortChange();
@@ -83,17 +83,17 @@ package org.angle3d.renderer
 		{
 			super._init();
 
-			mViewPortChanged=true;
+			mViewPortChanged = true;
 
-			mViewMatrix=new Matrix4f();
-			mViewProjectionMatrix=new Matrix4f();
+			mViewMatrix = new Matrix4f();
+			mViewProjectionMatrix = new Matrix4f();
 
-			mGuiBounding=new BoundingBox();
+			mGuiBounding = new BoundingBox();
 
-			mLocation=new Vector3f();
-			mRotation=new Quaternion();
+			mLocation = new Vector3f();
+			mRotation = new Quaternion();
 
-			mViewPortRect=new Rect(0.0, 1.0, 0.0, 1.0);
+			mViewPortRect = new Rect(0.0, 1.0, 0.0, 1.0);
 		}
 
 		public function copyFrom(cam:Camera3D):void
@@ -101,38 +101,38 @@ package org.angle3d.renderer
 			mLocation.copyFrom(cam.mLocation);
 			mRotation.copyFrom(cam.mRotation);
 
-			mFrustumNear=cam.mFrustumNear;
-			mFrustumFar=cam.mFrustumFar;
+			mFrustumNear = cam.mFrustumNear;
+			mFrustumFar = cam.mFrustumFar;
 			mFrustumRect.copyFrom(cam.mFrustumRect);
 
-			mCoeffLeft[0]=cam.mCoeffLeft[0];
-			mCoeffLeft[1]=cam.mCoeffLeft[1];
-			mCoeffRight[0]=cam.mCoeffRight[0];
-			mCoeffRight[1]=cam.mCoeffRight[1];
-			mCoeffBottom[0]=cam.mCoeffBottom[0];
-			mCoeffBottom[1]=cam.mCoeffBottom[1];
-			mCoeffTop[0]=cam.mCoeffTop[0];
-			mCoeffTop[1]=cam.mCoeffTop[1];
+			mCoeffLeft[0] = cam.mCoeffLeft[0];
+			mCoeffLeft[1] = cam.mCoeffLeft[1];
+			mCoeffRight[0] = cam.mCoeffRight[0];
+			mCoeffRight[1] = cam.mCoeffRight[1];
+			mCoeffBottom[0] = cam.mCoeffBottom[0];
+			mCoeffBottom[1] = cam.mCoeffBottom[1];
+			mCoeffTop[0] = cam.mCoeffTop[0];
+			mCoeffTop[1] = cam.mCoeffTop[1];
 
 			mViewPortRect.copyFrom(cam.mViewPortRect);
 
-			this.width=cam.width;
-			this.height=cam.height;
+			this.width = cam.width;
+			this.height = cam.height;
 
-			this.mPlaneState=cam.mPlaneState;
-			this.mViewPortChanged=cam.mViewPortChanged;
-			for (var i:int=0; i < FRUSTUM_PLANES; i++)
+			this.mPlaneState = cam.mPlaneState;
+			this.mViewPortChanged = cam.mViewPortChanged;
+			for (var i:int = 0; i < FRUSTUM_PLANES; i++)
 			{
 				mWorldPlanes[i].normal.copyFrom(cam.mWorldPlanes[i].normal);
-				mWorldPlanes[i].constant=cam.mWorldPlanes[i].constant;
+				mWorldPlanes[i].constant = cam.mWorldPlanes[i].constant;
 			}
 
-			this.mParallelProjection=cam.mParallelProjection;
+			this.mParallelProjection = cam.mParallelProjection;
 			if (cam.mProjectionMatrixOverride != null)
 			{
 				if (mProjectionMatrixOverride == null)
 				{
-					mProjectionMatrixOverride=cam.mProjectionMatrixOverride.clone();
+					mProjectionMatrixOverride = cam.mProjectionMatrixOverride.clone();
 				}
 				else
 				{
@@ -141,7 +141,7 @@ package org.angle3d.renderer
 			}
 			else
 			{
-				this.mProjectionMatrixOverride=null;
+				this.mProjectionMatrixOverride = null;
 			}
 			this.mViewMatrix.copyFrom(cam.mViewMatrix);
 			this.mProjectionMatrix.copyFrom(cam.mProjectionMatrix);
@@ -152,12 +152,12 @@ package org.angle3d.renderer
 
 		public function clone(newName:String):Camera3D
 		{
-			var cam:Camera3D=new Camera3D(width, height);
-			cam.name=newName;
-			cam.mViewPortChanged=true;
-			cam.mPlaneState=PlaneSide.None;
+			var cam:Camera3D = new Camera3D(width, height);
+			cam.name = newName;
+			cam.mViewPortChanged = true;
+			cam.mPlaneState = PlaneSide.None;
 
-			for (var i:int=0; i < FRUSTUM_PLANES; i++)
+			for (var i:int = 0; i < FRUSTUM_PLANES; i++)
 			{
 				cam.mWorldPlanes[i].copyFrom(mWorldPlanes[i]);
 			}
@@ -167,13 +167,13 @@ package org.angle3d.renderer
 
 			if (mProjectionMatrixOverride != null)
 			{
-				cam.mProjectionMatrixOverride=mProjectionMatrixOverride.clone();
+				cam.mProjectionMatrixOverride = mProjectionMatrixOverride.clone();
 			}
 
 			cam.mViewMatrix.copyFrom(mViewMatrix);
 			cam.mProjectionMatrix.copyFrom(mProjectionMatrix);
 			cam.mViewProjectionMatrix.copyFrom(mViewProjectionMatrix);
-			cam.mGuiBounding=mGuiBounding.clone() as BoundingBox;
+			cam.mGuiBounding = mGuiBounding.clone() as BoundingBox;
 
 			cam.update();
 
@@ -194,17 +194,17 @@ package org.angle3d.renderer
 		 * @param clipPlane the plane
 		 * @param side the side the camera stands from the plane
 		 */
-		public function setClipPlane(clipPlane:Plane, side:int=-1):void
+		public function setClipPlane(clipPlane:Plane, side:int = -1):void
 		{
 			if (side <= -1)
 			{
-				side=clipPlane.whichSide(mLocation);
+				side = clipPlane.whichSide(mLocation);
 			}
 
-			var sideFactor:Number=1.0;
+			var sideFactor:Number = 1.0;
 			if (side == PlaneSide.Negative)
 			{
-				sideFactor=-1.0;
+				sideFactor = -1.0;
 			}
 
 			//we are on the other side of the plane no need to clip anymore.
@@ -213,34 +213,34 @@ package org.angle3d.renderer
 				return;
 			}
 
-			var newProjectionMatrix:Matrix4f=mProjectionMatrix.clone();
-			var ivm:Matrix4f=mViewMatrix.clone();
+			var newProjectionMatrix:Matrix4f = mProjectionMatrix.clone();
+			var ivm:Matrix4f = mViewMatrix.clone();
 
-			var point:Vector3f=clipPlane.normal.clone();
+			var point:Vector3f = clipPlane.normal.clone();
 			point.scaleLocal(clipPlane.constant);
 
-			var pp:Vector3f=ivm.multVec(point);
-			var pn:Vector3f=ivm.multNormal(clipPlane.normal);
+			var pp:Vector3f = ivm.multVec(point);
+			var pn:Vector3f = ivm.multNormal(clipPlane.normal);
 
-			var clipPlaneV:Vector4f=new Vector4f();
-			clipPlaneV.x=pn.x * sideFactor;
-			clipPlaneV.y=pn.y * sideFactor;
-			clipPlaneV.z=pn.z * sideFactor;
-			clipPlaneV.w=-pp.dot(pn) * sideFactor;
+			var clipPlaneV:Vector4f = new Vector4f();
+			clipPlaneV.x = pn.x * sideFactor;
+			clipPlaneV.y = pn.y * sideFactor;
+			clipPlaneV.z = pn.z * sideFactor;
+			clipPlaneV.w = -pp.dot(pn) * sideFactor;
 
-			var v:Vector4f=new Vector4f();
-			v.x=(FastMath.signum(clipPlaneV.x) + newProjectionMatrix.m02) / newProjectionMatrix.m00;
-			v.y=(FastMath.signum(clipPlaneV.y) + newProjectionMatrix.m12) / newProjectionMatrix.m11;
-			v.z=-1.0;
-			v.w=(1.0 + newProjectionMatrix.m22) / newProjectionMatrix.m23;
+			var v:Vector4f = new Vector4f();
+			v.x = (FastMath.signum(clipPlaneV.x) + newProjectionMatrix.m02) / newProjectionMatrix.m00;
+			v.y = (FastMath.signum(clipPlaneV.y) + newProjectionMatrix.m12) / newProjectionMatrix.m11;
+			v.z = -1.0;
+			v.w = (1.0 + newProjectionMatrix.m22) / newProjectionMatrix.m23;
 
-			var dot:Number=clipPlaneV.dot(v);
-			var c:Vector4f=clipPlaneV.scale(2.0 / dot);
+			var dot:Number = clipPlaneV.dot(v);
+			var c:Vector4f = clipPlaneV.scale(2.0 / dot);
 
-			newProjectionMatrix.m20=c.x - newProjectionMatrix.m30;
-			newProjectionMatrix.m21=c.y - newProjectionMatrix.m31;
-			newProjectionMatrix.m22=c.z - newProjectionMatrix.m32;
-			newProjectionMatrix.m23=c.w - newProjectionMatrix.m33;
+			newProjectionMatrix.m20 = c.x - newProjectionMatrix.m30;
+			newProjectionMatrix.m21 = c.y - newProjectionMatrix.m31;
+			newProjectionMatrix.m22 = c.z - newProjectionMatrix.m32;
+			newProjectionMatrix.m23 = c.w - newProjectionMatrix.m33;
 			setProjectionMatrix(newProjectionMatrix);
 		}
 
@@ -255,16 +255,16 @@ package org.angle3d.renderer
 		 * @param fixAspect If true, the camera's aspect ratio will be recomputed.
 		 * Recomputing the aspect ratio requires changing the frustum values.
 		 */
-		public function resize(width:int, height:int, fixAspect:Boolean=true):void
+		public function resize(width:int, height:int, fixAspect:Boolean = true):void
 		{
-			this.width=width;
-			this.height=height;
+			this.width = width;
+			this.height = height;
 			onViewPortChange();
 
 			if (fixAspect)
 			{
-				mFrustumRect.right=mFrustumRect.top * width / height;
-				mFrustumRect.left=-mFrustumRect.right;
+				mFrustumRect.right = mFrustumRect.top * width / height;
+				mFrustumRect.left = -mFrustumRect.right;
 				onFrustumChange();
 			}
 		}
@@ -297,7 +297,7 @@ package org.angle3d.renderer
 		 * @return the direction the camera is facing.
 		 * @see Camera#getDirection()
 		 */
-		public function getDirection(result:Vector3f=null):Vector3f
+		public function getDirection(result:Vector3f = null):Vector3f
 		{
 			return mRotation.getRotationColumn(2, result);
 		}
@@ -308,7 +308,7 @@ package org.angle3d.renderer
 		 * @return the left axis of the camera.
 		 * @see Camera#getLeft()
 		 */
-		public function getLeft(result:Vector3f=null):Vector3f
+		public function getLeft(result:Vector3f = null):Vector3f
 		{
 			return mRotation.getRotationColumn(0, result);
 		}
@@ -319,7 +319,7 @@ package org.angle3d.renderer
 		 * @return the up axis of the camera.
 		 * @see Camera#getUp()
 		 */
-		public function getUp(result:Vector3f=null):Vector3f
+		public function getUp(result:Vector3f = null):Vector3f
 		{
 			return mRotation.getRotationColumn(1, result);
 		}
@@ -344,7 +344,7 @@ package org.angle3d.renderer
 		 */
 		public function set planeState(planeState:int):void
 		{
-			mPlaneState=planeState;
+			mPlaneState = planeState;
 		}
 
 		/**
@@ -467,17 +467,17 @@ package org.angle3d.renderer
 		//TODO 优化
 		public function lookAt(pos:Vector3f, upVector:Vector3f):void
 		{
-			var newDirection:Vector3f=pos.subtract(mLocation);
+			var newDirection:Vector3f = pos.subtract(mLocation);
 			newDirection.normalizeLocal();
 
-			var newUp:Vector3f=upVector.clone();
+			var newUp:Vector3f = upVector.clone();
 			newUp.normalizeLocal();
 			if (newUp.isZero())
 			{
 				newUp.setTo(0, 1, 0);
 			}
 
-			var newLeft:Vector3f=newUp.cross(newDirection);
+			var newLeft:Vector3f = newUp.cross(newDirection);
 			newLeft.normalizeLocal();
 			if (newLeft.isZero())
 			{
@@ -492,7 +492,7 @@ package org.angle3d.renderer
 			}
 
 			newUp.copyFrom(newDirection);
-			newUp=newUp.cross(newLeft);
+			newUp = newUp.cross(newLeft);
 			newUp.normalizeLocal();
 
 			mRotation.fromAxes(newLeft, newUp, newDirection);
@@ -572,9 +572,9 @@ package org.angle3d.renderer
 			}
 
 			var mask:int;
-			var rVal:int=FrustumIntersect.Inside;
+			var rVal:int = FrustumIntersect.Inside;
 
-			var planeCounter:int=FRUSTUM_PLANES;
+			var planeCounter:int = FRUSTUM_PLANES;
 			while (planeCounter-- > 0)
 			{
 				if (planeCounter == bound.getCheckPlane())
@@ -582,12 +582,12 @@ package org.angle3d.renderer
 					continue; // we have already checked this plane at first iteration
 				}
 
-				var planeId:int=(planeCounter == FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
+				var planeId:int = (planeCounter == FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
 
-				mask=1 << planeId;
+				mask = 1 << planeId;
 				if ((mPlaneState & mask) == 0)
 				{
-					var side:int=bound.whichSide(mWorldPlanes[planeId]);
+					var side:int = bound.whichSide(mWorldPlanes[planeId]);
 
 					if (side == PlaneSide.Negative)
 					{
@@ -599,11 +599,11 @@ package org.angle3d.renderer
 					{
 						//object is visible on *this* plane, so mark this plane
 						//so that we don't check it for sub nodes.
-						mPlaneState|=mask;
+						mPlaneState |= mask;
 					}
 					else
 					{
-						rVal=FrustumIntersect.Intersects;
+						rVal = FrustumIntersect.Intersects;
 							//TODO 直接返回就可以了吧？
 					}
 				}
@@ -646,7 +646,7 @@ package org.angle3d.renderer
 		 */
 		public function setProjectionMatrix(mat:Matrix4f):void
 		{
-			mProjectionMatrixOverride=mat;
+			mProjectionMatrixOverride = mat;
 			updateViewProjection();
 		}
 
@@ -711,7 +711,7 @@ package org.angle3d.renderer
 		 */
 		public function clearViewportChanged():void
 		{
-			mViewPortChanged=false;
+			mViewPortChanged = false;
 		}
 
 		/**
@@ -719,23 +719,23 @@ package org.angle3d.renderer
 		 */
 		public function onViewPortChange():void
 		{
-			mViewPortChanged=true;
+			mViewPortChanged = true;
 			updateGuiBounding();
 		}
 
 		private function updateGuiBounding():void
 		{
-			var sx:Number=width * mViewPortRect.left;
-			var ex:Number=width * mViewPortRect.right;
-			var sy:Number=height * mViewPortRect.bottom;
-			var ey:Number=height * mViewPortRect.top;
-			var xExtent:Number=Math.max(0, (ex - sx) * 0.5);
-			var yExtent:Number=Math.max(0, (ey - sy) * 0.5);
+			var sx:Number = width * mViewPortRect.left;
+			var ex:Number = width * mViewPortRect.right;
+			var sy:Number = height * mViewPortRect.bottom;
+			var ey:Number = height * mViewPortRect.top;
+			var xExtent:Number = Math.max(0, (ex - sx) * 0.5);
+			var yExtent:Number = Math.max(0, (ey - sy) * 0.5);
 
 			mGuiBounding.setCenter(new Vector3f(sx + xExtent, sy + yExtent, 0));
-			mGuiBounding.xExtent=xExtent;
-			mGuiBounding.yExtent=yExtent;
-			mGuiBounding.zExtent=Number.MAX_VALUE;
+			mGuiBounding.xExtent = xExtent;
+			mGuiBounding.yExtent = yExtent;
+			mGuiBounding.zExtent = Number.MAX_VALUE;
 		}
 
 		/**
@@ -743,61 +743,61 @@ package org.angle3d.renderer
 		 */
 		override public function onFrameChange():void
 		{
-			var vars:TempVars=TempVars.getTempVars();
+			var vars:TempVars = TempVars.getTempVars();
 
-			var left:Vector3f=getLeft(vars.vect1);
-			var direction:Vector3f=getDirection(vars.vect2);
-			var up:Vector3f=getUp(vars.vect3);
+			var left:Vector3f = getLeft(vars.vect1);
+			var direction:Vector3f = getDirection(vars.vect2);
+			var up:Vector3f = getUp(vars.vect3);
 
-			var dirDotLocation:Number=direction.dot(mLocation);
+			var dirDotLocation:Number = direction.dot(mLocation);
 
 			// left plane
-			var plane:Plane=mWorldPlanes[LEFT_PLANE];
-			var normal:Vector3f=plane.normal;
-			normal.x=left.x * mCoeffLeft[0] + direction.x * mCoeffLeft[1];
-			normal.y=left.y * mCoeffLeft[0] + direction.y * mCoeffLeft[1];
-			normal.z=left.z * mCoeffLeft[0] + direction.z * mCoeffLeft[1];
-			plane.constant=mLocation.dot(normal);
+			var plane:Plane = mWorldPlanes[LEFT_PLANE];
+			var normal:Vector3f = plane.normal;
+			normal.x = left.x * mCoeffLeft[0] + direction.x * mCoeffLeft[1];
+			normal.y = left.y * mCoeffLeft[0] + direction.y * mCoeffLeft[1];
+			normal.z = left.z * mCoeffLeft[0] + direction.z * mCoeffLeft[1];
+			plane.constant = mLocation.dot(normal);
 
 			// right plane
-			plane=mWorldPlanes[RIGHT_PLANE];
-			normal=plane.normal;
-			normal.x=left.x * mCoeffRight[0] + direction.x * mCoeffRight[1];
-			normal.y=left.y * mCoeffRight[0] + direction.y * mCoeffRight[1];
-			normal.z=left.z * mCoeffRight[0] + direction.z * mCoeffRight[1];
-			plane.constant=mLocation.dot(normal);
+			plane = mWorldPlanes[RIGHT_PLANE];
+			normal = plane.normal;
+			normal.x = left.x * mCoeffRight[0] + direction.x * mCoeffRight[1];
+			normal.y = left.y * mCoeffRight[0] + direction.y * mCoeffRight[1];
+			normal.z = left.z * mCoeffRight[0] + direction.z * mCoeffRight[1];
+			plane.constant = mLocation.dot(normal);
 
 			// bottom plane
-			plane=mWorldPlanes[BOTTOM_PLANE];
-			normal=plane.normal;
-			normal.x=up.x * mCoeffBottom[0] + direction.x * mCoeffBottom[1];
-			normal.y=up.y * mCoeffBottom[0] + direction.y * mCoeffBottom[1];
-			normal.z=up.z * mCoeffBottom[0] + direction.z * mCoeffBottom[1];
-			plane.constant=mLocation.dot(normal);
+			plane = mWorldPlanes[BOTTOM_PLANE];
+			normal = plane.normal;
+			normal.x = up.x * mCoeffBottom[0] + direction.x * mCoeffBottom[1];
+			normal.y = up.y * mCoeffBottom[0] + direction.y * mCoeffBottom[1];
+			normal.z = up.z * mCoeffBottom[0] + direction.z * mCoeffBottom[1];
+			plane.constant = mLocation.dot(normal);
 
 			// top plane
-			plane=mWorldPlanes[TOP_PLANE];
-			normal=plane.normal;
-			normal.x=up.x * mCoeffTop[0] + direction.x * mCoeffTop[1];
-			normal.y=up.y * mCoeffTop[0] + direction.y * mCoeffTop[1];
-			normal.z=up.z * mCoeffTop[0] + direction.z * mCoeffTop[1];
-			plane.constant=mLocation.dot(normal);
+			plane = mWorldPlanes[TOP_PLANE];
+			normal = plane.normal;
+			normal.x = up.x * mCoeffTop[0] + direction.x * mCoeffTop[1];
+			normal.y = up.y * mCoeffTop[0] + direction.y * mCoeffTop[1];
+			normal.z = up.z * mCoeffTop[0] + direction.z * mCoeffTop[1];
+			plane.constant = mLocation.dot(normal);
 
 			if (parallelProjection)
 			{
-				mWorldPlanes[LEFT_PLANE].constant+=mFrustumRect.left;
-				mWorldPlanes[RIGHT_PLANE].constant-=mFrustumRect.right;
-				mWorldPlanes[TOP_PLANE].constant-=mFrustumRect.top;
-				mWorldPlanes[BOTTOM_PLANE].constant+=mFrustumRect.bottom;
+				mWorldPlanes[LEFT_PLANE].constant += mFrustumRect.left;
+				mWorldPlanes[RIGHT_PLANE].constant -= mFrustumRect.right;
+				mWorldPlanes[TOP_PLANE].constant -= mFrustumRect.top;
+				mWorldPlanes[BOTTOM_PLANE].constant += mFrustumRect.bottom;
 			}
 
 			// far plane
 			mWorldPlanes[FAR_PLANE].normal.setTo(-direction.x, -direction.y, -direction.z);
-			mWorldPlanes[FAR_PLANE].constant=-(dirDotLocation + mFrustumFar);
+			mWorldPlanes[FAR_PLANE].constant = -(dirDotLocation + mFrustumFar);
 
 			// near plane
 			mWorldPlanes[NEAR_PLANE].normal.setTo(direction.x, direction.y, direction.z);
-			mWorldPlanes[NEAR_PLANE].constant=dirDotLocation + mFrustumNear;
+			mWorldPlanes[NEAR_PLANE].constant = dirDotLocation + mFrustumNear;
 
 			mViewMatrix.fromFrame(mLocation, direction, up, left);
 
@@ -809,16 +809,16 @@ package org.angle3d.renderer
 		/**
 		 * @see Camera#getWorldCoordinates
 		 */
-		public function getWorldCoordinates(screenPos:Vector2f, zPos:Number, result:Vector3f=null):Vector3f
+		public function getWorldCoordinates(screenPos:Vector2f, zPos:Number, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			var inverseMat:Matrix4f=mViewProjectionMatrix.invert();
+			var inverseMat:Matrix4f = mViewProjectionMatrix.invert();
 
 			result.setTo((screenPos.x / width - mViewPortRect.left) / mViewPortRect.width * 2 - 1, (screenPos.y / height - mViewPortRect.bottom) / mViewPortRect.height * 2 - 1, zPos * 2 - 1);
 
-			var w:Number=inverseMat.multProj(result, result);
+			var w:Number = inverseMat.multProj(result, result);
 			result.scaleLocal(1 / w);
 
 			return result;
@@ -829,17 +829,17 @@ package org.angle3d.renderer
 		 *
 		 * @see Camera#getScreenCoordinates(Vector3f, Vector3f)
 		 */
-		public function getScreenCoordinates(worldPos:Vector3f, result:Vector3f=null):Vector3f
+		public function getScreenCoordinates(worldPos:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			var w:Number=mViewProjectionMatrix.multProj(worldPos, result);
+			var w:Number = mViewProjectionMatrix.multProj(worldPos, result);
 			result.scaleLocal(1 / w);
 
-			result.x=((result.x + 1) * mViewPortRect.width * 0.5 + mViewPortRect.left) * width;
-			result.y=((result.y + 1) * mViewPortRect.height * 0.5 + mViewPortRect.bottom) * height;
-			result.z=(result.z + 1) * 0.5;
+			result.x = ((result.x + 1) * mViewPortRect.width * 0.5 + mViewPortRect.left) * width;
+			result.y = ((result.y + 1) * mViewPortRect.height * 0.5 + mViewPortRect.bottom) * height;
+			result.z = (result.z + 1) * 0.5;
 
 			return result;
 		}

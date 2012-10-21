@@ -22,7 +22,7 @@ package org.angle3d.math
 	 */
 	final public class Matrix4f
 	{
-		public static const IDENTITY:Matrix4f=new Matrix4f();
+		public static const IDENTITY:Matrix4f = new Matrix4f();
 
 		public var m00:Number;
 		public var m01:Number;
@@ -53,25 +53,25 @@ package org.angle3d.math
 		{
 			if (res.length == 16)
 			{
-				m00=res[0];
-				m01=res[1];
-				m02=res[2];
-				m03=res[3];
+				m00 = res[0];
+				m01 = res[1];
+				m02 = res[2];
+				m03 = res[3];
 
-				m10=res[4];
-				m11=res[5];
-				m12=res[6];
-				m13=res[7];
+				m10 = res[4];
+				m11 = res[5];
+				m12 = res[6];
+				m13 = res[7];
 
-				m20=res[8];
-				m21=res[9];
-				m22=res[10];
-				m23=res[11];
+				m20 = res[8];
+				m21 = res[9];
+				m22 = res[10];
+				m23 = res[11];
 
-				m30=res[12];
-				m31=res[13];
-				m32=res[14];
-				m33=res[15];
+				m30 = res[12];
+				m31 = res[13];
+				m32 = res[14];
+				m33 = res[15];
 			}
 			else if (res.length == 1)
 			{
@@ -93,14 +93,14 @@ package org.angle3d.math
 
 		public function makeIdentity():void
 		{
-			m00=m11=m22=m33=1.0;
-			m01=m02=m03=m10=m12=m13=m20=m21=m23=m30=m31=m32=0;
+			m00 = m11 = m22 = m33 = 1.0;
+			m01 = m02 = m03 = m10 = m12 = m13 = m20 = m21 = m23 = m30 = m31 = m32 = 0;
 		}
 
 		public function makeZero():void
 		{
-			m00=m11=m22=m33=0.0;
-			m01=m02=m03=m10=m12=m13=m20=m21=m23=m30=m31=m32=0;
+			m00 = m11 = m22 = m33 = 0.0;
+			m01 = m02 = m03 = m10 = m12 = m13 = m20 = m21 = m23 = m30 = m31 = m32 = 0;
 		}
 
 		/**
@@ -120,25 +120,25 @@ package org.angle3d.math
 		 */
 		public function copyFrom(mat:Matrix4f):void
 		{
-			this.m00=mat.m00;
-			this.m01=mat.m01;
-			this.m02=mat.m02;
-			this.m03=mat.m03;
+			this.m00 = mat.m00;
+			this.m01 = mat.m01;
+			this.m02 = mat.m02;
+			this.m03 = mat.m03;
 
-			this.m10=mat.m10;
-			this.m11=mat.m11;
-			this.m12=mat.m12;
-			this.m13=mat.m13;
+			this.m10 = mat.m10;
+			this.m11 = mat.m11;
+			this.m12 = mat.m12;
+			this.m13 = mat.m13;
 
-			this.m20=mat.m20;
-			this.m21=mat.m21;
-			this.m22=mat.m22;
-			this.m23=mat.m23;
+			this.m20 = mat.m20;
+			this.m21 = mat.m21;
+			this.m22 = mat.m22;
+			this.m23 = mat.m23;
 
-			this.m30=mat.m30;
-			this.m31=mat.m31;
-			this.m32=mat.m32;
-			this.m33=mat.m33;
+			this.m30 = mat.m30;
+			this.m31 = mat.m31;
+			this.m32 = mat.m32;
+			this.m33 = mat.m33;
 		}
 
 		/**
@@ -149,30 +149,30 @@ package org.angle3d.math
 		 */
 		public function copyAndMultLocal(copyM:Matrix4f, mat:Matrix4f):void
 		{
-			this.m00=copyM.m00 * mat.m00 + copyM.m01 * mat.m10 + copyM.m02 * mat.m20 + copyM.m03 * mat.m30;
-			this.m01=copyM.m00 * mat.m01 + copyM.m01 * mat.m11 + copyM.m02 * mat.m21 + copyM.m03 * mat.m31;
-			this.m02=copyM.m00 * mat.m02 + copyM.m01 * mat.m12 + copyM.m02 * mat.m22 + copyM.m03 * mat.m32;
-			this.m03=copyM.m00 * mat.m03 + copyM.m01 * mat.m13 + copyM.m02 * mat.m23 + copyM.m03 * mat.m33;
+			this.m00 = copyM.m00 * mat.m00 + copyM.m01 * mat.m10 + copyM.m02 * mat.m20 + copyM.m03 * mat.m30;
+			this.m01 = copyM.m00 * mat.m01 + copyM.m01 * mat.m11 + copyM.m02 * mat.m21 + copyM.m03 * mat.m31;
+			this.m02 = copyM.m00 * mat.m02 + copyM.m01 * mat.m12 + copyM.m02 * mat.m22 + copyM.m03 * mat.m32;
+			this.m03 = copyM.m00 * mat.m03 + copyM.m01 * mat.m13 + copyM.m02 * mat.m23 + copyM.m03 * mat.m33;
 
-			this.m10=copyM.m10 * mat.m00 + copyM.m11 * mat.m10 + copyM.m12 * mat.m20 + copyM.m13 * mat.m30;
-			this.m11=copyM.m10 * mat.m01 + copyM.m11 * mat.m11 + copyM.m12 * mat.m21 + copyM.m13 * mat.m31;
-			this.m12=copyM.m10 * mat.m02 + copyM.m11 * mat.m12 + copyM.m12 * mat.m22 + copyM.m13 * mat.m32;
-			this.m13=copyM.m10 * mat.m03 + copyM.m11 * mat.m13 + copyM.m12 * mat.m23 + copyM.m13 * mat.m33;
+			this.m10 = copyM.m10 * mat.m00 + copyM.m11 * mat.m10 + copyM.m12 * mat.m20 + copyM.m13 * mat.m30;
+			this.m11 = copyM.m10 * mat.m01 + copyM.m11 * mat.m11 + copyM.m12 * mat.m21 + copyM.m13 * mat.m31;
+			this.m12 = copyM.m10 * mat.m02 + copyM.m11 * mat.m12 + copyM.m12 * mat.m22 + copyM.m13 * mat.m32;
+			this.m13 = copyM.m10 * mat.m03 + copyM.m11 * mat.m13 + copyM.m12 * mat.m23 + copyM.m13 * mat.m33;
 
-			this.m20=copyM.m20 * mat.m00 + copyM.m21 * mat.m10 + copyM.m22 * mat.m20 + copyM.m23 * mat.m30;
-			this.m21=copyM.m20 * mat.m01 + copyM.m21 * mat.m11 + copyM.m22 * mat.m21 + copyM.m23 * mat.m31;
-			this.m22=copyM.m20 * mat.m02 + copyM.m21 * mat.m12 + copyM.m22 * mat.m22 + copyM.m23 * mat.m32;
-			this.m23=copyM.m20 * mat.m03 + copyM.m21 * mat.m13 + copyM.m22 * mat.m23 + copyM.m23 * mat.m33;
+			this.m20 = copyM.m20 * mat.m00 + copyM.m21 * mat.m10 + copyM.m22 * mat.m20 + copyM.m23 * mat.m30;
+			this.m21 = copyM.m20 * mat.m01 + copyM.m21 * mat.m11 + copyM.m22 * mat.m21 + copyM.m23 * mat.m31;
+			this.m22 = copyM.m20 * mat.m02 + copyM.m21 * mat.m12 + copyM.m22 * mat.m22 + copyM.m23 * mat.m32;
+			this.m23 = copyM.m20 * mat.m03 + copyM.m21 * mat.m13 + copyM.m22 * mat.m23 + copyM.m23 * mat.m33;
 
-			this.m30=copyM.m30 * mat.m00 + copyM.m31 * mat.m10 + copyM.m32 * mat.m20 + copyM.m33 * mat.m30;
-			this.m31=copyM.m30 * mat.m01 + copyM.m31 * mat.m11 + copyM.m32 * mat.m21 + copyM.m33 * mat.m31;
-			this.m32=copyM.m30 * mat.m02 + copyM.m31 * mat.m12 + copyM.m32 * mat.m22 + copyM.m33 * mat.m32;
-			this.m33=copyM.m30 * mat.m03 + copyM.m31 * mat.m13 + copyM.m32 * mat.m23 + copyM.m33 * mat.m33;
+			this.m30 = copyM.m30 * mat.m00 + copyM.m31 * mat.m10 + copyM.m32 * mat.m20 + copyM.m33 * mat.m30;
+			this.m31 = copyM.m30 * mat.m01 + copyM.m31 * mat.m11 + copyM.m32 * mat.m21 + copyM.m33 * mat.m31;
+			this.m32 = copyM.m30 * mat.m02 + copyM.m31 * mat.m12 + copyM.m32 * mat.m22 + copyM.m33 * mat.m32;
+			this.m33 = copyM.m30 * mat.m03 + copyM.m31 * mat.m13 + copyM.m32 * mat.m23 + copyM.m33 * mat.m33;
 		}
 
 		public function clone():Matrix4f
 		{
-			var result:Matrix4f=new Matrix4f();
+			var result:Matrix4f = new Matrix4f();
 			result.copyFrom(this);
 			return result;
 		}
@@ -183,50 +183,50 @@ package org.angle3d.math
 		 * @param array
 		 *		An array of 16 floats in column-major format (translation in elements 12, 13 and 14).
 		 */
-		public function setArray(matrix:Array, rowMajor:Boolean=true):void
+		public function setArray(matrix:Array, rowMajor:Boolean = true):void
 		{
 			CF::DEBUG
 			{
 				Assert.assert(matrix.length == 16, "Array must be of size 16.");
 			}
 
-			m00=matrix[0];
-			m11=matrix[5];
-			m22=matrix[10];
-			m33=matrix[15];
+			m00 = matrix[0];
+			m11 = matrix[5];
+			m22 = matrix[10];
+			m33 = matrix[15];
 			if (rowMajor)
 			{
-				m01=matrix[1];
-				m02=matrix[2];
-				m03=matrix[3];
-				m10=matrix[4];
+				m01 = matrix[1];
+				m02 = matrix[2];
+				m03 = matrix[3];
+				m10 = matrix[4];
 
-				m12=matrix[6];
-				m13=matrix[7];
-				m20=matrix[8];
-				m21=matrix[9];
+				m12 = matrix[6];
+				m13 = matrix[7];
+				m20 = matrix[8];
+				m21 = matrix[9];
 
-				m23=matrix[11];
-				m30=matrix[12];
-				m31=matrix[13];
-				m32=matrix[14];
+				m23 = matrix[11];
+				m30 = matrix[12];
+				m31 = matrix[13];
+				m32 = matrix[14];
 			}
 			else
 			{
-				m01=matrix[4];
-				m02=matrix[8];
-				m03=matrix[12];
-				m10=matrix[1];
+				m01 = matrix[4];
+				m02 = matrix[8];
+				m03 = matrix[12];
+				m10 = matrix[1];
 
-				m12=matrix[9];
-				m13=matrix[13];
-				m20=matrix[2];
-				m21=matrix[6];
+				m12 = matrix[9];
+				m13 = matrix[13];
+				m20 = matrix[2];
+				m21 = matrix[6];
 
-				m23=matrix[14];
-				m30=matrix[3];
-				m31=matrix[7];
-				m32=matrix[11];
+				m23 = matrix[14];
+				m30 = matrix[3];
+				m31 = matrix[7];
+				m32 = matrix[11];
 			}
 		}
 
@@ -236,50 +236,50 @@ package org.angle3d.math
 		 * @param array
 		 *		An array of 16 floats in column-major format (translation in elements 12, 13 and 14).
 		 */
-		public function setVector(matrix:Vector.<Number>, rowMajor:Boolean=true):void
+		public function setVector(matrix:Vector.<Number>, rowMajor:Boolean = true):void
 		{
 			CF::DEBUG
 			{
 				Assert.assert(matrix.length == 16, "Array must be of size 16.");
 			}
 
-			m00=matrix[0];
-			m11=matrix[5];
-			m22=matrix[10];
-			m33=matrix[15];
+			m00 = matrix[0];
+			m11 = matrix[5];
+			m22 = matrix[10];
+			m33 = matrix[15];
 			if (rowMajor)
 			{
-				m01=matrix[1];
-				m02=matrix[2];
-				m03=matrix[3];
-				m10=matrix[4];
+				m01 = matrix[1];
+				m02 = matrix[2];
+				m03 = matrix[3];
+				m10 = matrix[4];
 
-				m12=matrix[6];
-				m13=matrix[7];
-				m20=matrix[8];
-				m21=matrix[9];
+				m12 = matrix[6];
+				m13 = matrix[7];
+				m20 = matrix[8];
+				m21 = matrix[9];
 
-				m23=matrix[11];
-				m30=matrix[12];
-				m31=matrix[13];
-				m32=matrix[14];
+				m23 = matrix[11];
+				m30 = matrix[12];
+				m31 = matrix[13];
+				m32 = matrix[14];
 			}
 			else
 			{
-				m01=matrix[4];
-				m02=matrix[8];
-				m03=matrix[12];
-				m10=matrix[1];
+				m01 = matrix[4];
+				m02 = matrix[8];
+				m03 = matrix[12];
+				m10 = matrix[1];
 
-				m12=matrix[9];
-				m13=matrix[13];
-				m20=matrix[2];
-				m21=matrix[6];
+				m12 = matrix[9];
+				m13 = matrix[13];
+				m20 = matrix[2];
+				m21 = matrix[6];
 
-				m23=matrix[14];
-				m30=matrix[3];
-				m31=matrix[7];
-				m32=matrix[11];
+				m23 = matrix[14];
+				m30 = matrix[3];
+				m31 = matrix[7];
+				m32 = matrix[11];
 			}
 		}
 
@@ -303,26 +303,26 @@ package org.angle3d.math
 		{
 			makeIdentity();
 
-			var f:Vector3f=direction;
-			var s:Vector3f=f.cross(up);
-			var u:Vector3f=s.cross(f);
+			var f:Vector3f = direction;
+			var s:Vector3f = f.cross(up);
+			var u:Vector3f = s.cross(f);
 
-			m00=s.x;
-			m01=s.y;
-			m02=s.z;
+			m00 = s.x;
+			m01 = s.y;
+			m02 = s.z;
 
-			m10=u.x;
-			m11=u.y;
-			m12=u.z;
+			m10 = u.x;
+			m11 = u.y;
+			m12 = u.z;
 
-			m20=-f.x;
-			m21=-f.y;
-			m22=-f.z;
+			m20 = -f.x;
+			m21 = -f.y;
+			m22 = -f.z;
 
-			var transMatrix:Matrix4f=new Matrix4f();
-			transMatrix.m03=-location.x;
-			transMatrix.m13=-location.y;
-			transMatrix.m23=-location.z;
+			var transMatrix:Matrix4f = new Matrix4f();
+			transMatrix.m03 = -location.x;
+			transMatrix.m13 = -location.y;
+			transMatrix.m23 = -location.z;
 			multLocal(transMatrix);
 		}
 
@@ -334,7 +334,7 @@ package org.angle3d.math
 		 *            the column to retrieve. Must be between 0 and 2.
 		 * @return the column specified by the index.
 		 */
-		public function copyColumnTo(column:int, result:Vector4f=null):Vector4f
+		public function copyColumnTo(column:int, result:Vector4f = null):Vector4f
 		{
 			CF::DEBUG
 			{
@@ -342,12 +342,12 @@ package org.angle3d.math
 			}
 
 			if (result == null)
-				result=new Vector4f();
+				result = new Vector4f();
 
-			result.x=getValue(0, column);
-			result.y=getValue(1, column);
-			result.z=getValue(2, column);
-			result.w=getValue(3, column);
+			result.x = getValue(0, column);
+			result.y = getValue(1, column);
+			result.z = getValue(2, column);
+			result.w = getValue(3, column);
 			return result;
 		}
 
@@ -362,7 +362,7 @@ package org.angle3d.math
 		*            is created.
 		* @return the row specified by the index.
 		*/
-		public function copyRowTo(row:int, result:Vector4f=null):Vector4f
+		public function copyRowTo(row:int, result:Vector4f = null):Vector4f
 		{
 			CF::DEBUG
 			{
@@ -370,12 +370,12 @@ package org.angle3d.math
 			}
 
 			if (result == null)
-				result=new Vector4f();
+				result = new Vector4f();
 
-			result.x=getValue(row, 0);
-			result.y=getValue(row, 1);
-			result.z=getValue(row, 2);
-			result.w=getValue(row, 3);
+			result.x = getValue(row, 0);
+			result.y = getValue(row, 1);
+			result.z = getValue(row, 2);
+			result.w = getValue(row, 3);
 			return result;
 		}
 
@@ -418,7 +418,7 @@ package org.angle3d.math
 		 */
 		public function setValue(row:int, column:int, value:Number):void
 		{
-			this["m" + row + column]=value;
+			this["m" + row + column] = value;
 		}
 
 		/**
@@ -428,74 +428,74 @@ package org.angle3d.math
 		 */
 		public function transposeLocal():Matrix4f
 		{
-			var tmp:Number=m01;
-			m01=m10;
-			m10=tmp;
+			var tmp:Number = m01;
+			m01 = m10;
+			m10 = tmp;
 
-			tmp=m02;
-			m02=m20;
-			m20=tmp;
+			tmp = m02;
+			m02 = m20;
+			m20 = tmp;
 
-			tmp=m03;
-			m03=m30;
-			m30=tmp;
+			tmp = m03;
+			m03 = m30;
+			m30 = tmp;
 
-			tmp=m12;
-			m12=m21;
-			m21=tmp;
+			tmp = m12;
+			m12 = m21;
+			m21 = tmp;
 
-			tmp=m13;
-			m13=m31;
-			m31=tmp;
+			tmp = m13;
+			m13 = m31;
+			m31 = tmp;
 
-			tmp=m23;
-			m23=m32;
-			m32=tmp;
+			tmp = m23;
+			m23 = m32;
+			m32 = tmp;
 
 			return this;
 		}
 
-		public function fromFrustum(near:Number, far:Number, left:Number, right:Number, top:Number, bottom:Number, parallel:Boolean=false):void
+		public function fromFrustum(near:Number, far:Number, left:Number, right:Number, top:Number, bottom:Number, parallel:Boolean = false):void
 		{
 			makeIdentity();
 
-			var w:Number=(right - left);
-			var h:Number=(top - bottom);
-			var d:Number=(far - near);
+			var w:Number = (right - left);
+			var h:Number = (top - bottom);
+			var d:Number = (far - near);
 
 			if (parallel)
 			{
 				// scale
-				m00=2.0 / w;
+				m00 = 2.0 / w;
 				//m11 = 2.0f / (bottom - top);
-				m11=2.0 / h;
-				m22=-2.0 / d;
-				m33=1;
+				m11 = 2.0 / h;
+				m22 = -2.0 / d;
+				m33 = 1;
 
 				// translation
-				m03=-(right + left) / w;
+				m03 = -(right + left) / w;
 				//m31 = -(bottom + top) / (bottom - top);
-				m13=-(top + bottom) / h;
-				m23=-(far + near) / d;
+				m13 = -(top + bottom) / h;
+				m23 = -(far + near) / d;
 			}
 			else
 			{
-				m00=(2.0 * near) / w;
-				m11=(2.0 * near) / h;
-				m32=-1.0;
-				m33=0.0;
+				m00 = (2.0 * near) / w;
+				m11 = (2.0 * near) / h;
+				m32 = -1.0;
+				m33 = 0.0;
 
 				// A
-				m02=(right + left) / w;
+				m02 = (right + left) / w;
 
 				// B 
-				m12=(top + bottom) / h;
+				m12 = (top + bottom) / h;
 
 				// C
-				m22=-(far + near) / d;
+				m22 = -(far + near) / d;
 
 				// D
-				m23=-2 * (far * near) / d;
+				m23 = -2 * (far * near) / d;
 			}
 		}
 
@@ -511,7 +511,7 @@ package org.angle3d.math
 		 */
 		public function fromAngleAxis(angle:Number, axis:Vector3f):void
 		{
-			var normAxis:Vector3f=axis.clone();
+			var normAxis:Vector3f = axis.clone();
 			normAxis.normalizeLocal();
 			fromAngleNormalAxis(angle, normAxis);
 		}
@@ -529,28 +529,28 @@ package org.angle3d.math
 		{
 			makeIdentity();
 
-			var fCos:Number=Math.cos(angle);
-			var fSin:Number=Math.sin(angle);
-			var fOneMinusCos:Number=1.0 - fCos;
-			var fX2:Number=axis.x * axis.x;
-			var fY2:Number=axis.y * axis.y;
-			var fZ2:Number=axis.z * axis.z;
-			var fXYM:Number=axis.x * axis.y * fOneMinusCos;
-			var fXZM:Number=axis.x * axis.z * fOneMinusCos;
-			var fYZM:Number=axis.y * axis.z * fOneMinusCos;
-			var fXSin:Number=axis.x * fSin;
-			var fYSin:Number=axis.y * fSin;
-			var fZSin:Number=axis.z * fSin;
+			var fCos:Number = Math.cos(angle);
+			var fSin:Number = Math.sin(angle);
+			var fOneMinusCos:Number = 1.0 - fCos;
+			var fX2:Number = axis.x * axis.x;
+			var fY2:Number = axis.y * axis.y;
+			var fZ2:Number = axis.z * axis.z;
+			var fXYM:Number = axis.x * axis.y * fOneMinusCos;
+			var fXZM:Number = axis.x * axis.z * fOneMinusCos;
+			var fYZM:Number = axis.y * axis.z * fOneMinusCos;
+			var fXSin:Number = axis.x * fSin;
+			var fYSin:Number = axis.y * fSin;
+			var fZSin:Number = axis.z * fSin;
 
-			m00=fX2 * fOneMinusCos + fCos;
-			m01=fXYM - fZSin;
-			m02=fXZM + fYSin;
-			m10=fXYM + fZSin;
-			m11=fY2 * fOneMinusCos + fCos;
-			m12=fYZM - fXSin;
-			m20=fXZM - fYSin;
-			m21=fYZM + fXSin;
-			m22=fZ2 * fOneMinusCos + fCos;
+			m00 = fX2 * fOneMinusCos + fCos;
+			m01 = fXYM - fZSin;
+			m02 = fXZM + fYSin;
+			m10 = fXYM + fZSin;
+			m11 = fY2 * fOneMinusCos + fCos;
+			m12 = fYZM - fXSin;
+			m20 = fXZM - fYSin;
+			m21 = fYZM + fXSin;
+			m22 = fZ2 * fOneMinusCos + fCos;
 		}
 
 		/**
@@ -561,22 +561,22 @@ package org.angle3d.math
 		 */
 		public function scaleLocal(value:Number):void
 		{
-			m00*=value;
-			m01*=value;
-			m02*=value;
-			m03*=value;
-			m10*=value;
-			m11*=value;
-			m12*=value;
-			m13*=value;
-			m20*=value;
-			m21*=value;
-			m22*=value;
-			m23*=value;
-			m30*=value;
-			m31*=value;
-			m32*=value;
-			m33*=value;
+			m00 *= value;
+			m01 *= value;
+			m02 *= value;
+			m03 *= value;
+			m10 *= value;
+			m11 *= value;
+			m12 *= value;
+			m13 *= value;
+			m20 *= value;
+			m21 *= value;
+			m22 *= value;
+			m23 *= value;
+			m30 *= value;
+			m31 *= value;
+			m32 *= value;
+			m33 *= value;
 		}
 
 		/**
@@ -587,28 +587,28 @@ package org.angle3d.math
 		 */
 		public function scaleVecLocal(scale:Vector3f):void
 		{
-			var sx:Number=scale.x;
-			var sy:Number=scale.y;
-			var sz:Number=scale.z;
+			var sx:Number = scale.x;
+			var sy:Number = scale.y;
+			var sz:Number = scale.z;
 
-			m00*=sx;
-			m10*=sx;
-			m20*=sx;
-			m30*=sx;
-			m01*=sy;
-			m11*=sy;
-			m21*=sy;
-			m31*=sy;
-			m02*=sz;
-			m12*=sz;
-			m22*=sz;
-			m32*=sz;
+			m00 *= sx;
+			m10 *= sx;
+			m20 *= sx;
+			m30 *= sx;
+			m01 *= sy;
+			m11 *= sy;
+			m21 *= sy;
+			m31 *= sy;
+			m02 *= sz;
+			m12 *= sz;
+			m22 *= sz;
+			m32 *= sz;
 		}
 
-		public function scale(scalar:Number, result:Matrix4f=null):Matrix4f
+		public function scale(scalar:Number, result:Matrix4f = null):Matrix4f
 		{
 			if (result == null)
-				result=new Matrix4f();
+				result = new Matrix4f();
 
 			result.scaleLocal(scalar);
 			return result;
@@ -626,52 +626,52 @@ package org.angle3d.math
 		 *            the same object.
 		 * @return the resultant matrix
 		 */
-		public function mult(in2:Matrix4f, result:Matrix4f=null):Matrix4f
+		public function mult(in2:Matrix4f, result:Matrix4f = null):Matrix4f
 		{
 			if (result == null)
-				result=new Matrix4f();
+				result = new Matrix4f();
 
 			var temp00:Number, temp01:Number, temp02:Number, temp03:Number;
 			var temp10:Number, temp11:Number, temp12:Number, temp13:Number;
 			var temp20:Number, temp21:Number, temp22:Number, temp23:Number;
 			var temp30:Number, temp31:Number, temp32:Number, temp33:Number;
 
-			temp00=m00 * in2.m00 + m01 * in2.m10 + m02 * in2.m20 + m03 * in2.m30;
-			temp01=m00 * in2.m01 + m01 * in2.m11 + m02 * in2.m21 + m03 * in2.m31;
-			temp02=m00 * in2.m02 + m01 * in2.m12 + m02 * in2.m22 + m03 * in2.m32;
-			temp03=m00 * in2.m03 + m01 * in2.m13 + m02 * in2.m23 + m03 * in2.m33;
+			temp00 = m00 * in2.m00 + m01 * in2.m10 + m02 * in2.m20 + m03 * in2.m30;
+			temp01 = m00 * in2.m01 + m01 * in2.m11 + m02 * in2.m21 + m03 * in2.m31;
+			temp02 = m00 * in2.m02 + m01 * in2.m12 + m02 * in2.m22 + m03 * in2.m32;
+			temp03 = m00 * in2.m03 + m01 * in2.m13 + m02 * in2.m23 + m03 * in2.m33;
 
-			temp10=m10 * in2.m00 + m11 * in2.m10 + m12 * in2.m20 + m13 * in2.m30;
-			temp11=m10 * in2.m01 + m11 * in2.m11 + m12 * in2.m21 + m13 * in2.m31;
-			temp12=m10 * in2.m02 + m11 * in2.m12 + m12 * in2.m22 + m13 * in2.m32;
-			temp13=m10 * in2.m03 + m11 * in2.m13 + m12 * in2.m23 + m13 * in2.m33;
+			temp10 = m10 * in2.m00 + m11 * in2.m10 + m12 * in2.m20 + m13 * in2.m30;
+			temp11 = m10 * in2.m01 + m11 * in2.m11 + m12 * in2.m21 + m13 * in2.m31;
+			temp12 = m10 * in2.m02 + m11 * in2.m12 + m12 * in2.m22 + m13 * in2.m32;
+			temp13 = m10 * in2.m03 + m11 * in2.m13 + m12 * in2.m23 + m13 * in2.m33;
 
-			temp20=m20 * in2.m00 + m21 * in2.m10 + m22 * in2.m20 + m23 * in2.m30;
-			temp21=m20 * in2.m01 + m21 * in2.m11 + m22 * in2.m21 + m23 * in2.m31;
-			temp22=m20 * in2.m02 + m21 * in2.m12 + m22 * in2.m22 + m23 * in2.m32;
-			temp23=m20 * in2.m03 + m21 * in2.m13 + m22 * in2.m23 + m23 * in2.m33;
+			temp20 = m20 * in2.m00 + m21 * in2.m10 + m22 * in2.m20 + m23 * in2.m30;
+			temp21 = m20 * in2.m01 + m21 * in2.m11 + m22 * in2.m21 + m23 * in2.m31;
+			temp22 = m20 * in2.m02 + m21 * in2.m12 + m22 * in2.m22 + m23 * in2.m32;
+			temp23 = m20 * in2.m03 + m21 * in2.m13 + m22 * in2.m23 + m23 * in2.m33;
 
-			temp30=m30 * in2.m00 + m31 * in2.m10 + m32 * in2.m20 + m33 * in2.m30;
-			temp31=m30 * in2.m01 + m31 * in2.m11 + m32 * in2.m21 + m33 * in2.m31;
-			temp32=m30 * in2.m02 + m31 * in2.m12 + m32 * in2.m22 + m33 * in2.m32;
-			temp33=m30 * in2.m03 + m31 * in2.m13 + m32 * in2.m23 + m33 * in2.m33;
+			temp30 = m30 * in2.m00 + m31 * in2.m10 + m32 * in2.m20 + m33 * in2.m30;
+			temp31 = m30 * in2.m01 + m31 * in2.m11 + m32 * in2.m21 + m33 * in2.m31;
+			temp32 = m30 * in2.m02 + m31 * in2.m12 + m32 * in2.m22 + m33 * in2.m32;
+			temp33 = m30 * in2.m03 + m31 * in2.m13 + m32 * in2.m23 + m33 * in2.m33;
 
-			result.m00=temp00;
-			result.m01=temp01;
-			result.m02=temp02;
-			result.m03=temp03;
-			result.m10=temp10;
-			result.m11=temp11;
-			result.m12=temp12;
-			result.m13=temp13;
-			result.m20=temp20;
-			result.m21=temp21;
-			result.m22=temp22;
-			result.m23=temp23;
-			result.m30=temp30;
-			result.m31=temp31;
-			result.m32=temp32;
-			result.m33=temp33;
+			result.m00 = temp00;
+			result.m01 = temp01;
+			result.m02 = temp02;
+			result.m03 = temp03;
+			result.m10 = temp10;
+			result.m11 = temp11;
+			result.m12 = temp12;
+			result.m13 = temp13;
+			result.m20 = temp20;
+			result.m21 = temp21;
+			result.m22 = temp22;
+			result.m23 = temp23;
+			result.m30 = temp30;
+			result.m31 = temp31;
+			result.m32 = temp32;
+			result.m33 = temp33;
 
 			return result;
 		}
@@ -693,42 +693,42 @@ package org.angle3d.math
 			var temp20:Number, temp21:Number, temp22:Number, temp23:Number;
 			var temp30:Number, temp31:Number, temp32:Number, temp33:Number;
 
-			temp00=m00 * in2.m00 + m01 * in2.m10 + m02 * in2.m20 + m03 * in2.m30;
-			temp01=m00 * in2.m01 + m01 * in2.m11 + m02 * in2.m21 + m03 * in2.m31;
-			temp02=m00 * in2.m02 + m01 * in2.m12 + m02 * in2.m22 + m03 * in2.m32;
-			temp03=m00 * in2.m03 + m01 * in2.m13 + m02 * in2.m23 + m03 * in2.m33;
+			temp00 = m00 * in2.m00 + m01 * in2.m10 + m02 * in2.m20 + m03 * in2.m30;
+			temp01 = m00 * in2.m01 + m01 * in2.m11 + m02 * in2.m21 + m03 * in2.m31;
+			temp02 = m00 * in2.m02 + m01 * in2.m12 + m02 * in2.m22 + m03 * in2.m32;
+			temp03 = m00 * in2.m03 + m01 * in2.m13 + m02 * in2.m23 + m03 * in2.m33;
 
-			temp10=m10 * in2.m00 + m11 * in2.m10 + m12 * in2.m20 + m13 * in2.m30;
-			temp11=m10 * in2.m01 + m11 * in2.m11 + m12 * in2.m21 + m13 * in2.m31;
-			temp12=m10 * in2.m02 + m11 * in2.m12 + m12 * in2.m22 + m13 * in2.m32;
-			temp13=m10 * in2.m03 + m11 * in2.m13 + m12 * in2.m23 + m13 * in2.m33;
+			temp10 = m10 * in2.m00 + m11 * in2.m10 + m12 * in2.m20 + m13 * in2.m30;
+			temp11 = m10 * in2.m01 + m11 * in2.m11 + m12 * in2.m21 + m13 * in2.m31;
+			temp12 = m10 * in2.m02 + m11 * in2.m12 + m12 * in2.m22 + m13 * in2.m32;
+			temp13 = m10 * in2.m03 + m11 * in2.m13 + m12 * in2.m23 + m13 * in2.m33;
 
-			temp20=m20 * in2.m00 + m21 * in2.m10 + m22 * in2.m20 + m23 * in2.m30;
-			temp21=m20 * in2.m01 + m21 * in2.m11 + m22 * in2.m21 + m23 * in2.m31;
-			temp22=m20 * in2.m02 + m21 * in2.m12 + m22 * in2.m22 + m23 * in2.m32;
-			temp23=m20 * in2.m03 + m21 * in2.m13 + m22 * in2.m23 + m23 * in2.m33;
+			temp20 = m20 * in2.m00 + m21 * in2.m10 + m22 * in2.m20 + m23 * in2.m30;
+			temp21 = m20 * in2.m01 + m21 * in2.m11 + m22 * in2.m21 + m23 * in2.m31;
+			temp22 = m20 * in2.m02 + m21 * in2.m12 + m22 * in2.m22 + m23 * in2.m32;
+			temp23 = m20 * in2.m03 + m21 * in2.m13 + m22 * in2.m23 + m23 * in2.m33;
 
-			temp30=m30 * in2.m00 + m31 * in2.m10 + m32 * in2.m20 + m33 * in2.m30;
-			temp31=m30 * in2.m01 + m31 * in2.m11 + m32 * in2.m21 + m33 * in2.m31;
-			temp32=m30 * in2.m02 + m31 * in2.m12 + m32 * in2.m22 + m33 * in2.m32;
-			temp33=m30 * in2.m03 + m31 * in2.m13 + m32 * in2.m23 + m33 * in2.m33;
+			temp30 = m30 * in2.m00 + m31 * in2.m10 + m32 * in2.m20 + m33 * in2.m30;
+			temp31 = m30 * in2.m01 + m31 * in2.m11 + m32 * in2.m21 + m33 * in2.m31;
+			temp32 = m30 * in2.m02 + m31 * in2.m12 + m32 * in2.m22 + m33 * in2.m32;
+			temp33 = m30 * in2.m03 + m31 * in2.m13 + m32 * in2.m23 + m33 * in2.m33;
 
-			this.m00=temp00;
-			this.m01=temp01;
-			this.m02=temp02;
-			this.m03=temp03;
-			this.m10=temp10;
-			this.m11=temp11;
-			this.m12=temp12;
-			this.m13=temp13;
-			this.m20=temp20;
-			this.m21=temp21;
-			this.m22=temp22;
-			this.m23=temp23;
-			this.m30=temp30;
-			this.m31=temp31;
-			this.m32=temp32;
-			this.m33=temp33;
+			this.m00 = temp00;
+			this.m01 = temp01;
+			this.m02 = temp02;
+			this.m03 = temp03;
+			this.m10 = temp10;
+			this.m11 = temp11;
+			this.m12 = temp12;
+			this.m13 = temp13;
+			this.m20 = temp20;
+			this.m21 = temp21;
+			this.m22 = temp22;
+			this.m23 = temp23;
+			this.m30 = temp30;
+			this.m31 = temp31;
+			this.m32 = temp32;
+			this.m33 = temp33;
 		}
 
 		/**
@@ -741,15 +741,15 @@ package org.angle3d.math
 		 *            a vector to store the result in. Created if null is passed.
 		 * @return the rotated vector.
 		 */
-		public function multVec(vec:Vector3f, result:Vector3f=null):Vector3f
+		public function multVec(vec:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
-			result.x=m00 * vx + m01 * vy + m02 * vz + m03;
-			result.y=m10 * vx + m11 * vy + m12 * vz + m13;
-			result.z=m20 * vx + m21 * vy + m22 * vz + m23;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
+			result.x = m00 * vx + m01 * vy + m02 * vz + m03;
+			result.y = m10 * vx + m11 * vy + m12 * vz + m13;
+			result.z = m20 * vx + m21 * vy + m22 * vz + m23;
 
 			return result;
 		}
@@ -764,15 +764,15 @@ package org.angle3d.math
 		 *            a vector to store the result in.  created if null is passed.
 		 * @return the rotated vector.
 		 */
-		public function multVecAcross(vec:Vector3f, result:Vector3f=null):Vector3f
+		public function multVecAcross(vec:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
-			result.x=m00 * vx + m10 * vy + m20 * vz + m30;
-			result.y=m01 * vx + m11 * vy + m21 * vz + m31;
-			result.z=m02 * vx + m12 * vy + m22 * vz + m32;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
+			result.x = m00 * vx + m10 * vy + m20 * vz + m30;
+			result.y = m01 * vx + m11 * vy + m21 * vz + m31;
+			result.z = m02 * vx + m12 * vy + m22 * vz + m32;
 			return result;
 		}
 
@@ -786,29 +786,29 @@ package org.angle3d.math
 		 *            a vector to store the result in. Created if null is passed.
 		 * @return the rotated vector.
 		 */
-		public function multNormal(vec:Vector3f, result:Vector3f=null):Vector3f
+		public function multNormal(vec:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
 
-			result.x=m00 * vx + m01 * vy + m02 * vz;
-			result.y=m10 * vx + m11 * vy + m12 * vz;
-			result.z=m20 * vx + m21 * vy + m22 * vz;
+			result.x = m00 * vx + m01 * vy + m02 * vz;
+			result.y = m10 * vx + m11 * vy + m12 * vz;
+			result.z = m20 * vx + m21 * vy + m22 * vz;
 
 			return result;
 		}
 
-		public function multNormalAcross(vec:Vector3f, result:Vector3f=null):Vector3f
+		public function multNormalAcross(vec:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
-			result.x=m00 * vx + m10 * vy + m20 * vz;
-			result.y=m01 * vx + m11 * vy + m21 * vz;
-			result.z=m02 * vx + m12 * vy + m22 * vz;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
+			result.x = m00 * vx + m10 * vy + m20 * vz;
+			result.y = m01 * vx + m11 * vy + m21 * vz;
+			result.z = m02 * vx + m12 * vy + m22 * vz;
 
 			return result;
 		}
@@ -826,10 +826,10 @@ package org.angle3d.math
 		 */
 		public function multProj(vec:Vector3f, result:Vector3f):Number
 		{
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
-			result.x=m00 * vx + m01 * vy + m02 * vz + m03;
-			result.y=m10 * vx + m11 * vy + m12 * vz + m13;
-			result.z=m20 * vx + m21 * vy + m22 * vz + m23;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
+			result.x = m00 * vx + m01 * vy + m02 * vz + m03;
+			result.y = m10 * vx + m11 * vy + m12 * vz + m13;
+			result.z = m20 * vx + m21 * vy + m22 * vz + m23;
 			return m30 * vx + m31 * vy + m32 * vz + m33;
 		}
 
@@ -843,17 +843,17 @@ package org.angle3d.math
 		 *            a vector to store the result in. Created if null is passed.
 		 * @return the rotated vector.
 		 */
-		public function multVec4(vec:Vector4f, result:Vector4f=null):Vector4f
+		public function multVec4(vec:Vector4f, result:Vector4f = null):Vector4f
 		{
 			if (result == null)
-				result=new Vector4f();
+				result = new Vector4f();
 
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z, vw:Number=vec.w;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z, vw:Number = vec.w;
 
-			result.x=m00 * vx + m01 * vy + m02 * vz + m03 * vw;
-			result.y=m10 * vx + m11 * vy + m12 * vz + m13 * vw;
-			result.z=m20 * vx + m21 * vy + m22 * vz + m23 * vw;
-			result.w=m30 * vx + m31 * vy + m32 * vz + m33 * vw;
+			result.x = m00 * vx + m01 * vy + m02 * vz + m03 * vw;
+			result.y = m10 * vx + m11 * vy + m12 * vz + m13 * vw;
+			result.z = m20 * vx + m21 * vy + m22 * vz + m23 * vw;
+			result.w = m30 * vx + m31 * vy + m32 * vz + m33 * vw;
 
 			return result;
 		}
@@ -868,16 +868,16 @@ package org.angle3d.math
 		 *            a vector to store the result in.  created if null is passed.
 		 * @return the rotated vector.
 		 */
-		public function multVec4Across(vec:Vector4f, result:Vector4f=null):Vector4f
+		public function multVec4Across(vec:Vector4f, result:Vector4f = null):Vector4f
 		{
 			if (result == null)
-				result=new Vector4f();
+				result = new Vector4f();
 
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z, vw:Number=vec.w;
-			result.x=m00 * vx + m10 * vy + m20 * vz + m30 * vw;
-			result.y=m01 * vx + m11 * vy + m21 * vz + m31 * vw;
-			result.z=m02 * vx + m12 * vy + m22 * vz + m32 * vw;
-			result.z=m03 * vx + m13 * vy + m23 * vz + m33 * vw;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z, vw:Number = vec.w;
+			result.x = m00 * vx + m10 * vy + m20 * vz + m30 * vw;
+			result.y = m01 * vx + m11 * vy + m21 * vz + m31 * vw;
+			result.z = m02 * vx + m12 * vy + m22 * vz + m32 * vw;
+			result.z = m03 * vx + m13 * vy + m23 * vz + m33 * vw;
 
 			return result;
 		}
@@ -892,16 +892,16 @@ package org.angle3d.math
 		*            a quaternion to store the result in.  created if null is passed.
 		* @return store = this * vec
 		*/
-		public function multQuat(quat:Quaternion, result:Quaternion=null):Quaternion
+		public function multQuat(quat:Quaternion, result:Quaternion = null):Quaternion
 		{
 			if (result == null)
-				result=new Quaternion();
+				result = new Quaternion();
 
-			var vx:Number=quat.x, vy:Number=quat.y, vz:Number=quat.z, vw:Number=quat.w;
-			result.x=m00 * vx + m10 * vy + m20 * vz + m30 * vw;
-			result.y=m01 * vx + m11 * vy + m21 * vz + m31 * vw;
-			result.z=m02 * vx + m12 * vy + m22 * vz + m32 * vw;
-			result.w=m03 * vx + m13 * vy + m23 * vz + m33 * vw;
+			var vx:Number = quat.x, vy:Number = quat.y, vz:Number = quat.z, vw:Number = quat.w;
+			result.x = m00 * vx + m10 * vy + m20 * vz + m30 * vw;
+			result.y = m01 * vx + m11 * vy + m21 * vz + m31 * vw;
+			result.z = m02 * vx + m12 * vy + m22 * vz + m32 * vw;
+			result.w = m03 * vx + m13 * vy + m23 * vz + m33 * vw;
 
 			return result;
 		}
@@ -909,9 +909,9 @@ package org.angle3d.math
 		// XXX: This tests more solid than converting the q to a matrix and multiplying... why?
 		public function multQuatLocal(rotation:Quaternion):void
 		{
-			var axis:Vector3f=new Vector3f();
-			var angle:Number=rotation.toAngleAxis(axis);
-			var matrix4:Matrix4f=new Matrix4f();
+			var axis:Vector3f = new Vector3f();
+			var angle:Number = rotation.toAngleAxis(axis);
+			var matrix4:Matrix4f = new Matrix4f();
 			matrix4.fromAngleAxis(angle, axis);
 			multLocal(matrix4);
 		}
@@ -921,24 +921,24 @@ package org.angle3d.math
 		 *
 		 * @return The store
 		 */
-		public function invert(result:Matrix4f=null):Matrix4f
+		public function invert(result:Matrix4f = null):Matrix4f
 		{
 			if (result == null)
-				result=new Matrix4f();
+				result = new Matrix4f();
 
-			var fA0:Number=m00 * m11 - m01 * m10;
-			var fA1:Number=m00 * m12 - m02 * m10;
-			var fA2:Number=m00 * m13 - m03 * m10;
-			var fA3:Number=m01 * m12 - m02 * m11;
-			var fA4:Number=m01 * m13 - m03 * m11;
-			var fA5:Number=m02 * m13 - m03 * m12;
-			var fB0:Number=m20 * m31 - m21 * m30;
-			var fB1:Number=m20 * m32 - m22 * m30;
-			var fB2:Number=m20 * m33 - m23 * m30;
-			var fB3:Number=m21 * m32 - m22 * m31;
-			var fB4:Number=m21 * m33 - m23 * m31;
-			var fB5:Number=m22 * m33 - m23 * m32;
-			var fDet:Number=fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
+			var fA0:Number = m00 * m11 - m01 * m10;
+			var fA1:Number = m00 * m12 - m02 * m10;
+			var fA2:Number = m00 * m13 - m03 * m10;
+			var fA3:Number = m01 * m12 - m02 * m11;
+			var fA4:Number = m01 * m13 - m03 * m11;
+			var fA5:Number = m02 * m13 - m03 * m12;
+			var fB0:Number = m20 * m31 - m21 * m30;
+			var fB1:Number = m20 * m32 - m22 * m30;
+			var fB2:Number = m20 * m33 - m23 * m30;
+			var fB3:Number = m21 * m32 - m22 * m31;
+			var fB4:Number = m21 * m33 - m23 * m31;
+			var fB5:Number = m22 * m33 - m23 * m32;
+			var fDet:Number = fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
 
 			if (FastMath.fabs(fDet) <= 0)
 			{
@@ -947,41 +947,41 @@ package org.angle3d.math
 				return result;
 			}
 
-			var fInvDet:Number=1.0 / fDet;
+			var fInvDet:Number = 1.0 / fDet;
 
-			var f00:Number=(m11 * fB5 - m12 * fB4 + m13 * fB3) * fInvDet;
-			var f10:Number=(-m10 * fB5 + m12 * fB2 - m13 * fB1) * fInvDet;
-			var f20:Number=(m10 * fB4 - m11 * fB2 + m13 * fB0) * fInvDet;
-			var f30:Number=(-m10 * fB3 + m11 * fB1 - m12 * fB0) * fInvDet;
-			var f01:Number=(-m01 * fB5 + m02 * fB4 - m03 * fB3) * fInvDet;
-			var f11:Number=(m00 * fB5 - m02 * fB2 + m03 * fB1) * fInvDet;
-			var f21:Number=(-m00 * fB4 + m01 * fB2 - m03 * fB0) * fInvDet;
-			var f31:Number=(m00 * fB3 - m01 * fB1 + m02 * fB0) * fInvDet;
-			var f02:Number=(m31 * fA5 - m32 * fA4 + m33 * fA3) * fInvDet;
-			var f12:Number=(-m30 * fA5 + m32 * fA2 - m33 * fA1) * fInvDet;
-			var f22:Number=(m30 * fA4 - m31 * fA2 + m33 * fA0) * fInvDet;
-			var f32:Number=(-m30 * fA3 + m31 * fA1 - m32 * fA0) * fInvDet;
-			var f03:Number=(-m21 * fA5 + m22 * fA4 - m23 * fA3) * fInvDet;
-			var f13:Number=(m20 * fA5 - m22 * fA2 + m23 * fA1) * fInvDet;
-			var f23:Number=(-m20 * fA4 + m21 * fA2 - m23 * fA0) * fInvDet;
-			var f33:Number=(m20 * fA3 - m21 * fA1 + m22 * fA0) * fInvDet;
+			var f00:Number = (m11 * fB5 - m12 * fB4 + m13 * fB3) * fInvDet;
+			var f10:Number = (-m10 * fB5 + m12 * fB2 - m13 * fB1) * fInvDet;
+			var f20:Number = (m10 * fB4 - m11 * fB2 + m13 * fB0) * fInvDet;
+			var f30:Number = (-m10 * fB3 + m11 * fB1 - m12 * fB0) * fInvDet;
+			var f01:Number = (-m01 * fB5 + m02 * fB4 - m03 * fB3) * fInvDet;
+			var f11:Number = (m00 * fB5 - m02 * fB2 + m03 * fB1) * fInvDet;
+			var f21:Number = (-m00 * fB4 + m01 * fB2 - m03 * fB0) * fInvDet;
+			var f31:Number = (m00 * fB3 - m01 * fB1 + m02 * fB0) * fInvDet;
+			var f02:Number = (m31 * fA5 - m32 * fA4 + m33 * fA3) * fInvDet;
+			var f12:Number = (-m30 * fA5 + m32 * fA2 - m33 * fA1) * fInvDet;
+			var f22:Number = (m30 * fA4 - m31 * fA2 + m33 * fA0) * fInvDet;
+			var f32:Number = (-m30 * fA3 + m31 * fA1 - m32 * fA0) * fInvDet;
+			var f03:Number = (-m21 * fA5 + m22 * fA4 - m23 * fA3) * fInvDet;
+			var f13:Number = (m20 * fA5 - m22 * fA2 + m23 * fA1) * fInvDet;
+			var f23:Number = (-m20 * fA4 + m21 * fA2 - m23 * fA0) * fInvDet;
+			var f33:Number = (m20 * fA3 - m21 * fA1 + m22 * fA0) * fInvDet;
 
-			result.m00=f00;
-			result.m01=f01;
-			result.m02=f02;
-			result.m03=f03;
-			result.m10=f10;
-			result.m11=f11;
-			result.m12=f12;
-			result.m13=f13;
-			result.m20=f20;
-			result.m21=f21;
-			result.m22=f22;
-			result.m23=f23;
-			result.m30=f30;
-			result.m31=f31;
-			result.m32=f32;
-			result.m33=f33;
+			result.m00 = f00;
+			result.m01 = f01;
+			result.m02 = f02;
+			result.m03 = f03;
+			result.m10 = f10;
+			result.m11 = f11;
+			result.m12 = f12;
+			result.m13 = f13;
+			result.m20 = f20;
+			result.m21 = f21;
+			result.m22 = f22;
+			result.m23 = f23;
+			result.m30 = f30;
+			result.m31 = f31;
+			result.m32 = f32;
+			result.m33 = f33;
 
 			return result;
 		}
@@ -1003,57 +1003,57 @@ package org.angle3d.math
 		 *            The matrix to store the result in.  If null, a new matrix is created.
 		 * @return store
 		 */
-		public function adjoint(result:Matrix4f=null):Matrix4f
+		public function adjoint(result:Matrix4f = null):Matrix4f
 		{
 			if (result == null)
-				result=new Matrix4f();
+				result = new Matrix4f();
 
-			var fA0:Number=m00 * m11 - m01 * m10;
-			var fA1:Number=m00 * m12 - m02 * m10;
-			var fA2:Number=m00 * m13 - m03 * m10;
-			var fA3:Number=m01 * m12 - m02 * m11;
-			var fA4:Number=m01 * m13 - m03 * m11;
-			var fA5:Number=m02 * m13 - m03 * m12;
-			var fB0:Number=m20 * m31 - m21 * m30;
-			var fB1:Number=m20 * m32 - m22 * m30;
-			var fB2:Number=m20 * m33 - m23 * m30;
-			var fB3:Number=m21 * m32 - m22 * m31;
-			var fB4:Number=m21 * m33 - m23 * m31;
-			var fB5:Number=m22 * m33 - m23 * m32;
+			var fA0:Number = m00 * m11 - m01 * m10;
+			var fA1:Number = m00 * m12 - m02 * m10;
+			var fA2:Number = m00 * m13 - m03 * m10;
+			var fA3:Number = m01 * m12 - m02 * m11;
+			var fA4:Number = m01 * m13 - m03 * m11;
+			var fA5:Number = m02 * m13 - m03 * m12;
+			var fB0:Number = m20 * m31 - m21 * m30;
+			var fB1:Number = m20 * m32 - m22 * m30;
+			var fB2:Number = m20 * m33 - m23 * m30;
+			var fB3:Number = m21 * m32 - m22 * m31;
+			var fB4:Number = m21 * m33 - m23 * m31;
+			var fB5:Number = m22 * m33 - m23 * m32;
 
-			var f00:Number=m11 * fB5 - m12 * fB4 + m13 * fB3;
-			var f10:Number=-m10 * fB5 + m12 * fB2 - m13 * fB1;
-			var f20:Number=m10 * fB4 - m11 * fB2 + m13 * fB0;
-			var f30:Number=-m10 * fB3 + m11 * fB1 - m12 * fB0;
-			var f01:Number=-m01 * fB5 + m02 * fB4 - m03 * fB3;
-			var f11:Number=m00 * fB5 - m02 * fB2 + m03 * fB1;
-			var f21:Number=-m00 * fB4 + m01 * fB2 - m03 * fB0;
-			var f31:Number=m00 * fB3 - m01 * fB1 + m02 * fB0;
-			var f02:Number=m31 * fA5 - m32 * fA4 + m33 * fA3;
-			var f12:Number=-m30 * fA5 + m32 * fA2 - m33 * fA1;
-			var f22:Number=m30 * fA4 - m31 * fA2 + m33 * fA0;
-			var f32:Number=-m30 * fA3 + m31 * fA1 - m32 * fA0;
-			var f03:Number=-m21 * fA5 + m22 * fA4 - m23 * fA3;
-			var f13:Number=m20 * fA5 - m22 * fA2 + m23 * fA1;
-			var f23:Number=-m20 * fA4 + m21 * fA2 - m23 * fA0;
-			var f33:Number=m20 * fA3 - m21 * fA1 + m22 * fA0;
+			var f00:Number = m11 * fB5 - m12 * fB4 + m13 * fB3;
+			var f10:Number = -m10 * fB5 + m12 * fB2 - m13 * fB1;
+			var f20:Number = m10 * fB4 - m11 * fB2 + m13 * fB0;
+			var f30:Number = -m10 * fB3 + m11 * fB1 - m12 * fB0;
+			var f01:Number = -m01 * fB5 + m02 * fB4 - m03 * fB3;
+			var f11:Number = m00 * fB5 - m02 * fB2 + m03 * fB1;
+			var f21:Number = -m00 * fB4 + m01 * fB2 - m03 * fB0;
+			var f31:Number = m00 * fB3 - m01 * fB1 + m02 * fB0;
+			var f02:Number = m31 * fA5 - m32 * fA4 + m33 * fA3;
+			var f12:Number = -m30 * fA5 + m32 * fA2 - m33 * fA1;
+			var f22:Number = m30 * fA4 - m31 * fA2 + m33 * fA0;
+			var f32:Number = -m30 * fA3 + m31 * fA1 - m32 * fA0;
+			var f03:Number = -m21 * fA5 + m22 * fA4 - m23 * fA3;
+			var f13:Number = m20 * fA5 - m22 * fA2 + m23 * fA1;
+			var f23:Number = -m20 * fA4 + m21 * fA2 - m23 * fA0;
+			var f33:Number = m20 * fA3 - m21 * fA1 + m22 * fA0;
 
-			result.m00=f00;
-			result.m01=f01;
-			result.m02=f02;
-			result.m03=f03;
-			result.m10=f10;
-			result.m11=f11;
-			result.m12=f12;
-			result.m13=f13;
-			result.m20=f20;
-			result.m21=f21;
-			result.m22=f22;
-			result.m23=f23;
-			result.m30=f30;
-			result.m31=f31;
-			result.m32=f32;
-			result.m33=f33;
+			result.m00 = f00;
+			result.m01 = f01;
+			result.m02 = f02;
+			result.m03 = f03;
+			result.m10 = f10;
+			result.m11 = f11;
+			result.m12 = f12;
+			result.m13 = f13;
+			result.m20 = f20;
+			result.m21 = f21;
+			result.m22 = f22;
+			result.m23 = f23;
+			result.m30 = f30;
+			result.m31 = f31;
+			result.m32 = f32;
+			result.m33 = f33;
 
 			return result;
 		}
@@ -1066,24 +1066,24 @@ package org.angle3d.math
 			//    3. Translate
 
 			// Set up final matrix with scale, rotation and translation
-			m00=scale.x * rotMat.m00;
-			m01=scale.y * rotMat.m01;
-			m02=scale.z * rotMat.m02;
-			m03=position.x;
-			m10=scale.x * rotMat.m10;
-			m11=scale.y * rotMat.m11;
-			m12=scale.z * rotMat.m12;
-			m13=position.y;
-			m20=scale.x * rotMat.m20;
-			m21=scale.y * rotMat.m21;
-			m22=scale.z * rotMat.m22;
-			m23=position.z;
+			m00 = scale.x * rotMat.m00;
+			m01 = scale.y * rotMat.m01;
+			m02 = scale.z * rotMat.m02;
+			m03 = position.x;
+			m10 = scale.x * rotMat.m10;
+			m11 = scale.y * rotMat.m11;
+			m12 = scale.z * rotMat.m12;
+			m13 = position.y;
+			m20 = scale.x * rotMat.m20;
+			m21 = scale.y * rotMat.m21;
+			m22 = scale.z * rotMat.m22;
+			m23 = position.z;
 
 			// No projection term
-			m30=0;
-			m31=0;
-			m32=0;
-			m33=1;
+			m30 = 0;
+			m31 = 0;
+			m32 = 0;
+			m33 = 1;
 		}
 
 		/**
@@ -1093,43 +1093,43 @@ package org.angle3d.math
 		 */
 		public function determinant():Number
 		{
-			var fA0:Number=m00 * m11 - m01 * m10;
-			var fA1:Number=m00 * m12 - m02 * m10;
-			var fA2:Number=m00 * m13 - m03 * m10;
-			var fA3:Number=m01 * m12 - m02 * m11;
-			var fA4:Number=m01 * m13 - m03 * m11;
-			var fA5:Number=m02 * m13 - m03 * m12;
-			var fB0:Number=m20 * m31 - m21 * m30;
-			var fB1:Number=m20 * m32 - m22 * m30;
-			var fB2:Number=m20 * m33 - m23 * m30;
-			var fB3:Number=m21 * m32 - m22 * m31;
-			var fB4:Number=m21 * m33 - m23 * m31;
-			var fB5:Number=m22 * m33 - m23 * m32;
-			var fDet:Number=fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
+			var fA0:Number = m00 * m11 - m01 * m10;
+			var fA1:Number = m00 * m12 - m02 * m10;
+			var fA2:Number = m00 * m13 - m03 * m10;
+			var fA3:Number = m01 * m12 - m02 * m11;
+			var fA4:Number = m01 * m13 - m03 * m11;
+			var fA5:Number = m02 * m13 - m03 * m12;
+			var fB0:Number = m20 * m31 - m21 * m30;
+			var fB1:Number = m20 * m32 - m22 * m30;
+			var fB2:Number = m20 * m33 - m23 * m30;
+			var fB3:Number = m21 * m32 - m22 * m31;
+			var fB4:Number = m21 * m33 - m23 * m31;
+			var fB5:Number = m22 * m33 - m23 * m32;
+			var fDet:Number = fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
 			return fDet;
 		}
 
-		public function add(mat:Matrix4f, result:Matrix4f=null):Matrix4f
+		public function add(mat:Matrix4f, result:Matrix4f = null):Matrix4f
 		{
 			if (result == null)
-				result=new Matrix4f();
+				result = new Matrix4f();
 
-			result.m00=m00 + mat.m00;
-			result.m01=m01 + mat.m01;
-			result.m02=m02 + mat.m02;
-			result.m03=m03 + mat.m03;
-			result.m10=m10 + mat.m10;
-			result.m11=m11 + mat.m11;
-			result.m12=m12 + mat.m12;
-			result.m13=m13 + mat.m13;
-			result.m20=m20 + mat.m20;
-			result.m21=m21 + mat.m21;
-			result.m22=m22 + mat.m22;
-			result.m23=m23 + mat.m23;
-			result.m30=m30 + mat.m30;
-			result.m31=m31 + mat.m31;
-			result.m32=m32 + mat.m32;
-			result.m33=m33 + mat.m33;
+			result.m00 = m00 + mat.m00;
+			result.m01 = m01 + mat.m01;
+			result.m02 = m02 + mat.m02;
+			result.m03 = m03 + mat.m03;
+			result.m10 = m10 + mat.m10;
+			result.m11 = m11 + mat.m11;
+			result.m12 = m12 + mat.m12;
+			result.m13 = m13 + mat.m13;
+			result.m20 = m20 + mat.m20;
+			result.m21 = m21 + mat.m21;
+			result.m22 = m22 + mat.m22;
+			result.m23 = m23 + mat.m23;
+			result.m30 = m30 + mat.m30;
+			result.m31 = m31 + mat.m31;
+			result.m32 = m32 + mat.m32;
+			result.m33 = m33 + mat.m33;
 			return result;
 		}
 
@@ -1141,33 +1141,33 @@ package org.angle3d.math
 		 */
 		public function addLocal(mat:Matrix4f):Matrix4f
 		{
-			m00+=mat.m00;
-			m01+=mat.m01;
-			m02+=mat.m02;
-			m03+=mat.m03;
-			m10+=mat.m10;
-			m11+=mat.m11;
-			m12+=mat.m12;
-			m13+=mat.m13;
-			m20+=mat.m20;
-			m21+=mat.m21;
-			m22+=mat.m22;
-			m23+=mat.m23;
-			m30+=mat.m30;
-			m31+=mat.m31;
-			m32+=mat.m32;
-			m33+=mat.m33;
+			m00 += mat.m00;
+			m01 += mat.m01;
+			m02 += mat.m02;
+			m03 += mat.m03;
+			m10 += mat.m10;
+			m11 += mat.m11;
+			m12 += mat.m12;
+			m13 += mat.m13;
+			m20 += mat.m20;
+			m21 += mat.m21;
+			m22 += mat.m22;
+			m23 += mat.m23;
+			m30 += mat.m30;
+			m31 += mat.m31;
+			m32 += mat.m32;
+			m33 += mat.m33;
 			return this;
 		}
 
-		public function getTranslation(result:Vector3f=null):Vector3f
+		public function getTranslation(result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			result.x=m03;
-			result.y=m13;
-			result.z=m23;
+			result.x = m03;
+			result.y = m13;
+			result.z = m23;
 			return result;
 		}
 
@@ -1175,9 +1175,9 @@ package org.angle3d.math
 		//TODO 这个名字和计算不符合，需修改
 		public function setScale(scale:Vector3f):void
 		{
-			m00*=scale.x;
-			m11*=scale.y;
-			m22*=scale.z;
+			m00 *= scale.x;
+			m11 *= scale.y;
+			m22 *= scale.z;
 		}
 
 		/**
@@ -1188,9 +1188,9 @@ package org.angle3d.math
 		 */
 		public function setTranslation(trans:Vector3f):void
 		{
-			m03=trans.x;
-			m13=trans.y;
-			m23=trans.z;
+			m03 = trans.x;
+			m13 = trans.y;
+			m23 = trans.z;
 		}
 
 		/**
@@ -1207,23 +1207,23 @@ package org.angle3d.math
 		{
 			var sr:Number, sp:Number, sy:Number, cr:Number, cp:Number, cy:Number;
 
-			sy=Math.sin(rz);
-			cy=Math.cos(rz);
-			sp=Math.sin(ry);
-			cp=Math.cos(ry);
-			sr=Math.sin(rx);
-			cr=Math.cos(rx);
+			sy = Math.sin(rz);
+			cy = Math.cos(rz);
+			sp = Math.sin(ry);
+			cp = Math.cos(ry);
+			sr = Math.sin(rx);
+			cr = Math.cos(rx);
 
 			// matrix = (Z * Y) * X
-			m00=cp * cy;
-			m10=cp * sy;
-			m20=-sp;
-			m01=sr * sp * cy + cr * -sy;
-			m11=sr * sp * sy + cr * cy;
-			m21=sr * cp;
-			m02=(cr * sp * cy + -sr * -sy);
-			m12=(cr * sp * sy + -sr * cy);
-			m22=cr * cp;
+			m00 = cp * cy;
+			m10 = cp * sy;
+			m20 = -sp;
+			m01 = sr * sp * cy + cr * -sy;
+			m11 = sr * sp * sy + cr * cy;
+			m21 = sr * cp;
+			m02 = (cr * sp * cy + -sr * -sy);
+			m12 = (cr * sp * sy + -sr * cy);
+			m22 = cr * cp;
 		}
 
 		/**
@@ -1250,9 +1250,9 @@ package org.angle3d.math
 		 */
 		public function translateVect(vec:Vector3f):void
 		{
-			vec.x+=m03;
-			vec.y+=m13;
-			vec.z+=m23;
+			vec.x += m03;
+			vec.y += m13;
+			vec.z += m23;
 		}
 
 		/**
@@ -1265,99 +1265,99 @@ package org.angle3d.math
 		 */
 		public function inverseRotateVect(vec:Vector3f):void
 		{
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
 
-			vec.x=vx * m00 + vy * m10 + vz * m20;
-			vec.y=vx * m01 + vy * m11 + vz * m21;
-			vec.z=vx * m02 + vy * m12 + vz * m22;
+			vec.x = vx * m00 + vy * m10 + vz * m20;
+			vec.y = vx * m01 + vy * m11 + vz * m21;
+			vec.z = vx * m02 + vy * m12 + vz * m22;
 		}
 
 		public function rotateVect(vec:Vector3f):void
 		{
-			var vx:Number=vec.x, vy:Number=vec.y, vz:Number=vec.z;
+			var vx:Number = vec.x, vy:Number = vec.y, vz:Number = vec.z;
 
-			vec.x=vx * m00 + vy * m01 + vz * m02;
-			vec.y=vx * m10 + vy * m11 + vz * m12;
-			vec.z=vx * m20 + vy * m21 + vz * m22;
+			vec.x = vx * m00 + vy * m01 + vz * m02;
+			vec.y = vx * m10 + vy * m11 + vz * m12;
+			vec.z = vx * m20 + vy * m21 + vz * m22;
 		}
 
-		public function toQuaternion(result:Quaternion=null):Quaternion
+		public function toQuaternion(result:Quaternion = null):Quaternion
 		{
 			if (result == null)
-				result=new Quaternion();
+				result = new Quaternion();
 
 			result.fromMatrix4f(this);
 			return result;
 		}
 
-		public function toMatrix3f(mat:Matrix3f=null):Matrix3f
+		public function toMatrix3f(mat:Matrix3f = null):Matrix3f
 		{
 			if (mat == null)
-				mat=new Matrix3f();
+				mat = new Matrix3f();
 
-			mat.m00=m00;
-			mat.m01=m01;
-			mat.m02=m02;
-			mat.m10=m10;
-			mat.m11=m11;
-			mat.m12=m12;
-			mat.m20=m20;
-			mat.m21=m21;
-			mat.m22=m22;
+			mat.m00 = m00;
+			mat.m01 = m01;
+			mat.m02 = m02;
+			mat.m10 = m10;
+			mat.m11 = m11;
+			mat.m12 = m12;
+			mat.m20 = m20;
+			mat.m21 = m21;
+			mat.m22 = m22;
 			return mat;
 		}
 
-		public function toUniform(result:Vector.<Number>=null, rowMajor:Boolean=true):Vector.<Number>
+		public function toUniform(result:Vector.<Number> = null, rowMajor:Boolean = true):Vector.<Number>
 		{
 			if (result == null)
-				result=new Vector.<Number>(16);
+				result = new Vector.<Number>(16);
 
 //			result.length = 16;
 
 			if (rowMajor)
 			{
-				result[0]=m00;
-				result[1]=m01;
-				result[2]=m02;
-				result[3]=m03;
+				result[0] = m00;
+				result[1] = m01;
+				result[2] = m02;
+				result[3] = m03;
 
-				result[4]=m10;
-				result[5]=m11;
-				result[6]=m12;
-				result[7]=m13;
+				result[4] = m10;
+				result[5] = m11;
+				result[6] = m12;
+				result[7] = m13;
 
-				result[8]=m20;
-				result[9]=m21;
-				result[10]=m22;
-				result[11]=m23;
+				result[8] = m20;
+				result[9] = m21;
+				result[10] = m22;
+				result[11] = m23;
 
-				result[12]=m30;
-				result[13]=m31;
-				result[14]=m32;
-				result[15]=m33;
+				result[12] = m30;
+				result[13] = m31;
+				result[14] = m32;
+				result[15] = m33;
 
 			}
 			else
 			{
-				result[0]=m00;
-				result[4]=m01;
-				result[8]=m02;
-				result[12]=m03;
+				result[0] = m00;
+				result[4] = m01;
+				result[8] = m02;
+				result[12] = m03;
 
-				result[1]=m10;
-				result[5]=m11;
-				result[9]=m12;
-				result[13]=m13;
+				result[1] = m10;
+				result[5] = m11;
+				result[9] = m12;
+				result[13] = m13;
 
-				result[2]=m20;
-				result[6]=m21;
-				result[10]=m22;
-				result[14]=m23;
+				result[2] = m20;
+				result[6] = m21;
+				result[10] = m22;
+				result[14] = m23;
 
-				result[3]=m30;
-				result[7]=m31;
-				result[11]=m32;
-				result[15]=m33;
+				result[3] = m30;
+				result[7] = m31;
+				result[11] = m32;
+				result[15] = m33;
 			}
 
 			return result;

@@ -38,14 +38,14 @@ package org.angle3d.scene.control
 
 		public function setAnimationSpeed(value:Number):void
 		{
-			_fps=value / 60;
+			_fps = value / 60;
 		}
 
 		private function get material():Material
 		{
 			if (_material == null)
 			{
-				_material=_node.getMaterial();
+				_material = _node.getMaterial();
 			}
 			return _material;
 		}
@@ -54,7 +54,7 @@ package org.angle3d.scene.control
 		{
 			if (_mesh == null)
 			{
-				_mesh=_node.morphMesh;
+				_mesh = _node.morphMesh;
 			}
 			return _mesh;
 		}
@@ -66,41 +66,41 @@ package org.angle3d.scene.control
 		 * @param loop 是否循环
 		 * @param fadOutTime 前一个动画淡出时间，如果有的话
 		 */
-		public function playAnimation(animation:String, loop:Boolean=true, fadeOutTime:Number=0.5):void
+		public function playAnimation(animation:String, loop:Boolean = true, fadeOutTime:Number = 0.5):void
 		{
-			_oldAnimation=_curAnimation;
+			_oldAnimation = _curAnimation;
 
-			_curAnimation=animation;
+			_curAnimation = animation;
 
-			_morphData=mesh.getAnimation(_curAnimation);
-			_loop=loop;
+			_morphData = mesh.getAnimation(_curAnimation);
+			_loop = loop;
 
-			_pause=false;
+			_pause = false;
 			if (_morphData != null)
 			{
-				_curFrame=_morphData.start;
-				_nextFrame=_curFrame + 1;
+				_curFrame = _morphData.start;
+				_nextFrame = _curFrame + 1;
 			}
 		}
 
 		//TODO 可能需要添加一些参数，用于控制在什么位置停止动画
 		public function stop():void
 		{
-			_pause=true;
+			_pause = true;
 		}
 
 		override public function cloneForSpatial(spatial:Spatial):Control
 		{
-			var control:MorphControl=new MorphControl();
-			control.spatial=spatial;
-			control.enabled=enabled;
+			var control:MorphControl = new MorphControl();
+			control.spatial = spatial;
+			control.enabled = enabled;
 			return control;
 		}
 
 		override public function set spatial(spatial:Spatial):void
 		{
-			super.spatial=spatial;
-			_node=spatial as MorphGeometry;
+			super.spatial = spatial;
+			_node = spatial as MorphGeometry;
 		}
 
 		override protected function controlUpdate(tpf:Number):void
@@ -108,12 +108,12 @@ package org.angle3d.scene.control
 			if (_pause || _morphData == null)
 				return;
 
-			_curFrame+=_fps;
+			_curFrame += _fps;
 
 			if (!_loop && _curFrame >= _morphData.end)
 			{
-				_nextFrame=_curFrame=_morphData.end;
-				_pause=!_loop;
+				_nextFrame = _curFrame = _morphData.end;
+				_pause = !_loop;
 			}
 			else
 			{
@@ -122,17 +122,17 @@ package org.angle3d.scene.control
 					//循环情况下,_curFrame超过最后一帧后，不应该立即设为_keyframe.start,
 					//因为此时正在做最后一帧和开始帧之间的插值计算，所以要等到
 					//_curFrame >= _keyframe.end + 1时才设为_keyframe.start
-					_curFrame=_morphData.start;
+					_curFrame = _morphData.start;
 				}
-				_nextFrame=int(_curFrame + 1);
+				_nextFrame = int(_curFrame + 1);
 				if (_nextFrame > _morphData.end)
-					_nextFrame=_morphData.start;
+					_nextFrame = _morphData.start;
 			}
 
 			mesh.setFrame(int(_curFrame), _nextFrame);
 
 			//influence是两帧之间的插值，传递给Shader用于计算最终位置
-			material.influence=_curFrame - int(_curFrame);
+			material.influence = _curFrame - int(_curFrame);
 		}
 	}
 }

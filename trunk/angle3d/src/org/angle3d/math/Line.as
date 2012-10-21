@@ -20,10 +20,10 @@ package org.angle3d.math
 		 */
 		public var direction:Vector3f;
 
-		public function Line(origin:Vector3f=null, direction:Vector3f=null)
+		public function Line(origin:Vector3f = null, direction:Vector3f = null)
 		{
-			this.origin=new Vector3f();
-			this.direction=new Vector3f();
+			this.origin = new Vector3f();
+			this.direction = new Vector3f();
 
 			if (origin != null)
 			{
@@ -38,16 +38,16 @@ package org.angle3d.math
 
 		public function distanceSquared(point:Vector3f):Number
 		{
-			var compVec1:Vector3f=new Vector3f();
-			var compVec2:Vector3f=new Vector3f();
+			var compVec1:Vector3f = new Vector3f();
+			var compVec2:Vector3f = new Vector3f();
 
 			point.subtract(origin, compVec1);
-			var lineParameter:Number=direction.dot(compVec1);
+			var lineParameter:Number = direction.dot(compVec1);
 			direction.scale(lineParameter, compVec2);
 			origin.add(compVec2, compVec2);
 			compVec2.subtract(point, compVec1);
 
-			var len:Number=compVec1.lengthSquared;
+			var len:Number = compVec1.lengthSquared;
 
 			return len;
 		}
@@ -57,18 +57,18 @@ package org.angle3d.math
 			return Math.sqrt(distanceSquared(point));
 		}
 
-		public function random(result:Vector3f=null):Vector3f
+		public function random(result:Vector3f = null):Vector3f
 		{
 			if (result == null)
 			{
-				result=new Vector3f();
+				result = new Vector3f();
 			}
 
-			var rand:Number=Math.random();
-			var rand1:Number=1.0 - rand;
-			result.x=origin.x * rand1 + direction.x * rand;
-			result.y=origin.y * rand1 + direction.y * rand;
-			result.z=origin.z * rand1 + direction.z * rand;
+			var rand:Number = Math.random();
+			var rand1:Number = 1.0 - rand;
+			result.x = origin.x * rand1 + direction.x * rand;
+			result.y = origin.y * rand1 + direction.y * rand;
+			result.z = origin.z * rand1 + direction.z * rand;
 			return result;
 		}
 

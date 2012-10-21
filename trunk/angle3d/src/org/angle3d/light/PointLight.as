@@ -25,9 +25,9 @@ package org.angle3d.light
 		{
 			super(LightType.Point);
 
-			mPosition=new Vector3f();
-			mRadius=0;
-			mInvRadius=0;
+			mPosition = new Vector3f();
+			mRadius = 0;
+			mInvRadius = 0;
 		}
 
 		/**
@@ -56,14 +56,14 @@ package org.angle3d.light
 		{
 			Assert.assert(value >= 0, "Light radius cannot be negative");
 
-			mRadius=value;
+			mRadius = value;
 			if (value != 0)
 			{
-				mInvRadius=1 / value;
+				mInvRadius = 1 / value;
 			}
 			else
 			{
-				mInvRadius=0;
+				mInvRadius = 0;
 			}
 		}
 
@@ -71,12 +71,12 @@ package org.angle3d.light
 		{
 			if (owner.worldBound != null)
 			{
-				var bv:BoundingVolume=owner.worldBound;
-				lastDistance=bv.distanceSquaredTo(mPosition);
+				var bv:BoundingVolume = owner.worldBound;
+				lastDistance = bv.distanceSquaredTo(mPosition);
 			}
 			else
 			{
-				lastDistance=owner.getWorldTranslation().distanceSquared(mPosition);
+				lastDistance = owner.getWorldTranslation().distanceSquared(mPosition);
 			}
 		}
 

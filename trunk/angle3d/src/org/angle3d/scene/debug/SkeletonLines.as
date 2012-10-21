@@ -15,7 +15,7 @@ package org.angle3d.scene.debug
 		{
 			super();
 
-			_skeleton=skeleton;
+			_skeleton = skeleton;
 
 			updateGeometry();
 		}
@@ -31,17 +31,17 @@ package org.angle3d.scene.debug
 
 		private function writeBoneLine(bone:Bone):void
 		{
-			var parentPos:Vector3f=bone.getModelSpacePosition();
+			var parentPos:Vector3f = bone.getModelSpacePosition();
 
-			var children:Vector.<Bone>=bone.children;
-			var size:int=children.length;
+			var children:Vector.<Bone> = bone.children;
+			var size:int = children.length;
 
 			if (size > 0)
 			{
-				for (var i:int=0; i < size; i++)
+				for (var i:int = 0; i < size; i++)
 				{
-					var child:Bone=children[i];
-					var childPos:Vector3f=child.getModelSpacePosition();
+					var child:Bone = children[i];
+					var childPos:Vector3f = child.getModelSpacePosition();
 					addSegment(new WireframeLineSet(parentPos.x, parentPos.y, parentPos.z, childPos.x, childPos.y, childPos.z));
 
 					writeBoneLine(child);

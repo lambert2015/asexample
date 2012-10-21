@@ -18,7 +18,7 @@ package org.angle3d.input.controls
 		 */
 		public function KeyTrigger(keyCode:int)
 		{
-			this.keyCode=keyCode;
+			this.keyCode = keyCode;
 		}
 
 		public function getName():String

@@ -24,7 +24,7 @@ package org.assetloader.loaders
 		 */
 		protected var _loader:URLStream;
 
-		public function BinaryLoader(request:URLRequest, id:String=null)
+		public function BinaryLoader(request:URLRequest, id:String = null)
 		{
 			super(request, AssetType.BINARY, id);
 		}
@@ -35,7 +35,7 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete=new LoaderSignal(ByteArray);
+			_onComplete = new LoaderSignal(ByteArray);
 		}
 
 		/**
@@ -43,7 +43,7 @@ package org.assetloader.loaders
 		 */
 		override protected function constructLoader():IEventDispatcher
 		{
-			_loader=new URLStream();
+			_loader = new URLStream();
 			return _loader;
 		}
 
@@ -80,8 +80,8 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			super.destroy();
-			_loader=null;
-			_bytes=null;
+			_loader = null;
+			_bytes = null;
 		}
 
 		/**
@@ -89,10 +89,10 @@ package org.assetloader.loaders
 		 */
 		override protected function complete_handler(event:Event):void
 		{
-			_bytes=new ByteArray();
+			_bytes = new ByteArray();
 			_loader.readBytes(_bytes);
 
-			_data=_bytes;
+			_data = _bytes;
 
 			super.complete_handler(event);
 		}

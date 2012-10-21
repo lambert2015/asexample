@@ -63,14 +63,14 @@ package org.angle3d.material.sgsl
 	 */
 	public class OpCodeManager
 	{
-		public static const OP_SCALAR:uint=0x1;
-		public static const OP_INC_NEST:uint=0x2;
-		public static const OP_DEC_NEST:uint=0x4;
-		public static const OP_SPECIAL_TEX:uint=0x8;
-		public static const OP_SPECIAL_MATRIX:uint=0x10;
-		public static const OP_FRAG_ONLY:uint=0x20;
-		public static const OP_VERT_ONLY:uint=0x40;
-		public static const OP_NO_DEST:uint=0x80;
+		public static const OP_SCALAR:uint = 0x1;
+		public static const OP_INC_NEST:uint = 0x2;
+		public static const OP_DEC_NEST:uint = 0x4;
+		public static const OP_SPECIAL_TEX:uint = 0x8;
+		public static const OP_SPECIAL_MATRIX:uint = 0x10;
+		public static const OP_FRAG_ONLY:uint = 0x20;
+		public static const OP_VERT_ONLY:uint = 0x40;
+		public static const OP_NO_DEST:uint = 0x80;
 
 		private var _opCodeMap:Dictionary; //<String,OpCode>
 
@@ -86,8 +86,8 @@ package org.angle3d.material.sgsl
 
 		public function OpCodeManager(profile:String, version:int)
 		{
-			this.version=version;
-			this.profile=profile;
+			this.version = version;
+			this.profile = profile;
 			_initCodes();
 		}
 
@@ -115,9 +115,9 @@ package org.angle3d.material.sgsl
 
 		private function _initCodes():void
 		{
-			_opCodeMap=new Dictionary();
+			_opCodeMap = new Dictionary();
 
-			movCode=addCode(["mov"], 2, 0x00, 0);
+			movCode = addCode(["mov"], 2, 0x00, 0);
 			addCode(["add"], 3, 0x01, 0);
 			addCode(["sub", "subtract"], 3, 0x02, 0);
 			addCode(["mul", "multiply"], 3, 0x03, 0);
@@ -167,8 +167,8 @@ package org.angle3d.material.sgsl
 				addCode(["sgn"], 2, 0x2b, 0);
 			}
 
-			killCode=addCode(["kil", "kill", "discard"], 1, 0x27, OP_NO_DEST | OP_FRAG_ONLY);
-			textureCode=addCode(["texture2D", "textureCube"], 3, 0x28, OP_FRAG_ONLY | OP_SPECIAL_TEX);
+			killCode = addCode(["kil", "kill", "discard"], 1, 0x27, OP_NO_DEST | OP_FRAG_ONLY);
+			textureCode = addCode(["texture2D", "textureCube"], 3, 0x28, OP_FRAG_ONLY | OP_SPECIAL_TEX);
 
 			//约束模式下不能使用
 			if (profile == Context3DProfile.BASELINE)
@@ -188,12 +188,12 @@ package org.angle3d.material.sgsl
 		 */
 		private function addCode(names:Array, numRegister:uint, emitCode:uint, flags:uint):OpCode
 		{
-			var code:OpCode=new OpCode(names, numRegister, emitCode, flags);
+			var code:OpCode = new OpCode(names, numRegister, emitCode, flags);
 
-			var length:int=names.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = names.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				_opCodeMap[names[i]]=code;
+				_opCodeMap[names[i]] = code;
 			}
 
 			return code;

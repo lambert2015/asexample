@@ -45,15 +45,15 @@ package org.angle3d.input
 		 */
 		public function FlyByCamera(cam:Camera3D)
 		{
-			rotationSpeed=1.0;
-			moveSpeed=3.0;
-			motionAllowed=null;
-			enabled=true;
-			dragToRotate=false;
-			canRotate=false;
+			rotationSpeed = 1.0;
+			moveSpeed = 3.0;
+			motionAllowed = null;
+			enabled = true;
+			dragToRotate = false;
+			canRotate = false;
 
-			this.cam=cam;
-			initialUpVec=cam.getUp().clone();
+			this.cam = cam;
+			initialUpVec = cam.getUp().clone();
 		}
 
 		/**
@@ -67,7 +67,7 @@ package org.angle3d.input
 
 		public function setMotionAllowedListener(listener:MotionAllowedListener):void
 		{
-			this.motionAllowed=listener;
+			this.motionAllowed = listener;
 		}
 
 		/**
@@ -76,7 +76,7 @@ package org.angle3d.input
 		 */
 		public function setMoveSpeed(moveSpeed:Number):void
 		{
-			this.moveSpeed=moveSpeed;
+			this.moveSpeed = moveSpeed;
 		}
 
 		/**
@@ -85,7 +85,7 @@ package org.angle3d.input
 		 */
 		public function setRotationSpeed(rotationSpeed:Number):void
 		{
-			this.rotationSpeed=rotationSpeed;
+			this.rotationSpeed = rotationSpeed;
 		}
 
 		/**
@@ -93,7 +93,7 @@ package org.angle3d.input
 		 */
 		public function setEnabled(value:Boolean):void
 		{
-			this.enabled=value;
+			this.enabled = value;
 		}
 
 		/**
@@ -128,7 +128,7 @@ package org.angle3d.input
 		 */
 		public function setDragToRotate(dragToRotate:Boolean):void
 		{
-			this.dragToRotate=dragToRotate;
+			this.dragToRotate = dragToRotate;
 			//inputManager.setCursorVisible(dragToRotate);
 		}
 
@@ -139,9 +139,9 @@ package org.angle3d.input
 		 */
 		public function registerWithInput(inputManager:InputManager):void
 		{
-			this.inputManager=inputManager;
+			this.inputManager = inputManager;
 
-			var mappings:Array=["FLYCAM_Left", "FLYCAM_Right", "FLYCAM_Up", "FLYCAM_Down",
+			var mappings:Array = ["FLYCAM_Left", "FLYCAM_Right", "FLYCAM_Up", "FLYCAM_Down",
 
 				"FLYCAM_StrafeLeft", "FLYCAM_StrafeRight", "FLYCAM_Forward", "FLYCAM_Backward",
 
@@ -183,18 +183,18 @@ package org.angle3d.input
 				return;
 			}
 
-			var mat:Matrix3f=new Matrix3f();
+			var mat:Matrix3f = new Matrix3f();
 			mat.fromAngleNormalAxis(rotationSpeed * value, axis);
 
-			var up:Vector3f=cam.getUp();
-			var left:Vector3f=cam.getLeft();
-			var dir:Vector3f=cam.getDirection();
+			var up:Vector3f = cam.getUp();
+			var left:Vector3f = cam.getLeft();
+			var dir:Vector3f = cam.getDirection();
 
 			mat.multVec(up, up);
 			mat.multVec(left, left);
 			mat.multVec(dir, dir);
 
-			var q:Quaternion=new Quaternion();
+			var q:Quaternion = new Quaternion();
 			q.fromAxes(left, up, dir);
 			q.normalizeLocal();
 
@@ -205,40 +205,40 @@ package org.angle3d.input
 		private function zoomCamera(value:Number):void
 		{
 			// derive fovY value
-			var h:Number=cam.getFrustumRect().top;
-			var w:Number=cam.getFrustumRect().right;
-			var aspect:Number=w / h;
+			var h:Number = cam.getFrustumRect().top;
+			var w:Number = cam.getFrustumRect().right;
+			var aspect:Number = w / h;
 
-			var near:Number=cam.frustumNear;
+			var near:Number = cam.frustumNear;
 
-			var fovY:Number=Math.atan(h / near) / (FastMath.DEGTORAD * .5);
-			fovY+=value; //* 0.1f;
+			var fovY:Number = Math.atan(h / near) / (FastMath.DEGTORAD * .5);
+			fovY += value; //* 0.1f;
 
-			fovY=FastMath.fclamp(fovY, 1, 180);
+			fovY = FastMath.fclamp(fovY, 1, 180);
 
-			h=Math.tan(fovY * FastMath.DEGTORAD * .5) * near;
-			w=h * aspect;
+			h = Math.tan(fovY * FastMath.DEGTORAD * .5) * near;
+			w = h * aspect;
 
 			cam.setFrustumRect(-w, w, -h, h);
 		}
 
 		private function riseCamera(value:Number):void
 		{
-			var vel:Vector3f=new Vector3f(0, value * moveSpeed, 0);
-			var pos:Vector3f=cam.location.clone();
+			var vel:Vector3f = new Vector3f(0, value * moveSpeed, 0);
+			var pos:Vector3f = cam.location.clone();
 
 			if (motionAllowed != null)
 				motionAllowed.checkMotionAllowed(pos, vel);
 			else
 				pos.addLocal(vel);
 
-			cam.location=pos;
+			cam.location = pos;
 		}
 
 		private function moveCamera(value:Number, sideways:Boolean):void
 		{
-			var vel:Vector3f=new Vector3f();
-			var pos:Vector3f=cam.location.clone();
+			var vel:Vector3f = new Vector3f();
+			var pos:Vector3f = cam.location.clone();
 
 			if (sideways)
 			{
@@ -256,7 +256,7 @@ package org.angle3d.input
 			else
 				pos.addLocal(vel);
 
-			cam.location=pos;
+			cam.location = pos;
 		}
 
 		public function onAnalog(name:String, value:Number, tpf:Number):void
@@ -312,7 +312,7 @@ package org.angle3d.input
 
 			if (name == "FLYCAM_RotateDrag" && dragToRotate)
 			{
-				canRotate=value;
+				canRotate = value;
 					//inputManager.setCursorVisible(!value);
 			}
 		}

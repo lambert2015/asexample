@@ -67,30 +67,30 @@ package org.angle3d.effect.cpu
 
 		public function Particle()
 		{
-			velocity=new Vector3f();
-			position=new Vector3f();
-			color=0x0;
-			alpha=1.0;
+			velocity = new Vector3f();
+			position = new Vector3f();
+			color = 0x0;
+			alpha = 1.0;
 
-			size=0;
-			angle=0;
-			spin=0;
-			frame=0;
-			totalLife=0;
-			life=0;
+			size = 0;
+			angle = 0;
+			spin = 0;
+			frame = 0;
+			totalLife = 0;
+			life = 0;
 		}
 
 		public function reset():void
 		{
-			color=0x0;
-			alpha=1.0;
+			color = 0x0;
+			alpha = 1.0;
 
-			size=0;
-			angle=0;
-			spin=0;
-			frame=0;
-			totalLife=0;
-			life=0;
+			size = 0;
+			angle = 0;
+			spin = 0;
+			frame = 0;
+			totalLife = 0;
+			life = 0;
 		}
 	}
 }

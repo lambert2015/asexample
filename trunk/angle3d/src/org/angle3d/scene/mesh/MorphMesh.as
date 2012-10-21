@@ -11,7 +11,7 @@ package org.angle3d.scene.mesh
 	public class MorphMesh extends Mesh
 	{
 		//当前帧
-		private var mCurrentFrame:int=-1;
+		private var mCurrentFrame:int = -1;
 		private var mNextFrame:int;
 		private var mTotalFrame:int;
 
@@ -23,9 +23,9 @@ package org.angle3d.scene.mesh
 		{
 			super();
 
-			mType=MeshType.MT_MORPH_ANIMATION;
+			mType = MeshType.MT_MORPH_ANIMATION;
 
-			mAnimationMap=new Dictionary();
+			mAnimationMap = new Dictionary();
 		}
 
 		/**
@@ -38,12 +38,12 @@ package org.angle3d.scene.mesh
 
 		public function set useNormal(value:Boolean):void
 		{
-			mUseNormal=value;
+			mUseNormal = value;
 		}
 
 		public function set totalFrame(value:int):void
 		{
-			mTotalFrame=value;
+			mTotalFrame = value;
 		}
 
 		public function get totalFrame():int
@@ -53,7 +53,7 @@ package org.angle3d.scene.mesh
 
 		public function addAnimation(name:String, start:int, end:int):void
 		{
-			mAnimationMap[name]=new MorphData(name, start, end);
+			mAnimationMap[name] = new MorphData(name, start, end);
 		}
 
 		public function getAnimation(name:String):MorphData
@@ -66,12 +66,12 @@ package org.angle3d.scene.mesh
 			if (mCurrentFrame == curFrame)
 				return;
 
-			mCurrentFrame=curFrame;
-			mNextFrame=nextFrame;
+			mCurrentFrame = curFrame;
+			mNextFrame = nextFrame;
 
-			for (var i:int=0, length:int=mSubMeshList.length; i < length; i++)
+			for (var i:int = 0, length:int = mSubMeshList.length; i < length; i++)
 			{
-				var morphSubMesh:MorphSubMesh=mSubMeshList[i] as MorphSubMesh;
+				var morphSubMesh:MorphSubMesh = mSubMeshList[i] as MorphSubMesh;
 				morphSubMesh.setFrame(curFrame, nextFrame, mUseNormal);
 			}
 		}

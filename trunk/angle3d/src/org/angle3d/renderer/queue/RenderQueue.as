@@ -26,13 +26,13 @@ package org.angle3d.renderer.queue
 		 */
 		public function RenderQueue()
 		{
-			opaqueList=new GeometryList(new OpaqueComparator());
-			guiList=new GeometryList(new GuiComparator());
-			transparentList=new GeometryList(new TransparentComparator());
-			translucentList=new GeometryList(new TransparentComparator());
-			skyList=new GeometryList(new NullComparator());
-			shadowRecv=new GeometryList(new OpaqueComparator());
-			shadowCast=new GeometryList(new OpaqueComparator());
+			opaqueList = new GeometryList(new OpaqueComparator());
+			guiList = new GeometryList(new GuiComparator());
+			transparentList = new GeometryList(new TransparentComparator());
+			translucentList = new GeometryList(new TransparentComparator());
+			skyList = new GeometryList(new NullComparator());
+			shadowRecv = new GeometryList(new OpaqueComparator());
+			shadowCast = new GeometryList(new OpaqueComparator());
 		}
 
 		/**
@@ -65,19 +65,19 @@ package org.angle3d.renderer.queue
 			switch (bucket)
 			{
 				case QueueBucket.Gui:
-					guiList=new GeometryList(c);
+					guiList = new GeometryList(c);
 					break;
 				case QueueBucket.Opaque:
-					opaqueList=new GeometryList(c);
+					opaqueList = new GeometryList(c);
 					break;
 				case QueueBucket.Sky:
-					skyList=new GeometryList(c);
+					skyList = new GeometryList(c);
 					break;
 				case QueueBucket.Transparent:
-					transparentList=new GeometryList(c);
+					transparentList = new GeometryList(c);
 					break;
 				case QueueBucket.Translucent:
-					translucentList=new GeometryList(c);
+					translucentList = new GeometryList(c);
 					break;
 				default:
 					Assert.assert(false, "Unknown bucket type: " + bucket);
@@ -176,16 +176,16 @@ package org.angle3d.renderer.queue
 			}
 		}
 
-		private function renderGeometryList(list:GeometryList, rm:RenderManager, cam:Camera3D, clear:Boolean=true):void
+		private function renderGeometryList(list:GeometryList, rm:RenderManager, cam:Camera3D, clear:Boolean = true):void
 		{
 			//select camera for sorting
 			list.setCamera(cam);
 			list.sort();
 
-			var size:int=list.size;
-			for (var i:int=0; i < size; i++)
+			var size:int = list.size;
+			for (var i:int = 0; i < size; i++)
 			{
-				var obj:Geometry=list.getGeometry(i);
+				var obj:Geometry = list.getGeometry(i);
 
 				CF::DEBUG
 				{
@@ -193,7 +193,7 @@ package org.angle3d.renderer.queue
 				}
 
 				rm.renderGeometry(obj);
-				obj.queueDistance=Number.NEGATIVE_INFINITY;
+				obj.queueDistance = Number.NEGATIVE_INFINITY;
 			}
 
 			if (clear)
@@ -202,12 +202,12 @@ package org.angle3d.renderer.queue
 			}
 		}
 
-		public function renderShadowQueue(list:GeometryList, rm:RenderManager, cam:Camera3D, clear:Boolean=true):void
+		public function renderShadowQueue(list:GeometryList, rm:RenderManager, cam:Camera3D, clear:Boolean = true):void
 		{
 			renderGeometryList(list, rm, cam, clear);
 		}
 
-		public function renderShadowQueueByShadowMode(mode:int, rm:RenderManager, cam:Camera3D, clear:Boolean=true):void
+		public function renderShadowQueueByShadowMode(mode:int, rm:RenderManager, cam:Camera3D, clear:Boolean = true):void
 		{
 			switch (mode)
 			{
@@ -243,7 +243,7 @@ package org.angle3d.renderer.queue
 			}
 		}
 
-		public function renderQueue(bucket:int, rm:RenderManager, cam:Camera3D, clear:Boolean=true):void
+		public function renderQueue(bucket:int, rm:RenderManager, cam:Camera3D, clear:Boolean = true):void
 		{
 			switch (bucket)
 			{

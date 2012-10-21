@@ -23,8 +23,8 @@ package org.angle3d.signals
 		 */
 		override public function dispatch(... args):void
 		{
-			_motionEvent=args[0];
-			_curWayPoint=args[1];
+			_motionEvent = args[0];
+			_curWayPoint = args[1];
 
 			super.dispatch.apply(null, [this]);
 		}

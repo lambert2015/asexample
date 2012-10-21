@@ -65,34 +65,34 @@ package org.angle3d.animation
 
 		public function Bone(name:String)
 		{
-			this.name=name;
+			this.name = name;
 
-			parentName="";
+			parentName = "";
 
-			children=new Vector.<Bone>();
+			children = new Vector.<Bone>();
 
-			mBindPos=new Vector3f();
-			mBindRot=new Quaternion();
-			mBindScale=new Vector3f(1.0, 1.0, 1.0);
+			mBindPos = new Vector3f();
+			mBindRot = new Quaternion();
+			mBindScale = new Vector3f(1.0, 1.0, 1.0);
 
-			localPos=new Vector3f();
-			localRot=new Quaternion();
-			localScale=new Vector3f(1.0, 1.0, 1.0);
+			localPos = new Vector3f();
+			localRot = new Quaternion();
+			localScale = new Vector3f(1.0, 1.0, 1.0);
 
-			mWorldPos=new Vector3f();
-			mWorldRot=new Quaternion();
-			mWorldScale=new Vector3f(1.0, 1.0, 1.0);
+			mWorldPos = new Vector3f();
+			mWorldRot = new Quaternion();
+			mWorldScale = new Vector3f(1.0, 1.0, 1.0);
 
-			mWorldBindInversePos=new Vector3f();
-			mWorldBindInverseRot=new Quaternion();
-			mWorldBindInverseScale=new Vector3f(1.0, 1.0, 1.0);
+			mWorldBindInversePos = new Vector3f();
+			mWorldBindInverseRot = new Quaternion();
+			mWorldBindInverseScale = new Vector3f(1.0, 1.0, 1.0);
 		}
 
 		public function getAttachmentsNode():Node
 		{
 			if (mAttachNode == null)
 			{
-				mAttachNode=new Node(this.name + "_attachnode");
+				mAttachNode = new Node(this.name + "_attachnode");
 			}
 			return mAttachNode;
 		}
@@ -100,7 +100,7 @@ package org.angle3d.animation
 		//TODO 修改为内部使用
 		public function setAttachmentsNode(value:Node):void
 		{
-			mAttachNode=value;
+			mAttachNode = value;
 		}
 
 		/**
@@ -220,7 +220,7 @@ package org.angle3d.animation
 		public function addChild(bone:Bone):void
 		{
 			children.push(bone);
-			bone.parent=this;
+			bone.parent = this;
 		}
 
 		/**
@@ -260,7 +260,7 @@ package org.angle3d.animation
 				mAttachNode.setScale(mWorldScale);
 			}
 
-			var i:int=children.length;
+			var i:int = children.length;
 			while (--i >= 0)
 			{
 				children[i].update();
@@ -286,8 +286,8 @@ package org.angle3d.animation
 			mWorldBindInverseScale.setTo(1, 1, 1);
 			mWorldBindInverseScale.divideLocal(mWorldScale);
 
-			var length:int=children.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = children.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				children[i].setBindingPose();
 			}
@@ -302,8 +302,8 @@ package org.angle3d.animation
 			localRot.copyFrom(mBindRot);
 			localScale.copyFrom(mBindScale);
 
-			var length:int=children.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = children.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				children[i].reset();
 			}
@@ -359,10 +359,10 @@ package org.angle3d.animation
 
 		public function blendAnimTransforms(translation:Vector3f, rotation:Quaternion, scale:Vector3f, weight:Number):void
 		{
-			var tempVar:TempVars=TempVars.getTempVars();
+			var tempVar:TempVars = TempVars.getTempVars();
 
-			var tmpTranslation:Vector3f=tempVar.vect1;
-			var tmpRotation:Quaternion=tempVar.quat1;
+			var tmpTranslation:Vector3f = tempVar.vect1;
+			var tmpRotation:Quaternion = tempVar.quat1;
 
 			//location
 			tmpTranslation.copyAdd(mBindPos, translation);
@@ -376,7 +376,7 @@ package org.angle3d.animation
 			//scale
 			if (scale != null)
 			{
-				var tmpScale:Vector3f=tempVar.vect2;
+				var tmpScale:Vector3f = tempVar.vect2;
 				tmpScale.copyFrom(mBindScale);
 				localScale.multiplyLocal(scale);
 				localScale.lerp(localScale, tmpScale, weight);
@@ -389,7 +389,7 @@ package org.angle3d.animation
 		 * Sets local bind transform for bone.
 		 * Call setBindingPose() after all of the skeleton bones' bind transforms are set to save them.
 		 */
-		public function setBindTransforms(translation:Vector3f, rotation:Quaternion, scale:Vector3f=null):void
+		public function setBindTransforms(translation:Vector3f, rotation:Quaternion, scale:Vector3f = null):void
 		{
 			mBindPos.copyFrom(translation);
 			mBindRot.copyFrom(rotation);

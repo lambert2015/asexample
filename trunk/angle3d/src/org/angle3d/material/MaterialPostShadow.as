@@ -13,7 +13,7 @@ package org.angle3d.material
 		{
 			super();
 
-			_postShadowTechnique=new TechniquePostShadow();
+			_postShadowTechnique = new TechniquePostShadow();
 			addTechnique(_postShadowTechnique);
 		}
 

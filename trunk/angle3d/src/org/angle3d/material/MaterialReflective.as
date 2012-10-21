@@ -13,17 +13,17 @@ package org.angle3d.material
 	{
 		private var _technique:TechniqueReflective;
 
-		public function MaterialReflective(decalMap:TextureMapBase, environmentMap:CubeTextureMap, reflectivity:Number=0.8)
+		public function MaterialReflective(decalMap:TextureMapBase, environmentMap:CubeTextureMap, reflectivity:Number = 0.8)
 		{
 			super();
 
-			_technique=new TechniqueReflective(decalMap, environmentMap, reflectivity);
+			_technique = new TechniqueReflective(decalMap, environmentMap, reflectivity);
 			addTechnique(_technique);
 		}
 
 		override public function set influence(value:Number):void
 		{
-			_technique.influence=value;
+			_technique.influence = value;
 		}
 
 		public function get technique():TechniqueReflective
@@ -33,17 +33,17 @@ package org.angle3d.material
 
 		public function set decalMap(map:TextureMapBase):void
 		{
-			_technique.decalMap=map;
+			_technique.decalMap = map;
 		}
 
 		public function set environmentMap(map:CubeTextureMap):void
 		{
-			_technique.environmentMap=map;
+			_technique.environmentMap = map;
 		}
 
 		public function set reflectivity(reflectivity:Number):void
 		{
-			_technique.reflectivity=reflectivity;
+			_technique.reflectivity = reflectivity;
 		}
 
 		public function get decalMap():TextureMapBase

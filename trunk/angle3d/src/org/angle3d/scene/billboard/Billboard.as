@@ -37,33 +37,33 @@ package org.angle3d.scene.billboard
 		public var texcoordIndex:uint; // index into the BillboardSet array of texture coordinates
 		public var texcoordRect:SimpleRect; // individual texture coordinates
 
-		public function Billboard(position:Vector3f, owner:BillboardSet, color:uint=0xFFFFFFFF)
+		public function Billboard(position:Vector3f, owner:BillboardSet, color:uint = 0xFFFFFFFF)
 		{
-			this.position=position;
-			this.parentSet=owner;
-			this.color=color;
+			this.position = position;
+			this.parentSet = owner;
+			this.color = color;
 
-			this.rotation=0;
-			this.direction=new Vector3f(0, 0, 1);
+			this.rotation = 0;
+			this.direction = new Vector3f(0, 0, 1);
 
-			ownDimensions=false;
+			ownDimensions = false;
 
-			texcoordIndex=0;
-			useTexcoordRect=false;
+			texcoordIndex = 0;
+			useTexcoordRect = false;
 
 		}
 
 		public function reset():void
 		{
-			ownDimensions=false;
-			texcoordIndex=0;
-			rotation=0;
+			ownDimensions = false;
+			texcoordIndex = 0;
+			rotation = 0;
 			direction.setTo(0, 0, 1);
 		}
 
 		public function setRotation(rotation:Number):void
 		{
-			this.rotation=rotation;
+			this.rotation = rotation;
 			if (this.rotation != 0)
 				parentSet.notifyBillboardRotated();
 		}
@@ -80,9 +80,9 @@ package org.angle3d.scene.billboard
 
 		public function setPositionXYZ(x:Number, y:Number, z:Number):void
 		{
-			this.position.x=x;
-			this.position.y=y;
-			this.position.z=z;
+			this.position.x = x;
+			this.position.y = y;
+			this.position.z = z;
 		}
 
 		public function getPosition():Vector3f
@@ -92,27 +92,27 @@ package org.angle3d.scene.billboard
 
 		public function setDimensions(width:Number, height:Number):void
 		{
-			this.width=width;
-			this.height=height;
-			ownDimensions=true;
+			this.width = width;
+			this.height = height;
+			ownDimensions = true;
 			parentSet.notifyBillboardResized();
 		}
 
 		public function resetDimensions():void
 		{
-			ownDimensions=false;
+			ownDimensions = false;
 		}
 
 		public function setTexcoordIndex(texcoordIndex:int):void
 		{
-			this.texcoordIndex=texcoordIndex;
-			useTexcoordRect=false;
+			this.texcoordIndex = texcoordIndex;
+			useTexcoordRect = false;
 		}
 
 		public function setTexcoordRect(texcoordRect:SimpleRect):void
 		{
-			this.texcoordRect=texcoordRect;
-			useTexcoordRect=true;
+			this.texcoordRect = texcoordRect;
+			useTexcoordRect = true;
 		}
 	}
 }

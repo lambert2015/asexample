@@ -19,10 +19,10 @@ package org.angle3d.scene.mesh
 
 		public function VertexBuffer(type:String)
 		{
-			mType=type;
+			mType = type;
 
-			mCount=0;
-			mDirty=true;
+			mCount = 0;
+			mDirty = true;
 		}
 
 		public function get components():int
@@ -37,30 +37,30 @@ package org.angle3d.scene.mesh
 		 */
 		public function setData(data:Vector.<Number>, components:int):void
 		{
-			mData=data;
+			mData = data;
 
-			mComponents=components;
+			mComponents = components;
 
 			CF::DEBUG
 			{
 				Assert.assert(mComponents >= 1 && mComponents <= 4, "_components长度应该在1～4之间");
 			}
 
-			mCount=int(mData.length / mComponents);
+			mCount = int(mData.length / mComponents);
 
-			dirty=true;
+			dirty = true;
 		}
 
 		public function updateData(data:Vector.<Number>):void
 		{
-			mData=data;
+			mData = data;
 
 			CF::DEBUG
 			{
 				Assert.assert(int(mData.length / mComponents) == mCount, "更新的数组长度应该和之前相同");
 			}
 
-			dirty=true;
+			dirty = true;
 		}
 
 		public function getData():Vector.<Number>
@@ -70,8 +70,8 @@ package org.angle3d.scene.mesh
 
 		public function clean():void
 		{
-			dirty=true;
-			mData=null;
+			dirty = true;
+			mData = null;
 		}
 
 		/**
@@ -79,7 +79,7 @@ package org.angle3d.scene.mesh
 		 */
 		public function destroy():void
 		{
-			mData=null;
+			mData = null;
 		}
 
 		public function get count():int
@@ -103,7 +103,7 @@ package org.angle3d.scene.mesh
 		 */
 		public function set dirty(value:Boolean):void
 		{
-			mDirty=value;
+			mDirty = value;
 		}
 	}
 }

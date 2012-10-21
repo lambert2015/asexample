@@ -78,7 +78,7 @@ package org.assetloader.parsers
 		/**
 		 * @private
 		 */
-		protected var _isValid:Boolean=true;
+		protected var _isValid:Boolean = true;
 
 		/**
 		 * Parses url and breaks is down into properties and check whether the url is valid.
@@ -86,69 +86,69 @@ package org.assetloader.parsers
 		 */
 		public function URLParser(url:String)
 		{
-			_url=url;
+			_url = url;
 
 			if (!_url || _url == "")
 			{
-				_isValid=false;
+				_isValid = false;
 				return;
 			}
 
 			if (_url.length >= 250)
 			{
-				_isValid=false;
+				_isValid = false;
 				return;
 			}
 
-			var urlExp:RegExp=/^(?:(?P<scheme>\w+):\/\/)?(?:(?P<login>\w+):(?P<pass>\w+)@)?(?P<host>(?:(?P<subdomain>[\w\.]+)\.)?(?P<domain>\w+\.(?P<extension>\w+)))?(?::(?P<port>\d+))?(?P<path>[\w\W]*\/(?P<file>[^?]+(?:\.\w+)?)?)?(?:\?(?P<arg>[\w=&]+))?(?:#(?P<anchor>\w+))?/;
-			var match:*=urlExp.exec(url);
+			var urlExp:RegExp = /^(?:(?P<scheme>\w+):\/\/)?(?:(?P<login>\w+):(?P<pass>\w+)@)?(?P<host>(?:(?P<subdomain>[\w\.]+)\.)?(?P<domain>\w+\.(?P<extension>\w+)))?(?::(?P<port>\d+))?(?P<path>[\w\W]*\/(?P<file>[^?]+(?:\.\w+)?)?)?(?:\?(?P<arg>[\w=&]+))?(?:#(?P<anchor>\w+))?/;
+			var match:* = urlExp.exec(url);
 
 			if (match)
 			{
-				_protocol=match.scheme || null;
+				_protocol = match.scheme || null;
 
-				_host=match.host || null;
+				_host = match.host || null;
 
-				_login=match.login || null;
-				_password=match.pass || null;
+				_login = match.login || null;
+				_password = match.pass || null;
 
-				_port=match.port ? int(match.port) : 80;
+				_port = match.port ? int(match.port) : 80;
 
-				_path=match.path || null;
+				_path = match.path || null;
 
 				if (match.arg && match.arg != "")
-					_urlVariables=new URLVariables(match.arg);
+					_urlVariables = new URLVariables(match.arg);
 
-				_anchor=match.anchor || null;
+				_anchor = match.anchor || null;
 
 				if (!_protocol && _url.indexOf("/") == -1)
 				{
-					_path=_host || _url;
-					_fileName=_path.slice(-_path.lastIndexOf("/") - 1);
-					_host=null;
+					_path = _host || _url;
+					_fileName = _path.slice(-_path.lastIndexOf("/") - 1);
+					_host = null;
 				}
 
 				if (!_path || _path == "")
 				{
-					_isValid=false;
+					_isValid = false;
 					return;
 				}
 
 				if (_path.charAt(0) != "/")
-					_path="/" + _path;
+					_path = "/" + _path;
 
 				if (!_fileName)
-					_fileName=match.file || null;
+					_fileName = match.file || null;
 
 				if (_fileName)
 					if (_fileName.indexOf(".") != -1)
-						_fileExtension=_fileName.slice(_fileName.lastIndexOf(".") + 1);
+						_fileExtension = _fileName.slice(_fileName.lastIndexOf(".") + 1);
 
 				if (!_fileExtension && !_protocol && _path.charAt(_path.length - 1) != "/")
-					_isValid=false;
+					_isValid = false;
 			}
 			else
-				_isValid=false;
+				_isValid = false;
 		}
 
 		/**

@@ -16,10 +16,10 @@ package org.angle3d.io.parser.ms3d
 
 		public function MS3DMaterial()
 		{
-			ambient=new Color();
-			diffuse=new Color();
-			specular=new Color();
-			emissive=new Color();
+			ambient = new Color();
+			diffuse = new Color();
+			specular = new Color();
+			emissive = new Color();
 		}
 	}
 }

@@ -27,9 +27,9 @@ package org.assetloader.base
 	//TODO 此类应该改成静态类比较好吧
 	public class LoaderFactory
 	{
-		private static const textExt:Array=["txt", "js", "html", "htm", "php", "asp", "aspx", "jsp", "cfm"];
-		private static const imageExt:Array=["jpg", "jpeg", "png", "gif"];
-		private static const videoExt:Array=["flv", "f4v", "f4p", "mp4", "mov"];
+		private static const textExt:Array = ["txt", "js", "html", "htm", "php", "asp", "aspx", "jsp", "cfm"];
+		private static const imageExt:Array = ["jpg", "jpeg", "png", "gif"];
+		private static const videoExt:Array = ["flv", "f4v", "f4p", "mp4", "mov"];
 
 		/**
 		 * @private
@@ -54,22 +54,22 @@ package org.assetloader.base
 		 * @see org.assetloader.base.Param
 		 * @see org.assetloader.core.ILoader
 		 */
-		public function produce(id:String, type:String="AUTO", request:URLRequest=null, params:Array=null):ILoader
+		public function produce(id:String, type:String = "AUTO", request:URLRequest = null, params:Array = null):ILoader
 		{
 			if (request)
 			{
-				var urlParser:URLParser=new URLParser(request.url);
+				var urlParser:URLParser = new URLParser(request.url);
 				if (urlParser.isValid)
 				{
 					if (type == AssetType.AUTO)
-						type=getTypeFromExtension(urlParser.fileExtension);
+						type = getTypeFromExtension(urlParser.fileExtension);
 				}
 				else
 					throw new AssetLoaderError(AssetLoaderError.INVALID_URL);
 
 			}
 			else if (type == AssetType.AUTO)
-				type=AssetType.GROUP;
+				type = AssetType.GROUP;
 
 			constructLoader(type, id, request);
 
@@ -84,12 +84,12 @@ package org.assetloader.base
 		 */
 		protected function processParams(assetParams:Array):void
 		{
-			var pL:int=assetParams.length;
-			for (var i:int=0; i < pL; i++)
+			var pL:int = assetParams.length;
+			for (var i:int = 0; i < pL; i++)
 			{
 				if (assetParams[i] is IParam)
 				{
-					var param:IParam=assetParams[i];
+					var param:IParam = assetParams[i];
 					_loader.setParam(param.id, param.value);
 				}
 				else if (assetParams[i] is Array)
@@ -104,9 +104,9 @@ package org.assetloader.base
 		protected function getTypeFromExtension(extension:String):String
 		{
 			if (!extension)
-				extension="";
+				extension = "";
 
-			extension=extension.toLowerCase();
+			extension = extension.toLowerCase();
 
 			if (testExtenstion(textExt, extension))
 				return AssetType.TEXT;
@@ -158,47 +158,47 @@ package org.assetloader.base
 			switch (type)
 			{
 				case AssetType.TEXT:
-					_loader=new TextLoader(request, id);
+					_loader = new TextLoader(request, id);
 					break;
 
 				case AssetType.JSON:
-					_loader=new JSONLoader(request, id);
+					_loader = new JSONLoader(request, id);
 					break;
 
 				case AssetType.XML:
-					_loader=new XMLLoader(request, id);
+					_loader = new XMLLoader(request, id);
 					break;
 
 				case AssetType.CSS:
-					_loader=new CSSLoader(request, id);
+					_loader = new CSSLoader(request, id);
 					break;
 
 				case AssetType.BINARY:
-					_loader=new BinaryLoader(request, id);
+					_loader = new BinaryLoader(request, id);
 					break;
 
 				case AssetType.DISPLAY_OBJECT:
-					_loader=new DisplayObjectLoader(request, id);
+					_loader = new DisplayObjectLoader(request, id);
 					break;
 
 				case AssetType.SWF:
-					_loader=new SWFLoader(request, id);
+					_loader = new SWFLoader(request, id);
 					break;
 
 				case AssetType.IMAGE:
-					_loader=new ImageLoader(request, id);
+					_loader = new ImageLoader(request, id);
 					break;
 
 				case AssetType.SOUND:
-					_loader=new SoundLoader(request, id);
+					_loader = new SoundLoader(request, id);
 					break;
 
 				case AssetType.VIDEO:
-					_loader=new VideoLoader(request, id);
+					_loader = new VideoLoader(request, id);
 					break;
 
 				case AssetType.GROUP:
-					_loader=new AssetLoader(id);
+					_loader = new AssetLoader(id);
 					break;
 
 				default:

@@ -18,7 +18,7 @@ package org.angle3d.scene
 			super(name);
 			if (camera != null)
 			{
-				mCamControl.camera=camera;
+				mCamControl.camera = camera;
 			}
 		}
 
@@ -30,13 +30,13 @@ package org.angle3d.scene
 		override protected function _init():void
 		{
 			super._init();
-			mCamControl=new CameraControl();
+			mCamControl = new CameraControl();
 			addControl(mCamControl);
 		}
 
 		public function setEnabled(enabled:Boolean):void
 		{
-			mCamControl.enabled=enabled;
+			mCamControl.enabled = enabled;
 		}
 
 		public function isEnabled():Boolean
@@ -46,7 +46,7 @@ package org.angle3d.scene
 
 		public function set controlDir(controlDir:String):void
 		{
-			mCamControl.controlDir=controlDir;
+			mCamControl.controlDir = controlDir;
 		}
 
 		public function get controlDir():String
@@ -56,7 +56,7 @@ package org.angle3d.scene
 
 		public function setCamera(camera:Camera3D):void
 		{
-			mCamControl.camera=camera;
+			mCamControl.camera = camera;
 		}
 
 		public function getCamera():Camera3D

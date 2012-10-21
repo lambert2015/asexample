@@ -12,16 +12,16 @@ package org.angle3d.io.parser
 	 */
 	public class ParserOptions
 	{
-		private var _loadTextures:Boolean=false;
+		private var _loadTextures:Boolean = false;
 
-		private var _loadMeshes:Boolean=true;
-		private var _loadSkins:Boolean=true;
-		private var _mergeMeshes:Boolean=false;
+		private var _loadMeshes:Boolean = true;
+		private var _loadSkins:Boolean = true;
+		private var _mergeMeshes:Boolean = false;
 
-		private var _keepStreamsDynamic:Boolean=true;
+		private var _keepStreamsDynamic:Boolean = true;
 
 		private var _loadFunction:Function; //= load;
-		private var _rewritePathFunction:Function=rewritePath;
+		private var _rewritePathFunction:Function = rewritePath;
 
 		private var _replaceNodeFunction:Function; //= replaceNode;
 
@@ -126,27 +126,27 @@ package org.angle3d.io.parser
 
 		public function set loadTextures(value:Boolean):void
 		{
-			_loadTextures=value;
+			_loadTextures = value;
 		}
 
 		public function set loadMeshes(value:Boolean):void
 		{
-			_loadMeshes=value;
+			_loadMeshes = value;
 		}
 
 		public function set mergeMeshes(value:Boolean):void
 		{
-			_mergeMeshes=value;
+			_mergeMeshes = value;
 		}
 
 		public function set loadSkins(value:Boolean):void
 		{
-			_loadSkins=value;
+			_loadSkins = value;
 		}
 
 		public function set keepStreamsDynamic(value:Boolean):void
 		{
-			_keepStreamsDynamic=value;
+			_keepStreamsDynamic = value;
 		}
 
 		/**
@@ -154,7 +154,7 @@ package org.angle3d.io.parser
 		 */
 		public function set loadFunction(value:Function):void
 		{
-			_loadFunction=value;
+			_loadFunction = value;
 		}
 
 		/**
@@ -162,7 +162,7 @@ package org.angle3d.io.parser
 		 */
 		public function set rewritePathFunction(value:Function):void
 		{
-			_rewritePathFunction=value;
+			_rewritePathFunction = value;
 		}
 
 		/**
@@ -170,7 +170,7 @@ package org.angle3d.io.parser
 		 */
 		public function set replaceNodeFunction(value:Function):void
 		{
-			_replaceNodeFunction=value;
+			_replaceNodeFunction = value;
 		}
 
 //		protected function load(request : URLRequest, options : ParserOptions = null) : LoaderGroup

@@ -35,8 +35,8 @@ package org.angle3d.app.state
 
 		public function AppStateManager(app:Application)
 		{
-			states=new Vector.<AppState>();
-			this.app=app;
+			states = new Vector.<AppState>();
+			this.app = app;
 		}
 
 		/**
@@ -54,7 +54,7 @@ package org.angle3d.app.state
 
 		private function removeState(state:AppState):Boolean
 		{
-			var i:int=states.indexOf(state);
+			var i:int = states.indexOf(state);
 			if (i != -1)
 			{
 				states.splice(i, 1);
@@ -113,10 +113,10 @@ package org.angle3d.app.state
 		 */
 		public function getState(c:Class):AppState
 		{
-			var length:int=states.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = states.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var state:AppState=states[i];
+				var state:AppState = states[i];
 				if (state is c)
 				{
 					return state;
@@ -131,10 +131,10 @@ package org.angle3d.app.state
 		 */
 		public function update(tpf:Number):void
 		{
-			var length:int=states.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = states.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var state:AppState=states[i];
+				var state:AppState = states[i];
 
 				if (!state.isInitialized())
 				{
@@ -154,10 +154,10 @@ package org.angle3d.app.state
 		 */
 		public function render(rm:RenderManager):void
 		{
-			var length:int=states.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = states.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var state:AppState=states[i];
+				var state:AppState = states[i];
 
 				if (!state.isInitialized())
 				{
@@ -176,10 +176,10 @@ package org.angle3d.app.state
 		 */
 		public function postRender():void
 		{
-			var length:int=states.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = states.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var state:AppState=states[i];
+				var state:AppState = states[i];
 
 				if (!state.isInitialized())
 				{
@@ -198,10 +198,10 @@ package org.angle3d.app.state
 		 */
 		public function cleanup():void
 		{
-			var length:int=states.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = states.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var state:AppState=states[i];
+				var state:AppState = states[i];
 				state.postRender();
 			}
 		}

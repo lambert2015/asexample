@@ -27,9 +27,9 @@ package org.angle3d.effect.cpu.influencers
 
 		public function DefaultParticleInfluencer()
 		{
-			temp=new Vector3f();
-			initialVelocity=new Vector3f();
-			velocityVariation=0.2;
+			temp = new Vector3f();
+			initialVelocity = new Vector3f();
+			velocityVariation = 0.2;
 		}
 
 		public function influenceParticle(particle:Particle, emitterShape:EmitterShape):void
@@ -47,10 +47,10 @@ package org.angle3d.effect.cpu.influencers
 		{
 			particle.velocity.copyFrom(initialVelocity);
 
-			var nlegth:Number=initialVelocity.length;
-			temp.x=(Math.random() * 2 - 1) * length;
-			temp.y=(Math.random() * 2 - 1) * length;
-			temp.z=(Math.random() * 2 - 1) * length;
+			var nlegth:Number = initialVelocity.length;
+			temp.x = (Math.random() * 2 - 1) * length;
+			temp.y = (Math.random() * 2 - 1) * length;
+			temp.z = (Math.random() * 2 - 1) * length;
 
 			particle.velocity.lerp(particle.velocity, temp, velocityVariation);
 		}
@@ -58,9 +58,9 @@ package org.angle3d.effect.cpu.influencers
 
 		public function clone():IParticleInfluencer
 		{
-			var result:DefaultParticleInfluencer=new DefaultParticleInfluencer();
+			var result:DefaultParticleInfluencer = new DefaultParticleInfluencer();
 			result.initialVelocity.copyFrom(initialVelocity);
-			result.velocityVariation=velocityVariation;
+			result.velocityVariation = velocityVariation;
 
 			return result;
 		}
@@ -79,7 +79,7 @@ package org.angle3d.effect.cpu.influencers
 
 		public function setVelocityVariation(variation:Number):void
 		{
-			this.velocityVariation=variation;
+			this.velocityVariation = variation;
 		}
 
 		public function getVelocityVariation():Number

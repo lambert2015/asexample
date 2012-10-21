@@ -36,12 +36,12 @@ package org.angle3d.renderer
 
 		public function reset():void
 		{
-			cullMode=Context3DTriangleFace.FRONT;
-			depthTest=false;
-			compareMode=Context3DCompareMode.LESS_EQUAL;
-			colorWrite=false;
-			clipRectEnabled=false;
-			blendMode=BlendMode.Off;
+			cullMode = Context3DTriangleFace.FRONT;
+			depthTest = false;
+			compareMode = Context3DCompareMode.LESS_EQUAL;
+			colorWrite = false;
+			clipRectEnabled = false;
+			blendMode = BlendMode.Off;
 		}
 	}
 }

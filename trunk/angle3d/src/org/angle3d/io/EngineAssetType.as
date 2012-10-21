@@ -6,12 +6,12 @@ package org.angle3d.io
 	 */
 	public class EngineAssetType
 	{
-		public static const STATIC_MESH:int=0;
-		public static const KEYFRAME_MESH:int=1;
-		public static const SKINNED_MESH:int=2;
+		public static const STATIC_MESH:int = 0;
+		public static const KEYFRAME_MESH:int = 1;
+		public static const SKINNED_MESH:int = 2;
 
-		public static const TEXTURE:int=3;
-		public static const ATF_TEXTURE:int=4;
+		public static const TEXTURE:int = 3;
+		public static const ATF_TEXTURE:int = 4;
 	}
 }
 

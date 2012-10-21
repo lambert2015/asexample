@@ -27,16 +27,16 @@ package org.angle3d.material
 
 		public function Material()
 		{
-			_techniques=new Vector.<Technique>();
+			_techniques = new Vector.<Technique>();
 
-			mEmissiveColor=new Color(0, 0, 0, 1);
-			mAmbientColor=new Color(1, 1, 1, 0);
-			mDiffuseColor=new Color(1, 1, 1, 1);
-			mSpecularColor=new Color(1, 1, 1, 1);
+			mEmissiveColor = new Color(0, 0, 0, 1);
+			mAmbientColor = new Color(1, 1, 1, 0);
+			mDiffuseColor = new Color(1, 1, 1, 1);
+			mSpecularColor = new Color(1, 1, 1, 1);
 
-			mCullMode=Context3DTriangleFace.FRONT;
+			mCullMode = Context3DTriangleFace.FRONT;
 
-			mAlpha=1.0;
+			mAlpha = 1.0;
 		}
 
 		public function set skinningMatrices(data:Vector.<Number>):void
@@ -54,12 +54,12 @@ package org.angle3d.material
 			if (mCullMode == mode)
 				return;
 
-			mCullMode=mode;
+			mCullMode = mode;
 
-			var size:int=_techniques.length;
-			for (var i:int=0; i < size; i++)
+			var size:int = _techniques.length;
+			for (var i:int = 0; i < size; i++)
 			{
-				_techniques[i].renderState.cullMode=mode;
+				_techniques[i].renderState.cullMode = mode;
 			}
 		}
 
@@ -72,13 +72,13 @@ package org.angle3d.material
 		{
 			if (value)
 			{
-				mCullMode=Context3DTriangleFace.NONE;
+				mCullMode = Context3DTriangleFace.NONE;
 			}
 
-			var size:int=_techniques.length;
-			for (var i:int=0; i < size; i++)
+			var size:int = _techniques.length;
+			for (var i:int = 0; i < size; i++)
 			{
-				_techniques[i].renderState.cullMode=mCullMode;
+				_techniques[i].renderState.cullMode = mCullMode;
 			}
 		}
 
@@ -104,7 +104,7 @@ package org.angle3d.material
 
 		public function set alpha(alpha:Number):void
 		{
-			mAlpha=FastMath.fclamp(alpha, 0.0, 1.0);
+			mAlpha = FastMath.fclamp(alpha, 0.0, 1.0);
 		}
 
 		public function get alpha():Number
@@ -114,7 +114,7 @@ package org.angle3d.material
 
 		public function clone():Material
 		{
-			var mat:Material=new Material();
+			var mat:Material = new Material();
 			return mat;
 		}
 	}

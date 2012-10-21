@@ -20,19 +20,19 @@ package org.angle3d.material.sgsl.node
 		 */
 		public function cloneCustomFunction(functionMap:Dictionary):FunctionNode
 		{
-			var functionNode:FunctionNode=functionMap[this.name].clone();
+			var functionNode:FunctionNode = functionMap[this.name].clone();
 			if (functionNode.needReplace)
 			{
 				functionNode.replaceCustomFunction(functionMap);
 			}
 
-			var params:Vector.<ParameterNode>=functionNode.getParams();
-			var length:int=params.length;
-			var paramMap:Dictionary=new Dictionary();
-			for (var i:int=0; i < length; i++)
+			var params:Vector.<ParameterNode> = functionNode.getParams();
+			var length:int = params.length;
+			var paramMap:Dictionary = new Dictionary();
+			for (var i:int = 0; i < length; i++)
 			{
-				var param:ParameterNode=params[i];
-				paramMap[param.name]=children[i];
+				var param:ParameterNode = params[i];
+				paramMap[param.name] = children[i];
 			}
 
 			functionNode.replaceLeafNode(paramMap);
@@ -42,28 +42,28 @@ package org.angle3d.material.sgsl.node
 
 		override public function clone():LeafNode
 		{
-			var node:FunctionCallNode=new FunctionCallNode(name);
+			var node:FunctionCallNode = new FunctionCallNode(name);
 			cloneChildren(node);
 			return node;
 		}
 
-		override public function toString(level:int=0):String
+		override public function toString(level:int = 0):String
 		{
-			var result:String="";
+			var result:String = "";
 
-			result=name + "(" + getChildrenString(level) + ")";
+			result = name + "(" + getChildrenString(level) + ")";
 
 			return result;
 		}
 
 		override protected function getChildrenString(level:int):String
 		{
-			var results:Array=[];
+			var results:Array = [];
 			var m:LeafNode;
-			var length:int=_children.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = _children.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				m=_children[i];
+				m = _children[i];
 				results.push(m.toString(level));
 			}
 			return results.join(", ");

@@ -13,17 +13,17 @@ package org.angle3d.scene
 
 	public class SkyBox extends Geometry
 	{
-		public function SkyBox(cubeTexture:CubeTextureMap, size:Number=100.0)
+		public function SkyBox(cubeTexture:CubeTextureMap, size:Number = 100.0)
 		{
 			super("SkyBox");
 
 			setMaterial(new MaterialSkyBox(cubeTexture));
 			//TODO 添加参数用来选择使用Sphere还是Box
-			var sphereMesh:Sphere=new Sphere(size / 2, 10, 10);
+			var sphereMesh:Sphere = new Sphere(size / 2, 10, 10);
 			//setMesh(new SkyBoxShape(size));
 			setMesh(sphereMesh);
-			localQueueBucket=QueueBucket.Sky;
-			localCullHint=CullHint.Never;
+			localQueueBucket = QueueBucket.Sky;
+			localCullHint = CullHint.Never;
 			setBound(new BoundingSphere(Number.POSITIVE_INFINITY));
 		}
 	}

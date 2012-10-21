@@ -18,7 +18,7 @@ package org.angle3d.animation
 		{
 			super();
 
-			this.skeleton=skeleton;
+			this.skeleton = skeleton;
 			this.skeleton.resetAndUpdate();
 
 		}
@@ -29,9 +29,9 @@ package org.angle3d.animation
 			{
 				skeleton.reset();
 
-				var tempVars:TempVars=TempVars.getTempVars();
+				var tempVars:TempVars = TempVars.getTempVars();
 
-				for (var i:int=0; i < mNumchannels; i++)
+				for (var i:int = 0; i < mNumchannels; i++)
 				{
 					mChannels[i].update(tpf, tempVars);
 				}

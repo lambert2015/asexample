@@ -31,13 +31,13 @@ package org.angle3d.material.shader
 
 		public function Shader()
 		{
-			_attributeList=new AttributeList();
-			_vUniformList=new UniformList();
-			_fUniformList=new UniformList();
-			_textureList=new ShaderVariableList();
+			_attributeList = new AttributeList();
+			_vUniformList = new UniformList();
+			_fUniformList = new UniformList();
+			_textureList = new ShaderVariableList();
 
-			_bindUniforms=new Vector.<Uniform>();
-			_bindAttributes=new Dictionary();
+			_bindUniforms = new Vector.<Uniform>();
+			_bindAttributes = new Dictionary();
 		}
 
 		public function addVariable(shaderType:String, type:int, name:String, size:int):void
@@ -63,7 +63,7 @@ package org.angle3d.material.shader
 		 */
 		public function setConstants(shaderType:String, digits:Vector.<Vector.<Number>>):void
 		{
-			var list:UniformList=getUniformList(shaderType);
+			var list:UniformList = getUniformList(shaderType);
 
 			list.setConstants(digits);
 		}
@@ -89,35 +89,35 @@ package org.angle3d.material.shader
 			return (shaderType == ShaderType.VERTEX) ? _vUniformList : _fUniformList;
 		}
 
-		private var mShaderTypes:Array=[ShaderType.VERTEX, ShaderType.FRAGMENT];
+		private var mShaderTypes:Array = [ShaderType.VERTEX, ShaderType.FRAGMENT];
 
 		public function upload(render:IRenderer):void
 		{
-			for (var i:int=0; i < 2; i++)
+			for (var i:int = 0; i < 2; i++)
 			{
-				var type:String=mShaderTypes[i];
+				var type:String = mShaderTypes[i];
 
 				//上传常量
 				_uploadConstants(render, type);
 
 				//其他自定义数据
-				var list:UniformList=getUniformList(type);
-				var uniforms:Vector.<ShaderVariable>=list.getUniforms();
-				var size:int=uniforms.length;
+				var list:UniformList = getUniformList(type);
+				var uniforms:Vector.<ShaderVariable> = list.getUniforms();
+				var size:int = uniforms.length;
 				var uniform:Uniform;
-				for (var j:int=0; j < size; j++)
+				for (var j:int = 0; j < size; j++)
 				{
-					uniform=list.getUniformAt(j);
+					uniform = list.getUniformAt(j);
 					render.setShaderConstants(type, uniform.location, uniform.data, uniform.size);
 				}
 			}
 
 			//上传贴图
-			var textures:Vector.<ShaderVariable>=_textureList.getVariables();
-			var vLength:int=textures.length;
-			for (i=0; i < vLength; i++)
+			var textures:Vector.<ShaderVariable> = _textureList.getVariables();
+			var vLength:int = textures.length;
+			for (i = 0; i < vLength; i++)
 			{
-				var tex:TextureVariable=textures[i] as TextureVariable;
+				var tex:TextureVariable = textures[i] as TextureVariable;
 				render.setTextureAt(tex.location, tex.textureMap);
 			}
 		}
@@ -128,13 +128,13 @@ package org.angle3d.material.shader
 		 */
 		private function _uploadConstants(render:IRenderer, shaderType:String):void
 		{
-			var digits:Vector.<Vector.<Number>>=getUniformList(shaderType).getConstants();
+			var digits:Vector.<Vector.<Number>> = getUniformList(shaderType).getConstants();
 
 			if (digits == null)
 				return;
 
-			var length:int=digits.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = digits.length;
+			for (var i:int = 0; i < length; i++)
 			{
 				render.setShaderConstants(shaderType, i, digits[i], 1);
 			}
@@ -142,7 +142,7 @@ package org.angle3d.material.shader
 
 		public function setUniform(type:String, name:String, data:Vector.<Number>):void
 		{
-			var uniform:Uniform=getUniform(type, name);
+			var uniform:Uniform = getUniform(type, name);
 			if (uniform != null)
 			{
 				uniform.setVector(data);
@@ -161,7 +161,7 @@ package org.angle3d.material.shader
 
 		public function bindAttribute(bufferType:String, name:String):void
 		{
-			_bindAttributes[bufferType]=_attributeList.getVariable(name);
+			_bindAttributes[bufferType] = _attributeList.getVariable(name);
 		}
 
 		public function getAttribute(bufferType:String):AttributeVar
@@ -177,10 +177,10 @@ package org.angle3d.material.shader
 		 */
 		public function bindUniform(type:String, name:String, bd:int):void
 		{
-			var uniform:Uniform=getUniform(type, name);
+			var uniform:Uniform = getUniform(type, name);
 			if (uniform != null)
 			{
-				uniform.binding=bd;
+				uniform.binding = bd;
 				_bindUniforms.push(uniform);
 			}
 		}
@@ -209,13 +209,13 @@ package org.angle3d.material.shader
 
 		public function destroy():void
 		{
-			_vUniformList=null;
-			_fUniformList=null;
-			_textureList=null;
-			_attributeList=null;
-			_bindUniforms=null;
-			vertexData=null;
-			fragmentData=null;
+			_vUniformList = null;
+			_fUniformList = null;
+			_textureList = null;
+			_attributeList = null;
+			_bindUniforms = null;
+			vertexData = null;
+			fragmentData = null;
 			ShaderManager.instance.unregisterShader(name);
 		}
 
@@ -224,10 +224,10 @@ package org.angle3d.material.shader
 		 */
 		public function setUniformBindings(binds:Vector.<UniformBindingHelp>):void
 		{
-			var bLength:int=binds.length;
-			for (var i:int=0; i < bLength; i++)
+			var bLength:int = binds.length;
+			for (var i:int = 0; i < bLength; i++)
 			{
-				var help:UniformBindingHelp=binds[i];
+				var help:UniformBindingHelp = binds[i];
 				bindUniform(help.shaderType, help.name, help.bindType);
 			}
 		}

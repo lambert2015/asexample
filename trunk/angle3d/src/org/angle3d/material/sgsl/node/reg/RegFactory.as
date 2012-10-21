@@ -6,7 +6,7 @@ package org.angle3d.material.sgsl.node.reg
 
 	public class RegFactory
 	{
-		public static function create(name:String, regType:String, dataType:String, isArray:Boolean=false, arraySize:int=0):RegNode
+		public static function create(name:String, regType:String, dataType:String, isArray:Boolean = false, arraySize:int = 0):RegNode
 		{
 			//简单的语法检查
 			CF::DEBUG

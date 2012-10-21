@@ -27,7 +27,7 @@ package org.assetloader.loaders
 		 */
 		protected var _loader:Loader;
 
-		public function DisplayObjectLoader(request:URLRequest, id:String=null)
+		public function DisplayObjectLoader(request:URLRequest, id:String = null)
 		{
 			super(request, AssetType.DISPLAY_OBJECT, id);
 		}
@@ -38,7 +38,7 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete=new LoaderSignal(DisplayObject);
+			_onComplete = new LoaderSignal(DisplayObject);
 		}
 
 		/**
@@ -46,7 +46,7 @@ package org.assetloader.loaders
 		 */
 		override protected function constructLoader():IEventDispatcher
 		{
-			_loader=new Loader();
+			_loader = new Loader();
 			return _loader.contentLoaderInfo;
 		}
 
@@ -87,8 +87,8 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			super.destroy();
-			_loader=null;
-			_displayObject=null;
+			_loader = null;
+			_displayObject = null;
 		}
 
 		/**
@@ -96,9 +96,9 @@ package org.assetloader.loaders
 		 */
 		override protected function complete_handler(event:Event):void
 		{
-			_data=_displayObject=_loader.content;
+			_data = _displayObject = _loader.content;
 
-			var testResult:String=testData(_data);
+			var testResult:String = testData(_data);
 
 			if (testResult != "")
 			{

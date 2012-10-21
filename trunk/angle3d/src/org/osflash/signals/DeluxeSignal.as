@@ -34,11 +34,11 @@ package org.osflash.signals
 		 * NOTE: Subclasses cannot call super.apply(null, valueClasses),
 		 * but this constructor has logic to support super(valueClasses).
 		 */
-		public function DeluxeSignal(target:Object=null, ... valueClasses)
+		public function DeluxeSignal(target:Object = null, ... valueClasses)
 		{
-			_target=target;
+			_target = target;
 			// Cannot use super.apply(null, valueClasses), so allow the subclass to call super(valueClasses).
-			valueClasses=(valueClasses.length == 1 && valueClasses[0] is Array) ? valueClasses[0] : valueClasses;
+			valueClasses = (valueClasses.length == 1 && valueClasses[0] is Array) ? valueClasses[0] : valueClasses;
 
 			super(valueClasses);
 		}
@@ -54,7 +54,7 @@ package org.osflash.signals
 			if (value == _target)
 				return;
 			removeAll();
-			_target=value;
+			_target = value;
 		}
 
 		/**
@@ -65,8 +65,8 @@ package org.osflash.signals
 		override public function dispatch(... valueObjects):void
 		{
 			// Validate value objects against pre-defined value classes.
-			const numValueClasses:int=_valueClasses.length;
-			const numValueObjects:int=valueObjects.length;
+			const numValueClasses:int = _valueClasses.length;
+			const numValueObjects:int = valueObjects.length;
 
 			if (numValueObjects < numValueClasses)
 			{
@@ -74,7 +74,7 @@ package org.osflash.signals
 			}
 
 			// Cannot dispatch differently typed objects than declared classes.
-			for (var i:int=0; i < numValueClasses; i++)
+			for (var i:int = 0; i < numValueClasses; i++)
 			{
 				// Optimized for the optimistic case that values are correct.
 				if (valueObjects[i] is _valueClasses[i] || valueObjects[i] === null)
@@ -84,40 +84,40 @@ package org.osflash.signals
 			}
 
 			// Extract and clone event object if necessary.
-			var event:IEvent=valueObjects[0] as IEvent;
+			var event:IEvent = valueObjects[0] as IEvent;
 			if (event)
 			{
 				if (event.target)
 				{
-					event=event.clone();
-					valueObjects[0]=event;
+					event = event.clone();
+					valueObjects[0] = event;
 				}
 
-				event.target=target;
-				event.currentTarget=target;
-				event.signal=this;
+				event.target = target;
+				event.currentTarget = target;
+				event.signal = this;
 			}
 
 			// Broadcast to listeners.
-			var slotsToProcess:SlotList=slots;
+			var slotsToProcess:SlotList = slots;
 			while (slotsToProcess.nonEmpty)
 			{
 				slotsToProcess.head.execute(valueObjects);
-				slotsToProcess=slotsToProcess.tail;
+				slotsToProcess = slotsToProcess.tail;
 			}
 
 			// Bubble the event as far as possible.
 			if (!event || !event.bubbles)
 				return;
 
-			var currentTarget:Object=target;
+			var currentTarget:Object = target;
 
 			while (currentTarget && currentTarget.hasOwnProperty("parent") && (currentTarget == currentTarget["parent"]))
 			{
 				if (currentTarget is IBubbleEventHandler)
 				{
 					// onEventBubbled() can stop the bubbling by returning false.
-					if (!IBubbleEventHandler(event.currentTarget=currentTarget).onEventBubbled(event))
+					if (!IBubbleEventHandler(event.currentTarget = currentTarget).onEventBubbled(event))
 						break;
 				}
 			}

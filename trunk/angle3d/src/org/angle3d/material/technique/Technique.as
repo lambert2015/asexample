@@ -26,13 +26,13 @@ package org.angle3d.material.technique
 
 		protected var _requiresLight:Boolean;
 
-		protected var _keys:Array=[];
+		protected var _keys:Array = [];
 
 		public function Technique(name:String)
 		{
 			_initInternal();
 
-			_name=getQualifiedClassName(this);
+			_name = getQualifiedClassName(this);
 		}
 
 		public function getName():String
@@ -61,30 +61,30 @@ package org.angle3d.material.technique
 		 * @param	meshKey
 		 * @return
 		 */
-		final public function getShader(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Shader
+		final public function getShader(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Shader
 		{
-			var key:String=getKey(lightType, meshType);
+			var key:String = getKey(lightType, meshType);
 
-			var shader:Shader=_shaderMap[key];
+			var shader:Shader = _shaderMap[key];
 
 			if (shader == null)
 			{
 				if (_optionMap[key] == undefined)
 				{
-					_optionMap[key]=getOption(lightType, meshType);
+					_optionMap[key] = getOption(lightType, meshType);
 				}
 
-				var vstr:String=getVertexSource(lightType, meshType);
-				var fstr:String=getFragmentSource(lightType, meshType);
+				var vstr:String = getVertexSource(lightType, meshType);
+				var fstr:String = getFragmentSource(lightType, meshType);
 
-				var option:Vector.<Vector.<String>>=_optionMap[key];
+				var option:Vector.<Vector.<String>> = _optionMap[key];
 
-				shader=ShaderManager.instance.registerShader(key, [vstr, fstr], option);
+				shader = ShaderManager.instance.registerShader(key, [vstr, fstr], option);
 
 				shader.setUniformBindings(getBindUniforms(lightType, meshType));
 				shader.setAttributeBindings(getBindAttributes(lightType, meshType));
 
-				_shaderMap[key]=shader;
+				_shaderMap[key] = shader;
 			}
 
 			return shader;
@@ -92,11 +92,11 @@ package org.angle3d.material.technique
 
 		protected function _initInternal():void
 		{
-			_shaderMap=new Dictionary();
-			_optionMap=new Dictionary();
+			_shaderMap = new Dictionary();
+			_optionMap = new Dictionary();
 
-			_renderState=new RenderState();
-			_requiresLight=false;
+			_renderState = new RenderState();
+			_requiresLight = false;
 		}
 
 		public function get requiresLight():Boolean
@@ -106,34 +106,34 @@ package org.angle3d.material.technique
 
 		public function set requiresLight(value:Boolean):void
 		{
-			_requiresLight=value;
+			_requiresLight = value;
 		}
 
-		protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
 			return null;
 		}
 
-		protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
 			return null;
 		}
 
-		protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return "";
 		}
 
-		protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return "";
 		}
 
-		protected function getOption(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<Vector.<String>>
+		protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
 		{
-			var results:Vector.<Vector.<String>>=new Vector.<Vector.<String>>(2, true);
-			results[0]=new Vector.<String>();
-			results[1]=new Vector.<String>();
+			var results:Vector.<Vector.<String>> = new Vector.<Vector.<String>>(2, true);
+			results[0] = new Vector.<String>();
+			results[1] = new Vector.<String>();
 
 			if (meshType == MeshType.MT_MORPH_ANIMATION)
 			{
@@ -147,7 +147,7 @@ package org.angle3d.material.technique
 			return results;
 		}
 
-		protected function getKey(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return _name;
 		}

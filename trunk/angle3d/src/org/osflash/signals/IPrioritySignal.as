@@ -18,7 +18,7 @@ package org.osflash.signals
 		 * @return a ISlot, which contains the Function passed as the parameter
 		 * @see ISlot
 		 */
-		function addWithPriority(listener:Function, priority:int=0):ISlot
+		function addWithPriority(listener:Function, priority:int = 0):ISlot
 
 		/**
 		 * Subscribes a one-time listener for this signal.
@@ -34,6 +34,6 @@ package org.osflash.signals
 		 * @return a ISlot, which contains the Function passed as the parameter
 		 * @see ISlot
 		 */
-		function addOnceWithPriority(listener:Function, priority:int=0):ISlot
+		function addOnceWithPriority(listener:Function, priority:int = 0):ISlot
 	}
 }

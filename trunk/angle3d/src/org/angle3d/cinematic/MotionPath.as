@@ -38,9 +38,9 @@ package org.angle3d.cinematic
 		{
 			super();
 
-			_spline=new Spline();
+			_spline = new Spline();
 
-			_wayPointReach=new MotionPathSignal();
+			_wayPointReach = new MotionPathSignal();
 		}
 
 		public function get onWayPointReach():MotionPathSignal
@@ -56,20 +56,20 @@ package org.angle3d.cinematic
 		 */
 		public function interpolatePath(time:Number, control:MotionEvent, tpf:Number):Number
 		{
-			var traveledDistance:Number=0;
+			var traveledDistance:Number = 0;
 
-			var vars:TempVars=TempVars.getTempVars();
-			var temp:Vector3f=vars.vect1;
-			var tmpVector:Vector3f=vars.vect2;
+			var vars:TempVars = TempVars.getTempVars();
+			var temp:Vector3f = vars.vect1;
+			var tmpVector:Vector3f = vars.vect2;
 
 			//computing traveled distance according to new time
-			traveledDistance=time * (getLength() / control.getInitialDuration());
+			traveledDistance = time * (getLength() / control.getInitialDuration());
 
 			//getting waypoint index and current value from new traveled distance
-			var v:Vector2f=getWayPointIndexForDistance(traveledDistance);
+			var v:Vector2f = getWayPointIndexForDistance(traveledDistance);
 
 			//setting values
-			control.currentWayPoint=int(v.x);
+			control.currentWayPoint = int(v.x);
 			control.setCurrentValue(v.y);
 
 			//interpolating new position
@@ -79,7 +79,7 @@ package org.angle3d.cinematic
 			{
 				tmpVector.copyFrom(temp);
 				tmpVector.subtractLocal(control.spatial.getTranslation());
-				control.direction=tmpVector;
+				control.direction = tmpVector;
 				control.direction.normalizeLocal();
 			}
 
@@ -95,13 +95,13 @@ package org.angle3d.cinematic
 		public function checkWayPoint(control:MotionEvent, tpf:Number):void
 		{
 			//Epsilon varies with the tpf to avoid missing a waypoint on low framerate.
-			var epsilon:Number=tpf * 4;
+			var epsilon:Number = tpf * 4;
 			if (control.currentWayPoint != prevWayPoint)
 			{
 				if (control.getCurrentValue() >= 0 && control.getCurrentValue() < epsilon)
 				{
 					triggerWayPointReach(control.currentWayPoint, control);
-					prevWayPoint=control.currentWayPoint;
+					prevWayPoint = control.currentWayPoint;
 				}
 			}
 		}
@@ -110,13 +110,13 @@ package org.angle3d.cinematic
 		{
 			if (_debugNode == null)
 			{
-				_debugNode=new Node("MotionPath_debug");
+				_debugNode = new Node("MotionPath_debug");
 
-				var points:Vector.<Vector3f>=_spline.getControlPoints();
-				var pLength:int=points.length;
-				for (var i:int=0; i < pLength; i++)
+				var points:Vector.<Vector3f> = _spline.getControlPoints();
+				var pLength:int = points.length;
+				for (var i:int = 0; i < pLength; i++)
 				{
-					var geo:WireframeGeometry=new WireframeGeometry("sphere" + i, new WireframeCube(0.5, 0.5, 0.5));
+					var geo:WireframeGeometry = new WireframeGeometry("sphere" + i, new WireframeCube(0.5, 0.5, 0.5));
 					geo.setTranslation(points[i]);
 					_debugNode.attachChild(geo);
 				}
@@ -140,15 +140,15 @@ package org.angle3d.cinematic
 
 		private function _createLinearPath():Geometry
 		{
-			var geometry:WireframeGeometry=new WireframeGeometry("LinearPath", new WireframeCurve(_spline, 0));
-			geometry.materialWireframe.color=0x0000ff;
+			var geometry:WireframeGeometry = new WireframeGeometry("LinearPath", new WireframeCurve(_spline, 0));
+			geometry.materialWireframe.color = 0x0000ff;
 			return geometry;
 		}
 
 		private function _createCatmullRomPath():Geometry
 		{
-			var geometry:WireframeGeometry=new WireframeGeometry("CatmullRomPath", new WireframeCurve(_spline, 10));
-			geometry.materialWireframe.color=0x0000ff;
+			var geometry:WireframeGeometry = new WireframeGeometry("CatmullRomPath", new WireframeCurve(_spline, 10));
+			geometry.materialWireframe.color = 0x0000ff;
 			return geometry;
 		}
 
@@ -160,18 +160,18 @@ package org.angle3d.cinematic
 		 */
 		public function getWayPointIndexForDistance(distance:Number):Vector2f
 		{
-			var sum:Number=0;
-			distance=distance % _spline.getTotalLength();
-			var list:Vector.<Number>=_spline.getSegmentsLength();
-			var length:int=list.length;
-			for (var i:int=0; i < length; i++)
+			var sum:Number = 0;
+			distance = distance % _spline.getTotalLength();
+			var list:Vector.<Number> = _spline.getSegmentsLength();
+			var length:int = list.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var len:Number=list[i];
+				var len:Number = list[i];
 				if (sum + len >= distance)
 				{
 					return new Vector2f(i, (distance - sum) / len);
 				}
-				sum+=len;
+				sum += len;
 			}
 			return new Vector2f(_spline.getControlPoints().length - 1, 1.0);
 		}
@@ -242,7 +242,7 @@ package org.angle3d.cinematic
 		 */
 		public function set splineType(type:int):void
 		{
-			_spline.type=type;
+			_spline.type = type;
 		}
 
 		/**
@@ -269,10 +269,10 @@ package org.angle3d.cinematic
 		{
 			if (_debugNode != null)
 			{
-				var parent:Node=_debugNode.parent;
+				var parent:Node = _debugNode.parent;
 				_debugNode.removeFromParent();
 				_debugNode.detachAllChildren();
-				_debugNode=null;
+				_debugNode = null;
 			}
 		}
 

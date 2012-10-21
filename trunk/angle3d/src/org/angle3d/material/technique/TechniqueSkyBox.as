@@ -26,17 +26,17 @@ package org.angle3d.material.technique
 		{
 			super("TechniqueSkyBox");
 
-			_cubeTexture=cubeTexture;
+			_cubeTexture = cubeTexture;
 
-			_renderState.applyCullMode=true;
-			_renderState.cullMode=Context3DTriangleFace.NONE;
+			_renderState.applyCullMode = true;
+			_renderState.cullMode = Context3DTriangleFace.NONE;
 
-			_renderState.compareMode=Context3DCompareMode.ALWAYS;
+			_renderState.compareMode = Context3DCompareMode.ALWAYS;
 
-			_renderState.applyDepthTest=false;
-			_renderState.depthTest=false;
+			_renderState.applyDepthTest = false;
+			_renderState.depthTest = false;
 
-			_renderState.applyBlendMode=false;
+			_renderState.applyBlendMode = false;
 		}
 
 		/**
@@ -45,10 +45,10 @@ package org.angle3d.material.technique
 		 */
 		override public function updateShader(shader:Shader):void
 		{
-			shader.getTextureVar("t_cubeTexture").textureMap=_cubeTexture;
+			shader.getTextureVar("t_cubeTexture").textureMap = _cubeTexture;
 		}
 
-		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -71,7 +71,7 @@ package org.angle3d.material.technique
                 }]]>;
 		}
 
-		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 			    uniform samplerCube t_cubeTexture;
@@ -81,20 +81,20 @@ package org.angle3d.material.technique
                 }]]>;
 		}
 
-		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
-			var map:Dictionary=new Dictionary();
-			map[BufferType.POSITION]="a_position";
+			var map:Dictionary = new Dictionary();
+			map[BufferType.POSITION] = "a_position";
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_ViewMatrix", UniformBinding.ViewMatrix));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_ProjectionMatrix", UniformBinding.ProjectionMatrix));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldMatrix", UniformBinding.WorldMatrix));
-			list.fixed=true;
+			list.fixed = true;
 			return list;
 		}
 	}

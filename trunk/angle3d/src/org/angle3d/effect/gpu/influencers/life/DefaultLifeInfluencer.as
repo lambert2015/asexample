@@ -9,8 +9,8 @@ package org.angle3d.effect.gpu.influencers.life
 
 		public function DefaultLifeInfluencer(lowLife:Number, highLife:Number)
 		{
-			_lowLife=lowLife;
-			_highLife=highLife;
+			_lowLife = lowLife;
+			_highLife = highLife;
 		}
 
 		public function getLife(index:int):Number

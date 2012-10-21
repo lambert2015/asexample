@@ -11,9 +11,9 @@ package org.angle3d.effect.gpu.influencers.birth
 
 		public function getBirth(index:int):Number
 		{
-			var perCount:int=_generator.perSecondParticleCount;
+			var perCount:int = _generator.perSecondParticleCount;
 
-			var count:int=int(index / perCount);
+			var count:int = int(index / perCount);
 
 			return count + (index - count * perCount) / perCount;
 		}

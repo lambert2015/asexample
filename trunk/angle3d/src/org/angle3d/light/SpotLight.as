@@ -35,35 +35,35 @@ package org.angle3d.light
 		{
 			super(LightType.Spot);
 
-			mPosition=new Vector3f();
-			mDirection=new Vector3f(0, -1, 0);
+			mPosition = new Vector3f();
+			mDirection = new Vector3f(0, -1, 0);
 
-			mInnerAngle=FastMath.PI / (4 * 8);
-			mOuterAngle=FastMath.PI / (4 * 6);
-			mSpotRange=100;
-			mInvSpotRange=1 / 100;
-			mPackedAngleCos=0;
+			mInnerAngle = FastMath.PI / (4 * 8);
+			mOuterAngle = FastMath.PI / (4 * 6);
+			mSpotRange = 100;
+			mInvSpotRange = 1 / 100;
+			mPackedAngleCos = 0;
 			computePackedCos();
 		}
 
 		private function computePackedCos():void
 		{
-			var innerCos:Number=Math.cos(mInnerAngle);
-			var outerCos:Number=Math.cos(mOuterAngle);
-			mPackedAngleCos=int(innerCos * 1000);
-			mPackedAngleCos+=outerCos;
+			var innerCos:Number = Math.cos(mInnerAngle);
+			var outerCos:Number = Math.cos(mOuterAngle);
+			mPackedAngleCos = int(innerCos * 1000);
+			mPackedAngleCos += outerCos;
 		}
 
 		override public function computeLastDistance(owner:Spatial):void
 		{
 			if (owner.worldBound != null)
 			{
-				var bv:BoundingVolume=owner.worldBound;
-				lastDistance=bv.distanceSquaredTo(mPosition);
+				var bv:BoundingVolume = owner.worldBound;
+				lastDistance = bv.distanceSquaredTo(mPosition);
 			}
 			else
 			{
-				lastDistance=owner.getWorldTranslation().distanceSquared(mPosition);
+				lastDistance = owner.getWorldTranslation().distanceSquared(mPosition);
 			}
 		}
 
@@ -109,14 +109,14 @@ package org.angle3d.light
 		{
 			Assert.assert(value >= 0, "SpotLight range cannot be negative");
 
-			mSpotRange=value;
+			mSpotRange = value;
 			if (value != 0)
 			{
-				mInvSpotRange=1 / value;
+				mInvSpotRange = 1 / value;
 			}
 			else
 			{
-				mInvSpotRange=0;
+				mInvSpotRange = 0;
 			}
 		}
 
@@ -145,7 +145,7 @@ package org.angle3d.light
 		 */
 		public function set innerAngle(value:Number):void
 		{
-			mInnerAngle=value;
+			mInnerAngle = value;
 			computePackedCos();
 		}
 
@@ -166,7 +166,7 @@ package org.angle3d.light
 		 */
 		public function set outerAngle(value:Number):void
 		{
-			mOuterAngle=value;
+			mOuterAngle = value;
 			computePackedCos();
 		}
 

@@ -23,11 +23,11 @@ package org.angle3d.utils
 		/**
 		 * Allow X instances of TempVars.
 		 */
-		private static var STACK_SIZE:int=5;
+		private static var STACK_SIZE:int = 5;
 
-		private static var currentIndex:int=0;
+		private static var currentIndex:int = 0;
 
-		private static var varStack:Vector.<TempVars>=new Vector.<TempVars>(5, true);
+		private static var varStack:Vector.<TempVars> = new Vector.<TempVars>(5, true);
 
 		public static function getTempVars():TempVars
 		{
@@ -36,16 +36,16 @@ package org.angle3d.utils
 				Assert.assert(currentIndex <= STACK_SIZE - 1, "Only Allow " + STACK_SIZE + " instances of TempVars");
 			}
 
-			var instance:TempVars=varStack[currentIndex];
+			var instance:TempVars = varStack[currentIndex];
 			if (instance == null)
 			{
-				instance=new TempVars();
-				varStack[currentIndex]=instance;
+				instance = new TempVars();
+				varStack[currentIndex] = instance;
 			}
 
 			currentIndex++;
 
-			instance.isUsed=true;
+			instance.isUsed = true;
 
 			return instance;
 		}
@@ -108,46 +108,46 @@ package org.angle3d.utils
 
 		public function TempVars()
 		{
-			isUsed=false;
+			isUsed = false;
 
-			triangle=new Triangle();
+			triangle = new Triangle();
 
-			color=new Color();
+			color = new Color();
 
-			vect1=new Vector3f();
-			vect2=new Vector3f();
-			vect3=new Vector3f();
-			vect4=new Vector3f();
-			vect5=new Vector3f();
-			vect6=new Vector3f();
-			vect7=new Vector3f();
+			vect1 = new Vector3f();
+			vect2 = new Vector3f();
+			vect3 = new Vector3f();
+			vect4 = new Vector3f();
+			vect5 = new Vector3f();
+			vect6 = new Vector3f();
+			vect7 = new Vector3f();
 
-			vect4f=new Vector4f();
+			vect4f = new Vector4f();
 
-			vect2d=new Vector2f();
-			vect2d2=new Vector2f();
+			vect2d = new Vector2f();
+			vect2d2 = new Vector2f();
 
-			tempMat3=new Matrix3f();
-			tempMat4=new Matrix4f();
-			tempMat42=new Matrix4f();
+			tempMat3 = new Matrix3f();
+			tempMat4 = new Matrix4f();
+			tempMat42 = new Matrix4f();
 
-			quat1=new Quaternion();
-			quat2=new Quaternion();
+			quat1 = new Quaternion();
+			quat2 = new Quaternion();
 
-			plane=new Plane();
+			plane = new Plane();
 
-			fWdU=new Vector.<Number>(3, true);
-			fAWdU=new Vector.<Number>(3, true);
-			fDdU=new Vector.<Number>(3, true);
-			fADdU=new Vector.<Number>(3, true);
-			fAWxDdU=new Vector.<Number>(3, true);
+			fWdU = new Vector.<Number>(3, true);
+			fAWdU = new Vector.<Number>(3, true);
+			fDdU = new Vector.<Number>(3, true);
+			fADdU = new Vector.<Number>(3, true);
+			fAWxDdU = new Vector.<Number>(3, true);
 		}
 
 		public function release():void
 		{
 			Assert.assert(isUsed, "This instance of TempVars was already released!");
 
-			isUsed=false;
+			isUsed = false;
 
 			currentIndex--;
 

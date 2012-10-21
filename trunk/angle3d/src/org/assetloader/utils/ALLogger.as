@@ -29,7 +29,7 @@ package org.assetloader.utils
 		 * Signal is fired once logging occured.
 		 * arg1 - String - The output genereged.
 		 */
-		public var onLog:Signal=new Signal(String);
+		public var onLog:Signal = new Signal(String);
 
 		/**
 		 * If true the trace function will be called.
@@ -42,16 +42,16 @@ package org.assetloader.utils
 		 *
 		 * @default \t;
 		 */
-		public var indentChar:String="\t";
+		public var indentChar:String = "\t";
 
 		/**
 		 * Constructor, creates a new instance for outputting information.
 		 *
 		 * @param autoTrace If true, ALLogger will automatically call the trace function.
 		 */
-		public function ALLogger(autoTrace:Boolean=true)
+		public function ALLogger(autoTrace:Boolean = true)
 		{
-			this.autoTrace=autoTrace;
+			this.autoTrace = autoTrace;
 		}
 
 		/**
@@ -61,7 +61,7 @@ package org.assetloader.utils
 		 * @param verbosity The level of detail you'd like, max value 4.
 		 * @param recurse Recusion depth, setting -1 will cause infinite recusion.
 		 */
-		public function attach(loader:ILoader, verbosity:int=0, recurse:int=-1):void
+		public function attach(loader:ILoader, verbosity:int = 0, recurse:int = -1):void
 		{
 			_attachDetach("add", loader, verbosity, recurse);
 		}
@@ -73,7 +73,7 @@ package org.assetloader.utils
 		 * @param verbosity The level of detail you'd like to remove, max value 4, setting -1 will remove all.
 		 * @param recurse Recusion depth, setting -1 will cause infinite recusion.
 		 */
-		public function detach(loader:ILoader, verbosity:int=-1, recurse:int=-1):void
+		public function detach(loader:ILoader, verbosity:int = -1, recurse:int = -1):void
 		{
 			_attachDetach("remove", loader, verbosity, recurse);
 		}
@@ -85,87 +85,87 @@ package org.assetloader.utils
 		 * @param verbosity The level of detail you'd like, max value 4.
 		 * @param recurse Recusion depth, setting -1 will cause infinite recusion.
 		 */
-		public function explode(loader:ILoader, verbosity:int=0, recurse:int=-1):void
+		public function explode(loader:ILoader, verbosity:int = 0, recurse:int = -1):void
 		{
-			var str:String="";
+			var str:String = "";
 
-			var indentBy:int=0;
-			var parent:ILoader=loader.parent;
+			var indentBy:int = 0;
+			var parent:ILoader = loader.parent;
 			while (parent)
 			{
 				indentBy++;
-				parent=parent.parent;
+				parent = parent.parent;
 			}
-			var tbs:String=rptStr(indentChar, indentBy);
+			var tbs:String = rptStr(indentChar, indentBy);
 
 			if (loader is IAssetLoader)
 			{
-				var assetloader:IAssetLoader=IAssetLoader(loader);
+				var assetloader:IAssetLoader = IAssetLoader(loader);
 
-				str+=tbs + "[IASSETLOADER | id=" + assetloader.id + " | type=" + assetloader.type + "]\n";
+				str += tbs + "[IASSETLOADER | id=" + assetloader.id + " | type=" + assetloader.type + "]\n";
 				if (verbosity >= 2)
 				{
-					str+=tbs + " [ids = " + assetloader.ids + "]\n";
-					str+=tbs + " [loadedIds = " + assetloader.loadedIds + "]\n";
+					str += tbs + " [ids = " + assetloader.ids + "]\n";
+					str += tbs + " [loadedIds = " + assetloader.loadedIds + "]\n";
 				}
 				if (verbosity >= 1)
 				{
-					str+=tbs + " [numLoaders = " + assetloader.numLoaders + "]\n";
-					str+=tbs + " [numLoaded = " + assetloader.numLoaded + "]\n";
-					str+=tbs + " [numConnections = " + assetloader.numConnections + "]\n";
-					str+=tbs + " [failOnError = " + assetloader.failOnError + "]\n";
+					str += tbs + " [numLoaders = " + assetloader.numLoaders + "]\n";
+					str += tbs + " [numLoaded = " + assetloader.numLoaded + "]\n";
+					str += tbs + " [numConnections = " + assetloader.numConnections + "]\n";
+					str += tbs + " [failOnError = " + assetloader.failOnError + "]\n";
 				}
 				if (verbosity >= 3)
 				{
-					str+=tbs + " [numFailed = " + assetloader.numFailed + "]\n";
-					str+=tbs + " [failedIds = " + assetloader.failedIds + "]\n";
+					str += tbs + " [numFailed = " + assetloader.numFailed + "]\n";
+					str += tbs + " [failedIds = " + assetloader.failedIds + "]\n";
 				}
 			}
 			else
 			{
-				str+=tbs + "[ILOADER | id=" + loader.id + " | type=" + loader.type + "]\n";
+				str += tbs + "[ILOADER | id=" + loader.id + " | type=" + loader.type + "]\n";
 				if (verbosity >= 1)
 				{
-					str+=tbs + " [request.url = " + loader.request.url + "]\n";
+					str += tbs + " [request.url = " + loader.request.url + "]\n";
 					if (loader.parent)
-						str+=tbs + " [parent.id = " + loader.parent.id + "]\n";
-					str+=tbs + " [invoked = " + loader.invoked + "]\n";
-					str+=tbs + " [loaded = " + loader.loaded + "]\n";
-					str+=tbs + " [failed = " + loader.failed + "]\n";
+						str += tbs + " [parent.id = " + loader.parent.id + "]\n";
+					str += tbs + " [invoked = " + loader.invoked + "]\n";
+					str += tbs + " [loaded = " + loader.loaded + "]\n";
+					str += tbs + " [failed = " + loader.failed + "]\n";
 				}
 				if (verbosity >= 2)
 				{
-					str+=tbs + " [inProgress = " + loader.inProgress + "]\n";
-					str+=tbs + " [stopped = " + loader.stopped + "]\n";
-					str+=tbs + " [retryTally = " + loader.retryTally + "]\n";
+					str += tbs + " [inProgress = " + loader.inProgress + "]\n";
+					str += tbs + " [stopped = " + loader.stopped + "]\n";
+					str += tbs + " [retryTally = " + loader.retryTally + "]\n";
 				}
 			}
 
 			if (verbosity >= 3)
 			{
-				var paramsStr:String=" [params = {";
-				var paramProps:Array=[];
+				var paramsStr:String = " [params = {";
+				var paramProps:Array = [];
 				for (var param:String in loader.params)
 				{
 					paramProps.push(param);
 				}
 				paramProps.sort();
-				var pL:int=paramProps.length;
-				for (var p:int=0; p < pL; p++)
+				var pL:int = paramProps.length;
+				for (var p:int = 0; p < pL; p++)
 				{
-					paramsStr+=((p == 0) ? "" : " | ") + paramProps[p] + "=" + loader.getParam(paramProps[p]);
+					paramsStr += ((p == 0) ? "" : " | ") + paramProps[p] + "=" + loader.getParam(paramProps[p]);
 				}
-				paramsStr+="}]\n";
+				paramsStr += "}]\n";
 
-				str+=tbs + paramsStr;
+				str += tbs + paramsStr;
 			}
 
 			if (verbosity >= 4)
 			{
-				str+=_explodeStats(loader.stats, tbs);
+				str += _explodeStats(loader.stats, tbs);
 			}
 
-			str=str.slice(0, -1);
+			str = str.slice(0, -1);
 
 			log(str);
 
@@ -174,9 +174,9 @@ package org.assetloader.utils
 				if (recurse != 0)
 				{
 					recurse--;
-					var ids:Array=assetloader.ids;
-					var iL:int=ids.length;
-					for (var i:int=0; i < iL; i++)
+					var ids:Array = assetloader.ids;
+					var iL:int = ids.length;
+					for (var i:int = 0; i < iL; i++)
 					{
 						explode(assetloader.getLoader(ids[i]), verbosity, recurse);
 					}
@@ -190,29 +190,29 @@ package org.assetloader.utils
 		 * @param loader Any implementation of ILoader, includes IAssetLoader.
 		 * @param recurse Recusion depth, setting -1 will cause infinite recusion.
 		 */
-		public function explodeStats(loader:ILoader, recurse:int=-1):void
+		public function explodeStats(loader:ILoader, recurse:int = -1):void
 		{
 			var str:String;
 
-			var indentBy:int=0;
-			var parent:ILoader=loader.parent;
+			var indentBy:int = 0;
+			var parent:ILoader = loader.parent;
 			while (parent)
 			{
 				indentBy++;
-				parent=parent.parent;
+				parent = parent.parent;
 			}
-			var tbs:String=rptStr(indentChar, indentBy);
+			var tbs:String = rptStr(indentChar, indentBy);
 
 			if (loader is IAssetLoader)
-				str=tbs + "[IASSETLOADER";
+				str = tbs + "[IASSETLOADER";
 			else
-				str=tbs + "[ILOADER";
+				str = tbs + "[ILOADER";
 
-			str+=" | id=" + loader.id + " | type=" + loader.type + "]\n";
+			str += " | id=" + loader.id + " | type=" + loader.type + "]\n";
 
-			str+=_explodeStats(loader.stats, tbs);
+			str += _explodeStats(loader.stats, tbs);
 
-			str=str.slice(0, -1);
+			str = str.slice(0, -1);
 
 			log(str);
 
@@ -220,11 +220,11 @@ package org.assetloader.utils
 			{
 				if (recurse != 0)
 				{
-					var assetloader:IAssetLoader=IAssetLoader(loader);
+					var assetloader:IAssetLoader = IAssetLoader(loader);
 					recurse--;
-					var ids:Array=assetloader.ids;
-					var iL:int=ids.length;
-					for (var i:int=0; i < iL; i++)
+					var ids:Array = assetloader.ids;
+					var iL:int = ids.length;
+					for (var i:int = 0; i < iL; i++)
 					{
 						explodeStats(assetloader.getLoader(ids[i]), recurse);
 					}
@@ -238,12 +238,12 @@ package org.assetloader.utils
 		/**
 		 * @private
 		 */
-		protected function rptStr(input:String, count:int=1):String
+		protected function rptStr(input:String, count:int = 1):String
 		{
-			var output:String="";
-			for (var i:int=0; i < count; i++)
+			var output:String = "";
+			for (var i:int = 0; i < count; i++)
 			{
-				output+=input;
+				output += input;
 			}
 			return output;
 		}
@@ -251,16 +251,16 @@ package org.assetloader.utils
 		/**
 		 * @private
 		 */
-		protected function _explodeStats(stats:ILoadStats, tbs:String=""):String
+		protected function _explodeStats(stats:ILoadStats, tbs:String = ""):String
 		{
-			var str:String=tbs + " [ILOADSTATS]\n";
-			str+=tbs + "  [Total Time: " + stats.totalTime + " ms]\n";
-			str+=tbs + "  [Latency: " + Math.floor(stats.latency) + " ms]\n";
-			str+=tbs + "  [Current Speed: " + Math.floor(stats.speed) + " kbps]\n";
-			str+=tbs + "  [Average Speed: " + Math.floor(stats.averageSpeed) + " kbps]\n";
-			str+=tbs + "  [Loaded Bytes: " + stats.bytesLoaded + "]\n";
-			str+=tbs + "  [Total Bytes: " + stats.bytesTotal + "]\n";
-			str+=tbs + "  [Progress: " + stats.progress + "%]\n";
+			var str:String = tbs + " [ILOADSTATS]\n";
+			str += tbs + "  [Total Time: " + stats.totalTime + " ms]\n";
+			str += tbs + "  [Latency: " + Math.floor(stats.latency) + " ms]\n";
+			str += tbs + "  [Current Speed: " + Math.floor(stats.speed) + " kbps]\n";
+			str += tbs + "  [Average Speed: " + Math.floor(stats.averageSpeed) + " kbps]\n";
+			str += tbs + "  [Loaded Bytes: " + stats.bytesLoaded + "]\n";
+			str += tbs + "  [Total Bytes: " + stats.bytesTotal + "]\n";
+			str += tbs + "  [Progress: " + stats.progress + "%]\n";
 
 			return str;
 		}
@@ -270,21 +270,21 @@ package org.assetloader.utils
 		 *
 		 * So nice and dirty! But, this IS better than copy and paste.
 		 */
-		protected function _attachDetach(addRem:String, loader:ILoader, verbosity:int=0, recurse:int=-1):void
+		protected function _attachDetach(addRem:String, loader:ILoader, verbosity:int = 0, recurse:int = -1):void
 		{
 			if (verbosity < 0)
-				verbosity=int.MAX_VALUE;
+				verbosity = int.MAX_VALUE;
 
 			if (loader is IAssetLoader)
 			{
-				var assetloader:IAssetLoader=IAssetLoader(loader);
+				var assetloader:IAssetLoader = IAssetLoader(loader);
 
 				if (recurse != 0)
 				{
 					recurse--;
-					var ids:Array=assetloader.ids;
-					var iL:int=ids.length;
-					for (var i:int=0; i < iL; i++)
+					var ids:Array = assetloader.ids;
+					var iL:int = ids.length;
+					for (var i:int = 0; i < iL; i++)
 					{
 						_attachDetach(addRem, assetloader.getLoader(ids[i]), verbosity, recurse);
 					}
@@ -325,19 +325,19 @@ package org.assetloader.utils
 		 */
 		protected function logPacket(packet:Packet):void
 		{
-			var interfaceName:String=packet.type == AssetType.GROUP ? "IASSETLOADER" : "ILOADER";
-			var tbs:String=rptStr(indentChar, packet.indentBy);
-			var str:String=tbs + "[" + interfaceName + "] | id=" + packet.id + " | type=" + packet.type + ((packet.parentId) ? " | parent.id=" + packet.parentId : "") + "]\n";
+			var interfaceName:String = packet.type == AssetType.GROUP ? "IASSETLOADER" : "ILOADER";
+			var tbs:String = rptStr(indentChar, packet.indentBy);
+			var str:String = tbs + "[" + interfaceName + "] | id=" + packet.id + " | type=" + packet.type + ((packet.parentId) ? " | parent.id=" + packet.parentId : "") + "]\n";
 
-			str+=tbs + " " + packet.signal + ": [";
+			str += tbs + " " + packet.signal + ": [";
 
-			var properties:Array=packet.properties;
-			var pL:int=properties.length;
-			for (var i:int=0; i < pL; i++)
+			var properties:Array = packet.properties;
+			var pL:int = properties.length;
+			for (var i:int = 0; i < pL; i++)
 			{
-				str+=((i == 0) ? "" : " | ") + properties[i] + "=" + packet[properties[i]];
+				str += ((i == 0) ? "" : " | ") + properties[i] + "=" + packet[properties[i]];
 			}
-			str+="]";
+			str += "]";
 
 			log(str);
 		}
@@ -470,11 +470,11 @@ import flash.utils.describeType;
 
 dynamic class Packet
 {
-	protected var _properties:Array=[];
+	protected var _properties:Array = [];
 
 	public var target:ILoader;
 	public var signal:String;
-	public var indentBy:int=0;
+	public var indentBy:int = 0;
 
 	public var id:String;
 	public var type:String;
@@ -482,23 +482,23 @@ dynamic class Packet
 
 	public function Packet(signal:LoaderSignal, signalName:String)
 	{
-		target=signal.loader;
-		this.signal=signalName;
-		id=target.id;
-		type=target.type;
+		target = signal.loader;
+		this.signal = signalName;
+		id = target.id;
+		type = target.type;
 
 		if (target.parent)
-			parentId=target.parent.id;
+			parentId = target.parent.id;
 
-		var parent:ILoader=target.parent;
+		var parent:ILoader = target.parent;
 		while (parent)
 		{
 			indentBy++;
-			parent=parent.parent;
+			parent = parent.parent;
 		}
 
 		// Get the description of the class
-		var description:XML=describeType(signal);
+		var description:XML = describeType(signal);
 
 		// Get accessors from description
 		for each (var a:XML in description.accessor)
@@ -515,10 +515,10 @@ dynamic class Packet
 		_properties.splice(_properties.indexOf("loader"), 1);
 		_properties.splice(_properties.indexOf("valueClasses"), 1);
 
-		var pL:int=_properties.length;
-		for (var i:int=0; i < pL; i++)
+		var pL:int = _properties.length;
+		for (var i:int = 0; i < pL; i++)
 		{
-			this[_properties[i]]=signal[_properties[i]];
+			this[_properties[i]] = signal[_properties[i]];
 		}
 
 		_properties.sort();

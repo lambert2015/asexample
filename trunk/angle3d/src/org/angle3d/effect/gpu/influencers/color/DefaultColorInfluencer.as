@@ -7,10 +7,10 @@ package org.angle3d.effect.gpu.influencers.color
 	{
 		private var _color:uint;
 
-		public function DefaultColorInfluencer(color:uint=0x0)
+		public function DefaultColorInfluencer(color:uint = 0x0)
 		{
 			super();
-			_color=color;
+			_color = color;
 		}
 
 		public function getColor(index:int, color:Color):Color

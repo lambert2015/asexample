@@ -93,28 +93,28 @@ package org.angle3d.input
 
 		private function _init():void
 		{
-			_keyInput=new KeyInput();
-			_mouseInput=new MouseInput();
+			_keyInput = new KeyInput();
+			_mouseInput = new MouseInput();
 
 			_keyInput.setInputListener(this);
 			_mouseInput.setInputListener(this);
 
-			lastLastUpdateTime=0;
-			lastUpdateTime=0;
-			frameDelta=0;
-			eventsPermitted=true;
-			safeMode=false;
-			axisDeadZone=0.05;
+			lastLastUpdateTime = 0;
+			lastUpdateTime = 0;
+			frameDelta = 0;
+			eventsPermitted = true;
+			safeMode = false;
+			axisDeadZone = 0.05;
 
-			cursorPos=new Vector2f();
+			cursorPos = new Vector2f();
 
-			bindings=new Dictionary();
-			mappings=new Dictionary();
+			bindings = new Dictionary();
+			mappings = new Dictionary();
 
-			pressedButtons=new Dictionary();
-			axisValues=new Dictionary();
-			rawListeners=new Vector.<RawInputListener>();
-			inputQueue=new Vector.<InputEvent>();
+			pressedButtons = new Dictionary();
+			axisValues = new Dictionary();
+			rawListeners = new Vector.<RawInputListener>();
+			inputQueue = new Vector.<InputEvent>();
 		}
 
 		public function initialize(stage:Stage):void
@@ -122,7 +122,7 @@ package org.angle3d.input
 			_keyInput.initialize(stage);
 			_mouseInput.initialize(stage);
 
-			firstTime=getTimer();
+			firstTime = getTimer();
 		}
 
 		public function destroy():void
@@ -130,13 +130,13 @@ package org.angle3d.input
 			if (_keyInput != null)
 			{
 				_keyInput.destroy();
-				_keyInput=null;
+				_keyInput = null;
 			}
 
 			if (_mouseInput != null)
 			{
 				_mouseInput.destroy();
-				_mouseInput=null;
+				_mouseInput = null;
 			}
 		}
 
@@ -228,7 +228,7 @@ package org.angle3d.input
 		 */
 		public function setAxisDeadZone(deadZone:Number):void
 		{
-			this.axisDeadZone=deadZone;
+			this.axisDeadZone = deadZone;
 		}
 
 		/**
@@ -261,15 +261,15 @@ package org.angle3d.input
 		 */
 		public function addListener(listener:InputListener, mappingNames:Array):void
 		{
-			var length:int=mappingNames.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = mappingNames.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var mappingName:String=mappingNames[i];
-				var im:InputMapping=mappings[mappingName];
+				var mappingName:String = mappingNames[i];
+				var im:InputMapping = mappings[mappingName];
 				if (im == null)
 				{
-					im=new InputMapping(mappingName);
-					mappings[mappingName]=im;
+					im = new InputMapping(mappingName);
+					mappings[mappingName] = im;
 				}
 
 				if (!ArrayUtil.contain(im.listeners, listener))
@@ -314,23 +314,23 @@ package org.angle3d.input
 		 */
 		public function addMapping(mappingName:String, triggers:flash.Vector.<Trigger>):void
 		{
-			var mapping:InputMapping=mappings[mappingName];
+			var mapping:InputMapping = mappings[mappingName];
 			if (mapping == null)
 			{
-				mapping=new InputMapping(mappingName);
-				mappings[mappingName]=mapping;
+				mapping = new InputMapping(mappingName);
+				mappings[mappingName] = mapping;
 			}
 
-			var length:int=triggers.length;
-			for (var i:int=0; i < length; i++)
+			var length:int = triggers.length;
+			for (var i:int = 0; i < length; i++)
 			{
-				var trigger:Trigger=triggers[i];
-				var hash:int=trigger.triggerHashCode();
-				var names:Array=bindings[hash];
+				var trigger:Trigger = triggers[i];
+				var hash:int = trigger.triggerHashCode();
+				var names:Array = bindings[hash];
 				if (names == null)
 				{
-					names=[];
-					bindings[hash]=names;
+					names = [];
+					bindings[hash] = names;
 				}
 
 				if (!ArrayUtil.contain(names, mapping))
@@ -347,19 +347,19 @@ package org.angle3d.input
 
 		public function addSingleMapping(mappingName:String, trigger:Trigger):void
 		{
-			var mapping:InputMapping=mappings[mappingName];
+			var mapping:InputMapping = mappings[mappingName];
 			if (mapping == null)
 			{
-				mapping=new InputMapping(mappingName);
-				mappings[mappingName]=mapping;
+				mapping = new InputMapping(mappingName);
+				mappings[mappingName] = mapping;
 			}
 
-			var hash:int=trigger.triggerHashCode();
-			var names:Array=bindings[hash];
+			var hash:int = trigger.triggerHashCode();
+			var names:Array = bindings[hash];
 			if (names == null)
 			{
-				names=[];
-				bindings[hash]=names;
+				names = [];
+				bindings[hash] = names;
 			}
 
 			if (!ArrayUtil.contain(names, mapping))
@@ -386,16 +386,16 @@ package org.angle3d.input
 		 */
 		public function deleteMapping(mappingName:String):void
 		{
-			var mapping:InputMapping=mappings[mappingName];
+			var mapping:InputMapping = mappings[mappingName];
 
 			Assert.assert(mapping != null, "Cannot find mapping: " + mappingName);
 
-			var triggers:Array=mapping.triggers;
-			var i:int=triggers.length;
+			var triggers:Array = mapping.triggers;
+			var i:int = triggers.length;
 			while (--i >= 0)
 			{
-				var hash:int=triggers[i];
-				var maps:Array=bindings[hash];
+				var hash:int = triggers[i];
+				var maps:Array = bindings[hash];
 				ArrayUtil.remove(maps, mapping);
 			}
 		}
@@ -413,11 +413,11 @@ package org.angle3d.input
 		 */
 		public function deleteTrigger(mappingName:String, trigger:Trigger):void
 		{
-			var mapping:InputMapping=mappings[mappingName];
+			var mapping:InputMapping = mappings[mappingName];
 
 			Assert.assert(mapping != null, "Cannot find mapping: " + mappingName);
 
-			var maps:Array=bindings[trigger.triggerHashCode()];
+			var maps:Array = bindings[trigger.triggerHashCode()];
 			ArrayUtil.remove(maps, mapping);
 		}
 
@@ -428,8 +428,8 @@ package org.angle3d.input
 		 */
 		public function clearMappings():void
 		{
-			mappings=new Dictionary();
-			bindings=new Dictionary();
+			mappings = new Dictionary();
+			bindings = new Dictionary();
 			reset();
 		}
 
@@ -489,7 +489,7 @@ package org.angle3d.input
 		 */
 		public function removeRawInputListener(listener:RawInputListener):void
 		{
-			var index:int=rawListeners.indexOf(listener);
+			var index:int = rawListeners.indexOf(listener);
 
 			if (index > -1)
 			{
@@ -504,7 +504,7 @@ package org.angle3d.input
 		 */
 		public function clearRawInputListeners():void
 		{
-			rawListeners.length=0;
+			rawListeners.length = 0;
 		}
 
 		/**
@@ -516,47 +516,47 @@ package org.angle3d.input
 		 */
 		public function update(tpf:Number):void
 		{
-			frameTPF=tpf;
+			frameTPF = tpf;
 
 			// Activate safemode if the TPF value is so small
 			// that rounding errors are inevitable
-			safeMode=tpf < 0.015;
+			safeMode = tpf < 0.015;
 
-			var currentTime:int=getTimer();
-			frameDelta=currentTime - lastUpdateTime;
+			var currentTime:int = getTimer();
+			frameDelta = currentTime - lastUpdateTime;
 
-			eventsPermitted=true;
+			eventsPermitted = true;
 
 			_keyInput.update();
 			_mouseInput.update();
 
-			eventsPermitted=false;
+			eventsPermitted = false;
 
 			processQueue();
 			invokeUpdateActions();
 
-			lastLastUpdateTime=lastUpdateTime;
-			lastUpdateTime=currentTime;
+			lastLastUpdateTime = lastUpdateTime;
+			lastUpdateTime = currentTime;
 		}
 
 		private function invokeActions(hash:int, pressed:Boolean):void
 		{
-			var maps:Array=bindings[hash];
+			var maps:Array = bindings[hash];
 			if (maps == null)
 			{
 				return;
 			}
 
-			var size:int=maps.length;
-			var i:int=size;
+			var size:int = maps.length;
+			var i:int = size;
 			while (--i >= 0)
 			{
-				var mapping:InputMapping=maps[i];
-				var listeners:Array=mapping.listeners;
-				var j:int=listeners.length;
+				var mapping:InputMapping = maps[i];
+				var listeners:Array = mapping.listeners;
+				var j:int = listeners.length;
 				while (--j >= 0)
 				{
-					var listener:InputListener=listeners[j];
+					var listener:InputListener = listeners[j];
 					if (listener is ActionListener)
 					{
 						(listener as ActionListener).onAction(mapping.name, pressed, frameTPF);
@@ -586,12 +586,12 @@ package org.angle3d.input
 
 			if (pressed)
 			{
-				pressedButtons[hash]=time;
+				pressedButtons[hash] = time;
 			}
 			else
 			{
-				var pressTime:Number=pressedButtons[hash];
-				var timeDelta:Number=time - FastMath.fmax(pressTime, lastLastUpdateTime);
+				var pressTime:Number = pressedButtons[hash];
+				var timeDelta:Number = time - FastMath.fmax(pressTime, lastLastUpdateTime);
 				if (timeDelta > 0)
 				{
 					invokeAnalogs(hash, computeAnalogValue(timeDelta), false);
@@ -604,18 +604,18 @@ package org.angle3d.input
 			var i:int;
 			var event:InputEvent;
 
-			var queueSize:int=inputQueue.length;
+			var queueSize:int = inputQueue.length;
 
-			var length:int=rawListeners.length;
-			for (i=0; i < length; i++)
+			var length:int = rawListeners.length;
+			for (i = 0; i < length; i++)
 			{
-				var listener:RawInputListener=rawListeners[i];
+				var listener:RawInputListener = rawListeners[i];
 
 				listener.beforeInput();
 
-				for (var j:int=0; j < queueSize; j++)
+				for (var j:int = 0; j < queueSize; j++)
 				{
-					event=inputQueue[j];
+					event = inputQueue[j];
 					if (event.isConsumed())
 					{
 						continue;
@@ -647,9 +647,9 @@ package org.angle3d.input
 			}
 
 
-			for (i=0; i < queueSize; i++)
+			for (i = 0; i < queueSize; i++)
 			{
-				event=inputQueue[i];
+				event = inputQueue[i];
 				if (event.isConsumed())
 				{
 					continue;
@@ -677,15 +677,15 @@ package org.angle3d.input
 				}
 			}
 
-			inputQueue.length=0;
+			inputQueue.length = 0;
 		}
 
 		private function invokeUpdateActions():void
 		{
 			for (var hash:* in pressedButtons)
 			{
-				var pressTime:Number=pressedButtons[hash];
-				var timeDelta:Number=lastUpdateTime - FastMath.fmax(lastLastUpdateTime, pressTime);
+				var pressTime:Number = pressedButtons[hash];
+				var timeDelta:Number = lastUpdateTime - FastMath.fmax(lastLastUpdateTime, pressTime);
 
 				if (timeDelta > 0)
 				{
@@ -695,14 +695,14 @@ package org.angle3d.input
 
 			for (var key:* in axisValues)
 			{
-				var value:Number=axisValues[key];
+				var value:Number = axisValues[key];
 				invokeAnalogs(key, value * frameTPF, true);
 			}
 		}
 
 		private function invokeAnalogs(hash:int, value:Number, isAxis:Boolean):void
 		{
-			var maps:Array=bindings[hash];
+			var maps:Array = bindings[hash];
 			if (maps == null)
 			{
 				return;
@@ -710,18 +710,18 @@ package org.angle3d.input
 
 			if (!isAxis)
 			{
-				value*=frameTPF;
+				value *= frameTPF;
 			}
 
-			var i:int=maps.length;
+			var i:int = maps.length;
 			while (--i >= 0)
 			{
-				var mapping:InputMapping=maps[i];
-				var listeners:Array=mapping.listeners;
-				var j:int=listeners.length;
+				var mapping:InputMapping = maps[i];
+				var listeners:Array = mapping.listeners;
+				var j:int = listeners.length;
 				while (--j >= 0)
 				{
-					var listener:InputListener=listeners[j];
+					var listener:InputListener = listeners[j];
 					if (listener is AnalogListener)
 					{
 						// NOTE: multiply by TPF for any button bindings
@@ -739,27 +739,27 @@ package org.angle3d.input
 				return;
 			}
 
-			var maps:Array=bindings[hash];
+			var maps:Array = bindings[hash];
 			if (maps == null)
 			{
 				return;
 			}
 
-			var valueChanged:Boolean=!DictionaryUtil.containKey(axisValues, hash);
+			var valueChanged:Boolean = !DictionaryUtil.containKey(axisValues, hash);
 			if (applyTpf)
 			{
-				value*=frameTPF;
+				value *= frameTPF;
 			}
 
-			var i:int=maps.length;
+			var i:int = maps.length;
 			while (--i >= 0)
 			{
-				var mapping:InputMapping=maps[i];
-				var listeners:Array=mapping.listeners;
-				var j:int=listeners.length;
+				var mapping:InputMapping = maps[i];
+				var listeners:Array = mapping.listeners;
+				var j:int = listeners.length;
 				while (--j >= 0)
 				{
-					var listener:InputListener=listeners[j];
+					var listener:InputListener = listeners[j];
 
 					if (listener is ActionListener)
 					{
@@ -778,23 +778,23 @@ package org.angle3d.input
 		private function onMouseMotionEventQueued(evt:MouseMotionEvent):void
 		{
 			var val:Number;
-			var dx:Number=evt.dx;
+			var dx:Number = evt.dx;
 			if (dx != 0)
 			{
-				val=FastMath.fabs(dx / 1024);
+				val = FastMath.fabs(dx / 1024);
 				invokeAnalogsAndActions(MouseAxisTrigger.mouseAxisHash(MouseInput.AXIS_X, dx < 0), val, false);
 			}
-			var dy:Number=evt.dy;
+			var dy:Number = evt.dy;
 			if (dy != 0)
 			{
-				val=FastMath.fabs(dy / 1024);
+				val = FastMath.fabs(dy / 1024);
 				invokeAnalogsAndActions(MouseAxisTrigger.mouseAxisHash(MouseInput.AXIS_Y, dy < 0), val, false);
 			}
 		}
 
 		private function onMouseWheelEventQueued(evt:MouseWheelEvent):void
 		{
-			var delta:int=evt.deltaWheel;
+			var delta:int = evt.deltaWheel;
 			if (delta != 0)
 			{
 				//var val:Number = FastMath.fabs(delta / 10);
@@ -805,14 +805,14 @@ package org.angle3d.input
 
 		private function onKeyEventQueued(evt:KeyInputEvent):void
 		{
-			var hash:int=KeyTrigger.keyHash(evt.keyCode);
+			var hash:int = KeyTrigger.keyHash(evt.keyCode);
 			invokeActions(hash, evt.pressed);
 			invokeTimedActions(hash, evt.getTime(), evt.pressed);
 		}
 
 		private function onMouseButtonEventQueued(evt:MouseButtonEvent):void
 		{
-			var hash:int=MouseButtonTrigger.mouseButtonHash(evt.getButtonIndex());
+			var hash:int = MouseButtonTrigger.mouseButtonHash(evt.getButtonIndex());
 			invokeActions(hash, evt.pressed);
 			invokeTimedActions(hash, evt.getTime(), evt.pressed);
 		}

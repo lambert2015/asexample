@@ -37,7 +37,7 @@ package org.angle3d.renderer
 		 * @param numRegisters 要设置的常量数量。指定 -1（默认值），设置足够的寄存器以使用所有可用数据。
 		 *
 		 */
-		function setShaderConstants(shaderType:String, firstRegister:int, data:Vector.<Number>, numRegisters:int=-1):void;
+		function setShaderConstants(shaderType:String, firstRegister:int, data:Vector.<Number>, numRegisters:int = -1):void;
 
 		/**
 		 * Invalidates the current rendering state.

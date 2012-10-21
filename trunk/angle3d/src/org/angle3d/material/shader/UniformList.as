@@ -8,12 +8,12 @@ package org.angle3d.material.shader
 		public function UniformList()
 		{
 			super();
-			_constants=new Vector.<Vector.<Number>>();
+			_constants = new Vector.<Vector.<Number>>();
 		}
 
 		public function setConstants(value:Vector.<Vector.<Number>>):void
 		{
-			_constants=value;
+			_constants = value;
 		}
 
 		public function getConstants():Vector.<Vector.<Number>>
@@ -36,13 +36,13 @@ package org.angle3d.material.shader
 		 */
 		override public function validate():void
 		{
-			var offset:int=_constants != null ? _constants.length : 0;
-			var vLength:int=_variables.length;
-			for (var i:int=0; i < vLength; i++)
+			var offset:int = _constants != null ? _constants.length : 0;
+			var vLength:int = _variables.length;
+			for (var i:int = 0; i < vLength; i++)
 			{
-				var sv:ShaderVariable=_variables[i];
-				sv.location=offset;
-				offset+=sv.size;
+				var sv:ShaderVariable = _variables[i];
+				sv.location = offset;
+				offset += sv.size;
 			}
 		}
 	}

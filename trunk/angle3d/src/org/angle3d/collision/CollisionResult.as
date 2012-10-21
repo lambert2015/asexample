@@ -27,35 +27,35 @@ package org.angle3d.collision
 
 		public function setContactPointAndDistance(contactPoint:Vector3f, distance:Number):void
 		{
-			this.contactPoint=contactPoint;
-			this.distance=distance;
+			this.contactPoint = contactPoint;
+			this.distance = distance;
 		}
 
 		public function setGeometry(geom:Geometry):void
 		{
-			this.geometry=geom;
+			this.geometry = geom;
 		}
 
 		public function setContactNormal(norm:Vector3f):void
 		{
-			this.contactNormal=norm;
+			this.contactNormal = norm;
 		}
 
 		public function setContactPoint(point:Vector3f):void
 		{
-			this.contactPoint=point;
+			this.contactPoint = point;
 		}
 
 		public function setTriangleIndex(index:int):void
 		{
-			this.triangleIndex=index;
+			this.triangleIndex = index;
 		}
 
-		public function getTriangle(store:Triangle=null):Triangle
+		public function getTriangle(store:Triangle = null):Triangle
 		{
 			if (store == null)
 			{
-				store=new Triangle();
+				store = new Triangle();
 			}
 
 //			var m:Mesh = geometry.getMesh();

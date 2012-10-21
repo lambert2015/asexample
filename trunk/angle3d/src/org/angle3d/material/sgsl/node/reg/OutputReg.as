@@ -14,7 +14,7 @@ package org.angle3d.material.sgsl.node.reg
 		{
 			super(RegType.OUTPUT, DataType.VEC4, "output");
 
-			index=0;
+			index = 0;
 		}
 
 		override public function clone():LeafNode

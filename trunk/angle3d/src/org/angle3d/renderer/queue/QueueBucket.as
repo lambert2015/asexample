@@ -17,7 +17,7 @@ package org.angle3d.renderer.queue
 		 * You should use this mode for most normal objects, except transparent
 		 * ones, as it could give a nice performance boost to your application.
 		 */
-		public static const Opaque:int=0;
+		public static const Opaque:int = 0;
 
 		/**
 		 * This is the mode you should use for object with
@@ -27,7 +27,7 @@ package org.angle3d.renderer.queue
 		 * using Opaque) through the transparent parts of the newly drawn
 		 * object.
 		 */
-		public static const Transparent:int=1;
+		public static const Transparent:int = 1;
 
 		/**
 		 * A special mode used for rendering really far away, flat objects -
@@ -36,7 +36,7 @@ package org.angle3d.renderer.queue
 		 * to this bucket is that 3D objects will not be rendered correctly
 		 * due to lack of depth testing.
 		 */
-		public static const Sky:int=2;
+		public static const Sky:int = 2;
 
 		/**
 		 * A special mode used for rendering transparent objects that
@@ -45,7 +45,7 @@ package org.angle3d.renderer.queue
 		 * also objects that do not write to the depth buffer such as
 		 * particle emitters.
 		 */
-		public static const Translucent:int=3;
+		public static const Translucent:int = 3;
 
 		/**
 		 * This is a special mode, for drawing 2D object
@@ -55,13 +55,13 @@ package org.angle3d.renderer.queue
 		 * the resolution of the screen rendered to. Any spatials
 		 * outside of that range are culled.
 		 */
-		public static const Gui:int=4;
+		public static const Gui:int = 4;
 
 		/**
 		 * A special mode, that will ensure that this spatial uses the same
 		 * mode as the parent Node does.
 		 */
-		public static const Inherit:int=5;
+		public static const Inherit:int = 5;
 	}
 }
 

@@ -20,11 +20,11 @@ package org.angle3d.scene.mesh
 		{
 			super();
 
-			_merge=false;
-			_vertexBuffer3DMap=new Dictionary();
+			_merge = false;
+			_vertexBuffer3DMap = new Dictionary();
 
-			mVerticesList=new Vector.<Vector.<Number>>();
-			mNormalList=new Vector.<Vector.<Number>>();
+			mVerticesList = new Vector.<Vector.<Number>>();
+			mNormalList = new Vector.<Vector.<Number>>();
 		}
 
 		override public function set merge(value:Boolean):void
@@ -34,17 +34,17 @@ package org.angle3d.scene.mesh
 
 		override public function validate():void
 		{
-			mVerticesList.fixed=true;
+			mVerticesList.fixed = true;
 
-			mNormalList.length=mTotalFrame;
-			mNormalList.fixed=true;
+			mNormalList.length = mTotalFrame;
+			mNormalList.fixed = true;
 
 			updateBound();
 		}
 
 		public function set totalFrame(value:int):void
 		{
-			mTotalFrame=value;
+			mTotalFrame = value;
 		}
 
 		public function get totalFrame():int
@@ -57,7 +57,7 @@ package org.angle3d.scene.mesh
 			//需要时再创建，解析模型时一起创建耗时有点久
 			if (mNormalList[frame] == null)
 			{
-				mNormalList[frame]=MeshHelper.buildVertexNormals(mIndices, getVertices(frame));
+				mNormalList[frame] = MeshHelper.buildVertexNormals(mIndices, getVertices(frame));
 			}
 
 			return mNormalList[frame];

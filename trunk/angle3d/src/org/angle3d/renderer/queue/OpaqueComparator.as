@@ -21,16 +21,16 @@ package org.angle3d.renderer.queue
 
 		public function OpaqueComparator()
 		{
-			tempVec=new Vector3f();
-			tempVec2=new Vector3f();
+			tempVec = new Vector3f();
+			tempVec2 = new Vector3f();
 		}
 
 		public function compare(o1:Geometry, o2:Geometry):int
 		{
 			// use the same shader.
 			// sort front-to-back then.
-			var d1:Number=distanceToCam(o1);
-			var d2:Number=distanceToCam(o2);
+			var d1:Number = distanceToCam(o1);
+			var d2:Number = distanceToCam(o2);
 
 			if (d1 < d2)
 			{
@@ -54,31 +54,31 @@ package org.angle3d.renderer.queue
 				return spat.queueDistance;
 			}
 
-			var camPosition:Vector3f=cam.location;
-			var viewVector:Vector3f=cam.getDirection(tempVec2);
+			var camPosition:Vector3f = cam.location;
+			var viewVector:Vector3f = cam.getDirection(tempVec2);
 			var spatPosition:Vector3f;
 			if (spat.worldBound != null)
 			{
-				spatPosition=spat.worldBound.getCenter();
+				spatPosition = spat.worldBound.getCenter();
 			}
 			else
 			{
-				spatPosition=spat.getWorldTranslation();
+				spatPosition = spat.getWorldTranslation();
 			}
 
 			//tempVec = spatPosition.subtract(camPosition);
-			tempVec.x=spatPosition.x - camPosition.x;
-			tempVec.y=spatPosition.y - camPosition.y;
-			tempVec.z=spatPosition.z - camPosition.z;
+			tempVec.x = spatPosition.x - camPosition.x;
+			tempVec.y = spatPosition.y - camPosition.y;
+			tempVec.z = spatPosition.z - camPosition.z;
 
-			spat.queueDistance=tempVec.dot(viewVector);
+			spat.queueDistance = tempVec.dot(viewVector);
 
 			return spat.queueDistance;
 		}
 
 		public function setCamera(cam:Camera3D):void
 		{
-			this.cam=cam;
+			this.cam = cam;
 		}
 	}
 }

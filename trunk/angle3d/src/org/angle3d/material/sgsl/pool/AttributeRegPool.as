@@ -15,15 +15,15 @@ package org.angle3d.material.sgsl.pool
 		public function AttributeRegPool()
 		{
 			super();
-			_pool=new Vector.<int>(8, true);
+			_pool = new Vector.<int>(8, true);
 		}
 
 		override public function clear():void
 		{
 			super.clear();
-			for (var i:int=0; i < 8; i++)
+			for (var i:int = 0; i < 8; i++)
 			{
-				_pool[i]=0;
+				_pool[i] = 0;
 			}
 		}
 
@@ -38,12 +38,12 @@ package org.angle3d.material.sgsl.pool
 				Assert.assert(!value.registered, value.name + "不能注册多次");
 			}
 
-			for (var i:int=0; i < 8; i++)
+			for (var i:int = 0; i < 8; i++)
 			{
 				if (_pool[i] == 0)
 				{
-					value.index=i;
-					_pool[i]=1;
+					value.index = i;
+					_pool[i] = 1;
 					return;
 				}
 			}

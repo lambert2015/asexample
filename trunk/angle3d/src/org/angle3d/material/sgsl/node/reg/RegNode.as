@@ -22,10 +22,10 @@ package org.angle3d.material.sgsl.node.reg
 		{
 			super(name);
 
-			this.regType=regType;
-			this.dataType=dataType;
+			this.regType = regType;
+			this.dataType = dataType;
 
-			index=-1;
+			index = -1;
 		}
 
 		override public function clone():LeafNode
@@ -33,7 +33,7 @@ package org.angle3d.material.sgsl.node.reg
 			return new RegNode(regType, dataType, name);
 		}
 
-		override public function toString(level:int=0):String
+		override public function toString(level:int = 0):String
 		{
 			return getSpace(level) + regType + " " + dataType + " " + name + ";\n";
 		}

@@ -8,7 +8,7 @@ package org.angle3d.effect.gpu.influencers.life
 
 		public function SameLifeInfluencer(life:Number)
 		{
-			_life=life;
+			_life = life;
 		}
 
 		public function getLife(index:int):Number

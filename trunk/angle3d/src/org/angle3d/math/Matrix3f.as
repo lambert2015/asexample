@@ -8,8 +8,8 @@ package org.angle3d.math
 	 */
 	final public class Matrix3f
 	{
-		public static const ZERO:Matrix3f=new Matrix3f([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
-		public static const IDENTITY:Matrix3f=new Matrix3f();
+		public static const ZERO:Matrix3f = new Matrix3f([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+		public static const IDENTITY:Matrix3f = new Matrix3f();
 
 		public var m00:Number;
 		public var m01:Number;
@@ -27,15 +27,15 @@ package org.angle3d.math
 		{
 			if (res.length == 9)
 			{
-				m00=res[0];
-				m01=res[1];
-				m02=res[2];
-				m10=res[3];
-				m11=res[4];
-				m12=res[5];
-				m20=res[6];
-				m21=res[7];
-				m22=res[8];
+				m00 = res[0];
+				m01 = res[1];
+				m02 = res[2];
+				m10 = res[3];
+				m11 = res[4];
+				m12 = res[5];
+				m20 = res[6];
+				m21 = res[7];
+				m22 = res[8];
 			}
 			else if (res.length == 1)
 			{
@@ -59,21 +59,21 @@ package org.angle3d.math
 		 */
 		public function abs():void
 		{
-			m00=FastMath.fabs(m00);
-			m01=FastMath.fabs(m01);
-			m02=FastMath.fabs(m02);
-			m10=FastMath.fabs(m10);
-			m11=FastMath.fabs(m11);
-			m12=FastMath.fabs(m12);
-			m20=FastMath.fabs(m20);
-			m21=FastMath.fabs(m21);
-			m22=FastMath.fabs(m22);
+			m00 = FastMath.fabs(m00);
+			m01 = FastMath.fabs(m01);
+			m02 = FastMath.fabs(m02);
+			m10 = FastMath.fabs(m10);
+			m11 = FastMath.fabs(m11);
+			m12 = FastMath.fabs(m12);
+			m20 = FastMath.fabs(m20);
+			m21 = FastMath.fabs(m21);
+			m22 = FastMath.fabs(m22);
 		}
 
 		public function makeIdentity():void
 		{
-			m00=m11=m22=1.0;
-			m01=m02=m10=m12=m20=m21=0.0;
+			m00 = m11 = m22 = 1.0;
+			m01 = m02 = m10 = m12 = m20 = m21 = 0.0;
 		}
 
 		/**
@@ -85,17 +85,17 @@ package org.angle3d.math
 		 */
 		public function copyFrom(mat:Matrix3f):void
 		{
-			this.m00=mat.m00;
-			this.m01=mat.m01;
-			this.m02=mat.m02;
+			this.m00 = mat.m00;
+			this.m01 = mat.m01;
+			this.m02 = mat.m02;
 
-			this.m10=mat.m10;
-			this.m11=mat.m11;
-			this.m12=mat.m12;
+			this.m10 = mat.m10;
+			this.m11 = mat.m11;
+			this.m12 = mat.m12;
 
-			this.m20=mat.m20;
-			this.m21=mat.m21;
-			this.m22=mat.m22;
+			this.m20 = mat.m20;
+			this.m21 = mat.m21;
+			this.m22 = mat.m22;
 		}
 
 		/**
@@ -104,7 +104,7 @@ package org.angle3d.math
 		 * @param array
 		 *		An array of 16 floats in column-major format (translation in elements 12, 13 and 14).
 		 */
-		public function setArray(matrix:Array, rowMajor:Boolean=true):void
+		public function setArray(matrix:Array, rowMajor:Boolean = true):void
 		{
 			CF::DEBUG
 			{
@@ -113,27 +113,27 @@ package org.angle3d.math
 
 			if (rowMajor)
 			{
-				m00=matrix[0];
-				m01=matrix[1];
-				m02=matrix[2];
-				m10=matrix[3];
-				m11=matrix[4];
-				m12=matrix[5];
-				m20=matrix[6];
-				m21=matrix[7];
-				m22=matrix[8];
+				m00 = matrix[0];
+				m01 = matrix[1];
+				m02 = matrix[2];
+				m10 = matrix[3];
+				m11 = matrix[4];
+				m12 = matrix[5];
+				m20 = matrix[6];
+				m21 = matrix[7];
+				m22 = matrix[8];
 			}
 			else
 			{
-				m00=matrix[0];
-				m01=matrix[3];
-				m02=matrix[6];
-				m10=matrix[1];
-				m11=matrix[4];
-				m12=matrix[7];
-				m20=matrix[2];
-				m21=matrix[5];
-				m22=matrix[8];
+				m00 = matrix[0];
+				m01 = matrix[3];
+				m02 = matrix[6];
+				m10 = matrix[1];
+				m11 = matrix[4];
+				m12 = matrix[7];
+				m20 = matrix[2];
+				m21 = matrix[5];
+				m22 = matrix[8];
 			}
 		}
 
@@ -143,7 +143,7 @@ package org.angle3d.math
 		 * @param array
 		 *		An array of 16 floats in column-major format (translation in elements 12, 13 and 14).
 		 */
-		public function setVector(matrix:Vector.<Number>, rowMajor:Boolean=true):void
+		public function setVector(matrix:Vector.<Number>, rowMajor:Boolean = true):void
 		{
 			CF::DEBUG
 			{
@@ -152,27 +152,27 @@ package org.angle3d.math
 
 			if (rowMajor)
 			{
-				m00=matrix[0];
-				m01=matrix[1];
-				m02=matrix[2];
-				m10=matrix[3];
-				m11=matrix[4];
-				m12=matrix[5];
-				m20=matrix[6];
-				m21=matrix[7];
-				m22=matrix[8];
+				m00 = matrix[0];
+				m01 = matrix[1];
+				m02 = matrix[2];
+				m10 = matrix[3];
+				m11 = matrix[4];
+				m12 = matrix[5];
+				m20 = matrix[6];
+				m21 = matrix[7];
+				m22 = matrix[8];
 			}
 			else
 			{
-				m00=matrix[0];
-				m01=matrix[3];
-				m02=matrix[6];
-				m10=matrix[1];
-				m11=matrix[4];
-				m12=matrix[7];
-				m20=matrix[2];
-				m21=matrix[5];
-				m22=matrix[8];
+				m00 = matrix[0];
+				m01 = matrix[3];
+				m02 = matrix[6];
+				m10 = matrix[1];
+				m11 = matrix[4];
+				m12 = matrix[7];
+				m20 = matrix[2];
+				m21 = matrix[5];
+				m22 = matrix[8];
 			}
 		}
 
@@ -192,44 +192,44 @@ package org.angle3d.math
 			return this["m" + row + column];
 		}
 
-		public function toUniform(list:Vector.<Number>=null, rowMajor:Boolean=true):Vector.<Number>
+		public function toUniform(list:Vector.<Number> = null, rowMajor:Boolean = true):Vector.<Number>
 		{
 			if (list == null)
 			{
-				list=new Vector.<Number>(12);
+				list = new Vector.<Number>(12);
 			}
 
 			if (list.length != 12)
 			{
-				list.length=12;
+				list.length = 12;
 			}
 
-			list[0]=m00;
-			list[5]=m11;
-			list[10]=m22;
+			list[0] = m00;
+			list[5] = m11;
+			list[10] = m22;
 			if (rowMajor)
 			{
-				list[1]=m01;
-				list[2]=m02;
-				list[3]=0;
-				list[4]=m10;
-				list[6]=m12;
-				list[7]=0;
-				list[8]=m20;
-				list[9]=m21;
-				list[11]=0;
+				list[1] = m01;
+				list[2] = m02;
+				list[3] = 0;
+				list[4] = m10;
+				list[6] = m12;
+				list[7] = 0;
+				list[8] = m20;
+				list[9] = m21;
+				list[11] = 0;
 			}
 			else
 			{
-				list[1]=m10;
-				list[2]=m20;
-				list[3]=0;
-				list[4]=m01;
-				list[6]=m21;
-				list[7]=0;
-				list[8]=m02;
-				list[9]=m12;
-				list[11]=0;
+				list[1] = m10;
+				list[2] = m20;
+				list[3] = 0;
+				list[4] = m01;
+				list[6] = m21;
+				list[7] = 0;
+				list[8] = m02;
+				list[9] = m12;
+				list[11] = 0;
 			}
 
 			return list;
@@ -243,16 +243,16 @@ package org.angle3d.math
 		 *            the column to retrieve. Must be between 0 and 2.
 		 * @return the column specified by the index.
 		 */
-		public function copyColumnTo(column:int, result:Vector3f=null):Vector3f
+		public function copyColumnTo(column:int, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
 			{
-				result=new Vector3f();
+				result = new Vector3f();
 			}
 
-			result.x=getValue(0, column);
-			result.y=getValue(1, column);
-			result.z=getValue(2, column);
+			result.x = getValue(0, column);
+			result.y = getValue(1, column);
+			result.z = getValue(2, column);
 			return result;
 		}
 
@@ -267,16 +267,16 @@ package org.angle3d.math
 		*            is created.
 		* @return the row specified by the index.
 		*/
-		public function copyRowTo(row:int, result:Vector3f=null):Vector3f
+		public function copyRowTo(row:int, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
 			{
-				result=new Vector3f();
+				result = new Vector3f();
 			}
 
-			result.x=getValue(row, 0);
-			result.y=getValue(row, 1);
-			result.z=getValue(row, 2);
+			result.x = getValue(row, 0);
+			result.y = getValue(row, 1);
+			result.z = getValue(row, 2);
 			return result;
 		}
 
@@ -331,7 +331,7 @@ package org.angle3d.math
 		 */
 		public function setValue(row:int, column:int, value:Number):void
 		{
-			this["m" + row + column]=value;
+			this["m" + row + column] = value;
 		}
 
 		/**
@@ -352,15 +352,15 @@ package org.angle3d.math
 				Assert.assert(matrix.length == 3 && matrix[0].length == 3, "Array must be of size 3.");
 			}
 
-			m00=matrix[0][0];
-			m01=matrix[0][1];
-			m02=matrix[0][2];
-			m10=matrix[1][0];
-			m11=matrix[1][1];
-			m12=matrix[1][2];
-			m20=matrix[2][0];
-			m21=matrix[2][1];
-			m22=matrix[2][2];
+			m00 = matrix[0][0];
+			m01 = matrix[0][1];
+			m02 = matrix[0][2];
+			m10 = matrix[1][0];
+			m11 = matrix[1][1];
+			m12 = matrix[1][2];
+			m20 = matrix[2][0];
+			m21 = matrix[2][1];
+			m22 = matrix[2][2];
 		}
 
 		/**
@@ -375,17 +375,17 @@ package org.angle3d.math
 		 */
 		public function fromAxes(uAxis:Vector3f, vAxis:Vector3f, wAxis:Vector3f):void
 		{
-			m00=uAxis.x;
-			m01=uAxis.y;
-			m20=uAxis.z;
+			m00 = uAxis.x;
+			m01 = uAxis.y;
+			m20 = uAxis.z;
 
-			m01=vAxis.x;
-			m11=vAxis.y;
-			m21=vAxis.z;
+			m01 = vAxis.x;
+			m11 = vAxis.y;
+			m21 = vAxis.z;
 
-			m02=wAxis.x;
-			m12=wAxis.y;
-			m22=wAxis.z;
+			m02 = wAxis.x;
+			m12 = wAxis.y;
+			m22 = wAxis.z;
 		}
 
 		/**
@@ -423,7 +423,7 @@ package org.angle3d.math
 		 */
 		public function fromAngleAxis(angle:Number, axis:Vector3f):void
 		{
-			var normalAxis:Vector3f=axis.clone();
+			var normalAxis:Vector3f = axis.clone();
 			normalAxis.normalizeLocal();
 			fromAngleNormalAxis(angle, normalAxis);
 		}
@@ -439,28 +439,28 @@ package org.angle3d.math
 		 */
 		public function fromAngleNormalAxis(angle:Number, axis:Vector3f):void
 		{
-			var fCos:Number=Math.cos(angle);
-			var fSin:Number=Math.sin(angle);
-			var fOneMinusCos:Number=1.0 - fCos;
-			var fX2:Number=axis.x * axis.x;
-			var fY2:Number=axis.y * axis.y;
-			var fZ2:Number=axis.z * axis.z;
-			var fXYM:Number=axis.x * axis.y * fOneMinusCos;
-			var fXZM:Number=axis.x * axis.z * fOneMinusCos;
-			var fYZM:Number=axis.y * axis.z * fOneMinusCos;
-			var fXSin:Number=axis.x * fSin;
-			var fYSin:Number=axis.y * fSin;
-			var fZSin:Number=axis.z * fSin;
+			var fCos:Number = Math.cos(angle);
+			var fSin:Number = Math.sin(angle);
+			var fOneMinusCos:Number = 1.0 - fCos;
+			var fX2:Number = axis.x * axis.x;
+			var fY2:Number = axis.y * axis.y;
+			var fZ2:Number = axis.z * axis.z;
+			var fXYM:Number = axis.x * axis.y * fOneMinusCos;
+			var fXZM:Number = axis.x * axis.z * fOneMinusCos;
+			var fYZM:Number = axis.y * axis.z * fOneMinusCos;
+			var fXSin:Number = axis.x * fSin;
+			var fYSin:Number = axis.y * fSin;
+			var fZSin:Number = axis.z * fSin;
 
-			m00=fX2 * fOneMinusCos + fCos;
-			m01=fXYM - fZSin;
-			m02=fXZM + fYSin;
-			m10=fXYM + fZSin;
-			m11=fY2 * fOneMinusCos + fCos;
-			m12=fYZM - fXSin;
-			m20=fXZM - fYSin;
-			m21=fYZM + fXSin;
-			m22=fZ2 * fOneMinusCos + fCos;
+			m00 = fX2 * fOneMinusCos + fCos;
+			m01 = fXYM - fZSin;
+			m02 = fXZM + fYSin;
+			m10 = fXYM + fZSin;
+			m11 = fY2 * fOneMinusCos + fCos;
+			m12 = fYZM - fXSin;
+			m20 = fXZM - fYSin;
+			m21 = fYZM + fXSin;
+			m22 = fZ2 * fOneMinusCos + fCos;
 		}
 
 		/**
@@ -472,34 +472,34 @@ package org.angle3d.math
 		 *            the matrix to multiply this matrix by.
 		 * @return the result matrix.
 		 */
-		public function mult(mat:Matrix3f, result:Matrix3f=null):Matrix3f
+		public function mult(mat:Matrix3f, result:Matrix3f = null):Matrix3f
 		{
 			if (result == null)
-				result=new Matrix3f();
+				result = new Matrix3f();
 
 			var temp00:Number, temp01:Number, temp02:Number;
 			var temp10:Number, temp11:Number, temp12:Number;
 			var temp20:Number, temp21:Number, temp22:Number;
 
-			temp00=m00 * mat.m00 + m01 * mat.m10 + m02 * mat.m20;
-			temp01=m00 * mat.m01 + m01 * mat.m11 + m02 * mat.m21;
-			temp02=m00 * mat.m02 + m01 * mat.m12 + m02 * mat.m22;
-			temp10=m10 * mat.m00 + m11 * mat.m10 + m12 * mat.m20;
-			temp11=m10 * mat.m01 + m11 * mat.m11 + m12 * mat.m21;
-			temp12=m10 * mat.m02 + m11 * mat.m12 + m12 * mat.m22;
-			temp20=m20 * mat.m00 + m21 * mat.m10 + m22 * mat.m20;
-			temp21=m20 * mat.m01 + m21 * mat.m11 + m22 * mat.m21;
-			temp22=m20 * mat.m02 + m21 * mat.m12 + m22 * mat.m22;
+			temp00 = m00 * mat.m00 + m01 * mat.m10 + m02 * mat.m20;
+			temp01 = m00 * mat.m01 + m01 * mat.m11 + m02 * mat.m21;
+			temp02 = m00 * mat.m02 + m01 * mat.m12 + m02 * mat.m22;
+			temp10 = m10 * mat.m00 + m11 * mat.m10 + m12 * mat.m20;
+			temp11 = m10 * mat.m01 + m11 * mat.m11 + m12 * mat.m21;
+			temp12 = m10 * mat.m02 + m11 * mat.m12 + m12 * mat.m22;
+			temp20 = m20 * mat.m00 + m21 * mat.m10 + m22 * mat.m20;
+			temp21 = m20 * mat.m01 + m21 * mat.m11 + m22 * mat.m21;
+			temp22 = m20 * mat.m02 + m21 * mat.m12 + m22 * mat.m22;
 
-			result.m00=temp00;
-			result.m01=temp01;
-			result.m02=temp02;
-			result.m10=temp10;
-			result.m11=temp11;
-			result.m12=temp12;
-			result.m20=temp20;
-			result.m21=temp21;
-			result.m22=temp22;
+			result.m00 = temp00;
+			result.m01 = temp01;
+			result.m02 = temp02;
+			result.m10 = temp10;
+			result.m11 = temp11;
+			result.m12 = temp12;
+			result.m20 = temp20;
+			result.m21 = temp21;
+			result.m22 = temp22;
 
 			return result;
 		}
@@ -513,18 +513,18 @@ package org.angle3d.math
 		 *            the vector to multiply this matrix by.
 		 * @return the result vector.
 		 */
-		public function multVec(vec:Vector3f, result:Vector3f=null):Vector3f
+		public function multVec(vec:Vector3f, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
-				result=new Vector3f();
+				result = new Vector3f();
 
-			var x:Number=vec.x;
-			var y:Number=vec.y;
-			var z:Number=vec.z;
+			var x:Number = vec.x;
+			var y:Number = vec.y;
+			var z:Number = vec.z;
 
-			result.x=m00 * x + m01 * y + m02 * z;
-			result.y=m10 * x + m11 * y + m12 * z;
-			result.z=m20 * x + m21 * y + m22 * z;
+			result.x = m00 * x + m01 * y + m02 * z;
+			result.y = m10 * x + m11 * y + m12 * z;
+			result.z = m20 * x + m21 * y + m22 * z;
 			return result;
 		}
 
@@ -540,12 +540,12 @@ package org.angle3d.math
 		 */
 		public function multVecLocal(vec:Vector3f):void
 		{
-			var x:Number=vec.x;
-			var y:Number=vec.y;
-			var z:Number=vec.z;
-			vec.x=m00 * x + m01 * y + m02 * z;
-			vec.y=m10 * x + m11 * y + m12 * z;
-			vec.z=m20 * x + m21 * y + m22 * z;
+			var x:Number = vec.x;
+			var y:Number = vec.y;
+			var z:Number = vec.z;
+			vec.x = m00 * x + m01 * y + m02 * z;
+			vec.y = m10 * x + m11 * y + m12 * z;
+			vec.z = m20 * x + m21 * y + m22 * z;
 		}
 
 		/**
@@ -558,15 +558,15 @@ package org.angle3d.math
 		 */
 		public function scaleBy(scale:Number):void
 		{
-			m00*=scale;
-			m01*=scale;
-			m02*=scale;
-			m10*=scale;
-			m11*=scale;
-			m12*=scale;
-			m20*=scale;
-			m21*=scale;
-			m22*=scale;
+			m00 *= scale;
+			m01 *= scale;
+			m02 *= scale;
+			m10 *= scale;
+			m11 *= scale;
+			m12 *= scale;
+			m20 *= scale;
+			m21 *= scale;
+			m22 *= scale;
 		}
 
 		/**
@@ -591,17 +591,17 @@ package org.angle3d.math
 		 */
 		public function transposeLocal():Matrix3f
 		{
-			var tmp:Number=m01;
-			m01=m10;
-			m10=tmp;
+			var tmp:Number = m01;
+			m01 = m10;
+			m10 = tmp;
 
-			tmp=m02;
-			m02=m20;
-			m20=tmp;
+			tmp = m02;
+			m02 = m20;
+			m20 = tmp;
 
-			tmp=m12;
-			m12=m21;
-			m21=tmp;
+			tmp = m12;
+			m12 = m21;
+			m21 = tmp;
 
 			return this;
 		}
@@ -611,39 +611,39 @@ package org.angle3d.math
 		 *
 		 * @return The new inverse matrix
 		 */
-		public function invert(result:Matrix3f=null):Matrix3f
+		public function invert(result:Matrix3f = null):Matrix3f
 		{
 			if (result == null)
-				result=new Matrix3f();
+				result = new Matrix3f();
 
-			var det:Number=determinant();
+			var det:Number = determinant();
 			if (FastMath.fabs(det) <= FastMath.FLT_EPSILON)
 			{
 				result.zero();
 				return result;
 			}
 
-			var fInvDet:Number=1 / det;
+			var fInvDet:Number = 1 / det;
 
-			var f00:Number=(m11 * m22 - m12 * m21) * fInvDet;
-			var f01:Number=(m02 * m21 - m01 * m22) * fInvDet;
-			var f02:Number=(m01 * m12 - m02 * m11) * fInvDet;
-			var f10:Number=(m12 * m20 - m10 * m22) * fInvDet;
-			var f11:Number=(m00 * m22 - m02 * m20) * fInvDet;
-			var f12:Number=(m02 * m10 - m00 * m12) * fInvDet;
-			var f20:Number=(m10 * m21 - m11 * m20) * fInvDet;
-			var f21:Number=(m01 * m20 - m00 * m21) * fInvDet;
-			var f22:Number=(m00 * m11 - m01 * m10) * fInvDet;
+			var f00:Number = (m11 * m22 - m12 * m21) * fInvDet;
+			var f01:Number = (m02 * m21 - m01 * m22) * fInvDet;
+			var f02:Number = (m01 * m12 - m02 * m11) * fInvDet;
+			var f10:Number = (m12 * m20 - m10 * m22) * fInvDet;
+			var f11:Number = (m00 * m22 - m02 * m20) * fInvDet;
+			var f12:Number = (m02 * m10 - m00 * m12) * fInvDet;
+			var f20:Number = (m10 * m21 - m11 * m20) * fInvDet;
+			var f21:Number = (m01 * m20 - m00 * m21) * fInvDet;
+			var f22:Number = (m00 * m11 - m01 * m10) * fInvDet;
 
-			result.m00=f00;
-			result.m01=f01;
-			result.m02=f02;
-			result.m10=f10;
-			result.m11=f11;
-			result.m12=f12;
-			result.m20=f20;
-			result.m21=f21;
-			result.m22=f22;
+			result.m00 = f00;
+			result.m01 = f01;
+			result.m02 = f02;
+			result.m10 = f10;
+			result.m11 = f11;
+			result.m12 = f12;
+			result.m20 = f20;
+			result.m21 = f21;
+			result.m22 = f22;
 
 			return result;
 		}
@@ -665,30 +665,30 @@ package org.angle3d.math
 		 *            The matrix to store the result in.  If null, a new matrix is created.
 		 * @return result
 		 */
-		public function adjoint(result:Matrix3f=null):Matrix3f
+		public function adjoint(result:Matrix3f = null):Matrix3f
 		{
 			if (result == null)
-				result=new Matrix3f();
+				result = new Matrix3f();
 
-			var f00:Number=m11 * m22 - m12 * m21;
-			var f01:Number=m02 * m21 - m01 * m22;
-			var f02:Number=m01 * m12 - m02 * m11;
-			var f10:Number=m12 * m20 - m10 * m22;
-			var f11:Number=m00 * m22 - m02 * m20;
-			var f12:Number=m02 * m10 - m00 * m12;
-			var f20:Number=m10 * m21 - m11 * m20;
-			var f21:Number=m01 * m20 - m00 * m21;
-			var f22:Number=m00 * m11 - m01 * m10;
+			var f00:Number = m11 * m22 - m12 * m21;
+			var f01:Number = m02 * m21 - m01 * m22;
+			var f02:Number = m01 * m12 - m02 * m11;
+			var f10:Number = m12 * m20 - m10 * m22;
+			var f11:Number = m00 * m22 - m02 * m20;
+			var f12:Number = m02 * m10 - m00 * m12;
+			var f20:Number = m10 * m21 - m11 * m20;
+			var f21:Number = m01 * m20 - m00 * m21;
+			var f22:Number = m00 * m11 - m01 * m10;
 
-			result.m00=f00;
-			result.m01=f01;
-			result.m02=f02;
-			result.m10=f10;
-			result.m11=f11;
-			result.m12=f12;
-			result.m20=f20;
-			result.m21=f21;
-			result.m22=f22;
+			result.m00 = f00;
+			result.m01 = f01;
+			result.m02 = f02;
+			result.m10 = f10;
+			result.m11 = f11;
+			result.m12 = f12;
+			result.m20 = f20;
+			result.m21 = f21;
+			result.m22 = f22;
 
 			return result;
 		}
@@ -700,10 +700,10 @@ package org.angle3d.math
 		 */
 		public function determinant():Number
 		{
-			var fCo00:Number=m11 * m22 - m12 * m21;
-			var fCo10:Number=m12 * m20 - m10 * m22;
-			var fCo20:Number=m10 * m21 - m11 * m20;
-			var fDet:Number=m00 * fCo00 + m01 * fCo10 + m02 * fCo20;
+			var fCo00:Number = m11 * m22 - m12 * m21;
+			var fCo10:Number = m12 * m20 - m10 * m22;
+			var fCo20:Number = m10 * m21 - m11 * m20;
+			var fDet:Number = m00 * fCo00 + m01 * fCo10 + m02 * fCo20;
 			return fDet;
 		}
 
@@ -714,7 +714,7 @@ package org.angle3d.math
 		 */
 		public function zero():void
 		{
-			m00=m01=m02=m10=m11=m12=m20=m21=m22=0.0;
+			m00 = m01 = m02 = m10 = m11 = m12 = m20 = m21 = m22 = 0.0;
 		}
 
 		/**
@@ -745,10 +745,10 @@ package org.angle3d.math
 			return "Matrix3f\n[ " + m00 + "\t" + m01 + "\t" + m02 + "\n " + m10 + "\t" + m11 + "\t" + m12 + "\n " + m20 + "\t" + m21 + "\t" + m22 + "]";
 		}
 
-		public function clone(result:Matrix3f=null):Matrix3f
+		public function clone(result:Matrix3f = null):Matrix3f
 		{
 			if (result == null)
-				result=new Matrix3f();
+				result = new Matrix3f();
 			result.copyFrom(this);
 			return result;
 		}
@@ -768,73 +768,73 @@ package org.angle3d.math
 		{
 			var e:Number, h:Number, f:Number;
 
-			var v:Vector3f=start.cross(end);
-			e=start.dot(end);
-			f=(e < 0) ? -e : e;
+			var v:Vector3f = start.cross(end);
+			e = start.dot(end);
+			f = (e < 0) ? -e : e;
 
 			// if "from" and "to" vectors are nearly parallel
 			if (f > 1.0 - FastMath.ZERO_TOLERANCE)
 			{
-				var u:Vector3f=new Vector3f();
-				var x:Vector3f=new Vector3f();
+				var u:Vector3f = new Vector3f();
+				var x:Vector3f = new Vector3f();
 				var c1:Number, c2:Number, c3:Number; /* coefficients for later use */
 				var i:int, j:int;
 
-				x.x=(start.x > 0.0) ? start.x : -start.x;
-				x.y=(start.y > 0.0) ? start.y : -start.y;
-				x.z=(start.z > 0.0) ? start.z : -start.z;
+				x.x = (start.x > 0.0) ? start.x : -start.x;
+				x.y = (start.y > 0.0) ? start.y : -start.y;
+				x.z = (start.z > 0.0) ? start.z : -start.z;
 
 				if (x.x < x.y)
 				{
 					if (x.x < x.z)
 					{
-						x.x=1.0;
-						x.y=x.z=0.0;
+						x.x = 1.0;
+						x.y = x.z = 0.0;
 					}
 					else
 					{
-						x.z=1.0;
-						x.x=x.y=0.0;
+						x.z = 1.0;
+						x.x = x.y = 0.0;
 					}
 				}
 				else
 				{
 					if (x.y < x.z)
 					{
-						x.y=1.0;
-						x.x=x.z=0.0;
+						x.y = 1.0;
+						x.x = x.z = 0.0;
 					}
 					else
 					{
-						x.z=1.0;
-						x.x=x.y=0.0;
+						x.z = 1.0;
+						x.x = x.y = 0.0;
 					}
 				}
 
-				u.x=x.x - start.x;
-				u.y=x.y - start.y;
-				u.z=x.z - start.z;
-				v.x=x.x - end.x;
-				v.y=x.y - end.y;
-				v.z=x.z - end.z;
+				u.x = x.x - start.x;
+				u.y = x.y - start.y;
+				u.z = x.z - start.z;
+				v.x = x.x - end.x;
+				v.y = x.y - end.y;
+				v.z = x.z - end.z;
 
-				c1=2.0 / u.dot(u);
-				c2=2.0 / v.dot(v);
-				c3=c1 * c2 * u.dot(v);
+				c1 = 2.0 / u.dot(u);
+				c2 = 2.0 / v.dot(v);
+				c3 = c1 * c2 * u.dot(v);
 
 				var val:Number;
-				for (i=0; i < 3; i++)
+				for (i = 0; i < 3; i++)
 				{
-					for (j=0; j < 3; j++)
+					for (j = 0; j < 3; j++)
 					{
-						var ui:Number=u.getValueAt(i);
-						var uj:Number=u.getValueAt(j);
-						var vi:Number=v.getValueAt(i);
-						var vj:Number=v.getValueAt(j);
-						val=-c1 * ui * uj - c2 * vi * vj + c3 * vi * uj;
+						var ui:Number = u.getValueAt(i);
+						var uj:Number = u.getValueAt(j);
+						var vi:Number = v.getValueAt(i);
+						var vj:Number = v.getValueAt(j);
+						val = -c1 * ui * uj - c2 * vi * vj + c3 * vi * uj;
 						setValue(i, j, val);
 					}
-					val=getValue(i, i);
+					val = getValue(i, i);
 					setValue(i, i, val + 1.0);
 				}
 			}
@@ -842,12 +842,12 @@ package org.angle3d.math
 			{
 				// the most common case, unless "start"="end", or "start"=-"end"
 				var hvx:Number, hvz:Number, hvxy:Number, hvxz:Number, hvyz:Number;
-				h=1.0 / (1.0 + e);
-				hvx=h * v.x;
-				hvz=h * v.z;
-				hvxy=hvx * v.y;
-				hvxz=hvx * v.z;
-				hvyz=hvz * v.y;
+				h = 1.0 / (1.0 + e);
+				hvx = h * v.x;
+				hvz = h * v.z;
+				hvxy = hvx * v.y;
+				hvxz = hvx * v.z;
+				hvyz = hvz * v.y;
 				setValue(0, 0, e + hvx * v.x);
 				setValue(0, 1, hvxy - v.z);
 				setValue(0, 2, hvxz + v.y);

@@ -15,10 +15,10 @@ package org.angle3d.material
 		{
 			super();
 
-			_technique=new TechniqueCPUParticle();
+			_technique = new TechniqueCPUParticle();
 			addTechnique(_technique);
 
-			this.texture=texture;
+			this.texture = texture;
 		}
 
 		override public function set influence(value:Number):void
@@ -32,7 +32,7 @@ package org.angle3d.material
 
 		public function set texture(value:TextureMapBase):void
 		{
-			_technique.texture=value;
+			_technique.texture = value;
 		}
 
 

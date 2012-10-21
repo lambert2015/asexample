@@ -16,8 +16,8 @@ package org.angle3d.effect.gpu
 
 		public function ParticleSystemControl(particleSystem:ParticleSystem)
 		{
-			this.particleSystem=particleSystem;
-			_enabled=true;
+			this.particleSystem = particleSystem;
+			_enabled = true;
 		}
 
 		public function cloneForSpatial(spatial:Spatial):Control
@@ -37,7 +37,7 @@ package org.angle3d.effect.gpu
 
 		public function set enabled(enabled:Boolean):void
 		{
-			_enabled=enabled;
+			_enabled = enabled;
 		}
 
 		public function get enabled():Boolean

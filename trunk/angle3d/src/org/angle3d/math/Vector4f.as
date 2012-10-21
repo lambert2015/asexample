@@ -34,21 +34,21 @@ package org.angle3d.math
 		 */
 		public var w:Number;
 
-		public function Vector4f(x:Number=0, y:Number=0, z:Number=0, w:Number=0)
+		public function Vector4f(x:Number = 0, y:Number = 0, z:Number = 0, w:Number = 0)
 		{
-			this.x=x;
-			this.y=y;
-			this.z=z;
-			this.w=w;
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.w = w;
 		}
 
 		[Inline]
 		public final function copyFrom(other:Vector4f):void
 		{
-			this.x=other.x;
-			this.y=other.y;
-			this.z=other.z;
-			this.w=other.w;
+			this.x = other.x;
+			this.y = other.y;
+			this.z = other.z;
+			this.w = other.w;
 		}
 
 		/**
@@ -68,10 +68,10 @@ package org.angle3d.math
 		[Inline]
 		public final function setTo(x:Number, y:Number, z:Number, w:Number):void
 		{
-			this.x=x;
-			this.y=y;
-			this.z=z;
-			this.w=w;
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.w = w;
 		}
 
 		/**
@@ -93,10 +93,10 @@ package org.angle3d.math
 		[Inline]
 		public final function addLocal(vec:Vector4f):void
 		{
-			x+=vec.x;
-			y+=vec.y;
-			z+=vec.z;
-			w+=vec.w;
+			x += vec.x;
+			y += vec.y;
+			z += vec.z;
+			w += vec.w;
 		}
 
 		/**
@@ -112,10 +112,10 @@ package org.angle3d.math
 		[Inline]
 		public final function scaleAdd(scalar:Number, add:Vector4f):void
 		{
-			x=x * scalar + add.x;
-			y=y * scalar + add.y;
-			z=z * scalar + add.z;
-			w=w * scalar + add.w;
+			x = x * scalar + add.x;
+			y = y * scalar + add.y;
+			z = z * scalar + add.z;
+			w = w * scalar + add.w;
 		}
 
 		/**
@@ -136,9 +136,9 @@ package org.angle3d.math
 		[Inline]
 		public final function project(other:Vector4f):Vector4f
 		{
-			var n:Number=this.dot(other);
-			var d:Number=other.lengthSquared;
-			var result:Vector4f=other.clone();
+			var n:Number = this.dot(other);
+			var d:Number = other.lengthSquared;
+			var result:Vector4f = other.clone();
 			result.normalize();
 			result.scaleLocal(n / d);
 			return result;
@@ -154,7 +154,7 @@ package org.angle3d.math
 		[Inline]
 		public final function isUnitVector():Boolean
 		{
-			var len:Number=length;
+			var len:Number = length;
 			return 0.99 < len && len < 1.01;
 		}
 
@@ -191,10 +191,10 @@ package org.angle3d.math
 		[Inline]
 		public final function distanceSquared(v:Vector4f):Number
 		{
-			var dx:Number=x - v.x;
-			var dy:Number=y - v.y;
-			var dz:Number=z - v.z;
-			var dw:Number=w - v.w;
+			var dx:Number = x - v.x;
+			var dy:Number = y - v.y;
+			var dz:Number = z - v.z;
+			var dw:Number = w - v.w;
 			return (dx * dx + dy * dy + dz * dz + dw * dw);
 		}
 
@@ -220,33 +220,33 @@ package org.angle3d.math
 		[Inline]
 		public final function scaleLocal(scalar:Number):void
 		{
-			x*=scalar;
-			y*=scalar;
-			z*=scalar;
-			w*=scalar;
+			x *= scalar;
+			y *= scalar;
+			z *= scalar;
+			w *= scalar;
 		}
 
 		[Inline]
-		public final function multiply(vec:Vector4f, result:Vector4f=null):Vector4f
+		public final function multiply(vec:Vector4f, result:Vector4f = null):Vector4f
 		{
 			if (result == null)
 			{
-				result=new Vector4f();
+				result = new Vector4f();
 			}
-			result.x=x * vec.x;
-			result.y=y * vec.y;
-			result.z=z * vec.z;
-			result.w=w * vec.w;
+			result.x = x * vec.x;
+			result.y = y * vec.y;
+			result.z = z * vec.z;
+			result.w = w * vec.w;
 			return result;
 		}
 
 		[Inline]
 		public final function multiplyLocal(vec:Vector4f):void
 		{
-			x*=vec.x;
-			y*=vec.y;
-			z*=vec.z;
-			w*=vec.w;
+			x *= vec.x;
+			y *= vec.y;
+			z *= vec.z;
+			w *= vec.w;
 		}
 
 		/**
@@ -265,10 +265,10 @@ package org.angle3d.math
 		[Inline]
 		public final function negateLocal():void
 		{
-			x=-x;
-			y=-y;
-			z=-z;
-			w=-w;
+			x = -x;
+			y = -y;
+			z = -z;
+			w = -w;
 		}
 
 		/**
@@ -290,10 +290,10 @@ package org.angle3d.math
 		[Inline]
 		public final function decrementBy(vec:Vector4f):void
 		{
-			x-=vec.x;
-			y-=vec.y;
-			z-=vec.z;
-			w-=vec.w;
+			x -= vec.x;
+			y -= vec.y;
+			z -= vec.z;
+			w -= vec.w;
 		}
 
 		/**
@@ -303,14 +303,14 @@ package org.angle3d.math
 		 */
 		public function normalize():void
 		{
-			var len:Number=x * x + y * y + z * z + w * w;
+			var len:Number = x * x + y * y + z * z + w * w;
 			if (len != 1 && len != 0)
 			{
-				len=1.0 / Math.sqrt(len);
-				x*=len;
-				y*=len;
-				z*=len;
-				w*=len;
+				len = 1.0 / Math.sqrt(len);
+				x *= len;
+				y *= len;
+				z *= len;
+				w *= len;
 			}
 		}
 
@@ -320,7 +320,7 @@ package org.angle3d.math
 		[Inline]
 		public final function zero():void
 		{
-			x=y=z=w=0;
+			x = y = z = w = 0;
 		}
 
 		/**
@@ -333,19 +333,19 @@ package org.angle3d.math
 		[Inline]
 		public final function angleBetween(other:Vector4f):Number
 		{
-			var dot:Number=this.dot(other);
-			var angle:Number=Math.acos(dot);
+			var dot:Number = this.dot(other);
+			var angle:Number = Math.acos(dot);
 			return angle;
 		}
 
 		[Inline]
 		public final function lerp(v1:Vector4f, v2:Vector4f, interp:Number):void
 		{
-			var t:Number=1 - interp;
-			this.x=t * v1.x + interp * v2.x;
-			this.y=t * v1.y + interp * v2.y;
-			this.z=t * v1.z + interp * v2.z;
-			this.w=t * v1.w + interp * v2.w;
+			var t:Number = 1 - interp;
+			this.x = t * v1.x + interp * v2.x;
+			this.y = t * v1.y + interp * v2.y;
+			this.z = t * v1.z + interp * v2.z;
+			this.w = t * v1.w + interp * v2.w;
 		}
 
 		/**
@@ -375,16 +375,16 @@ package org.angle3d.math
 		}
 
 		[Inline]
-		public final function toVector(arr:Vector.<Number>=null):Vector.<Number>
+		public final function toVector(arr:Vector.<Number> = null):Vector.<Number>
 		{
 			if (arr == null)
 			{
-				arr=new Vector.<Number>();
+				arr = new Vector.<Number>();
 			}
-			arr[0]=x;
-			arr[1]=y;
-			arr[2]=z;
-			arr[3]=w;
+			arr[0] = x;
+			arr[1] = y;
+			arr[2] = z;
+			arr[3] = w;
 			return arr;
 		}
 

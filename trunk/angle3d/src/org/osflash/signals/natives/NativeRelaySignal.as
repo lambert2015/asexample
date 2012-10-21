@@ -29,13 +29,13 @@ package org.osflash.signals.natives
 		 * Because the target is an IEventDispatcher,
 		 * eventClass needs to be flash.events.Event or a subclass of it.
 		 */
-		public function NativeRelaySignal(target:IEventDispatcher, eventType:String, eventClass:Class=null)
+		public function NativeRelaySignal(target:IEventDispatcher, eventType:String, eventClass:Class = null)
 		{
 			super(eventClass || Event);
 
-			this.eventType=eventType;
-			this.eventClass=eventClass;
-			this.target=target;
+			this.eventType = eventType;
+			this.eventClass = eventClass;
+			this.target = target;
 		}
 
 
@@ -51,7 +51,7 @@ package org.osflash.signals.natives
 				return;
 			if (_target)
 				removeAll();
-			_target=value;
+			_target = value;
 		}
 
 		/** @inheritDoc */
@@ -62,7 +62,7 @@ package org.osflash.signals.natives
 
 		public function set eventType(value:String):void
 		{
-			_eventType=value;
+			_eventType = value;
 		}
 
 		/** @inheritDoc */
@@ -73,13 +73,13 @@ package org.osflash.signals.natives
 
 		public function set eventClass(value:Class):void
 		{
-			_eventClass=value || Event;
-			_valueClasses=[_eventClass];
+			_eventClass = value || Event;
+			_valueClasses = [_eventClass];
 		}
 
 		override public function set valueClasses(value:Array):void
 		{
-			eventClass=(value && value.length > 0) ? value[0] : null;
+			eventClass = (value && value.length > 0) ? value[0] : null;
 		}
 
 		/**
@@ -110,7 +110,7 @@ package org.osflash.signals.natives
 		 * @throws ArgumentError <code>ArgumentError</code>: Given listener is <code>null</code>.
 		 * @throws ArgumentError <code>ArgumentError</code>: Target object cannot be <code>null</code>.
 		 */
-		public function addWithPriority(listener:Function, priority:int=0):ISlot
+		public function addWithPriority(listener:Function, priority:int = 0):ISlot
 		{
 			return registerListenerWithPriority(listener, false, priority);
 		}
@@ -121,7 +121,7 @@ package org.osflash.signals.natives
 		 * @throws ArgumentError <code>ArgumentError</code>: Given listener is <code>null</code>.
 		 * @throws ArgumentError <code>ArgumentError</code>: Target object cannot be <code>null</code>.
 		 */
-		public function addOnceWithPriority(listener:Function, priority:int=0):ISlot
+		public function addOnceWithPriority(listener:Function, priority:int = 0):ISlot
 		{
 			return registerListenerWithPriority(listener, true, priority);
 		}
@@ -129,8 +129,8 @@ package org.osflash.signals.natives
 		/** @inheritDoc */
 		override public function remove(listener:Function):ISlot
 		{
-			const nonEmptyBefore:Boolean=slots.nonEmpty;
-			const slot:ISlot=super.remove(listener);
+			const nonEmptyBefore:Boolean = slots.nonEmpty;
+			const slot:ISlot = super.remove(listener);
 			if (nonEmptyBefore != slots.nonEmpty)
 				target.removeEventListener(eventType, onNativeEvent);
 			return slot;
@@ -193,29 +193,29 @@ package org.osflash.signals.natives
 
 		protected function onNativeEvent(event:Event):void
 		{
-			var slotsToProcess:SlotList=slots;
+			var slotsToProcess:SlotList = slots;
 
 			while (slotsToProcess.nonEmpty)
 			{
 				slotsToProcess.head.execute1(event);
-				slotsToProcess=slotsToProcess.tail;
+				slotsToProcess = slotsToProcess.tail;
 			}
 		}
 
-		protected function registerListenerWithPriority(listener:Function, once:Boolean=false, priority:int=0):ISlot
+		protected function registerListenerWithPriority(listener:Function, once:Boolean = false, priority:int = 0):ISlot
 		{
 			if (!target)
 				throw new ArgumentError('Target object cannot be null.');
-			const nonEmptyBefore:Boolean=slots.nonEmpty;
+			const nonEmptyBefore:Boolean = slots.nonEmpty;
 
-			var slot:ISlot=null;
+			var slot:ISlot = null;
 			if (registrationPossible(listener, once))
 			{
-				slot=new Slot(listener, this, once, priority);
-				slots=slots.insertWithPriority(slot);
+				slot = new Slot(listener, this, once, priority);
+				slots = slots.insertWithPriority(slot);
 			}
 			else
-				slot=slots.find(listener);
+				slot = slots.find(listener);
 
 			// Account for cases where the same listener is added twice.
 			if (nonEmptyBefore != slots.nonEmpty)

@@ -21,7 +21,7 @@ package org.angle3d.texture
 	{
 		private var mBitmapData:BitmapData;
 
-		public function BitmapTexture(bitmapData:BitmapData, mipmap:Boolean=false)
+		public function BitmapTexture(bitmapData:BitmapData, mipmap:Boolean = false)
 		{
 			super(mipmap);
 
@@ -47,12 +47,12 @@ package org.angle3d.texture
 
 			setSize(value.width, value.height);
 
-			mBitmapData=value;
+			mBitmapData = value;
 		}
 
 		override protected function uploadTexture():void
 		{
-			var t:Texture=mTexture as Texture;
+			var t:Texture = mTexture as Texture;
 			if (mMipmap)
 			{
 				MipmapGenerator.generateMipMaps(mBitmapData, t, null, true);

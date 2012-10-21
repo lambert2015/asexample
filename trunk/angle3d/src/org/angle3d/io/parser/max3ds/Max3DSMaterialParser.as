@@ -3,8 +3,8 @@ package org.angle3d.io.parser.max3ds
 
 	internal class Max3DSMaterialParser extends AbstractMax3DSParser
 	{
-		private var _name:String=null;
-		private var _textureFilename:String=null;
+		private var _name:String = null;
+		private var _textureFilename:String = null;
 
 		public function Max3DSMaterialParser(chunk:Max3DSChunk)
 		{
@@ -25,20 +25,20 @@ package org.angle3d.io.parser.max3ds
 		{
 			super.initialize();
 
-			parseFunctions[Max3DSChunk.MATERIAL]=enterChunk;
-			parseFunctions[Max3DSChunk.MATERIAL_NAME]=parseName;
-			parseFunctions[Max3DSChunk.MATERIAL_TEXMAP]=enterChunk;
-			parseFunctions[Max3DSChunk.MATERIAL_MAPNAME]=parseTextureFilename;
+			parseFunctions[Max3DSChunk.MATERIAL] = enterChunk;
+			parseFunctions[Max3DSChunk.MATERIAL_NAME] = parseName;
+			parseFunctions[Max3DSChunk.MATERIAL_TEXMAP] = enterChunk;
+			parseFunctions[Max3DSChunk.MATERIAL_MAPNAME] = parseTextureFilename;
 		}
 
 		protected function parseName(chunk:Max3DSChunk):void
 		{
-			_name=chunk.readString();
+			_name = chunk.readString();
 		}
 
 		protected function parseTextureFilename(chunk:Max3DSChunk):void
 		{
-			_textureFilename=chunk.readString();
+			_textureFilename = chunk.readString();
 		}
 
 	}

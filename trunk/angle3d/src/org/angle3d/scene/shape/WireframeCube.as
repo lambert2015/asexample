@@ -18,9 +18,9 @@ package org.angle3d.scene.shape
 		{
 			super();
 
-			this._width=width;
-			this._height=height;
-			this._depth=depth;
+			this._width = width;
+			this._height = height;
+			this._depth = depth;
 
 			setupGeometry();
 			build();
@@ -28,9 +28,9 @@ package org.angle3d.scene.shape
 
 		private function setupGeometry():void
 		{
-			var hw:Number=_width * 0.5;
-			var hh:Number=_height * 0.5;
-			var hd:Number=_depth * 0.5;
+			var hw:Number = _width * 0.5;
+			var hh:Number = _height * 0.5;
+			var hd:Number = _depth * 0.5;
 
 			addSegment(new WireframeLineSet(-hw, hh, -hd, -hw, -hh, -hd));
 			addSegment(new WireframeLineSet(-hw, hh, hd, -hw, -hh, hd));

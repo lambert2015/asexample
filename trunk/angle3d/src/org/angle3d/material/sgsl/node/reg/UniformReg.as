@@ -21,11 +21,11 @@ package org.angle3d.material.sgsl.node.reg
 		 */
 		public var arraySize:int;
 
-		public function UniformReg(dataType:String, name:String, isArray:Boolean=false, arraySize:int=0)
+		public function UniformReg(dataType:String, name:String, isArray:Boolean = false, arraySize:int = 0)
 		{
 			super(RegType.UNIFORM, dataType, name);
-			this.isArray=isArray;
-			this.arraySize=arraySize;
+			this.isArray = isArray;
+			this.arraySize = arraySize;
 		}
 
 		override public function clone():LeafNode

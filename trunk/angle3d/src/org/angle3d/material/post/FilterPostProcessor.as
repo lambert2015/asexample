@@ -16,7 +16,7 @@ package org.angle3d.material.post
 
 		public function FilterPostProcessor()
 		{
-			_initialized=false;
+			_initialized = false;
 		}
 
 		/**
@@ -27,7 +27,7 @@ package org.angle3d.material.post
 		 */
 		public function initialize(rm:RenderManager, vp:ViewPort):void
 		{
-			_initialized=true;
+			_initialized = true;
 		}
 
 		/**

@@ -20,65 +20,65 @@
 		/**
 		 * the color black (0,0,0).
 		 */
-		public static const Black:Color=new Color(0, 0, 0, 1);
+		public static const Black:Color = new Color(0, 0, 0, 1);
 
 		/**
 		 * the color black (0,0,0).
 		 */
-		public static const BlackNoAlpha:Color=new Color(0, 0, 0, 0);
+		public static const BlackNoAlpha:Color = new Color(0, 0, 0, 0);
 
 		/**
 		 * the color white (1,1,1).
 		 */
-		public static const White:Color=new Color(1, 1, 1, 1);
+		public static const White:Color = new Color(1, 1, 1, 1);
 		/**
 		 * the color gray (.2,.2,.2).
 		 */
-		public static const DarkGray:Color=new Color(0.2, 0.2, 0.2, 1.0);
+		public static const DarkGray:Color = new Color(0.2, 0.2, 0.2, 1.0);
 		/**
 		 * the color gray (.5,.5,.5).
 		 */
-		public static const Gray:Color=new Color(0.5, 0.5, 0.5, 1.0);
+		public static const Gray:Color = new Color(0.5, 0.5, 0.5, 1.0);
 		/**
 		 * the color gray (.8,.8,.8).
 		 */
-		public static const LightGray:Color=new Color(0.8, 0.8, 0.8, 1.0);
+		public static const LightGray:Color = new Color(0.8, 0.8, 0.8, 1.0);
 		/**
 		 * the color red (1,0,0).
 		 */
-		public static const Red:Color=new Color(1, 0, 0, 1);
+		public static const Red:Color = new Color(1, 0, 0, 1);
 		/**
 		 * the color green (0,1,0).
 		 */
-		public static const Green:Color=new Color(0, 1, 0, 1);
+		public static const Green:Color = new Color(0, 1, 0, 1);
 		/**
 		 * the color blue (0,0,1).
 		 */
-		public static const Blue:Color=new Color(0, 0, 1, 1);
+		public static const Blue:Color = new Color(0, 0, 1, 1);
 		/**
 		 * the color yellow (1,1,0).
 		 */
-		public static const Yellow:Color=new Color(1, 1, 0, 1);
+		public static const Yellow:Color = new Color(1, 1, 0, 1);
 		/**
 		 * the color magenta (1,0,1).
 		 */
-		public static const Magenta:Color=new Color(1, 0, 1, 1);
+		public static const Magenta:Color = new Color(1, 0, 1, 1);
 		/**
 		 * the color cyan (0,1,1).
 		 */
-		public static const Cyan:Color=new Color(0, 1, 1, 1);
+		public static const Cyan:Color = new Color(0, 1, 1, 1);
 		/**
 		 * the color orange (251/255, 130/255,0).
 		 */
-		public static const Orange:Color=new Color(251 / 255, 130 / 255, 0, 1);
+		public static const Orange:Color = new Color(251 / 255, 130 / 255, 0, 1);
 		/**
 		 * the color brown (65/255, 40/255, 25/255).
 		 */
-		public static const Brown:Color=new Color(65 / 255, 40 / 255, 25 / 255, 1);
+		public static const Brown:Color = new Color(65 / 255, 40 / 255, 25 / 255, 1);
 		/**
 		 * the color pink (1, 0.68, 0.68).
 		 */
-		public static const Pink:Color=new Color(1, 0.68, 0.68, 1);
+		public static const Pink:Color = new Color(1, 0.68, 0.68, 1);
 
 		/**
 		 * The red component of the color.
@@ -106,60 +106,60 @@
 		 * @param b the blue component of this color.
 		 * @param a the alpha component of this color.
 		 */
-		public function Color(r:Number=0.0, g:Number=0.0, b:Number=0.0, a:Number=1.0)
+		public function Color(r:Number = 0.0, g:Number = 0.0, b:Number = 0.0, a:Number = 1.0)
 		{
-			this.r=r;
-			this.g=g;
-			this.b=b;
-			this.a=a;
+			this.r = r;
+			this.g = g;
+			this.b = b;
+			this.a = a;
 		}
 
-		public function setRGBA(r:Number, g:Number, b:Number, a:Number=1.0):void
+		public function setRGBA(r:Number, g:Number, b:Number, a:Number = 1.0):void
 		{
-			this.r=r / 255;
-			this.g=g / 255;
-			this.b=b / 255;
-			this.a=a;
+			this.r = r / 255;
+			this.g = g / 255;
+			this.b = b / 255;
+			this.a = a;
 		}
 
-		public function setTo(r:Number, g:Number, b:Number, a:Number=1.0):void
+		public function setTo(r:Number, g:Number, b:Number, a:Number = 1.0):void
 		{
-			this.r=r;
-			this.g=g;
-			this.b=b;
-			this.a=a;
+			this.r = r;
+			this.g = g;
+			this.b = b;
+			this.a = a;
 		}
 
-		public function add(value:Color, result:Color=null):Color
+		public function add(value:Color, result:Color = null):Color
 		{
 			if (result == null)
-				result=new Color();
-			result.r=r + value.r;
-			result.g=g + value.g;
-			result.b=b + value.b;
-			result.a=a + value.a;
+				result = new Color();
+			result.r = r + value.r;
+			result.g = g + value.g;
+			result.b = b + value.b;
+			result.a = a + value.a;
 			return result;
 		}
 
 		public function addLocal(value:Color):void
 		{
-			this.r+=value.r;
-			this.g+=value.g;
-			this.b+=value.b;
-			this.a+=value.a;
+			this.r += value.r;
+			this.g += value.g;
+			this.b += value.b;
+			this.a += value.a;
 		}
 
-		public function toUniform(result:Vector.<Number>=null):Vector.<Number>
+		public function toUniform(result:Vector.<Number> = null):Vector.<Number>
 		{
 			if (result == null)
 			{
-				result=new Vector.<Number>(4, true);
+				result = new Vector.<Number>(4, true);
 			}
 
-			result[0]=r;
-			result[1]=g;
-			result[2]=b;
-			result[3]=a;
+			result[0] = r;
+			result[1] = g;
+			result[2] = b;
+			result[3] = a;
 			return result;
 		}
 
@@ -170,19 +170,19 @@
 
 		public function setColor(color:uint):void
 		{
-			var invert:Number=1.0 / 255;
-			a=(color >> 24 & 0xFF) * invert;
-			r=(color >> 16 & 0xFF) * invert;
-			g=(color >> 8 & 0xFF) * invert;
-			b=(color & 0xFF) * invert;
+			var invert:Number = 1.0 / 255;
+			a = (color >> 24 & 0xFF) * invert;
+			r = (color >> 16 & 0xFF) * invert;
+			g = (color >> 8 & 0xFF) * invert;
+			b = (color & 0xFF) * invert;
 		}
 
 		public function setRGB(color:uint):void
 		{
-			var invert:Number=1.0 / 255;
-			r=(color >> 16 & 0xFF) * invert;
-			g=(color >> 8 & 0xFF) * invert;
-			b=(color & 0xFF) * invert;
+			var invert:Number = 1.0 / 255;
+			r = (color >> 16 & 0xFF) * invert;
+			g = (color >> 8 & 0xFF) * invert;
+			b = (color & 0xFF) * invert;
 		}
 
 		public function clone():Color
@@ -207,12 +207,12 @@
 
 		public function lerp(v1:Color, v2:Color, interp:Number):void
 		{
-			var t:Number=1 - interp;
+			var t:Number = 1 - interp;
 
-			this.r=t * v1.r + interp * v2.r;
-			this.g=t * v1.g + interp * v2.g;
-			this.b=t * v1.b + interp * v2.b;
-			this.a=t * v1.a + interp * v2.a;
+			this.r = t * v1.r + interp * v2.r;
+			this.g = t * v1.g + interp * v2.g;
+			this.b = t * v1.b + interp * v2.b;
+			this.a = t * v1.a + interp * v2.a;
 		}
 
 		public function toString():String

@@ -26,17 +26,17 @@ package org.angle3d.texture
 		{
 			super(true);
 
-			mBitmapDatas=new Vector.<BitmapData>(6, true);
-			mBitmapDatas[0]=posX;
-			mBitmapDatas[1]=negX;
-			mBitmapDatas[2]=posY;
-			mBitmapDatas[3]=negY;
-			mBitmapDatas[4]=posZ;
-			mBitmapDatas[5]=negZ;
+			mBitmapDatas = new Vector.<BitmapData>(6, true);
+			mBitmapDatas[0] = posX;
+			mBitmapDatas[1] = negX;
+			mBitmapDatas[2] = posY;
+			mBitmapDatas[3] = negY;
+			mBitmapDatas[4] = posZ;
+			mBitmapDatas[5] = negZ;
 
 			CF::DEBUG
 			{
-				for (var i:int=0; i < 6; i++)
+				for (var i:int = 0; i < 6; i++)
 				{
 					testSize(mBitmapDatas[i]);
 				}
@@ -62,9 +62,9 @@ package org.angle3d.texture
 
 		override protected function uploadTexture():void
 		{
-			var cubeTexture:CubeTexture=(mTexture as CubeTexture);
+			var cubeTexture:CubeTexture = (mTexture as CubeTexture);
 
-			for (var i:int=0; i < 6; i++)
+			for (var i:int = 0; i < 6; i++)
 			{
 				MipmapGenerator.generateMipMapsCube(mBitmapDatas[i], cubeTexture, i, null, true);
 			}

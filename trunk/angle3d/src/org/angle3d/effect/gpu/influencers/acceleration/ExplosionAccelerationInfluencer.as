@@ -10,7 +10,7 @@ package org.angle3d.effect.gpu.influencers.acceleration
 		public function ExplosionAccelerationInfluencer(scale:Number)
 		{
 			super();
-			_scale=scale;
+			_scale = scale;
 		}
 
 		/**
@@ -18,9 +18,9 @@ package org.angle3d.effect.gpu.influencers.acceleration
 		 */
 		public function getAcceleration(velocity:Vector3f, store:Vector3f):Vector3f
 		{
-			store.x=velocity.x * _scale;
-			store.y=velocity.y * _scale;
-			store.z=velocity.z * _scale;
+			store.x = velocity.x * _scale;
+			store.y = velocity.y * _scale;
+			store.z = velocity.z * _scale;
 			return store;
 		}
 	}

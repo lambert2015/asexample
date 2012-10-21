@@ -12,7 +12,7 @@ package org.osflash.signals
 		/**
 		 * Represents an empty list. Used as the list terminator.
 		 */
-		public static const NIL:SlotList=new SlotList(null, null);
+		public static const NIL:SlotList = new SlotList(null, null);
 
 		/**
 		 * Creates and returns a new SlotList object.
@@ -27,7 +27,7 @@ package org.osflash.signals
 		 * @throws ArgumentError <code>ArgumentError</code>: Parameters head and tail are null. Use the NIL element instead.
 		 * @throws ArgumentError <code>ArgumentError</code>: Parameter head cannot be null.
 		 */
-		public function SlotList(head:ISlot, tail:SlotList=null)
+		public function SlotList(head:ISlot, tail:SlotList = null)
 		{
 			if (!head && !tail)
 			{
@@ -35,7 +35,7 @@ package org.osflash.signals
 					throw new ArgumentError('Parameters head and tail are null. Use the NIL element instead.');
 
 				//this is the NIL element as per definition
-				nonEmpty=false;
+				nonEmpty = false;
 			}
 			else if (!head)
 			{
@@ -43,16 +43,16 @@ package org.osflash.signals
 			}
 			else
 			{
-				this.head=head;
-				this.tail=tail || NIL;
-				nonEmpty=true;
+				this.head = head;
+				this.tail = tail || NIL;
+				nonEmpty = true;
 			}
 		}
 
 		// Although those variables are not const, they would be if AS3 would handle it correctly.
 		public var head:ISlot;
 		public var tail:SlotList;
-		public var nonEmpty:Boolean=false;
+		public var nonEmpty:Boolean = false;
 
 		/**
 		 * The number of slots in the list.
@@ -68,13 +68,13 @@ package org.osflash.signals
 			// Instead we assume that O(n) is okay since the length property is used in rare cases.
 			// We could also cache the length lazy, but that is a waste of another 8b per list node (at least).
 
-			var result:uint=0;
-			var p:SlotList=this;
+			var result:uint = 0;
+			var p:SlotList = this;
 
 			while (p.nonEmpty)
 			{
 				++result;
-				p=p.tail;
+				p = p.tail;
 			}
 
 			return result;
@@ -112,17 +112,17 @@ package org.osflash.signals
 
 			// The list already has two or more slots.
 			// We have to build a new list with cloned items because they are immutable.
-			const wholeClone:SlotList=new SlotList(head);
-			var subClone:SlotList=wholeClone;
-			var current:SlotList=tail;
+			const wholeClone:SlotList = new SlotList(head);
+			var subClone:SlotList = wholeClone;
+			var current:SlotList = tail;
 
 			while (current.nonEmpty)
 			{
-				subClone=subClone.tail=new SlotList(current.head);
-				current=current.tail;
+				subClone = subClone.tail = new SlotList(current.head);
+				current = current.tail;
 			}
 			// Append the new slot last.
-			subClone.tail=new SlotList(slot);
+			subClone.tail = new SlotList(slot);
 			return wholeClone;
 		}
 
@@ -139,29 +139,29 @@ package org.osflash.signals
 			if (!nonEmpty)
 				return new SlotList(slot);
 
-			const priority:int=slot.priority;
+			const priority:int = slot.priority;
 			// Special case: new slot has the highest priority.
 			if (priority > this.head.priority)
 				return prepend(slot);
 
-			const wholeClone:SlotList=new SlotList(head);
-			var subClone:SlotList=wholeClone;
-			var current:SlotList=tail;
+			const wholeClone:SlotList = new SlotList(head);
+			var subClone:SlotList = wholeClone;
+			var current:SlotList = tail;
 
 			// Find a slot with lower priority and go in front of it.
 			while (current.nonEmpty)
 			{
 				if (priority > current.head.priority)
 				{
-					subClone.tail=current.prepend(slot);
+					subClone.tail = current.prepend(slot);
 					return wholeClone;
 				}
-				subClone=subClone.tail=new SlotList(current.head);
-				current=current.tail;
+				subClone = subClone.tail = new SlotList(current.head);
+				current = current.tail;
 			}
 
 			// Slot has lowest priority.
-			subClone.tail=new SlotList(slot);
+			subClone.tail = new SlotList(slot);
 			return wholeClone;
 		}
 
@@ -180,21 +180,21 @@ package org.osflash.signals
 				return tail;
 
 			// The first item wasn't a match so the filtered list will contain it.
-			const wholeClone:SlotList=new SlotList(head);
-			var subClone:SlotList=wholeClone;
-			var current:SlotList=tail;
+			const wholeClone:SlotList = new SlotList(head);
+			var subClone:SlotList = wholeClone;
+			var current:SlotList = tail;
 
 			while (current.nonEmpty)
 			{
 				if (current.head.listener == listener)
 				{
 					// Splice out the current head.
-					subClone.tail=current.tail;
+					subClone.tail = current.tail;
 					return wholeClone;
 				}
 
-				subClone=subClone.tail=new SlotList(current.head);
-				current=current.tail;
+				subClone = subClone.tail = new SlotList(current.head);
+				current = current.tail;
 			}
 
 			// The listener was not found so this list is unchanged.
@@ -209,12 +209,12 @@ package org.osflash.signals
 			if (!nonEmpty)
 				return false;
 
-			var p:SlotList=this;
+			var p:SlotList = this;
 			while (p.nonEmpty)
 			{
 				if (p.head.listener == listener)
 					return true;
-				p=p.tail;
+				p = p.tail;
 			}
 
 			return false;
@@ -231,12 +231,12 @@ package org.osflash.signals
 			if (!nonEmpty)
 				return null;
 
-			var p:SlotList=this;
+			var p:SlotList = this;
 			while (p.nonEmpty)
 			{
 				if (p.head.listener == listener)
 					return p.head;
-				p=p.tail;
+				p = p.tail;
 			}
 
 			return null;
@@ -244,16 +244,16 @@ package org.osflash.signals
 
 		public function toString():String
 		{
-			var buffer:String='';
-			var p:SlotList=this;
+			var buffer:String = '';
+			var p:SlotList = this;
 
 			while (p.nonEmpty)
 			{
-				buffer+=p.head + " -> ";
-				p=p.tail;
+				buffer += p.head + " -> ";
+				p = p.tail;
 			}
 
-			buffer+="NIL";
+			buffer += "NIL";
 
 			return "[List " + buffer + "]";
 		}

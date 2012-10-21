@@ -49,7 +49,7 @@ package org.angle3d.particles.affectors
 
 		public function setAffectSpecialisation(value:int):void
 		{
-			mAffectSpecialisation=value;
+			mAffectSpecialisation = value;
 		}
 
 		/** Perform initialisation actions.

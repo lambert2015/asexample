@@ -5,10 +5,10 @@ package org.angle3d.particles.affectors
 
 	public class ScaleAffector extends ParticleAffector
 	{
-		public static const DEFAULT_X_SCALE:Number=1.0;
-		public static const DEFAULT_Y_SCALE:Number=1.0;
-		public static const DEFAULT_Z_SCALE:Number=1.0;
-		public static const DEFAULT_XYZ_SCALE:Number=1.0;
+		public static const DEFAULT_X_SCALE:Number = 1.0;
+		public static const DEFAULT_Y_SCALE:Number = 1.0;
+		public static const DEFAULT_Z_SCALE:Number = 1.0;
+		public static const DEFAULT_XYZ_SCALE:Number = 1.0;
 
 		protected var mDynScaleX:DynamicAttribute;
 		protected var mDynScaleY:DynamicAttribute;

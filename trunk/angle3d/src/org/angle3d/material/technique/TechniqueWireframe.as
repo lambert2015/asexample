@@ -24,23 +24,23 @@ package org.angle3d.material.technique
 		private var _color:Color;
 		private var _thickness:Number;
 
-		public function TechniqueWireframe(color:uint=0xFFFFFFFF, thickness:Number=1)
+		public function TechniqueWireframe(color:uint = 0xFFFFFFFF, thickness:Number = 1)
 		{
 			super("WireframeTechnique");
 
-			_renderState.applyCullMode=true;
-			_renderState.cullMode=Context3DTriangleFace.FRONT;
+			_renderState.applyCullMode = true;
+			_renderState.cullMode = Context3DTriangleFace.FRONT;
 
-			_renderState.applyDepthTest=true;
-			_renderState.depthTest=true;
-			_renderState.compareMode=Context3DCompareMode.LESS_EQUAL;
+			_renderState.applyDepthTest = true;
+			_renderState.depthTest = true;
+			_renderState.compareMode = Context3DCompareMode.LESS_EQUAL;
 
-			_renderState.applyBlendMode=false;
+			_renderState.applyBlendMode = false;
 
-			_color=new Color();
+			_color = new Color();
 
-			this.color=color;
-			this.thickness=thickness;
+			this.color = color;
+			this.thickness = thickness;
 		}
 
 		public function set color(color:uint):void
@@ -55,7 +55,7 @@ package org.angle3d.material.technique
 
 		public function set alpha(alpha:Number):void
 		{
-			_color.a=FastMath.fclamp(alpha, 0.0, 1.0);
+			_color.a = FastMath.fclamp(alpha, 0.0, 1.0);
 		}
 
 		public function get alpha():Number
@@ -65,7 +65,7 @@ package org.angle3d.material.technique
 
 		public function set thickness(thickness:Number):void
 		{
-			_thickness=thickness * 0.001;
+			_thickness = thickness * 0.001;
 		}
 
 		public function get thickness():Number
@@ -79,7 +79,7 @@ package org.angle3d.material.technique
 			shader.getUniform(ShaderType.VERTEX, "u_thickness").setFloat(_thickness);
 		}
 
-		override protected function getVertexSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 //			return "attribute vec3 a_position\n" + 
 //				"attribute vec3 a_position1\n" +
@@ -153,7 +153,7 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getFragmentSource(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			return <![CDATA[
 				function main(){
@@ -161,20 +161,20 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getBindAttributes(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
 		{
-			var map:Dictionary=new Dictionary();
-			map[BufferType.POSITION]="a_position";
-			map[BufferType.POSITION1]="a_position1";
+			var map:Dictionary = new Dictionary();
+			map[BufferType.POSITION] = "a_position";
+			map[BufferType.POSITION1] = "a_position1";
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String=LightType.None, meshType:String=MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
 		{
-			var list:Vector.<UniformBindingHelp>=new Vector.<UniformBindingHelp>();
+			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_worldViewMatrix", UniformBinding.WorldViewMatrix));
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_projectionMatrix", UniformBinding.ProjectionMatrix));
-			list.fixed=true;
+			list.fixed = true;
 			return list;
 		}
 	}

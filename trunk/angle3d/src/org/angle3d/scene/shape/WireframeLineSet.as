@@ -20,13 +20,13 @@ package org.angle3d.scene.shape
 
 		public function WireframeLineSet(sx:Number, sy:Number, sz:Number, ex:Number, ey:Number, ez:Number)
 		{
-			this.sx=sx;
-			this.sy=sy;
-			this.sz=sz;
+			this.sx = sx;
+			this.sy = sy;
+			this.sz = sz;
 
-			this.ex=ex;
-			this.ey=ey;
-			this.ez=ez;
+			this.ex = ex;
+			this.ey = ey;
+			this.ez = ez;
 		}
 	}
 }

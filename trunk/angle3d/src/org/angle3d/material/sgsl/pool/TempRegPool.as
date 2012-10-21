@@ -16,15 +16,15 @@ package org.angle3d.material.sgsl.pool
 		public function TempRegPool()
 		{
 			super();
-			_pool=new Vector.<int>(4 * 8, true);
+			_pool = new Vector.<int>(4 * 8, true);
 		}
 
 		override public function clear():void
 		{
 			super.clear();
-			for (var i:int=0; i < 32; i++)
+			for (var i:int = 0; i < 32; i++)
 			{
-				_pool[i]=0;
+				_pool[i] = 0;
 			}
 		}
 
@@ -48,25 +48,25 @@ package org.angle3d.material.sgsl.pool
 			var fLength:int;
 			var m:int;
 
-			var size:int=value.size;
+			var size:int = value.size;
 
 			CF::DEBUG
 			{
 				Assert.assert(size > 0, "size至少要大于0");
 			}
 
-			var tVar:TempReg=(value as TempReg);
+			var tVar:TempReg = (value as TempReg);
 
 			//除了矩阵外，其他类型的临时变量不能跨越寄存器，只能存在于某个寄存器中
 
 			//小于3时，可以在任意位置寻找
 			if (size < 3)
 			{
-				for (i=0; i < 8; i++)
+				for (i = 0; i < 8; i++)
 				{
-					freeList=_getFreesAt(i);
-					fLength=freeList.length;
-					for (m=0; m < fLength; m++)
+					freeList = _getFreesAt(i);
+					fLength = freeList.length;
+					for (m = 0; m < fLength; m++)
 					{
 						//空闲空间大于等于需要的大小
 						if (freeList[m].size >= size)
@@ -80,13 +80,13 @@ package org.angle3d.material.sgsl.pool
 			else if (size == 3)
 			{
 				//因为nrm,crs等函数不容许使用w,所以只能找前3位是空余的寄存器
-				for (i=0; i < 8; i++)
+				for (i = 0; i < 8; i++)
 				{
-					freeList=_getFreesAt(i);
-					fLength=freeList.length;
-					for (m=0; m < fLength; m++)
+					freeList = _getFreesAt(i);
+					fLength = freeList.length;
+					for (m = 0; m < fLength; m++)
 					{
-						var free:TempFree=freeList[m];
+						var free:TempFree = freeList[m];
 						//空闲空间大于等于需要的大小,并且无偏移
 						if (free.size >= size && free.offset == 0)
 						{
@@ -99,11 +99,11 @@ package org.angle3d.material.sgsl.pool
 			else
 			{
 				//vec4,mat3,mat4
-				var matLength:int=int(size / 4);
+				var matLength:int = int(size / 4);
 
 				//防止出界
-				var range:int=9 - matLength;
-				for (i=0; i < range; i++)
+				var range:int = 9 - matLength;
+				for (i = 0; i < range; i++)
 				{
 					//连续多个寄存器可用
 					if (isFreeFrom(i, i + matLength))
@@ -129,8 +129,8 @@ package org.angle3d.material.sgsl.pool
 		 */
 		private function _registerVar(reg:TempReg, index:int, offset:int, size:int):void
 		{
-			reg.index=index;
-			reg.offset=offset;
+			reg.index = index;
+			reg.offset = offset;
 			_registerPool(index * 4 + offset, size);
 		}
 
@@ -141,11 +141,11 @@ package org.angle3d.material.sgsl.pool
 		 */
 		private function _registerPool(start:int, size:int):void
 		{
-			var end:int=start + size;
-			for (var i:int=start; i < end; i++)
+			var end:int = start + size;
+			for (var i:int = start; i < end; i++)
 			{
 				//setAt(i);
-				_pool[i]=1;
+				_pool[i] = 1;
 			}
 		}
 
@@ -165,7 +165,7 @@ package org.angle3d.material.sgsl.pool
 		 */
 		private function setAt(pos:int):void
 		{
-			_pool[pos]=1;
+			_pool[pos] = 1;
 		}
 
 		/**
@@ -174,7 +174,7 @@ package org.angle3d.material.sgsl.pool
 		 */
 		private function clearAt(pos:int):void
 		{
-			_pool[pos]=0;
+			_pool[pos] = 0;
 		}
 
 		/**
@@ -184,17 +184,17 @@ package org.angle3d.material.sgsl.pool
 		 */
 		private function _getFreesAt(index:int):Vector.<TempFree>
 		{
-			index*=4;
+			index *= 4;
 
-			var list:Vector.<TempFree>=new Vector.<TempFree>();
+			var list:Vector.<TempFree> = new Vector.<TempFree>();
 
-			var tempFree:TempFree=null;
+			var tempFree:TempFree = null;
 
 			//是否是空闲地址
-			var isFirst:Boolean=true;
-			var freeSize:int=0;
+			var isFirst:Boolean = true;
+			var freeSize:int = 0;
 
-			for (var j:int=0; j < 4; j++)
+			for (var j:int = 0; j < 4; j++)
 			{
 				//此地址空闲
 				if (_pool[index + j] == 0)
@@ -202,10 +202,10 @@ package org.angle3d.material.sgsl.pool
 					if (isFirst)
 					{
 						//写入起始位置
-						tempFree=new TempFree();
-						tempFree.offset=j;
+						tempFree = new TempFree();
+						tempFree.offset = j;
 						list.push(tempFree);
-						isFirst=false;
+						isFirst = false;
 					}
 					freeSize++;
 				}
@@ -214,17 +214,17 @@ package org.angle3d.material.sgsl.pool
 					//freeSize > 0代表之前有个连续空闲空间，加入其大小
 					if (freeSize > 0)
 					{
-						tempFree.size=freeSize;
+						tempFree.size = freeSize;
 					}
-					isFirst=true;
-					freeSize=0;
+					isFirst = true;
+					freeSize = 0;
 				}
 			}
 
 			//设置最后一个连续空间的大小
 			if (freeSize > 0)
 			{
-				tempFree.size=freeSize;
+				tempFree.size = freeSize;
 			}
 
 			return list;
@@ -237,12 +237,12 @@ package org.angle3d.material.sgsl.pool
 		 */
 		private function isFreeAt(index:int):Boolean
 		{
-			index*=4;
+			index *= 4;
 
-			var value:int=0;
-			for (var i:int=0; i < 4; i++)
+			var value:int = 0;
+			for (var i:int = 0; i < 4; i++)
 			{
-				value+=_pool[index + i];
+				value += _pool[index + i];
 			}
 
 			return (value == 0);
@@ -256,7 +256,7 @@ package org.angle3d.material.sgsl.pool
 		 */
 		private function isFreeFrom(start:int, end:int):Boolean
 		{
-			for (var i:int=start; i < end; i++)
+			for (var i:int = start; i < end; i++)
 			{
 				if (!isFreeAt(i))
 				{
@@ -272,19 +272,19 @@ package org.angle3d.material.sgsl.pool
 		 */
 		override public function logout(value:RegNode):void
 		{
-			var tReg:TempReg=(value as TempReg);
+			var tReg:TempReg = (value as TempReg);
 
 			CF::DEBUG
 			{
 				Assert.assert(tReg != null, value.name + "不是临时变量");
 			}
 
-			var start:int=tReg.index * 4 + tReg.offset;
-			var length:int=start + tReg.size;
-			for (var i:int=start; i < length; i++)
+			var start:int = tReg.index * 4 + tReg.offset;
+			var length:int = start + tReg.size;
+			for (var i:int = start; i < length; i++)
 			{
 				//clearAt(i);
-				_pool[i]=0;
+				_pool[i] = 0;
 			}
 		}
 
@@ -294,15 +294,15 @@ package org.angle3d.material.sgsl.pool
 		 */
 		public function toString():String
 		{
-			var str:String="TempRegisterPool\n[\n ";
-			for (var i:int=0; i < 8; i++)
+			var str:String = "TempRegisterPool\n[\n ";
+			for (var i:int = 0; i < 8; i++)
 			{
-				var line:String="";
-				for (var j:int=0; j < 4; j++)
+				var line:String = "";
+				for (var j:int = 0; j < 4; j++)
 				{
-					line+=_pool[i * 4 + j] + "\t";
+					line += _pool[i * 4 + j] + "\t";
 				}
-				str+=line + "\n";
+				str += line + "\n";
 			}
 			return str;
 		}

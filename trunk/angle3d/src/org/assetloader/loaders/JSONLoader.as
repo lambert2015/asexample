@@ -15,10 +15,10 @@ package org.assetloader.loaders
 		 */
 		protected var _jsonObject:Object;
 
-		public function JSONLoader(request:URLRequest, id:String=null)
+		public function JSONLoader(request:URLRequest, id:String = null)
 		{
 			super(request, id);
-			_type=AssetType.JSON;
+			_type = AssetType.JSON;
 		}
 
 		/**
@@ -27,7 +27,7 @@ package org.assetloader.loaders
 		override protected function initSignals():void
 		{
 			super.initSignals();
-			_onComplete=new LoaderSignal(Object);
+			_onComplete = new LoaderSignal(Object);
 		}
 
 		/**
@@ -36,7 +36,7 @@ package org.assetloader.loaders
 		override public function destroy():void
 		{
 			super.destroy();
-			_jsonObject=null;
+			_jsonObject = null;
 		}
 
 		/**
@@ -46,14 +46,14 @@ package org.assetloader.loaders
 		 */
 		override protected function testData(data:String):String
 		{
-			var errMsg:String="";
+			var errMsg:String = "";
 			try
 			{
-				_data=_jsonObject=JSON.parse(data);
+				_data = _jsonObject = JSON.parse(data);
 			}
 			catch (err:Error)
 			{
-				errMsg=err.message;
+				errMsg = err.message;
 			}
 
 			return errMsg;

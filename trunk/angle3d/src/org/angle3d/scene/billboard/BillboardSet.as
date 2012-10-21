@@ -90,70 +90,70 @@ package org.angle3d.scene.billboard
 		 * @param poolSize 最少需要一个布告板
 		 *
 		 */
-		public function BillboardSet(name:String, poolSize:int=1)
+		public function BillboardSet(name:String, poolSize:int = 1)
 		{
 			super(name);
 
-			mBillboardType=BillboardType.BBT_POINT;
-			mOriginType=BillboardOriginType.BBO_CENTER;
-			mRotationType=BillboardRotationType.BBR_VERTEX;
+			mBillboardType = BillboardType.BBT_POINT;
+			mOriginType = BillboardOriginType.BBO_CENTER;
+			mRotationType = BillboardRotationType.BBR_VERTEX;
 
-			mAutoUpdate=true;
-			mBillboardDataChanged=true;
-			mAllDefaultSize=true;
-			mAccurateFacing=false;
-			mAllDefaultRotation=true;
-			mWorldSpace=false;
+			mAutoUpdate = true;
+			mBillboardDataChanged = true;
+			mAllDefaultSize = true;
+			mAccurateFacing = false;
+			mAllDefaultRotation = true;
+			mWorldSpace = false;
 
-			mCamX=new Vector3f();
-			mCamY=new Vector3f();
+			mCamX = new Vector3f();
+			mCamY = new Vector3f();
 
-			mCamDir=new Vector3f();
-			mCamQ=new Quaternion();
-			mCamPos=new Vector3f();
+			mCamDir = new Vector3f();
+			mCamQ = new Quaternion();
+			mCamPos = new Vector3f();
 
-			mCommonDirection=new Vector3f(0, 0, 1);
-			mCommonUpVector=new Vector3f(0, 1, 0);
+			mCommonDirection = new Vector3f(0, 0, 1);
+			mCommonUpVector = new Vector3f(0, 1, 0);
 
 			setDefaultDimensions(100, 100);
 			setTextureStacksAndSlices(1, 1);
 
-			localShadowMode=ShadowMode.Off;
+			localShadowMode = ShadowMode.Off;
 
-			mVOffset=new Vector.<Vector3f>(4, true);
-			mOwnOffset=new Vector.<Vector3f>(4, true);
-			for (var i:int=0; i < 4; i++)
+			mVOffset = new Vector.<Vector3f>(4, true);
+			mOwnOffset = new Vector.<Vector3f>(4, true);
+			for (var i:int = 0; i < 4; i++)
 			{
-				mVOffset[i]=new Vector3f();
-				mOwnOffset[i]=new Vector3f();
+				mVOffset[i] = new Vector3f();
+				mOwnOffset[i] = new Vector3f();
 			}
 
-			mRectOff=new SimpleRect();
+			mRectOff = new SimpleRect();
 
-			mBillboardPool=new Vector.<Billboard>();
-			mFreeBillboards=new Vector.<Billboard>();
-			mActiveBillboards=new Vector.<Billboard>();
+			mBillboardPool = new Vector.<Billboard>();
+			mFreeBillboards = new Vector.<Billboard>();
+			mActiveBillboards = new Vector.<Billboard>();
 			setPoolSize(poolSize);
 
-			mControl=new BillboardSetControl();
+			mControl = new BillboardSetControl();
 			addControl(mControl);
 		}
 
 		public function setPoolSize(size:int):void
 		{
-			var currSize:int=mBillboardPool.length;
+			var currSize:int = mBillboardPool.length;
 			if (currSize >= size)
 				return;
 
 			this.increasePool(size);
 
-			for (var i:int=currSize; i < size; ++i)
+			for (var i:int = currSize; i < size; ++i)
 			{
 				// Add new items to the queue
 				mFreeBillboards.push(mBillboardPool[i]);
 			}
 
-			mPoolSize=size;
+			mPoolSize = size;
 
 			_createBuffers();
 		}
@@ -162,12 +162,12 @@ package org.angle3d.scene.billboard
 
 		public function increasePool(size:int):void
 		{
-			var oldSize:int=mBillboardPool.length;
+			var oldSize:int = mBillboardPool.length;
 
-			mBillboardPool.length=size;
-			for (var i:int=oldSize; i < size; ++i)
+			mBillboardPool.length = size;
+			for (var i:int = oldSize; i < size; ++i)
 			{
-				mBillboardPool[i]=new Billboard(new Vector3f(), this);
+				mBillboardPool[i] = new Billboard(new Vector3f(), this);
 			}
 		}
 
@@ -179,22 +179,22 @@ package org.angle3d.scene.billboard
 		/**
 		 * 生成一个新的布告板
 		 */
-		public function createBillboard(position:Vector3f, color:uint=0xFFFFFF):Billboard
+		public function createBillboard(position:Vector3f, color:uint = 0xFFFFFF):Billboard
 		{
 			if (mFreeBillboards.length == 0)
 			{
 				return null;
 			}
 
-			var newBill:Billboard=mFreeBillboards.shift();
+			var newBill:Billboard = mFreeBillboards.shift();
 			newBill.reset();
 
 			mActiveBillboards.push(newBill);
 
-			newBill.width=mDefaultWidth;
-			newBill.height=mDefaultHeight;
-			newBill.parentSet=this;
-			newBill.color=color;
+			newBill.width = mDefaultWidth;
+			newBill.height = mDefaultHeight;
+			newBill.parentSet = this;
+			newBill.color = color;
 			newBill.position.copyFrom(position);
 			return newBill;
 		}
@@ -209,12 +209,12 @@ package org.angle3d.scene.billboard
 		 */
 		public function clear():void
 		{
-			var activeCount:int=mActiveBillboards.length;
-			for (var i:int=0; i < activeCount; i++)
+			var activeCount:int = mActiveBillboards.length;
+			for (var i:int = 0; i < activeCount; i++)
 			{
 				mFreeBillboards.push(mActiveBillboards[i]);
 			}
-			mActiveBillboards.length=0;
+			mActiveBillboards.length = 0;
 		}
 
 		public function getActiveBillboards():Vector.<Billboard>
@@ -229,7 +229,7 @@ package org.angle3d.scene.billboard
 
 		public function removeBillboardAt(index:int):void
 		{
-			var bill:Billboard=mActiveBillboards[index];
+			var bill:Billboard = mActiveBillboards[index];
 			mActiveBillboards.splice(index, 1);
 
 			mFreeBillboards.push(bill);
@@ -237,7 +237,7 @@ package org.angle3d.scene.billboard
 
 		public function removeBillboard(billboard:Billboard):void
 		{
-			var index:int=mActiveBillboards.indexOf(billboard);
+			var index:int = mActiveBillboards.indexOf(billboard);
 			if (index > -1)
 			{
 				mActiveBillboards.splice(index, 1);
@@ -250,7 +250,7 @@ package org.angle3d.scene.billboard
 		 */
 		public function setOriginType(origin:int):void
 		{
-			mOriginType=origin;
+			mOriginType = origin;
 
 			//计算偏移数据
 			switch (mOriginType)
@@ -295,7 +295,7 @@ package org.angle3d.scene.billboard
 		 */
 		public function setRotationType(rotationType:int):void
 		{
-			mRotationType=rotationType;
+			mRotationType = rotationType;
 		}
 
 		public function getRotationType():int
@@ -308,13 +308,13 @@ package org.angle3d.scene.billboard
 		 */
 		public function setDefaultDimensions(width:Number, height:Number):void
 		{
-			mDefaultWidth=width;
-			mDefaultHeight=height;
+			mDefaultWidth = width;
+			mDefaultHeight = height;
 		}
 
 		public function setDefaultWidth(width:Number):void
 		{
-			mDefaultWidth=width;
+			mDefaultWidth = width;
 		}
 
 		public function getDefaultWidth():Number
@@ -324,7 +324,7 @@ package org.angle3d.scene.billboard
 
 		public function setDefaultHeight(height:Number):void
 		{
-			mDefaultHeight=height;
+			mDefaultHeight = height;
 		}
 
 		public function getDefaultHeight():Number
@@ -349,7 +349,7 @@ package org.angle3d.scene.billboard
 		I leave the final transform to the render pipeline since that can
 		use hardware TnL if it is available.
 		*/
-		public function beginBillboards(numBillboards:uint=0):void
+		public function beginBillboards(numBillboards:uint = 0):void
 		{
 			// Generate axes etc up-front if not oriented per-billboard
 			if (mBillboardType != BillboardType.BBT_ORIENTED_SELF && mBillboardType != BillboardType.BBT_PERPENDICULAR_SELF && !(mAccurateFacing && mBillboardType != BillboardType.BBT_PERPENDICULAR_COMMON))
@@ -415,11 +415,11 @@ package org.angle3d.scene.billboard
 			 * 颜色部分不需要修改了
 			 */
 			var i:int;
-			var activeCount:int=mActiveBillboards.length * 12;
-			var totalCount:int=mPoolSize * 12;
-			for (i=activeCount; i < totalCount; i++)
+			var activeCount:int = mActiveBillboards.length * 12;
+			var totalCount:int = mPoolSize * 12;
+			for (i = activeCount; i < totalCount; i++)
 			{
-				mVertices[i]=0;
+				mVertices[i] = 0;
 			}
 
 			mPosBuffer.updateData(mVertices);
@@ -428,7 +428,7 @@ package org.angle3d.scene.billboard
 
 			mMesh.validate();
 
-			mBillboardDataChanged=false;
+			mBillboardDataChanged = false;
 		}
 
 		override public function updateGeometricState():void
@@ -441,7 +441,7 @@ package org.angle3d.scene.billboard
 		 */
 		public function setBillboardType(type:int):void
 		{
-			mBillboardType=type;
+			mBillboardType = type;
 		}
 
 		public function getBillboardType():int
@@ -477,7 +477,7 @@ package org.angle3d.scene.billboard
 		 */
 		public function setUseAccurateFacing(acc:Boolean):void
 		{
-			mAccurateFacing=acc;
+			mAccurateFacing = acc;
 		}
 
 		public function getUseAccurateFacing():Boolean
@@ -490,7 +490,7 @@ package org.angle3d.scene.billboard
 		 */
 		public function set inWorldSpace(ws:Boolean):void
 		{
-			mWorldSpace=ws;
+			mWorldSpace = ws;
 		}
 
 		public function get inWorldSpace():Boolean
@@ -506,11 +506,11 @@ package org.angle3d.scene.billboard
 				return;
 			}
 
-			mTextureCoords=new Vector.<SimpleRect>(numCoords);
-			var count:int=mTextureCoords.length;
-			for (var i:int=0; i < count; i++)
+			mTextureCoords = new Vector.<SimpleRect>(numCoords);
+			var count:int = mTextureCoords.length;
+			for (var i:int = 0; i < count; i++)
 			{
-				mTextureCoords[i]=coords[i];
+				mTextureCoords[i] = coords[i];
 			}
 		}
 
@@ -520,34 +520,34 @@ package org.angle3d.scene.billboard
 		public function setTextureStacksAndSlices(stacks:int, slices:int):void
 		{
 			if (stacks == 0)
-				stacks=1;
+				stacks = 1;
 			if (slices == 0)
-				slices=1;
+				slices = 1;
 
 			//  clear out any previous allocation (as vectors may not shrink)
-			mTextureCoords=new Vector.<SimpleRect>(stacks * slices);
-			var count:int=mTextureCoords.length;
-			for (var i:int=0; i < count; i++)
+			mTextureCoords = new Vector.<SimpleRect>(stacks * slices);
+			var count:int = mTextureCoords.length;
+			for (var i:int = 0; i < count; i++)
 			{
-				mTextureCoords[i]=new SimpleRect();
+				mTextureCoords[i] = new SimpleRect();
 			}
 
 			//  make room
-			var coordIndex:uint=0;
+			var coordIndex:uint = 0;
 			//  spread the U and V coordinates across the rects
-			for (var v:int=0; v < stacks; ++v)
+			for (var v:int = 0; v < stacks; ++v)
 			{
 				//  (float)X / X is guaranteed to be == 1.0f for X up to 8 million, so
 				//  our range of 1..256 is quite enough to guarantee perfect coverage.
-				var top:Number=v / stacks;
-				var bottom:Number=(v + 1) / stacks;
-				for (var u:int=0; u < slices; ++u)
+				var top:Number = v / stacks;
+				var bottom:Number = (v + 1) / stacks;
+				for (var u:int = 0; u < slices; ++u)
 				{
-					var r:SimpleRect=mTextureCoords[coordIndex++];
-					r.left=u / slices;
-					r.bottom=bottom;
-					r.right=(u + 1) / slices;
-					r.top=top;
+					var r:SimpleRect = mTextureCoords[coordIndex++];
+					r.left = u / slices;
+					r.bottom = bottom;
+					r.right = (u + 1) / slices;
+					r.top = top;
 				}
 			}
 		}
@@ -557,7 +557,7 @@ package org.angle3d.scene.billboard
 		 */
 		public function setAutoUpdate(autoUpdate:Boolean):void
 		{
-			mAutoUpdate=autoUpdate;
+			mAutoUpdate = autoUpdate;
 		}
 
 		public function getAutoUpdate():Boolean
@@ -571,7 +571,7 @@ package org.angle3d.scene.billboard
 		 */
 		public function notifyBillboardDataChanged():void
 		{
-			mBillboardDataChanged=true;
+			mBillboardDataChanged = true;
 		}
 
 		/**
@@ -580,7 +580,7 @@ package org.angle3d.scene.billboard
 		 */
 		internal function notifyBillboardResized():void
 		{
-			mAllDefaultSize=false;
+			mAllDefaultSize = false;
 		}
 
 		/**
@@ -589,7 +589,7 @@ package org.angle3d.scene.billboard
 		 */
 		internal function notifyBillboardRotated():void
 		{
-			mAllDefaultRotation=false;
+			mAllDefaultRotation = false;
 		}
 
 		//-----------------------------------------------------------------------
@@ -602,7 +602,7 @@ package org.angle3d.scene.billboard
 		 * Internal method for generating billboard corners.
 		 * Optional parameter pBill is only present for type BBT_ORIENTED_SELF and BBT_PERPENDICULAR_SELF
 		 */
-		private function genBillboardAxes(axisX:Vector3f, axisY:Vector3f, billboard:Billboard=null):void
+		private function genBillboardAxes(axisX:Vector3f, axisY:Vector3f, billboard:Billboard = null):void
 		{
 			// If we're using accurate facing, recalculate camera direction per BB
 			if (mAccurateFacing && (mBillboardType == BillboardType.BBT_POINT || mBillboardType == BillboardType.BBT_ORIENTED_COMMON || mBillboardType == BillboardType.BBT_ORIENTED_SELF))
@@ -666,185 +666,185 @@ package org.angle3d.scene.billboard
 		 @param offsets Array of 4 Vector3 offsets
 		 @param pBillboard Reference to billboard
 		 */
-		private var mColor:Color=new Color();
-		private var mRotationMat:Matrix3f=new Matrix3f();
+		private var mColor:Color = new Color();
+		private var mRotationMat:Matrix3f = new Matrix3f();
 
 		private function genVertices(index:int, offsets:Vector.<Vector3f>, bb:Billboard):void
 		{
 			mColor.setColor(bb.color);
 
-			var r:SimpleRect=bb.useTexcoordRect ? bb.texcoordRect : mTextureCoords[bb.texcoordIndex];
+			var r:SimpleRect = bb.useTexcoordRect ? bb.texcoordRect : mTextureCoords[bb.texcoordIndex];
 
-			var bbpx:Number=bb.position.x;
-			var bbpy:Number=bb.position.y;
-			var bbpz:Number=bb.position.z;
+			var bbpx:Number = bb.position.x;
+			var bbpy:Number = bb.position.y;
+			var bbpz:Number = bb.position.z;
 
-			var index8:int=index * 8;
-			var index12:int=index * 12;
-			var index16:int=index * 16;
+			var index8:int = index * 8;
+			var index12:int = index * 12;
+			var index16:int = index * 16;
 
 			// Color,颜色都一样
-			for (var i:int=0; i < 4; i++)
+			for (var i:int = 0; i < 4; i++)
 			{
-				mColors[index16 + i * 4 + 0]=mColor.r;
-				mColors[index16 + i * 4 + 1]=mColor.g;
-				mColors[index16 + i * 4 + 2]=mColor.b;
-				mColors[index16 + i * 4 + 3]=mColor.a;
+				mColors[index16 + i * 4 + 0] = mColor.r;
+				mColors[index16 + i * 4 + 1] = mColor.g;
+				mColors[index16 + i * 4 + 2] = mColor.b;
+				mColors[index16 + i * 4 + 3] = mColor.a;
 			}
 
 			if (mAllDefaultRotation || bb.rotation == 0)
 			{
 				// Left-top
 				// Positions
-				mVertices[index12 + 0]=offsets[0].x + bbpx;
-				mVertices[index12 + 1]=offsets[0].y + bbpy;
-				mVertices[index12 + 2]=offsets[0].z + bbpz;
+				mVertices[index12 + 0] = offsets[0].x + bbpx;
+				mVertices[index12 + 1] = offsets[0].y + bbpy;
+				mVertices[index12 + 2] = offsets[0].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 0]=r.left;
-				mTexCoords[index8 + 1]=r.top;
+				mTexCoords[index8 + 0] = r.left;
+				mTexCoords[index8 + 1] = r.top;
 
 				// Right-top
 				// Positions
-				mVertices[index12 + 3]=offsets[1].x + bbpx;
-				mVertices[index12 + 4]=offsets[1].y + bbpy;
-				mVertices[index12 + 5]=offsets[1].z + bbpz;
+				mVertices[index12 + 3] = offsets[1].x + bbpx;
+				mVertices[index12 + 4] = offsets[1].y + bbpy;
+				mVertices[index12 + 5] = offsets[1].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 2]=r.right;
-				mTexCoords[index8 + 3]=r.top;
+				mTexCoords[index8 + 2] = r.right;
+				mTexCoords[index8 + 3] = r.top;
 
 				// Left-bottom
 				// Positions
-				mVertices[index12 + 6]=offsets[2].x + bbpx;
-				mVertices[index12 + 7]=offsets[2].y + bbpy;
-				mVertices[index12 + 8]=offsets[2].z + bbpz;
+				mVertices[index12 + 6] = offsets[2].x + bbpx;
+				mVertices[index12 + 7] = offsets[2].y + bbpy;
+				mVertices[index12 + 8] = offsets[2].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 4]=r.left;
-				mTexCoords[index8 + 5]=r.bottom;
+				mTexCoords[index8 + 4] = r.left;
+				mTexCoords[index8 + 5] = r.bottom;
 
 				// Right-bottom
 				// Positions
-				mVertices[index12 + 9]=offsets[3].x + bbpx;
-				mVertices[index12 + 10]=offsets[3].y + bbpy;
-				mVertices[index12 + 11]=offsets[3].z + bbpz;
+				mVertices[index12 + 9] = offsets[3].x + bbpx;
+				mVertices[index12 + 10] = offsets[3].y + bbpy;
+				mVertices[index12 + 11] = offsets[3].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 6]=r.right;
-				mTexCoords[index8 + 7]=r.bottom;
+				mTexCoords[index8 + 6] = r.right;
+				mTexCoords[index8 + 7] = r.bottom;
 			}
 			else if (mRotationType == BillboardRotationType.BBR_VERTEX)
 			{
 				// TODO: Cache axis when billboard type is BBT_POINT or BBT_PERPENDICULAR_COMMON
-				var offset30:Vector3f=offsets[3].subtract(offsets[0]);
-				var offset21:Vector3f=offsets[2].subtract(offsets[1]);
+				var offset30:Vector3f = offsets[3].subtract(offsets[0]);
+				var offset21:Vector3f = offsets[2].subtract(offsets[1]);
 
-				var axis:Vector3f=offset30.cross(offset21);
+				var axis:Vector3f = offset30.cross(offset21);
 				axis.normalizeLocal();
 
 				mRotationMat.fromAngleAxis(bb.rotation, axis);
 
-				var pt:Vector3f=new Vector3f();
+				var pt:Vector3f = new Vector3f();
 
 				// Left-top
 				// Positions
 				mRotationMat.multVec(offsets[0], pt);
-				mVertices[index12 + 0]=pt.x + bbpx;
-				mVertices[index12 + 1]=pt.y + bbpy;
-				mVertices[index12 + 2]=pt.z + bbpz;
+				mVertices[index12 + 0] = pt.x + bbpx;
+				mVertices[index12 + 1] = pt.y + bbpy;
+				mVertices[index12 + 2] = pt.z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 0]=r.left;
-				mTexCoords[index8 + 1]=r.top;
+				mTexCoords[index8 + 0] = r.left;
+				mTexCoords[index8 + 1] = r.top;
 
 				// Right-top
 				// Positions
 				mRotationMat.multVec(offsets[1], pt);
-				mVertices[index12 + 3]=pt.x + bbpx;
-				mVertices[index12 + 4]=pt.y + bbpy;
-				mVertices[index12 + 5]=pt.z + bbpz;
+				mVertices[index12 + 3] = pt.x + bbpx;
+				mVertices[index12 + 4] = pt.y + bbpy;
+				mVertices[index12 + 5] = pt.z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 2]=r.right;
-				mTexCoords[index8 + 3]=r.top;
+				mTexCoords[index8 + 2] = r.right;
+				mTexCoords[index8 + 3] = r.top;
 
 				// Left-bottom
 				// Positions
 				mRotationMat.multVec(offsets[2], pt);
-				mVertices[index12 + 6]=pt.x + bbpx;
-				mVertices[index12 + 7]=pt.y + bbpy;
-				mVertices[index12 + 8]=pt.z + bbpz;
+				mVertices[index12 + 6] = pt.x + bbpx;
+				mVertices[index12 + 7] = pt.y + bbpy;
+				mVertices[index12 + 8] = pt.z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 4]=r.left;
-				mTexCoords[index8 + 5]=r.bottom;
+				mTexCoords[index8 + 4] = r.left;
+				mTexCoords[index8 + 5] = r.bottom;
 
 				// Right-bottom
 				// Positions
 				mRotationMat.multVec(offsets[3], pt);
-				mVertices[index12 + 9]=pt.x + bbpx;
-				mVertices[index12 + 10]=pt.y + bbpy;
-				mVertices[index12 + 11]=pt.z + bbpz;
+				mVertices[index12 + 9] = pt.x + bbpx;
+				mVertices[index12 + 10] = pt.y + bbpy;
+				mVertices[index12 + 11] = pt.z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 6]=r.right;
-				mTexCoords[index8 + 7]=r.bottom;
+				mTexCoords[index8 + 6] = r.right;
+				mTexCoords[index8 + 7] = r.bottom;
 			}
 			else //if(mRotationType == BillboardRotationType.BBR_TEXCOORD)
 			{
-				var cos_rot:Number=Math.cos(bb.rotation);
-				var sin_rot:Number=Math.sin(bb.rotation);
+				var cos_rot:Number = Math.cos(bb.rotation);
+				var sin_rot:Number = Math.sin(bb.rotation);
 
-				var halfWidth:Number=r.width * 0.5;
-				var halfHeight:Number=r.height * 0.5;
-				var mid_u:Number=r.left + halfWidth;
-				var mid_v:Number=r.top + halfHeight;
+				var halfWidth:Number = r.width * 0.5;
+				var halfHeight:Number = r.height * 0.5;
+				var mid_u:Number = r.left + halfWidth;
+				var mid_v:Number = r.top + halfHeight;
 
-				var cos_rot_w:Number=cos_rot * halfWidth;
-				var cos_rot_h:Number=cos_rot * halfHeight;
-				var sin_rot_w:Number=sin_rot * halfWidth;
-				var sin_rot_h:Number=sin_rot * halfHeight;
+				var cos_rot_w:Number = cos_rot * halfWidth;
+				var cos_rot_h:Number = cos_rot * halfHeight;
+				var sin_rot_w:Number = sin_rot * halfWidth;
+				var sin_rot_h:Number = sin_rot * halfHeight;
 
 				// Left-top
 				// Positions
-				mVertices[index12 + 0]=offsets[0].x + bbpx;
-				mVertices[index12 + 1]=offsets[0].y + bbpy;
-				mVertices[index12 + 2]=offsets[0].z + bbpz;
+				mVertices[index12 + 0] = offsets[0].x + bbpx;
+				mVertices[index12 + 1] = offsets[0].y + bbpy;
+				mVertices[index12 + 2] = offsets[0].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 0]=mid_u - cos_rot_w + sin_rot_h;
-				mTexCoords[index8 + 1]=mid_v - sin_rot_w - cos_rot_h;
+				mTexCoords[index8 + 0] = mid_u - cos_rot_w + sin_rot_h;
+				mTexCoords[index8 + 1] = mid_v - sin_rot_w - cos_rot_h;
 
 				// Right-top
 				// Positions
-				mVertices[index12 + 3]=offsets[1].x + bbpx;
-				mVertices[index12 + 4]=offsets[1].y + bbpy;
-				mVertices[index12 + 5]=offsets[1].z + bbpz;
+				mVertices[index12 + 3] = offsets[1].x + bbpx;
+				mVertices[index12 + 4] = offsets[1].y + bbpy;
+				mVertices[index12 + 5] = offsets[1].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 2]=mid_u + cos_rot_w + sin_rot_h;
-				mTexCoords[index8 + 3]=mid_v + sin_rot_w - cos_rot_h;
+				mTexCoords[index8 + 2] = mid_u + cos_rot_w + sin_rot_h;
+				mTexCoords[index8 + 3] = mid_v + sin_rot_w - cos_rot_h;
 
 				// Left-bottom
 				// Positions
-				mVertices[index12 + 6]=offsets[2].x + bbpx;
-				mVertices[index12 + 7]=offsets[2].y + bbpy;
-				mVertices[index12 + 8]=offsets[2].z + bbpz;
+				mVertices[index12 + 6] = offsets[2].x + bbpx;
+				mVertices[index12 + 7] = offsets[2].y + bbpy;
+				mVertices[index12 + 8] = offsets[2].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 4]=mid_u - cos_rot_w - sin_rot_h;
-				mTexCoords[index8 + 5]=mid_v - sin_rot_w + cos_rot_h;
+				mTexCoords[index8 + 4] = mid_u - cos_rot_w - sin_rot_h;
+				mTexCoords[index8 + 5] = mid_v - sin_rot_w + cos_rot_h;
 
 				// Right-bottom
 				// Positions
-				mVertices[index12 + 9]=offsets[3].x + bbpx;
-				mVertices[index12 + 10]=offsets[3].y + bbpy;
-				mVertices[index12 + 11]=offsets[3].z + bbpz;
+				mVertices[index12 + 9] = offsets[3].x + bbpx;
+				mVertices[index12 + 10] = offsets[3].y + bbpy;
+				mVertices[index12 + 11] = offsets[3].z + bbpz;
 
 				// Texture coords
-				mTexCoords[index8 + 6]=mid_u + cos_rot_w - sin_rot_h;
-				mTexCoords[index8 + 7]=mid_v + sin_rot_w + cos_rot_h;
+				mTexCoords[index8 + 6] = mid_u + cos_rot_w - sin_rot_h;
+				mTexCoords[index8 + 7] = mid_v + sin_rot_w + cos_rot_h;
 			}
 		}
 
@@ -855,10 +855,10 @@ package org.angle3d.scene.billboard
 		 Fills output array of 4 vectors with vector offsets
 		 from origin for left-top, right-top, left-bottom, right-bottom corners.
 		 */
-		private var vLeftOff:Vector3f=new Vector3f();
-		private var vRightOff:Vector3f=new Vector3f();
-		private var vTopOff:Vector3f=new Vector3f();
-		private var vBottomOff:Vector3f=new Vector3f();
+		private var vLeftOff:Vector3f = new Vector3f();
+		private var vRightOff:Vector3f = new Vector3f();
+		private var vTopOff:Vector3f = new Vector3f();
+		private var vBottomOff:Vector3f = new Vector3f();
 
 		private function genVertOffsets(width:Number, height:Number, xAxis:Vector3f, yAxis:Vector3f, pDestVec:Vector.<Vector3f>):void
 		{
@@ -874,21 +874,21 @@ package org.angle3d.scene.billboard
 			yAxis.scale(mRectOff.bottom * height, vBottomOff);
 
 			// Make final offsets to vertex positions
-			pDestVec[0].x=vLeftOff.x + vTopOff.x;
-			pDestVec[0].y=vLeftOff.y + vTopOff.y;
-			pDestVec[0].z=vLeftOff.z + vTopOff.z;
+			pDestVec[0].x = vLeftOff.x + vTopOff.x;
+			pDestVec[0].y = vLeftOff.y + vTopOff.y;
+			pDestVec[0].z = vLeftOff.z + vTopOff.z;
 
-			pDestVec[1].x=vRightOff.x + vTopOff.x;
-			pDestVec[1].y=vRightOff.y + vTopOff.y;
-			pDestVec[1].z=vRightOff.z + vTopOff.z;
+			pDestVec[1].x = vRightOff.x + vTopOff.x;
+			pDestVec[1].y = vRightOff.y + vTopOff.y;
+			pDestVec[1].z = vRightOff.z + vTopOff.z;
 
-			pDestVec[2].x=vLeftOff.x + vBottomOff.x;
-			pDestVec[2].y=vLeftOff.y + vBottomOff.y;
-			pDestVec[2].z=vLeftOff.z + vBottomOff.z;
+			pDestVec[2].x = vLeftOff.x + vBottomOff.x;
+			pDestVec[2].y = vLeftOff.y + vBottomOff.y;
+			pDestVec[2].z = vLeftOff.z + vBottomOff.z;
 
-			pDestVec[3].x=vRightOff.x + vBottomOff.x;
-			pDestVec[3].y=vRightOff.y + vBottomOff.y;
-			pDestVec[3].z=vRightOff.z + vBottomOff.z;
+			pDestVec[3].x = vRightOff.x + vBottomOff.x;
+			pDestVec[3].y = vRightOff.y + vBottomOff.y;
+			pDestVec[3].z = vRightOff.z + vBottomOff.z;
 		}
 
 		/**
@@ -898,11 +898,11 @@ package org.angle3d.scene.billboard
 
 		private function _createBuffers():void
 		{
-			mVertices=new Vector.<Number>(mPoolSize * 12, true);
-			mColors=new Vector.<Number>(mPoolSize * 16, true);
-			mTexCoords=new Vector.<Number>(mPoolSize * 8, true);
+			mVertices = new Vector.<Number>(mPoolSize * 12, true);
+			mColors = new Vector.<Number>(mPoolSize * 16, true);
+			mTexCoords = new Vector.<Number>(mPoolSize * 8, true);
 
-			var indices:Vector.<uint>=new Vector.<uint>(mPoolSize * 6, true);
+			var indices:Vector.<uint> = new Vector.<uint>(mPoolSize * 6, true);
 
 			/**
 			 *
@@ -913,58 +913,58 @@ package org.angle3d.scene.billboard
 			 * 	2-----3
 			 */
 			//一共mPoolSize个布告板
-			for (var i:int=0; i < mPoolSize; i++)
+			for (var i:int = 0; i < mPoolSize; i++)
 			{
-				var id2:int=i * 2;
-				var id4:int=i * 4;
-				var id6:int=i * 6;
-				var id16:int=i * 16;
+				var id2:int = i * 2;
+				var id4:int = i * 4;
+				var id6:int = i * 6;
+				var id16:int = i * 16;
 
 				// triangle 1
-				indices[id6 + 0]=id4 + 1;
-				indices[id6 + 1]=id4 + 0;
-				indices[id6 + 2]=id4 + 2;
+				indices[id6 + 0] = id4 + 1;
+				indices[id6 + 1] = id4 + 0;
+				indices[id6 + 2] = id4 + 2;
 
 				// triangle 2
-				indices[id6 + 3]=id4 + 1;
-				indices[id6 + 4]=id4 + 2;
-				indices[id6 + 5]=id4 + 3;
+				indices[id6 + 3] = id4 + 1;
+				indices[id6 + 4] = id4 + 2;
+				indices[id6 + 5] = id4 + 3;
 
-				mTexCoords[id2 + 0]=0;
-				mTexCoords[id2 + 1]=1;
+				mTexCoords[id2 + 0] = 0;
+				mTexCoords[id2 + 1] = 1;
 
-				mTexCoords[id2 + 2]=1;
-				mTexCoords[id2 + 3]=1;
+				mTexCoords[id2 + 2] = 1;
+				mTexCoords[id2 + 3] = 1;
 
-				mTexCoords[id2 + 4]=0;
-				mTexCoords[id2 + 5]=0;
+				mTexCoords[id2 + 4] = 0;
+				mTexCoords[id2 + 5] = 0;
 
-				mTexCoords[id2 + 6]=1;
-				mTexCoords[id2 + 7]=0;
+				mTexCoords[id2 + 6] = 1;
+				mTexCoords[id2 + 7] = 0;
 
-				for (var j:int=0; j < 4; j++)
+				for (var j:int = 0; j < 4; j++)
 				{
-					var id16j4:int=id16 + j * 4;
+					var id16j4:int = id16 + j * 4;
 
-					mColors[id16j4 + 0]=1;
-					mColors[id16j4 + 1]=1;
-					mColors[id16j4 + 2]=1;
-					mColors[id16j4 + 3]=1;
+					mColors[id16j4 + 0] = 1;
+					mColors[id16j4 + 1] = 1;
+					mColors[id16j4 + 2] = 1;
+					mColors[id16j4 + 3] = 1;
 				}
 			}
 
 
-			mSubMesh=new SubMesh();
+			mSubMesh = new SubMesh();
 			mSubMesh.setIndices(indices);
 			mSubMesh.setVertexBuffer(BufferType.POSITION, 3, mVertices);
 			mSubMesh.setVertexBuffer(BufferType.TEXCOORD, 2, mTexCoords);
 			mSubMesh.setVertexBuffer(BufferType.COLOR, 4, mColors);
 
-			mPosBuffer=mSubMesh.getVertexBuffer(BufferType.POSITION);
-			mColorBuffer=mSubMesh.getVertexBuffer(BufferType.COLOR);
-			mTexCoordBuffer=mSubMesh.getVertexBuffer(BufferType.TEXCOORD);
+			mPosBuffer = mSubMesh.getVertexBuffer(BufferType.POSITION);
+			mColorBuffer = mSubMesh.getVertexBuffer(BufferType.COLOR);
+			mTexCoordBuffer = mSubMesh.getVertexBuffer(BufferType.TEXCOORD);
 
-			mMesh=new Mesh();
+			mMesh = new Mesh();
 			mMesh.addSubMesh(mSubMesh);
 			this.setMesh(mMesh);
 		}

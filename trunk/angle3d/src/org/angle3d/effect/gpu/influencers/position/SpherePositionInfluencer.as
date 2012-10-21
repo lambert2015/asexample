@@ -16,37 +16,37 @@ package org.angle3d.effect.gpu.influencers.position
 		private var _edge:Boolean;
 		private var _random:Boolean;
 
-		private var _randomPoint:Vector3f=new Vector3f();
+		private var _randomPoint:Vector3f = new Vector3f();
 
-		public function SpherePositionInfluencer(center:Vector3f, radius:Number, edge:Boolean=false, random:Boolean=true)
+		public function SpherePositionInfluencer(center:Vector3f, radius:Number, edge:Boolean = false, random:Boolean = true)
 		{
-			_center=center;
-			_radius=radius;
-			_radiusSquared=radius * radius;
-			_edge=edge;
-			_random=random;
+			_center = center;
+			_radius = radius;
+			_radiusSquared = radius * radius;
+			_edge = edge;
+			_random = random;
 		}
 
 		public function getPosition(index:int, store:Vector3f):Vector3f
 		{
 			if (_edge)
 			{
-				_randomPoint.x=(Math.random() * 2 - 1);
-				_randomPoint.y=(Math.random() * 2 - 1);
-				_randomPoint.z=(Math.random() * 2 - 1);
+				_randomPoint.x = (Math.random() * 2 - 1);
+				_randomPoint.y = (Math.random() * 2 - 1);
+				_randomPoint.z = (Math.random() * 2 - 1);
 				_randomPoint.normalizeLocal();
 
-				store.x=_center.x + _randomPoint.x * _radius;
-				store.y=_center.y + _randomPoint.y * _radius;
-				store.z=_center.z + _randomPoint.z * _radius;
+				store.x = _center.x + _randomPoint.x * _radius;
+				store.y = _center.y + _randomPoint.y * _radius;
+				store.z = _center.z + _randomPoint.z * _radius;
 			}
 			else
 			{
 				do
 				{
-					store.x=_center.x + (Math.random() * 2 - 1) * _radius;
-					store.y=_center.y + (Math.random() * 2 - 1) * _radius;
-					store.z=_center.z + (Math.random() * 2 - 1) * _radius;
+					store.x = _center.x + (Math.random() * 2 - 1) * _radius;
+					store.y = _center.y + (Math.random() * 2 - 1) * _radius;
+					store.z = _center.z + (Math.random() * 2 - 1) * _radius;
 				} while (store.distanceSquared(_center) > _radiusSquared);
 			}
 

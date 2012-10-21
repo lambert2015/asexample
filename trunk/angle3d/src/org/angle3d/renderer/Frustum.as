@@ -10,31 +10,31 @@ package org.angle3d.renderer
 		/**
 		 * LEFT_PLANE represents the left plane of the camera frustum.
 		 */
-		public static const LEFT_PLANE:int=0;
+		public static const LEFT_PLANE:int = 0;
 		/**
 		 * RIGHT_PLANE represents the right plane of the camera frustum.
 		 */
-		public static const RIGHT_PLANE:int=1;
+		public static const RIGHT_PLANE:int = 1;
 		/**
 		 * BOTTOM_PLANE represents the bottom plane of the camera frustum.
 		 */
-		public static const BOTTOM_PLANE:int=2;
+		public static const BOTTOM_PLANE:int = 2;
 		/**
 		 * TOP_PLANE represents the top plane of the camera frustum.
 		 */
-		public static const TOP_PLANE:int=3;
+		public static const TOP_PLANE:int = 3;
 		/**
 		 * FAR_PLANE represents the far plane of the camera frustum.
 		 */
-		public static const FAR_PLANE:int=4;
+		public static const FAR_PLANE:int = 4;
 		/**
 		 * NEAR_PLANE represents the near plane of the camera frustum.
 		 */
-		public static const NEAR_PLANE:int=5;
+		public static const NEAR_PLANE:int = 5;
 		/**
 		 * FRUSTUM_PLANES represents the number of planes of the camera frustum.
 		 */
-		public static const FRUSTUM_PLANES:int=6;
+		public static const FRUSTUM_PLANES:int = 6;
 
 		/**
 		 * Distance from camera to near frustum plane.
@@ -69,22 +69,22 @@ package org.angle3d.renderer
 
 		protected function _init():void
 		{
-			mWorldPlanes=new Vector.<Plane>(FRUSTUM_PLANES, true);
-			for (var i:int=0; i < FRUSTUM_PLANES; i++)
+			mWorldPlanes = new Vector.<Plane>(FRUSTUM_PLANES, true);
+			for (var i:int = 0; i < FRUSTUM_PLANES; i++)
 			{
-				mWorldPlanes[i]=new Plane();
+				mWorldPlanes[i] = new Plane();
 			}
 
-			mProjectionMatrix=new Matrix4f();
+			mProjectionMatrix = new Matrix4f();
 
-			mFrustumNear=1.0;
-			mFrustumFar=2.0;
-			mFrustumRect=new Rect(-0.5, 0.5, -0.5, 0.5);
+			mFrustumNear = 1.0;
+			mFrustumFar = 2.0;
+			mFrustumRect = new Rect(-0.5, 0.5, -0.5, 0.5);
 
-			mCoeffLeft=new Vector.<Number>(2);
-			mCoeffRight=new Vector.<Number>(2);
-			mCoeffBottom=new Vector.<Number>(2);
-			mCoeffTop=new Vector.<Number>(2);
+			mCoeffLeft = new Vector.<Number>(2);
+			mCoeffRight = new Vector.<Number>(2);
+			mCoeffBottom = new Vector.<Number>(2);
+			mCoeffTop = new Vector.<Number>(2);
 		}
 
 		/**
@@ -97,41 +97,41 @@ package org.angle3d.renderer
 		{
 			if (!parallelProjection)
 			{
-				var nearSquared:Number=mFrustumNear * mFrustumNear;
-				var leftSquared:Number=mFrustumRect.left * mFrustumRect.left;
-				var rightSquared:Number=mFrustumRect.right * mFrustumRect.right;
-				var bottomSquared:Number=mFrustumRect.bottom * mFrustumRect.bottom;
-				var topSquared:Number=mFrustumRect.top * mFrustumRect.top;
+				var nearSquared:Number = mFrustumNear * mFrustumNear;
+				var leftSquared:Number = mFrustumRect.left * mFrustumRect.left;
+				var rightSquared:Number = mFrustumRect.right * mFrustumRect.right;
+				var bottomSquared:Number = mFrustumRect.bottom * mFrustumRect.bottom;
+				var topSquared:Number = mFrustumRect.top * mFrustumRect.top;
 
-				var inverseLength:Number=1 / Math.sqrt(nearSquared + leftSquared);
-				mCoeffLeft[0]=mFrustumNear * inverseLength;
-				mCoeffLeft[1]=-mFrustumRect.left * inverseLength;
+				var inverseLength:Number = 1 / Math.sqrt(nearSquared + leftSquared);
+				mCoeffLeft[0] = mFrustumNear * inverseLength;
+				mCoeffLeft[1] = -mFrustumRect.left * inverseLength;
 
-				inverseLength=1 / Math.sqrt(nearSquared + rightSquared);
-				mCoeffRight[0]=-mFrustumNear * inverseLength;
-				mCoeffRight[1]=mFrustumRect.right * inverseLength;
+				inverseLength = 1 / Math.sqrt(nearSquared + rightSquared);
+				mCoeffRight[0] = -mFrustumNear * inverseLength;
+				mCoeffRight[1] = mFrustumRect.right * inverseLength;
 
-				inverseLength=1 / Math.sqrt(nearSquared + bottomSquared);
-				mCoeffBottom[0]=mFrustumNear * inverseLength;
-				mCoeffBottom[1]=-mFrustumRect.bottom * inverseLength;
+				inverseLength = 1 / Math.sqrt(nearSquared + bottomSquared);
+				mCoeffBottom[0] = mFrustumNear * inverseLength;
+				mCoeffBottom[1] = -mFrustumRect.bottom * inverseLength;
 
-				inverseLength=1 / Math.sqrt(nearSquared + topSquared);
-				mCoeffTop[0]=-mFrustumNear * inverseLength;
-				mCoeffTop[1]=mFrustumRect.top * inverseLength;
+				inverseLength = 1 / Math.sqrt(nearSquared + topSquared);
+				mCoeffTop[0] = -mFrustumNear * inverseLength;
+				mCoeffTop[1] = mFrustumRect.top * inverseLength;
 			}
 			else
 			{
-				mCoeffLeft[0]=1;
-				mCoeffLeft[1]=0;
+				mCoeffLeft[0] = 1;
+				mCoeffLeft[1] = 0;
 
-				mCoeffRight[0]=-1;
-				mCoeffRight[1]=0;
+				mCoeffRight[0] = -1;
+				mCoeffRight[1] = 0;
 
-				mCoeffBottom[0]=1;
-				mCoeffBottom[1]=0;
+				mCoeffBottom[0] = 1;
+				mCoeffBottom[1] = 0;
 
-				mCoeffTop[0]=-1;
-				mCoeffTop[1]=0;
+				mCoeffTop[0] = -1;
+				mCoeffTop[1] = 0;
 			}
 
 			mProjectionMatrix.fromFrustum(mFrustumNear, mFrustumFar, mFrustumRect.left, mFrustumRect.right, mFrustumRect.top, mFrustumRect.bottom, mParallelProjection);
@@ -156,7 +156,7 @@ package org.angle3d.renderer
 		 */
 		public function set parallelProjection(value:Boolean):void
 		{
-			mParallelProjection=value;
+			mParallelProjection = value;
 			onFrustumChange();
 		}
 
@@ -184,7 +184,7 @@ package org.angle3d.renderer
 		 */
 		public function set frustumBottom(frustumBottom:Number):void
 		{
-			mFrustumRect.bottom=frustumBottom;
+			mFrustumRect.bottom = frustumBottom;
 			onFrustumChange();
 		}
 
@@ -207,7 +207,7 @@ package org.angle3d.renderer
 		 */
 		public function set frustumFar(frustumFar:Number):void
 		{
-			this.mFrustumFar=frustumFar;
+			this.mFrustumFar = frustumFar;
 			onFrustumChange();
 		}
 
@@ -224,7 +224,7 @@ package org.angle3d.renderer
 		 */
 		public function set frustumLeft(frustumLeft:Number):void
 		{
-			mFrustumRect.left=frustumLeft;
+			mFrustumRect.left = frustumLeft;
 			onFrustumChange();
 		}
 
@@ -247,7 +247,7 @@ package org.angle3d.renderer
 		 */
 		public function set frustumNear(frustumNear:Number):void
 		{
-			this.mFrustumNear=frustumNear;
+			this.mFrustumNear = frustumNear;
 			onFrustumChange();
 		}
 
@@ -265,7 +265,7 @@ package org.angle3d.renderer
 		 */
 		public function set frustumRight(frustumRight:Number):void
 		{
-			mFrustumRect.right=frustumRight;
+			mFrustumRect.right = frustumRight;
 			onFrustumChange();
 		}
 
@@ -282,7 +282,7 @@ package org.angle3d.renderer
 		 */
 		public function set frustumTop(frustumTop:Number):void
 		{
-			mFrustumRect.top=frustumTop;
+			mFrustumRect.top = frustumTop;
 			onFrustumChange();
 		}
 
@@ -298,8 +298,8 @@ package org.angle3d.renderer
 		 */
 		public function setFrustum(near:Number, far:Number, left:Number, right:Number, bottom:Number, top:Number):void
 		{
-			mFrustumNear=near;
-			mFrustumFar=far;
+			mFrustumNear = near;
+			mFrustumFar = far;
 
 			mFrustumRect.setTo(left, right, bottom, top);
 			onFrustumChange();
@@ -322,11 +322,11 @@ package org.angle3d.renderer
 		 */
 		public function setFrustumPerspective(fovY:Number, aspect:Number, near:Number, far:Number):void
 		{
-			var h:Number=Math.tan(fovY * FastMath.DEGTORAD * 0.5) * near;
-			var w:Number=h * aspect;
+			var h:Number = Math.tan(fovY * FastMath.DEGTORAD * 0.5) * near;
+			var w:Number = h * aspect;
 
-			mFrustumNear=near;
-			mFrustumFar=far;
+			mFrustumNear = near;
+			mFrustumFar = far;
 			mFrustumRect.setTo(-w, w, -h, h);
 
 			onFrustumChange();

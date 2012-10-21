@@ -16,7 +16,7 @@ package org.angle3d.material
 		{
 			super();
 
-			_technique=new TechniqueVertexColor();
+			_technique = new TechniqueVertexColor();
 
 			addTechnique(_technique);
 		}
@@ -25,7 +25,7 @@ package org.angle3d.material
 		{
 			_technique.setAlpha(alpha);
 
-			super.alpha=alpha;
+			super.alpha = alpha;
 		}
 	}
 }
