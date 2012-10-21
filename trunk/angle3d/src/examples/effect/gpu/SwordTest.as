@@ -30,7 +30,7 @@ package examples.effect.gpu
 		private var swordShape:ParticleShape;
 		private var angle:Number = 0;
 
-		[Embed(source = "../../embed/sword.jpg")]
+		[Embed(source = "../../../../assets/embed/sword.jpg")]
 		private static var EMBED_SWORD:Class;
 
 		public function SwordTest()

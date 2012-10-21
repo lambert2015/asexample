@@ -44,8 +44,8 @@ package examples.model
 			//flyCam.setDragToRotate(true);
 
 			var assetLoader : AssetLoader = AssetManager.getInstance().createLoader("max3dsLoader");
-			assetLoader.addFile("ship", "assets/max3ds/ship.3ds", AssetType.BINARY);
-			assetLoader.addFile("ship_texture", "assets/max3ds/ship.jpg", AssetType.IMAGE);
+			assetLoader.addFile("ship", "../assets/max3ds/ship.3ds", AssetType.BINARY);
+			assetLoader.addFile("ship_texture", "../assets/max3ds/ship.jpg", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.start();
 		}

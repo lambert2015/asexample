@@ -28,7 +28,7 @@ package examples.effect.gpu
 		private var particleSystem:ParticleSystem;
 		private var bulletShape:ParticleShape;
 
-		[Embed(source = "../../embed/bullet.png")]
+		[Embed(source = "../../../../assets/embed/bullet.png")]
 		private static var EMBED_DEBRIS:Class;
 
 		public function BulletTest()

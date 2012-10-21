@@ -19,7 +19,7 @@ package examples.material
 
 	public class MaterialReflectiveTest extends SimpleApplication
 	{
-		[Embed(source = "../embed/wall.jpg")]
+		[Embed(source = "../../../assets/embed/wall.jpg")]
 		private static var DECALMAP_ASSET : Class;
 
 		private var reflectiveSphere : Geometry;

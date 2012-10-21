@@ -3,6 +3,7 @@ package org.angle3d.material.sgsl
 
 	import flash.display3D.Context3DProfile;
 	import flash.utils.Dictionary;
+	import org.angle3d.utils.Logger;
 	
 	import org.angle3d.material.sgsl.node.FunctionNode;
 	import org.angle3d.material.sgsl.parser.SgslParser;
@@ -74,6 +75,8 @@ package org.angle3d.material.sgsl
 		private var _opCodeMap : Dictionary; //<String,OpCode>
 
 		public var profile:String;
+		
+		public var version:int;
 
 		public var movCode : OpCode;
 
@@ -81,8 +84,9 @@ package org.angle3d.material.sgsl
 
 		public var killCode : OpCode;
 
-		public function OpCodeManager(profile:String)
+		public function OpCodeManager(profile:String, version:int)
 		{
+			this.version = version;
 			this.profile = profile;
 			_initCodes();
 		}
@@ -94,6 +98,13 @@ package org.angle3d.material.sgsl
 
 		public function getCode(name : String) : OpCode
 		{
+			CF::DEBUG 
+			{
+				if (_opCodeMap[name] == null)
+				{
+					Logger.warn("can not find opCode " + name + ",please check your sgsl version !");
+				}
+			}
 			return _opCodeMap[name];
 		}
 
@@ -136,22 +147,26 @@ package org.angle3d.material.sgsl
 			addCode(["m44"], 3, 0x18, OP_SPECIAL_MATRIX);
 			addCode(["m34"], 3, 0x19, OP_SPECIAL_MATRIX);
 
-			//not available in agal version 1
-			//addCode(["ifz"], 1, 0x1a, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["inz"], 1, 0x1b, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["ife"], 2, 0x1c, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["ine"], 2, 0x1d, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["ifg"], 2, 0x1e, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["ifl"], 2, 0x1f, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["ieg"], 2, 0x20, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["iel"], 2, 0x21, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["els"], 0, 0x22, OP_NO_DEST | OP_INC_NEST | OP_DEC_NEST);
-			//addCode(["elf"], 0, 0x23, OP_NO_DEST | OP_DEC_NEST);
-			//addCode(["rep"], 1, 0x24, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
-			//addCode(["erp"], 0, 0x25, OP_NO_DEST | OP_DEC_NEST);
-			//addCode(["brk"], 0, 0x26, OP_NO_DEST);
-
-
+			//available in agal version 2
+			if (this.version == 2)
+			{
+				addCode(["ifz"], 1, 0x1a, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["inz"], 1, 0x1b, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["ife"], 2, 0x1c, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["ine"], 2, 0x1d, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["ifg"], 2, 0x1e, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["ifl"], 2, 0x1f, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["ieg"], 2, 0x20, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["iel"], 2, 0x21, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["els"], 0, 0x22, OP_NO_DEST | OP_INC_NEST | OP_DEC_NEST);
+				addCode(["elf"], 0, 0x23, OP_NO_DEST | OP_DEC_NEST);
+				addCode(["rep"], 1, 0x24, OP_NO_DEST | OP_INC_NEST | OP_SCALAR);
+				addCode(["erp"], 0, 0x25, OP_NO_DEST | OP_DEC_NEST);
+				addCode(["brk"], 0, 0x26, OP_NO_DEST);
+				
+				addCode(["sgn"], 2, 0x2b, 0);
+			}
+			
 			killCode = addCode(["kil", "kill", "discard"], 1, 0x27, OP_NO_DEST | OP_FRAG_ONLY);
 			textureCode = addCode(["texture2D", "textureCube"], 3, 0x28, OP_FRAG_ONLY | OP_SPECIAL_TEX);
 			
@@ -160,9 +175,6 @@ package org.angle3d.material.sgsl
 			{
 				addCode(["sge", "greaterThanEqual", "step"], 3, 0x29, 0);
 				addCode(["slt", "lessThan"], 3, 0x2a, 0);
-				
-				//not available in agal version 1
-				//addCode(["sgn"], 2, 0x2b, 0);
 				
 				addCode(["seq", "equal"], 3, 0x2c, 0);
 				addCode(["sne", "notEqual"], 3, 0x2d, 0);

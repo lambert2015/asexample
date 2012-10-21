@@ -59,10 +59,10 @@ package examples.model
 			flyCam.setDragToRotate(true);
 			
 			var assetLoader:AssetLoader = AssetManager.getInstance().createLoader("md2Loader");
-			assetLoader.addFile("ratamahatta", "assets/md2/ratamahatta.md2", AssetType.BINARY);
-			assetLoader.addFile("w_rlauncher", "assets/md2/w_rlauncher.md2", AssetType.BINARY);
-			assetLoader.addFile("ratamahatta_texture", "assets/md2/ctf_r.png", AssetType.IMAGE);
-			assetLoader.addFile("w_rlauncher_texture", "assets/md2/w_rlauncher.png", AssetType.IMAGE);
+			assetLoader.addFile("ratamahatta", "../assets/md2/ratamahatta.md2", AssetType.BINARY);
+			assetLoader.addFile("w_rlauncher", "../assets/md2/w_rlauncher.md2", AssetType.BINARY);
+			assetLoader.addFile("ratamahatta_texture", "../assets/md2/ctf_r.png", AssetType.IMAGE);
+			assetLoader.addFile("w_rlauncher_texture", "../assets/md2/w_rlauncher.png", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.start();
 		}

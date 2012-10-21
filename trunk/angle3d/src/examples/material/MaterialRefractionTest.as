@@ -16,7 +16,7 @@ package examples.material
 
 	public class MaterialRefractionTest extends SimpleApplication
 	{
-		[Embed(source = "../embed/rock.jpg")]
+		[Embed(source = "../../../assets/embed/rock.jpg")]
 		private static var DECALMAP_ASSET : Class;
 
 		private var reflectiveSphere : Geometry;
