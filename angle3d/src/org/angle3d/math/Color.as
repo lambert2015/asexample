@@ -15,7 +15,7 @@
 	 * are within the constraints.
 	 * @author andy
 	 */
-	final public class Color
+	public class Color
 	{
 		/**
 		 * the color black (0,0,0).
@@ -114,12 +114,13 @@
 			this.a = a;
 		}
 
-		public function setRGBA(r:Number, g:Number, b:Number, a:Number = 1.0):void
+		[Inline]
+		public function setRGBA(r:Number, g:Number, b:Number, a:Number = 255):void
 		{
 			this.r = r / 255;
 			this.g = g / 255;
 			this.b = b / 255;
-			this.a = a;
+			this.a = a / 255;
 		}
 
 		public function setTo(r:Number, g:Number, b:Number, a:Number = 1.0):void
@@ -141,6 +142,7 @@
 			return result;
 		}
 
+		[Inline]
 		public function addLocal(value:Color):void
 		{
 			this.r += value.r;
@@ -149,18 +151,12 @@
 			this.a += value.a;
 		}
 
-		public function toUniform(result:Vector.<Number> = null):Vector.<Number>
+		public function toUniform(result:Vector.<Number>):void
 		{
-			if (result == null)
-			{
-				result = new Vector.<Number>(4, true);
-			}
-
 			result[0] = r;
 			result[1] = g;
 			result[2] = b;
 			result[3] = a;
-			return result;
 		}
 
 		public function getColor():uint
