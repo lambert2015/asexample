@@ -49,55 +49,20 @@ package org.angle3d.math
 		 * @param res
 		 *
 		 */
-		public function Matrix4f(... res)
+		public function Matrix4f()
 		{
-			if (res.length == 16)
-			{
-				m00 = res[0];
-				m01 = res[1];
-				m02 = res[2];
-				m03 = res[3];
-
-				m10 = res[4];
-				m11 = res[5];
-				m12 = res[6];
-				m13 = res[7];
-
-				m20 = res[8];
-				m21 = res[9];
-				m22 = res[10];
-				m23 = res[11];
-
-				m30 = res[12];
-				m31 = res[13];
-				m32 = res[14];
-				m33 = res[15];
-			}
-			else if (res.length == 1)
-			{
-				if (res[0] is Array)
-				{
-					setArray(res[0]);
-				}
-				else if (res[0] is Vector)
-				{
-					setVector(res[0]);
-				}
-			}
-			else if (res.length == 0)
-			{
-				makeIdentity();
-			}
+			makeIdentity();
 		}
 
-
-		public function makeIdentity():void
+		[Inline]
+		public final function makeIdentity():void
 		{
 			m00 = m11 = m22 = m33 = 1.0;
 			m01 = m02 = m03 = m10 = m12 = m13 = m20 = m21 = m23 = m30 = m31 = m32 = 0;
 		}
 
-		public function makeZero():void
+		[Inline]
+		public final function makeZero():void
 		{
 			m00 = m11 = m22 = m33 = 0.0;
 			m01 = m02 = m03 = m10 = m12 = m13 = m20 = m21 = m23 = m30 = m31 = m32 = 0;
@@ -106,9 +71,13 @@ package org.angle3d.math
 		/**
 		 * @return true if this matrix is identity
 		 */
-		public function isIdentity():Boolean
+		[Inline]
+		public final function isIdentity():Boolean
 		{
-			return (m00 == 1 && m01 == 0 && m02 == 0 && m03 == 0) && (m10 == 0 && m11 == 1 && m12 == 0 && m13 == 0) && (m20 == 0 && m21 == 0 && m22 == 1 && m23 == 0) && (m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
+			return (m00 == 1 && m01 == 0 && m02 == 0 && m03 == 0) && 
+					(m10 == 0 && m11 == 1 && m12 == 0 && m13 == 0) && 
+					(m20 == 0 && m21 == 0 && m22 == 1 && m23 == 0) && 
+					(m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
 		}
 
 		/**
@@ -187,7 +156,7 @@ package org.angle3d.math
 		{
 			CF::DEBUG
 			{
-				Assert.assert(matrix.length == 16, "Array must be of size 16.");
+				Assert.assert(matrix.length == 16, "Array.length must be 16.");
 			}
 
 			m00 = matrix[0];
@@ -240,7 +209,7 @@ package org.angle3d.math
 		{
 			CF::DEBUG
 			{
-				Assert.assert(matrix.length == 16, "Array must be of size 16.");
+				Assert.assert(matrix.length == 16, "Array.length must be 16.");
 			}
 
 			m00 = matrix[0];
@@ -294,7 +263,8 @@ package org.angle3d.math
 		 *            the colum index.
 		 * @return the value at (i, j).
 		 */
-		public function getValue(row:int, column:int):Number
+		[Inline]
+		public final function getValue(row:int, column:int):Number
 		{
 			return this["m" + row + column];
 		}
@@ -416,7 +386,8 @@ package org.angle3d.math
 		 *            the value for (i, j).
 		 * @return this
 		 */
-		public function setValue(row:int, column:int, value:Number):void
+		[Inline]
+		public final function setValue(row:int, column:int, value:Number):void
 		{
 			this["m" + row + column] = value;
 		}
@@ -943,7 +914,9 @@ package org.angle3d.math
 			if (FastMath.fabs(fDet) <= 0)
 			{
 				result.makeIdentity();
-				Logger.warn("This matrix cannot be inverted");
+				CF::DEBUG {
+					Logger.warn("This matrix cannot be inverted");
+				}
 				return result;
 			}
 
@@ -1139,7 +1112,7 @@ package org.angle3d.math
 		 * @param mat
 		 *            the matrix to add to this.
 		 */
-		public function addLocal(mat:Matrix4f):Matrix4f
+		public function addLocal(mat:Matrix4f):void
 		{
 			m00 += mat.m00;
 			m01 += mat.m01;
@@ -1157,7 +1130,6 @@ package org.angle3d.math
 			m31 += mat.m31;
 			m32 += mat.m32;
 			m33 += mat.m33;
-			return this;
 		}
 
 		public function getTranslation(result:Vector3f = null):Vector3f

@@ -23,35 +23,9 @@ package org.angle3d.math
 		public var m21:Number;
 		public var m22:Number;
 
-		public function Matrix3f(... res)
+		public function Matrix3f()
 		{
-			if (res.length == 9)
-			{
-				m00 = res[0];
-				m01 = res[1];
-				m02 = res[2];
-				m10 = res[3];
-				m11 = res[4];
-				m12 = res[5];
-				m20 = res[6];
-				m21 = res[7];
-				m22 = res[8];
-			}
-			else if (res.length == 1)
-			{
-				if (res[0] is Array)
-				{
-					setArray(res[0]);
-				}
-				else if (res[0] is Vector)
-				{
-					setVector(res[0]);
-				}
-			}
-			else if (res.length == 0)
-			{
-				makeIdentity();
-			}
+			makeIdentity();
 		}
 
 		/**
@@ -70,7 +44,8 @@ package org.angle3d.math
 			m22 = FastMath.fabs(m22);
 		}
 
-		public function makeIdentity():void
+		[Inline]
+		public final function makeIdentity():void
 		{
 			m00 = m11 = m22 = 1.0;
 			m01 = m02 = m10 = m12 = m20 = m21 = 0.0;
@@ -187,7 +162,8 @@ package org.angle3d.math
 		 *            the colum index.
 		 * @return the value at (i, j).
 		 */
-		public function getValue(row:int, column:int):Number
+		[Inline]
+		public final function getValue(row:int, column:int):Number
 		{
 			return this["m" + row + column];
 		}
@@ -196,7 +172,7 @@ package org.angle3d.math
 		{
 			if (list == null)
 			{
-				list = new Vector.<Number>(12);
+				list = new Vector.<Number>(12,true);
 			}
 
 			if (list.length != 12)
@@ -329,7 +305,8 @@ package org.angle3d.math
 		 *            the value for (i, j).
 		 * @return this
 		 */
-		public function setValue(row:int, column:int, value:Number):void
+		[Inline]
+		public final function setValue(row:int, column:int, value:Number):void
 		{
 			this["m" + row + column] = value;
 		}
@@ -398,7 +375,8 @@ package org.angle3d.math
 		 *            the quaternion to create a rotational matrix from.
 		 * @return this
 		 */
-		public function copyFromQuaternion(quaternion:Quaternion):void
+		[Inline]
+		public final function copyFromQuaternion(quaternion:Quaternion):void
 		{
 			quaternion.toMatrix3f(this);
 		}
@@ -408,7 +386,9 @@ package org.angle3d.math
 		 */
 		public function isIdentity():Boolean
 		{
-			return (m00 == 1 && m01 == 0 && m02 == 0) && (m10 == 0 && m11 == 1 && m12 == 0) && (m20 == 0 && m21 == 0 && m22 == 1);
+			return (m00 == 1 && m01 == 0 && m02 == 0) && 
+					(m10 == 0 && m11 == 1 && m12 == 0) && 
+					(m20 == 0 && m21 == 0 && m22 == 1);
 		}
 
 		/**
@@ -556,7 +536,8 @@ package org.angle3d.math
 		 *            the value to scale by.
 		 * @return this Matrix3f
 		 */
-		public function scaleBy(scale:Number):void
+		[Inline]
+		public final function scaleBy(scale:Number):void
 		{
 			m00 *= scale;
 			m01 *= scale;
