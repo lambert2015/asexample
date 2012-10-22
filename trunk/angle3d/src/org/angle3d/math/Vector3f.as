@@ -457,15 +457,12 @@ package org.angle3d.math
 			return new Vector3f(x, y, z);
 		}
 
-		public function toVector(vec:Vector.<Number> = null):Vector.<Number>
+		[Inline]
+		public final function toUniform(vec:Vector.<Number>):void
 		{
-			if (vec == null)
-				vec = new Vector.<Number>();
-
 			vec[0] = x;
 			vec[1] = y;
 			vec[2] = z;
-			return vec;
 		}
 
 		public function toString():String

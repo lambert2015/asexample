@@ -74,10 +74,7 @@ package org.angle3d.math
 		[Inline]
 		public final function isIdentity():Boolean
 		{
-			return (m00 == 1 && m01 == 0 && m02 == 0 && m03 == 0) && 
-					(m10 == 0 && m11 == 1 && m12 == 0 && m13 == 0) && 
-					(m20 == 0 && m21 == 0 && m22 == 1 && m23 == 0) && 
-					(m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
+			return (m00 == 1 && m01 == 0 && m02 == 0 && m03 == 0) && (m10 == 0 && m11 == 1 && m12 == 0 && m13 == 0) && (m20 == 0 && m21 == 0 && m22 == 1 && m23 == 0) && (m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
 		}
 
 		/**
@@ -914,7 +911,8 @@ package org.angle3d.math
 			if (FastMath.fabs(fDet) <= 0)
 			{
 				result.makeIdentity();
-				CF::DEBUG {
+				CF::DEBUG
+				{
 					Logger.warn("This matrix cannot be inverted");
 				}
 				return result;
@@ -1279,13 +1277,8 @@ package org.angle3d.math
 			return mat;
 		}
 
-		public function toUniform(result:Vector.<Number> = null, rowMajor:Boolean = true):Vector.<Number>
+		public function toUniform(result:Vector.<Number>, rowMajor:Boolean = true):void
 		{
-			if (result == null)
-				result = new Vector.<Number>(16);
-
-//			result.length = 16;
-
 			if (rowMajor)
 			{
 				result[0] = m00;
@@ -1331,8 +1324,6 @@ package org.angle3d.math
 				result[11] = m32;
 				result[15] = m33;
 			}
-
-			return result;
 		}
 
 		public function toString():String
