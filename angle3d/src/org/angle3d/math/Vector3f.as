@@ -1,5 +1,6 @@
 package org.angle3d.math
 {
+	import org.angle3d.utils.Assert;
 
 
 	public class Vector3f

@@ -818,7 +818,16 @@ package org.angle3d.math
 		 */
 		public function fromAxes(xAxis:Vector3f, yAxis:Vector3f, zAxis:Vector3f):void
 		{
-			var m:Matrix3f = new Matrix3f([xAxis.x, yAxis.x, zAxis.x, xAxis.y, yAxis.y, zAxis.y, xAxis.z, yAxis.z, zAxis.z]);
+			var m:Matrix3f = new Matrix3f();
+			m.m00 = xAxis.x; 
+			m.m01 = yAxis.x; 
+			m.m02 = zAxis.x; 
+			m.m10 = xAxis.y; 
+			m.m11 = yAxis.y; 
+			m.m12 = zAxis.y; 
+			m.m20 = xAxis.z; 
+			m.m21 = yAxis.z; 
+			m.m22 = zAxis.z;
 			fromMatrix3f(m);
 		}
 

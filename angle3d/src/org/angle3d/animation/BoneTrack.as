@@ -2,6 +2,7 @@ package org.angle3d.animation
 {
 	import org.angle3d.math.Quaternion;
 	import org.angle3d.math.Vector3f;
+	import org.angle3d.utils.Assert;
 	import org.angle3d.utils.TempVars;
 
 	/**

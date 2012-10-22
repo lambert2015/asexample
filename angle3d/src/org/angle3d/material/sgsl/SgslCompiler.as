@@ -4,6 +4,8 @@ package org.angle3d.material.sgsl
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.Endian;
+	import org.angle3d.utils.Assert;
+	import org.angle3d.utils.Logger;
 
 	import org.angle3d.material.sgsl.node.AgalNode;
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
