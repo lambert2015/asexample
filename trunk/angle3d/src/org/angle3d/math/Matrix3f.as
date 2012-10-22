@@ -1,5 +1,6 @@
 package org.angle3d.math
 {
+	import org.angle3d.utils.Assert;
 
 
 
@@ -8,7 +9,6 @@ package org.angle3d.math
 	 */
 	final public class Matrix3f
 	{
-		public static const ZERO:Matrix3f = new Matrix3f([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
 		public static const IDENTITY:Matrix3f = new Matrix3f();
 
 		public var m00:Number;
@@ -708,7 +708,17 @@ package org.angle3d.math
 		 */
 		public function transposeNew():Matrix3f
 		{
-			return new Matrix3f([m00, m10, m20, m01, m11, m21, m02, m12, m22]);
+			var result:Matrix3f = new Matrix3f();
+			result.m00 = m00;
+			result.m01 = m10;
+			result.m02 = m20;
+			result.m10 = m01;
+			result.m11 = m11;
+			result.m12 = m21;
+			result.m20 = m02;
+			result.m21 = m12;
+			result.m22 = m22;
+			return result;
 		}
 
 		/**
