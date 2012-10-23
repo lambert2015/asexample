@@ -5,7 +5,6 @@
 
 	public class UnexpectedTokenError extends Error
 	{
-
 		public function UnexpectedTokenError(tok:Token = null, expected:String = null)
 		{
 			if (tok == null)

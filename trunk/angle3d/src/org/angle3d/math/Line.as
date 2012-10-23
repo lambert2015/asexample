@@ -57,19 +57,13 @@ package org.angle3d.math
 			return Math.sqrt(distanceSquared(point));
 		}
 
-		public function random(result:Vector3f = null):Vector3f
+		public function getRandomPointInLine(result:Vector3f):void
 		{
-			if (result == null)
-			{
-				result = new Vector3f();
-			}
-
 			var rand:Number = Math.random();
 			var rand1:Number = 1.0 - rand;
 			result.x = origin.x * rand1 + direction.x * rand;
 			result.y = origin.y * rand1 + direction.y * rand;
 			result.z = origin.z * rand1 + direction.z * rand;
-			return result;
 		}
 
 		public function clone():Line

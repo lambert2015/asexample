@@ -10,6 +10,7 @@ package org.angle3d.material.shader
 	/**
 	 * 一个Shader是一个Technique中的一个实现，Technique根据不同的条件生成不同的Shader
 	 */
+	//TODO 优化
 	public class Shader
 	{
 		//vertex
@@ -79,12 +80,14 @@ package org.angle3d.material.shader
 			return _attributeList.getVariable(name) as AttributeVar;
 		}
 
-		public function getTextureList():ShaderVariableList
+		[Inline]
+		public final function getTextureList():ShaderVariableList
 		{
 			return _textureList;
 		}
 
-		public function getUniformList(shaderType:String):UniformList
+		[Inline]
+		public final function getUniformList(shaderType:String):UniformList
 		{
 			return (shaderType == ShaderType.VERTEX) ? _vUniformList : _fUniformList;
 		}
@@ -93,6 +96,15 @@ package org.angle3d.material.shader
 
 		public function upload(render:IRenderer):void
 		{
+			//上传贴图
+			var textures:Vector.<ShaderVariable> = _textureList.getVariables();
+			var vLength:int = textures.length;
+			for (i = 0; i < vLength; i++)
+			{
+				var tex:TextureVariable = textures[i] as TextureVariable;
+				render.setTextureAt(tex.location, tex.textureMap);
+			}
+			
 			for (var i:int = 0; i < 2; i++)
 			{
 				var type:String = mShaderTypes[i];
@@ -110,15 +122,6 @@ package org.angle3d.material.shader
 					uniform = list.getUniformAt(j);
 					render.setShaderConstants(type, uniform.location, uniform.data, uniform.size);
 				}
-			}
-
-			//上传贴图
-			var textures:Vector.<ShaderVariable> = _textureList.getVariables();
-			var vLength:int = textures.length;
-			for (i = 0; i < vLength; i++)
-			{
-				var tex:TextureVariable = textures[i] as TextureVariable;
-				render.setTextureAt(tex.location, tex.textureMap);
 			}
 		}
 

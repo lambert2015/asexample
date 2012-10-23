@@ -26,11 +26,12 @@ package org.angle3d.renderer
 		function setTextureAt(index:int, map:TextureMapBase):void;
 
 		/**
-		 * 设置着色器程序的常量输入。
-		 * 设置要通过顶点或片段着色器程序访问的常量数组。
-		 * Program3D 中设置的常量在着色器程序内作为常量寄存器访问。
-		 * 每个常量寄存器都由 4 个浮点值（x、y、z、w）组成。因此，每个寄存器都要求数据 Vector 中有 4 个条目。
-		 * 您可以为顶点程序设置 128 个寄存器，为片段程序设置 28 个寄存器。
+		 * <p>设置着色器程序的常量输入</p>
+		 * <p>设置要通过顶点或片段着色器程序访问的常量数组</p>
+		 * <p>Program3D 中设置的常量在着色器程序内作为常量寄存器访问</p>
+		 * <p>每个常量寄存器都由 4 个浮点值（x、y、z、w）组成</p>
+		 * <p>因此，每个寄存器都要求数据 Vector 中有 4 个条目</p>
+		 * <p>您可以为顶点程序设置 128 个寄存器，为片段程序设置 28 个寄存器</p>
 		 * @param shaderType 着色器程序类型
 		 * @param firstRegister 要设置的首个常量寄存器的索引
 		 * @param data 浮点常量值。data 中至少有 numRegisters 4 个元素。

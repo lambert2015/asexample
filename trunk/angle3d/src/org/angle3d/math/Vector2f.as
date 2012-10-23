@@ -349,15 +349,6 @@ package org.angle3d.math
 			y = ny;
 		}
 
-		/**
-		 * <code>zero</code> resets this vector's data to zero internally.
-		 */
-		[Inline]
-		public final function zero():void
-		{
-			x = y = 0;
-		}
-
 		[Inline]
 		public final function clone():Vector2f
 		{

@@ -4,6 +4,7 @@ package org.angle3d.material.shader
 	import org.angle3d.math.Color;
 	import org.angle3d.math.Matrix3f;
 	import org.angle3d.math.Matrix4f;
+	import org.angle3d.math.Quaternion;
 	import org.angle3d.math.Vector2f;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.math.Vector4f;
@@ -84,7 +85,13 @@ package org.angle3d.material.shader
 		[Inline]
 		public final function setVector4(vec:Vector4f):void
 		{
-			vec.toVector(_data);
+			vec.toUniform(_data);
+		}
+		
+		[Inline]
+		public final function setQuaterion(q:Quaternion):void
+		{
+			q.toUniform(_data);
 		}
 
 		public function get data():Vector.<Number>
