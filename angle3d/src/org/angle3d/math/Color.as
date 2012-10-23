@@ -123,7 +123,7 @@
 			this.a = a * FastMath.INVERT_255;
 		}
 
-		[Inline]
+//		[Inline]
 		public final function setTo(r:Number, g:Number, b:Number, a:Number = 1.0):void
 		{
 			this.r = r;

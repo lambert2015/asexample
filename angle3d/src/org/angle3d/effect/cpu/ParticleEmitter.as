@@ -811,7 +811,8 @@ package org.angle3d.effect.cpu
 
 			if (!_worldSpace)
 			{
-				_inverseRotation = getWorldRotation().toMatrix3f(_inverseRotation).invertLocal();
+				getWorldRotation().toMatrix3f(_inverseRotation);
+				_inverseRotation.invertLocal();
 			}
 
 			_particleMesh.updateParticleData(_particles, vp.camera, _inverseRotation);

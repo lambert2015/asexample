@@ -73,7 +73,11 @@ package org.angle3d.math
 			for (i = 0; i < controlPoints.length; i++)
 			{
 				var cp:Vector4f = controlPoints[i];
-				this.controlPoints.push(cp.toVector3f());
+				var v3:Vector3f = new Vector3f();
+				v3.x = cp.x;
+				v3.y = cp.y;
+				v3.z = cp.z;
+				this.controlPoints.push(v3);
 				this.weights[i] = cp.w;
 			}
 			CurveAndSurfaceMath.prepareNurbsKnots(knots, basisFunctionDegree);

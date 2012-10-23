@@ -22,86 +22,87 @@ package examples.model
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.signals.LoaderSignal;
-	
+
 	public class MS3DSkinnedMeshTest extends SimpleApplication
 	{
 		public function MS3DSkinnedMeshTest()
 		{
 			super();
-			
+
 			var assetLoader:AssetLoader = AssetManager.getInstance().createLoader("ms3dLoader");
 			assetLoader.addFile("ninja", "../assets/ms3d/ninja.ms3d", AssetType.BINARY);
 			assetLoader.addFile("ninjaSkin", "../assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.onError.add(_loadError);
 			assetLoader.start();
-			
+
 			this.addChild(new Stats());
 		}
-		
+
 		private var material:MaterialTexture;
+
 		private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
 		{
 			flyCam.setDragToRotate(true);
-			
+
 			material = new MaterialTexture(new BitmapTexture(assets["ninjaSkin"].bitmapData));
-			
+
 			var parser:MS3DParser = new MS3DParser();
-			
-			
+
+
 			for (var i:int = 0; i < 5; i++)
 			{
 				for (var j:int = 0; j < 5; j++)
 				{
-					var node:Node = createNinja(parser,assets);
-					node.setTranslationXYZ((i-3) * 15, 0, (j-3)*15);
+					var node:Node = createNinja(parser, assets);
+					node.setTranslationXYZ((i - 3) * 15, 0, (j - 3) * 15);
 					scene.attachChild(node);
 				}
 			}
-			
+
 			cam.location.setTo(0, 15, -100);
 			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 		}
-		
-		private function createNinja(parser:MS3DParser,assets:Dictionary):Node
+
+		private function createNinja(parser:MS3DParser, assets:Dictionary):Node
 		{
 			var ninjaNode:Node = parser.parseSkinnedMesh("ninja", assets["ninja"]);
 			ninjaNode.setMaterial(material);
-			
+
 			var skeletonControl:SkeletonControl = ninjaNode.getControlByClass(SkeletonControl) as SkeletonControl;
-			
+
 			//attatchNode
 			var boxNode:Node = new Node("box");
 			var gm:Geometry = new Geometry("cube", new Cube(0.5, 0.5, 5, 1, 1, 1));
 			gm.setMaterial(new MaterialFill(0xff0000, 0.5));
 			gm.localQueueBucket = QueueBucket.Transparent;
 			boxNode.attachChild(gm);
-			
+
 			var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");
 			attachNode.attachChild(boxNode);
-			
+
 			var animControl:SkeletonAnimControl = ninjaNode.getControlByClass(SkeletonAnimControl) as SkeletonAnimControl;
 			var channel:AnimChannel = animControl.createChannel();
 			channel.playAnimation("default", LoopMode.Cycle, 10);
-			
-			//var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
-			//ninjaNode.attachChild(skeletonDebugger);
-			
+
+			var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
+			ninjaNode.attachChild(skeletonDebugger);
+
 			return ninjaNode;
 		}
-		
+
 		private function _loadError(signal:LoaderSignal):void
 		{
 			trace(signal.numListeners);
 		}
-		
+
 		private var angle:Number = 0;
-		
+
 		override public function simpleUpdate(tpf:Number):void
 		{
 			angle += 0.01;
 			angle %= FastMath.TWO_PI;
-		
+
 			//cam.location.setTo(Math.cos(angle) * 15, 15, Math.sin(angle) * 15);
 			//cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 		}
