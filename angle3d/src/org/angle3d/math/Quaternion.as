@@ -1,6 +1,7 @@
 package org.angle3d.math
 {
 
+	import flash.geom.Matrix3D;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.utils.TempVars;
 
@@ -352,11 +353,8 @@ package org.angle3d.math
 		 *            The Matrix3f to store the result in.
 		 * @return the rotation matrix representation of this quaternion.
 		 */
-		public function toMatrix3f(result:Matrix3f = null):Matrix3f
+		public function toMatrix3f(result:Matrix3f):void
 		{
-			if (result == null)
-				result = new Matrix3f();
-
 			var norm:Number = x * x + y * y + z * z + w * w;
 
 			// we explicitly test norm against one here, saving a division
@@ -388,15 +386,10 @@ package org.angle3d.math
 			result.m20 = (xz - yw);
 			result.m21 = (yz + xw);
 			result.m22 = 1 - (xx + yy);
-
-			return result;
 		}
 
-		public function toMatrix4f(result:Matrix4f = null):Matrix4f
+		public function toMatrix4f(result:Matrix4f):void
 		{
-			if (result == null)
-				result = new Matrix4f();
-
 			var norm:Number = x * x + y * y + z * z + w * w;
 			// we explicitly test norm against one here, saving a division
 			// at the cost of a test and branch.  Is it worth it?
@@ -427,8 +420,15 @@ package org.angle3d.math
 			result.m20 = (xz - yw);
 			result.m21 = (yz + xw);
 			result.m22 = 1 - (xx + yy);
-
-			return result;
+		}
+		
+		[Inline]
+		public final function toUniform(list:Vector.<Number>):void
+		{
+			list[0] = x;
+			list[1] = y;
+			list[2] = z;
+			list[3] = w;
 		}
 
 		/**
@@ -842,7 +842,8 @@ package org.angle3d.math
 		 */
 		public function toAxes(axis:Vector.<Vector3f>):void
 		{
-			var tempMat:Matrix3f = toMatrix3f();
+			var tempMat:Matrix3f = new Matrix3f();
+			toMatrix3f(tempMat);
 			axis[0] = tempMat.copyColumnTo(0, axis[0]);
 			axis[1] = tempMat.copyColumnTo(1, axis[1]);
 			axis[2] = tempMat.copyColumnTo(2, axis[2]);
@@ -975,9 +976,9 @@ package org.angle3d.math
 		/**
 		 * <code>normalize</code> normalizes the current <code>Quaternion</code>
 		 */
-		public function normalizeLocal():Quaternion
+		public function normalizeLocal():void
 		{
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number = getNorm();
 			if (norm == 0)
 			{
 				x = y = z = w = 0.0;
@@ -990,14 +991,6 @@ package org.angle3d.math
 				z *= norm;
 				w *= norm;
 			}
-
-			return this;
-		}
-
-		[Inline]
-		public final function zero():void
-		{
-			x = y = z = w = 0;
 		}
 
 		/**
@@ -1038,7 +1031,7 @@ package org.angle3d.math
 		 */
 		public function inverseLocal():void
 		{
-			var norm:Number = x * x + y * y + z * z + w * w;
+			var norm:Number = getNorm();
 			if (norm > 0.0)
 			{
 				norm = 1.0 / norm;

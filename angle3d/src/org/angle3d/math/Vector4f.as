@@ -315,15 +315,6 @@ package org.angle3d.math
 		}
 
 		/**
-		 * <code>zero</code> resets this vector's data to zero internally.
-		 */
-		[Inline]
-		public final function zero():void
-		{
-			x = y = z = w = 0;
-		}
-
-		/**
 		 * <code>angleBetween</code> returns (in radians) the angle between two vectors.
 		 * It is assumed that both this vector and the given vector are unit vectors (iow, normalized).
 		 *
@@ -375,23 +366,20 @@ package org.angle3d.math
 		}
 
 		[Inline]
-		public final function toVector(arr:Vector.<Number> = null):Vector.<Number>
+		public final function toUniform(arr:Vector.<Number>):void
 		{
-			if (arr == null)
-			{
-				arr = new Vector.<Number>();
-			}
 			arr[0] = x;
 			arr[1] = y;
 			arr[2] = z;
 			arr[3] = w;
-			return arr;
 		}
 
 		[Inline]
-		public final function toVector3f():Vector3f
+		public final function toVector3f(vec3:Vector3f):void
 		{
-			return new Vector3f(x, y, z);
+			vec3.x = x;
+			vec3.y = y;
+			vec3.z = z;
 		}
 
 		public function toString():String

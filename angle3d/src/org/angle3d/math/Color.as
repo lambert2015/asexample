@@ -115,15 +115,16 @@
 		}
 
 		[Inline]
-		public function setRGBA(r:Number, g:Number, b:Number, a:Number = 255):void
+		public final function setRGBA(r:Number, g:Number, b:Number, a:Number = 255):void
 		{
-			this.r = r / 255;
-			this.g = g / 255;
-			this.b = b / 255;
-			this.a = a / 255;
+			this.r = r * FastMath.INVERT_255;
+			this.g = g * FastMath.INVERT_255;
+			this.b = b * FastMath.INVERT_255;
+			this.a = a * FastMath.INVERT_255;
 		}
 
-		public function setTo(r:Number, g:Number, b:Number, a:Number = 1.0):void
+		[Inline]
+		public final function setTo(r:Number, g:Number, b:Number, a:Number = 1.0):void
 		{
 			this.r = r;
 			this.g = g;
@@ -143,7 +144,7 @@
 		}
 
 		[Inline]
-		public function addLocal(value:Color):void
+		public final function addLocal(value:Color):void
 		{
 			this.r += value.r;
 			this.g += value.g;
@@ -151,7 +152,8 @@
 			this.a += value.a;
 		}
 
-		public function toUniform(result:Vector.<Number>):void
+		[Inline]
+		public final function toUniform(result:Vector.<Number>):void
 		{
 			result[0] = r;
 			result[1] = g;
@@ -166,7 +168,7 @@
 
 		public function setColor(color:uint):void
 		{
-			var invert:Number = 1.0 / 255;
+			var invert:Number = FastMath.INVERT_255;
 			a = (color >> 24 & 0xFF) * invert;
 			r = (color >> 16 & 0xFF) * invert;
 			g = (color >> 8 & 0xFF) * invert;
@@ -175,7 +177,7 @@
 
 		public function setRGB(color:uint):void
 		{
-			var invert:Number = 1.0 / 255;
+			var invert:Number = FastMath.INVERT_255;
 			r = (color >> 16 & 0xFF) * invert;
 			g = (color >> 8 & 0xFF) * invert;
 			b = (color & 0xFF) * invert;
@@ -186,7 +188,8 @@
 			return new Color(r, g, b, a);
 		}
 
-		public function copyFrom(other:Color):void
+		[Inline]
+		public final function copyFrom(other:Color):void
 		{
 			setTo(other.r, other.g, other.b, other.a);
 		}
