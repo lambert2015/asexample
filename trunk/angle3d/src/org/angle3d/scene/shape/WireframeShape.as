@@ -49,7 +49,7 @@ package org.angle3d.scene.shape
 		 */
 		private var _indices:Vector.<uint>;
 
-		public function build():void
+		public function build(updateIndices:Boolean = true):void
 		{
 			_posVector.fixed = false;
 			_posVector.length = 0;
@@ -57,8 +57,12 @@ package org.angle3d.scene.shape
 			_pos1Vector.fixed = false;
 			_pos1Vector.length = 0;
 
-			_indices.fixed = false;
-			_indices.length = 0;
+			if (updateIndices)
+			{
+				_indices.fixed = false;
+				_indices.length = 0;
+			}
+
 
 			var sLength:int = _segments.length;
 			for (var i:int = 0; i < sLength; i++)
@@ -66,12 +70,15 @@ package org.angle3d.scene.shape
 				var segment:WireframeLineSet = _segments[i];
 
 				var index:uint = i << 2;
-				_indices.push(index);
-				_indices.push(index + 1);
-				_indices.push(index + 2);
-				_indices.push(index + 3);
-				_indices.push(index + 2);
-				_indices.push(index + 1);
+				if (updateIndices)
+				{
+					_indices.push(index);
+					_indices.push(index + 1);
+					_indices.push(index + 2);
+					_indices.push(index + 3);
+					_indices.push(index + 2);
+					_indices.push(index + 1);
+				}
 
 				var i12:int = i * 12;
 				var i16:int = i * 16;
@@ -119,16 +126,20 @@ package org.angle3d.scene.shape
 				_pos1Vector[i16 + 15] = 1;
 			}
 
-			updateBuffer();
+			updateBuffer(updateIndices);
 		}
 
-		protected function updateBuffer():void
+		protected function updateBuffer(updateIndices:Boolean = true):void
 		{
 			_posVector.fixed = true;
 			_pos1Vector.fixed = true;
-			_indices.fixed = true;
 
-			_subMesh.setIndices(_indices);
+			if (updateIndices)
+			{
+				_indices.fixed = true;
+				_subMesh.setIndices(_indices);
+			}
+
 			_subMesh.setVertexBuffer(BufferType.POSITION, 3, _posVector);
 			_subMesh.setVertexBuffer(BufferType.POSITION1, 4, _pos1Vector);
 			_subMesh.validate();

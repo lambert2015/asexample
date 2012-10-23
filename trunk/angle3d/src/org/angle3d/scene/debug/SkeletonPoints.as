@@ -6,7 +6,6 @@ package org.angle3d.scene.debug
 	import org.angle3d.animation.Skeleton;
 	import org.angle3d.material.MaterialFill;
 	import org.angle3d.scene.Node;
-	import org.angle3d.scene.shape.Sphere;
 
 	public class SkeletonPoints extends Node
 	{

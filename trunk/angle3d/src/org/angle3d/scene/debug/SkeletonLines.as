@@ -20,13 +20,13 @@ package org.angle3d.scene.debug
 			updateGeometry();
 		}
 
-		public function updateGeometry():void
+		public function updateGeometry(updateIndices:Boolean = true):void
 		{
 			clearSegment();
 
 			writeBoneLine(_skeleton.rootBone);
 
-			build();
+			build(updateIndices);
 		}
 
 		private function writeBoneLine(bone:Bone):void

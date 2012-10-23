@@ -19,6 +19,8 @@ package org.angle3d.material
 			_technique = new TechniqueVertexColor();
 
 			addTechnique(_technique);
+
+			sortingId = 4;
 		}
 
 		override public function set alpha(alpha:Number):void

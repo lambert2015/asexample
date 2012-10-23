@@ -15,6 +15,7 @@ package org.angle3d.bounding
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.scene.mesh.SubMesh;
 	import org.angle3d.utils.Assert;
+	import org.angle3d.utils.TempVars;
 
 	/**
 	 * <code>BoundingBox</code> defines an axis-aligned cube that defines a
@@ -243,23 +244,29 @@ package org.angle3d.bounding
 			trans.rotation.multiplyVector(box.center, box.center);
 			box.center.addLocal(trans.translation);
 
-			var transMatrix:Matrix3f = new Matrix3f();
+			var tempVars:TempVars = TempVars.getTempVars();
+
+			var transMatrix:Matrix3f = tempVars.tempMat3;
+			var tmp1:Vector3f = tempVars.vect1;
+			var tmp2:Vector3f = tempVars.vect2;
+
 			transMatrix.setQuaternion(trans.rotation);
 			// Make the rotation matrix all positive to get the maximum x/y/z extent
 			transMatrix.abs();
 
 			var scale:Vector3f = trans.scale;
-			var tmp1:Vector3f = new Vector3f();
 			tmp1.x = xExtent * scale.x;
 			tmp1.y = yExtent * scale.y;
 			tmp1.z = zExtent * scale.z;
 
-			var tmp2:Vector3f = transMatrix.multVec(tmp1);
+			transMatrix.multVec(tmp1, tmp2);
 
 			// Assign the biggest rotations after scales.
 			box.xExtent = FastMath.fabs(tmp2.x);
 			box.yExtent = FastMath.fabs(tmp2.y);
 			box.zExtent = FastMath.fabs(tmp2.z);
+
+			tempVars.release();
 
 			return box;
 		}

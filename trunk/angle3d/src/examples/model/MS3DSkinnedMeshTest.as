@@ -74,8 +74,8 @@ package examples.model
 			//attatchNode
 			var boxNode:Node = new Node("box");
 			var gm:Geometry = new Geometry("cube", new Cube(0.5, 0.5, 5, 1, 1, 1));
-			gm.setMaterial(new MaterialFill(0xff0000, 0.5));
-			gm.localQueueBucket = QueueBucket.Transparent;
+			gm.setMaterial(new MaterialFill(0xff0000, 1.0));
+			gm.localQueueBucket = QueueBucket.Opaque;
 			boxNode.attachChild(gm);
 
 			var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");

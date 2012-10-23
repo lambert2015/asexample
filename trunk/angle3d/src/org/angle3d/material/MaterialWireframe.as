@@ -18,6 +18,8 @@ package org.angle3d.material
 			_technique = new TechniqueWireframe(color, thickness);
 
 			addTechnique(_technique);
+
+			sortingId = 3;
 		}
 
 		public function set thickness(thickness:Number):void

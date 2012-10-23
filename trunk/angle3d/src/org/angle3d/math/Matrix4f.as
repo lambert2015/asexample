@@ -113,27 +113,28 @@ package org.angle3d.math
 		 * @param mat  乘以mat
 		 *
 		 */
+		//TODO 耗时较久
 		public function copyAndMultLocal(copyM:Matrix4f, mat:Matrix4f):void
 		{
-			this.m00 = copyM.m00 * mat.m00 + copyM.m01 * mat.m10 + copyM.m02 * mat.m20 + copyM.m03 * mat.m30;
-			this.m01 = copyM.m00 * mat.m01 + copyM.m01 * mat.m11 + copyM.m02 * mat.m21 + copyM.m03 * mat.m31;
-			this.m02 = copyM.m00 * mat.m02 + copyM.m01 * mat.m12 + copyM.m02 * mat.m22 + copyM.m03 * mat.m32;
-			this.m03 = copyM.m00 * mat.m03 + copyM.m01 * mat.m13 + copyM.m02 * mat.m23 + copyM.m03 * mat.m33;
+			m00 = copyM.m00 * mat.m00 + copyM.m01 * mat.m10 + copyM.m02 * mat.m20 + copyM.m03 * mat.m30;
+			m01 = copyM.m00 * mat.m01 + copyM.m01 * mat.m11 + copyM.m02 * mat.m21 + copyM.m03 * mat.m31;
+			m02 = copyM.m00 * mat.m02 + copyM.m01 * mat.m12 + copyM.m02 * mat.m22 + copyM.m03 * mat.m32;
+			m03 = copyM.m00 * mat.m03 + copyM.m01 * mat.m13 + copyM.m02 * mat.m23 + copyM.m03 * mat.m33;
 
-			this.m10 = copyM.m10 * mat.m00 + copyM.m11 * mat.m10 + copyM.m12 * mat.m20 + copyM.m13 * mat.m30;
-			this.m11 = copyM.m10 * mat.m01 + copyM.m11 * mat.m11 + copyM.m12 * mat.m21 + copyM.m13 * mat.m31;
-			this.m12 = copyM.m10 * mat.m02 + copyM.m11 * mat.m12 + copyM.m12 * mat.m22 + copyM.m13 * mat.m32;
-			this.m13 = copyM.m10 * mat.m03 + copyM.m11 * mat.m13 + copyM.m12 * mat.m23 + copyM.m13 * mat.m33;
+			m10 = copyM.m10 * mat.m00 + copyM.m11 * mat.m10 + copyM.m12 * mat.m20 + copyM.m13 * mat.m30;
+			m11 = copyM.m10 * mat.m01 + copyM.m11 * mat.m11 + copyM.m12 * mat.m21 + copyM.m13 * mat.m31;
+			m12 = copyM.m10 * mat.m02 + copyM.m11 * mat.m12 + copyM.m12 * mat.m22 + copyM.m13 * mat.m32;
+			m13 = copyM.m10 * mat.m03 + copyM.m11 * mat.m13 + copyM.m12 * mat.m23 + copyM.m13 * mat.m33;
 
-			this.m20 = copyM.m20 * mat.m00 + copyM.m21 * mat.m10 + copyM.m22 * mat.m20 + copyM.m23 * mat.m30;
-			this.m21 = copyM.m20 * mat.m01 + copyM.m21 * mat.m11 + copyM.m22 * mat.m21 + copyM.m23 * mat.m31;
-			this.m22 = copyM.m20 * mat.m02 + copyM.m21 * mat.m12 + copyM.m22 * mat.m22 + copyM.m23 * mat.m32;
-			this.m23 = copyM.m20 * mat.m03 + copyM.m21 * mat.m13 + copyM.m22 * mat.m23 + copyM.m23 * mat.m33;
+			m20 = copyM.m20 * mat.m00 + copyM.m21 * mat.m10 + copyM.m22 * mat.m20 + copyM.m23 * mat.m30;
+			m21 = copyM.m20 * mat.m01 + copyM.m21 * mat.m11 + copyM.m22 * mat.m21 + copyM.m23 * mat.m31;
+			m22 = copyM.m20 * mat.m02 + copyM.m21 * mat.m12 + copyM.m22 * mat.m22 + copyM.m23 * mat.m32;
+			m23 = copyM.m20 * mat.m03 + copyM.m21 * mat.m13 + copyM.m22 * mat.m23 + copyM.m23 * mat.m33;
 
-			this.m30 = copyM.m30 * mat.m00 + copyM.m31 * mat.m10 + copyM.m32 * mat.m20 + copyM.m33 * mat.m30;
-			this.m31 = copyM.m30 * mat.m01 + copyM.m31 * mat.m11 + copyM.m32 * mat.m21 + copyM.m33 * mat.m31;
-			this.m32 = copyM.m30 * mat.m02 + copyM.m31 * mat.m12 + copyM.m32 * mat.m22 + copyM.m33 * mat.m32;
-			this.m33 = copyM.m30 * mat.m03 + copyM.m31 * mat.m13 + copyM.m32 * mat.m23 + copyM.m33 * mat.m33;
+			m30 = copyM.m30 * mat.m00 + copyM.m31 * mat.m10 + copyM.m32 * mat.m20 + copyM.m33 * mat.m30;
+			m31 = copyM.m30 * mat.m01 + copyM.m31 * mat.m11 + copyM.m32 * mat.m21 + copyM.m33 * mat.m31;
+			m32 = copyM.m30 * mat.m02 + copyM.m31 * mat.m12 + copyM.m32 * mat.m22 + copyM.m33 * mat.m32;
+			m33 = copyM.m30 * mat.m03 + copyM.m31 * mat.m13 + copyM.m32 * mat.m23 + copyM.m33 * mat.m33;
 		}
 
 		public function clone():Matrix4f
