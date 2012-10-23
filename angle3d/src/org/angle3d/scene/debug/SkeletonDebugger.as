@@ -3,10 +3,8 @@ package org.angle3d.scene.debug
 	import flash.display3D.Context3DCompareMode;
 
 	import org.angle3d.animation.Skeleton;
-	import org.angle3d.material.Material;
 	import org.angle3d.material.MaterialWireframe;
 	import org.angle3d.renderer.queue.QueueBucket;
-	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.Node;
 	import org.angle3d.scene.WireframeGeometry;
 
@@ -37,9 +35,9 @@ package org.angle3d.scene.debug
 			//TODO 
 			//Opaque还得再加个层级
 
-			lineGM.localQueueBucket = QueueBucket.Transparent;
+			lineGM.localQueueBucket = QueueBucket.Opaque;
 
-			_points.localQueueBucket = QueueBucket.Transparent;
+			_points.localQueueBucket = QueueBucket.Opaque;
 
 			attachChild(lineGM);
 			attachChild(_points);
@@ -49,7 +47,7 @@ package org.angle3d.scene.debug
 		{
 			super.updateControls(tpf);
 
-			_lines.updateGeometry();
+			_lines.updateGeometry(false);
 			_points.updateGeometry();
 		}
 	}

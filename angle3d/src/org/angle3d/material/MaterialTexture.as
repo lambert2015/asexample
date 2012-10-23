@@ -22,6 +22,8 @@ package org.angle3d.material
 			this.texture = texture;
 			this.lightmap = lightmap;
 			this.useTexCoord2 = useTexCoord2;
+
+			sortingId = 2;
 		}
 
 		override public function set skinningMatrices(data:Vector.<Number>):void

@@ -21,6 +21,8 @@ package org.angle3d.material
 			addTechnique(_technique);
 
 			this.alpha = alpha;
+
+			sortingId = 1;
 		}
 
 		public function get technique():TechniqueFill

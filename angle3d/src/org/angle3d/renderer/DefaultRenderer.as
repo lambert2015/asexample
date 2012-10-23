@@ -101,8 +101,7 @@ package org.angle3d.renderer
 		public function applyRenderState(state:RenderState):void
 		{
 			//TODO 这里有问题，需要检查
-//			if (state.depthTest != _renderContext.depthTest ||
-//				state.compareMode != _renderContext.compareMode)
+			if (state.depthTest != _renderContext.depthTest || state.compareMode != _renderContext.compareMode)
 			{
 				_context3D.setDepthTest(state.depthTest, state.compareMode);
 				_renderContext.depthTest = state.depthTest;
@@ -231,16 +230,21 @@ package org.angle3d.renderer
 				Assert.assert(shader != null, "shader cannot be null");
 			}
 
-			clearTextures();
-
-			_shader = shader;
-
-			var program:Program3D = ShaderManager.instance.getProgram(_shader.name);
-
-			if (_lastProgram != program)
+			if (_shader != shader)
 			{
-				_context3D.setProgram(program);
-				_lastProgram = program;
+				clearTextures();
+
+				_shader = shader;
+
+				_shader.uploadTexture(this);
+
+				var program:Program3D = ShaderManager.instance.getProgram(_shader.name);
+
+				if (_lastProgram != program)
+				{
+					_context3D.setProgram(program);
+					_lastProgram = program;
+				}
 			}
 
 			//上传Shader数据

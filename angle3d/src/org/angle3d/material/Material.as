@@ -23,7 +23,9 @@ package org.angle3d.material
 
 		private var mAlpha:Number;
 
-		private var _techniques:Vector.<Technique>;
+		protected var sortingId:int = -1;
+
+		protected var _techniques:Vector.<Technique>;
 
 		public function Material()
 		{
@@ -110,6 +112,11 @@ package org.angle3d.material
 		public function get alpha():Number
 		{
 			return mAlpha;
+		}
+
+		public function getSortId():int
+		{
+			return sortingId;
 		}
 
 		public function clone():Material

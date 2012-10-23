@@ -94,17 +94,21 @@ package org.angle3d.material.shader
 
 		private var mShaderTypes:Array = [ShaderType.VERTEX, ShaderType.FRAGMENT];
 
-		public function upload(render:IRenderer):void
+		public function uploadTexture(render:IRenderer):void
 		{
 			//上传贴图
 			var textures:Vector.<ShaderVariable> = _textureList.getVariables();
-			var vLength:int = textures.length;
-			for (i = 0; i < vLength; i++)
+			var size:int = textures.length;
+			for (var i:int = 0; i < size; i++)
 			{
 				var tex:TextureVariable = textures[i] as TextureVariable;
 				render.setTextureAt(tex.location, tex.textureMap);
 			}
-			
+		}
+
+		//TODO 这里可以测试是否可以合并数据，一次提交数据
+		public function upload(render:IRenderer):void
+		{
 			for (var i:int = 0; i < 2; i++)
 			{
 				var type:String = mShaderTypes[i];

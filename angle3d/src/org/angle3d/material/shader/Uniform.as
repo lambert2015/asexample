@@ -21,7 +21,7 @@ package org.angle3d.material.shader
 		/**
 		 * Binding to a renderer value, or null if user-defined uniform
 		 */
-		private var _binding:int;
+		public var binding:int;
 
 		public function Uniform(name:String, size:int)
 		{
@@ -87,7 +87,7 @@ package org.angle3d.material.shader
 		{
 			vec.toUniform(_data);
 		}
-		
+
 		[Inline]
 		public final function setQuaterion(q:Quaternion):void
 		{
@@ -97,16 +97,6 @@ package org.angle3d.material.shader
 		public function get data():Vector.<Number>
 		{
 			return _data;
-		}
-
-		public function set binding(value:int):void
-		{
-			_binding = value;
-		}
-
-		public function get binding():int
-		{
-			return _binding;
 		}
 	}
 }
