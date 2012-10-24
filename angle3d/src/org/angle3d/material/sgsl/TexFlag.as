@@ -9,6 +9,8 @@ package org.angle3d.material.sgsl
 
 	internal class TexFlag
 	{
+		public var type:int;
+		
 		public var bias:int;
 
 		public var dimension:int;
@@ -33,7 +35,7 @@ package org.angle3d.material.sgsl
 
 		public function getTexFlagsBits():uint
 		{
-			return (dimension << 4) | (special << 8) | (wrap << 12) | (mipmap << 16) | (filter << 20);
+			return type | (dimension << 4) | (special << 8) | (wrap << 12) | (mipmap << 16) | (filter << 20);
 		}
 
 		public function get lod():int
@@ -69,6 +71,15 @@ package org.angle3d.material.sgsl
 				{
 					switch (str.toLowerCase())
 					{
+						case "rgba":
+							type = 0;
+							break;
+						case "dxt1":
+							type = 1;
+							break;
+						case "dxt5":
+							type = 2;
+							break;
 						case "2d":
 							dimension = 0;
 							break;

@@ -72,7 +72,7 @@ package org.angle3d.texture
 		override protected function createTexture(context:Context3D):TextureBase
 		{
 			//TODO 为何用Context3DTextureFormat.Compressed不行呢
-			return context.createTexture(mWidth, mHeight, Context3DTextureFormat.COMPRESSED, false);
+			return context.createTexture(mWidth, mHeight, Context3DTextureFormat.COMPRESSED_ALPHA, false);
 		}
 	}
 }
