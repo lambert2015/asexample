@@ -152,10 +152,10 @@ package org.angle3d.material.technique
 			
 				    #ifdef(lightmap){
 				        #ifdef(useTexCoord2){
-				            t_lightMapColor = texture2D(v_texCoord2,s_lightmap,linear,nomip,wrap);
+				            t_lightMapColor = texture2D(v_texCoord2,s_lightmap,dxt5,linear,nomip,wrap);
 				        }
 				        #else{
-				            t_lightMapColor = texture2D(v_texCoord,s_lightmap,linear,nomip,wrap);
+				            t_lightMapColor = texture2D(v_texCoord,s_lightmap,dxt5,linear,nomip,wrap);
 				        }
 
 				        t_textureMapColor = multiply(t_textureMapColor,t_lightMapColor);

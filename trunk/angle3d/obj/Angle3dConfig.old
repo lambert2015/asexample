@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2012-10-23'</value>
+      <value>'2012-10-24'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -37,7 +37,7 @@
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>E:\asexample\angle3d\src\examples\model\MS3DSkinnedMeshTest.as</path-element>
+    <path-element>E:\asexample\angle3d\src\examples\ATFTextureTest.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
   <default-frame-rate>60</default-frame-rate>

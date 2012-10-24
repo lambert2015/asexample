@@ -42,15 +42,15 @@ package examples
 			cam.location = new Vector3f(0, 0, -100);
 			cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 
-			var assetLoader : AssetLoader = AssetManager.getInstance().createLoader("house_diffuse");
-			assetLoader.addFile("house_diffuse", "assets/atf/house_diffuse.atf", AssetType.BINARY);
+			var assetLoader : AssetLoader = AssetManager.getInstance().createLoader("leaf");
+			assetLoader.addFile("leaf", "assets/atf/leaf.atf", AssetType.BINARY);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.start();
 		}
 
 		private function _loadComplete(signal : LoaderSignal, assets : Dictionary) : void
 		{
-			var atfTexture : ATFTexture = new ATFTexture(assets["house_diffuse"]);
+			var atfTexture : ATFTexture = new ATFTexture(assets["leaf"]);
 
 			var textureMat : MaterialTexture = new MaterialTexture(atfTexture);
 
