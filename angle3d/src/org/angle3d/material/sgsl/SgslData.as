@@ -175,13 +175,9 @@ package org.angle3d.material.sgsl
 			}
 
 			//忽略output
-			if (reg.regType == RegType.OUTPUT)
+			CF::DEBUG
 			{
-				CF::DEBUG
-				{
-					Assert.assert(false, "output不需要定义");
-				}
-				return;
+				Assert.assert(reg.regType != RegType.OUTPUT, "output不需要定义");
 			}
 
 			switch (reg.regType)
