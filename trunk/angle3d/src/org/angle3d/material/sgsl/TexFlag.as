@@ -10,7 +10,7 @@ package org.angle3d.material.sgsl
 	internal class TexFlag
 	{
 		public var type:int;
-		
+
 		public var bias:int;
 
 		public var dimension:int;

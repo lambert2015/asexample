@@ -18,6 +18,8 @@ package org.angle3d.texture
 	{
 		private var mByteArray:ByteArray;
 
+		private var _format:String;
+
 		public function ATFTexture(data:ByteArray)
 		{
 			super(false);
@@ -35,44 +37,56 @@ package org.angle3d.texture
 			mByteArray = byte;
 			mByteArray.position = 0;
 
-			//check weather file if really is a compressed texture
-			var signature:String = mByteArray.readUTFBytes(3);
-
 			CF::DEBUG
 			{
-				Assert.assert(signature == "ATF", "This ByteArray is not a atf file");
+				var signature:String = String.fromCharCode(mByteArray[0], mByteArray[1], mByteArray[2]);
+				Assert.assert(signature == "ATF", "Invalid ATF data");
 			}
 
-			mByteArray.position += 3;
-
-			//Check if this is a CubeMap
-			var cubeMap:uint = byte.readUnsignedByte();
-			cubeMap = cubeMap & 0x80;
-
-			CF::DEBUG
+			switch (mByteArray[6])
 			{
-				Assert.assert(cubeMap != 0x80, "File is a CubeMap.");
+				case 0:
+				case 1:
+					_format = Context3DTextureFormat.BGRA;
+					break;
+				case 2:
+				case 3:
+					_format = Context3DTextureFormat.COMPRESSED;
+					break;
+				case 4:
+				case 5:
+					_format = Context3DTextureFormat.COMPRESSED_ALPHA;
+					break;
+				default:
+					throw new Error("Invalid ATF format");
 			}
 
-			var log2Width:uint = byte.readUnsignedByte();
-			var log2Height:uint = byte.readUnsignedByte();
+			var log2Width:uint = mByteArray[7];
+			var log2Height:uint = mByteArray[8];
+			var numTextures:uint = mByteArray[9];
+
+			mMipmap = numTextures > 1;
 
 			invalidateContent();
 
-			setSize(int(Math.pow(2, log2Width)), int(Math.pow(2, log2Height)));
+			setSize(Math.pow(2, log2Width), Math.pow(2, log2Height));
+		}
+
+		public function get format():String
+		{
+			return _format;
 		}
 
 		override protected function uploadTexture():void
 		{
 			var t:Texture = mTexture as Texture;
 
-			t.uploadCompressedTextureFromByteArray(mByteArray, 0);
+			t.uploadCompressedTextureFromByteArray(mByteArray, 0, false);
 		}
 
 		override protected function createTexture(context:Context3D):TextureBase
 		{
-			//TODO 为何用Context3DTextureFormat.Compressed不行呢
-			return context.createTexture(mWidth, mHeight, Context3DTextureFormat.COMPRESSED_ALPHA, false);
+			return context.createTexture(mWidth, mHeight, _format, false);
 		}
 	}
 }

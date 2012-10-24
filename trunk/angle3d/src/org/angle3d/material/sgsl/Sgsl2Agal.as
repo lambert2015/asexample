@@ -1,6 +1,5 @@
 package org.angle3d.material.sgsl
 {
-	import flash.media.Video;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
@@ -152,17 +151,22 @@ package org.angle3d.material.sgsl
 			return "";
 		}
 
+		//TODO 这里不对，少了一个format
 		private function readTexture():String
 		{
 			var index:int = _data.readUnsignedShort();
 			var lod:int = _data.readUnsignedByte();
-			_data.readUnsignedByte();
-			_data.readUnsignedByte();
-
-			var dimension:int = _data.readUnsignedByte() >> 4 & 0xf;
+			//未使用
+			_data.position += 2;
+//			_data.readUnsignedByte();
+//			_data.readUnsignedByte();
 
 			var value:int = _data.readUnsignedByte();
 
+			var format:int = value & 0xf;
+			var dimension:int = value >> 4 & 0xf;
+
+			value = _data.readUnsignedByte();
 			var wrap:int = value >> 4 & 0xf;
 
 			value = _data.readUnsignedByte();
@@ -171,6 +175,19 @@ package org.angle3d.material.sgsl
 			var filter:int = value >> 4 & 0xf;
 
 			var option:Array = [];
+			if (format == 0)
+			{
+				option.push("rgba");
+			}
+			else if (format == 1)
+			{
+				option.push("dxt1");
+			}
+			else if (format == 2)
+			{
+				option.push("dxt5");
+			}
+
 			if (dimension == 0)
 			{
 				option.push("2d");
