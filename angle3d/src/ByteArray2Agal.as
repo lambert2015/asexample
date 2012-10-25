@@ -1,12 +1,11 @@
-package org.angle3d.material.sgsl
+package
 {
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.display3D.Context3DProgramType;
+	import flash.utils.Endian;
 
-	import org.angle3d.material.shader.ShaderType;
-	import org.angle3d.math.FastMath;
-
-	public class Sgsl2Agal
+	public class ByteArray2Agal
 	{
 		private var _codeMap:Dictionary;
 
@@ -16,7 +15,7 @@ package org.angle3d.material.sgsl
 
 		private var _data:ByteArray;
 
-		public function Sgsl2Agal()
+		public function ByteArray2Agal()
 		{
 			_codeMap = new Dictionary();
 			_codeMap[0x00] = "mov";
@@ -79,6 +78,7 @@ package org.angle3d.material.sgsl
 		public function toAgal(data:ByteArray):String
 		{
 			_data = data;
+			_data.endian = Endian.LITTLE_ENDIAN;
 
 			_data.position = 0;
 
@@ -86,7 +86,7 @@ package org.angle3d.material.sgsl
 			_data.readUnsignedInt(); // AGAL version, big endian, bit pattern will be 0x01000000
 			_data.readUnsignedByte(); // tag program id
 
-			_shaderType = (_data.readUnsignedByte() == 0) ? ShaderType.VERTEX : ShaderType.FRAGMENT;
+			_shaderType = (_data.readUnsignedByte() == 0) ? Context3DProgramType.VERTEX : Context3DProgramType.FRAGMENT;
 
 			var agal:String = "";
 			var index:int;
@@ -138,11 +138,11 @@ package org.angle3d.material.sgsl
 				case 0x0:
 					return "va";
 				case 0x1:
-					return _shaderType == ShaderType.VERTEX ? "vc" : "fc";
+					return _shaderType == Context3DProgramType.VERTEX ? "vc" : "fc";
 				case 0x2:
-					return _shaderType == ShaderType.VERTEX ? "vt" : "ft";
+					return _shaderType == Context3DProgramType.VERTEX ? "vt" : "ft";
 				case 0x3:
-					return _shaderType == ShaderType.VERTEX ? "op" : "oc";
+					return _shaderType == Context3DProgramType.VERTEX ? "op" : "oc";
 				case 0x4:
 					return "v";
 				case 0x5:
@@ -267,7 +267,7 @@ package org.angle3d.material.sgsl
 						var t:int = maskBits & (1 << i);
 						if (t > 0)
 						{
-							mask += _swizzleMap[FastMath.log2(t)];
+							mask += _swizzleMap[log2(t)];
 						}
 					}
 				}
@@ -276,6 +276,17 @@ package org.angle3d.material.sgsl
 				{
 					result += "." + mask;
 				}
+			}
+			return result;
+		}
+		
+		private function log2(value:int):int
+		{
+			var result:int = -1;
+			while (value > 0)
+			{
+				value >>= 1;
+				result++;
 			}
 			return result;
 		}
