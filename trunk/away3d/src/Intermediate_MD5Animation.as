@@ -87,10 +87,6 @@ package
 
 	public class Intermediate_MD5Animation extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public var SignatureSwf:Class;
-
 		//floor diffuse map
 		[Embed(source = "/../embeds/rockbase_diffuse.jpg")]
 		private var FloorDiffuse:Class;
@@ -198,10 +194,6 @@ package
 		private const IDLE_SPEED:Number = 1;
 		private const ACTION_SPEED:Number = 1;
 
-		//signature variables
-		private var Signature:Sprite;
-		private var SignatureBitmap:Bitmap;
-
 		//light objects
 		private var redLight:PointLight;
 		private var blueLight:PointLight;
@@ -267,16 +259,7 @@ package
 			placeHolder.y = 50;
 			cameraController = new LookAtController(camera, placeHolder);
 
-			view.addSourceURL("srcview/index.html");
 			addChild(view);
-
-			//add signature
-			Signature = Sprite(new SignatureSwf());
-			SignatureBitmap = new Bitmap(new BitmapData(Signature.width, Signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			SignatureBitmap.bitmapData.draw(Signature);
-			stage.quality = StageQuality.LOW;
-			addChild(SignatureBitmap);
 
 			awayStats = new AwayStats(view);
 			addChild(awayStats);
@@ -643,7 +626,6 @@ package
 		{
 			view.width = stage.stageWidth;
 			view.height = stage.stageHeight;
-			SignatureBitmap.y = stage.stageHeight - Signature.height;
 			awayStats.x = stage.stageWidth - awayStats.width;
 		}
 	}

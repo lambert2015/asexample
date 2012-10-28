@@ -155,20 +155,12 @@ package
 		[Embed(source = "/../embeds/lensflare/flare12.jpg")]
 		private var Flare12:Class;
 
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public var SignatureSwf:Class;
-
 		//engine variables
 		private var scene:Scene3D;
 		private var camera:Camera3D;
 		private var view:View3D;
 		private var cameraController:HoverController;
 		private var awayStats:AwayStats;
-
-		//signature variables
-		private var Signature:Sprite;
-		private var SignatureBitmap:Bitmap;
 
 		//material objects
 		private var sunMaterial:TextureMaterial;
@@ -251,16 +243,7 @@ package
 			//setup parser to be used on loader3D
 			Parsers.enableAllBundled();
 
-			view.addSourceURL("srcview/index.html");
 			addChild(view);
-
-			//add signature
-			Signature = Sprite(new SignatureSwf());
-			SignatureBitmap = new Bitmap(new BitmapData(Signature.width, Signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			SignatureBitmap.bitmapData.draw(Signature);
-			stage.quality = StageQuality.LOW;
-			addChild(SignatureBitmap);
 
 			addChild(awayStats = new AwayStats(view));
 
@@ -632,7 +615,6 @@ package
 		{
 			view.width = stage.stageWidth;
 			view.height = stage.stageHeight;
-			SignatureBitmap.y = stage.stageHeight - Signature.height;
 			awayStats.x = stage.stageWidth - awayStats.width;
 		}
 	}

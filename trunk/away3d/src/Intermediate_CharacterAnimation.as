@@ -83,10 +83,6 @@ package
 
 	public class Intermediate_CharacterAnimation extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public var SignatureSwf:Class;
-
 		//polar bear color map
 		[Embed(source = "/../embeds/snow_diffuse.png")]
 		private var SnowDiffuse:Class;
@@ -150,10 +146,6 @@ package
 		private const RUN_SPEED:Number = 2;
 		private const WALK_SPEED:Number = 1;
 		private const BREATHE_SPEED:Number = 1;
-
-		//signature variables
-		private var Signature:Sprite;
-		private var SignatureBitmap:Bitmap;
 
 		//light objects
 		private var sunLight:DirectionalLight;
@@ -219,16 +211,7 @@ package
 			placeHolder.z = 1000;
 			cameraController = new LookAtController(camera, placeHolder);
 
-			view.addSourceURL("srcview/index.html");
 			addChild(view);
-
-			//add signature
-			Signature = Sprite(new SignatureSwf());
-			SignatureBitmap = new Bitmap(new BitmapData(Signature.width, Signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			SignatureBitmap.bitmapData.draw(Signature);
-			stage.quality = StageQuality.LOW;
-			addChild(SignatureBitmap);
 
 			awayStats = new AwayStats(view);
 			addChild(awayStats);
@@ -495,7 +478,6 @@ package
 		{
 			view.width = stage.stageWidth;
 			view.height = stage.stageHeight;
-			SignatureBitmap.y = stage.stageHeight - Signature.height;
 			awayStats.x = stage.stageWidth - awayStats.width;
 		}
 	}

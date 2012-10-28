@@ -1,43 +1,3 @@
-/*
-
-Dynamic tree generation and placement in a night-time scene
-
-Demonstrates:
-
-How to create a height map and splat map from scratch to use for realistic terrain
-How to use fratacl algorithms to create a custom tree-generating geometry primitive
-How to save GPU memory by cloning complex.
-
-Code by Rob Bateman & Alejadro Santander
-rob@infiniteturtles.co.uk
-http://www.infiniteturtles.co.uk
-Alejandro Santander
-http://www.lidev.com.ar/
-
-This code is distributed under the MIT License
-
-Copyright (c)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
-
 package
 {
 
@@ -90,10 +50,6 @@ package
 
 	public class Advanced_FractalTreeDemo extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public var SignatureSwf:Class;
-
 		//skybox
 		[Embed(source = "/../embeds/skybox/grimnight_posX.png")]
 		private var EnvPosX:Class;
@@ -136,10 +92,6 @@ package
 		private var view:View3D;
 		private var awayStats:AwayStats;
 		private var cameraController:HoverController;
-
-		//signature variables
-		private var Signature:Sprite;
-		private var SignatureBitmap:Bitmap;
 
 		//light objects
 		private var moonLight:DirectionalLight;
@@ -252,16 +204,7 @@ package
 			//setup controller to be used on the camera
 			cameraController = new HoverController(camera, null, 0, 10, 25000, 0, 70);
 
-			view.addSourceURL("srcview/index.html");
 			addChild(view);
-
-			//add signature
-			Signature = Sprite(new SignatureSwf());
-			SignatureBitmap = new Bitmap(new BitmapData(Signature.width, Signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			SignatureBitmap.bitmapData.draw(Signature);
-			stage.quality = StageQuality.LOW;
-			addChild(SignatureBitmap);
 
 			awayStats = new AwayStats(view);
 			addChild(awayStats);
@@ -613,7 +556,6 @@ package
 		{
 			view.width = stage.stageWidth;
 			view.height = stage.stageHeight;
-			SignatureBitmap.y = stage.stageHeight - Signature.height;
 			awayStats.x = stage.stageWidth - awayStats.width;
 		}
 

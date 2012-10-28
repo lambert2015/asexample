@@ -67,10 +67,6 @@ package
 
 	public class Basic_Load3DS extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public static var SignatureSwf:Class;
-
 		//solider ant texture
 		[Embed(source = "/../embeds/soldier_ant.jpg")]
 		public static var AntTexture:Class;
@@ -86,10 +82,6 @@ package
 		//engine variables
 		private var _view:View3D;
 		private var _cameraController:HoverController;
-
-		//signature variables
-		private var _signature:Sprite;
-		private var _signatureBitmap:Bitmap;
 
 		//light objects
 		private var _light:DirectionalLight;
@@ -120,7 +112,6 @@ package
 
 			//setup the view
 			_view = new View3D();
-			_view.addSourceURL("srcview/index.html");
 			addChild(_view);
 
 			//setup the camera for optimal shadow rendering
@@ -157,15 +148,6 @@ package
 			_loader.addEventListener(AssetEvent.ASSET_COMPLETE, onAssetComplete);
 			_loader.loadData(new AntModel(), assetLoaderContext);
 			_view.scene.addChild(_loader);
-
-
-			//add signature
-			_signature = new SignatureSwf();
-			_signatureBitmap = new Bitmap(new BitmapData(_signature.width, _signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			_signatureBitmap.bitmapData.draw(_signature);
-			stage.quality = StageQuality.LOW;
-			addChild(_signatureBitmap);
 
 			//add stats panel
 			addChild(new AwayStats(_view));
@@ -256,7 +238,6 @@ package
 		{
 			_view.width = stage.stageWidth;
 			_view.height = stage.stageHeight;
-			_signatureBitmap.y = stage.stageHeight - _signature.height;
 		}
 	}
 }

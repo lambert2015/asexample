@@ -1,47 +1,7 @@
-/*
-
-Shadind example in Away3d
-
-Demonstrates:
-
-How to create multiple lightsources in a scene.
-How to apply specular maps, normals maps and diffuse texture maps to a material.
-
-Code by Rob Bateman
-rob@infiniteturtles.co.uk
-http://www.infiniteturtles.co.uk
-
-This code is distributed under the MIT License
-
-Copyright (c)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
-
 package
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
-	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -66,10 +26,6 @@ package
 
 	public class Basic_Shading extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		private var SignatureSwf:Class;
-
 		//cube textures
 		[Embed(source = "/../embeds/trinket_diffuse.jpg")]
 		public static var TrinketDiffuse:Class;
@@ -103,10 +59,6 @@ package
 		private var camera:Camera3D;
 		private var view:View3D;
 		private var cameraController:HoverController;
-
-		//signature variables
-		private var Signature:Sprite;
-		private var SignatureBitmap:Bitmap;
 
 		//material objects
 		private var planeMaterial:TextureMaterial;
@@ -177,16 +129,7 @@ package
 			cameraController.panAngle = 45;
 			cameraController.tiltAngle = 20;
 
-			view.addSourceURL("srcview/index.html");
 			addChild(view);
-
-			//add signature
-			Signature = Sprite(new SignatureSwf());
-			SignatureBitmap = new Bitmap(new BitmapData(Signature.width, Signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			SignatureBitmap.bitmapData.draw(Signature);
-			stage.quality = StageQuality.LOW;
-			addChild(SignatureBitmap);
 
 			addChild(new AwayStats(view));
 		}
@@ -344,7 +287,6 @@ package
 		{
 			view.width = stage.stageWidth;
 			view.height = stage.stageHeight;
-			SignatureBitmap.y = stage.stageHeight - Signature.height;
 		}
 	}
 }

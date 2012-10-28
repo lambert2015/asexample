@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="Basic_Tweening3D.as" projectUUID="e12e86dd-b767-4bb7-858a-58247cfc2b3e" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="Basic_Shading.as" projectUUID="e12e86dd-b767-4bb7-858a-58247cfc2b3e" version="11">
   <compiler additionalCompilerArguments="-locale en_US&#13;&#10;-default-size 1024 768&#13;&#10;-default-background-color 0x0&#13;&#10;-default-frame-rate 60&#13;&#10;-inline" advancedTelemetry="true" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">

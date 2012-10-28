@@ -78,10 +78,6 @@ package
 
 	public class Advanced_TerrainDemo extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public var SignatureSwf:Class;
-
 		// Environment map.
 		[Embed(source = "/../embeds/skybox/snow_positive_x.jpg")]
 		private var EnvPosX:Class;
@@ -130,10 +126,6 @@ package
 		private var view:View3D;
 		private var cameraController:FirstPersonController;
 		private var awayStats:AwayStats;
-
-		//signature variables
-		private var Signature:Sprite;
-		private var SignatureBitmap:Bitmap;
 
 		//light objects
 		private var sunLight:DirectionalLight;
@@ -209,16 +201,7 @@ package
 			//setup controller to be used on the camera
 			cameraController = new FirstPersonController(camera, 180, 0, -80, 80);
 
-			view.addSourceURL("srcview/index.html");
 			addChild(view);
-
-			//add signature
-			Signature = Sprite(new SignatureSwf());
-			SignatureBitmap = new Bitmap(new BitmapData(Signature.width, Signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			SignatureBitmap.bitmapData.draw(Signature);
-			stage.quality = StageQuality.LOW;
-			addChild(SignatureBitmap);
 
 			awayStats = new AwayStats(view);
 			addChild(awayStats);
@@ -452,7 +435,6 @@ package
 		{
 			view.width = stage.stageWidth;
 			view.height = stage.stageHeight;
-			SignatureBitmap.y = stage.stageHeight - Signature.height;
 			awayStats.x = stage.stageWidth - awayStats.width;
 		}
 	}

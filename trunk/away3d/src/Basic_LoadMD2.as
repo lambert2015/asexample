@@ -28,10 +28,6 @@
 
 	public class Basic_LoadMD2 extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public static var SignatureSwf:Class;
-
 		//plane textures
 		[Embed(source = "/../embeds/floor_diffuse.jpg")]
 		public static var FloorDiffuse:Class;
@@ -94,7 +90,6 @@
 
 			//setup the view
 			_view = new View3D();
-			_view.addSourceURL("srcview/index.html");
 			addChild(_view);
 
 			//setup the camera for optimal rendering
