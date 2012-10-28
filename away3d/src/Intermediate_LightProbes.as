@@ -78,10 +78,6 @@ package
 
 	public class Intermediate_LightProbes extends Sprite
 	{
-		//signature swf
-		[Embed(source = "/../embeds/signature.swf", symbol = "Signature")]
-		public var SignatureSwf:Class;
-
 		// cornell baked lighting map
 		[Embed(source = "/../embeds/cornell.obj", mimeType = "application/octet-stream")]
 		private var CornellOBJ:Class;
@@ -114,10 +110,6 @@ package
 		private var camera:Camera3D;
 		private var view:View3D;
 		private var cameraController:LookAtController;
-
-		//signature variables
-		private var Signature:Sprite;
-		private var SignatureBitmap:Bitmap;
 
 		//light objects
 		private var mainLight:PointLight;
@@ -183,12 +175,6 @@ package
 
 			//view.addSourceURL("srcview/index.html");
 			addChild(view);
-
-			//add signature
-			Signature = Sprite(new SignatureSwf());
-			SignatureBitmap = new Bitmap(new BitmapData(Signature.width, Signature.height, true, 0));
-			SignatureBitmap.bitmapData.draw(Signature);
-			addChild(SignatureBitmap);
 
 			addChild(new AwayStats(view));
 		}
@@ -423,7 +409,6 @@ package
 		{
 			view.width = stage.stageWidth;
 			view.height = stage.stageHeight;
-			SignatureBitmap.y = stage.stageHeight - Signature.height;
 		}
 	}
 }
