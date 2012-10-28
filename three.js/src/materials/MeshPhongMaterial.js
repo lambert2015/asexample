@@ -17,6 +17,9 @@
  *  bumpMap: new THREE.Texture( <Image> ),
  *  bumpScale: <float>,
  *
+ *  normalMap: new THREE.Texture( <Image> ),
+ *  normalScale: <Vector2>,
+ *
  *  specularMap: new THREE.Texture( <Image> ),
  *
  *  envMap: new THREE.TextureCube( [posx, negx, posy, negy, posz, negz] ),
@@ -41,22 +44,21 @@
  * }
  */
 
-THREE.MeshPhongMaterial = function(parameters) {
+THREE.MeshPhongMaterial = function ( parameters ) {
 
-	THREE.Material.call(this);
+	THREE.Material.call( this );
 
-	this.color = new THREE.Color(0xffffff);
-	// diffuse
-	this.ambient = new THREE.Color(0xffffff);
-	this.emissive = new THREE.Color(0x000000);
-	this.specular = new THREE.Color(0x111111);
+	this.color = new THREE.Color( 0xffffff ); // diffuse
+	this.ambient = new THREE.Color( 0xffffff );
+	this.emissive = new THREE.Color( 0x000000 );
+	this.specular = new THREE.Color( 0x111111 );
 	this.shininess = 30;
 
 	this.metal = false;
 	this.perPixel = false;
 
 	this.wrapAround = false;
-	this.wrapRGB = new THREE.Vector3(1, 1, 1);
+	this.wrapRGB = new THREE.Vector3( 1, 1, 1 );
 
 	this.map = null;
 
@@ -64,6 +66,9 @@ THREE.MeshPhongMaterial = function(parameters) {
 
 	this.bumpMap = null;
 	this.bumpScale = 1;
+
+	this.normalMap = null;
+	this.normalScale = new THREE.Vector2( 1, 1 );
 
 	this.specularMap = null;
 
@@ -87,29 +92,29 @@ THREE.MeshPhongMaterial = function(parameters) {
 	this.morphTargets = false;
 	this.morphNormals = false;
 
-	this.setValues(parameters);
+	this.setValues( parameters );
 
 };
 
-THREE.MeshPhongMaterial.prototype = Object.create(THREE.Material.prototype);
+THREE.MeshPhongMaterial.prototype = Object.create( THREE.Material.prototype );
 
-THREE.MeshPhongMaterial.prototype.clone = function() {
+THREE.MeshPhongMaterial.prototype.clone = function () {
 
 	var material = new THREE.MeshPhongMaterial();
 
-	THREE.Material.prototype.clone.call(this, material);
+	THREE.Material.prototype.clone.call( this, material );
 
-	material.color.copy(this.color);
-	material.ambient.copy(this.ambient);
-	material.emissive.copy(this.emissive);
-	material.specular.copy(this.specular);
+	material.color.copy( this.color );
+	material.ambient.copy( this.ambient );
+	material.emissive.copy( this.emissive );
+	material.specular.copy( this.specular );
 	material.shininess = this.shininess;
 
 	material.metal = this.metal;
 	material.perPixel = this.perPixel;
 
 	material.wrapAround = this.wrapAround;
-	material.wrapRGB.copy(this.wrapRGB);
+	material.wrapRGB.copy( this.wrapRGB );
 
 	material.map = this.map;
 
@@ -117,6 +122,9 @@ THREE.MeshPhongMaterial.prototype.clone = function() {
 
 	material.bumpMap = this.bumpMap;
 	material.bumpScale = this.bumpScale;
+
+	material.normalMap = this.normalMap;
+	material.normalScale.copy( this.normalScale );
 
 	material.specularMap = this.specularMap;
 

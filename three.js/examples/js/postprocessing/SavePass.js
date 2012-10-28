@@ -4,7 +4,10 @@
 
 THREE.SavePass = function ( renderTarget ) {
 
-	var shader = THREE.ShaderExtras[ "screen" ];
+	if ( THREE.CopyShader === undefined )
+		console.error( "THREE.SavePass relies on THREE.CopyShader" );
+
+	var shader = THREE.CopyShader;
 
 	this.textureID = "tDiffuse";
 
@@ -39,7 +42,7 @@ THREE.SavePass.prototype = {
 
 		if ( this.uniforms[ this.textureID ] ) {
 
-			this.uniforms[ this.textureID ].texture = readBuffer;
+			this.uniforms[ this.textureID ].value = readBuffer;
 
 		}
 

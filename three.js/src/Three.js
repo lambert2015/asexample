@@ -1,35 +1,50 @@
 /**
  * @author mrdoob / http://mrdoob.com/
+ * @author Larry Battle / http://bateru.com/news
  */
 
-var THREE = THREE || {
-	REVISION : '50'
+var THREE = THREE || { REVISION: '52' };
+
+self.console = self.console || {
+
+	info: function () {},
+	log: function () {},
+	debug: function () {},
+	warn: function () {},
+	error: function () {}
+
 };
 
-if (self.console === undefined) {
+self.Int32Array = self.Int32Array || Array;
+self.Float32Array = self.Float32Array || Array;
 
-	self.console = {
+// Shims for "startsWith", "endsWith", and "trim" for browsers where this is not yet implemented
+// not sure we should have this, or at least not have it here
 
-		info : function() {
-		},
-		log : function() {
-		},
-		debug : function() {
-		},
-		warn : function() {
-		},
-		error : function() {
-		}
-	};
+// http://stackoverflow.com/questions/646628/javascript-startswith
+// http://stackoverflow.com/questions/498970/how-do-i-trim-a-string-in-javascript
+// http://wiki.ecmascript.org/doku.php?id=harmony%3astring_extras
 
-}
+String.prototype.startsWith = String.prototype.startsWith || function ( str ) {
 
-if (self.Int32Array === undefined) {
+	return this.slice( 0, str.length ) === str;
 
-	self.Int32Array = Array;
-	self.Float32Array = Array;
+};
 
-}
+String.prototype.endsWith = String.prototype.endsWith || function ( str ) {
+
+	var t = String( str );
+	var index = this.lastIndexOf( t );
+	return ( -1 < index && index ) === (this.length - t.length);
+
+};
+
+String.prototype.trim = String.prototype.trim || function () {
+
+	return this.replace( /^\s+|\s+$/g, '' );
+
+};
+
 
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
@@ -37,42 +52,35 @@ if (self.Int32Array === undefined) {
 // requestAnimationFrame polyfill by Erik Möller
 // fixes from Paul Irish and Tino Zijdel
 
-( function() {
+( function () {
 
-		var lastTime = 0;
-		var vendors = ['ms', 'moz', 'webkit', 'o'];
+	var lastTime = 0;
+	var vendors = [ 'ms', 'moz', 'webkit', 'o' ];
 
-		for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+	for ( var x = 0; x < vendors.length && !window.requestAnimationFrame; ++ x ) {
 
-			window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-			window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+		window.requestAnimationFrame = window[ vendors[ x ] + 'RequestAnimationFrame' ];
+		window.cancelAnimationFrame = window[ vendors[ x ] + 'CancelAnimationFrame' ] || window[ vendors[ x ] + 'CancelRequestAnimationFrame' ];
 
-		}
+	}
 
-		if (window.requestAnimationFrame === undefined) {
+	if ( window.requestAnimationFrame === undefined ) {
 
-			window.requestAnimationFrame = function(callback, element) {
+		window.requestAnimationFrame = function ( callback, element ) {
 
-				var currTime = Date.now(), timeToCall = Math.max(0, 16 - (currTime - lastTime ));
-				var id = window.setTimeout(function() {
-					callback(currTime + timeToCall);
-				}, timeToCall);
-				lastTime = currTime + timeToCall;
-				return id;
+			var currTime = Date.now(), timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
+			var id = window.setTimeout( function() { callback( currTime + timeToCall ); }, timeToCall );
+			lastTime = currTime + timeToCall;
+			return id;
 
-			};
+		};
 
-		}
+	}
 
-		if (window.cancelAnimationFrame === undefined) {
+	window.cancelAnimationFrame = window.cancelAnimationFrame || function ( id ) { window.clearTimeout( id ) };
 
-			window.cancelAnimationFrame = function(id) {
-				clearTimeout(id);
-			};
+}() );
 
-		}
-
-	}() );
 
 // MATERIAL CONSTANTS
 
@@ -134,6 +142,7 @@ THREE.DstColorFactor = 208;
 THREE.OneMinusDstColorFactor = 209;
 THREE.SrcAlphaSaturateFactor = 210;
 
+
 // TEXTURE CONSTANTS
 
 THREE.MultiplyOperation = 0;
@@ -141,18 +150,13 @@ THREE.MixOperation = 1;
 
 // Mapping modes
 
-THREE.UVMapping = function() {
-};
+THREE.UVMapping = function () {};
 
-THREE.CubeReflectionMapping = function() {
-};
-THREE.CubeRefractionMapping = function() {
-};
+THREE.CubeReflectionMapping = function () {};
+THREE.CubeRefractionMapping = function () {};
 
-THREE.SphericalReflectionMapping = function() {
-};
-THREE.SphericalRefractionMapping = function() {
-};
+THREE.SphericalReflectionMapping = function () {};
+THREE.SphericalRefractionMapping = function () {};
 
 // Wrapping modes
 
@@ -193,3 +197,18 @@ THREE.RGBFormat = 1020;
 THREE.RGBAFormat = 1021;
 THREE.LuminanceFormat = 1022;
 THREE.LuminanceAlphaFormat = 1023;
+
+// Compressed texture formats
+
+THREE.RGB_S3TC_DXT1_Format = 2001;
+THREE.RGBA_S3TC_DXT1_Format = 2002;
+THREE.RGBA_S3TC_DXT3_Format = 2003;
+THREE.RGBA_S3TC_DXT5_Format = 2004;
+
+/*
+// Potential future PVRTC compressed texture formats
+THREE.RGB_PVRTC_4BPPV1_Format = 2100;
+THREE.RGB_PVRTC_2BPPV1_Format = 2101;
+THREE.RGBA_PVRTC_4BPPV1_Format = 2102;
+THREE.RGBA_PVRTC_2BPPV1_Format = 2103;
+*/

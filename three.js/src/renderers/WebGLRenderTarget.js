@@ -3,7 +3,7 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.WebGLRenderTarget = function(width, height, options) {
+THREE.WebGLRenderTarget = function ( width, height, options ) {
 
 	this.width = width;
 	this.height = height;
@@ -18,8 +18,8 @@ THREE.WebGLRenderTarget = function(width, height, options) {
 
 	this.anisotropy = options.anisotropy !== undefined ? options.anisotropy : 1;
 
-	this.offset = new THREE.Vector2(0, 0);
-	this.repeat = new THREE.Vector2(1, 1);
+	this.offset = new THREE.Vector2( 0, 0 );
+	this.repeat = new THREE.Vector2( 1, 1 );
 
 	this.format = options.format !== undefined ? options.format : THREE.RGBAFormat;
 	this.type = options.type !== undefined ? options.type : THREE.UnsignedByteType;
@@ -33,7 +33,7 @@ THREE.WebGLRenderTarget = function(width, height, options) {
 
 THREE.WebGLRenderTarget.prototype.clone = function() {
 
-	var tmp = new THREE.WebGLRenderTarget(this.width, this.height);
+	var tmp = new THREE.WebGLRenderTarget( this.width, this.height );
 
 	tmp.wrapS = this.wrapS;
 	tmp.wrapT = this.wrapT;
@@ -43,8 +43,8 @@ THREE.WebGLRenderTarget.prototype.clone = function() {
 
 	tmp.minFilter = this.minFilter;
 
-	tmp.offset.copy(this.offset);
-	tmp.repeat.copy(this.repeat);
+	tmp.offset.copy( this.offset );
+	tmp.repeat.copy( this.repeat );
 
 	tmp.format = this.format;
 	tmp.type = this.type;

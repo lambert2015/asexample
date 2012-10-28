@@ -1,5 +1,5 @@
 /**
- * @author mr.doob / http://mrdoob.com/
+ * @author mrdoob / http://mrdoob.com/
  */
 
 THREE.SVGRenderer = function () {
@@ -19,6 +19,8 @@ THREE.SVGRenderer = function () {
 
 	_enableLighting = false,
 	_color = new THREE.Color(),
+	_diffuseColor = new THREE.Color(),
+	_emissiveColor = new THREE.Color(),
 	_ambientLight = new THREE.Color(),
 	_directionalLights = new THREE.Color(),
 	_pointLights = new THREE.Color(),
@@ -97,7 +99,7 @@ THREE.SVGRenderer = function () {
 		_this.info.render.vertices = 0;
 		_this.info.render.faces = 0;
 
-		_renderData = _projector.projectScene( scene, camera, this.sortElements );
+		_renderData = _projector.projectScene( scene, camera, this.sortObjects, this.sortElements );
 		_elements = _renderData.elements;
 		_lights = _renderData.lights;
 
@@ -346,7 +348,26 @@ THREE.SVGRenderer = function () {
 
 			_color.copy( material.color );
 
+			if ( material.vertexColors === THREE.FaceColors ) {
+
+				_color.r *= element.color.r;
+				_color.g *= element.color.g;
+				_color.b *= element.color.b;
+
+			}
+
 		} else if ( material instanceof THREE.MeshLambertMaterial ) {
+
+			_diffuseColor.copy( material.color );
+			_emissiveColor.copy( material.emissive );
+
+			if ( material.vertexColors === THREE.FaceColors ) {
+
+				_diffuseColor.r *= element.color.r;
+				_diffuseColor.g *= element.color.g;
+				_diffuseColor.b *= element.color.b;
+
+			}
 
 			if ( _enableLighting ) {
 
@@ -356,13 +377,13 @@ THREE.SVGRenderer = function () {
 
 				calculateLight( _lights, element.centroidWorld, element.normalWorld, _color );
 
-				_color.r = Math.max( 0, Math.min( material.color.r * _color.r, 1 ) );
-				_color.g = Math.max( 0, Math.min( material.color.g * _color.g, 1 ) );
-				_color.b = Math.max( 0, Math.min( material.color.b * _color.b, 1 ) );
+				_color.r = _color.r * _diffuseColor.r + _emissiveColor.r;
+				_color.g = _color.g * _diffuseColor.g + _emissiveColor.g;
+				_color.b = _color.b * _diffuseColor.b + _emissiveColor.b;
 
 			} else {
 
-				_color.copy( material.color );
+				_color.copy( _diffuseColor );
 
 			}
 
@@ -403,7 +424,26 @@ THREE.SVGRenderer = function () {
 
 			_color.copy( material.color );
 
+			if ( material.vertexColors === THREE.FaceColors ) {
+
+				_color.r *= element.color.r;
+				_color.g *= element.color.g;
+				_color.b *= element.color.b;
+
+			}
+
 		} else if ( material instanceof THREE.MeshLambertMaterial ) {
+
+			_diffuseColor.copy( material.color );
+			_emissiveColor.copy( material.emissive );
+
+			if ( material.vertexColors === THREE.FaceColors ) {
+
+				_diffuseColor.r *= element.color.r;
+				_diffuseColor.g *= element.color.g;
+				_diffuseColor.b *= element.color.b;
+
+			}
 
 			if ( _enableLighting ) {
 
@@ -413,13 +453,13 @@ THREE.SVGRenderer = function () {
 
 				calculateLight( _lights, element.centroidWorld, element.normalWorld, _color );
 
-				_color.r = Math.max( 0, Math.min( material.color.r * _color.r, 1 ) );
-				_color.g = Math.max( 0, Math.min( material.color.g * _color.g, 1 ) );
-				_color.b = Math.max( 0, Math.min( material.color.b * _color.b, 1 ) );
+				_color.r = _color.r * _diffuseColor.r + _emissiveColor.r;
+				_color.g = _color.g * _diffuseColor.g + _emissiveColor.g;
+				_color.b = _color.b * _diffuseColor.b + _emissiveColor.b;
 
 			} else {
 
-				_color.copy( material.color );
+				_color.copy( _diffuseColor );
 
 			}
 

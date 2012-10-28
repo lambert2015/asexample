@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.RenderableLine = function() {
+THREE.RenderableLine = function () {
 
 	this.z = null;
 

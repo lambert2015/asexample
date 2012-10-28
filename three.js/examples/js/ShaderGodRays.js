@@ -45,8 +45,7 @@ THREE.ShaderGodRays = {
 
 			tInput: {
 				type: "t",
-				value: 0,
-				texture: null
+				value: null
 			},
 
 			fStepSize: {
@@ -103,6 +102,10 @@ THREE.ShaderGodRays = {
 				"vec2 uv = vUv.xy;",
 				"float col = 0.0;",
 
+				// This breaks ANGLE in Chrome 22
+				//	- see http://code.google.com/p/chromium/issues/detail?id=153105
+
+				/*
 				// Unrolling didnt do much on my hardware (ATI Mobility Radeon 3450),
 				// so i've just left the loop
 
@@ -120,6 +123,27 @@ THREE.ShaderGodRays = {
 					"uv += stepv;",
 
 				"}",
+				*/
+
+				// Unrolling loop manually makes it work in ANGLE
+
+				"if ( 0.0 <= iters && uv.y < 1.0 ) col += texture2D( tInput, uv ).r;",
+				"uv += stepv;",
+
+				"if ( 1.0 <= iters && uv.y < 1.0 ) col += texture2D( tInput, uv ).r;",
+				"uv += stepv;",
+
+				"if ( 2.0 <= iters && uv.y < 1.0 ) col += texture2D( tInput, uv ).r;",
+				"uv += stepv;",
+
+				"if ( 3.0 <= iters && uv.y < 1.0 ) col += texture2D( tInput, uv ).r;",
+				"uv += stepv;",
+
+				"if ( 4.0 <= iters && uv.y < 1.0 ) col += texture2D( tInput, uv ).r;",
+				"uv += stepv;",
+
+				"if ( 5.0 <= iters && uv.y < 1.0 ) col += texture2D( tInput, uv ).r;",
+				"uv += stepv;",
 
 				// Should technically be dividing by 'iters', but 'TAPS_PER_PASS' smooths out
 				// objectionable artifacts, in particular near the sun position. The side
@@ -148,14 +172,12 @@ THREE.ShaderGodRays = {
 
 			tColors: {
 				type: "t",
-				value: 0,
-				texture: null
+				value: null
 			},
 
 			tGodRays: {
 				type: "t",
-				value: 1,
-				texture: null
+				value: null
 			},
 
 			fGodRayIntensity: {

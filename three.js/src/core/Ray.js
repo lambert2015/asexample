@@ -2,129 +2,107 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.Ray = function(origin, direction, near, far) {
+( function ( THREE ) {
 
-	this.origin = origin || new THREE.Vector3();
-	this.direction = direction || new THREE.Vector3();
-	this.near = near || 0;
-	this.far = far || Infinity;
+	THREE.Ray = function ( origin, direction, near, far ) {
 
-	//
+		this.origin = origin || new THREE.Vector3();
+		this.direction = direction || new THREE.Vector3();
+		this.near = near || 0;
+		this.far = far || Infinity;
 
-	var a = new THREE.Vector3();
-	var b = new THREE.Vector3();
-	var c = new THREE.Vector3();
-	var d = new THREE.Vector3();
+	};
 
 	var originCopy = new THREE.Vector3();
-	var directionCopy = new THREE.Vector3();
+
+	var localOriginCopy = new THREE.Vector3();
+	var localDirectionCopy = new THREE.Vector3();
 
 	var vector = new THREE.Vector3();
 	var normal = new THREE.Vector3();
 	var intersectPoint = new THREE.Vector3();
 
-	var descSort = function(a, b) {
+	var inverseMatrix = new THREE.Matrix4();
+
+	var descSort = function ( a, b ) {
 
 		return a.distance - b.distance;
 
 	};
 
-	//
-
 	var v0 = new THREE.Vector3(), v1 = new THREE.Vector3(), v2 = new THREE.Vector3();
-	var dot, intersect, distance;
 
-	var distanceFromIntersection = function(origin, direction, position) {
+	var distanceFromIntersection = function ( origin, direction, position ) {
 
-		v0.sub(position, origin);
-		dot = v0.dot(direction);
+		v0.sub( position, origin );
 
-		intersect = v1.add(origin, v2.copy(direction).multiplyScalar(dot));
-		distance = position.distanceTo(intersect);
+		var dot = v0.dot( direction );
+
+		var intersect = v1.add( origin, v2.copy( direction ).multiplyScalar( dot ) );
+		var distance = position.distanceTo( intersect );
 
 		return distance;
 
-	}
+	};
+
 	// http://www.blackpawn.com/texts/pointinpoly/default.html
 
-	var dot00, dot01, dot02, dot11, dot12, invDenom, u, v;
+	var pointInFace3 = function ( p, a, b, c ) {
 
-	var pointInFace3 = function(p, a, b, c) {
+		v0.sub( c, a );
+		v1.sub( b, a );
+		v2.sub( p, a );
 
-		v0.sub(c, a);
-		v1.sub(b, a);
-		v2.sub(p, a);
+		var dot00 = v0.dot( v0 );
+		var dot01 = v0.dot( v1 );
+		var dot02 = v0.dot( v2 );
+		var dot11 = v1.dot( v1 );
+		var dot12 = v1.dot( v2 );
 
-		dot00 = v0.dot(v0);
-		dot01 = v0.dot(v1);
-		dot02 = v0.dot(v2);
-		dot11 = v1.dot(v1);
-		dot12 = v1.dot(v2);
+		var invDenom = 1 / ( dot00 * dot11 - dot01 * dot01 );
+		var u = ( dot11 * dot02 - dot01 * dot12 ) * invDenom;
+		var v = ( dot00 * dot12 - dot01 * dot02 ) * invDenom;
 
-		invDenom = 1 / (dot00 * dot11 - dot01 * dot01 );
-		u = (dot11 * dot02 - dot01 * dot12 ) * invDenom;
-		v = (dot00 * dot12 - dot01 * dot02 ) * invDenom;
-
-		return (u >= 0 ) && (v >= 0 ) && (u + v < 1 );
-
-	}
-	//
-
-	var precision = 0.0001;
-
-	this.setPrecision = function(value) {
-
-		precision = value;
+		return ( u >= 0 ) && ( v >= 0 ) && ( u + v < 1 );
 
 	};
 
-	this.intersectObject = function(object, recursive) {
+	var intersectObject = function ( object, ray, intersects ) {
 
-		var intersect, intersects = [];
+		var distance,intersect;
 
-		if (recursive === true) {
+		if ( object instanceof THREE.Particle ) {
 
-			for (var i = 0, l = object.children.length; i < l; i++) {
+			distance = distanceFromIntersection( ray.origin, ray.direction, object.matrixWorld.getPosition() );
 
-				Array.prototype.push.apply(intersects, this.intersectObject(object.children[i], recursive));
+			if ( distance > object.scale.x ) {
 
-			}
-
-		}
-
-		if ( object instanceof THREE.Particle) {
-
-			distance = distanceFromIntersection(this.origin, this.direction, object.matrixWorld.getPosition());
-
-			if (distance > object.scale.x) {
-
-				return [];
+				return intersects;
 
 			}
 
 			intersect = {
 
-				distance : distance,
-				point : object.position,
-				face : null,
-				object : object
+				distance: distance,
+				point: object.position,
+				face: null,
+				object: object
 
 			};
 
-			intersects.push(intersect);
+			intersects.push( intersect );
 
-		} else if ( object instanceof THREE.Mesh) {
+		} else if ( object instanceof THREE.Mesh ) {
 
 			// Checking boundingSphere
 
-			var scale = THREE.Frustum.__v1.set(object.matrixWorld.getColumnX().length(), object.matrixWorld.getColumnY().length(), object.matrixWorld.getColumnZ().length());
-			var scaledRadius = object.geometry.boundingSphere.radius * Math.max(scale.x, Math.max(scale.y, scale.z));
+			var scaledRadius = object.geometry.boundingSphere.radius * object.matrixWorld.getMaxScaleOnAxis();
 
 			// Checking distance to ray
 
-			distance = distanceFromIntersection(this.origin, this.direction, object.matrixWorld.getPosition());
+			distance = distanceFromIntersection( ray.origin, ray.direction, object.matrixWorld.getPosition() );
 
-			if (distance > scaledRadius) {
+			if ( distance > scaledRadius) {
 
 				return intersects;
 
@@ -132,103 +110,112 @@ THREE.Ray = function(origin, direction, near, far) {
 
 			// Checking faces
 
-			var f, fl, face, dot, scalar, rangeSq = this.range * this.range, geometry = object.geometry, vertices = geometry.vertices, objMatrix, geometryMaterials, isFaceMaterial, material, side;
+			var f, fl, face, dot, scalar,
+			geometry = object.geometry,
+			vertices = geometry.vertices,
+			objMatrix, geometryMaterials,
+			isFaceMaterial, material, side, point;
 
 			geometryMaterials = object.geometry.materials;
 			isFaceMaterial = object.material instanceof THREE.MeshFaceMaterial;
 			side = object.material.side;
 
-			object.matrixRotationWorld.extractRotation(object.matrixWorld);
+			var a, b, c, d;
+			var precision = ray.precision;
 
-			for ( f = 0, fl = geometry.faces.length; f < fl; f++) {
+			object.matrixRotationWorld.extractRotation( object.matrixWorld );
 
-				face = geometry.faces[f];
+			originCopy.copy( ray.origin );
 
-				material = isFaceMaterial === true ? geometryMaterials[face.materialIndex] : object.material;
-				if (material === undefined)
-					continue;
+			objMatrix = object.matrixWorld;
+			inverseMatrix.getInverse( objMatrix );
 
+			localOriginCopy.copy( originCopy );
+			inverseMatrix.multiplyVector3( localOriginCopy );
+
+			localDirectionCopy.copy( ray.direction );
+			inverseMatrix.rotateAxis( localDirectionCopy ).normalize();
+
+			for ( f = 0, fl = geometry.faces.length; f < fl; f ++ ) {
+
+				face = geometry.faces[ f ];
+
+				material = isFaceMaterial === true ? geometryMaterials[ face.materialIndex ] : object.material;
+				if ( material === undefined ) continue;
 				side = material.side;
 
-				originCopy.copy(this.origin);
-				directionCopy.copy(this.direction);
-
-				objMatrix = object.matrixWorld;
-
-				// determine if ray intersects the plane of the face
-				// note: this works regardless of the direction of the face normal
-
-				vector = objMatrix.multiplyVector3(vector.copy(face.centroid)).subSelf(originCopy);
-				normal = object.matrixRotationWorld.multiplyVector3(normal.copy(face.normal));
-				dot = directionCopy.dot(normal);
+				vector.sub( face.centroid, localOriginCopy );
+				normal = face.normal;
+				dot = localDirectionCopy.dot( normal );
 
 				// bail if ray and plane are parallel
 
-				if (Math.abs(dot) < precision)
-					continue;
+				if ( Math.abs( dot ) < precision ) continue;
 
 				// calc distance to plane
 
-				scalar = normal.dot(vector) / dot;
+				scalar = normal.dot( vector ) / dot;
 
 				// if negative distance, then plane is behind ray
 
-				if (scalar < 0)
-					continue;
+				if ( scalar < 0 ) continue;
 
-				if (side === THREE.DoubleSide || (side === THREE.FrontSide ? dot < 0 : dot > 0 )) {
+				if ( side === THREE.DoubleSide || ( side === THREE.FrontSide ? dot < 0 : dot > 0 ) ) {
 
-					intersectPoint.add(originCopy, directionCopy.multiplyScalar(scalar));
+					intersectPoint.add( localOriginCopy, localDirectionCopy.multiplyScalar( scalar ) );
 
-					distance = originCopy.distanceTo(intersectPoint);
+					if ( face instanceof THREE.Face3 ) {
 
-					if (distance < this.near)
-						continue;
-					if (distance > this.far)
-						continue;
+						a = vertices[ face.a ];
+						b = vertices[ face.b ];
+						c = vertices[ face.c ];
 
-					if ( face instanceof THREE.Face3) {
+						if ( pointInFace3( intersectPoint, a, b, c ) ) {
 
-						a = objMatrix.multiplyVector3(a.copy(vertices[face.a]));
-						b = objMatrix.multiplyVector3(b.copy(vertices[face.b]));
-						c = objMatrix.multiplyVector3(c.copy(vertices[face.c]));
+							point = object.matrixWorld.multiplyVector3( intersectPoint.clone() );
+							distance = originCopy.distanceTo( point );
 
-						if (pointInFace3(intersectPoint, a, b, c)) {
+							if ( distance < ray.near || distance > ray.far ) continue;
 
 							intersect = {
 
-								distance : distance,
-								point : intersectPoint.clone(),
-								face : face,
-								faceIndex : f,
-								object : object
+								distance: distance,
+								point: point,
+								face: face,
+								faceIndex: f,
+								object: object
 
 							};
 
-							intersects.push(intersect);
+							intersects.push( intersect );
 
 						}
 
-					} else if ( face instanceof THREE.Face4) {
+					} else if ( face instanceof THREE.Face4 ) {
 
-						a = objMatrix.multiplyVector3(a.copy(vertices[face.a]));
-						b = objMatrix.multiplyVector3(b.copy(vertices[face.b]));
-						c = objMatrix.multiplyVector3(c.copy(vertices[face.c]));
-						d = objMatrix.multiplyVector3(d.copy(vertices[face.d]));
+						a = vertices[ face.a ];
+						b = vertices[ face.b ];
+						c = vertices[ face.c ];
+						d = vertices[ face.d ];
 
-						if (pointInFace3(intersectPoint, a, b, d) || pointInFace3(intersectPoint, b, c, d)) {
+						if ( pointInFace3( intersectPoint, a, b, d ) || pointInFace3( intersectPoint, b, c, d ) ) {
+
+							point = object.matrixWorld.multiplyVector3( intersectPoint.clone() );
+							distance = originCopy.distanceTo( point );
+
+							if ( distance < ray.near || distance > ray.far ) continue;
 
 							intersect = {
 
-								distance : distance,
-								point : intersectPoint.clone(),
-								face : face,
-								faceIndex : f,
-								object : object
+								distance: distance,
+								point: point,
+								face: face,
+								faceIndex: f,
+								object: object
 
 							};
 
-							intersects.push(intersect);
+							intersects.push( intersect );
 
 						}
 
@@ -240,26 +227,67 @@ THREE.Ray = function(origin, direction, near, far) {
 
 		}
 
-		intersects.sort(descSort);
+	};
 
-		return intersects;
+	var intersectDescendants = function ( object, ray, intersects ) {
+
+		var descendants = object.getDescendants();
+
+		for ( var i = 0, l = descendants.length; i < l; i ++ ) {
+
+			intersectObject( descendants[ i ], ray, intersects );
+
+		}
+	};
+
+	//
+
+	THREE.Ray.prototype.precision = 0.0001;
+
+	THREE.Ray.prototype.set = function ( origin, direction ) {
+
+		this.origin = origin;
+		this.direction = direction;
 
 	};
 
-	this.intersectObjects = function(objects, recursive) {
+	THREE.Ray.prototype.intersectObject = function ( object, recursive ) {
 
 		var intersects = [];
 
-		for (var i = 0, l = objects.length; i < l; i++) {
+		if ( recursive === true ) {
 
-			Array.prototype.push.apply(intersects, this.intersectObject(objects[i], recursive));
+			intersectDescendants( object, this, intersects );
 
 		}
 
-		intersects.sort(descSort);
+		intersectObject( object, this, intersects );
+
+		intersects.sort( descSort );
 
 		return intersects;
 
 	};
 
-};
+	THREE.Ray.prototype.intersectObjects = function ( objects, recursive ) {
+
+		var intersects = [];
+
+		for ( var i = 0, l = objects.length; i < l; i ++ ) {
+
+			intersectObject( objects[ i ], this, intersects );
+
+			if ( recursive === true ) {
+
+				intersectDescendants( objects[ i ], this, intersects );
+
+			}
+		}
+
+		intersects.sort( descSort );
+
+		return intersects;
+
+	};
+
+}( THREE ) );
