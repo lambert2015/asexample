@@ -130,7 +130,7 @@
 
 	<body>
 		<div id="info">
-			<a href="http://github.com/mrdoob/three.js">three.js</a> - scene loader test
+			<a href="http://threejs.org">three.js</a> - scene loader test
 		</div>
 
 		<div id="scene_explorer">
@@ -149,8 +149,12 @@
 
 		<script src="../build/three.min.js"></script>
 
+		<script src="js/loaders/ctm/lzma.js"></script>
+		<script src="js/loaders/ctm/ctm.js"></script>
+		<script src="js/loaders/ctm/CTMLoader.js"></script>
+
 		<script src="js/Detector.js"></script>
-		<script src="js/Stats.js"></script>
+		<script src="js/libs/stats.min.js"></script>
 
 		<script>
 
@@ -170,6 +174,9 @@
 			var windowHalfY = window.innerHeight / 2;
 
 			var rotatingObjects = [];
+			var morphAnimatedObjects = [];
+
+			var clock = new THREE.Clock();
 
 			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -192,7 +199,7 @@
 				for ( m in result.materials ) {
 
 					material = result.materials[ m ];
-					if ( ! ( material instanceof THREE.MeshFaceMaterial ) ) {
+					if ( ! ( material instanceof THREE.MeshFaceMaterial || material instanceof THREE.ShaderMaterial || material.morphTargets ) ) {
 
 						if( !material.program ) {
 
@@ -229,6 +236,10 @@
 				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
 				renderer.domElement.style.position = "relative";
 				container.appendChild( renderer.domElement );
+
+				renderer.gammaInput = true;
+				renderer.gammaOutput = true;
+				renderer.physicallyBasedShading = true;
 
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
@@ -299,11 +310,17 @@
 
 					handle_update( result, 1 );
 
-					THREE.SceneUtils.traverseHierarchy( result.scene, function ( child ) {
+					result.scene.traverse( function ( object ) {
 
-						if ( child.properties.rotating === true ) {
+						if ( object.properties.rotating === true ) {
 
-							rotatingObjects.push( child );
+							rotatingObjects.push( object );
+
+						}
+
+						if ( object instanceof THREE.MorphAnimMesh ) {
+
+							morphAnimatedObjects.push( object );
 
 						}
 
@@ -314,6 +331,8 @@
 				$( "progress" ).style.display = "block";
 
 				var loader = new THREE.SceneLoader();
+
+				loader.addGeometryHandler( "ctm", THREE.CTMLoader );
 
 				loader.callbackSync = callbackSync;
 				loader.callbackProgress = callbackProgress;
@@ -429,6 +448,8 @@
 
 			function render() {
 
+				var delta = clock.getDelta();
+
 				camera.position.x += ( mouseX - camera.position.x ) * .001;
 				camera.position.y += ( - mouseY - camera.position.y ) * .001;
 
@@ -438,8 +459,16 @@
 
 					var object = rotatingObjects[ i ];
 
-					object.rotation.x += 0.01;
-					object.rotation.y += 0.02;
+					if ( object.properties.rotateX ) object.rotation.x += 1 * delta;
+					if ( object.properties.rotateY ) object.rotation.y += 0.5 * delta;
+
+				}
+
+				for ( var i = 0; i < morphAnimatedObjects.length; i ++ ) {
+
+					var object = morphAnimatedObjects[ i ];
+
+					object.updateAnimation( 1000 * delta );
 
 				}
 

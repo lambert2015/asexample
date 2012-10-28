@@ -38,7 +38,7 @@
 		<script src="../build/three.min.js"></script>
 
 		<script src="js/Detector.js"></script>
-		<script src="js/Stats.js"></script>
+		<script src="js/libs/stats.min.js"></script>
 
 		<script>
 
@@ -186,7 +186,7 @@
 					callbackMale   = function( geometry ) { createScene( geometry,  90, FLOOR, 50, 105 ) },
 					callbackFemale = function( geometry ) { createScene( geometry, -80, FLOOR, 50, 0 ) };
 
-				loader.load( "obj/male02/Male02_slim.js", callbackMale );
+				loader.load( "obj/male02/Male02_dds.js", callbackMale );
 				loader.load( "obj/female02/Female02_slim.js", callbackFemale );
 
 				//loader.load( "obj/male02/Male02_bin.js", callbackMale );

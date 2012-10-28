@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.UV = function(u, v) {
+THREE.UV = function ( u, v ) {
 
 	this.u = u || 0;
 	this.v = v || 0;
@@ -11,9 +11,9 @@ THREE.UV = function(u, v) {
 
 THREE.UV.prototype = {
 
-	constructor : THREE.UV,
+	constructor: THREE.UV,
 
-	set : function(u, v) {
+	set: function ( u, v ) {
 
 		this.u = u;
 		this.v = v;
@@ -22,7 +22,7 @@ THREE.UV.prototype = {
 
 	},
 
-	copy : function(uv) {
+	copy: function ( uv ) {
 
 		this.u = uv.u;
 		this.v = uv.v;
@@ -31,18 +31,19 @@ THREE.UV.prototype = {
 
 	},
 
-	lerpSelf : function(uv, alpha) {
+	lerpSelf: function ( uv, alpha ) {
 
-		this.u += (uv.u - this.u ) * alpha;
-		this.v += (uv.v - this.v ) * alpha;
+		this.u += ( uv.u - this.u ) * alpha;
+		this.v += ( uv.v - this.v ) * alpha;
 
 		return this;
 
 	},
 
-	clone : function() {
+	clone: function () {
 
-		return new THREE.UV(this.u, this.v);
+		return new THREE.UV( this.u, this.v );
 
 	}
+
 };

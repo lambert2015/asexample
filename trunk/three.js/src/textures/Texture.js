@@ -4,9 +4,11 @@
  * @author szimek / https://github.com/szimek/
  */
 
-THREE.Texture = function(image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy) {
+THREE.Texture = function ( image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
 
-	this.id = THREE.TextureCount++;
+	THREE.TextureLibrary.push( this );
+
+	this.id = THREE.TextureIdCount ++;
 
 	this.image = image;
 
@@ -23,8 +25,8 @@ THREE.Texture = function(image, mapping, wrapS, wrapT, magFilter, minFilter, for
 	this.format = format !== undefined ? format : THREE.RGBAFormat;
 	this.type = type !== undefined ? type : THREE.UnsignedByteType;
 
-	this.offset = new THREE.Vector2(0, 0);
-	this.repeat = new THREE.Vector2(1, 1);
+	this.offset = new THREE.Vector2( 0, 0 );
+	this.repeat = new THREE.Vector2( 1, 1 );
 
 	this.generateMipmaps = true;
 	this.premultiplyAlpha = false;
@@ -37,22 +39,46 @@ THREE.Texture = function(image, mapping, wrapS, wrapT, magFilter, minFilter, for
 
 THREE.Texture.prototype = {
 
-	constructor : THREE.Texture,
+	constructor: THREE.Texture,
 
-	clone : function() {
+	clone: function () {
 
-		var clonedTexture = new THREE.Texture(this.image, this.mapping, this.wrapS, this.wrapT, this.magFilter, this.minFilter, this.format, this.type, this.anisotropy);
+		var texture = new THREE.Texture();
 
-		clonedTexture.offset.copy(this.offset);
-		clonedTexture.repeat.copy(this.repeat);
+		texture.image = this.image;
 
-		clonedTexture.generateMipmaps = this.generateMipmaps;
-		clonedTexture.premultiplyAlpha = this.premultiplyAlpha;
-		clonedTexture.flipY = this.flipY;
+		texture.mapping = this.mapping;
 
-		return clonedTexture;
+		texture.wrapS = this.wrapS;
+		texture.wrapT = this.wrapT;
+
+		texture.magFilter = this.magFilter;
+		texture.minFilter = this.minFilter;
+
+		texture.anisotropy = this.anisotropy;
+
+		texture.format = this.format;
+		texture.type = this.type;
+
+		texture.offset.copy( this.offset );
+		texture.repeat.copy( this.repeat );
+
+		texture.generateMipmaps = this.generateMipmaps;
+		texture.premultiplyAlpha = this.premultiplyAlpha;
+		texture.flipY = this.flipY;
+
+		return texture;
+
+	},
+
+	deallocate: function () {
+
+		var index = THREE.TextureLibrary.indexOf( this );
+		if ( index !== -1 ) THREE.TextureLibrary.splice( index, 1 );
 
 	}
+
 };
 
-THREE.TextureCount = 0;
+THREE.TextureIdCount = 0;
+THREE.TextureLibrary = [];

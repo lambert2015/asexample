@@ -4,7 +4,6 @@
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
-	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -64,10 +63,6 @@
 		//engine variables
 		private var _view:View3D;
 		private var _cameraController:HoverController;
-
-		//signature variables
-		private var _signature:Sprite;
-		private var _signatureBitmap:Bitmap;
 
 		//light objects
 		private var _light:DirectionalLight;
@@ -150,14 +145,6 @@
 
 			//setup the scene
 			_view.scene.addChild(_floor);
-
-			//add signature
-			_signature = new SignatureSwf();
-			_signatureBitmap = new Bitmap(new BitmapData(_signature.width, _signature.height, true, 0));
-			stage.quality = StageQuality.HIGH;
-			_signatureBitmap.bitmapData.draw(_signature);
-			stage.quality = StageQuality.LOW;
-			addChild(_signatureBitmap);
 
 			//add stats panel
 			addChild(new AwayStats(_view));
@@ -274,7 +261,6 @@
 		{
 			_view.width = stage.stageWidth;
 			_view.height = stage.stageHeight;
-			_signatureBitmap.y = stage.stageHeight - _signature.height;
 		}
 	}
 }

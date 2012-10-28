@@ -6,7 +6,7 @@ THREE.ShadowMapPlugin = function ( ) {
 
 	var _gl,
 	_renderer,
-	_depthMaterial, _depthMaterialMorph, _depthMaterialSkin,
+	_depthMaterial, _depthMaterialMorph, _depthMaterialSkin, _depthMaterialMorphSkin,
 
 	_frustum = new THREE.Frustum(),
 	_projScreenMatrix = new THREE.Matrix4(),
@@ -25,10 +25,12 @@ THREE.ShadowMapPlugin = function ( ) {
 		_depthMaterial = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader, vertexShader: depthShader.vertexShader, uniforms: depthUniforms } );
 		_depthMaterialMorph = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader, vertexShader: depthShader.vertexShader, uniforms: depthUniforms, morphTargets: true } );
 		_depthMaterialSkin = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader, vertexShader: depthShader.vertexShader, uniforms: depthUniforms, skinning: true } );
+		_depthMaterialMorphSkin = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader, vertexShader: depthShader.vertexShader, uniforms: depthUniforms, morphTargets: true, skinning: true } );
 
 		_depthMaterial._shadowPass = true;
 		_depthMaterialMorph._shadowPass = true;
 		_depthMaterialSkin._shadowPass = true;
+		_depthMaterialMorphSkin._shadowPass = true;
 
 	};
 
@@ -60,6 +62,7 @@ THREE.ShadowMapPlugin = function ( ) {
 		_gl.disable( _gl.BLEND );
 
 		_gl.enable( _gl.CULL_FACE );
+		_gl.frontFace( _gl.CCW );
 
 		if ( _renderer.shadowMapCullFrontFaces ) {
 
@@ -191,7 +194,7 @@ THREE.ShadowMapPlugin = function ( ) {
 
 			shadowCamera.matrixWorldInverse.getInverse( shadowCamera.matrixWorld );
 
-			if ( light.cameraHelper ) light.cameraHelper.lines.visible = light.shadowCameraVisible;
+			if ( light.cameraHelper ) light.cameraHelper.visible = light.shadowCameraVisible;
 			if ( light.shadowCameraVisible ) light.cameraHelper.update();
 
 			// compute shadow matrix
@@ -247,6 +250,8 @@ THREE.ShadowMapPlugin = function ( ) {
 
 			// render regular objects
 
+			var objectMaterial, useMorphing, useSkinning;
+
 			for ( j = 0, jl = renderList.length; j < jl; j ++ ) {
 
 				webglObject = renderList[ j ];
@@ -259,17 +264,28 @@ THREE.ShadowMapPlugin = function ( ) {
 					// culling is overriden globally for all objects
 					// while rendering depth map
 
+					// need to deal with MeshFaceMaterial somehow
+					// in that case just use the first of geometry.materials for now
+					// (proper solution would require to break objects by materials
+					//  similarly to regular rendering and then set corresponding
+					//  depth materials per each chunk instead of just once per object)
+
+					objectMaterial = getObjectMaterial( object );
+
+					useMorphing = object.geometry.morphTargets.length > 0 && objectMaterial.morphTargets;
+					useSkinning = object instanceof THREE.SkinnedMesh && objectMaterial.skinning;
+
 					if ( object.customDepthMaterial ) {
 
 						material = object.customDepthMaterial;
 
-					} else if ( object.geometry.morphTargets.length ) {
+					} else if ( useSkinning ) {
+
+						material = useMorphing ? _depthMaterialMorphSkin : _depthMaterialSkin;
+
+					} else if ( useMorphing ) {
 
 						material = _depthMaterialMorph;
-
-					} else if ( object instanceof THREE.SkinnedMesh ) {
-
-						material = _depthMaterialSkin;
 
 					} else {
 
@@ -456,6 +472,15 @@ THREE.ShadowMapPlugin = function ( ) {
 		//shadowCamera.far = _max.z;
 
 		shadowCamera.updateProjectionMatrix();
+
+	}
+
+	// For the moment just ignore objects that have multiple materials with different animation methods
+	// Only the first material will be taken into account for deciding which depth material to use for shadow maps
+
+	function getObjectMaterial( object ) {
+
+		return object.material instanceof THREE.MeshFaceMaterial ? object.geometry.materials[ 0 ] : object.material;
 
 	}
 

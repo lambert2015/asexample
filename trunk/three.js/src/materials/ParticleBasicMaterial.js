@@ -18,11 +18,11 @@
  * }
  */
 
-THREE.ParticleBasicMaterial = function(parameters) {
+THREE.ParticleBasicMaterial = function ( parameters ) {
 
-	THREE.Material.call(this);
+	THREE.Material.call( this );
 
-	this.color = new THREE.Color(0xffffff);
+	this.color = new THREE.Color( 0xffffff );
 
 	this.map = null;
 
@@ -33,19 +33,19 @@ THREE.ParticleBasicMaterial = function(parameters) {
 
 	this.fog = true;
 
-	this.setValues(parameters);
+	this.setValues( parameters );
 
 };
 
-THREE.ParticleBasicMaterial.prototype = Object.create(THREE.Material.prototype);
+THREE.ParticleBasicMaterial.prototype = Object.create( THREE.Material.prototype );
 
-THREE.ParticleBasicMaterial.prototype.clone = function() {
+THREE.ParticleBasicMaterial.prototype.clone = function () {
 
 	var material = new THREE.ParticleBasicMaterial();
 
-	THREE.Material.prototype.clone.call(this, material);
+	THREE.Material.prototype.clone.call( this, material );
 
-	material.color.copy(this.color);
+	material.color.copy( this.color );
 
 	material.map = this.map;
 

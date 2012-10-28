@@ -2,9 +2,9 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.Clock = function(autoStart) {
+THREE.Clock = function ( autoStart ) {
 
-	this.autoStart = (autoStart !== undefined ) ? autoStart : true;
+	this.autoStart = ( autoStart !== undefined ) ? autoStart : true;
 
 	this.startTime = 0;
 	this.oldTime = 0;
@@ -14,7 +14,7 @@ THREE.Clock = function(autoStart) {
 
 };
 
-THREE.Clock.prototype.start = function() {
+THREE.Clock.prototype.start = function () {
 
 	this.startTime = Date.now();
 	this.oldTime = this.startTime;
@@ -23,7 +23,7 @@ THREE.Clock.prototype.start = function() {
 
 };
 
-THREE.Clock.prototype.stop = function() {
+THREE.Clock.prototype.stop = function () {
 
 	this.getElapsedTime();
 
@@ -31,7 +31,7 @@ THREE.Clock.prototype.stop = function() {
 
 };
 
-THREE.Clock.prototype.getElapsedTime = function() {
+THREE.Clock.prototype.getElapsedTime = function () {
 
 	this.elapsedTime += this.getDelta();
 
@@ -39,20 +39,21 @@ THREE.Clock.prototype.getElapsedTime = function() {
 
 };
 
-THREE.Clock.prototype.getDelta = function() {
+
+THREE.Clock.prototype.getDelta = function () {
 
 	var diff = 0;
 
-	if (this.autoStart && !this.running) {
+	if ( this.autoStart && ! this.running ) {
 
 		this.start();
 
 	}
 
-	if (this.running) {
+	if ( this.running ) {
 
 		var newTime = Date.now();
-		diff = 0.001 * (newTime - this.oldTime );
+		diff = 0.001 * ( newTime - this.oldTime );
 		this.oldTime = newTime;
 
 		this.elapsedTime += diff;
@@ -61,4 +62,4 @@ THREE.Clock.prototype.getDelta = function() {
 
 	return diff;
 
-}; 
+};

@@ -2,43 +2,43 @@
  * https://github.com/mrdoob/eventtarget.js/
  */
 
-THREE.EventTarget = function() {
+THREE.EventTarget = function () {
 
 	var listeners = {};
 
-	this.addEventListener = function(type, listener) {
+	this.addEventListener = function ( type, listener ) {
 
-		if (listeners[type] === undefined) {
+		if ( listeners[ type ] === undefined ) {
 
-			listeners[type] = [];
-
-		}
-
-		if (listeners[type].indexOf(listener) === -1) {
-
-			listeners[type].push(listener);
+			listeners[ type ] = [];
 
 		}
 
-	};
+		if ( listeners[ type ].indexOf( listener ) === - 1 ) {
 
-	this.dispatchEvent = function(event) {
-
-		for (var listener in listeners[event.type] ) {
-
-			listeners[ event.type ][ listener ](event);
+			listeners[ type ].push( listener );
 
 		}
 
 	};
 
-	this.removeEventListener = function(type, listener) {
+	this.dispatchEvent = function ( event ) {
 
-		var index = listeners[type].indexOf(listener);
+		for ( var listener in listeners[ event.type ] ) {
 
-		if (index !== -1) {
+			listeners[ event.type ][ listener ]( event );
 
-			listeners[type].splice(index, 1);
+		}
+
+	};
+
+	this.removeEventListener = function ( type, listener ) {
+
+		var index = listeners[ type ].indexOf( listener );
+
+		if ( index !== - 1 ) {
+
+			listeners[ type ].splice( index, 1 );
 
 		}
 

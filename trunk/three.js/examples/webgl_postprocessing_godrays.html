@@ -35,10 +35,10 @@
 		<script src="js/ShaderGodRays.js"></script>
 
 		<script src="js/Detector.js"></script>
-		<script src="js/Stats.js"></script>
+		<script src="js/libs/stats.min.js"></script>
 
 		<div id="info">
-			<a href="http://github.com/mrdoob/three.js" target="_blank">three.js</a> - webgl god-rays example - tree by <a href="http://www.turbosquid.com/3d-models/free-tree-3d-model/592617" target="_blank">stanloshka</a>
+			<a href="http://threejs.org" target="_blank">three.js</a> - webgl god-rays example - tree by <a href="http://www.turbosquid.com/3d-models/free-tree-3d-model/592617" target="_blank">stanloshka</a>
 		</div>
 
 
@@ -370,7 +370,7 @@
 					var stepLen = filterLen * Math.pow( TAPS_PER_PASS, -pass );
 
 					postprocessing.godrayGenUniforms[ "fStepSize" ].value = stepLen;
-					postprocessing.godrayGenUniforms[ "tInput" ].texture = postprocessing.rtTextureDepth;
+					postprocessing.godrayGenUniforms[ "tInput" ].value = postprocessing.rtTextureDepth;
 
 					postprocessing.scene.overrideMaterial = postprocessing.materialGodraysGenerate;
 
@@ -382,7 +382,7 @@
 					stepLen = filterLen * Math.pow( TAPS_PER_PASS, -pass );
 
 					postprocessing.godrayGenUniforms[ "fStepSize" ].value = stepLen;
-					postprocessing.godrayGenUniforms[ "tInput" ].texture = postprocessing.rtTextureGodRays2;
+					postprocessing.godrayGenUniforms[ "tInput" ].value = postprocessing.rtTextureGodRays2;
 
 					renderer.render( postprocessing.scene, postprocessing.camera, postprocessing.rtTextureGodRays1  );
 
@@ -392,14 +392,14 @@
 					stepLen = filterLen * Math.pow( TAPS_PER_PASS, -pass );
 
 					postprocessing.godrayGenUniforms[ "fStepSize" ].value = stepLen;
-					postprocessing.godrayGenUniforms[ "tInput" ].texture = postprocessing.rtTextureGodRays1;
+					postprocessing.godrayGenUniforms[ "tInput" ].value = postprocessing.rtTextureGodRays1;
 
 					renderer.render( postprocessing.scene, postprocessing.camera , postprocessing.rtTextureGodRays2  );
 
 					// final pass - composite god-rays onto colors
 
-					postprocessing.godrayCombineUniforms["tColors"].texture = postprocessing.rtTextureColors;
-					postprocessing.godrayCombineUniforms["tGodRays"].texture = postprocessing.rtTextureGodRays2;
+					postprocessing.godrayCombineUniforms["tColors"].value = postprocessing.rtTextureColors;
+					postprocessing.godrayCombineUniforms["tGodRays"].value = postprocessing.rtTextureGodRays2;
 
 					postprocessing.scene.overrideMaterial = postprocessing.materialGodraysCombine;
 

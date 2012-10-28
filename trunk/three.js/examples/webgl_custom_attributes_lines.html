@@ -28,11 +28,11 @@
 	</head>
 
 	<body>
-		<div id="info"><a href="http://github.com/mrdoob/three.js" target="_blank">three.js</a> - custom attributes example</div>
+		<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> - custom attributes example</div>
 		<div id="container"></div>
 
 		<script src="js/Detector.js"></script>
-		<script src="js/Stats.js"></script>
+		<script src="js/libs/stats.min.js"></script>
 
 		<script src="../build/three.min.js"></script>
 
@@ -95,7 +95,6 @@
 			bevelSize = 1.5,
 			bevelSegments = 10,
 			bevelEnabled = true,
-			bend = false,
 
 			font = "helvetiker", 		// helvetiker, optimer, gentilis, droid sans, droid serif
 			weight = "bold",		// normal bold
@@ -131,13 +130,13 @@
 
 			var shaderMaterial = new THREE.ShaderMaterial( {
 
-				uniforms: 		uniforms,
+				uniforms:       uniforms,
 				attributes:     attributes,
 				vertexShader:   document.getElementById( 'vertexshader' ).textContent,
 				fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-				blending: 		THREE.AdditiveBlending,
-				depthTest:		false,
-				transparent:	true
+				blending:       THREE.AdditiveBlending,
+				depthTest:      false,
+				transparent:    true
 
 			});
 
@@ -157,8 +156,6 @@
 				bevelSize: bevelSize,
 				bevelEnabled: bevelEnabled,
 				bevelSegments: bevelSegments,
-
-				bend: bend,
 
 				steps: steps
 

@@ -3,22 +3,22 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.Bone = function(belongsToSkin) {
+THREE.Bone = function( belongsToSkin ) {
 
-	THREE.Object3D.call(this);
+	THREE.Object3D.call( this );
 
 	this.skin = belongsToSkin;
 	this.skinMatrix = new THREE.Matrix4();
 
 };
 
-THREE.Bone.prototype = Object.create(THREE.Object3D.prototype);
+THREE.Bone.prototype = Object.create( THREE.Object3D.prototype );
 
-THREE.Bone.prototype.update = function(parentSkinMatrix, forceUpdate) {
+THREE.Bone.prototype.update = function( parentSkinMatrix, forceUpdate ) {
 
 	// update local
 
-	if (this.matrixAutoUpdate) {
+	if ( this.matrixAutoUpdate ) {
 
 		forceUpdate |= this.updateMatrix();
 
@@ -26,15 +26,15 @@ THREE.Bone.prototype.update = function(parentSkinMatrix, forceUpdate) {
 
 	// update skin matrix
 
-	if (forceUpdate || this.matrixWorldNeedsUpdate) {
+	if ( forceUpdate || this.matrixWorldNeedsUpdate ) {
 
-		if (parentSkinMatrix) {
+		if( parentSkinMatrix ) {
 
-			this.skinMatrix.multiply(parentSkinMatrix, this.matrix);
+			this.skinMatrix.multiply( parentSkinMatrix, this.matrix );
 
 		} else {
 
-			this.skinMatrix.copy(this.matrix);
+			this.skinMatrix.copy( this.matrix );
 
 		}
 
@@ -47,9 +47,9 @@ THREE.Bone.prototype.update = function(parentSkinMatrix, forceUpdate) {
 
 	var child, i, l = this.children.length;
 
-	for ( i = 0; i < l; i++) {
+	for ( i = 0; i < l; i ++ ) {
 
-		this.children[i].update(this.skinMatrix, forceUpdate);
+		this.children[ i ].update( this.skinMatrix, forceUpdate );
 
 	}
 

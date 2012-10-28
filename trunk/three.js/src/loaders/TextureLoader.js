@@ -2,9 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.TextureLoader = function() {
+THREE.TextureLoader = function () {
 
-	THREE.EventTarget.call(this);
+	THREE.EventTarget.call( this );
 
 	this.crossOrigin = null;
 
@@ -12,39 +12,33 @@ THREE.TextureLoader = function() {
 
 THREE.TextureLoader.prototype = {
 
-	constructor : THREE.TextureLoader,
+	constructor: THREE.TextureLoader,
 
-	load : function(url) {
+	load: function ( url ) {
 
 		var scope = this;
 
 		var image = new Image();
 
-		image.addEventListener('load', function() {
+		image.addEventListener( 'load', function () {
 
-			var texture = new THREE.Texture(image);
+			var texture = new THREE.Texture( image );
 			texture.needsUpdate = true;
 
-			scope.dispatchEvent({
-				type : 'load',
-				content : texture
-			});
+			scope.dispatchEvent( { type: 'load', content: texture } );
 
-		}, false);
+		}, false );
 
-		image.addEventListener('error', function() {
+		image.addEventListener( 'error', function () {
 
-			scope.dispatchEvent({
-				type : 'error',
-				message : 'Couldn\'t load URL [' + url + ']'
-			});
+			scope.dispatchEvent( { type: 'error', message: 'Couldn\'t load URL [' + url + ']' } );
 
-		}, false);
+		}, false );
 
-		if (scope.crossOrigin)
-			image.crossOrigin = scope.crossOrigin;
+		if ( scope.crossOrigin ) image.crossOrigin = scope.crossOrigin;
 
 		image.src = url;
 
 	}
+
 }

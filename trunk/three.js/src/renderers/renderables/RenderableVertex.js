@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.RenderableVertex = function() {
+THREE.RenderableVertex = function () {
 
 	this.positionWorld = new THREE.Vector3();
 	this.positionScreen = new THREE.Vector4();
@@ -11,9 +11,9 @@ THREE.RenderableVertex = function() {
 
 };
 
-THREE.RenderableVertex.prototype.copy = function(vertex) {
+THREE.RenderableVertex.prototype.copy = function ( vertex ) {
 
-	this.positionWorld.copy(vertex.positionWorld);
-	this.positionScreen.copy(vertex.positionScreen);
+	this.positionWorld.copy( vertex.positionWorld );
+	this.positionScreen.copy( vertex.positionScreen );
 
 }
