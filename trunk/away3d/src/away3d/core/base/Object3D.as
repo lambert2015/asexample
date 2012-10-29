@@ -291,6 +291,15 @@ package away3d.core.base
 			invalidatePosition();
 		}
 
+		public function setPositionXYZ(x:Number, y:Number, z:Number):void
+		{
+			_x = x;
+			_y = y;
+			_z = z;
+
+			invalidatePosition();
+		}
+
 		/**
 		 * Defines the euler angle of rotation of the 3d object around the x-axis, relative to the local coordinates of the parent <code>ObjectContainer3D</code>.
 		 */

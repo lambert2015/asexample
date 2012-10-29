@@ -144,7 +144,7 @@ package
 			planeMaterial.normalMap = Cast.bitmapTexture(FloorNormals);
 			planeMaterial.lightPicker = lightPicker;
 			planeMaterial.repeat = true;
-			planeMaterial.mipmap = false;
+			planeMaterial.mipmap = true;
 
 			sphereMaterial = new TextureMaterial(Cast.bitmapTexture(BeachBallDiffuse));
 			sphereMaterial.specularMap = Cast.bitmapTexture(BeachBallSpecular);
@@ -154,7 +154,7 @@ package
 			cubeMaterial.specularMap = Cast.bitmapTexture(TrinketSpecular);
 			cubeMaterial.normalMap = Cast.bitmapTexture(TrinketNormals);
 			cubeMaterial.lightPicker = lightPicker;
-			cubeMaterial.mipmap = false;
+			cubeMaterial.mipmap = true;
 
 			var weaveDiffuseTexture:BitmapTexture = Cast.bitmapTexture(WeaveDiffuse);
 			torusMaterial = new TextureMaterial(weaveDiffuseTexture);
@@ -179,8 +179,8 @@ package
 			light2 = new DirectionalLight();
 			light2.direction = new Vector3D(0, -1, 0);
 			light2.color = 0x00FFFF;
-			light2.ambient = 0.1;
-			light2.diffuse = 0.7;
+			light2.ambient = 0.4;
+			light2.diffuse = 0.3;
 
 			scene.addChild(light2);
 
@@ -199,24 +199,18 @@ package
 			scene.addChild(plane);
 
 			sphere = new Mesh(new SphereGeometry(150, 40, 20), sphereMaterial);
-			sphere.x = 300;
-			sphere.y = 160;
-			sphere.z = 300;
+			sphere.setPositionXYZ(300, 160, 300);
 
 			scene.addChild(sphere);
 
 			cube = new Mesh(new CubeGeometry(200, 200, 200, 1, 1, 1, false), cubeMaterial);
-			cube.x = 300;
-			cube.y = 160;
-			cube.z = -250;
+			cube.setPositionXYZ(300, 160, -250);
 
 			scene.addChild(cube);
 
 			torus = new Mesh(new TorusGeometry(150, 60, 40, 20), torusMaterial);
 			torus.geometry.scaleUV(10, 5);
-			torus.x = -250;
-			torus.y = 160;
-			torus.z = -250;
+			torus.setPositionXYZ(-250, 160, -250);
 
 			scene.addChild(torus);
 		}
