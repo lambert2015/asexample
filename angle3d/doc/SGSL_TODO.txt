@@ -1,4 +1,5 @@
 Sgsl TODO List:
+添加预处理部分Preprocessor
 
 添加数组类型      uniform mat4 bones[32];类似于这种方式,mat4其实也算是一种数组 uniform vec4 wordMatrix[4];
 
