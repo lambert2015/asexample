@@ -79,14 +79,14 @@ package examples.model
 			boxNode.attachChild(gm);
 
 			var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");
-			attachNode.attachChild(boxNode);
+			//attachNode.attachChild(boxNode);
 
 			var animControl:SkeletonAnimControl = ninjaNode.getControlByClass(SkeletonAnimControl) as SkeletonAnimControl;
 			var channel:AnimChannel = animControl.createChannel();
 			channel.playAnimation("default", LoopMode.Cycle, 10);
 
 			var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
-			ninjaNode.attachChild(skeletonDebugger);
+			//ninjaNode.attachChild(skeletonDebugger);
 
 			return ninjaNode;
 		}
