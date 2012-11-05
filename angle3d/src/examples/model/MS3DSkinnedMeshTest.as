@@ -30,8 +30,8 @@ package examples.model
 			super();
 
 			var assetLoader:AssetLoader = AssetManager.getInstance().createLoader("ms3dLoader");
-			assetLoader.addFile("ninja", "../assets/ms3d/ninja.ms3d", AssetType.BINARY);
-			assetLoader.addFile("ninjaSkin", "../assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
+			assetLoader.addFile("ninja", "../asexample/angle3d/assets/ms3d/ninja.ms3d", AssetType.BINARY);
+			assetLoader.addFile("ninjaSkin", "../asexample/angle3d/assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.onError.add(_loadError);
 			assetLoader.start();
