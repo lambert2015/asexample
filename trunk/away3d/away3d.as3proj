@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin-debug\fdMain.swf" />
+    <movie path="..\..\away3d_bin\fdMain.swf" />
     <movie fps="60" />
     <movie width="800" />
     <movie height="600" />

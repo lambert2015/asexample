@@ -18,7 +18,7 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<locationURI>DOCUMENTS/bin</locationURI>
+			<locationURI>DOCUMENTS/angle3d_bin</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -4,12 +4,12 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\Angle3d.swf" />
+    <movie path="..\..\angle3d_bin\Angle3d.swf" />
     <movie fps="60" />
     <movie width="1024" />
     <movie height="768" />
     <movie version="11" />
-    <movie minorVersion="4" />
+    <movie minorVersion="5" />
     <movie platform="Flash Player" />
     <movie background="#000000" />
   </output>
@@ -70,7 +70,7 @@
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\ReadAgal.as" />
+    <compile path="src\examples\model\MS3DSkinnedMeshTest.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
