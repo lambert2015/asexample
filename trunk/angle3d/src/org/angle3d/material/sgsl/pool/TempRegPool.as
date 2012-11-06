@@ -28,7 +28,7 @@ package org.angle3d.material.sgsl.pool
 			}
 		}
 
-		override public function arrange():void
+		override public function build():void
 		{
 		}
 

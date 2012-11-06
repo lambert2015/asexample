@@ -42,12 +42,12 @@ package org.angle3d.material.sgsl.pool
 		/**
 		 * 一次性注册所有Uniform
 		 */
-		override public function arrange():void
+		override public function build():void
 		{
 			//常量总是放在最前面
 			registerConstants();
 
-			super.arrange();
+			super.build();
 		}
 
 		/**

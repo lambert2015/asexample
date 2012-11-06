@@ -3,10 +3,8 @@ package org.angle3d.material.sgsl
 
 	import flash.display3D.Context3DProfile;
 	import flash.utils.Dictionary;
-	import org.angle3d.utils.Logger;
 
-	import org.angle3d.material.sgsl.node.FunctionNode;
-	import org.angle3d.material.sgsl.parser.SgslParser;
+	import org.angle3d.utils.Logger;
 
 	/**
 	 * mov	0x00	move	move data from source1 to destination, componentwise
