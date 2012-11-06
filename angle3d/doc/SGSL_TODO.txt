@@ -1,5 +1,7 @@
 Sgsl TODO List:
 添加预处理部分Preprocessor
+实现类似于flsl的实现，最好能实现一个保持所有数据到一个二进制文件里，这样就不会有某些方面的问题了。
+同时还需要实现一个编译和效果预览工具
 
 添加数组类型      uniform mat4 bones[32];类似于这种方式,mat4其实也算是一种数组 uniform vec4 wordMatrix[4];
 
