@@ -34,7 +34,7 @@ package org.angle3d.material.sgsl.pool
 			_regs.length = 0;
 		}
 
-		public function arrange():void
+		public function build():void
 		{
 			var length:int = _regs.length;
 			for (var i:int = 0; i < length; i++)

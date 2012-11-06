@@ -93,7 +93,7 @@
 				}
 			}
 
-			data.arrange();
+			data.build();
 
 			//删除自定义函数
 //			var func : FunctionNode;

@@ -103,11 +103,24 @@
 		//TODO 添加注释语法
 		private function _buildRegex():void
 		{
-			_tokenRegex = [[TokenType.IDENTIFIER, /[a-zA-Z_][a-zA-Z0-9_]*/], [TokenType.NUMBER, /[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?/], [TokenType.CONDITION, /#/],
+			_tokenRegex = [[TokenType.IDENTIFIER, /[a-zA-Z_][a-zA-Z0-9_]*/],
+				[TokenType.NUMBER, /[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?/],
+				[TokenType.CONDITION, /#/],
 				// grouping
-				[TokenType.SEMI, /;/], [TokenType.LBRACE, /{/], [TokenType.RBRACE, /}/], [TokenType.LBRACKET, /\[/], [TokenType.RBRACKET, /\]/], [TokenType.LPAREN, /\(/], [TokenType.RPAREN, /\)/], [TokenType.COMMA, /,/],
+				[TokenType.SEMI, /;/],
+				[TokenType.LBRACE, /{/],
+				[TokenType.RBRACE, /}/],
+				[TokenType.LBRACKET, /\[/],
+				[TokenType.RBRACKET, /\]/],
+				[TokenType.LPAREN, /\(/],
+				[TokenType.RPAREN, /\)/],
+				[TokenType.COMMA, /,/],
 				// operators
-				[TokenType.DOT, /\./], [TokenType.PLUS, /\+/], [TokenType.EQUAL, /=/], [TokenType.AND, /&&/], [TokenType.OR, /\|\|/]];
+				[TokenType.DOT, /\./],
+				[TokenType.PLUS, /\+/],
+				[TokenType.EQUAL, /=/],
+				[TokenType.AND, /&&/],
+				[TokenType.OR, /\|\|/]];
 
 			_tokenRegexSize = _tokenRegex.length;
 

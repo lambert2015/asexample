@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="examples/ATFTextureTest.as" projectUUID="23c00e3a-64fa-4fe6-84c6-8a8e935cdba1" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="examples/sgsl/SaveSgsl.as" projectUUID="23c00e3a-64fa-4fe6-84c6-8a8e935cdba1" version="11">
   <compiler additionalCompilerArguments="-locale zh_CN&#13;&#10;-inline&#13;&#10;-load-config+=..\obj\debug_config.xml&#13;&#10;-default-frame-rate 60&#10;-default-size 800 600" advancedTelemetry="true" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderLocation="DOCUMENTS/angle3d_bin" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -32,6 +32,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="examples/sgsl/SaveSgsl.as"/>
     <application path="examples/ATFTextureTest.as"/>
     <application path="examples/shadow/ShadowTest.as"/>
     <application path="examples/scene/BillboardTest.as"/>

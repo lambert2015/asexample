@@ -168,26 +168,27 @@ package org.angle3d.material.sgsl
 		 */
 		public function addReg(reg:RegNode):void
 		{
-
-			CF::DEBUG
-			{
-				Assert.assert(reg != null, "变量不存在");
-			}
-
 			//忽略output
 			CF::DEBUG
 			{
+				Assert.assert(reg != null, "变量不存在");
 				Assert.assert(reg.regType != RegType.OUTPUT, "output不需要定义");
+				Assert.assert(_regsMap[reg.name] == undefined, reg.name + "变量名定义重复");
+
+				if (reg.regType == RegType.ATTRIBUTE)
+				{
+					Assert.assert(shaderType == ShaderType.VERTEX, "AttributeVar只能定义在Vertex中");
+				}
+				else if (reg is TextureReg)
+				{
+					Assert.assert(shaderType == ShaderType.FRAGMENT, "Texture只能定义在Fragment中");
+				}
 			}
 
 			switch (reg.regType)
 			{
 				case RegType.ATTRIBUTE:
 					attributePool.addReg(reg);
-					CF::DEBUG
-				{
-					Assert.assert(shaderType == ShaderType.VERTEX, "AttributeVar只能定义在Vertex中");
-				}
 					break;
 				case RegType.TEMP:
 					_tempPool.addReg(reg);
@@ -195,10 +196,6 @@ package org.angle3d.material.sgsl
 				case RegType.UNIFORM:
 					if (reg is TextureReg)
 					{
-						CF::DEBUG
-						{
-							Assert.assert(shaderType == ShaderType.FRAGMENT, "Texture只能定义在Fragment中");
-						}
 						texturePool.addReg(reg);
 					}
 					else
@@ -210,12 +207,6 @@ package org.angle3d.material.sgsl
 					varyingPool.addReg(reg);
 					break;
 			}
-
-			CF::DEBUG
-			{
-				Assert.assert(_regsMap[reg.name] == undefined, reg.name + "变量名定义重复");
-			}
-
 			_regsMap[reg.name] = reg;
 		}
 
@@ -229,35 +220,21 @@ package org.angle3d.material.sgsl
 			return _regsMap[name];
 		}
 
-//		public function getDigitExpression(value:Number):TokenExpression
-//		{
-//			var expression:TokenExpression = new TokenExpression();
-//
-//			var reg:UniformReg = new UniformReg(DataType.FLOAT, value + "");
-//			reg.index = uniformPool.getDigitIndex(value);
-//
-//			expression.reg = reg;
-//			expression.swizzle = uniformPool.getDigitComponent(value);
-//
-//			return expression;
-//		}
-
 		/**
 		 * 注册所有Reg，设置它们的位置
 		 */
-		//TODO 重命名
-		public function arrange():void
+		public function build():void
 		{
 			if (shaderType == ShaderType.VERTEX)
 			{
-				attributePool.arrange();
-				varyingPool.arrange();
+				attributePool.build();
+				varyingPool.build();
 			}
 			else
 			{
-				texturePool.arrange();
+				texturePool.build();
 			}
-			uniformPool.arrange();
+			uniformPool.build();
 
 
 			//添加所有临时变量到一个数组中
