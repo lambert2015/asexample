@@ -36,11 +36,11 @@ package org.angle3d.material.sgsl.pool
 		 * 设置tVar寄存器位置
 		 * @param	tVar 对应的临时变量
 		 */
-		override public function register(value:RegNode):void
+		override public function register(node:RegNode):void
 		{
 			CF::DEBUG
 			{
-				Assert.assert(!value.registered, value.name + "不能注册多次");
+				Assert.assert(!node.registered, node.name + "不能注册多次");
 			}
 
 			var i:int;
@@ -48,14 +48,14 @@ package org.angle3d.material.sgsl.pool
 			var fLength:int;
 			var m:int;
 
-			var size:int = value.size;
+			var size:int = node.size;
 
 			CF::DEBUG
 			{
 				Assert.assert(size > 0, "size至少要大于0");
 			}
 
-			var tVar:TempReg = (value as TempReg);
+			var tVar:TempReg = (node as TempReg);
 
 			//除了矩阵外，其他类型的临时变量不能跨越寄存器，只能存在于某个寄存器中
 

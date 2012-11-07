@@ -36,8 +36,8 @@ package org.angle3d.material.sgsl.pool
 
 		public function build():void
 		{
-			var length:int = _regs.length;
-			for (var i:int = 0; i < length; i++)
+			var count:int = _regs.length;
+			for (var i:int = 0; i < count; i++)
 			{
 				register(_regs[i]);
 			}
@@ -47,7 +47,7 @@ package org.angle3d.material.sgsl.pool
 		 * 注册寄存器位置
 		 * @param value
 		 */
-		public function register(value:RegNode):void
+		public function register(node:RegNode):void
 		{
 
 		}
@@ -56,7 +56,7 @@ package org.angle3d.material.sgsl.pool
 		 * 注销
 		 * @param value
 		 */
-		public function logout(value:RegNode):void
+		public function logout(node:RegNode):void
 		{
 
 		}

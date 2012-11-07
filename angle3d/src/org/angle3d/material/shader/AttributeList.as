@@ -32,7 +32,7 @@ package org.angle3d.material.shader
 			}
 		}
 
-		override public function validate():void
+		override public function build():void
 		{
 			var att:AttributeVar;
 			var offset:int = 0;

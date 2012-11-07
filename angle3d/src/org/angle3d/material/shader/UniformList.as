@@ -34,7 +34,7 @@ package org.angle3d.material.shader
 		/**
 		 * 需要偏移常数数组的长度
 		 */
-		override public function validate():void
+		override public function build():void
 		{
 			var offset:int = _constants != null ? _constants.length : 0;
 			var vLength:int = _variables.length;

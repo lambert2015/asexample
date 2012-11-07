@@ -206,12 +206,12 @@ package org.angle3d.material.shader
 		/**
 		 *
 		 */
-		public function validate():void
+		public function build():void
 		{
-			_attributeList.validate();
-			_vUniformList.validate();
-			_fUniformList.validate();
-			_textureList.validate();
+			_attributeList.build();
+			_vUniformList.build();
+			_fUniformList.build();
+			_textureList.build();
 		}
 
 		public function destroy():void

@@ -150,9 +150,9 @@ package org.angle3d.material.sgsl.pool
 		 * 设置value寄存器位置
 		 * @param value
 		 */
-		override public function register(value:RegNode):void
+		override public function register(node:RegNode):void
 		{
-			var uniformReg:UniformReg = value as UniformReg;
+			var uniformReg:UniformReg = node as UniformReg;
 
 			CF::DEBUG
 			{

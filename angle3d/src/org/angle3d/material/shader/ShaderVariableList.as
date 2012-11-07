@@ -31,7 +31,7 @@ package org.angle3d.material.shader
 		/**
 		 * 添加所有变量后，设置每个变量的位置
 		 */
-		public function validate():void
+		public function build():void
 		{
 			//默认是按照在数组中的顺序来设置location
 			var vLength:int = _variables.length;
