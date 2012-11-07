@@ -33,20 +33,20 @@ package org.angle3d.material.sgsl.pool
 		 * 设置tVar寄存器位置
 		 * @param	tVar 对应的临时变量
 		 */
-		override public function register(value:RegNode):void
+		override public function register(node:RegNode):void
 		{
 			CF::DEBUG
 			{
-				Assert.assert(!value.registered, value.name + "不能注册多次");
+				Assert.assert(!node.registered, node.name + "不能注册多次");
 			}
 
 			//TODO 应该尽量避免传递Mat4,Mat3，大部分情况下没必要
-			var size:int = DataType.getRegisterCount(value.dataType);
+			var size:int = DataType.getRegisterCount(node.dataType);
 			for (var i:int = 0; i < 8; i++)
 			{
 				if (_pool[i] == 0)
 				{
-					value.index = i;
+					node.index = i;
 					for (var j:int = 0; j < size; j++)
 					{
 						_pool[i + j] = 1;

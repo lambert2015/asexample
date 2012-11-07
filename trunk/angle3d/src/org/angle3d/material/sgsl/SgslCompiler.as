@@ -112,7 +112,7 @@ package org.angle3d.material.sgsl
 			shader.vertexData = writeByteArray(_vertexData);
 			shader.fragmentData = writeByteArray(_fragmentData);
 
-			shader.validate();
+			shader.build();
 
 			_compiled = true;
 
@@ -156,8 +156,8 @@ package org.angle3d.material.sgsl
 			var regList:Vector.<RegNode> = data.uniformPool.getRegs();
 
 			var varType:int = ShaderVarType.UNIFORM;
-			var rLength:int = regList.length;
-			for (var i:int = 0; i < rLength; i++)
+			var count:int = regList.length;
+			for (var i:int = 0; i < count; i++)
 			{
 				var reg:RegNode = regList[i];
 				shader.addVariable(shaderType, varType, reg.name, reg.size);
@@ -174,8 +174,8 @@ package org.angle3d.material.sgsl
 				varType = ShaderVarType.TEXTURE;
 			}
 
-			rLength = regList.length;
-			for (i = 0; i < rLength; i++)
+			count = regList.length;
+			for (i = 0; i < count; i++)
 			{
 				reg = regList[i];
 				shader.addVariable(shaderType, varType, reg.name, reg.size);
@@ -206,11 +206,6 @@ package org.angle3d.material.sgsl
 			{
 				writeNode(nodes[i]);
 			}
-
-//			CF::DEBUG
-//			{
-//				trace(getAgalInfo(_byteArray));
-//			}
 
 			return _byteArray;
 		}

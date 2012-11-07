@@ -10,18 +10,20 @@ package org.angle3d.material.sgsl.pool
 	 */
 	public class AttributeRegPool extends RegPool
 	{
+		public static const REGISTER_COUNT:int = 8;
+		
 		private var _pool:Vector.<int>;
 
 		public function AttributeRegPool()
 		{
 			super();
-			_pool = new Vector.<int>(8, true);
+			_pool = new Vector.<int>(REGISTER_COUNT, true);
 		}
 
 		override public function clear():void
 		{
 			super.clear();
-			for (var i:int = 0; i < 8; i++)
+			for (var i:int = 0; i < REGISTER_COUNT; i++)
 			{
 				_pool[i] = 0;
 			}
@@ -31,18 +33,18 @@ package org.angle3d.material.sgsl.pool
 		 * 设置value寄存器位置
 		 * @param value 对应的变量
 		 */
-		override public function register(value:RegNode):void
+		override public function register(node:RegNode):void
 		{
 			CF::DEBUG
 			{
-				Assert.assert(!value.registered, value.name + "不能注册多次");
+				Assert.assert(!node.registered, node.name + "不能注册多次");
 			}
 
-			for (var i:int = 0; i < 8; i++)
+			for (var i:int = 0; i < REGISTER_COUNT; i++)
 			{
 				if (_pool[i] == 0)
 				{
-					value.index = i;
+					node.index = i;
 					_pool[i] = 1;
 					return;
 				}
