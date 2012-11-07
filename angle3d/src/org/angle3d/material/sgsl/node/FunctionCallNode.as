@@ -47,6 +47,11 @@ package org.angle3d.material.sgsl.node
 			return node;
 		}
 
+		/**
+		 * only for debug
+		 * @param	level
+		 * @return
+		 */
 		override public function toString(level:int = 0):String
 		{
 			var result:String = "";
@@ -56,6 +61,11 @@ package org.angle3d.material.sgsl.node
 			return result;
 		}
 
+		/**
+		 * only for debug
+		 * @param	level
+		 * @return
+		 */
 		override protected function getChildrenString(level:int):String
 		{
 			var results:Array = [];

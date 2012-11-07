@@ -59,13 +59,20 @@ package org.angle3d.material.technique
 
 		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
-			var source:String = "attribute vec3 a_position;" + "attribute vec2 a_texCoord;" + "attribute vec4 a_color;" +
+			var source:String = "attribute vec3 a_position;" + 
+				"attribute vec2 a_texCoord;" + 
+				"attribute vec4 a_color;" +
 
-				"varying vec4 v_texCoord;" + "varying vec4 v_color;" +
+				"varying vec4 v_texCoord;" + 
+				"varying vec4 v_color;" +
 
 				"uniform mat4 u_WorldViewProjectionMatrix;" +
 
-				"function main(){" + "	output = m44(a_position,u_WorldViewProjectionMatrix);" + "	v_texCoord = a_texCoord;" + "	v_color = a_color;" + "}";
+				"function main(){" + 
+				"	output = m44(a_position,u_WorldViewProjectionMatrix);" + 
+				"	v_texCoord = a_texCoord;" + 
+				"	v_color = a_color;" + 
+				"}";
 			return source;
 		}
 
