@@ -155,8 +155,8 @@ package org.angle3d.material.sgsl
 			var pool:VaryingRegPool = vertexData.varyingPool;
 
 			var regs:Vector.<RegNode> = pool.getRegs();
-			var rLength:int = regs.length;
-			for (var i:int = 0; i < rLength; i++)
+			var count:int = regs.length;
+			for (var i:int = 0; i < count; i++)
 			{
 				addReg(regs[i]);
 			}
