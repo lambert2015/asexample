@@ -109,8 +109,8 @@ package org.angle3d.material.sgsl
 			_updateShader(_vertexData, shader);
 			_updateShader(_fragmentData, shader);
 
-			shader.vertexData = writeByteArray(_vertexData);
-			shader.fragmentData = writeByteArray(_fragmentData);
+			shader.vertexData = assemble(_vertexData);
+			shader.fragmentData = assemble(_fragmentData);
 
 			shader.build();
 
@@ -184,7 +184,7 @@ package org.angle3d.material.sgsl
 
 		private var _currentData:SgslData;
 
-		private function writeByteArray(data:SgslData):ByteArray
+		private function assemble(data:SgslData):ByteArray
 		{
 			_currentData = data;
 
