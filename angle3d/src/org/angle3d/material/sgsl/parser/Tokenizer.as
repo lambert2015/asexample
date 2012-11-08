@@ -37,19 +37,21 @@
 			}
 
 			// end of script
-			if (_position > _sourceSize)
+			if (_position >= _sourceSize)
 			{
-				_nextToken = new Token(TokenType.NONE, "<NONE>");
-				_token = new Token(TokenType.EOF, "<EOF>");
+				if (_position == _sourceSize)
+				{
+					_token = _nextToken;
+					_nextToken = new Token(TokenType.EOF, "<EOF>");
+				}else
+				{
+					_nextToken = new Token(TokenType.NONE, "<NONE>");
+					_token = new Token(TokenType.EOF, "<EOF>");
+				}
 				return;
 			}
 
-			if (_position == _sourceSize)
-			{
-				_token = _nextToken;
-				_nextToken = new Token(TokenType.EOF, "<EOF>");
-				return;
-			}
+			
 
 			_token = _nextToken;
 			_nextToken = _createNextToken(_source.substr(_position));
@@ -61,7 +63,7 @@
 		}
 
 		/**
-		 * 检查是否正确，返回当前ToKen,并解析下一个关键字
+		 * 检查是否正确，返回当前Token,并解析下一个关键字
 		 */
 		public function accept(type:String):Token
 		{
@@ -100,7 +102,6 @@
 			return _token;
 		}
 
-		//TODO 添加注释语法
 		private function _buildRegex():void
 		{
 			_tokenRegex = [[TokenType.IDENTIFIER, /[a-zA-Z_][a-zA-Z0-9_]*/],
@@ -172,14 +173,14 @@
 					return TokenType.FUNCTION;
 				case "return":
 					return TokenType.FUNCTION_RETURN;
-				case DataType.SAMPLER2D:
-				case DataType.SAMPLERCUBE:
+				case DataType.FLOAT:
+				case DataType.VEC2:
+				case DataType.VEC3:
+				case DataType.VEC4:
 				case DataType.MAT4:
 				case DataType.MAT3:
-				case DataType.VEC4:
-				case DataType.VEC3:
-				case DataType.VEC2:
-				case DataType.FLOAT:
+				case DataType.SAMPLER2D:
+				case DataType.SAMPLERCUBE:
 					return TokenType.DATATYPE;
 				case RegType.ATTRIBUTE:
 				case RegType.VARYING:
