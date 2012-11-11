@@ -3,6 +3,7 @@ package org.angle3d.input
 	import flash.display.Stage;
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
+
 	import org.angle3d.input.controls.ActionListener;
 	import org.angle3d.input.controls.AnalogListener;
 	import org.angle3d.input.controls.InputListener;
@@ -72,7 +73,9 @@ package org.angle3d.input
 		private var lastUpdateTime:Number;
 		private var frameDelta:Number;
 		private var firstTime:int;
+
 		private var eventsPermitted:Boolean;
+		private var mouseVisible:Boolean;
 		private var safeMode:Boolean;
 		private var axisDeadZone:Number;
 
@@ -103,6 +106,7 @@ package org.angle3d.input
 			lastUpdateTime = 0;
 			frameDelta = 0;
 			eventsPermitted = true;
+			mouseVisible = true;
 			safeMode = false;
 			axisDeadZone = 0.05;
 
@@ -441,6 +445,34 @@ package org.angle3d.input
 		{
 			pressedButtons.clear();
 			axisValues.clear();
+		}
+
+		/**
+		 * Returns whether the mouse cursor is visible or not.
+		 *
+		 * <p>By default the cursor is visible.
+		 *
+		 * @return whether the mouse cursor is visible or not.
+		 *
+		 * @see InputManager#setCursorVisible(boolean)
+		 */
+		public function isCursorVisible():Boolean
+		{
+			return mouseVisible;
+		}
+
+		/**
+		 * Set whether the mouse cursor should be visible or not.
+		 *
+		 * @param visible whether the mouse cursor should be visible or not.
+		 */
+		public function setCursorVisible(visible:Boolean):void
+		{
+			if (mouseVisible != visible)
+			{
+				mouseVisible = visible;
+				_mouseInput.setCursorVisible(mouseVisible);
+			}
 		}
 
 		/**

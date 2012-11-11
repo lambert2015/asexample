@@ -72,21 +72,21 @@ package examples.model
 			var skeletonControl:SkeletonControl = ninjaNode.getControlByClass(SkeletonControl) as SkeletonControl;
 
 			//attatchNode
-			var boxNode:Node = new Node("box");
-			var gm:Geometry = new Geometry("cube", new Cube(0.5, 0.5, 5, 1, 1, 1));
-			gm.setMaterial(new MaterialFill(0xff0000, 1.0));
-			gm.localQueueBucket = QueueBucket.Opaque;
-			boxNode.attachChild(gm);
+//			var boxNode:Node = new Node("box");
+//			var gm:Geometry = new Geometry("cube", new Cube(0.5, 0.5, 5, 1, 1, 1));
+//			gm.setMaterial(new MaterialFill(0xff0000, 1.0));
+//			gm.localQueueBucket = QueueBucket.Opaque;
+//			boxNode.attachChild(gm);
 
-			var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");
-			//attachNode.attachChild(boxNode);
+//			var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");
+//			attachNode.attachChild(boxNode);
 
 			var animControl:SkeletonAnimControl = ninjaNode.getControlByClass(SkeletonAnimControl) as SkeletonAnimControl;
 			var channel:AnimChannel = animControl.createChannel();
 			channel.playAnimation("default", LoopMode.Cycle, 10);
 
 			var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
-			//ninjaNode.attachChild(skeletonDebugger);
+			ninjaNode.attachChild(skeletonDebugger);
 
 			return ninjaNode;
 		}

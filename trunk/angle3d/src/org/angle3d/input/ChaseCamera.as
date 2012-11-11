@@ -10,8 +10,8 @@ package org.angle3d.input
 	import org.angle3d.renderer.Camera3D;
 	import org.angle3d.renderer.RenderManager;
 	import org.angle3d.renderer.ViewPort;
-	import org.angle3d.scene.control.Control;
 	import org.angle3d.scene.Spatial;
+	import org.angle3d.scene.control.Control;
 
 
 	/**
@@ -51,6 +51,7 @@ package org.angle3d.input
 		private var zooming:Boolean;
 		private var trailing:Boolean;
 		private var chasing:Boolean;
+		private var veryCloseRotation:Boolean;
 		private var canRotate:Boolean;
 		private var offsetDistance:Number;
 		private var prevPos:Vector3f;
@@ -64,9 +65,12 @@ package org.angle3d.input
 		private var dragToRotate:Boolean;
 		private var lookAtOffset:Vector3f;
 		private var leftClickRotate:Boolean;
+		private var rightClickRotate:Boolean;
 		private var temp:Vector3f;
 		private var invertYaxis:Boolean;
 		private var invertXaxis:Boolean;
+		private var hideCursorOnRotate:Boolean;
+
 		private static var ChaseCamDown:String = "ChaseCamDown";
 		private static var ChaseCamUp:String = "ChaseCamUp";
 		private static var ChaseCamZoomIn:String = "ChaseCamZoomIn";
@@ -146,10 +150,13 @@ package org.angle3d.input
 			dragToRotate = false;
 			lookAtOffset = new Vector3f(0, 0, 0);
 			leftClickRotate = true;
+			rightClickRotate = true;
 			temp = new Vector3f(0, 0, 0);
 
 			invertYaxis = false;
 			invertXaxis = false;
+
+			hideCursorOnRotate = true;
 		}
 
 		private var zoomin:Boolean;
@@ -198,12 +205,14 @@ package org.angle3d.input
 					if (keyPressed)
 					{
 						canRotate = true;
-							//inputManager.setCursorVisible(false);
+						if (hideCursorOnRotate)
+							inputManager.setCursorVisible(false);
 					}
 					else
 					{
 						canRotate = false;
-							//inputManager.setCursorVisible(true);
+						if (hideCursorOnRotate)
+							inputManager.setCursorVisible(true);
 					}
 				}
 			}
@@ -218,7 +227,13 @@ package org.angle3d.input
 		{
 			this.inputManager = inputManager;
 
-			var inputs:Array = [ChaseCamToggleRotate, ChaseCamDown, ChaseCamUp, ChaseCamMoveLeft, ChaseCamMoveRight, ChaseCamZoomIn, ChaseCamZoomOut];
+			var inputs:Array = [ChaseCamToggleRotate,
+				ChaseCamDown,
+				ChaseCamUp,
+				ChaseCamMoveLeft,
+				ChaseCamMoveRight,
+				ChaseCamZoomIn,
+				ChaseCamZoomOut];
 
 			inputManager.addSingleMapping(ChaseCamDown, new MouseAxisTrigger(MouseInput.AXIS_Y, !invertYaxis));
 			inputManager.addSingleMapping(ChaseCamUp, new MouseAxisTrigger(MouseInput.AXIS_Y, invertYaxis));
@@ -230,6 +245,7 @@ package org.angle3d.input
 			inputManager.addSingleMapping(ChaseCamMoveRight, new MouseAxisTrigger(MouseInput.AXIS_X, invertXaxis));
 
 			inputManager.addSingleMapping(ChaseCamToggleRotate, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+			inputManager.addSingleMapping(ChaseCamToggleRotate, new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
 
 			inputManager.addListener(this, inputs);
 		}
@@ -245,8 +261,7 @@ package org.angle3d.input
 		{
 			inputManager.deleteMapping(ChaseCamToggleRotate);
 			inputManager.addMapping(ChaseCamToggleRotate, triggers);
-			var inputs:Array = [];
-			inputs.push(ChaseCamToggleRotate);
+			var inputs:Array = [ChaseCamToggleRotate];
 			inputManager.addListener(this, inputs);
 		}
 
@@ -260,8 +275,7 @@ package org.angle3d.input
 		{
 			inputManager.deleteMapping(ChaseCamZoomIn);
 			inputManager.addMapping(ChaseCamZoomIn, triggers);
-			var inputs:Array = [];
-			inputs.push(ChaseCamZoomIn);
+			var inputs:Array = [ChaseCamZoomIn];
 			inputManager.addListener(this, inputs);
 		}
 
@@ -276,8 +290,7 @@ package org.angle3d.input
 			inputManager.deleteMapping(ChaseCamZoomOut);
 			inputManager.addMapping(ChaseCamZoomOut, triggers);
 
-			var inputs:Array = [];
-			inputs.push(ChaseCamZoomOut);
+			var inputs:Array = [ChaseCamZoomOut];
 			inputManager.addListener(this, inputs);
 		}
 
@@ -312,9 +325,12 @@ package org.angle3d.input
 			targetDistance += value * zoomSpeed;
 			targetDistance = FastMath.fclamp(targetDistance, minDistance, maxDistance);
 
-			if ((targetVRotation < minVerticalRotation) && (targetDistance > (minDistance + 1.0)))
+			if (veryCloseRotation)
 			{
-				targetVRotation = minVerticalRotation;
+				if ((targetVRotation < minVerticalRotation) && (targetDistance > (minDistance + 1.0)))
+				{
+					targetVRotation = minVerticalRotation;
+				}
 			}
 		}
 
@@ -327,15 +343,30 @@ package org.angle3d.input
 			}
 
 			vRotating = true;
+			var lastGoodRot:Number = targetVRotation;
 			targetVRotation += value * rotationSpeed;
 			if (targetVRotation > maxVerticalRotation)
 			{
-				targetVRotation = maxVerticalRotation;
+				targetVRotation = lastGoodRot;
 			}
 
-			if ((targetVRotation < minVerticalRotation) && (targetDistance > (minDistance + 1.0)))
+			if (veryCloseRotation)
 			{
-				targetVRotation = minVerticalRotation;
+				if ((targetVRotation < minVerticalRotation) && (targetDistance > (minDistance + 1.0)))
+				{
+					targetVRotation = minVerticalRotation;
+				}
+				else if (targetVRotation < -FastMath.DEGTORAD * 90)
+				{
+					targetVRotation = lastGoodRot;
+				}
+			}
+			else
+			{
+				if ((targetVRotation < minVerticalRotation))
+				{
+					targetVRotation = lastGoodRot;
+				}
 			}
 		}
 
@@ -375,7 +406,14 @@ package org.angle3d.input
 						//We do not if the player is rotationg the cam
 						if (targetMoves && !canRotate)
 						{
-							targetRotation = rotation + FastMath.fclamp(targetRotation - rotation, -trailingRotationInertia, trailingRotationInertia);
+							if (targetRotation - rotation > trailingRotationInertia)
+							{
+								targetRotation = rotation + trailingRotationInertia;
+							}
+							else if (targetRotation - rotation < -trailingRotationInertia)
+							{
+								targetRotation = rotation - trailingRotationInertia;
+							}
 						}
 						//Target stops
 						targetMoves = false;
@@ -396,8 +434,7 @@ package org.angle3d.input
 						if (targetMoves)
 						{
 							//computation if the inverted direction of the target
-							var a:Vector3f = targetDir.clone();
-							a.negate();
+							var a:Vector3f = targetDir.negate();
 							a.normalizeLocal();
 							//the x unit vector
 							var b:Vector3f = Vector3f.X_AXIS;
@@ -412,6 +449,7 @@ package org.angle3d.input
 							{
 								targetRotation = Math.acos(a.dot(b));
 							}
+
 							if (targetRotation - rotation > FastMath.PI || targetRotation - rotation < -FastMath.PI)
 							{
 								targetRotation -= FastMath.TWO_PI;
@@ -503,6 +541,8 @@ package org.angle3d.input
 					pos.addLocal(lookAtOffset);
 					cam.location = pos;
 				}
+
+
 				//keeping track on the previous position of the target
 				prevPos.copyFrom(targetLocation);
 
@@ -806,6 +846,28 @@ package org.angle3d.input
 			this.zoomSensitivity = zoomSensitivity;
 		}
 
+
+		/**
+		 * Returns the rotation speed when the mouse is moved.
+		 *
+		 * @return the rotation speed when the mouse is moved.
+		 */
+		public function getRotationSpeed():Number
+		{
+			return rotationSpeed;
+		}
+
+		/**
+		 * Sets the rotate amount when user moves his mouse, the lower the value,
+		 * the slower the camera will rotate. default is 1.
+		 *
+		 * @param rotationSpeed Rotation speed on mouse movement, default is 1.
+		 */
+		public function setRotationSpeed(rotationSpeed:Number):void
+		{
+			this.rotationSpeed = rotationSpeed;
+		}
+
 		/**
 		 * Sets the default distance at start of applicaiton
 		 * @param defaultDistance
@@ -857,7 +919,7 @@ package org.angle3d.input
 		{
 			this.dragToRotate = dragToRotate;
 			this.canRotate = !dragToRotate;
-			//inputManager.setCursorVisible(dragToRotate);
+			inputManager.setCursorVisible(dragToRotate);
 		}
 
 		/**
@@ -937,9 +999,7 @@ package org.angle3d.input
 			inputManager.addSingleMapping(ChaseCamDown, new MouseAxisTrigger(MouseInput.AXIS_Y, !invertYaxis));
 			inputManager.addSingleMapping(ChaseCamUp, new MouseAxisTrigger(MouseInput.AXIS_Y, invertYaxis));
 
-			var inputs:Array = [];
-			inputs.push(ChaseCamDown);
-			inputs.push(ChaseCamUp);
+			var inputs:Array = [ChaseCamDown, ChaseCamUp];
 			inputManager.addListener(this, inputs);
 		}
 
@@ -956,9 +1016,7 @@ package org.angle3d.input
 			inputManager.addSingleMapping(ChaseCamMoveLeft, new MouseAxisTrigger(MouseInput.AXIS_X, !invertXaxis));
 			inputManager.addSingleMapping(ChaseCamMoveRight, new MouseAxisTrigger(MouseInput.AXIS_X, invertXaxis));
 
-			var inputs:Array = [];
-			inputs.push(ChaseCamMoveLeft);
-			inputs.push(ChaseCamMoveRight);
+			var inputs:Array = [ChaseCamMoveLeft, ChaseCamMoveRight];
 			inputManager.addListener(this, inputs);
 		}
 

@@ -50,6 +50,15 @@
 		/** + */
 		public static const PLUS:String = "PLUS";
 
+		/** - */
+		public static const SUBTRACT:String = "SUBTRACT";
+
+		/** * */
+		public static const MULTIPLY:String = "MULTIPLY";
+
+		/** / */
+		public static const DIVIDE:String = "DIVIDE";
+
 		/** = */
 		public static const EQUAL:String = "EQUAL";
 

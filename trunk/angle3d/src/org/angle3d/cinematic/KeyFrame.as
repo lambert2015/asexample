@@ -15,6 +15,11 @@ package org.angle3d.cinematic
 			tracks = new Vector.<CinematicEvent>();
 		}
 
+		public function isEmpty():Boolean
+		{
+			return tracks.length == 0;
+		}
+
 		public function trigger():Vector.<CinematicEvent>
 		{
 			var length:int = tracks.length;

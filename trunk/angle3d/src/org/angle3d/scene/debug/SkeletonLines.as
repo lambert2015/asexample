@@ -24,7 +24,11 @@ package org.angle3d.scene.debug
 		{
 			clearSegment();
 
-			writeBoneLine(_skeleton.rootBone);
+			var rootBones:Vector.<Bone> = _skeleton.rootBones;
+			for (var i:uint = 0, il:uint = rootBones.length; i < il; i++)
+			{
+				writeBoneLine(_skeleton.rootBones[i]);
+			}
 
 			build(updateIndices);
 		}
