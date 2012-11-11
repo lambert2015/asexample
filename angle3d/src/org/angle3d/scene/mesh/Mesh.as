@@ -6,6 +6,7 @@ package org.angle3d.scene.mesh
 	import org.angle3d.collision.CollisionResults;
 	import org.angle3d.collision.bin.BIHTree;
 	import org.angle3d.math.Matrix4f;
+	import org.angle3d.math.Triangle;
 	import org.angle3d.scene.CollisionData;
 
 	public class Mesh implements IMesh
@@ -31,6 +32,11 @@ package org.angle3d.scene.mesh
 			mBound = new BoundingBox();
 
 			mSubMeshList = new Vector.<SubMesh>();
+		}
+
+		public function getTriangle(index:int, store:Triangle):void
+		{
+
 		}
 
 		public function get type():String

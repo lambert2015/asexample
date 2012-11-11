@@ -1,5 +1,7 @@
 package org.angle3d.collision.bin
 {
+	import flash.geom.Vector3D;
+
 	import org.angle3d.math.Vector3f;
 
 	/**
@@ -9,10 +11,10 @@ package org.angle3d.collision.bin
 
 	public class BIHTriangle
 	{
-		private var pointa:Vector3f;
-		private var pointb:Vector3f;
-		private var pointc:Vector3f;
-		private var center:Vector3f;
+		public var pointa:Vector3f;
+		public var pointb:Vector3f;
+		public var pointc:Vector3f;
+		public var center:Vector3f;
 
 		public function BIHTriangle(p1:Vector3f, p2:Vector3f, p3:Vector3f)
 		{
@@ -25,19 +27,72 @@ package org.angle3d.collision.bin
 			center.z = (pointa.z + pointb.z + pointc.z) / 3;
 		}
 
-		public function getPoint1():Vector3f
+		public function getNormal():Vector3f
 		{
-			return pointa;
+			var normal:Vector3f = pointb.clone();
+			normal.subtractLocal(pointa);
+			normal.crossLocal(pointc.subtract(pointa));
+			normal.normalizeLocal();
+			return normal;
 		}
 
-		public function getPoint2():Vector3f
+		public function getExtreme(axis:int, left:Boolean):Number
 		{
-			return pointb;
-		}
-
-		public function getPoint3():Vector3f
-		{
-			return pointc;
+			var v1:Number, v2:Number, v3:Number;
+			switch (axis)
+			{
+				case 0:
+					v1 = pointa.x;
+					v2 = pointb.x;
+					v3 = pointc.x;
+					break;
+				case 1:
+					v1 = pointa.y;
+					v2 = pointb.y;
+					v3 = pointc.y;
+					break;
+				case 2:
+					v1 = pointa.z;
+					v2 = pointb.z;
+					v3 = pointc.z;
+					break;
+				default:
+					return 0;
+			}
+			if (left)
+			{
+				if (v1 < v2)
+				{
+					if (v1 < v3)
+						return v1;
+					else
+						return v3;
+				}
+				else
+				{
+					if (v2 < v3)
+						return v2;
+					else
+						return v3;
+				}
+			}
+			else
+			{
+				if (v1 > v2)
+				{
+					if (v1 > v3)
+						return v1;
+					else
+						return v3;
+				}
+				else
+				{
+					if (v2 > v3)
+						return v2;
+					else
+						return v3;
+				}
+			}
 		}
 	}
 }

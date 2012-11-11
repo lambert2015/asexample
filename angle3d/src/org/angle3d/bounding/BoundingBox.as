@@ -620,7 +620,8 @@ package org.angle3d.bounding
 			var t:Array = [0, Number.POSITIVE_INFINITY];
 
 			var saveT0:Number = t[0], saveT1:Number = t[1];
-			var notEntirelyClipped:Boolean = clip(direction.x, -diff.x - xExtent, t) && clip(-direction.x, diff.x - xExtent, t) && clip(direction.y, -diff.y - yExtent, t) && clip(-direction.y, diff.y - yExtent, t) && clip(direction.z, -diff.z - zExtent, t) && clip(-direction.z, diff.z - zExtent, t);
+			var notEntirelyClipped:Boolean = clip(direction.x, -diff.x - xExtent, t) && clip(-direction.x, diff.x - xExtent, t) && clip(direction.y, -diff.y - yExtent, t) && clip(-direction.y, diff.y -
+				yExtent, t) && clip(direction.z, -diff.z - zExtent, t) && clip(-direction.z, diff.z - zExtent, t);
 
 			if (notEntirelyClipped && (t[0] != saveT0 || t[1] != saveT1))
 			{
@@ -635,11 +636,15 @@ package org.angle3d.bounding
 					point1.scaleAdd(distances[1], ray.origin);
 
 					result = new CollisionResult();
-					result.setContactPointAndDistance(point0, distances[0]);
+					result.contactPoint = point0;
+					result.distance = distances[0];
 					results.addCollision(result);
+
 					result = new CollisionResult();
-					result.setContactPointAndDistance(point1, distances[1]);
+					result.contactPoint = point1;
+					result.distance = distances[1];
 					results.addCollision(result);
+
 					return 2;
 				}
 
@@ -647,7 +652,8 @@ package org.angle3d.bounding
 				point.scaleAdd(t[0], ray.origin);
 
 				result = new CollisionResult();
-				result.setContactPointAndDistance(point, t[0]);
+				result.contactPoint = point;
+				result.distance = t[0];
 				results.addCollision(result);
 				return 1;
 			}

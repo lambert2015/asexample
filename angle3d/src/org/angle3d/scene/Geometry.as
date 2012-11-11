@@ -238,7 +238,7 @@ package org.angle3d.scene
 				var newSize:int = results.size;
 				for (var i:int = prevSize; i < newSize; i++)
 				{
-					results.getCollisionDirect(i).setGeometry(this);
+					results.getCollisionDirect(i).geometry = this;
 				}
 				return added;
 			}

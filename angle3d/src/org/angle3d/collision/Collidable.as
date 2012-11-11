@@ -2,7 +2,7 @@ package org.angle3d.collision
 {
 
 	/**
-	 * public interface for Collidable objects.
+	 * Interface for Collidable objects.
 	 * Classes that implement this public interface are marked as collidable, meaning
 	 * they support collision detection between other objects that are also
 	 * collidable.
