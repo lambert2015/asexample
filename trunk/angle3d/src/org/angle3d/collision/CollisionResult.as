@@ -1,54 +1,28 @@
 package org.angle3d.collision
 {
 	import org.angle3d.math.Triangle;
+	import org.angle3d.math.Vector3f;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.mesh.Mesh;
-	import org.angle3d.math.Vector3f;
 
 	/**
-	 * ...
-	 * @author andy
+	 * A <code>CollisionResult</code> represents a single collision instance
+	 * between two {@link Collidable}. A collision check can result in many
+	 * collision instances (places where collision has occured).
+	 *
+	 * @author Kirill Vainer
 	 */
-
 	public class CollisionResult
 	{
+		public var geometry:Geometry;
+		public var contactPoint:Vector3f;
+		public var contactNormal:Vector3f;
 		public var distance:Number;
-
-		private var geometry:Geometry;
-		private var contactPoint:Vector3f;
-		private var contactNormal:Vector3f;
-
-		private var triangleIndex:int;
+		public var triangleIndex:int;
 
 		public function CollisionResult()
 		{
 
-		}
-
-		public function setContactPointAndDistance(contactPoint:Vector3f, distance:Number):void
-		{
-			this.contactPoint = contactPoint;
-			this.distance = distance;
-		}
-
-		public function setGeometry(geom:Geometry):void
-		{
-			this.geometry = geom;
-		}
-
-		public function setContactNormal(norm:Vector3f):void
-		{
-			this.contactNormal = norm;
-		}
-
-		public function setContactPoint(point:Vector3f):void
-		{
-			this.contactPoint = point;
-		}
-
-		public function setTriangleIndex(index:int):void
-		{
-			this.triangleIndex = index;
 		}
 
 		public function getTriangle(store:Triangle = null):Triangle
@@ -58,31 +32,21 @@ package org.angle3d.collision
 				store = new Triangle();
 			}
 
-//			var m:Mesh = geometry.getMesh();
-//			m.getTriangle(triangleIndex, store);
+			var m:Mesh = geometry.getMesh();
+			m.getTriangle(triangleIndex, store);
 			store.calculateCenter();
 			store.calculateNormal();
 			return store;
 		}
 
-		public function getContactPoint():Vector3f
+		public function compareTo(other:CollisionResult):int
 		{
-			return contactPoint;
+			return distance - other.distance;
 		}
 
-		public function getContactNormal():Vector3f
+		public function equals(other:CollisionResult):Boolean
 		{
-			return contactNormal;
-		}
-
-		public function getGeometry():Geometry
-		{
-			return geometry;
-		}
-
-		public function getTriangleIndex():int
-		{
-			return triangleIndex;
+			return this.compareTo(other) == 0;
 		}
 	}
 }

@@ -324,7 +324,8 @@ package org.angle3d.math
 				point.scaleAdd(d, origin);
 
 				var cr:CollisionResult = new CollisionResult();
-				cr.setContactPointAndDistance(point, d);
+				cr.contactPoint = point;
+				cr.distance = d;
 				results.addCollision(cr);
 
 				return 1;

@@ -612,7 +612,8 @@ package org.angle3d.bounding
 				point.scaleAdd(distance, ray.origin);
 
 				var result:CollisionResult = new CollisionResult();
-				result.setContactPointAndDistance(point, distance);
+				result.contactPoint = point;
+				result.distance = distance;
 				results.addCollision(result);
 				return 1;
 			}
@@ -637,14 +638,16 @@ package org.angle3d.bounding
 				point = ray.direction.clone();
 				point.scaleAdd(dist, ray.origin);
 				cr = new CollisionResult();
-				cr.setContactPointAndDistance(point, dist);
+				cr.contactPoint = point;
+				cr.distance = dist;
 				results.addCollision(cr);
 
 				dist = -a1 + root;
 				point = ray.direction.clone();
 				point.scaleAdd(dist, ray.origin);
 				cr = new CollisionResult();
-				cr.setContactPointAndDistance(point, dist);
+				cr.contactPoint = point;
+				cr.distance = dist;
 				results.addCollision(cr);
 				return 2;
 			}
@@ -654,7 +657,8 @@ package org.angle3d.bounding
 				point = ray.direction.clone();
 				point.scaleAdd(dist, ray.origin);
 				cr = new CollisionResult();
-				cr.setContactPointAndDistance(point, dist);
+				cr.contactPoint = point;
+				cr.distance = dist;
 				results.addCollision(cr);
 				return 1;
 			}
