@@ -1,7 +1,6 @@
 package org.angle3d.scene.shape
 {
-	import org.angle3d.math.Color;
-	import org.angle3d.math.Vector3f;
+
 
 	/**
 	 * ...

@@ -211,10 +211,10 @@ package org.angle3d.scene
 				child.setTransformRefresh();
 				child.setLightListRefresh();
 
-				CF::DEBUG
-				{
-					Logger.log(child.toString() + " attached to this node " + this.toString());
-				}
+//				CF::DEBUG
+//				{
+//					Logger.log(child.toString() + " attached to " + this.toString());
+//				}
 			}
 		}
 

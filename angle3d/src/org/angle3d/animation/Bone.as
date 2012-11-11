@@ -88,6 +88,21 @@ package org.angle3d.animation
 			mWorldBindInverseScale = new Vector3f(1.0, 1.0, 1.0);
 		}
 
+		/**
+		 * 只克隆基础信息
+		 * @return
+		 *
+		 */
+		public function clone():Bone
+		{
+			var result:Bone = new Bone(this.name);
+			result.parentName = this.parentName;
+			result.localPos.copyFrom(this.localPos);
+			result.localRot.copyFrom(this.localRot);
+			result.localScale.copyFrom(this.localScale);
+			return result;
+		}
+
 		public function getAttachmentsNode():Node
 		{
 			if (mAttachNode == null)
@@ -104,6 +119,7 @@ package org.angle3d.animation
 		}
 
 		/**
+		 * 模型空间坐标
 		 * Returns the position of the bone in model space.
 		 *
 		 * @return The position of the bone in model space.

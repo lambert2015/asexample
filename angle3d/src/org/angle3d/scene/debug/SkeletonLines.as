@@ -27,29 +27,25 @@ package org.angle3d.scene.debug
 			var rootBones:Vector.<Bone> = _skeleton.rootBones;
 			for (var i:uint = 0, il:uint = rootBones.length; i < il; i++)
 			{
-				writeBoneLine(_skeleton.rootBones[i]);
+				buildBoneLines(_skeleton.rootBones[i]);
 			}
 
 			build(updateIndices);
 		}
 
-		private function writeBoneLine(bone:Bone):void
+		private function buildBoneLines(bone:Bone):void
 		{
 			var parentPos:Vector3f = bone.getModelSpacePosition();
 
 			var children:Vector.<Bone> = bone.children;
-			var size:int = children.length;
-
-			if (size > 0)
+			var size:uint = children.length;
+			for (var i:uint = 0; i < size; i++)
 			{
-				for (var i:int = 0; i < size; i++)
-				{
-					var child:Bone = children[i];
-					var childPos:Vector3f = child.getModelSpacePosition();
-					addSegment(new WireframeLineSet(parentPos.x, parentPos.y, parentPos.z, childPos.x, childPos.y, childPos.z));
+				var child:Bone = children[i];
+				var childPos:Vector3f = child.getModelSpacePosition();
+				addSegment(new WireframeLineSet(parentPos.x, parentPos.y, parentPos.z, childPos.x, childPos.y, childPos.z));
 
-					writeBoneLine(child);
-				}
+				buildBoneLines(child);
 			}
 		}
 	}
