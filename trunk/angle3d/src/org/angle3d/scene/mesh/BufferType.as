@@ -6,7 +6,15 @@ package org.angle3d.scene.mesh
 	 */
 	public class BufferType
 	{
-		public static const VERTEX_TYPES:Array = [POSITION, TEXCOORD, NORMAL, COLOR, TANGENT, BINORMAL, BONE_WEIGHTS, BONE_INDICES, BIND_POSE_POSITION, TEXCOORD2, TEXCOORD3, TEXCOORD4, POSITION1, NORMAL1, PARTICLE_VELOCITY, PARTICLE_LIFE_SCALE_ANGLE];
+		public static const VERTEX_TYPES:Array = [POSITION, TEXCOORD,
+			NORMAL, TANGENT, BINORMAL,
+			COLOR,
+			BONE_WEIGHTS, BONE_INDICES, BIND_POSE_POSITION,
+			TEXCOORD2, TEXCOORD3, TEXCOORD4,
+			POSITION1,
+			NORMAL1,
+			PARTICLE_VELOCITY,
+			PARTICLE_LIFE_SCALE_ANGLE];
 
 		/**
 		 * Position of the vertex (3 floats)
@@ -24,11 +32,6 @@ package org.angle3d.scene.mesh
 		public static const NORMAL:String = "normal";
 
 		/**
-		 * Color
-		 */
-		public static const COLOR:String = "color";
-
-		/**
 		 * Tangent vector, normalized.
 		 */
 		public static const TANGENT:String = "tangent";
@@ -37,6 +40,11 @@ package org.angle3d.scene.mesh
 		 * Binormal vector, normalized.
 		 */
 		public static const BINORMAL:String = "binormal";
+
+		/**
+		 * Color
+		 */
+		public static const COLOR:String = "color";
 
 		/**
 		 * Bone weights, used with animation (4 floats)

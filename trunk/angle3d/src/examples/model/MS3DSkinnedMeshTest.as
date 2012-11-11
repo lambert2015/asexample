@@ -1,22 +1,24 @@
 package examples.model
 {
 	import flash.utils.Dictionary;
+
 	import org.angle3d.animation.AnimChannel;
+	import org.angle3d.animation.Animation;
+	import org.angle3d.animation.Bone;
+	import org.angle3d.animation.Skeleton;
 	import org.angle3d.animation.SkeletonAnimControl;
 	import org.angle3d.animation.SkeletonControl;
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.cinematic.LoopMode;
 	import org.angle3d.io.AssetManager;
 	import org.angle3d.io.parser.ms3d.MS3DParser;
-	import org.angle3d.material.MaterialFill;
 	import org.angle3d.material.MaterialTexture;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.renderer.queue.QueueBucket;
-	import org.angle3d.scene.debug.SkeletonDebugger;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.Node;
-	import org.angle3d.scene.shape.Cube;
+	import org.angle3d.scene.debug.SkeletonDebugger;
+	import org.angle3d.scene.mesh.SkinnedMesh;
 	import org.angle3d.texture.BitmapTexture;
 	import org.angle3d.utils.Stats;
 	import org.assetloader.AssetLoader;
@@ -40,6 +42,9 @@ package examples.model
 		}
 
 		private var material:MaterialTexture;
+		private var skinnedMesh:SkinnedMesh;
+		private var animation:Animation;
+		private var bones:Vector.<Bone>;
 
 		private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
 		{
@@ -49,12 +54,16 @@ package examples.model
 
 			var parser:MS3DParser = new MS3DParser();
 
+			skinnedMesh = parser.parseSkinnedMesh("ninja", assets["ninja"]);
+			var array:Array = parser.buildSkeleton();
+			bones = array[0];
+			animation = array[1];
 
 			for (var i:int = 0; i < 5; i++)
 			{
 				for (var j:int = 0; j < 5; j++)
 				{
-					var node:Node = createNinja(parser, assets);
+					var node:Node = createNinja(i);
 					node.setTranslationXYZ((i - 3) * 15, 0, (j - 3) * 15);
 					scene.attachChild(node);
 				}
@@ -64,12 +73,27 @@ package examples.model
 			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 		}
 
-		private function createNinja(parser:MS3DParser, assets:Dictionary):Node
+		private function createNinja(index:int):Node
 		{
-			var ninjaNode:Node = parser.parseSkinnedMesh("ninja", assets["ninja"]);
+			var geometry:Geometry = new Geometry("ninja" + index, skinnedMesh);
+
+			var ninjaNode:Node = new Node("ninja" + index);
+			ninjaNode.attachChild(geometry);
 			ninjaNode.setMaterial(material);
 
-			var skeletonControl:SkeletonControl = ninjaNode.getControlByClass(SkeletonControl) as SkeletonControl;
+			var newBones:Vector.<Bone> = new Vector.<Bone>();
+			for (var i:uint = 0, il:uint = bones.length; i < il; i++)
+			{
+				newBones[i] = bones[i].clone();
+			}
+
+			var skeleton:Skeleton = new Skeleton(newBones);
+			var skeletonControl:SkeletonControl = new SkeletonControl(geometry, skeleton);
+			var animationControl:SkeletonAnimControl = new SkeletonAnimControl(skeleton);
+			animationControl.addAnimation("default", animation);
+
+			ninjaNode.addControl(skeletonControl);
+			ninjaNode.addControl(animationControl);
 
 			//attatchNode
 //			var boxNode:Node = new Node("box");
@@ -103,8 +127,8 @@ package examples.model
 			angle += 0.01;
 			angle %= FastMath.TWO_PI;
 
-			//cam.location.setTo(Math.cos(angle) * 15, 15, Math.sin(angle) * 15);
-			//cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+			cam.location.setTo(Math.cos(angle) * 50, 20, Math.sin(angle) * 60);
+			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 		}
 	}
 }

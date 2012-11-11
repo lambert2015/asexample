@@ -1,7 +1,6 @@
 package org.angle3d.scene.debug
 {
 	import org.angle3d.scene.Geometry;
-	import org.angle3d.scene.mesh.Mesh;
 	import org.angle3d.scene.shape.Sphere;
 
 	public class SphereNode extends Geometry

@@ -48,7 +48,7 @@ package org.angle3d.scene.debug
 			super.updateControls(tpf);
 
 			_lines.updateGeometry(false);
-			_points.updateGeometry();
+			//_points.updateGeometry();
 		}
 	}
 }

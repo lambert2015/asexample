@@ -5,34 +5,37 @@ package org.angle3d.scene.debug
 	import org.angle3d.animation.Bone;
 	import org.angle3d.animation.Skeleton;
 	import org.angle3d.material.MaterialFill;
+	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.Node;
+	import org.angle3d.scene.shape.Cube;
 
 	public class SkeletonPoints extends Node
 	{
-		private var _radius:Number;
+		private var _size:Number;
 		private var _skeleton:Skeleton;
 
-		private var points:Vector.<SphereNode>;
+		private var points:Vector.<Geometry>;
 
 		private var material:MaterialFill;
 
-		public function SkeletonPoints(name:String, skeleton:Skeleton, radius:Number)
+		public function SkeletonPoints(name:String, skeleton:Skeleton, size:Number)
 		{
 			super(name);
-			this._skeleton = skeleton;
-			this._radius = radius;
+
+			_skeleton = skeleton;
+			_size = size;
 
 			material = new MaterialFill(0x00ff00);
 			material.technique.renderState.applyDepthTest = true;
 			material.technique.renderState.depthTest = true;
 			material.technique.renderState.compareMode = Context3DCompareMode.ALWAYS;
 
-			points = new Vector.<SphereNode>();
+			points = new Vector.<Geometry>();
 
 			var boneCount:int = _skeleton.numBones;
 			for (var i:int = 0; i < boneCount; i++)
 			{
-				var node:SphereNode = new SphereNode("sphere" + i, radius, 8, 8);
+				var node:Geometry = new Geometry(_skeleton.boneList[i].name, new Cube(_size, _size, _size));
 				node.setMaterial(material);
 				this.attachChild(node);
 				points[i] = node;
@@ -45,7 +48,7 @@ package org.angle3d.scene.debug
 			for (var i:int = 0; i < boneCount; i++)
 			{
 				var bone:Bone = _skeleton.getBoneAt(i);
-				var node:SphereNode = points[i];
+				var node:Geometry = points[i];
 				node.setTranslation(bone.getModelSpacePosition());
 			}
 		}

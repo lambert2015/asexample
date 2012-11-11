@@ -111,7 +111,7 @@ package org.angle3d.io.parser.ms3d
 			return mesh;
 		}
 
-		public function parseSkinnedMesh(name:String, data:ByteArray):Node
+		public function parseSkinnedMesh(name:String, data:ByteArray):SkinnedMesh
 		{
 			data.endian = Endian.LITTLE_ENDIAN;
 			data.position = 0;
@@ -205,14 +205,10 @@ package org.angle3d.io.parser.ms3d
 
 			mesh.validate();
 
-			var node:Node = new Node(name);
-			var geometry:Geometry = new Geometry(name + "_geometry", mesh);
-			node.attachChild(geometry);
-			buildSkeleton(node, geometry);
-			return node;
+			return mesh;
 		}
 
-		private function buildSkeleton(node:Node, geometry:Geometry):void
+		public function buildSkeleton():Array
 		{
 			var bones:Vector.<Bone> = new Vector.<Bone>();
 			var tracks:Vector.<BoneTrack> = new Vector.<BoneTrack>();
@@ -221,11 +217,11 @@ package org.angle3d.io.parser.ms3d
 
 			var q:Quaternion = new Quaternion();
 
-			var length:int = mMs3dJoints.length;
+			var length:uint = mMs3dJoints.length;
 			var bone:Bone;
 			var joint:MS3DJoint;
 			var track:BoneTrack;
-			for (var i:int = 0; i < length; i++)
+			for (var i:uint = 0; i < length; i++)
 			{
 				bone = new Bone("");
 				bones.push(bone);
@@ -261,14 +257,7 @@ package org.angle3d.io.parser.ms3d
 				track = new BoneTrack(i, times, translations, rotations);
 				animation.addTrack(track);
 			}
-
-			var skeleton:Skeleton = new Skeleton(bones);
-			var skeletoncontrol:SkeletonControl = new SkeletonControl(geometry, skeleton);
-			var animationControl:SkeletonAnimControl = new SkeletonAnimControl(skeleton);
-			animationControl.addAnimation("default", animation);
-
-			node.addControl(skeletoncontrol);
-			node.addControl(animationControl);
+			return [bones, animation];
 		}
 
 		/**
@@ -582,12 +571,6 @@ package org.angle3d.io.parser.ms3d
 
 				joint.rotation.setTo(data.readFloat(), data.readFloat(), data.readFloat());
 				joint.translation.setTo(data.readFloat(), data.readFloat(), data.readFloat());
-//				joint.rotation.x = data.readFloat();
-//				joint.rotation.y = data.readFloat();
-//				joint.rotation.z = data.readFloat();
-//				joint.translation.x = data.readFloat();
-//				joint.translation.y = data.readFloat();
-//				joint.translation.z = data.readFloat();
 
 				var numKeyFramesRot:uint = data.readUnsignedShort();
 				var numKeyFramesPos:uint = data.readUnsignedShort();
