@@ -230,6 +230,15 @@ package org.angle3d.cinematic
 			}
 		}
 
+		/**
+		 * Adds a cinematic event to this cinematic at the given timestamp. This
+		 * operation returns a keyFrame
+		 *
+		 * @param timeStamp the time when the event will start after the begining of
+		 * the cinematic
+		 * @param cinematicEvent the cinematic event
+		 * @return the keyFrame for that event.
+		 */
 		public function addTrack(timeStamp:Number, track:CinematicEvent):KeyFrame
 		{
 			var keyFrame:KeyFrame = timeLine.getKeyFrameAtTime(timeStamp);
@@ -243,6 +252,54 @@ package org.angle3d.cinematic
 			cinematicEvents.push(track);
 			return keyFrame;
 		}
+
+
+		/**
+		 * removes the first occurence found of the given cinematicEvent.
+		 *
+		 * @param cinematicEvent the cinematicEvent to remove
+		 * @return true if the element has been removed
+		 */
+//		public function removeCinematicEvent( cinematicEvent:CinematicEvent):Boolean {
+//			var index:int =cinematicEvents.indexOf(cinematicEvent);
+//			if(index == -1)
+//				return;
+//			
+//			cinematicEvents.splice(index,1);
+//
+//			for (KeyFrame keyFrame : timeLine.values()) {
+//				if (keyFrame.cinematicEvents.remove(cinematicEvent)) {
+//					return true;
+//				}
+//			}
+//			return false;
+//		}
+//		
+//		/**
+//		 * removes the first occurence found of the given cinematicEvent for the given time stamp.
+//		 * @param timeStamp the timestamp when the cinematicEvent has been added
+//		 * @param cinematicEvent the cinematicEvent to remove
+//		 * @return true if the element has been removed
+//		 */
+//		public function removeCinematicEvent(timeStamp:Number, cinematicEvent:CinematicEvent):Boolean {
+//			KeyFrame keyFrame = timeLine.getKeyFrameAtTime(timeStamp);
+//			return removeCinematicEvent(keyFrame, cinematicEvent);
+//		}
+//		
+//		/**
+//		 * removes the first occurence found of the given cinematicEvent for the given keyFrame
+//		 * @param keyFrame the keyFrame returned by the addCinematicEvent method.
+//		 * @param cinematicEvent the cinematicEvent to remove
+//		 * @return true if the element has been removed
+//		 */
+//		public function removeCinematicEvent(keyFrame:KeyFrame, cinematicEvent:CinematicEvent):Boolean {
+//			boolean ret = keyFrame.cinematicEvents.remove(cinematicEvent);
+//			cinematicEvents.remove(cinematicEvent);
+//			if (keyFrame.isEmpty()) {
+//				timeLine.removeKeyFrame(keyFrame.getIndex());
+//			}
+//			return ret;
+//		}
 
 		public function render(rm:RenderManager):void
 		{

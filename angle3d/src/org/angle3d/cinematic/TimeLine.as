@@ -8,7 +8,7 @@ package org.angle3d.cinematic
 	 * ...
 	 * @author andy
 	 */
-
+//TODO 换一种实现
 	public class TimeLine
 	{
 		private var map:Dictionary; //<int,KeyFrame>;

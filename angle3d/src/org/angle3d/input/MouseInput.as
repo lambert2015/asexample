@@ -2,6 +2,7 @@ package org.angle3d.input
 {
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
+	import flash.ui.Mouse;
 	import flash.utils.getTimer;
 
 	import org.angle3d.input.event.MouseButtonEvent;
@@ -42,6 +43,7 @@ package org.angle3d.input
 		private var dy:Number;
 		private var wheel:int;
 		private var wheelDelta:int;
+		private var visible:Boolean;
 
 		public function MouseInput()
 		{
@@ -51,6 +53,7 @@ package org.angle3d.input
 			dy = 0;
 			wheelDelta = 0;
 			wheel = 0;
+			visible = true;
 
 			_stage = null;
 			_listener = null;
@@ -63,7 +66,15 @@ package org.angle3d.input
 		 */
 		public function setCursorVisible(visible:Boolean):void
 		{
-
+			this.visible = visible;
+			if (visible)
+			{
+				Mouse.show();
+			}
+			else
+			{
+				Mouse.hide();
+			}
 		}
 
 		/**

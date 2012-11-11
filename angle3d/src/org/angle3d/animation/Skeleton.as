@@ -24,9 +24,8 @@ package org.angle3d.animation
 		public static const MAX_BONE_COUNT:int = 32;
 
 		//
-		public var rootBone:Bone;
+		public var rootBones:Vector.<Bone>;
 
-		private var mNumBones:int;
 		private var mBoneList:Vector.<Bone>;
 		private var mBoneMap:Dictionary;
 
@@ -48,16 +47,18 @@ package org.angle3d.animation
 		public function Skeleton(boneList:Vector.<Bone>)
 		{
 			this.mBoneList = boneList;
-			mNumBones = boneList.length;
-
 			createSkinningMatrices();
-
 			buildBoneTree();
 		}
 
-		public function get numBones():int
+		public function get numBones():uint
 		{
-			return mNumBones;
+			return mBoneList.length;
+		}
+
+		public function get boneList():Vector.<Bone>
+		{
+			return mBoneList;
 		}
 
 		/**
@@ -66,17 +67,19 @@ package org.angle3d.animation
 		private function buildBoneTree():void
 		{
 			mBoneMap = new Dictionary();
-			for (var i:int = 0; i < mNumBones; i++)
+			var count:uint = mBoneList.length;
+			for (var i:uint = 0; i < count; i++)
 			{
 				mBoneMap[mBoneList[i].name] = mBoneList[i];
 			}
 
+			rootBones = new Vector.<Bone>();
 			for (var name:String in mBoneMap)
 			{
 				var bone:Bone = mBoneMap[name];
-				if (bone.parentName == "")
+				if (bone.parentName == null || bone.parentName == "")
 				{
-					rootBone = bone;
+					rootBones.push(bone);
 				}
 				else
 				{
@@ -85,40 +88,34 @@ package org.angle3d.animation
 				}
 			}
 
-			rootBone.update();
-			rootBone.setBindingPose();
+			count = rootBones.length;
+			for (i = 0; i < count; i++)
+			{
+				rootBones[i].update();
+				rootBones[i].setBindingPose();
+			}
 		}
 
 		public function copy(source:Skeleton):void
 		{
-			//this.boneList = source.boneList.concat();
-			//
-			//rootBones = new Vector.<Bone>();
-//			var length:int = this.boneList.length;
-//			for (var i:int = 0; i < length; i++)
-			//{
-			//var b:Bone = boneList[i];
-			//if (b.getParent() == null)
-			//{
-			//rootBones.push(b);
-			//}
-			//}
-			//
-			//createSkinningMatrices();
-			//
-			//var i:int = rootBones.length;
-			//while (--i >= 0)
-			//{
-			//var rootBone:Bone = rootBones[i];
-			//rootBone.update();
-			//rootBone.setBindingPose();
-			//}
+//			var sourceList:Vector.<Bone> = source.boneList;
+//
+//			this.mBoneList = new Vector.<Bone>();
+//			var count:int = sourceList.length;
+//			for (var i:int = 0; i < count; i++)
+//			{
+//				mBoneList[i] = sourceList[i].clone();
+//			}
+//
+//			createSkinningMatrices();
+//			buildBoneTree();
 		}
 
 		private function createSkinningMatrices():void
 		{
-			mSkinningMatrixes = new Vector.<Matrix4f>(mNumBones, true);
-			for (var i:int = 0; i < mNumBones; i++)
+			var count:uint = mBoneList.length;
+			mSkinningMatrixes = new Vector.<Matrix4f>(count, true);
+			for (var i:uint = 0; i < count; i++)
 			{
 				mSkinningMatrixes[i] = new Matrix4f();
 			}
@@ -130,7 +127,11 @@ package org.angle3d.animation
 		 */
 		public function update():void
 		{
-			rootBone.update();
+			var count:uint = rootBones.length;
+			for (var i:uint = 0; i < count; i++)
+			{
+				rootBones[i].update();
+			}
 		}
 
 		/**
@@ -138,7 +139,11 @@ package org.angle3d.animation
 		 */
 		public function setBindingPose():void
 		{
-			rootBone.setBindingPose();
+			var count:uint = rootBones.length;
+			for (var i:uint = 0; i < count; i++)
+			{
+				rootBones[i].setBindingPose();
+			}
 		}
 
 		/**
@@ -146,7 +151,11 @@ package org.angle3d.animation
 		 */
 		public function reset():void
 		{
-			rootBone.reset();
+			var count:uint = rootBones.length;
+			for (var i:uint = 0; i < count; i++)
+			{
+				rootBones[i].reset();
+			}
 		}
 
 		/**
@@ -154,8 +163,12 @@ package org.angle3d.animation
 		 */
 		public function resetAndUpdate():void
 		{
-			rootBone.reset();
-			rootBone.update();
+			var count:uint = rootBones.length;
+			for (var i:uint = 0; i < count; i++)
+			{
+				rootBones[i].reset();
+				rootBones[i].update();
+			}
 		}
 
 		/**
@@ -207,7 +220,8 @@ package org.angle3d.animation
 		{
 			var tempVar:TempVars = TempVars.getTempVars();
 
-			for (var i:int = 0; i < mNumBones; i++)
+			var count:uint = mBoneList.length;
+			for (var i:int = 0; i < count; i++)
 			{
 				mBoneList[i].getOffsetTransform(mSkinningMatrixes[i], tempVar.quat1, tempVar.vect1, tempVar.vect2, tempVar.tempMat3);
 			}

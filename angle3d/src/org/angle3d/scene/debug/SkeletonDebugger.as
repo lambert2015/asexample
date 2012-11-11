@@ -40,7 +40,7 @@ package org.angle3d.scene.debug
 			_points.localQueueBucket = QueueBucket.Opaque;
 
 			attachChild(lineGM);
-			attachChild(_points);
+			//attachChild(_points);
 		}
 
 		override public function updateControls(tpf:Number):void
