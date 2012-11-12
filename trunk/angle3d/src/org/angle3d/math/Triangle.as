@@ -1,5 +1,7 @@
 package org.angle3d.math
 {
+	import org.angle3d.collision.Collidable;
+	import org.angle3d.collision.CollisionResults;
 	import org.angle3d.math.Vector3f;
 
 	/**
@@ -10,62 +12,52 @@ package org.angle3d.math
 	 * @author Mark Powell
 	 * @author Joshua Slack
 	 */
-	public class Triangle extends AbstractTriangle
+	public class Triangle implements Collidable
 	{
-		private var pointA:Vector3f;
-		private var pointB:Vector3f;
-		private var pointC:Vector3f;
+		public var point1:Vector3f;
+		public var point2:Vector3f;
+		public var point3:Vector3f;
 
-		private var center:Vector3f;
-		private var normal:Vector3f;
+		public var center:Vector3f;
+		public var normal:Vector3f;
 
-		private var projection:Number;
-		private var index:int;
+		public var projection:Number;
+		public var index:int;
 
 		public function Triangle(p1:Vector3f = null, p2:Vector3f = null, p3:Vector3f = null)
 		{
 			super();
 
-			pointA = new Vector3f();
-			pointB = new Vector3f();
-			pointC = new Vector3f();
+			point1 = new Vector3f();
+			point2 = new Vector3f();
+			point3 = new Vector3f();
 
 			if (p1 != null && p2 != null && p3 != null)
 			{
-				pointA.copyFrom(p1);
-				pointB.copyFrom(p2);
-				pointC.copyFrom(p3);
+				point1.copyFrom(p1);
+				point2.copyFrom(p2);
+				point3.copyFrom(p3);
 			}
 		}
 
-		override public function getPoint(i:int):Vector3f
+		public function collideWith(other:Collidable, results:CollisionResults):int
+		{
+			return other.collideWith(this, results);
+		}
+
+		public function getPoint(i:int):Vector3f
 		{
 			switch (i)
 			{
 				case 0:
-					return pointA;
+					return point1;
 				case 1:
-					return pointB;
+					return point2;
 				case 2:
-					return pointC;
+					return point3;
 				default:
 					return null;
 			}
-		}
-
-		override public function getPoint1():Vector3f
-		{
-			return pointA;
-		}
-
-		override public function getPoint2():Vector3f
-		{
-			return pointB;
-		}
-
-		override public function getPoint3():Vector3f
-		{
-			return pointC;
 		}
 
 		/**
@@ -75,27 +67,27 @@ package org.angle3d.math
 		 * @param i the index to place the point.
 		 * @param point the point to set.
 		 */
-		override public function setPoint(i:int, point:Vector3f):void
+		public function setPoint(i:int, point:Vector3f):void
 		{
 			switch (i)
 			{
 				case 0:
-					pointA.copyFrom(point);
+					point1.copyFrom(point);
 					break;
 				case 1:
-					pointB.copyFrom(point);
+					point2.copyFrom(point);
 					break;
 				case 2:
-					pointC.copyFrom(point);
+					point3.copyFrom(point);
 					break;
 			}
 		}
 
-		override public function setPoints(p1:Vector3f, p2:Vector3f, p3:Vector3f):void
+		public function setPoints(p1:Vector3f, p2:Vector3f, p3:Vector3f):void
 		{
-			pointA.copyFrom(p1);
-			pointB.copyFrom(p2);
-			pointC.copyFrom(p3);
+			point1.copyFrom(p1);
+			point2.copyFrom(p2);
+			point3.copyFrom(p3);
 		}
 
 		/**
@@ -106,15 +98,15 @@ package org.angle3d.math
 		{
 			if (center == null)
 			{
-				center = pointA.clone();
+				center = point1.clone();
 			}
 			else
 			{
-				center.copyFrom(pointA);
+				center.copyFrom(point1);
 			}
 
-			center.addLocal(pointB);
-			center.addLocal(pointC);
+			center.addLocal(point2);
+			center.addLocal(point3);
 			center.scaleLocal(1 / 3);
 		}
 
@@ -126,14 +118,14 @@ package org.angle3d.math
 		{
 			if (normal == null)
 			{
-				normal = pointB.clone();
+				normal = point2.clone();
 			}
 			else
 			{
-				normal.copyFrom(pointB);
+				normal.copyFrom(point2);
 			}
-			normal.subtractLocal(pointA);
-			normal.crossLocal(pointC.subtract(pointA));
+			normal.subtractLocal(point1);
+			normal.crossLocal(point3.subtract(point1));
 			normal.normalizeLocal();
 		}
 
@@ -239,14 +231,14 @@ package org.angle3d.math
 
 		public function copy(tri:Triangle):void
 		{
-			this.pointA.copyFrom(tri.pointA);
-			this.pointB.copyFrom(tri.pointB);
-			this.pointC.copyFrom(tri.pointC);
+			this.point1.copyFrom(tri.point1);
+			this.point2.copyFrom(tri.point2);
+			this.point3.copyFrom(tri.point3);
 		}
 
 		public function clone():Triangle
 		{
-			return new Triangle(pointA, pointB, pointC);
+			return new Triangle(point1, point2, point3);
 		}
 	}
 }

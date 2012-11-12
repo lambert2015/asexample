@@ -1,6 +1,7 @@
 package org.angle3d.utils
 {
 
+	import org.angle3d.collision.bih.BIHStackData;
 	import org.angle3d.math.Color;
 	import org.angle3d.math.Matrix3f;
 	import org.angle3d.math.Matrix4f;
@@ -105,6 +106,12 @@ package org.angle3d.utils
 		public var fDdU:Vector.<Number>;
 		public var fADdU:Vector.<Number>;
 		public var fAWxDdU:Vector.<Number>;
+
+		/**
+		 * BIHTree
+		 */
+		public var bihSwapTmp:Vector.<Number> = new Vector.<Number>(9, true);
+		public var bihStack:Vector.<BIHStackData> = new Vector.<BIHStackData>();
 
 		public function TempVars()
 		{

@@ -74,7 +74,8 @@ package org.angle3d.math
 		[Inline]
 		public final function isIdentity():Boolean
 		{
-			return (m00 == 1 && m01 == 0 && m02 == 0 && m03 == 0) && (m10 == 0 && m11 == 1 && m12 == 0 && m13 == 0) && (m20 == 0 && m21 == 0 && m22 == 1 && m23 == 0) && (m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
+			return (m00 == 1 && m01 == 0 && m02 == 0 && m03 == 0) && (m10 == 0 && m11 == 1 && m12 == 0 && m13 == 0) && (m20 == 0 && m21 == 0 && m22 == 1 && m23 == 0) && (m30 == 0 && m31 == 0 && m32 ==
+				0 && m33 == 1);
 		}
 
 		/**
@@ -84,7 +85,7 @@ package org.angle3d.math
 		 * @param matrix
 		 *            the matrix to copy.
 		 */
-		public function copyFrom(mat:Matrix4f):void
+		public function copyFrom(mat:Matrix4f):Matrix4f
 		{
 			this.m00 = mat.m00;
 			this.m01 = mat.m01;
@@ -105,6 +106,8 @@ package org.angle3d.math
 			this.m31 = mat.m31;
 			this.m32 = mat.m32;
 			this.m33 = mat.m33;
+
+			return this;
 		}
 
 		/**
@@ -1329,7 +1332,8 @@ package org.angle3d.math
 
 		public function toString():String
 		{
-			return "Matrix4f\n[" + m00 + "\t" + m01 + "\t" + m02 + "\t" + m03 + "\n " + m10 + "\t" + m11 + "\t" + m12 + "\t" + m13 + "\n " + m20 + "\t" + m21 + "\t" + m22 + "\t" + m23 + "\n " + m30 + "\t" + m31 + "\t" + m32 + "\t" + m33 + "]";
+			return "Matrix4f\n[" + m00 + "\t" + m01 + "\t" + m02 + "\t" + m03 + "\n " + m10 + "\t" + m11 + "\t" + m12 + "\t" + m13 + "\n " + m20 + "\t" + m21 + "\t" + m22 + "\t" + m23 + "\n " + m30 + "\t" +
+				m31 + "\t" + m32 + "\t" + m33 + "]";
 		}
 	}
 }
