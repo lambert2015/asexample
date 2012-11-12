@@ -1,4 +1,4 @@
-package org.angle3d.collision.bin
+package org.angle3d.collision.bih
 {
 	import org.angle3d.bounding.BoundingBox;
 	import org.angle3d.bounding.BoundingVolume;

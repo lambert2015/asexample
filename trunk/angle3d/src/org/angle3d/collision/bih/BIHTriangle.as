@@ -1,4 +1,4 @@
-package org.angle3d.collision.bin
+package org.angle3d.collision.bih
 {
 	import flash.geom.Vector3D;
 
