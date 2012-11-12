@@ -1,4 +1,4 @@
-package org.angle3d.collision.bin
+package org.angle3d.collision.bih
 {
 
 	public class BIHStackData
