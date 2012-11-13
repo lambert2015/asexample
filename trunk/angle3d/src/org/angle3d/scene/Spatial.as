@@ -209,7 +209,6 @@ package org.angle3d.scene
 		{
 			mRefreshFlags |= RF_BOUND;
 
-			// XXX: Replace with a recursive call?
 			var p:Spatial = parent;
 			while (p != null)
 			{
@@ -229,6 +228,29 @@ package org.angle3d.scene
 		}
 
 		/**
+		 * (Internal use only) Forces a refresh of the given types of data.
+		 *
+		 * @param transforms Refresh world transform based on parents'
+		 * @param bounds Refresh bounding volume data based on child nodes
+		 * @param lights Refresh light list based on parents'
+		 */
+		public function forceRefresh(transforms:Boolean, bounds:Boolean, lights:Boolean):void
+		{
+			if (transforms)
+			{
+				setTransformRefresh();
+			}
+			if (bounds)
+			{
+				setBoundRefresh();
+			}
+			if (lights)
+			{
+				setLightListRefresh();
+			}
+		}
+
+		/**
 		 * <code>checkCulling</code> checks the spatial with the camera to see if it
 		 * should be culled.
 		 * <p>
@@ -243,7 +265,8 @@ package org.angle3d.scene
 		{
 			CF::DEBUG
 			{
-				Assert.assert(mRefreshFlags == 0, "Scene graph is not properly updated for rendering.\n" + "Make sure scene graph state was not changed after\n" + " rootNode.updateGeometricState() call. \n" + "Problem spatial name: " + name);
+				Assert.assert(mRefreshFlags == 0, "Scene graph is not properly updated for rendering.\n" + "Make sure scene graph state was not changed after\n" + " rootNode.updateGeometricState() call. \n" +
+					"Problem spatial name: " + name);
 			}
 
 			var cm:int = cullHint;

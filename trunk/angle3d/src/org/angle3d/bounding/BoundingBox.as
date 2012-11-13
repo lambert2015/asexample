@@ -615,13 +615,17 @@ package org.angle3d.bounding
 		{
 			var result:CollisionResult;
 			var diff:Vector3f = ray.origin.subtract(center);
-			var direction:Vector3f = ray.direction.clone();
+			var direction:Vector3f = ray.direction;
 
 			var t:Array = [0, Number.POSITIVE_INFINITY];
 
 			var saveT0:Number = t[0], saveT1:Number = t[1];
-			var notEntirelyClipped:Boolean = clip(direction.x, -diff.x - xExtent, t) && clip(-direction.x, diff.x - xExtent, t) && clip(direction.y, -diff.y - yExtent, t) && clip(-direction.y, diff.y -
-				yExtent, t) && clip(direction.z, -diff.z - zExtent, t) && clip(-direction.z, diff.z - zExtent, t);
+			var notEntirelyClipped:Boolean = clip(direction.x, -diff.x - xExtent, t) &&
+				clip(-direction.x, diff.x - xExtent, t) &&
+				clip(direction.y, -diff.y - yExtent, t) &&
+				clip(-direction.y, diff.y - yExtent, t) &&
+				clip(direction.z, -diff.z - zExtent, t) &&
+				clip(-direction.z, diff.z - zExtent, t);
 
 			if (notEntirelyClipped && (t[0] != saveT0 || t[1] != saveT1))
 			{

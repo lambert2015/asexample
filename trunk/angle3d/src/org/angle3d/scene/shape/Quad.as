@@ -73,6 +73,7 @@ package org.angle3d.scene.shape
 
 			subMesh.validate();
 			this.addSubMesh(subMesh);
+			validate();
 		}
 	}
 }
