@@ -16,7 +16,7 @@ package examples.model
 	import org.angle3d.texture.BitmapTexture;
 	import org.angle3d.utils.Stats;
 
-
+//TODO 添加箭头测试
 	public class ShapeTest extends SimpleApplication
 	{
 		private var angle:Number;
@@ -59,11 +59,11 @@ package examples.model
 			gm.setTranslationXYZ(100, 0, 0);
 			scene.attachChild(gm);
 
-			var torusKnot:TorusKnot = new TorusKnot(50, 10, 100, 400, false, 2, 3, 1);
+			var torusKnot:TorusKnot = new TorusKnot(50, 10, 100, 40, false, 2, 3, 1);
 			gm = new Geometry("torusKnot", torusKnot);
 			gm.setMaterial(textureMat);
 			gm.setTranslationXYZ(100, 0, -100);
-			//scene.attachChild(gm);
+			scene.attachChild(gm);
 
 			var sphere:Sphere = new Sphere(20, 20, 50);
 			gm = new Geometry("sphere", sphere);

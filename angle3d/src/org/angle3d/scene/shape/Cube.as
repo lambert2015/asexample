@@ -248,6 +248,7 @@ package org.angle3d.scene.shape
 			subMesh.setIndices(_indices);
 			subMesh.validate();
 			this.addSubMesh(subMesh);
+			validate();
 		}
 	}
 }

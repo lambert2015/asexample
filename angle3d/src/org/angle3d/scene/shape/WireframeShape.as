@@ -127,6 +127,8 @@ package org.angle3d.scene.shape
 			}
 
 			updateBuffer(updateIndices);
+
+			validate();
 		}
 
 		protected function updateBuffer(updateIndices:Boolean = true):void

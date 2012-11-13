@@ -145,6 +145,7 @@
 			subMesh.setIndices(indices);
 			subMesh.validate();
 			this.addSubMesh(subMesh);
+			validate();
 		}
 
 		/**

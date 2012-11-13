@@ -42,7 +42,9 @@ package org.angle3d.scene.shape
 			var cx:Number = center.x;
 			var cy:Number = center.y;
 			var cz:Number = center.z;
-			return Vector.<Vector3f>([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
+			return Vector.<Vector3f>([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent),
+				new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx +
+				xExtent, cy + yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
 		}
 
 		/**
@@ -105,6 +107,7 @@ package org.angle3d.scene.shape
 			duUpdateGeometryColors();
 			duUpdateGeometryIndices();
 			this.addSubMesh(subMesh);
+			validate();
 		}
 
 		/**

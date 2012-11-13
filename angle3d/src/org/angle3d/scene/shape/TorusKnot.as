@@ -130,6 +130,7 @@ package org.angle3d.scene.shape
 			subMesh.setIndices(_indices);
 			subMesh.validate();
 			this.addSubMesh(subMesh);
+			validate();
 		}
 
 		private function getPos(_radius:Number, _p:uint, _q:uint, _heightScale:Number, _u:Number, _v:Number):Vector3f
