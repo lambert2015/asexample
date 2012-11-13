@@ -137,6 +137,27 @@ package org.angle3d.math
 			}
 		}
 
+		public function setValueAt(index:int, value:Number):void
+		{
+			CF::DEBUG
+			{
+				Assert.assert(index >= 0 && index < 3, "out of bound");
+			}
+
+			if (index == 0)
+			{
+				x = value;
+			}
+			else if (index == 1)
+			{
+				y = value;
+			}
+			else
+			{
+				z = value;
+			}
+		}
+
 		/**
 		 *
 		 * <code>add</code> adds a provided vector to this vector creating a

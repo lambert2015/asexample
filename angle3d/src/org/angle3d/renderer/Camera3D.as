@@ -843,8 +843,8 @@ package org.angle3d.renderer
 
 			var inverseMat:Matrix4f = mViewProjectionMatrix.invert();
 
-			result.setTo((screenPos.x / width - mViewPortRect.left) / mViewPortRect.width * 2 - 1,
-				(screenPos.y / height - mViewPortRect.bottom) / mViewPortRect.height * 2 - 1,
+			result.setTo((screenPos.x / width - mViewPortRect.left) / (mViewPortRect.right - mViewPortRect.left) * 2 - 1,
+				(screenPos.y / height - mViewPortRect.bottom) / (mViewPortRect.top - mViewPortRect.bottom) * 2 - 1,
 				projectionZPos * 2 - 1);
 
 			var w:Number = inverseMat.multProj(result, result);

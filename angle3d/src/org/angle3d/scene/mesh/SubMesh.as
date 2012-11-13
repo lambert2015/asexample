@@ -7,7 +7,12 @@ package org.angle3d.scene.mesh
 
 	import org.angle3d.bounding.BoundingBox;
 	import org.angle3d.bounding.BoundingVolume;
+	import org.angle3d.collision.Collidable;
+	import org.angle3d.collision.CollisionResults;
+	import org.angle3d.collision.bih.BIHTree;
+	import org.angle3d.math.Matrix4f;
 	import org.angle3d.math.Triangle;
+	import org.angle3d.scene.CollisionData;
 	import org.angle3d.utils.Assert;
 
 	/**
@@ -17,8 +22,11 @@ package org.angle3d.scene.mesh
 	 */
 	//TODO 目前有个问题，Shader中Attribute的顺序可能和这里的不同，这时候该根据那个作为标准呢
 	//TODO 合并后对某些Shader可能会有问题，因为数据可能不搭配。
+	//合并有许多问题，暂时不使用
 	public class SubMesh
 	{
+		protected var collisionTree:CollisionData;
+
 		public var mesh:Mesh;
 
 		/**
@@ -53,6 +61,26 @@ package org.angle3d.scene.mesh
 		public function validate():void
 		{
 			updateBound();
+		}
+
+		/**
+		 * Generates a collision tree for the mesh.
+		 */
+		private function createCollisionData():void
+		{
+			var tree:BIHTree = new BIHTree(this);
+			tree.construct();
+			collisionTree = tree;
+		}
+
+		public function collideWith(other:Collidable, worldMatrix:Matrix4f, worldBound:BoundingVolume, results:CollisionResults):int
+		{
+			if (collisionTree == null)
+			{
+				createCollisionData();
+			}
+
+			return collisionTree.collideWith(other, worldMatrix, worldBound, results);
 		}
 
 		/**
@@ -260,15 +288,6 @@ package org.angle3d.scene.mesh
 					_vertexBuffer3D = null;
 				}
 			}
-//			else
-//			{
-//				var buffer3D:VertexBuffer3D = _vertexBuffer3DMap[type];
-//				if (buffer3D != null)
-//				{
-//					buffer3D.dispose();
-//					delete _vertexBuffer3DMap[type];
-//				}
-//			}
 		}
 
 		public function setIndices(indices:Vector.<uint>):void

@@ -5,14 +5,17 @@ package org.angle3d.collision.bih
 	import org.angle3d.bounding.BoundingVolume;
 	import org.angle3d.collision.Collidable;
 	import org.angle3d.collision.CollisionResults;
+	import org.angle3d.error.UnsupportedCollisionException;
+	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Matrix4f;
 	import org.angle3d.math.Ray;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.scene.CollisionData;
-	import org.angle3d.scene.mesh.Mesh;
 	import org.angle3d.scene.mesh.BufferType;
+	import org.angle3d.scene.mesh.Mesh;
+	import org.angle3d.scene.mesh.SubMesh;
 	import org.angle3d.utils.TempVars;
-	import org.angle3d.math.FastMath;
+
 	/**
 	 * ...
 	 * @author andy
@@ -28,7 +31,7 @@ package org.angle3d.collision.bih
 		private var numTris:int;
 		private var maxTrisPerNode:int;
 
-		private var mesh:Mesh;
+		private var subMesh:SubMesh;
 
 		private var pointData:Vector.<Number>;
 		private var triIndices:Vector.<int>;
@@ -36,35 +39,31 @@ package org.angle3d.collision.bih
 		private var boundResults:CollisionResults = new CollisionResults();
 		private var bihSwapTmp:Vector.<Number>;
 
-		public function BIHTree(mesh:Mesh,maxTrisPerNode:int=100)
+		public function BIHTree(subMesh:SubMesh, maxTrisPerNode:int = 100)
 		{
-			this.mesh = mesh;
+			this.subMesh = subMesh;
 			this.maxTrisPerNode = maxTrisPerNode;
 
-			if(maxTrisPerNode < 1 || mesh == null)
+			if (maxTrisPerNode < 1 || subMesh == null)
 			{
 				throw new Error("illegal argument");
 			}
 
-			bihSwapTmp = new Vector.<Number>(9,true);
+			bihSwapTmp = new Vector.<Number>(9, true);
 
-			var vertices:Vector.<Number> = mesh.getBuffer(BufferType.Position).getData();
-			IndexBuffer ib = mesh.getIndexBuffer();
-	        if (ib == null) {
-	            ib = new VirtualIndexBuffer(mesh.getVertexCount(), mesh.getMode());
-	        } else if (mesh.getMode() != Mode.Triangles) {
-	            ib = new WrappedIndexBuffer(mesh);
-	        }
+			var vertices:Vector.<Number> = subMesh.getVertexBuffer(BufferType.POSITION).getData();
+			var indices:Vector.<uint> = subMesh.getIndices();
 
-	        numTris = ib.size() / 3;
-	        initTriList(vb, ib);
+			numTris = indices.length / 3;
+			initTriList(vertices, indices);
 		}
 
-		private function initTriList(vertices:Vector.<Number>,indices:Vector.<int>):void
+		private function initTriList(vertices:Vector.<Number>, indices:Vector.<uint>):void
 		{
-			pointData = new Vector.<Number>(numTris*3*3);
-			var p:int=0;
-			for(var i:int = 0; i < numTris * 3; i+=3)
+			pointData = new Vector.<Number>(numTris * 3 * 3);
+			var p:int = 0;
+			var count:int = numTris * 3;
+			for (var i:int = 0; i < count; i += 3)
 			{
 				var vert:int = indices[i] * 3;
 
@@ -73,12 +72,12 @@ package org.angle3d.collision.bih
 				pointData[p++] = vertices[vert];
 
 
-				vert = indices[i+1]*3;
+				vert = indices[i + 1] * 3;
 				pointData[p++] = vertices[vert++];
 				pointData[p++] = vertices[vert++];
 				pointData[p++] = vertices[vert];
 
-				vert = indices[i+2]*3;
+				vert = indices[i + 2] * 3;
 				pointData[p++] = vertices[vert++];
 				pointData[p++] = vertices[vert++];
 				pointData[p++] = vertices[vert];
@@ -86,7 +85,7 @@ package org.angle3d.collision.bih
 			}
 
 			triIndices = new Vector.<int>(numTris);
-			for(i =0 ; i<numTris;i++)
+			for (i = 0; i < numTris; i++)
 			{
 				triIndices[i] = i;
 			}
@@ -98,7 +97,7 @@ package org.angle3d.collision.bih
 			root = createNode(0, numTris - 1, sceneBbox, 0);
 		}
 
-		private function createBox(l:int, r:int):BoundingBox 
+		private function createBox(l:int, r:int):BoundingBox
 		{
 			var vars:TempVars = TempVars.getTempVars();
 
@@ -109,7 +108,7 @@ package org.angle3d.collision.bih
 			var v2:Vector3f = vars.vect4;
 			var v3:Vector3f = vars.vect5;
 
-			for (var i:int = l; i <= r; i++) 
+			for (var i:int = l; i <= r; i++)
 			{
 				getTriangle(i, v1, v2, v3);
 				Vector3f.checkMinMax(min, max, v1);
@@ -117,8 +116,11 @@ package org.angle3d.collision.bih
 				Vector3f.checkMinMax(min, max, v3);
 			}
 
-			var bbox:BoundingBox = new BoundingBox(min, max);
+			var bbox:BoundingBox = new BoundingBox();
+			bbox.setMinMax(min, max);
+
 			vars.release();
+
 			return bbox;
 		}
 
@@ -127,7 +129,7 @@ package org.angle3d.collision.bih
 			return triIndices[triIndex];
 		}
 
-		private function sortTriangles(l:int, r:int,split:Number,axis:int):int 
+		private function sortTriangles(l:int, r:int, split:Number, axis:int):int
 		{
 			var pivot:int = l;
 			var j:int = r;
@@ -138,16 +140,16 @@ package org.angle3d.collision.bih
 			var v2:Vector3f = vars.vect2;
 			var v3:Vector3f = vars.vect3;
 
-			while (pivot <= j) 
+			while (pivot <= j)
 			{
 				getTriangle(pivot, v1, v2, v3);
 				v1.addLocal(v2).addLocal(v3).scaleLocal(FastMath.ONE_THIRD);
-				if (v1.getValueAt(axis) > split) 
+				if (v1.getValueAt(axis) > split)
 				{
 					swapTriangles(pivot, j);
 					--j;
-				} 
-				else 
+				}
+				else
 				{
 					++pivot;
 				}
@@ -158,115 +160,126 @@ package org.angle3d.collision.bih
 			return pivot;
 		}
 
-    private function setMinMax(bbox:BoundingBox, doMin:Boolean, axis:int, value:Number):void
-	{
-        var min:Vector3f = bbox.getMin(null);
-        var max:Vector3f = bbox.getMax(null);
-
-        if (doMin) {
-            min.set(axis, value);
-        } else {
-            max.set(axis, value);
-        }
-
-        bbox.setMinMax(min, max);
-    }
-
-    private function getMinMax(bbox:BoundingBox, doMin:Boolean, axis:int):Number {
-        if (doMin) {
-            return bbox.getMin(null).get(axis);
-        } else {
-            return bbox.getMax(null).get(axis);
-        }
-    }
-
-    private function createNode( l:int, r:int, nodeBbox:BoundingBox, depth:int):BIHNode 
-	{
-        if ((r - l) < maxTrisPerNode || depth > MAX_TREE_DEPTH) {
-            return new BIHNode(l, r);
-        }
-
-        var currentBox:BoundingBox = createBox(l, r);
-
-        var exteriorExt:Vector3f = nodeBbox.getExtent(null);
-        var interiorExt:Vector3f = currentBox.getExtent(null);
-        exteriorExt.subtractLocal(interiorExt);
-
-        var axis:int = 0;
-        if (exteriorExt.x > exteriorExt.y) 
+		private function setMinMax(bbox:BoundingBox, doMin:Boolean, axis:int, value:Number):void
 		{
-            if (exteriorExt.x > exteriorExt.z) 
+			var min:Vector3f = bbox.getMin(null);
+			var max:Vector3f = bbox.getMax(null);
+
+			if (doMin)
 			{
-                axis = 0;
-            } 
-			else 
+				min.setValueAt(axis, value);
+			}
+			else
 			{
-                axis = 2;
-            }
-        } 
-		else 
+				max.setValueAt(axis, value);
+			}
+
+			bbox.setMinMax(min, max);
+		}
+
+		private function getMinMax(bbox:BoundingBox, doMin:Boolean, axis:int):Number
 		{
-            if (exteriorExt.y > exteriorExt.z) 
+			if (doMin)
 			{
-                axis = 1;
-            } 
-			else 
+				return bbox.getMin(null).getValueAt(axis);
+			}
+			else
 			{
-                axis = 2;
-            }
-        }
-		
-        if (exteriorExt.equals(Vector3f.ZERO)) 
+				return bbox.getMax(null).getValueAt(axis);
+			}
+		}
+
+		private function createNode(l:int, r:int, nodeBbox:BoundingBox, depth:int):BIHNode
 		{
-            axis = 0;
-        }
+			if ((r - l) < maxTrisPerNode || depth > MAX_TREE_DEPTH)
+			{
+				return new BIHNode(l, r);
+			}
+
+			var currentBox:BoundingBox = createBox(l, r);
+
+			var exteriorExt:Vector3f = nodeBbox.getExtent(null);
+			var interiorExt:Vector3f = currentBox.getExtent(null);
+			exteriorExt.subtractLocal(interiorExt);
+
+			var axis:int = 0;
+			if (exteriorExt.x > exteriorExt.y)
+			{
+				if (exteriorExt.x > exteriorExt.z)
+				{
+					axis = 0;
+				}
+				else
+				{
+					axis = 2;
+				}
+			}
+			else
+			{
+				if (exteriorExt.y > exteriorExt.z)
+				{
+					axis = 1;
+				}
+				else
+				{
+					axis = 2;
+				}
+			}
+
+			if (exteriorExt.isZero())
+			{
+				axis = 0;
+			}
 
 //        Arrays.sort(tris, l, r, comparators[axis]);
-        var split:Number = currentBox.getCenter().getValueAt(axis);
-        var pivot:int = sortTriangles(l, r, split, axis);
-        if (pivot == l || pivot == r) 
-		{
-            pivot = (r + l) / 2;
-        }
+			var split:Number = currentBox.getCenter().getValueAt(axis);
+			var pivot:int = sortTriangles(l, r, split, axis);
+			if (pivot == l || pivot == r)
+			{
+				pivot = (r + l) / 2;
+			}
 
-        //If one of the partitions is empty, continue with recursion: same level but different bbox
-        if (pivot < l) 
-		{
-            //Only right
-            var rbbox:BoundingBox = new BoundingBox(currentBox);
-            setMinMax(rbbox, true, axis, split);
-            return createNode(l, r, rbbox, depth + 1);
-        } 
-		else if (pivot > r) 
-		{
-            //Only left
-            var lbbox:BoundingBox = new BoundingBox(currentBox);
-            setMinMax(lbbox, false, axis, split);
-            return createNode(l, r, lbbox, depth + 1);
-        } 
-		else 
-		{
-            //Build the node
-            var node:BIHNode = new BIHNode(axis);
+			var lbbox:BoundingBox;
+			var rbbox:BoundingBox;
+			//If one of the partitions is empty, continue with recursion: same level but different bbox
+			if (pivot < l)
+			{
+				//Only right
+				rbbox = currentBox.clone() as BoundingBox;
+				setMinMax(rbbox, true, axis, split);
+				return createNode(l, r, rbbox, depth + 1);
+			}
+			else if (pivot > r)
+			{
+				//Only left
+				lbbox = currentBox.clone() as BoundingBox;
+				setMinMax(lbbox, false, axis, split);
+				return createNode(l, r, lbbox, depth + 1);
+			}
+			else
+			{
+				//Build the node
+				var node:BIHNode = new BIHNode(-1, -1);
+				node.axis = axis;
 
-            //Left child
-            var lbbox:BoundingBox = new BoundingBox(currentBox);
-            setMinMax(lbbox, false, axis, split);
+				//Left child
+				lbbox = currentBox.clone() as BoundingBox;
+				setMinMax(lbbox, false, axis, split);
 
-            //The left node right border is the plane most right
-            node.setLeftPlane(getMinMax(createBox(l, max(l, pivot - 1)), false, axis));
-            node.setLeftChild(createNode(l, max(l, pivot - 1), lbbox, depth + 1)); //Recursive call
+				//The left node right border is the plane most right
+				node.leftPlane = getMinMax(createBox(l, Math.max(l, pivot - 1)), false, axis);
+				node.left = createNode(l, Math.max(l, pivot - 1), lbbox, depth + 1); //Recursive call
 
-            //Right Child
-            var rbbox:BoundingBox = new BoundingBox(currentBox);
-            setMinMax(rbbox, true, axis, split);
-            //The right node left border is the plane most left
-            node.setRightPlane(getMinMax(createBox(pivot, r), true, axis));
-            node.setRightChild(createNode(pivot, r, rbbox, depth + 1)); //Recursive call
+				//Right Child
+				rbbox = currentBox.clone() as BoundingBox;
+				setMinMax(rbbox, true, axis, split);
+				//The right node left border is the plane most left
+				node.rightPlane = getMinMax(createBox(pivot, r), true, axis);
+				node.right = createNode(pivot, r, rbbox, depth + 1); //Recursive call
 
-            return node;
-        }
-    }
+				return node;
+			}
+		}
 
 		public function getTriangle(index:int, v1:Vector3f, v2:Vector3f, v3:Vector3f):void
 		{
@@ -285,19 +298,31 @@ package org.angle3d.collision.bih
 			v3.z = pointData[pointIndex++];
 		}
 
-		public function swapTriangles( index1:int, index2:int):void
+		public function swapTriangles(index1:int, index2:int):void
 		{
 			var p1:int = index1 * 9;
 			var p2:int = index2 * 9;
 
+
+			var i:int;
+
 			// store p1 in tmp
-			System.arraycopy(pointData, p1, bihSwapTmp, 0, 9);
+			for (i = 0; i < 9; i++)
+			{
+				bihSwapTmp[i] = pointData[p1 + i];
+			}
 
 			// copy p2 to p1
-			System.arraycopy(pointData, p2, pointData, p1, 9);
+			for (i = 0; i < 9; i++)
+			{
+				pointData[p1 + i] = pointData[p2 + i];
+			}
 
 			// copy tmp to p2
-			System.arraycopy(bihSwapTmp, 0, pointData, p2, 9);
+			for (i = 0; i < 9; i++)
+			{
+				pointData[p2 + i] = bihSwapTmp[i];
+			}
 
 			// swap indices
 			var tmp2:int = triIndices[index1];
@@ -306,86 +331,86 @@ package org.angle3d.collision.bih
 		}
 
 		private function collideWithRay(r:Ray,
-				worldMatrix:Matrix4f,
-				worldBound:BoundingVolume,
-				results:CollisionResults):int
+			worldMatrix:Matrix4f,
+			worldBound:BoundingVolume,
+			results:CollisionResults):int
 		{
 			boundResults.clear();
 			worldBound.collideWith(r, boundResults);
-			if (boundResults.size > 0) 
+			if (boundResults.size > 0)
 			{
 				var tMin:Number = boundResults.getClosestCollision().distance;
 				var tMax:Number = boundResults.getFarthestCollision().distance;
 
-				if (tMax <= 0) 
+				if (tMax <= 0)
 				{
 					tMax = Number.POSITIVE_INFINITY;
-				} 
-				else if (tMin == tMax) 
+				}
+				else if (tMin == tMax)
 				{
 					tMin = 0;
 				}
 
-				if (tMin <= 0) 
+				if (tMin <= 0)
 				{
 					tMin = 0;
 				}
 
-				if (r.getLimit() < Number.POSITIVE_INFINITY) 
+				if (r.getLimit() < Number.POSITIVE_INFINITY)
 				{
 					tMax = Math.min(tMax, r.getLimit());
-					if (tMin > tMax){
+					if (tMin > tMax)
+					{
 						return 0;
 					}
 				}
 
-	//            return root.intersectBrute(r, worldMatrix, this, tMin, tMax, results);
-				return root.intersectWhere(r, worldMatrix, this, tMin, tMax, results);
+				//            return root.intersectBrute(r, worldMatrix, this, tMin, tMax, results);
+				return root.intersectWhere2(r, worldMatrix, this, tMin, tMax, results);
 			}
 			return 0;
 		}
 
 		private function collideWithBoundingVolume(bv:BoundingVolume,
-				worldMatrix:Matrix4f,
-				results:CollisionResults):int 
+			worldMatrix:Matrix4f,
+			results:CollisionResults):int
 		{
 			var bbox:BoundingBox;
-			if (bv is BoundingSphere) 
+			if (bv is BoundingSphere)
 			{
 				var sphere:BoundingSphere = bv as BoundingSphere;
-				bbox = new BoundingBox(bv.center.clone(), sphere.radius,
-						sphere.radius,
-						sphere.radius);
-			} 
-			else if (bv is BoundingBox) 
+				bbox = new BoundingBox(bv.center.clone());
+				bbox.setExtent(sphere.radius, sphere.radius, sphere.radius);
+			}
+			else if (bv is BoundingBox)
 			{
 				bbox = bv.clone() as BoundingBox;
 			}
-			else 
+			else
 			{
 				throw new UnsupportedCollisionException();
 			}
 
-			bbox.transform(worldMatrix.invert(), bbox);
+			bbox.transformByMatrix(worldMatrix.invert(), bbox);
 			return root.intersectWhere(bv, bbox, worldMatrix, this, results);
 		}
 
-		public function collideWith( other:Collidable,
-				 worldMatrix:Matrix4f,
-				 worldBound:BoundingVolume,
-				 results:CollisionResults) :int
+		public function collideWith(other:Collidable,
+			worldMatrix:Matrix4f,
+			worldBound:BoundingVolume,
+			results:CollisionResults):int
 		{
-			if (other is Ray) 
+			if (other is Ray)
 			{
 				var ray:Ray = other as Ray;
 				return collideWithRay(ray, worldMatrix, worldBound, results);
-			} 
-			else if (other is BoundingVolume) 
+			}
+			else if (other is BoundingVolume)
 			{
 				var bv:BoundingVolume = other as BoundingVolume;
 				return collideWithBoundingVolume(bv, worldMatrix, results);
-			} 
-			else 
+			}
+			else
 			{
 				throw new UnsupportedCollisionException();
 			}
