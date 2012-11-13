@@ -4,6 +4,7 @@
 
 	public class FastMath
 	{
+		public static const ONE_THIRD:Number = 1.0 / 3.0;
 		public static const INVERT_255:Number = 1.0 / 255;
 		public static const PI:Number = Math.PI;
 		public static const INV_PI:Number = 1 / Math.PI;

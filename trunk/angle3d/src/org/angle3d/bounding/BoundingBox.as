@@ -694,7 +694,7 @@ package org.angle3d.bounding
 		 */
 		override public function intersectsTriangle(tri:Triangle):Boolean
 		{
-			return Intersection.intersect(this, tri.getPoint1(), tri.getPoint2(), tri.getPoint3());
+			return Intersection.intersect(this, tri.point1, tri.point2, tri.point3);
 		}
 
 		override public function contains(point:Vector3f):Boolean

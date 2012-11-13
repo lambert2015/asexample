@@ -63,6 +63,7 @@ package org.angle3d.input
 	 */
 	public class InputManager implements RawInputListener
 	{
+		private var _initialized:Boolean;
 		private var _stage:Stage;
 
 		private var _keyInput:KeyInput;
@@ -91,11 +92,6 @@ package org.angle3d.input
 
 		public function InputManager()
 		{
-			_init();
-		}
-
-		private function _init():void
-		{
 			_keyInput = new KeyInput();
 			_mouseInput = new MouseInput();
 
@@ -119,14 +115,20 @@ package org.angle3d.input
 			axisValues = new Dictionary();
 			rawListeners = new Vector.<RawInputListener>();
 			inputQueue = new Vector.<InputEvent>();
+
+			_initialized = false;
 		}
 
 		public function initialize(stage:Stage):void
 		{
+			_stage = stage;
+
 			_keyInput.initialize(stage);
 			_mouseInput.initialize(stage);
 
 			firstTime = getTimer();
+
+			_initialized = true;
 		}
 
 		public function destroy():void
@@ -178,7 +180,7 @@ package org.angle3d.input
 			//throw new Error("MouseInput has raised an event at an illegal time.");
 			//}
 
-			cursorPos.setTo(evt.x, evt.y);
+			cursorPos.setTo(evt.x, _stage.stageHeight - evt.y);
 			inputQueue.push(evt);
 		}
 
@@ -548,6 +550,9 @@ package org.angle3d.input
 		 */
 		public function update(tpf:Number):void
 		{
+			if (!_initialized)
+				return;
+
 			frameTPF = tpf;
 
 			// Activate safemode if the TPF value is so small

@@ -19,8 +19,6 @@ package org.angle3d.scene.mesh
 
 		protected var mBoundDirty:Boolean;
 
-		protected var collisionTree:CollisionData;
-
 		protected var mSubMeshList:Vector.<SubMesh>;
 
 		protected var mType:String;
@@ -121,24 +119,15 @@ package org.angle3d.scene.mesh
 			return mBound;
 		}
 
-		/**
-		 * Generates a collision tree for the mesh.
-		 */
-		private function createCollisionData():void
-		{
-			var tree:BIHTree = new BIHTree(this);
-			tree.construct();
-			collisionTree = tree;
-		}
-
 		public function collideWith(other:Collidable, worldMatrix:Matrix4f, worldBound:BoundingVolume, results:CollisionResults):int
 		{
-			if (collisionTree == null)
+			var size:int = 0;
+			var count:int = subMeshList.length;
+			for (var i:int = 0; i < count; i++)
 			{
-				createCollisionData();
+				size += subMeshList[i].collideWith(other, worldMatrix, worldBound, results);
 			}
-
-			return collisionTree.collideWith(other, worldMatrix, worldBound, results);
+			return size;
 		}
 	}
 }
