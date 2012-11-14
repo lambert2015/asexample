@@ -81,9 +81,9 @@ package org.angle3d.bounding
 			var count:int = 0;
 			for (var i:int = start; i < end; i++)
 			{
-				vertList[count++] = tris[i].getPoint1();
-				vertList[count++] = tris[i].getPoint2();
-				vertList[count++] = tris[i].getPoint3();
+				vertList[count++] = tris[i].point1
+				vertList[count++] = tris[i].point2
+				vertList[count++] = tris[i].point3;
 			}
 			averagePoints(vertList);
 		}
