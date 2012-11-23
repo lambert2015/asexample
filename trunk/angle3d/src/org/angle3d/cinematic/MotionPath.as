@@ -78,7 +78,7 @@ package org.angle3d.cinematic
 			if (control.needsDirection())
 			{
 				tmpVector.copyFrom(temp);
-				tmpVector.subtractLocal(control.spatial.getTranslation());
+				tmpVector.subtractLocal(control.spatial.translation);
 				control.direction = tmpVector;
 				control.direction.normalizeLocal();
 			}

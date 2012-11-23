@@ -271,7 +271,7 @@ package org.angle3d.animation
 
 			if (mAttachNode != null)
 			{
-				mAttachNode.setTranslation(mWorldPos);
+				mAttachNode.translation = mWorldPos;
 				mAttachNode.setRotation(mWorldRot);
 				mAttachNode.setScale(mWorldScale);
 			}

@@ -150,7 +150,7 @@ package org.angle3d.material.technique
 			var map:Dictionary = new Dictionary();
 			map[BufferType.POSITION] = "a_position";
 
-			if (meshType == MeshType.MT_MORPH_ANIMATION)
+			if (meshType == MeshType.MT_KEYFRAME)
 			{
 				map[BufferType.POSITION1] = "a_position1";
 			}

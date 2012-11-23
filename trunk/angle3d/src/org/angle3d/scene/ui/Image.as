@@ -34,7 +34,7 @@ package org.angle3d.scene.ui
 
 		public function setPosition(x:Number, y:Number):void
 		{
-			var z:Number = this.getTranslation().z;
+			var z:Number = this.translation.z;
 			this.setTranslationXYZ(x, y, z);
 		}
 

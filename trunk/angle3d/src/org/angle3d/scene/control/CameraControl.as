@@ -79,7 +79,7 @@ package org.angle3d.scene.control
 						// set the localtransform, so that the worldtransform would be equal to the camera's transform.
 						// Location:
 						var vecDiff:Vector3f = mCamera.location.subtract(spatial.getWorldTranslation());
-						vecDiff.addLocal(spatial.getTranslation());
+						vecDiff.addLocal(spatial.translation);
 
 						// Rotation:
 						var worldDiff:Quaternion = mCamera.rotation.subtract(spatial.getWorldRotation());

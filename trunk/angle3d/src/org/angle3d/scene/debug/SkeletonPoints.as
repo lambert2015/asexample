@@ -49,7 +49,7 @@ package org.angle3d.scene.debug
 			{
 				var bone:Bone = _skeleton.getBoneAt(i);
 				var node:Geometry = points[i];
-				node.setTranslation(bone.getModelSpacePosition());
+				node.translation = bone.getModelSpacePosition();
 			}
 		}
 	}

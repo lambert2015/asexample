@@ -158,7 +158,7 @@ package org.angle3d.material.technique
 			map[BufferType.POSITION] = "a_position";
 			map[BufferType.NORMAL] = "a_normal";
 
-			if (meshType == MeshType.MT_MORPH_ANIMATION)
+			if (meshType == MeshType.MT_KEYFRAME)
 			{
 				map[BufferType.POSITION1] = "a_position1";
 				map[BufferType.NORMAL1] = "a_normal1";
