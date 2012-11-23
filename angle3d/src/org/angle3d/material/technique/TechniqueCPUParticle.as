@@ -57,7 +57,7 @@ package org.angle3d.material.technique
 			shader.getTextureVar("s_texture").textureMap = _texture;
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource(lightType:String = "none", meshType:String = "static"):String
 		{
 			var source:String = "attribute vec3 a_position;" + 
 				"attribute vec2 a_texCoord;" + 
@@ -76,7 +76,7 @@ package org.angle3d.material.technique
 			return source;
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource(lightType:String = "none", meshType:String = "static"):String
 		{
 			return <![CDATA[
 				uniform sampler2D s_texture;
@@ -87,19 +87,19 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
+		override protected function getOption(lightType:String = "none", meshType:String = "static"):Vector.<Vector.<String>>
 		{
 			var results:Vector.<Vector.<String>> = super.getOption(lightType, meshType);
 			return results;
 		}
 
-		override protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getKey(lightType:String = "none", meshType:String = "static"):String
 		{
 			var result:Array = [_name, meshType];
 			return result.join("_");
 		}
 
-		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
+		override protected function getBindAttributes(lightType:String = "none", meshType:String = "static"):Dictionary
 		{
 			var map:Dictionary = new Dictionary();
 			map[BufferType.POSITION] = "a_position";
@@ -108,7 +108,7 @@ package org.angle3d.material.technique
 			return map;
 		}
 
-		override protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		override protected function getBindUniforms(lightType:String = "none", meshType:String = "static"):Vector.<UniformBindingHelp>
 		{
 			var list:Vector.<UniformBindingHelp> = new Vector.<UniformBindingHelp>();
 			list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));

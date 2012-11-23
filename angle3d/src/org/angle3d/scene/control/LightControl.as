@@ -115,7 +115,7 @@ package org.angle3d.scene.control
 				var pLight:PointLight = light as PointLight;
 
 				vecDiff = pLight.position.subtract(spatial.getWorldTranslation());
-				vecDiff.addLocal(spatial.getTranslation());
+				vecDiff.addLocal(spatial.translation);
 				spatial.setTranslation(vecDiff);
 			}
 			else if (light is DirectionalLight)
@@ -124,7 +124,7 @@ package org.angle3d.scene.control
 				vecDiff = dLight.direction.clone();
 				vecDiff.scaleLocal(-1);
 				vecDiff.subtractLocal(spatial.getWorldTranslation());
-				vecDiff.addLocal(spatial.getTranslation());
+				vecDiff.addLocal(spatial.translation);
 				spatial.setTranslation(vecDiff);
 			}
 		}

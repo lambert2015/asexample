@@ -317,11 +317,11 @@ package org.angle3d.material.technique
 				map[BufferType.TEXCOORD2] = "a_texCoord2";
 			}
 
-			if (meshType == MeshType.MT_MORPH_ANIMATION)
+			if (meshType == MeshType.MT_KEYFRAME)
 			{
 				map[BufferType.POSITION1] = "a_position1";
 			}
-			else if (meshType == MeshType.MT_SKELETAL_ANIMATION)
+			else if (meshType == MeshType.MT_SKINNING)
 			{
 				map[BufferType.BONE_INDICES] = "a_boneIndices";
 				map[BufferType.BONE_WEIGHTS] = "a_boneWeights";

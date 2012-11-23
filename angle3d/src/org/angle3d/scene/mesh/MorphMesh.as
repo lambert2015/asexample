@@ -23,7 +23,7 @@ package org.angle3d.scene.mesh
 		{
 			super();
 
-			mType = MeshType.MT_MORPH_ANIMATION;
+			mType = MeshType.MT_KEYFRAME;
 
 			mAnimationMap = new Dictionary();
 		}

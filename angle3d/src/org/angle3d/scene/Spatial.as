@@ -24,6 +24,7 @@ package org.angle3d.scene
 	import org.angle3d.utils.Cloneable;
 	import org.angle3d.utils.TempVars;
 
+	//TODO API 优化
 	//TODO 还需要添加更多常用属性
 	//例如：是否可拾取，是否显示鼠标
 	/**
@@ -927,7 +928,7 @@ package org.angle3d.scene
 		 *
 		 * @return the local translation of this node.
 		 */
-		public function getTranslation():Vector3f
+		public function get translation():Vector3f
 		{
 			return mLocalTransform.translation;
 		}
@@ -939,7 +940,7 @@ package org.angle3d.scene
 		 * @param localTranslation
 		 *            the local translation of this spatial.
 		 */
-		public function setTranslation(localTranslation:Vector3f):void
+		public function set translation(localTranslation:Vector3f):void
 		{
 			mLocalTransform.setTranslation(localTranslation);
 			setTransformRefresh();
@@ -1099,7 +1100,7 @@ package org.angle3d.scene
 		{
 			var worldTrans:Vector3f = getWorldTranslation();
 			var absTrans:Vector3f = worldTrans.subtract(worldBound.center);
-			setTranslation(absTrans);
+			translation = absTrans;
 			return this;
 		}
 
@@ -1343,11 +1344,6 @@ package org.angle3d.scene
 			mFrustrumIntersects = intersects;
 		}
 
-		public function toString():String
-		{
-			return name + "(" + getQualifiedClassName(this) + ")";
-		}
-
 		/**
 		 * Creates a transform matrix that will convert from this spatials'
 		 * local coordinate space to the world coordinate space
@@ -1412,6 +1408,11 @@ package org.angle3d.scene
 		public function collideWith(other:Collidable, results:CollisionResults):int
 		{
 			return -1;
+		}
+		
+		public function toString():String
+		{
+			return name + "(" + getQualifiedClassName(this) + ")";
 		}
 	}
 }

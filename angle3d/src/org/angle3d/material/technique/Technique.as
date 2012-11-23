@@ -61,7 +61,7 @@ package org.angle3d.material.technique
 		 * @param	meshKey
 		 * @return
 		 */
-		final public function getShader(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Shader
+		final public function getShader(lightType:String = "none", meshType:String = "static"):Shader
 		{
 			var key:String = getKey(lightType, meshType);
 
@@ -109,37 +109,37 @@ package org.angle3d.material.technique
 			_requiresLight = value;
 		}
 
-		protected function getBindUniforms(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<UniformBindingHelp>
+		protected function getBindUniforms(lightType:String = "none", meshType:String = "static"):Vector.<UniformBindingHelp>
 		{
 			return null;
 		}
 
-		protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary
+		protected function getBindAttributes(lightType:String = "none", meshType:String = "static"):Dictionary
 		{
 			return null;
 		}
 
-		protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		protected function getVertexSource(lightType:String = "none", meshType:String = "static"):String
 		{
 			return "";
 		}
 
-		protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		protected function getFragmentSource(lightType:String = "none", meshType:String = "static"):String
 		{
 			return "";
 		}
 
-		protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
+		protected function getOption(lightType:String = "none", meshType:String = "static"):Vector.<Vector.<String>>
 		{
 			var results:Vector.<Vector.<String>> = new Vector.<Vector.<String>>(2, true);
 			results[0] = new Vector.<String>();
 			results[1] = new Vector.<String>();
 
-			if (meshType == MeshType.MT_MORPH_ANIMATION)
+			if (meshType == MeshType.MT_KEYFRAME)
 			{
 				results[0].push("USE_KEYFRAME");
 			}
-			else if (meshType == MeshType.MT_SKELETAL_ANIMATION)
+			else if (meshType == MeshType.MT_SKINNING)
 			{
 				results[0].push("USE_SKINNING");
 			}
@@ -147,7 +147,7 @@ package org.angle3d.material.technique
 			return results;
 		}
 
-		protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		protected function getKey(lightType:String = "none", meshType:String = "static"):String
 		{
 			return _name;
 		}

@@ -49,7 +49,7 @@ package examples.material
 //			Glass 1.5
 //			Plastic 1.5
 //			Diamond	 2.417
-			var material : MaterialRefraction = new MaterialRefraction(decalMap, sky.cubeMap, 1.5, 0.6);
+			var material : MaterialRefraction = new MaterialRefraction(decalMap, sky.cubeMap, 2.417, 0.6);
 
 			var sphere : Sphere = new Sphere(50, 30, 30);
 			reflectiveSphere = new Geometry("sphere", sphere);
