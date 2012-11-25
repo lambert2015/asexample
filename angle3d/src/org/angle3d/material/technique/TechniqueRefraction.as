@@ -2,6 +2,7 @@ package org.angle3d.material.technique
 {
 	import flash.display3D.Context3DCompareMode;
 	import flash.display3D.Context3DTriangleFace;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	import org.angle3d.light.LightType;
@@ -9,8 +10,6 @@ package org.angle3d.material.technique
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.material.shader.UniformBinding;
 	import org.angle3d.material.shader.UniformBindingHelp;
-	import org.angle3d.math.Color;
-	import org.angle3d.math.FastMath;
 	import org.angle3d.scene.mesh.BufferType;
 	import org.angle3d.scene.mesh.MeshType;
 	import org.angle3d.texture.CubeTextureMap;
@@ -24,6 +23,11 @@ package org.angle3d.material.technique
 	 */
 	public class TechniqueRefraction extends Technique
 	{
+		[Embed(source = "data/refraction.vs", mimeType = "application/octet-stream")]
+		private static var RefractionVS:Class;
+		[Embed(source = "data/refraction.fs", mimeType = "application/octet-stream")]
+		private static var RefractionFS:Class;
+
 		private var _decalMap:TextureMapBase;
 
 		private var _environmentMap:CubeTextureMap;
@@ -34,7 +38,7 @@ package org.angle3d.material.technique
 
 		public function TechniqueRefraction(decalMap:TextureMapBase, environmentMap:CubeTextureMap, etaRatio:Number = 1.5, transmittance:Number = 0.5)
 		{
-			super("TechniqueReflective");
+			super();
 
 			_renderState.applyCullMode = true;
 			_renderState.cullMode = Context3DTriangleFace.FRONT;
@@ -110,57 +114,16 @@ package org.angle3d.material.technique
 			shader.getTextureVar("u_environmentMap").textureMap = _environmentMap;
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
-			return <![CDATA[
-				attribute vec3 a_position;
-				attribute vec2 a_texCoord;
-				attribute vec3 a_normal;
-				
-				varying vec4 v_texCoord;
-				varying vec4 v_refract;
-				
-				uniform mat4 u_WorldViewProjectionMatrix;
-				uniform mat4 u_worldMatrix;
-				uniform vec4 u_camPosition;
-			    uniform vec4 u_etaRatio;
-				
-				function main(){
-					output = m44(a_position,u_WorldViewProjectionMatrix);
-
-					vec3 t_N = m33(a_normal.xyz,u_worldMatrix);
-					t_N = normalize(t_N);
-
-					vec4 t_positionW = m44(a_position,u_worldMatrix);
-					vec3 t_I = sub(t_positionW.xyz,u_camPosition.xyz);
-			        t_I = normalize(t_I);
-			
-					v_refract = refract(t_I,t_N,u_etaRatio);
-					v_texCoord = a_texCoord;
-				}]]>;
+			var ba:ByteArray = new RefractionVS();
+			return ba.readUTFBytes(ba.length);
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
-			return <![CDATA[
-				
-				uniform vec4 u_transmittance;
-				uniform sampler2D u_decalMap;
-				uniform samplerCube u_environmentMap;
-			
-				function lerp(vec4 source1,vec4 source2,float percent){
-					float t_percent1 = percent;
-					t_percent1 = sub(1.0,t_percent1);
-					vec4 t_local1 = mul(source1,t_percent1);
-					vec4 t_local2 = mul(source2,percent);
-					return add(t_local1,t_local2);
-				}
-			
-				function main(){
-					vec4 t_reflectedColor = textureCube(v_refract,u_environmentMap,nomip,linear,clamp);
-					vec4 t_decalColor = texture2D(v_texCoord,u_decalMap,nomip,linear,clamp);
-					output = lerp(t_decalColor,t_reflectedColor,u_transmittance.x);
-				}]]>;
+			var ba:ByteArray = new RefractionFS();
+			return ba.readUTFBytes(ba.length);
 		}
 
 		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary

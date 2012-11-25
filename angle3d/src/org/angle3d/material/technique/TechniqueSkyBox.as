@@ -2,6 +2,7 @@ package org.angle3d.material.technique
 {
 	import flash.display3D.Context3DCompareMode;
 	import flash.display3D.Context3DTriangleFace;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	import org.angle3d.light.LightType;
@@ -20,11 +21,16 @@ package org.angle3d.material.technique
 
 	public class TechniqueSkyBox extends Technique
 	{
+		[Embed(source = "data/skybox.vs", mimeType = "application/octet-stream")]
+		private static var SkyBoxVS:Class;
+		[Embed(source = "data/skybox.fs", mimeType = "application/octet-stream")]
+		private static var SkyBoxFS:Class;
+
 		private var _cubeTexture:CubeTextureMap;
 
 		public function TechniqueSkyBox(cubeTexture:CubeTextureMap)
 		{
-			super("TechniqueSkyBox");
+			super();
 
 			_cubeTexture = cubeTexture;
 
@@ -48,37 +54,16 @@ package org.angle3d.material.technique
 			shader.getTextureVar("t_cubeTexture").textureMap = _cubeTexture;
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
-			return <![CDATA[
-				attribute vec3 a_position;
-				
-				uniform mat4 u_ViewMatrix;
-				uniform mat4 u_ProjectionMatrix;
-				uniform mat4 u_WorldMatrix;
-
-				varying vec4 v_direction;
-
-			    function main(){
-			        vec4 t_temp;
-					t_temp.xyz = m33(a_position.xyz,u_ViewMatrix);
-					t_temp.w = 1.0;
-			
-					output = m44(t_temp,u_ProjectionMatrix);
-			
-					t_temp.xyz = m33(a_position.xyz,u_WorldMatrix);
-					v_direction = t_temp.xyz;
-                }]]>;
+			var ba:ByteArray = new SkyBoxVS();
+			return ba.readUTFBytes(ba.length);
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
-			return <![CDATA[
-			    uniform samplerCube t_cubeTexture;
-				function main(){
-					vec3 t_dir = normalize(v_direction.xyz);
-					output = textureCube(t_dir,t_cubeTexture,nomip,linear,clamp);
-                }]]>;
+			var ba:ByteArray = new SkyBoxFS();
+			return ba.readUTFBytes(ba.length);
 		}
 
 		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary

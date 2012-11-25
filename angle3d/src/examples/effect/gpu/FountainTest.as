@@ -3,25 +3,20 @@ package examples.effect.gpu
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
-	
-	import org.angle3d.utils.Stats;
-	
+
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.effect.gpu.ParticleShape;
 	import org.angle3d.effect.gpu.ParticleShapeGenerator;
 	import org.angle3d.effect.gpu.ParticleSystem;
-	import org.angle3d.effect.gpu.influencers.life.DefaultLifeInfluencer;
 	import org.angle3d.effect.gpu.influencers.life.SameLifeInfluencer;
 	import org.angle3d.effect.gpu.influencers.position.DefaultPositionInfluencer;
 	import org.angle3d.effect.gpu.influencers.scale.DefaultScaleInfluencer;
 	import org.angle3d.effect.gpu.influencers.velocity.ConeVelocityInfluencer;
-	import org.angle3d.effect.gpu.influencers.velocity.RandomVelocityInfluencer;
 	import org.angle3d.material.BlendMode;
-	import org.angle3d.material.MaterialGPUParticle;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.scene.shape.Cone;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
+	import org.angle3d.utils.Stats;
 
 	/**
 	 * 喷泉
@@ -49,7 +44,7 @@ package examples.effect.gpu
 
 			var bitmap:Bitmap = new EMBED_SMOKE();
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			var texture:BitmapTexture = new BitmapTexture(bitmapData, false);
+			var texture:Texture2D = new Texture2D(bitmapData, false);
 
 			var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(2000, 5);
 			particleGenerator.setPositionInfluencer(new DefaultPositionInfluencer(new Vector3f(0, 0, 0)));
@@ -59,7 +54,7 @@ package examples.effect.gpu
 
 			var fountainShape:ParticleShape = particleGenerator.createParticleShape("Fountain", texture);
 			fountainShape.blendMode = BlendMode.AlphaAdditive;
-			fountainShape.setAlpha(0.8,0.2);
+			fountainShape.setAlpha(0.8, 0.2);
 			fountainShape.setColor(0x44ccff, 0xccffff);
 			fountainShape.setAcceleration(new Vector3f(0, -4, 0));
 			fountainShape.setSize(0.5, 0.3);
@@ -70,7 +65,7 @@ package examples.effect.gpu
 			particleSystem.play();
 
 			cam.location.setTo(0, 8, 10);
-			cam.lookAt(new Vector3f(0,3,0), Vector3f.Y_AXIS);
+			cam.lookAt(new Vector3f(0, 3, 0), Vector3f.Y_AXIS);
 
 			this.stage.doubleClickEnabled = true;
 			this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);

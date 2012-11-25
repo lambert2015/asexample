@@ -19,7 +19,7 @@ package examples.model
 	import org.angle3d.scene.Node;
 	import org.angle3d.scene.debug.SkeletonDebugger;
 	import org.angle3d.scene.mesh.SkinnedMesh;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 	import org.angle3d.utils.Stats;
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.AssetType;
@@ -50,7 +50,7 @@ package examples.model
 		{
 			flyCam.setDragToRotate(true);
 
-			material = new MaterialTexture(new BitmapTexture(assets["ninjaSkin"].bitmapData));
+			material = new MaterialTexture(new Texture2D(assets["ninjaSkin"].bitmapData));
 
 			var parser:MS3DParser = new MS3DParser();
 

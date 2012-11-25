@@ -6,22 +6,16 @@ package examples.effect.cpu
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.effect.cpu.ParticleEmitter;
 	import org.angle3d.effect.cpu.shape.EmitterSphereShape;
-	import org.angle3d.material.Material;
-	import org.angle3d.material.MaterialFill;
 	import org.angle3d.material.MaterialCPUParticle;
-	import org.angle3d.material.MaterialTexture;
+	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.math.Color;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Quaternion;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.scene.CullHint;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.Node;
-	import org.angle3d.scene.WireframeGeometry;
 	import org.angle3d.scene.shape.Cube;
-	import org.angle3d.scene.shape.WireframeGrid;
-	import org.angle3d.texture.BitmapTexture;
-	import org.angle3d.texture.TextureMap;
+	import org.angle3d.texture.Texture2D;
 
 	public class ExplosionEffectTest extends SimpleApplication
 	{
@@ -73,7 +67,7 @@ package examples.effect.cpu
 		{
 			var bitmap:Bitmap = new cls();
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			var texture:BitmapTexture = new BitmapTexture(bitmapData, false);
+			var texture:Texture2D = new Texture2D(bitmapData, false);
 
 			return new MaterialCPUParticle(texture);
 		}
@@ -272,7 +266,7 @@ package examples.effect.cpu
 
 			var cube:Cube = new Cube(1, 1, 1, 1, 1, 1);
 			var gm:Geometry = new Geometry("cube", cube);
-			gm.setMaterial(new MaterialFill(0x668800));
+			gm.setMaterial(new MaterialColorFill(0x668800));
 			scene.attachChild(gm);
 		}
 

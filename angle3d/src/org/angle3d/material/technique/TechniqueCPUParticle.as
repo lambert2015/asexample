@@ -2,16 +2,15 @@ package org.angle3d.material.technique
 {
 	import flash.display3D.Context3DCompareMode;
 	import flash.display3D.Context3DTriangleFace;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
-	import org.angle3d.light.LightType;
 	import org.angle3d.material.BlendMode;
 	import org.angle3d.material.shader.Shader;
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.material.shader.UniformBinding;
 	import org.angle3d.material.shader.UniformBindingHelp;
 	import org.angle3d.scene.mesh.BufferType;
-	import org.angle3d.scene.mesh.MeshType;
 	import org.angle3d.texture.TextureMapBase;
 
 	/**
@@ -21,11 +20,16 @@ package org.angle3d.material.technique
 
 	public class TechniqueCPUParticle extends Technique
 	{
+		[Embed(source = "data/cpuparticle.vs", mimeType = "application/octet-stream")]
+		private static var CPUParticleVS:Class;
+		[Embed(source = "data/cpuparticle.fs", mimeType = "application/octet-stream")]
+		private static var CPUParticleFS:Class;
+
 		private var _texture:TextureMapBase;
 
 		public function TechniqueCPUParticle()
 		{
-			super("TechniqueCPUParticle");
+			super();
 
 			_renderState.applyCullMode = true;
 			_renderState.cullMode = Context3DTriangleFace.FRONT;
@@ -57,34 +61,16 @@ package org.angle3d.material.technique
 			shader.getTextureVar("s_texture").textureMap = _texture;
 		}
 
-		override protected function getVertexSource(lightType:String = "none", meshType:String = "static"):String
+		override protected function getVertexSource():String
 		{
-			var source:String = "attribute vec3 a_position;" + 
-				"attribute vec2 a_texCoord;" + 
-				"attribute vec4 a_color;" +
-
-				"varying vec4 v_texCoord;" + 
-				"varying vec4 v_color;" +
-
-				"uniform mat4 u_WorldViewProjectionMatrix;" +
-
-				"function main(){" + 
-				"	output = m44(a_position,u_WorldViewProjectionMatrix);" + 
-				"	v_texCoord = a_texCoord;" + 
-				"	v_color = a_color;" + 
-				"}";
-			return source;
+			var ba:ByteArray = new CPUParticleVS();
+			return ba.readUTFBytes(ba.length);
 		}
 
-		override protected function getFragmentSource(lightType:String = "none", meshType:String = "static"):String
+		override protected function getFragmentSource():String
 		{
-			return <![CDATA[
-				uniform sampler2D s_texture;
-				function main(){
-					vec4 t_diffuseColor = texture2D(v_texCoord,s_texture,linear,nomip,clamp);
-					t_diffuseColor = mul(t_diffuseColor,v_color);
-					output = t_diffuseColor;
-				}]]>;
+			var ba:ByteArray = new CPUParticleFS();
+			return ba.readUTFBytes(ba.length);
 		}
 
 		override protected function getOption(lightType:String = "none", meshType:String = "static"):Vector.<Vector.<String>>
@@ -95,7 +81,7 @@ package org.angle3d.material.technique
 
 		override protected function getKey(lightType:String = "none", meshType:String = "static"):String
 		{
-			var result:Array = [_name, meshType];
+			var result:Array = [name, meshType];
 			return result.join("_");
 		}
 

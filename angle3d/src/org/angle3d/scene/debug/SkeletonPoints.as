@@ -4,7 +4,7 @@ package org.angle3d.scene.debug
 
 	import org.angle3d.animation.Bone;
 	import org.angle3d.animation.Skeleton;
-	import org.angle3d.material.MaterialFill;
+	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.Node;
 	import org.angle3d.scene.shape.Cube;
@@ -16,7 +16,7 @@ package org.angle3d.scene.debug
 
 		private var points:Vector.<Geometry>;
 
-		private var material:MaterialFill;
+		private var material:MaterialColorFill;
 
 		public function SkeletonPoints(name:String, skeleton:Skeleton, size:Number)
 		{
@@ -25,7 +25,7 @@ package org.angle3d.scene.debug
 			_skeleton = skeleton;
 			_size = size;
 
-			material = new MaterialFill(0x00ff00);
+			material = new MaterialColorFill(0x00ff00);
 			material.technique.renderState.applyDepthTest = true;
 			material.technique.renderState.depthTest = true;
 			material.technique.renderState.compareMode = Context3DCompareMode.ALWAYS;

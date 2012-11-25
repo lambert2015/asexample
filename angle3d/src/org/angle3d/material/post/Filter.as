@@ -1,5 +1,8 @@
 package org.angle3d.material.post
 {
+	import org.angle3d.material.Material;
+	import org.angle3d.renderer.RenderManager;
+	import org.angle3d.renderer.ViewPort;
 
 	/**
 	 * Filters are 2D effects applied to the rendered scene.<br>
@@ -16,12 +19,33 @@ package org.angle3d.material.post
 	public class Filter
 	{
 		private var name:String;
-		private var defaultPass:Pass;
+		protected var defaultPass:Pass;
+		protected var postRenderPasses:Vector.<Pass>;
+		protected var material:Material;
+		protected var enabled:Boolean = true;
+		protected var processor:FilterPostProcessor;
 
 
-		public function Filter()
+		public function Filter(name:String)
 		{
+			this.name = name;
+		}
 
+		/**
+		 *
+		 * initialize this filter
+		 * use InitFilter for overriding filter initialization
+		 * @param manager the assetManager
+		 * @param renderManager the renderManager
+		 * @param vp the viewport
+		 * @param w the width
+		 * @param h the height
+		 */
+		protected function init(renderManager:RenderManager, vp:ViewPort, w:int, h:int):void
+		{
+			defaultPass = new Pass();
+			defaultPass.init(renderManager.getRenderer(), w, h);
+			initFilter(renderManager, vp, w, h);
 		}
 	}
 }

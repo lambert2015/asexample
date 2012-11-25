@@ -85,7 +85,7 @@ package org.angle3d.cinematic
 
 			checkWayPoint(control, tpf);
 
-			control.spatial.setTranslation(temp);
+			control.spatial.translation = temp;
 
 			vars.release();
 
@@ -117,7 +117,7 @@ package org.angle3d.cinematic
 				for (var i:int = 0; i < pLength; i++)
 				{
 					var geo:WireframeGeometry = new WireframeGeometry("sphere" + i, new WireframeCube(0.5, 0.5, 0.5));
-					geo.setTranslation(points[i]);
+					geo.translation = points[i];
 					_debugNode.attachChild(geo);
 				}
 

@@ -113,7 +113,7 @@ package org.angle3d.animation
 
 			if (translations != null)
 			{
-				spatial.setTranslation(tempV);
+				spatial.translation = tempV;
 			}
 
 			if (rotations != null)

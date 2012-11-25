@@ -1,7 +1,7 @@
 package org.angle3d.material.technique
 {
-	import flash.display3D.Context3D;
 	import flash.display3D.Context3DCompareMode;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	import org.angle3d.light.LightType;
@@ -10,7 +10,6 @@ package org.angle3d.material.technique
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.material.shader.UniformBinding;
 	import org.angle3d.material.shader.UniformBindingHelp;
-	import org.angle3d.math.Color;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.scene.mesh.BufferType;
 	import org.angle3d.scene.mesh.MeshType;
@@ -22,11 +21,16 @@ package org.angle3d.material.technique
 
 	public class TechniqueVertexColor extends Technique
 	{
+		[Embed(source = "data/vertexcolor.vs", mimeType = "application/octet-stream")]
+		private static var VertexColorVS:Class;
+		[Embed(source = "data/vertexcolor.fs", mimeType = "application/octet-stream")]
+		private static var VertexColorFS:Class;
+
 		private var _alpha:Vector.<Number>;
 
 		public function TechniqueVertexColor()
 		{
-			super("VertexColorTechnique");
+			super();
 
 			_renderState.applyDepthTest = true;
 			_renderState.depthTest = true;
@@ -68,30 +72,16 @@ package org.angle3d.material.technique
 			shader.getUniform(ShaderType.VERTEX, "u_alpha").setVector(_alpha);
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
-			return <![CDATA[
-				attribute vec3 a_position;
-				attribute vec3 a_color;
-
-				uniform mat4 u_WorldViewProjectionMatrix;
-				uniform vec4 u_alpha;
-
-				varying vec4 v_color;
-
-				function main(){
-					output = m44(a_position,u_WorldViewProjectionMatrix);
-					v_color.rgb = a_color.rgb;
-					v_color.a = u_alpha.x;
-			    }]]>;
+			var ba:ByteArray = new VertexColorVS();
+			return ba.readUTFBytes(ba.length);
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
-			return <![CDATA[
-			   function main(){
-				   output = v_color;
-			   }]]>;
+			var ba:ByteArray = new VertexColorFS();
+			return ba.readUTFBytes(ba.length);
 		}
 
 		override protected function getBindAttributes(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Dictionary

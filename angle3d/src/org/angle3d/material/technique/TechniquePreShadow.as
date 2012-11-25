@@ -16,7 +16,7 @@ package org.angle3d.material.technique
 			super(name);
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -32,7 +32,7 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
 			return <![CDATA[
 				uniform sampler2D u_diffuseMap;

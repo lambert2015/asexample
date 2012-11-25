@@ -3,7 +3,7 @@ package examples.material
 	import org.angle3d.utils.Stats;
 
 	import org.angle3d.app.SimpleApplication;
-	import org.angle3d.material.MaterialFill;
+	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.material.MaterialTexture;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
@@ -13,7 +13,7 @@ package examples.material
 	import org.angle3d.scene.shape.Sphere;
 	import org.angle3d.scene.shape.Torus;
 	import org.angle3d.scene.shape.TorusKnot;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	/**
 	 * 需实现
@@ -40,10 +40,10 @@ package examples.material
 
 			flyCam.setDragToRotate(true);
 
-			var colorMat : MaterialFill = new MaterialFill(0xFF0000);
+			var colorMat : MaterialColorFill = new MaterialColorFill(0xFF0000);
 			colorMat.alpha = 0.5;
 
-			var texture : BitmapTexture = new BitmapTexture(new EmbedPositiveZ().bitmapData);
+			var texture : Texture2D = new Texture2D(new EmbedPositiveZ().bitmapData);
 			var textureMat : MaterialTexture = new MaterialTexture(texture);
 
 			var gm : Geometry;
@@ -55,7 +55,7 @@ package examples.material
 			gm.localQueueBucket = QueueBucket.Transparent;
 			scene.attachChild(gm);
 
-			var colorMat2 : MaterialFill = new MaterialFill(0x00FF00);
+			var colorMat2 : MaterialColorFill = new MaterialColorFill(0x00FF00);
 			colorMat2.alpha = 0.7;
 
 			var torus : Torus = new Torus(50, 10, 10, 10, true);

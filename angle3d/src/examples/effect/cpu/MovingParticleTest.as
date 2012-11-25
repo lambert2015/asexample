@@ -9,7 +9,7 @@ package examples.effect.cpu
 	import org.angle3d.math.Color;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	public class MovingParticleTest extends SimpleApplication
 	{
@@ -50,7 +50,7 @@ package examples.effect.cpu
 			
 			var bitmap:Bitmap = new EMBED_SMOKE();
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			var texture:BitmapTexture = new BitmapTexture(bitmapData, false);
+			var texture:Texture2D = new Texture2D(bitmapData, false);
 
 			var material:MaterialCPUParticle = new MaterialCPUParticle(texture);
 			emit.setMaterial(material);

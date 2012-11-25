@@ -1,5 +1,6 @@
-﻿package org.angle3d.utils
+﻿package org.angle3d.ds
 {
+	import org.angle3d.utils.Assert;
 
 
 

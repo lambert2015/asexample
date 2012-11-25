@@ -4,6 +4,24 @@ package org.angle3d.utils
 	public class StringUtil
 	{
 
+		private static const _formatRegExp:RegExp = new RegExp("{(\\d+)}", "g");
+
+		public static function format(input:String, ... values):String
+		{
+			return getFormat(input, values);
+		}
+
+		public static function getFormat(input:String, values:Array):String
+		{
+			if (input == null)
+				return "";
+			var result:String = input.replace(_formatRegExp, function():String
+			{
+				return values[parseInt(arguments[1])];
+			});
+			return result;
+		}
+
 		/**
 		 * 拆分并删除空行
 		 * @param	str

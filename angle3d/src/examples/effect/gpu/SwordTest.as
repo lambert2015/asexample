@@ -19,7 +19,7 @@ package examples.effect.gpu
 	import org.angle3d.material.MaterialGPUParticle;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	/**
 	 * 下雪测试
@@ -46,7 +46,7 @@ package examples.effect.gpu
 
 			flyCam.setDragToRotate(true);
 
-			var texture:BitmapTexture = new BitmapTexture(new EMBED_SWORD().bitmapData, false);
+			var texture:Texture2D = new Texture2D(new EMBED_SWORD().bitmapData, false);
 
 			var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(90, 3);
 			particleGenerator.setPositionInfluencer(new CirclePositionInfluencer(new Vector3f(0, 10, 0), 3, 0));

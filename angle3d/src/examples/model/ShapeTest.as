@@ -1,19 +1,23 @@
 package examples.model
 {
+	import flash.display3D.Context3DCompareMode;
+	import flash.display3D.Context3DTriangleFace;
+
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.collision.CollisionResult;
 	import org.angle3d.collision.CollisionResults;
-	import org.angle3d.material.MaterialFill;
+	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.material.MaterialTexture;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Ray;
 	import org.angle3d.math.Vector3f;
+	import org.angle3d.scene.CullHint;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.shape.Cube;
 	import org.angle3d.scene.shape.Sphere;
 	import org.angle3d.scene.shape.Torus;
 	import org.angle3d.scene.shape.TorusKnot;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 	import org.angle3d.utils.Stats;
 
 //TODO 添加箭头测试
@@ -38,18 +42,27 @@ package examples.model
 			super.initialize(width, height);
 
 			flyCam.setDragToRotate(true);
-			flyCam.setEnabled(false);
+//			flyCam.setEnabled(false);
 
-			var colorMat:MaterialFill = new MaterialFill(0xFF0000);
+			var colorMat:MaterialColorFill = new MaterialColorFill(0xFF0000);
 
-			var texture:BitmapTexture = new BitmapTexture(new EmbedPositiveZ().bitmapData);
+			var texture:Texture2D = new Texture2D(new EmbedPositiveZ().bitmapData);
 			var textureMat:MaterialTexture = new MaterialTexture(texture);
 
 			var gm:Geometry;
 
 			var cube:Cube = new Cube(100, 100, 100, 1, 1, 1);
 			gm = new Geometry("cube", cube);
-			gm.setMaterial(textureMat);
+			gm.setMaterial(colorMat);
+			gm.setTranslationXYZ(-100, 0, 0);
+			scene.attachChild(gm);
+
+			var colorMat2:MaterialColorFill = new MaterialColorFill(0xFFff00);
+			colorMat2.technique.renderState.cullMode = Context3DTriangleFace.BACK;
+			var cube2:Cube = new Cube(100, 100, 100, 1, 1, 1);
+			gm = new Geometry("cube2", cube2);
+			gm.setScaleXYZ(1.03, 1.03, 1.03);
+			gm.setMaterial(colorMat2);
 			gm.setTranslationXYZ(-100, 0, 0);
 			scene.attachChild(gm);
 
@@ -59,13 +72,13 @@ package examples.model
 			gm.setTranslationXYZ(100, 0, 0);
 			scene.attachChild(gm);
 
-			var torusKnot:TorusKnot = new TorusKnot(50, 10, 100, 40, false, 2, 3, 1);
+			var torusKnot:TorusKnot = new TorusKnot(30, 10, 20, 20, false, 2, 3, 2);
 			gm = new Geometry("torusKnot", torusKnot);
 			gm.setMaterial(textureMat);
 			gm.setTranslationXYZ(100, 0, -100);
 			scene.attachChild(gm);
 
-			var sphere:Sphere = new Sphere(20, 20, 50);
+			var sphere:Sphere = new Sphere(20, 10, 10);
 			gm = new Geometry("sphere", sphere);
 			gm.setMaterial(textureMat);
 			gm.setTranslationXYZ(-100, 0, -100);
@@ -86,9 +99,6 @@ package examples.model
 			var origin:Vector3f = cam.getWorldCoordinates(inputManager.getCursorPosition(), 0.0);
 			var direction:Vector3f = cam.getWorldCoordinates(inputManager.getCursorPosition(), 0.3);
 			direction.subtractLocal(origin).normalizeLocal();
-
-//			trace("origin : " + origin.toString());
-//			trace("inputManager.getCursorPosition() : " + inputManager.getCursorPosition().toString());
 
 			var ray:Ray = new Ray(origin, direction);
 			var results:CollisionResults = new CollisionResults();

@@ -124,7 +124,7 @@ package org.angle3d.cinematic.event
 			//interpolating new position
 			path.getSpline().interpolate(getCurrentValue(), _currentWayPoint, temp);
 			//setting new position to the spatial
-			_spatial.setTranslation(temp);
+			_spatial.translation = temp;
 
 			vars.release();
 		}

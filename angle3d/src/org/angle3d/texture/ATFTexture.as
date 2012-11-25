@@ -14,11 +14,11 @@ package org.angle3d.texture
 	 * adobe atf file
 	 * @author andy
 	 */
-	public class ATFTexture extends TextureMap
+	public class ATFTexture extends TextureMapBase
 	{
 		private var mByteArray:ByteArray;
 
-		private var _format:String;
+		private var mContext3DTextureFormat:String;
 
 		public function ATFTexture(data:ByteArray)
 		{
@@ -47,15 +47,15 @@ package org.angle3d.texture
 			{
 				case 0:
 				case 1:
-					_format = Context3DTextureFormat.BGRA;
+					mContext3DTextureFormat = Context3DTextureFormat.BGRA;
 					break;
 				case 2:
 				case 3:
-					_format = Context3DTextureFormat.COMPRESSED;
+					mContext3DTextureFormat = Context3DTextureFormat.COMPRESSED;
 					break;
 				case 4:
 				case 5:
-					_format = Context3DTextureFormat.COMPRESSED_ALPHA;
+					mContext3DTextureFormat = Context3DTextureFormat.COMPRESSED_ALPHA;
 					break;
 				default:
 					throw new Error("Invalid ATF format");
@@ -72,9 +72,26 @@ package org.angle3d.texture
 			setSize(Math.pow(2, log2Width), Math.pow(2, log2Height));
 		}
 
-		public function get format():String
+		public function get context3DTextureFormat():String
 		{
-			return _format;
+			return mContext3DTextureFormat;
+		}
+
+		public function set context3DTextureFormat(value:String):void
+		{
+			mContext3DTextureFormat = value;
+			switch (mContext3DTextureFormat)
+			{
+				case Context3DTextureFormat.BGRA:
+					setFormat(TextureFormat.RGBA);
+					break;
+				case Context3DTextureFormat.COMPRESSED:
+					setFormat(TextureFormat.DXT1);
+					break;
+				case Context3DTextureFormat.COMPRESSED_ALPHA:
+					setFormat(TextureFormat.DXT5);
+					break;
+			}
 		}
 
 		override protected function uploadTexture():void
@@ -86,7 +103,7 @@ package org.angle3d.texture
 
 		override protected function createTexture(context:Context3D):TextureBase
 		{
-			return context.createTexture(mWidth, mHeight, _format, false);
+			return context.createTexture(mWidth, mHeight, mContext3DTextureFormat, false);
 		}
 	}
 }

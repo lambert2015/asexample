@@ -3,7 +3,7 @@ package examples.scene
 	import org.angle3d.utils.Stats;
 	
 	import org.angle3d.app.SimpleApplication;
-	import org.angle3d.material.MaterialFill;
+	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.material.MaterialTexture;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
@@ -12,7 +12,7 @@ package examples.scene
 	import org.angle3d.scene.control.BillboardControl;
 	import org.angle3d.scene.shape.Cube;
 	import org.angle3d.scene.shape.TorusKnot;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	//各种形状测试
 	public class BillboardTest extends SimpleApplication
@@ -39,9 +39,9 @@ package examples.scene
 
 			flyCam.setDragToRotate(true);
 
-			var colorMat:MaterialFill = new MaterialFill(0xFF0000);
+			var colorMat:MaterialColorFill = new MaterialColorFill(0xFF0000);
 
-			var texture:BitmapTexture = new BitmapTexture(new EmbedPositiveZ().bitmapData);
+			var texture:Texture2D = new Texture2D(new EmbedPositiveZ().bitmapData);
 			var textureMat:MaterialTexture = new MaterialTexture(texture);
 
 

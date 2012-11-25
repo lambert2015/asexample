@@ -22,7 +22,7 @@ package examples.effect.gpu
 	import org.angle3d.material.MaterialGPUParticle;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 	
 	/**
 	 * 
@@ -52,7 +52,7 @@ package examples.effect.gpu
 			
 			var bitmap:Bitmap = new EMBED_DEBRIS();
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			var texture:BitmapTexture = new BitmapTexture(bitmapData, false);
+			var texture:Texture2D = new Texture2D(bitmapData, false);
 			
 			var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(150, 3);
 			particleGenerator.setPositionInfluencer(new PlanePositionInfluencer(new Vector3f(0, 0, 0),5,5,"xy"));
@@ -77,7 +77,7 @@ package examples.effect.gpu
 			
 			bitmap = new EMBED_GLOW();
 			bitmapData = bitmap.bitmapData;
-			var texture2:BitmapTexture = new BitmapTexture(bitmapData, false);
+			var texture2:Texture2D = new Texture2D(bitmapData, false);
 			
 			
 			var shape:ParticleShape = particleGenerator.createParticleShape("glowShape", texture2);

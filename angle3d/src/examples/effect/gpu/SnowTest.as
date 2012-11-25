@@ -15,7 +15,7 @@ package examples.effect.gpu
 	import org.angle3d.effect.gpu.influencers.velocity.DefaultVelocityInfluencer;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 	import org.angle3d.utils.Stats;
 
 	/**
@@ -43,7 +43,7 @@ package examples.effect.gpu
 
 			flyCam.setDragToRotate(true);
 
-			var texture:BitmapTexture = new BitmapTexture(new EMBED_SNOW().bitmapData, false);
+			var texture:Texture2D = new Texture2D(new EMBED_SNOW().bitmapData, false);
 
 			var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(1000, 8);
 			particleGenerator.setPositionInfluencer(new PlanePositionInfluencer(new Vector3f(0, 10, 0), 20, 20));
