@@ -20,7 +20,7 @@ package examples.effect.gpu
 	import org.angle3d.material.MaterialGPUParticle;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	//TODO 是否添加可用多个颜色
 	public class FireTest extends SimpleApplication
@@ -48,7 +48,7 @@ package examples.effect.gpu
 
 			var bitmap:Bitmap = new EMBED_SMOKE();
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			var texture:BitmapTexture = new BitmapTexture(bitmapData, false);
+			var texture:Texture2D = new Texture2D(bitmapData, false);
 
 			var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(500, 2);
 			particleGenerator.setPositionInfluencer(new DefaultPositionInfluencer(new Vector3f(0, 0, 0)));

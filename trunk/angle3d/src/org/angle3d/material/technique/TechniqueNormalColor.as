@@ -2,6 +2,7 @@ package org.angle3d.material.technique
 {
 	import flash.display3D.Context3DCompareMode;
 	import flash.display3D.Context3DTriangleFace;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	import org.angle3d.light.LightType;
@@ -21,13 +22,18 @@ package org.angle3d.material.technique
 
 	public class TechniqueNormalColor extends Technique
 	{
+		[Embed(source = "data/normalcolor.vs", mimeType = "application/octet-stream")]
+		private static var NormalColorVS:Class;
+		[Embed(source = "data/normalcolor.fs", mimeType = "application/octet-stream")]
+		private static var NormalColorFS:Class;
+
 		private var _influences:Vector.<Number>;
 
 		private var _normalScales:Vector.<Number>;
 
 		public function TechniqueNormalColor()
 		{
-			super("TechniqueNormalColor");
+			super();
 
 			_renderState.applyCullMode = true;
 			_renderState.cullMode = Context3DTriangleFace.FRONT;
@@ -79,66 +85,16 @@ package org.angle3d.material.technique
 			}
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
-			return <![CDATA[
-				attribute vec3 a_position;
-				attribute vec3 a_normal;
-				
-				#ifdef(USE_KEYFRAME){
-					attribute vec3 a_position1;
-					attribute vec3 a_normal1;
-					uniform vec4 u_influences;
-				}
-			
-				varying vec4 v_normal;
-			
-				uniform mat4 u_WorldViewProjectionMatrix;
-
-				function main()
-				{
-					#ifdef(USE_KEYFRAME){
-						vec3 morphed0;
-						morphed0 = mul(a_position,u_influences.x);
-						vec3 morphed1;
-						morphed1 = mul(a_position1,u_influences.y);
-						vec4 morphed;
-						morphed.xyz = add(morphed0,morphed1);
-						morphed.w = 1.0;
-						output = m44(morphed,u_WorldViewProjectionMatrix);
-			
-						vec3 normalMorphed0;
-						normalMorphed0 = mul(a_normal,u_influences.x);
-						vec3 normalMorphed1;
-						normalMorphed1 = mul(a_normal1,u_influences.y);
-						vec3 normalMorphed;
-						normalMorphed = add(normalMorphed0,normalMorphed1);
-						normalMorphed = normalize(normalMorphed);
-						v_normal = normalMorphed;
-					}
-					#else {
-						output = m44(a_position,u_WorldViewProjectionMatrix);
-						v_normal = a_normal;
-					}
-				}]]>;
+			var ba:ByteArray = new NormalColorVS();
+			return ba.readUTFBytes(ba.length);
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
-			return <![CDATA[
-			
-				uniform vec4 u_scale;
-				temp vec4 t_normal;
-				temp vec4 t_color;
-	
-			    function main()
-				{
-					t_normal = mul(v_normal,u_scale);
-					t_normal = add(t_normal,u_scale);
-					t_color.xyz = t_normal.xyz;
-					t_color.w = 1.0;
-					output = t_color;
-				}]]>;
+			var ba:ByteArray = new NormalColorFS();
+			return ba.readUTFBytes(ba.length);
 		}
 
 		override protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
@@ -148,7 +104,7 @@ package org.angle3d.material.technique
 
 		override protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
-			var result:Array = [_name, meshType];
+			var result:Array = [name, meshType];
 			return result.join("_");
 		}
 

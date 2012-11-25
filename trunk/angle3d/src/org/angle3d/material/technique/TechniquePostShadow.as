@@ -5,18 +5,17 @@ package org.angle3d.material.technique
 	import org.angle3d.light.LightType;
 	import org.angle3d.material.shader.Shader;
 	import org.angle3d.material.shader.ShaderType;
-	import org.angle3d.material.shader.Uniform;
 	import org.angle3d.material.shader.UniformBinding;
 	import org.angle3d.material.shader.UniformBindingHelp;
 	import org.angle3d.math.Matrix4f;
 	import org.angle3d.scene.mesh.BufferType;
 	import org.angle3d.scene.mesh.MeshType;
-	import org.angle3d.texture.TextureMap;
+	import org.angle3d.texture.TextureMapBase;
 
 	public class TechniquePostShadow extends Technique
 	{
 		private var _lightViewProjection:Matrix4f;
-		private var _texture:TextureMap;
+		private var _texture:TextureMapBase;
 
 		private var _biasMat:Matrix4f;
 
@@ -26,10 +25,11 @@ package org.angle3d.material.technique
 
 			_lightViewProjection = new Matrix4f();
 
-			_biasMat = new Matrix4f([0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.5, 0.5, 1.0]);
+			_biasMat = new Matrix4f();
+			_biasMat.setArray([0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.5, 0.5, 1.0]);
 		}
 
-		public function setTexture(texture:TextureMap):void
+		public function setTexture(texture:TextureMapBase):void
 		{
 			_texture = texture;
 		}
@@ -48,7 +48,7 @@ package org.angle3d.material.technique
 			shader.getTextureVar("u_diffuseMap").textureMap = _texture;
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
 			return <![CDATA[
 				attribute vec3 a_position;
@@ -70,7 +70,7 @@ package org.angle3d.material.technique
 				}]]>;
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
 			return <![CDATA[
 				uniform sampler2D u_ShadowMap;

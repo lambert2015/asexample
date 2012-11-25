@@ -4,7 +4,6 @@ package org.angle3d.material.technique
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
-	import org.angle3d.light.LightType;
 	import org.angle3d.manager.ShaderManager;
 	import org.angle3d.material.RenderState;
 	import org.angle3d.material.shader.Shader;
@@ -17,7 +16,7 @@ package org.angle3d.material.technique
 	 */
 	public class Technique
 	{
-		protected var _name:String;
+		private var _name:String;
 
 		protected var _shaderMap:Dictionary; //<String,Shader>;
 		protected var _optionMap:Dictionary; //<String,Array>;
@@ -28,14 +27,16 @@ package org.angle3d.material.technique
 
 		protected var _keys:Array = [];
 
-		public function Technique(name:String)
+		public function Technique()
 		{
 			_initInternal();
 
-			_name = getQualifiedClassName(this);
+			var className:String = getQualifiedClassName(this);
+			var index:int = className.lastIndexOf("::");
+			_name = className.slice(index + 2);
 		}
 
-		public function getName():String
+		public final function get name():String
 		{
 			return _name;
 		}
@@ -74,8 +75,8 @@ package org.angle3d.material.technique
 					_optionMap[key] = getOption(lightType, meshType);
 				}
 
-				var vstr:String = getVertexSource(lightType, meshType);
-				var fstr:String = getFragmentSource(lightType, meshType);
+				var vstr:String = getVertexSource();
+				var fstr:String = getFragmentSource();
 
 				var option:Vector.<Vector.<String>> = _optionMap[key];
 
@@ -119,12 +120,12 @@ package org.angle3d.material.technique
 			return null;
 		}
 
-		protected function getVertexSource(lightType:String = "none", meshType:String = "static"):String
+		protected function getVertexSource():String
 		{
 			return "";
 		}
 
-		protected function getFragmentSource(lightType:String = "none", meshType:String = "static"):String
+		protected function getFragmentSource():String
 		{
 			return "";
 		}

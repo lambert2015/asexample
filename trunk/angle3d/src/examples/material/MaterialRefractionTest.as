@@ -12,7 +12,7 @@ package examples.material
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.shape.Sphere;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	public class MaterialRefractionTest extends SimpleApplication
 	{
@@ -41,7 +41,7 @@ package examples.material
 
 			scene.attachChild(sky);
 
-			var decalMap : BitmapTexture = new BitmapTexture(new DECALMAP_ASSET().bitmapData);
+			var decalMap : Texture2D = new Texture2D(new DECALMAP_ASSET().bitmapData);
 
 //			Vacuum 1.0
 //			Air 1.0003

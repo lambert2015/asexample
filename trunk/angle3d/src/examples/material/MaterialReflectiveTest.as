@@ -15,7 +15,7 @@ package examples.material
 	import org.angle3d.scene.shape.Sphere;
 	import org.angle3d.scene.shape.WireframeShape;
 	import org.angle3d.scene.shape.WireframeUtil;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	public class MaterialReflectiveTest extends SimpleApplication
 	{
@@ -44,7 +44,7 @@ package examples.material
 
 			scene.attachChild(sky);
 
-			var decalMap : BitmapTexture = new BitmapTexture(new DECALMAP_ASSET().bitmapData);
+			var decalMap : Texture2D = new Texture2D(new DECALMAP_ASSET().bitmapData);
 
 			var material : MaterialReflective = new MaterialReflective(decalMap, sky.cubeMap, 0.8);
 

@@ -7,7 +7,7 @@ package org.angle3d.io.parser.max3ds
 	import flash.utils.Endian;
 
 	import org.angle3d.io.parser.ParserOptions;
-	import org.angle3d.material.MaterialFill;
+	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.Node;
 	import org.angle3d.scene.mesh.BufferType;

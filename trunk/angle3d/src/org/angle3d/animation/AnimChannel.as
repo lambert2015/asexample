@@ -3,7 +3,7 @@ package org.angle3d.animation
 	import org.angle3d.cinematic.LoopMode;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.utils.Assert;
-	import org.angle3d.utils.BitVector;
+	import org.angle3d.ds.BitVector;
 	import org.angle3d.utils.TempVars;
 
 	/**

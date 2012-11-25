@@ -6,18 +6,14 @@ package org.angle3d.texture
 	import flash.display3D.textures.CubeTexture;
 	import flash.display3D.textures.TextureBase;
 
+	import org.angle3d.utils.Assert;
 	import org.angle3d.utils.TextureUtil;
-
-	CF::DEBUG
-	{
-		import org.angle3d.utils.Assert;
-	}
 
 	/**
 	 * ...
 	 * @author andy
 	 */
-//TODO FIXME 为何CubeTexture必须要生成mipmap,否则报错
+	//TODO FIXME 为何CubeTexture必须要生成mipmap,否则报错
 	public class CubeTextureMap extends TextureMapBase
 	{
 		private var mBitmapDatas:Vector.<BitmapData>;

@@ -1,7 +1,7 @@
 package org.angle3d.material.technique
 {
-	import flash.display3D.Context3D;
 	import flash.display3D.Context3DCompareMode;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	import org.angle3d.light.LightType;
@@ -21,15 +21,20 @@ package org.angle3d.material.technique
 	 * @author andy
 	 */
 
-	public class TechniqueFill extends Technique
+	public class TechniqueColorFill extends Technique
 	{
+		[Embed(source = "data/colorfill.vs", mimeType = "application/octet-stream")]
+		private static var ColorFillVS:Class;
+		[Embed(source = "data/colorfill.fs", mimeType = "application/octet-stream")]
+		private static var ColorFillFS:Class;
+
 		private var _color:Color;
 
 		private var _influences:Vector.<Number>;
 
-		public function TechniqueFill(color:uint = 0xFFFFF)
+		public function TechniqueColorFill(color:uint = 0xFFFFF)
 		{
-			super("FillTechnique");
+			super();
 
 			_renderState.applyDepthTest = true;
 			_renderState.depthTest = true;
@@ -101,43 +106,16 @@ package org.angle3d.material.technique
 			}
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
-			return <![CDATA[
-			    attribute vec3 a_position;
-				varying vec4 v_color;
-				uniform mat4 u_WorldViewProjectionMatrix;
-				uniform vec4 u_color;
-			
-				#ifdef(USE_KEYFRAME){
-				    attribute vec3 a_position1;
-				    uniform vec4 u_influences;
-				}
-			
-				function main(){
-			    	#ifdef(USE_KEYFRAME){
-				        vec3 morphed0;
-				        morphed0 = mul(a_position,u_influences.x);
-				        vec3 morphed1;
-				        morphed1 = mul(a_position1,u_influences.y);
-				        vec4 morphed;
-				        morphed.xyz = add(morphed0,morphed1);
-				        morphed.w = 1.0;
-				        output = m44(morphed,u_WorldViewProjectionMatrix);
-				    }
-				    #else {
-				        output = m44(a_position,u_WorldViewProjectionMatrix);
-				    }
-				    v_color = u_color;
-                }]]>;
+			var ba:ByteArray = new ColorFillVS();
+			return ba.readUTFBytes(ba.length);
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
-			return <![CDATA[
-               function main(){
-			       output = v_color;
-                }]]>;
+			var ba:ByteArray = new ColorFillFS();
+			return ba.readUTFBytes(ba.length);
 		}
 
 		override protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>

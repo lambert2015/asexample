@@ -13,20 +13,20 @@ package examples.model
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.mesh.Mesh;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 	import org.angle3d.utils.Stats;
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.signals.LoaderSignal;
-	
-	
+
+
 
 	public class Max3DSParserTest extends SimpleApplication
 	{
 
-		private var angle : Number;
+		private var angle:Number;
 
-		private var gm : Geometry;
+		private var gm:Geometry;
 
 		public function Max3DSParserTest()
 		{
@@ -37,42 +37,42 @@ package examples.model
 			this.addChild(new Stats());
 		}
 
-		override protected function initialize(width : int, height : int) : void
+		override protected function initialize(width:int, height:int):void
 		{
 			super.initialize(width, height);
 
 			//flyCam.setDragToRotate(true);
 
-			var assetLoader : AssetLoader = AssetManager.getInstance().createLoader("max3dsLoader");
-			assetLoader.addFile("ship", "../assets/max3ds/ship.3ds", AssetType.BINARY);
-			assetLoader.addFile("ship_texture", "../assets/max3ds/ship.jpg", AssetType.IMAGE);
+			var assetLoader:AssetLoader = AssetManager.getInstance().createLoader("max3dsLoader");
+			assetLoader.addFile("ship", "../asexample/angle3d/assets/max3ds/ship.3ds", AssetType.BINARY);
+			assetLoader.addFile("ship_texture", "../asexample/angle3d/assets/max3ds/ship.jpg", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.start();
 		}
 
-		private function _loadComplete(signal : LoaderSignal, assets : Dictionary) : void
+		private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
 		{
-			var bitmapTexture : BitmapTexture = new BitmapTexture(assets["ship_texture"].bitmapData);
-			var material : MaterialTexture = new MaterialTexture(bitmapTexture);
+			var bitmapTexture:Texture2D = new Texture2D(assets["ship_texture"].bitmapData);
+			var material:MaterialTexture = new MaterialTexture(bitmapTexture);
 			material.doubleSide = true;
 
-			var sky : DefaultSkyBox = new DefaultSkyBox(500);
+			var sky:DefaultSkyBox = new DefaultSkyBox(500);
 			scene.attachChild(sky);
 
-			var data : ByteArray = assets["ship"];
-			var parser : Max3DSParser = new Max3DSParser();
+			var data:ByteArray = assets["ship"];
+			var parser:Max3DSParser = new Max3DSParser();
 			parser.parse(data, new ParserOptions());
 
-			var mesh : Mesh = parser.mesh;
+			var mesh:Mesh = parser.mesh;
 
-			var geom : Geometry = new Geometry("ship", mesh);
+			var geom:Geometry = new Geometry("ship", mesh);
 
 			geom.setMaterial(material);
 
 			scene.attachChild(geom);
 		}
 
-		override public function simpleUpdate(tpf : Number) : void
+		override public function simpleUpdate(tpf:Number):void
 		{
 			angle += 0.02;
 			angle %= FastMath.TWO_PI;

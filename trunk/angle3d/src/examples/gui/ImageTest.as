@@ -7,7 +7,7 @@ package examples.gui
 	import examples.skybox.DefaultSkyBox;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.scene.ui.Image;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 	
 	public class ImageTest extends SimpleApplication
 	{
@@ -27,7 +27,7 @@ package examples.gui
 		{
 			super.initialize(width, height);
 
-			var texture:BitmapTexture = new BitmapTexture(new EmbedPositiveZ().bitmapData);
+			var texture:Texture2D = new Texture2D(new EmbedPositiveZ().bitmapData);
 			//var textureMat:MaterialTexture = new MaterialTexture(texture);
 			
 			image = new Image("image",false);

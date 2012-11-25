@@ -1,6 +1,7 @@
 package org.angle3d.material.technique
 {
 	import flash.display3D.Context3DTextureFormat;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
 	import org.angle3d.animation.Skeleton;
@@ -14,6 +15,7 @@ package org.angle3d.material.technique
 	import org.angle3d.scene.mesh.MeshType;
 	import org.angle3d.texture.ATFTexture;
 	import org.angle3d.texture.TextureMapBase;
+	import org.angle3d.utils.StringUtil;
 
 	/**
 	 * ...
@@ -22,6 +24,11 @@ package org.angle3d.material.technique
 
 	public class TechniqueTexture extends Technique
 	{
+		[Embed(source = "data/texture.vs", mimeType = "application/octet-stream")]
+		private static var TextureVS:Class;
+		[Embed(source = "data/texture.fs", mimeType = "application/octet-stream")]
+		private static var TextureFS:Class;
+
 		private var _texture:TextureMapBase;
 
 		private var _lightmap:TextureMapBase;
@@ -34,7 +41,7 @@ package org.angle3d.material.technique
 
 		public function TechniqueTexture()
 		{
-			super("TechniqueTexture");
+			super();
 
 			_useTexCoord2 = false;
 			_texture = null;
@@ -110,140 +117,18 @@ package org.angle3d.material.technique
 			}
 		}
 
-		override protected function getVertexSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getVertexSource():String
 		{
-			var source:String = "attribute vec3 a_position;" +
-				"attribute vec2 a_texCoord;" +
-
-				"varying vec4 v_texCoord;" +
-
-				"#ifdef(lightmap && useTexCoord2){" +
-				"   attribute vec2 a_texCoord2;" +
-				"   varying vec4 v_texCoord2;" +
-				"}" +
-
-				"uniform mat4 u_WorldViewProjectionMatrix;" +
-
-				"#ifdef(USE_KEYFRAME){" +
-				"   attribute vec3 a_position1;" +
-				"   uniform vec4 u_influences;" +
-				"}" + "#elseif(USE_SKINNING){" +
-				"	attribute vec4 a_boneWeights;" +
-				"	attribute vec4 a_boneIndices;" +
-				"	uniform vec4 u_boneMatrixs[" + Skeleton.MAX_BONE_COUNT * 3 + "];" +
-				"}"
-				+
-
-				"function main(){" +
-				"	#ifdef(USE_KEYFRAME){" +
-				"		vec3 morphed0 = mul(a_position,u_influences.x);" +
-				"		vec3 morphed1 = mul(a_position1,u_influences.y);" +
-				"		vec4 morphed;" +
-				"		morphed.xyz = add(morphed0,morphed1);" +
-				"		morphed.w = 1.0;" +
-				"		output = m44(morphed,u_WorldViewProjectionMatrix);" +
-				"	}" +
-				"	#elseif(USE_SKINNING){" +
-				"		mat3 t_skinTransform;" +
-				"		vec4 t_vec;" + "		vec4 t_vec1;" +
-				"		vec4 t_boneIndexVec = mul(a_boneIndices,3);" +
-
-				//计算最终蒙皮矩阵
-				"		t_vec1 = mul(a_boneWeights.x,u_boneMatrixs[t_boneIndexVec.x]);" +
-				"		t_vec  = mul(a_boneWeights.y,u_boneMatrixs[t_boneIndexVec.y]);" +
-				"		t_vec1 = add(t_vec1,t_vec);" +
-				"		t_vec  = mul(a_boneWeights.z,u_boneMatrixs[t_boneIndexVec.z]);" +
-				"		t_vec1 = add(t_vec1,t_vec);" +
-				"		t_vec  = mul(a_boneWeights.w,u_boneMatrixs[t_boneIndexVec.w]);" +
-				"		t_skinTransform[0] = add(t_vec1,t_vec);" +
-
-				"		t_vec1 = mul(a_boneWeights.x,u_boneMatrixs[t_boneIndexVec.x + 1]);" +
-				"		t_vec  = mul(a_boneWeights.y,u_boneMatrixs[t_boneIndexVec.y + 1]);" +
-				"		t_vec1 = add(t_vec1,t_vec);" +
-				"		t_vec  = mul(a_boneWeights.z,u_boneMatrixs[t_boneIndexVec.z + 1]);" +
-				"		t_vec1 = add(t_vec1,t_vec);" +
-				"		t_vec  = mul(a_boneWeights.w,u_boneMatrixs[t_boneIndexVec.w + 1]);" +
-				"		t_skinTransform[1] = add(t_vec1,t_vec);" +
-
-				"		t_vec1 = mul(a_boneWeights.x,u_boneMatrixs[t_boneIndexVec.x + 2]);" +
-				"		t_vec  = mul(a_boneWeights.y,u_boneMatrixs[t_boneIndexVec.y + 2]);" +
-				"		t_vec1 = add(t_vec1,t_vec);" +
-				"		t_vec  = mul(a_boneWeights.z,u_boneMatrixs[t_boneIndexVec.z + 2]);" +
-				"		t_vec1 = add(t_vec1,t_vec);" +
-				"		t_vec  = mul(a_boneWeights.w,u_boneMatrixs[t_boneIndexVec.w + 2]);" +
-				"		t_skinTransform[2] = add(t_vec1,t_vec);" +
-
-				"		vec4 t_localPos;" +
-				"		t_localPos.xyz = m34(a_position,t_skinTransform);" +
-				"		t_localPos.w = 1.0;" +
-				"		output = m44(t_localPos,u_WorldViewProjectionMatrix);" +
-				"	}" +
-				"	#else {" +
-				"		output = m44(a_position,u_WorldViewProjectionMatrix);" +
-				"	}" +
-				"	v_texCoord = a_texCoord;" +
-				"	#ifdef( lightmap && useTexCoord2){" +
-				"		v_texCoord2 = a_texCoord2;" +
-				"	}" +
-				"}";
+			var ba:ByteArray = new TextureVS();
+			var source:String = ba.readUTFBytes(ba.length);
+			source = StringUtil.format(source, Skeleton.MAX_BONE_COUNT * 3);
 			return source;
 		}
 
-		override protected function getFragmentSource(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
+		override protected function getFragmentSource():String
 		{
-			return <![CDATA[
-			
-			    temp vec4 t_textureMapColor;
-			
-				uniform sampler2D s_texture;
-			
-				#ifdef(lightmap){
-				    temp vec4 t_lightMapColor;
-			        uniform sampler2D s_lightmap;
-			    }
-			
-				/*优化贴图格式选择部分，现在这样写太麻烦了*/
-				function main(){
-					
-					#ifdef(texCoordCompressAlpha){
-						t_textureMapColor = texture2D(v_texCoord,s_texture,dxt5,linear,nomip,wrap);
-					}
-					#elseif(texCoordCompress){
-						t_textureMapColor = texture2D(v_texCoord,s_texture,dxt1,linear,nomip,wrap);
-					}
-					#else {
-						t_textureMapColor = texture2D(v_texCoord,s_texture,rgba,linear,nomip,wrap);
-					}
-				    
-			
-				    #ifdef(lightmap){
-				        #ifdef(useTexCoord2){
-							#ifdef(lightmapCompressAlpha){
-								t_lightMapColor = texture2D(v_texCoord2,s_lightmap,dxt5,linear,nomip,wrap);
-							}
-							#elseif(lightmapCompress){
-								t_lightMapColor = texture2D(v_texCoord2,s_lightmap,dxt1,linear,nomip,wrap);
-							}
-							#else {
-								t_lightMapColor = texture2D(v_texCoord2,s_lightmap,rgba,linear,nomip,wrap);
-							}
-				        }
-				        #else{
-							#ifdef(lightmapCompressAlpha){
-								t_lightMapColor = texture2D(v_texCoord,s_lightmap,dxt5,linear,nomip,wrap);
-							}
-							#elseif(lightmapCompress){
-								t_lightMapColor = texture2D(v_texCoord,s_lightmap,dxt1,linear,nomip,wrap);
-							}
-							#else {
-								t_lightMapColor = texture2D(v_texCoord,s_lightmap,rgba,linear,nomip,wrap);
-							}
-				        }
-
-				        t_textureMapColor = multiply(t_textureMapColor,t_lightMapColor);
-			        }
-			        output = t_textureMapColor;
-			    }]]>;
+			var ba:ByteArray = new TextureFS();
+			return ba.readUTFBytes(ba.length);
 		}
 
 		override protected function getOption(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):Vector.<Vector.<String>>
@@ -253,11 +138,11 @@ package org.angle3d.material.technique
 			if (_texture is ATFTexture)
 			{
 				var atf:ATFTexture = (_texture as ATFTexture);
-				if (atf.format == Context3DTextureFormat.COMPRESSED_ALPHA)
+				if (atf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED_ALPHA)
 				{
 					results[1].push("texCoordCompressAlpha");
 				}
-				else if (atf.format == Context3DTextureFormat.COMPRESSED)
+				else if (atf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED)
 				{
 					results[1].push("texCoordCompress");
 				}
@@ -268,11 +153,11 @@ package org.angle3d.material.technique
 				if (_lightmap is ATFTexture)
 				{
 					var lightmapAtf:ATFTexture = (_lightmap as ATFTexture);
-					if (lightmapAtf.format == Context3DTextureFormat.COMPRESSED_ALPHA)
+					if (lightmapAtf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED_ALPHA)
 					{
 						results[1].push("lightmapCompressAlpha");
 					}
-					else if (lightmapAtf.format == Context3DTextureFormat.COMPRESSED)
+					else if (lightmapAtf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED)
 					{
 						results[1].push("lightmapCompress");
 					}
@@ -292,7 +177,7 @@ package org.angle3d.material.technique
 		override protected function getKey(lightType:String = LightType.None, meshType:String = MeshType.MT_STATIC):String
 		{
 			_keys.length = 0;
-			_keys.push(_name);
+			_keys.push(name);
 			_keys.push(meshType);
 
 			if (_lightmap != null)

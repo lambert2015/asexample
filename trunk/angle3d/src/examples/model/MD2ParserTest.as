@@ -7,7 +7,7 @@ package examples.model
 	import examples.skybox.DefaultSkyBox;
 	import org.angle3d.io.AssetManager;
 	import org.angle3d.io.parser.md2.MD2Parser;
-	import org.angle3d.material.MaterialFill;
+	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.material.MaterialNormalColor;
 	import org.angle3d.material.MaterialReflective;
 	import org.angle3d.material.MaterialTexture;
@@ -16,7 +16,7 @@ package examples.model
 	import org.angle3d.scene.mesh.MorphMesh;
 	import org.angle3d.scene.MorphGeometry;
 	import org.angle3d.scene.Node;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 	import org.angle3d.utils.Stats;
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.AssetType;
@@ -75,16 +75,16 @@ package examples.model
 
 		private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
 		{
-			var monsterMaterial:MaterialTexture = new MaterialTexture(new BitmapTexture(assets["ratamahatta_texture"].bitmapData));
-			var weaponMaterial:MaterialTexture = new MaterialTexture(new BitmapTexture(assets["w_rlauncher_texture"].bitmapData));
+			var monsterMaterial:MaterialTexture = new MaterialTexture(new Texture2D(assets["ratamahatta_texture"].bitmapData));
+			var weaponMaterial:MaterialTexture = new MaterialTexture(new Texture2D(assets["w_rlauncher_texture"].bitmapData));
 
-			var fillMaterial:MaterialFill = new MaterialFill(0x008822);
+			var fillMaterial:MaterialColorFill = new MaterialColorFill(0x008822);
 			var normalMaterial:MaterialNormalColor = new MaterialNormalColor();
 
 			var skybox:DefaultSkyBox = new DefaultSkyBox(500);
 			scene.attachChild(skybox);
 
-			var reflectiveMat:MaterialReflective = new MaterialReflective(new BitmapTexture(assets["ratamahatta_texture"].bitmapData), skybox.cubeMap, 0.9);
+			var reflectiveMat:MaterialReflective = new MaterialReflective(new Texture2D(assets["ratamahatta_texture"].bitmapData), skybox.cubeMap, 0.9);
 
 			var parser:MD2Parser = new MD2Parser();
 			var monsterMesh:MorphMesh = parser.parse(assets["ratamahatta"]);

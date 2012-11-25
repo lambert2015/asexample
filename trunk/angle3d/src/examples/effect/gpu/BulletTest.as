@@ -18,7 +18,7 @@ package examples.effect.gpu
 	import org.angle3d.material.MaterialGPUParticle;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	/**
 	 * 测试SpriteSheet模式
@@ -46,7 +46,7 @@ package examples.effect.gpu
 
 			var bitmap:Bitmap = new EMBED_DEBRIS();
 			var bitmapData:BitmapData = bitmap.bitmapData;
-			var texture:BitmapTexture = new BitmapTexture(bitmapData, false);
+			var texture:Texture2D = new Texture2D(bitmapData, false);
 
 			var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(50, 5);
 			particleGenerator.setPositionInfluencer(new DefaultPositionInfluencer(new Vector3f(0, 0, 0)));

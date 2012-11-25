@@ -93,6 +93,7 @@ package org.angle3d.material.sgsl
 							wrap = 0;
 							break;
 						case "wrap":
+						case "repeat":
 							wrap = 1;
 							break;
 						case "nomip":

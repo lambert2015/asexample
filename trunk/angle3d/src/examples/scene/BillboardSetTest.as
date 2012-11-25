@@ -13,7 +13,7 @@ package examples.scene
 	import org.angle3d.scene.billboard.BillboardOriginType;
 	import org.angle3d.scene.billboard.BillboardSet;
 	import org.angle3d.scene.billboard.BillboardType;
-	import org.angle3d.texture.BitmapTexture;
+	import org.angle3d.texture.Texture2D;
 
 	[SWF(width = "800", height = "600", frameRate = "60")]
 	//各种形状测试
@@ -47,7 +47,7 @@ package examples.scene
 			var vertexColorMat:MaterialVertexColor = new MaterialVertexColor();
 			vertexColorMat.alpha = 0.5;
 
-			var texture:BitmapTexture = new BitmapTexture(new EmbedPositiveZ().bitmapData);
+			var texture:Texture2D = new Texture2D(new EmbedPositiveZ().bitmapData);
 			var textureMat:MaterialTexture = new MaterialTexture(texture);
 
 

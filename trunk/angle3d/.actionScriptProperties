@@ -32,34 +32,34 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="examples/sgsl/SaveSgsl.as"/>
-    <application path="examples/ATFTextureTest.as"/>
-    <application path="examples/shadow/ShadowTest.as"/>
-    <application path="examples/scene/BillboardTest.as"/>
-    <application path="examples/scene/BillboardSetTest.as"/>
-    <application path="examples/model/ShapeTest.as"/>
-    <application path="examples/model/MD2ParserTest.as"/>
-    <application path="examples/model/Max3DSParserTest.as"/>
-    <application path="examples/material/MaterialWireframeTest.as"/>
     <application path="examples/material/MaterialTransparentTest.as"/>
-    <application path="examples/material/MaterialRefractionTest.as"/>
-    <application path="examples/gui/ImageTest.as"/>
+    <application path="examples/scene/BillboardSetTest.as"/>
+    <application path="examples/effect/gpu/BulletTest.as"/>
+    <application path="examples/model/MS3DSkinnedMeshTest.as"/>
+    <application path="examples/model/MD2ParserTest.as"/>
+    <application path="examples/material/MaterialWireframeTest.as"/>
+    <application path="examples/effect/gpu/FireTest.as"/>
     <application path="examples/animation/SurroundTest.as"/>
     <application path="examples/animation/SpatialAnimTest.as"/>
-    <application path="examples/effect/cpu/MovingParticleTest.as"/>
-    <application path="examples/effect/cpu/ExplosionEffectTest.as"/>
-    <application path="examples/effect/gpu/TexCoordTest.as"/>
-    <application path="examples/effect/gpu/SwordTest.as"/>
-    <application path="examples/effect/gpu/FountainTest.as"/>
-    <application path="examples/effect/gpu/FireTest.as"/>
-    <application path="examples/effect/gpu/ExplosionTest.as"/>
-    <application path="examples/effect/gpu/CrazyFlash.as"/>
-    <application path="examples/effect/gpu/BulletTest.as"/>
-    <application path="examples/animation/MotionPathTest.as"/>
-    <application path="examples/model/MS3DSkinnedMeshTest.as"/>
     <application path="examples/model/MS3DStaticModelParserTest.as"/>
-    <application path="examples/effect/gpu/SnowTest.as"/>
+    <application path="examples/scene/BillboardTest.as"/>
+    <application path="examples/effect/gpu/CrazyFlash.as"/>
+    <application path="examples/effect/gpu/FountainTest.as"/>
     <application path="examples/material/MaterialReflectiveTest.as"/>
+    <application path="examples/effect/gpu/SnowTest.as"/>
+    <application path="examples/effect/gpu/ExplosionTest.as"/>
+    <application path="examples/sgsl/SaveSgsl.as"/>
+    <application path="examples/effect/cpu/MovingParticleTest.as"/>
+    <application path="examples/gui/ImageTest.as"/>
+    <application path="examples/textures/ATFTextureTest.as"/>
+    <application path="examples/animation/MotionPathTest.as"/>
+    <application path="examples/material/MaterialRefractionTest.as"/>
+    <application path="examples/effect/gpu/SwordTest.as"/>
+    <application path="examples/effect/gpu/TexCoordTest.as"/>
+    <application path="examples/model/Max3DSParserTest.as"/>
+    <application path="examples/effect/cpu/ExplosionEffectTest.as"/>
+    <application path="examples/shadow/ShadowTest.as"/>
+    <application path="examples/model/ShapeTest.as"/>
   </applications>
   <modules/>
   <workers/>

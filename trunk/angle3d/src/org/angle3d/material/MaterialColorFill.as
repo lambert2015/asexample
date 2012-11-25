@@ -1,6 +1,6 @@
 package org.angle3d.material
 {
-	import org.angle3d.material.technique.TechniqueFill;
+	import org.angle3d.material.technique.TechniqueColorFill;
 	import org.angle3d.math.Color;
 
 
@@ -8,15 +8,15 @@ package org.angle3d.material
 	 * 单色的Material
 	 * @author andy
 	 */
-	public class MaterialFill extends Material
+	public class MaterialColorFill extends Material
 	{
-		private var _technique:TechniqueFill;
+		private var _technique:TechniqueColorFill;
 
-		public function MaterialFill(color:uint = 0xFFFFF, alpha:Number = 1.0)
+		public function MaterialColorFill(color:uint = 0xFFFFF, alpha:Number = 1.0)
 		{
 			super();
 
-			_technique = new TechniqueFill(color);
+			_technique = new TechniqueColorFill(color);
 
 			addTechnique(_technique);
 
@@ -25,7 +25,7 @@ package org.angle3d.material
 			sortingId = 1;
 		}
 
-		public function get technique():TechniqueFill
+		public function get technique():TechniqueColorFill
 		{
 			return _technique;
 		}
