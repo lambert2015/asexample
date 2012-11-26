@@ -1,0 +1,7 @@
+Shader重构
+一个Technique可以根据条件的不同生成不同的Shader,每种Shader只需要生成一次即可
+Material|--- Technique
+        |             
+		|             
+		|			   
+		|--- Technique

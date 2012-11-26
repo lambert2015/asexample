@@ -24,7 +24,11 @@ package org.angle3d.material.shader
 		private var timer:Timer;
 		private var near:Number, far:Number;
 		private var viewX:int, viewY:int, viewWidth:int, viewHeight:int;
-		private var camUp:Vector3f = new Vector3f(), camLeft:Vector3f = new Vector3f(), camDir:Vector3f = new Vector3f(), camLoc:Vector3f = new Vector3f();
+		
+		private var camUp:Vector3f = new Vector3f();
+		private var camLeft:Vector3f = new Vector3f();
+		private var camDir:Vector3f = new Vector3f(); 
+		private var camLoc:Vector3f = new Vector3f();
 
 		private var tmpMatrix:Matrix4f = new Matrix4f();
 		private var tmpMatrix3:Matrix3f = new Matrix3f();
