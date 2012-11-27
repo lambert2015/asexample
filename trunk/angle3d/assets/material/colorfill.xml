@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<material>
+	<parameters>
+		<child name="DiffuseMap" type="Texture2D"/>
+		<child name="EnvMap" type="TextureCubeMap"/>
+	</parameters>
+	<techniques>
+		<vs url="colorfill.vs"/>
+		<fs url="colorfill.fs"/>
+		<worldParameters name="WorldViewProjectionMatrix"/>
+		<worldParameters name="NormalMatrix"/>
+		<worldParameters name="WorldViewMatrix"/>
+		<worldParameters name="ViewMatrix"/>
+		<worldParameters name="CameraPosition"/>
+		<worldParameters name="WorldMatrix"/>
+		<defines>
+			<child name="USE_REFLECTION" parameter="EnvMap"/>
+		</defines>
+	</techniques>
+</material>

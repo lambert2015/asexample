@@ -20,15 +20,20 @@ package examples.model
 	import org.angle3d.texture.Texture2D;
 	import org.angle3d.utils.Stats;
 
-//TODO 添加箭头测试
-	public class ShapeTest extends SimpleApplication
+	//TODO 添加箭头测试
+	/**
+	 * 拾取测试,拾取到的物品高亮显示
+	 * 这里高亮方式用了一种hack方式
+	 * 在原模型位置添加一个相同模型，稍微放大，然后设置其cullMode为back
+	 */
+	public class ShapeCollisionTest extends SimpleApplication
 	{
 		private var angle:Number;
 
 		[Embed(source = "../../../assets/embed/no-shader.png")]
 		private static var EmbedPositiveZ:Class;
 
-		public function ShapeTest()
+		public function ShapeCollisionTest()
 		{
 			super();
 
@@ -37,6 +42,8 @@ package examples.model
 			this.addChild(new Stats());
 		}
 
+		private var selectedMaterial:MaterialColorFill;
+		private var selectedGeometry:Geometry;
 		override protected function initialize(width:int, height:int):void
 		{
 			super.initialize(width, height);
@@ -57,15 +64,9 @@ package examples.model
 			gm.setTranslationXYZ(-100, 0, 0);
 			scene.attachChild(gm);
 
-			var colorMat2:MaterialColorFill = new MaterialColorFill(0xFFff00);
-			colorMat2.technique.renderState.cullMode = Context3DTriangleFace.BACK;
-			var cube2:Cube = new Cube(100, 100, 100, 1, 1, 1);
-			gm = new Geometry("cube2", cube2);
-			gm.setScaleXYZ(1.03, 1.03, 1.03);
-			gm.setMaterial(colorMat2);
-			gm.setTranslationXYZ(-100, 0, 0);
-			scene.attachChild(gm);
-
+			selectedMaterial = new MaterialColorFill(0xFFff00);
+			selectedMaterial.technique.renderState.cullMode = Context3DTriangleFace.BACK;
+			
 			var torus:Torus = new Torus(50, 10, 10, 10, true);
 			gm = new Geometry("torus", torus);
 			gm.setMaterial(textureMat);
@@ -91,10 +92,10 @@ package examples.model
 
 		override public function simpleUpdate(tpf:Number):void
 		{
-//			angle += 0.02;
-//			angle %= FastMath.TWO_PI;
-//			cam.location.setTo(Math.cos(angle) * 300, 100, Math.sin(angle) * 300);
-//			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+			if (selectedGeometry != null)
+			{
+				scene.detachChild(selectedGeometry);
+			}
 
 			var origin:Vector3f = cam.getWorldCoordinates(inputManager.getCursorPosition(), 0.0);
 			var direction:Vector3f = cam.getWorldCoordinates(inputManager.getCursorPosition(), 0.3);
@@ -107,8 +108,11 @@ package examples.model
 			if (results.size > 0)
 			{
 				var closest:CollisionResult = results.getClosestCollision();
-
-				trace(closest.geometry.name);
+				selectedGeometry = new Geometry(closest.geometry.name+"_selected", closest.geometry.getMesh());
+				selectedGeometry.setScaleXYZ(1.03, 1.03, 1.03);
+				selectedGeometry.setMaterial(selectedMaterial);
+				selectedGeometry.translation = closest.geometry.translation;
+				scene.attachChild(selectedGeometry);
 			}
 		}
 	}
