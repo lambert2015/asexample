@@ -6,6 +6,7 @@ package org.angle3d.material.technique
 
 	import org.angle3d.manager.ShaderManager;
 	import org.angle3d.material.RenderState;
+	import org.angle3d.material.TechniqueDef;
 	import org.angle3d.material.shader.Shader;
 	import org.angle3d.material.shader.UniformBindingHelp;
 	import org.angle3d.scene.mesh.MeshType;
@@ -16,6 +17,8 @@ package org.angle3d.material.technique
 	 */
 	public class Technique
 	{
+		public var def:TechniqueDef;
+
 		private var _name:String;
 
 		protected var _shaderMap:Dictionary; //<String,Shader>;
