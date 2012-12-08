@@ -107,7 +107,7 @@ package org.angle3d.effect.gpu
 
 		public function setColor(start:uint, end:uint):void
 		{
-			_gpuMaterial.setColor(start, end);
+			_gpuMaterial.setParticleColor(start, end);
 		}
 
 		public function setAlpha(start:Number, end:Number):void

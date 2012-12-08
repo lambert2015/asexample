@@ -1,7 +1,6 @@
 package org.angle3d.scene.ui
 {
 	import org.angle3d.material.MaterialTexture;
-	import org.angle3d.math.Vector3f;
 	import org.angle3d.renderer.queue.QueueBucket;
 	import org.angle3d.scene.CullHint;
 	import org.angle3d.scene.Geometry;
@@ -12,12 +11,12 @@ package org.angle3d.scene.ui
 	 * A Image represents a 2D image drawn on the screen.
 	 * It can be used to represent sprites or other background elements.
 	 */
-	public class Image extends Geometry
+	public class Picture extends Geometry
 	{
 		private var mWidth:Number;
 		private var mHeight:Number;
 
-		public function Image(name:String, flipY:Boolean)
+		public function Picture(name:String, flipY:Boolean = false)
 		{
 			super(name, new Quad(1, 1, flipY));
 
