@@ -98,7 +98,7 @@ package org.angle3d.material
 			_technique.setSpriteSheet(animDuration, col, row);
 		}
 
-		public function setColor(start:uint, end:uint):void
+		public function setParticleColor(start:uint, end:uint):void
 		{
 			_technique.setColor(start, end);
 		}

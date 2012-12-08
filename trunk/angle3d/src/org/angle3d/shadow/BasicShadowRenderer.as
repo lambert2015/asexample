@@ -12,7 +12,7 @@ package org.angle3d.shadow
 	import org.angle3d.renderer.queue.GeometryList;
 	import org.angle3d.renderer.queue.RenderQueue;
 	import org.angle3d.renderer.queue.ShadowMode;
-	import org.angle3d.scene.ui.Image;
+	import org.angle3d.scene.ui.Picture;
 	import org.angle3d.texture.FrameBuffer;
 	import org.angle3d.texture.Texture2D;
 	import org.angle3d.texture.TextureMap;
@@ -38,7 +38,7 @@ package org.angle3d.shadow
 		private var preshadowMat:MaterialPreShadow;
 		private var postshadowMat:MaterialPostShadow;
 
-		private var picture:Image;
+		private var picture:Picture;
 
 		public function BasicShadowRenderer(size:int)
 		{
@@ -51,7 +51,7 @@ package org.angle3d.shadow
 			postshadowMat = new MaterialPostShadow();
 			postshadowMat.setTexture(shadowMap);
 
-			picture = new Image("ShadowMap", false);
+			picture = new Picture("ShadowMap", false);
 			picture.setTexture(shadowMap, false);
 
 			noOccluders = false;
@@ -111,7 +111,7 @@ package org.angle3d.shadow
 		 * debug only
 		 * @return
 		 */
-		public function getPicture():Image
+		public function getPicture():Picture
 		{
 			return picture;
 		}

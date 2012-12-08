@@ -6,6 +6,7 @@ package org.angle3d.material
 	import org.angle3d.material.technique.Technique;
 	import org.angle3d.math.Color;
 	import org.angle3d.math.FastMath;
+	import org.angle3d.texture.TextureMapBase;
 
 	/**
 	 * <code>Material</code> describes the rendering style for a given
@@ -123,6 +124,28 @@ package org.angle3d.material
 		{
 			var mat:Material = new Material();
 			return mat;
+		}
+
+		public function setInt(key:String, value:int):void
+		{
+			// TODO Auto Generated method stub
+
+		}
+
+		public function setFloat(key:String, value:Number):void
+		{
+			// TODO Auto Generated method stub
+
+		}
+
+		public function setColor(key:String, color:Color):void
+		{
+
+		}
+
+		public function setTexture(key:String, texture:TextureMapBase):void
+		{
+
 		}
 	}
 }

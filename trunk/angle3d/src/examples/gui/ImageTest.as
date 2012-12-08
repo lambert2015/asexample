@@ -6,12 +6,12 @@ package examples.gui
 	import org.angle3d.app.SimpleApplication;
 	import examples.skybox.DefaultSkyBox;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.scene.ui.Image;
+	import org.angle3d.scene.ui.Picture;
 	import org.angle3d.texture.Texture2D;
 	
 	public class ImageTest extends SimpleApplication
 	{
-		private var image:Image;
+		private var image:Picture;
 		
 		[Embed(source = "../../../assets/embed/no-shader.png")]
 		private static var EmbedPositiveZ:Class;
@@ -30,7 +30,7 @@ package examples.gui
 			var texture:Texture2D = new Texture2D(new EmbedPositiveZ().bitmapData);
 			//var textureMat:MaterialTexture = new MaterialTexture(texture);
 			
-			image = new Image("image",false);
+			image = new Picture("image",false);
 			image.move(new Vector3f(0,0,-1));
 			image.setPosition(200,200);
 			image.setSize(200,200);
