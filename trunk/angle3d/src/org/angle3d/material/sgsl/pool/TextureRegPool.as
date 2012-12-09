@@ -1,6 +1,8 @@
 package org.angle3d.material.sgsl.pool
 {
 
+	import flash.display3D.Context3DProfile;
+
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.utils.Assert;
 
@@ -11,19 +13,27 @@ package org.angle3d.material.sgsl.pool
 	public class TextureRegPool extends RegPool
 	{
 		private var _pool:Vector.<int>;
-		private var _maxCount:int;
 
-		public function TextureRegPool()
+		public function TextureRegPool(profile:String)
 		{
-			super();
-			_maxCount = 8;
-			_pool = new Vector.<int>(_maxCount, true);
+			super(profile);
+
+			_pool = new Vector.<int>(mRegLimit, true);
+		}
+
+		override protected function getRegLimit():uint
+		{
+			if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+			{
+				return 16;
+			}
+			return 8;
 		}
 
 		override public function clear():void
 		{
 			super.clear();
-			for (var i:int = 0; i < _maxCount; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				_pool[i] = 0;
 			}
@@ -40,7 +50,7 @@ package org.angle3d.material.sgsl.pool
 				Assert.assert(!node.registered, node.name + "不能注册多次");
 			}
 
-			for (var i:int = 0; i < _maxCount; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				if (_pool[i] == 0)
 				{

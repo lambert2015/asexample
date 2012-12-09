@@ -1,17 +1,17 @@
 package org.angle3d.app
 {
 	import flash.ui.Keyboard;
+
+	import org.angle3d.input.FlyByCamera;
 	import org.angle3d.input.controls.ActionListener;
 	import org.angle3d.input.controls.KeyTrigger;
-	import org.angle3d.input.FlyByCamera;
 	import org.angle3d.math.Quaternion;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.renderer.queue.QueueBucket;
 	import org.angle3d.renderer.RenderManager;
+	import org.angle3d.renderer.queue.QueueBucket;
 	import org.angle3d.scene.CullHint;
 	import org.angle3d.scene.Node;
 	import org.angle3d.utils.Logger;
-	import org.angle3d.material.sgsl.SgslVersion;
 
 	/**
 	 * <code>SimpleApplication</code> extends the {@link com.jme3.app.Application}
@@ -38,9 +38,9 @@ package org.angle3d.app
 
 		protected var flyCam:FlyByCamera;
 
-		public function SimpleApplication(sgslVersion:int = 1)
+		public function SimpleApplication()
 		{
-			super(sgslVersion);
+			super();
 		}
 
 		public function onAction(name:String, value:Boolean, tpf:Number):void
@@ -107,12 +107,12 @@ package org.angle3d.app
 			super.initialize(width, height);
 
 			_scene = new Node("Root Node");
-			viewPort.attachScene(_scene);
+			mViewPort.attachScene(_scene);
 
 			_gui = new Node("Gui Node");
 			_gui.localQueueBucket = QueueBucket.Gui;
 			_gui.localCullHint = CullHint.Never;
-			guiViewPort.attachScene(_gui);
+			mGuiViewPort.attachScene(_gui);
 
 			if (inputManager != null)
 			{

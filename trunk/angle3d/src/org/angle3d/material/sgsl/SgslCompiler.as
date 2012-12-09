@@ -1,11 +1,10 @@
 package org.angle3d.material.sgsl
 {
 
+	import flash.display3D.Context3DProfile;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.Endian;
-	import org.angle3d.utils.Assert;
-	import org.angle3d.utils.Logger;
 
 	import org.angle3d.material.sgsl.node.AgalNode;
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
@@ -21,6 +20,8 @@ package org.angle3d.material.sgsl
 	import org.angle3d.material.shader.Shader;
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.material.shader.ShaderVarType;
+	import org.angle3d.utils.Assert;
+	import org.angle3d.utils.Logger;
 
 	/**
 	 * Stage3D Shader Language(sgsl) Complier
@@ -30,7 +31,7 @@ package org.angle3d.material.sgsl
 //TODO 添加数组类型
 	public class SgslCompiler
 	{
-		public static const MAX_OPCODES:int = 200;
+		private var MAX_OPCODES:int = 200;
 
 		private var _swizzleMap:Dictionary;
 
@@ -52,8 +53,14 @@ package org.angle3d.material.sgsl
 
 		private var _opCodeManager:OpCodeManager;
 
-		public function SgslCompiler(sgslParser:SgslParser, opCodeManager:OpCodeManager)
+		public var profile:String;
+
+		public function SgslCompiler(profile:String, sgslParser:SgslParser, opCodeManager:OpCodeManager)
 		{
+			this.profile = profile;
+
+			MAX_OPCODES = (profile == Context3DProfile.BASELINE_EXTENDED) ? 1024 : 200;
+
 			_parser = sgslParser;
 			_opCodeManager = opCodeManager;
 
@@ -79,8 +86,8 @@ package org.angle3d.material.sgsl
 
 			_sgsl2Agal = new Sgsl2Agal();
 
-			_vertexData = new SgslData(ShaderType.VERTEX);
-			_fragmentData = new SgslData(ShaderType.FRAGMENT);
+			_vertexData = new SgslData(profile, ShaderType.VERTEX);
+			_fragmentData = new SgslData(profile, ShaderType.FRAGMENT);
 		}
 
 		/**

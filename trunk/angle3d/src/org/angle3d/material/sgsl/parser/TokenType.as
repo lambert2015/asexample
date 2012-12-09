@@ -68,6 +68,24 @@
 		/** || */
 		public static const OR:String = "OR";
 
+		/** == */
+		public static const DOUBLE_EQUAL:String = "DOUBLE_EQUAL";
+
+		/** != */
+		public static const NOT_EQUAL:String = "NOT_EQUAL";
+
+		/** >= */
+		public static const GREATER_EQUAL:String = "GREATER_EQUAL";
+
+		/** <= */
+		public static const LESS_EQUAL:String = "LESS_EQUAL";
+
+		/** > */
+		public static const GREATER_THAN:String = "GREATER_THAN";
+
+		/** < */
+		public static const LESS_THAN:String = "LESS_THAN";
+
 		/** [ */
 		public static const LBRACKET:String = "LBRACKET";
 

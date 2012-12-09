@@ -43,7 +43,8 @@
 				{
 					_token = _nextToken;
 					_nextToken = new Token(TokenType.EOF, "<EOF>");
-				}else
+				}
+				else
 				{
 					_nextToken = new Token(TokenType.NONE, "<NONE>");
 					_token = new Token(TokenType.EOF, "<EOF>");
@@ -51,7 +52,7 @@
 				return;
 			}
 
-			
+
 
 			_token = _nextToken;
 			_nextToken = _createNextToken(_source.substr(_position));
@@ -116,6 +117,13 @@
 				[TokenType.LPAREN, /\(/],
 				[TokenType.RPAREN, /\)/],
 				[TokenType.COMMA, /,/],
+				//if/else
+				[TokenType.GREATER_THAN, /\>/],
+				[TokenType.LESS_THAN, /\</],
+				[TokenType.GREATER_EQUAL, /\>=/],
+				[TokenType.LESS_EQUAL, /\<=/],
+				[TokenType.NOT_EQUAL, /\!=/],
+				[TokenType.DOUBLE_EQUAL, /==/],
 				// operators
 				[TokenType.DOT, /\./],
 				[TokenType.PLUS, /\+/],

@@ -35,11 +35,11 @@ package org.angle3d.app
 		protected var renderer:IRenderer;
 		protected var renderManager:RenderManager;
 
-		protected var viewPort:ViewPort;
+		protected var mViewPort:ViewPort;
 		protected var cam:Camera3D;
 
-		protected var guiViewPort:ViewPort;
-		protected var guiCam:Camera3D;
+		protected var mGuiViewPort:ViewPort;
+		protected var mGuiCam:Camera3D;
 
 		protected var stage3D:Stage3D;
 
@@ -55,13 +55,10 @@ package org.angle3d.app
 		protected var oldTime:int;
 
 		protected var _context3DProfile:String;
-		protected var _sgslVersion:int;
 
-		public function Application(sgslVersion:int = 1)
+		public function Application()
 		{
 			super();
-
-			_sgslVersion = sgslVersion;
 
 			inputEnabled = true;
 			oldTime = -1;
@@ -121,14 +118,14 @@ package org.angle3d.app
 			}
 		}
 
-		public function getGuiViewPort():ViewPort
+		public function get guiViewPort():ViewPort
 		{
-			return guiViewPort;
+			return mGuiViewPort;
 		}
 
-		public function getViewPort():ViewPort
+		public function get viewPort():ViewPort
 		{
-			return viewPort;
+			return mViewPort;
 		}
 
 		protected function initialize(width:int, height:int):void
@@ -152,7 +149,7 @@ package org.angle3d.app
 
 		protected function initShaderManager():void
 		{
-			ShaderManager.init(stage3D.context3D, _context3DProfile, _sgslVersion);
+			ShaderManager.init(stage3D.context3D, _context3DProfile);
 		}
 
 		/**
@@ -173,12 +170,12 @@ package org.angle3d.app
 			renderer = new DefaultRenderer(stage3D);
 			renderManager = new RenderManager(renderer);
 
-			viewPort = renderManager.createMainView("Default", cam);
-			viewPort.setClearFlags(true, true, true);
+			mViewPort = renderManager.createMainView("Default", cam);
+			mViewPort.setClearFlags(true, true, true);
 
-			guiCam = new Camera3D(width, height);
-			guiViewPort = renderManager.createPostView("Gui Default", guiCam);
-			guiViewPort.setClearFlags(false, false, false);
+			mGuiCam = new Camera3D(width, height);
+			mGuiViewPort = renderManager.createPostView("Gui Default", mGuiCam);
+			mGuiViewPort.setClearFlags(false, false, false);
 		}
 
 		protected function _addedToStageHandler(e:Event):void
@@ -199,7 +196,7 @@ package org.angle3d.app
 			stage3D.addEventListener(Event.CONTEXT3D_CREATE, _context3DCreateHandler);
 
 			_context3DProfile = Context3DProfile.BASELINE;
-			stage3D.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.BASELINE);
+			stage3D.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.BASELINE_EXTENDED);
 		}
 
 		protected function _context3DCreateHandler(e:Event):void

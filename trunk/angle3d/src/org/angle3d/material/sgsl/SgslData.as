@@ -31,6 +31,8 @@ package org.angle3d.material.sgsl
 		 */
 		public var shaderType:String;
 
+		public var profile:String;
+
 		private var _nodes:Vector.<AgalNode>;
 
 		public var attributePool:AttributeRegPool;
@@ -45,22 +47,23 @@ package org.angle3d.material.sgsl
 		 */
 		private var _regsMap:Dictionary;
 
-		public function SgslData(shaderType:String)
+		public function SgslData(profile:String, shaderType:String)
 		{
+			this.profile = profile;
 			this.shaderType = shaderType;
 
 			_nodes = new Vector.<AgalNode>();
 
-			_tempPool = new TempRegPool();
-			uniformPool = new UniformRegPool(shaderType);
-			varyingPool = new VaryingRegPool();
+			_tempPool = new TempRegPool(this.profile);
+			uniformPool = new UniformRegPool(this.profile, shaderType);
+			varyingPool = new VaryingRegPool(this.profile);
 			if (shaderType == ShaderType.VERTEX)
 			{
-				attributePool = new AttributeRegPool();
+				attributePool = new AttributeRegPool(this.profile);
 			}
 			else
 			{
-				texturePool = new TextureRegPool();
+				texturePool = new TextureRegPool(this.profile);
 			}
 
 			_regsMap = new Dictionary();

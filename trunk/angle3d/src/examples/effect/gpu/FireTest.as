@@ -42,7 +42,7 @@ package examples.effect.gpu
 		{
 			super.initialize(width, height);
 
-			viewPort.setBackgroundColor(0x0);
+			mViewPort.setBackgroundColor(0x0);
 
 			flyCam.setDragToRotate(true);
 
