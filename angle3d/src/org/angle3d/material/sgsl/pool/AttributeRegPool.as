@@ -10,20 +10,24 @@ package org.angle3d.material.sgsl.pool
 	 */
 	public class AttributeRegPool extends RegPool
 	{
-		public static const REGISTER_COUNT:int = 8;
-		
 		private var _pool:Vector.<int>;
 
-		public function AttributeRegPool()
+		public function AttributeRegPool(profile:String)
 		{
-			super();
-			_pool = new Vector.<int>(REGISTER_COUNT, true);
+			super(profile);
+
+			_pool = new Vector.<int>(mRegLimit, true);
+		}
+
+		override protected function getRegLimit():uint
+		{
+			return 8;
 		}
 
 		override public function clear():void
 		{
 			super.clear();
-			for (var i:int = 0; i < REGISTER_COUNT; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				_pool[i] = 0;
 			}
@@ -40,7 +44,7 @@ package org.angle3d.material.sgsl.pool
 				Assert.assert(!node.registered, node.name + "不能注册多次");
 			}
 
-			for (var i:int = 0; i < REGISTER_COUNT; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				if (_pool[i] == 0)
 				{

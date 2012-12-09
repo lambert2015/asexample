@@ -1,6 +1,8 @@
 package org.angle3d.material.sgsl.pool
 {
 
+	import flash.display3D.Context3DProfile;
+
 	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.utils.Assert;
@@ -13,17 +15,27 @@ package org.angle3d.material.sgsl.pool
 	{
 		private var _pool:Vector.<int>;
 
-		public function VaryingRegPool()
+		public function VaryingRegPool(profile:String)
 		{
-			super();
-			_pool = new Vector.<int>(8, true);
+			super(profile);
+
+			_pool = new Vector.<int>(mRegLimit, true);
+		}
+
+		override protected function getRegLimit():uint
+		{
+			if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+			{
+				return 10;
+			}
+			return 8;
 		}
 
 		override public function clear():void
 		{
 			super.clear();
 
-			for (var i:int = 0; i < 8; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				_pool[i] = 0;
 			}
@@ -42,7 +54,7 @@ package org.angle3d.material.sgsl.pool
 
 			//TODO 应该尽量避免传递Mat4,Mat3，大部分情况下没必要
 			var size:int = DataType.getRegisterCount(node.dataType);
-			for (var i:int = 0; i < 8; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				if (_pool[i] == 0)
 				{

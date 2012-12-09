@@ -3,7 +3,7 @@ package org.angle3d.material.sgsl
 
 	/**
 	 * 操作符
-	 * @author
+	 * @author andy
 	 */
 	internal class OpCode
 	{
@@ -32,9 +32,14 @@ package org.angle3d.material.sgsl
 		 * 只能在Fragment中使用
 		 * @return
 		 */
-		public function isFragOnly():Boolean
+		public function get isFragOnly():Boolean
 		{
 			return (flags & OpCodeManager.OP_FRAG_ONLY) != 0;
+		}
+
+		public function get isVersion2():Boolean
+		{
+			return (flags & OpCodeManager.OP_VERSION2) != 0;
 		}
 	}
 }

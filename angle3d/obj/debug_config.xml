@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <flex-config>
-   <compiler locale="en_US" swf-version="15">
+   <compiler locale="en_US" swf-version="19">
 		<define>
 			<name>CF::DEBUG</name>
 			<value>true</value>

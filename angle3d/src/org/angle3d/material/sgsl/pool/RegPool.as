@@ -9,37 +9,54 @@ package org.angle3d.material.sgsl.pool
 	 */
 	public class RegPool
 	{
-		protected var _regs:Vector.<RegNode>;
+		protected var mRegLimit:int;
 
-		public function RegPool()
+		protected var mProfile:String;
+
+		protected var mRegs:Vector.<RegNode>;
+
+		public function RegPool(profile:String)
 		{
-			_regs = new Vector.<RegNode>();
+			this.profile = profile;
+
+			mRegLimit = getRegLimit();
+			mRegs = new Vector.<RegNode>();
+		}
+
+		protected function getRegLimit():uint
+		{
+			return 0;
+		}
+
+		public function set profile(value:String):void
+		{
+			mProfile = value;
 		}
 
 		public function addReg(value:RegNode):void
 		{
-			if (_regs.indexOf(value) == -1)
+			if (mRegs.indexOf(value) == -1)
 			{
-				_regs.push(value);
+				mRegs.push(value);
 			}
 		}
 
 		public function getRegs():Vector.<RegNode>
 		{
-			return _regs;
+			return mRegs;
 		}
 
 		public function clear():void
 		{
-			_regs.length = 0;
+			mRegs.length = 0;
 		}
 
 		public function build():void
 		{
-			var count:int = _regs.length;
+			var count:int = mRegs.length;
 			for (var i:int = 0; i < count; i++)
 			{
-				register(_regs[i]);
+				register(mRegs[i]);
 			}
 		}
 

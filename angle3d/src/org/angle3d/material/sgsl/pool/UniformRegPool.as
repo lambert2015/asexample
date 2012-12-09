@@ -1,6 +1,8 @@
 package org.angle3d.material.sgsl.pool
 {
 
+	import flash.display3D.Context3DProfile;
+
 	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.material.sgsl.node.reg.UniformReg;
@@ -17,26 +19,45 @@ package org.angle3d.material.sgsl.pool
 	{
 		private var _pool:Vector.<int>;
 
-		/**
-		 * 寄存器最大值
-		 */
-		private var max:int;
-
 		private var _constants:Vector.<Number>;
 
 		private var shaderType:String;
 
-		public function UniformRegPool(shaderType:String)
+		public function UniformRegPool(profile:String, shaderType:String)
 		{
-			super();
-
 			this.shaderType = shaderType;
 
-			max = (shaderType == ShaderType.VERTEX) ? 128 : 28;
+			super(profile);
 
-			_pool = new Vector.<int>(max, true);
+			_pool = new Vector.<int>(mRegLimit, true);
 
 			_constants = new Vector.<Number>();
+		}
+
+		override protected function getRegLimit():uint
+		{
+			if (shaderType == ShaderType.VERTEX)
+			{
+				if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+				{
+					return 250;
+				}
+				else
+				{
+					return 128;
+				}
+			}
+			else
+			{
+				if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+				{
+					return 64;
+				}
+				else
+				{
+					return 28;
+				}
+			}
 		}
 
 		/**
@@ -118,7 +139,7 @@ package org.angle3d.material.sgsl.pool
 		private function registerConstants():void
 		{
 			//clear pool
-			for (var i:int = 0; i < max; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				_pool[i] = 0;
 			}
@@ -138,7 +159,7 @@ package org.angle3d.material.sgsl.pool
 		{
 			super.clear();
 
-			for (var i:int = 0; i < max; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				_pool[i] = 0;
 			}
@@ -160,7 +181,7 @@ package org.angle3d.material.sgsl.pool
 			}
 
 			var size:int = int(uniformReg.size / 4);
-			for (var i:int = 0; i < max; i++)
+			for (var i:int = 0; i < mRegLimit; i++)
 			{
 				if (_pool[i] == 0)
 				{

@@ -18,7 +18,7 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<locationURI>DOCUMENTS/angle3d_bin</locationURI>
+			<location>D:/SVNSpace/molehill/angle3d_bin</location>
 		</link>
 		<link>
 			<name>bin-release</name>

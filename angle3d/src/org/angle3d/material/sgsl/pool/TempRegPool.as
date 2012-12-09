@@ -1,5 +1,7 @@
 package org.angle3d.material.sgsl.pool
 {
+	import flash.display3D.Context3DProfile;
+
 	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.material.sgsl.node.reg.TempReg;
@@ -13,10 +15,20 @@ package org.angle3d.material.sgsl.pool
 	{
 		private var _pool:Vector.<int>;
 
-		public function TempRegPool()
+		public function TempRegPool(profile:String)
 		{
-			super();
-			_pool = new Vector.<int>(4 * 8, true);
+			super(profile);
+
+			_pool = new Vector.<int>(4 * mRegLimit, true);
+		}
+
+		override protected function getRegLimit():uint
+		{
+			if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+			{
+				return 26;
+			}
+			return 8;
 		}
 
 		override public function clear():void
