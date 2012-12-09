@@ -5,45 +5,54 @@ package examples.sgsl
 	import flash.display3D.Context3DRenderMode;
 	import flash.events.MouseEvent;
 	import flash.net.FileReference;
-
+	import flash.utils.ByteArray;
+	import org.angle3d.manager.ShaderManager;
+	
+	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.material.sgsl.OpCodeManager;
 	import org.angle3d.material.sgsl.SgslCompiler;
 	import org.angle3d.material.sgsl.parser.SgslParser;
 	import org.angle3d.material.shader.Shader;
 
-	public class SaveSgsl extends Sprite
+	public class SaveSgsl extends SimpleApplication
 	{
+		[Embed(source = "gpuparticle.vs", mimeType = "application/octet-stream")]
+		private static var GPUParticleVS:Class;
+		[Embed(source = "gpuparticle.fs", mimeType = "application/octet-stream")]
+		private static var GPUParticleFS:Class;
+		
 		private var shader:Shader;
 
 		public function SaveSgsl()
 		{
-			var vertexSrc:String = "attribute vec3 a_position;" + "attribute vec4 a_boneWeights;" + "attribute vec4 a_boneIndices;" +
-
-				"uniform mat4 u_WorldViewProjectionMatrix;" + "uniform vec4 u_boneMatrixs[" + 32 * 3 + "];" +
-
-				"function main(){" + "		mat3 t_skinTransform;" + "		vec4 t_vec;" + "		vec4 t_vec1;" +
-
-				"       float n1 = a_boneWeights.x;" + "       n1 = 1.0;" + "		t_vec1 = mul(n1,u_boneMatrixs[a_boneIndices.x]);" + "		t_skinTransform[0] = t_vec1;" +
-
-				"		t_vec1 = mul(n1,u_boneMatrixs[a_boneIndices.x + 1]);" + "		t_skinTransform[1] = t_vec1;" +
-
-				"		t_vec1 = mul(n1,u_boneMatrixs[a_boneIndices.x + 2]);" + "		t_skinTransform[2] = t_vec1;" +
-
-				"		vec4 t_localPos;" + "		t_localPos.xyz = m34(a_position,t_skinTransform);" + "		t_localPos.w = 1.0;" + "		output = m44(t_localPos,u_WorldViewProjectionMatrix);" + "}";
-			;
-
-			var fragmentSrc:String = <![CDATA[
-							function main(){
-				                output = 1.0;
-							}]]>;
-
-			var mOpCodeManager:OpCodeManager = new OpCodeManager(Context3DProfile.BASELINE_EXTENDED);
-			var mSgslParser:SgslParser = new SgslParser();
-			var parser:SgslCompiler = new SgslCompiler(Context3DProfile.BASELINE_EXTENDED, mSgslParser, mOpCodeManager);
-			shader = parser.complie([vertexSrc, fragmentSrc]);
+			
+		}
+		
+		override protected function initialize(width : int, height : int) : void
+		{
+			super.initialize(width, height);
+			
+			var vertexSrc:String = getVertexSource();
+			
+			var fragmentSrc:String = getFragmentSource();
+			
+			shader = ShaderManager.instance.registerShader("gpuparticle",[vertexSrc, fragmentSrc]);
 
 			this.stage.addEventListener(MouseEvent.CLICK, _saveData);
 		}
+		
+		 protected function getVertexSource():String
+		{
+			var ba:ByteArray = new GPUParticleVS();
+			return ba.readUTFBytes(ba.length);
+		}
+		
+		 protected function getFragmentSource():String
+		{
+			var ba:ByteArray = new GPUParticleFS();
+			return ba.readUTFBytes(ba.length);
+		}
+		
 		private var count:int = 0;
 
 		private function _saveData(e:MouseEvent):void

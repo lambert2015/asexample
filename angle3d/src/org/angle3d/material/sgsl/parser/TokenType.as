@@ -24,7 +24,11 @@
 
 		//预编译条件
 		/** # */
-		public static const CONDITION:String = "CONDITION";
+		public static const PRE_CONDITION:String = "PRE_CONDITION";
+
+		public static const IF:String = "IF";
+
+		public static const ELSE:String = "ELSE";
 
 		/** return */
 		public static const FUNCTION_RETURN:String = "RETURN";

@@ -107,7 +107,7 @@
 		{
 			_tokenRegex = [[TokenType.IDENTIFIER, /[a-zA-Z_][a-zA-Z0-9_]*/],
 				[TokenType.NUMBER, /[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?/],
-				[TokenType.CONDITION, /#/],
+				[TokenType.PRE_CONDITION, /#/],
 				// grouping
 				[TokenType.SEMI, /;/],
 				[TokenType.LBRACE, /{/],
@@ -181,6 +181,10 @@
 					return TokenType.FUNCTION;
 				case "return":
 					return TokenType.FUNCTION_RETURN;
+				case "if":
+					return TokenType.IF;
+				case "else":
+					return TokenType.ELSE;
 				case DataType.FLOAT:
 				case DataType.VEC2:
 				case DataType.VEC3:
