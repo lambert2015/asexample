@@ -613,6 +613,7 @@
 
 			_tok.accept(TokenType.LBRACKET); // SKIP '['
 
+			//TODO 优化判断，目前这里不够精确
 			if (_tok.token.type != TokenType.RBRACKET)
 			{
 				while (_tok.token.type != TokenType.RBRACKET)
