@@ -1,6 +1,7 @@
 ﻿package org.angle3d.material.sgsl.parser
 {
 	import flash.utils.Dictionary;
+	import org.angle3d.material.sgsl.node.ConditionEndNode;
 	import org.angle3d.material.sgsl.node.ConditionNode;
 
 	import org.angle3d.material.sgsl.RegType;
@@ -321,6 +322,9 @@
 			{
 				parseElseCondition(ifConditionNode);
 			}
+			
+			var conditionEndNode:ConditionEndNode = new ConditionEndNode("end");
+			parent.addChild(conditionEndNode);
 		}
 		
 		/**
@@ -343,11 +347,11 @@
 				var type:String = _tok.token.type;
 				if (type == TokenType.PREDEFINE)
 				{
-					parent.addChild(parsePredefine());
+					//parent.addChild(parsePredefine());
 				}
 				else if (type == TokenType.IF)
 				{
-					parseIfCondition(parent);
+					//parseIfCondition(parent);
 				}
 				//不应该出现这种情况
 				else if (type == TokenType.FUNCTION_RETURN)
@@ -356,7 +360,7 @@
 				}
 				else
 				{
-					parseStatement(parent);
+					//parseStatement(parent);
 				}
 			}
 
