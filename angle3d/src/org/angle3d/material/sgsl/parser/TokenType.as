@@ -24,7 +24,7 @@
 
 		//预编译条件
 		/** # */
-		public static const PRE_CONDITION:String = "PRE_CONDITION";
+		public static const PREDEFINE:String = "PREDEFINE";
 
 		public static const IF:String = "IF";
 

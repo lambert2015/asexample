@@ -24,7 +24,7 @@ package org.angle3d.material.sgsl.pool
 
 		override protected function getRegLimit():uint
 		{
-			if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+			if (mProfile == "baselineExtended")
 			{
 				return 26;
 			}

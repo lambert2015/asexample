@@ -38,7 +38,7 @@ package org.angle3d.material.sgsl.pool
 		{
 			if (shaderType == ShaderType.VERTEX)
 			{
-				if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+				if (mProfile == "baselineExtended")
 				{
 					return 250;
 				}
@@ -49,7 +49,7 @@ package org.angle3d.material.sgsl.pool
 			}
 			else
 			{
-				if (mProfile == Context3DProfile.BASELINE_EXTENDED)
+				if (mProfile == "baselineExtended")
 				{
 					return 64;
 				}

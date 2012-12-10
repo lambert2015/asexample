@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2012-11-27'</value>
+      <value>'2012-12-10'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -37,7 +37,7 @@
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>E:\asexample\angle3d\src\examples\model\ShapeCollisionTest.as</path-element>
+    <path-element>E:\asexample\angle3d\src\examples\sgsl\SaveSgsl.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
   <default-frame-rate>60</default-frame-rate>

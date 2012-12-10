@@ -59,7 +59,7 @@ package org.angle3d.material.sgsl
 		{
 			this.profile = profile;
 
-			MAX_OPCODES = (profile == Context3DProfile.BASELINE_EXTENDED) ? 1024 : 200;
+			MAX_OPCODES = (profile == "baselineExtended") ? 1024 : 200;
 
 			_parser = sgslParser;
 			_opCodeManager = opCodeManager;
