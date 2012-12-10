@@ -26,9 +26,9 @@
 		/** # */
 		public static const PREDEFINE:String = "PREDEFINE";
 
-		public static const IF:String = "IF";
+		public static const IF:String = "if";
 
-		public static const ELSE:String = "ELSE";
+		public static const ELSE:String = "else";
 
 		/** return */
 		public static const FUNCTION_RETURN:String = "RETURN";

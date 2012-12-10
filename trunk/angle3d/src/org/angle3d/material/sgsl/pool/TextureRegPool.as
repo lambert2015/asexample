@@ -4,6 +4,7 @@ package org.angle3d.material.sgsl.pool
 	import flash.display3D.Context3DProfile;
 
 	import org.angle3d.material.sgsl.node.reg.RegNode;
+	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.utils.Assert;
 
 	/**
@@ -23,11 +24,18 @@ package org.angle3d.material.sgsl.pool
 
 		override protected function getRegLimit():uint
 		{
-			if (mProfile == "baselineExtended")
+			if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 			{
 				return 16;
 			}
-			return 8;
+			else if (mProfile == ShaderProfile.BASELINE)
+			{
+				return 8;
+			}
+			else
+			{
+				return 4;
+			}
 		}
 
 		override public function clear():void

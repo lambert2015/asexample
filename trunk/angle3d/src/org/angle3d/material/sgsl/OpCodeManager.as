@@ -4,6 +4,7 @@ package org.angle3d.material.sgsl
 	import flash.display3D.Context3DProfile;
 	import flash.utils.Dictionary;
 
+	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.utils.Logger;
 
 	/**
@@ -146,7 +147,7 @@ package org.angle3d.material.sgsl
 			addCode(["m34"], 3, 0x19, OP_SPECIAL_MATRIX);
 
 			//available in agal version 2
-			if (profile == "baselineExtended")
+			if (profile == ShaderProfile.BASELINE_EXTENDED)
 			{
 				addCode(["ddx"], 2, 0x1a, OP_VERSION2 | OP_FRAG_ONLY);
 				addCode(["ddy"], 2, 0x1b, OP_VERSION2 | OP_FRAG_ONLY);
@@ -164,7 +165,7 @@ package org.angle3d.material.sgsl
 			textureCode = addCode(["texture2D", "textureCube"], 3, 0x28, OP_FRAG_ONLY | OP_SPECIAL_TEX);
 
 			//约束模式下不能使用
-			if (profile == Context3DProfile.BASELINE)
+			if (profile != ShaderProfile.BASELINE_CONSTRAINED)
 			{
 				addCode(["sge", "greaterThanEqual", "step"], 3, 0x29, 0);
 				addCode(["slt", "lessThan"], 3, 0x2a, 0);

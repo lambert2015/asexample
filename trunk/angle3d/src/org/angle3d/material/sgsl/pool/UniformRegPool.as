@@ -6,6 +6,7 @@ package org.angle3d.material.sgsl.pool
 	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.material.sgsl.node.reg.UniformReg;
+	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.utils.Assert;
 
@@ -38,7 +39,7 @@ package org.angle3d.material.sgsl.pool
 		{
 			if (shaderType == ShaderType.VERTEX)
 			{
-				if (mProfile == "baselineExtended")
+				if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 				{
 					return 250;
 				}

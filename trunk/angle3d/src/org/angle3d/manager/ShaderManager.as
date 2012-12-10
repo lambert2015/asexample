@@ -88,14 +88,14 @@ package org.angle3d.manager
 		//		}
 		//TODO 约束模式有几个函数用不了，需要自己自定义这几个函数
 		[Embed(source = "customOpCode.txt", mimeType = "application/octet-stream")]
-		private static var CustomOpCodeBD:Class;
+		private static var CustomOpCodeAsset:Class;
+
 		private function _initCustomFunctions():void
 		{
 			mCustomFunctionMap = new Dictionary();
-			
-			var ba:ByteArray = new customOpCodeBD();
-			var source:String = ba.readUTFBytes(ba.length);
 
+			var ba:ByteArray = new CustomOpCodeAsset();
+			var source:String = ba.readUTFBytes(ba.length);
 			var functionList:Vector.<FunctionNode> = mSgslParser.execFunctions(source);
 
 			var fLength:int = functionList.length;

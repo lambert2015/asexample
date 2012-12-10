@@ -5,6 +5,7 @@ package org.angle3d.material.sgsl.pool
 	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.material.sgsl.node.reg.TempReg;
+	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.utils.Assert;
 
 	/**
@@ -24,7 +25,7 @@ package org.angle3d.material.sgsl.pool
 
 		override protected function getRegLimit():uint
 		{
-			if (mProfile == "baselineExtended")
+			if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 			{
 				return 26;
 			}
