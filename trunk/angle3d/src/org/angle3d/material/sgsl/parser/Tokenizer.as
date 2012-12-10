@@ -107,7 +107,7 @@
 		{
 			_tokenRegex = [[TokenType.IDENTIFIER, /[a-zA-Z_][a-zA-Z0-9_]*/],
 				[TokenType.NUMBER, /[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?/],
-				[TokenType.PRE_CONDITION, /#/],
+				[TokenType.PREDEFINE, /#[elsdif]{4,6}/],
 				// grouping
 				[TokenType.SEMI, /;/],
 				[TokenType.LBRACE, /{/],

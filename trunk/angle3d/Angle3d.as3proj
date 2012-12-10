@@ -40,7 +40,7 @@
     <option linkReport="" />
     <option loadExterns="" />
     <option staticLinkRSL="True" />
-    <option additional="-load-config+=obj\debug_config.xml" />
+    <option additional="-load-config+=obj\debug_config.xml&#xA;-swf-version 19" />
     <option compilerConstants="" />
     <option minorVersion="" />
   </build>
@@ -70,7 +70,7 @@
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\examples\model\ShapeCollisionTest.as" />
+    <compile path="src\examples\sgsl\SaveSgsl.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

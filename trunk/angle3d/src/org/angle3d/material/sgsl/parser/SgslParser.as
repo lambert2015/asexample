@@ -1,6 +1,7 @@
 ﻿package org.angle3d.material.sgsl.parser
 {
 	import flash.utils.Dictionary;
+	import org.angle3d.material.sgsl.node.ConditionNode;
 
 	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.error.UnexpectedTokenError;
@@ -91,9 +92,9 @@
 				{
 					program.addChild(parseFunction());
 				}
-				else if (_tok.token.type == TokenType.PRE_CONDITION)
+				else if (_tok.token.type == TokenType.PREDEFINE)
 				{
-					program.addChild(parsePreCondition());
+					program.addChild(parsePredefine());
 				}
 				else
 				{
@@ -113,16 +114,16 @@
 		 * condition = '#ifdef || #elseif' '(' Identifier { "||" | "&&" } ")" || '#else' block;
 		 */
 
-		private function parsePreCondition():PredefineNode
+		private function parsePredefine():PredefineNode
 		{
 			var condition:PredefineNode = new PredefineNode();
 
-			condition.addChild(parseSubCondition());
+			condition.addChild(parseSubPredefine());
 
 			//接下来一个也是条件，并且不是新的条件，而是之前条件的延续
-			while (_tok.token.type == TokenType.PRE_CONDITION && _tok.peek.name != PredefineType.IFDEF)
+			while (_tok.token.type == TokenType.PREDEFINE && _tok.peek.name != PredefineType.IFDEF)
 			{
-				condition.addChild(parseSubCondition());
+				condition.addChild(parseSubPredefine());
 			}
 
 			return condition;
@@ -134,11 +135,13 @@
 		 * @param parent
 		 *
 		 */
-		private function parseSubCondition():PredefineSubNode
+		private function parseSubPredefine():PredefineSubNode
 		{
-			_tok.accept(TokenType.PRE_CONDITION); //SKIP '#'
-
-			var subNode:PredefineSubNode = new PredefineSubNode(_tok.accept(TokenType.IDENTIFIER).name);
+			var predefine:Token = _tok.token;
+			
+			var subNode:PredefineSubNode = new PredefineSubNode(predefine.name.slice(1));
+			
+			_tok.accept(TokenType.PREDEFINE); //SKIP '#ifdef'
 
 			if (subNode.name == PredefineType.IFDEF || subNode.name == PredefineType.ELSEIF)
 			{
@@ -185,9 +188,9 @@
 				{
 					subNode.addChild(parseFunction());
 				}
-				else if (t.type == TokenType.PRE_CONDITION)
+				else if (t.type == TokenType.PREDEFINE)
 				{
-					subNode.addChild(parsePreCondition());
+					subNode.addChild(parsePredefine());
 				}
 				else
 				{
@@ -237,13 +240,13 @@
 			while (_tok.token.type != TokenType.RBRACE)
 			{
 				var type:String = _tok.token.type;
-				if (type == TokenType.PRE_CONDITION)
+				if (type == TokenType.PREDEFINE)
 				{
-					fn.addChild(parsePreCondition());
+					fn.addChild(parsePredefine());
 				}
 				else if (type == TokenType.IF)
 				{
-					parseIfElse(fn);
+					parseIfCondition(fn);
 				}
 				else if (type == TokenType.FUNCTION_RETURN)
 				{
@@ -261,33 +264,26 @@
 			return fn;
 		}
 
-		private function parseIfElse(parent:BranchNode):void
+		private function parseIfCondition(parent:BranchNode):void
 		{
+			var conditionToken:Token = _tok.token;
+			var ifConditionNode:ConditionNode = new ConditionNode(conditionToken.name);
+			
 			_tok.accept(TokenType.IF);
 			_tok.accept(TokenType.LPAREN);
 
 			var leftNode:LeafNode = parseAtomExpression();
+			ifConditionNode.addChild(leftNode);
 
-			var compareToken:Token = _tok.token;
-			switch (compareToken.name)
-			{
-				case ">":
-					break;
-				case ">=":
-					break;
-				case "<":
-					break;
-				case "<=":
-					break;
-				case "==":
-					break;
-				case "!=":
-					break;
-			}
-
+			// > < >= ...
+			ifConditionNode.compareMethod = _tok.token.name;
+			//skip compareMethod
 			_tok.next();
 
 			var rightNode:LeafNode = parseAtomExpression();
+			ifConditionNode.addChild(rightNode);
+			
+			parent.addChild(ifConditionNode);
 
 			_tok.accept(TokenType.RPAREN);
 
@@ -298,13 +294,60 @@
 			while (_tok.token.type != TokenType.RBRACE)
 			{
 				var type:String = _tok.token.type;
-				if (type == TokenType.PRE_CONDITION)
+				if (type == TokenType.PREDEFINE)
 				{
-					parent.addChild(parsePreCondition());
+					parent.addChild(parsePredefine());
 				}
 				else if (type == TokenType.IF)
 				{
-					parseIfElse(parent);
+					parseIfCondition(parent);
+				}
+				//不应该出现这种情况
+				else if (type == TokenType.FUNCTION_RETURN)
+				{
+					//fn.result = parseReturn();
+				}
+				else
+				{
+					parseStatement(parent);
+				}
+			}
+
+			// skip '}'
+			_tok.accept(TokenType.RBRACE);
+			
+			//TODO 查找ELSE
+			if (_tok.token.name == TokenType.ELSE)
+			{
+				parseElseCondition(ifConditionNode);
+			}
+		}
+		
+		/**
+		 * else{...}
+		 * @param	ifNode
+		 */
+		private function parseElseCondition(ifNode:ConditionNode):void
+		{
+			var conditionToken:Token = _tok.token;
+			var elseConditionNode:ConditionNode = new ConditionNode(conditionToken.name);
+			
+			_tok.accept(TokenType.ELSE);
+
+			//解析块  {...}
+			// skip '{'
+			_tok.accept(TokenType.LBRACE);
+
+			while (_tok.token.type != TokenType.RBRACE)
+			{
+				var type:String = _tok.token.type;
+				if (type == TokenType.PREDEFINE)
+				{
+					parent.addChild(parsePredefine());
+				}
+				else if (type == TokenType.IF)
+				{
+					parseIfCondition(parent);
 				}
 				//不应该出现这种情况
 				else if (type == TokenType.FUNCTION_RETURN)
