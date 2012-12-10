@@ -46,26 +46,23 @@ package org.angle3d.material.sgsl
 			_codeMap[0x18] = "m44";
 			_codeMap[0x19] = "m34";
 
-//			_codeMap[0x1a] = "ifz";
-//			_codeMap[0x1b] = "inz";
-//			_codeMap[0x1c] = "ife";
-//			_codeMap[0x1d] = "ine";
-//			_codeMap[0x1e] = "ifg";
-//			_codeMap[0x1f] = "ifl";
-//			_codeMap[0x20] = "ieg";
-//			_codeMap[0x21] = "iel";
-//			_codeMap[0x22] = "els";
-//			_codeMap[0x23] = "elf";
-//			_codeMap[0x24] = "rep";
-//			_codeMap[0x25] = "erp";
-//			_codeMap[0x26] = "brk";
+			_codeMap[0x1a] = "ddx";
+			_codeMap[0x1b] = "ddy";
+			_codeMap[0x1c] = "ife";
+			_codeMap[0x1d] = "ine";
+			_codeMap[0x1e] = "ifg";
+			_codeMap[0x1f] = "ifl";
+			_codeMap[0x20] = "els";
+			_codeMap[0x21] = "elf";
+			//space
+			_codeMap[0x26] = "ted";
 
 			_codeMap[0x27] = "kil";
 			_codeMap[0x28] = "tex";
 			_codeMap[0x29] = "sge";
 			_codeMap[0x2a] = "slt";
 
-//			_codeMap[0x2b] = "sgn";
+			_codeMap[0x2b] = "sgn";
 			_codeMap[0x2c] = "seq";
 			_codeMap[0x2d] = "sne";
 

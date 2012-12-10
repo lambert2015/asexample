@@ -1,7 +1,32 @@
 /* common help function */
 
-/*#ifdef(CONSTRAINED){
-}*/
+#ifdef(baseline){
+
+function greaterThan(float x,float y){
+	return lessThan(y,x);
+}
+
+function ceil(float value){
+	float t_local_frc = fract(value);
+	float t_local_int = sub(value,t_local_frc);
+	float t_local_2 = lessThan(0.0,t_local_frc);
+	return add(t_local_int,t_local_2);
+}
+
+function sign(float source1){
+	float t_local0;
+	float t_local1;
+	float t_local2;
+	float t_local3;
+	t_local0 = notEqual(source1,0.0);
+	t_local1 = lessThan(source1,0.0);
+	t_local1 = negate(t_local1);
+	t_local2 = lessThan(0.0,source1);
+	t_local3 = add(t_local1,t_local2);
+	return mul(t_local0,t_local3);
+}
+
+}
 
 function tan(float value){
 	float t_sin = sin(value);
@@ -9,26 +34,18 @@ function tan(float value){
 	return divide(t_sin,t_cos);
 }
 
-function greaterThan(float x,float y){
-	return lessThan(y,x);
-}
-
 function clamp(float value,float minVal,float maxVal){
 	float t_local = max(value,minVal);
 	return min(t_local,maxVal);
 }
+
 function floor(float value){
-	float t_local = frc(value);
+	float t_local = fract(value);
 	return sub(value,t_local);
 }
-function ceil(float value){
-	float t_local_frc = frc(value);
-	float t_local_int = sub(value,t_local_frc);
-	float t_local_2 = lessThan(0.0,t_local_frc);
-	return add(t_local_int,t_local_2);
-}
+
 function round(float value){
-	float t_local_frc = frc(value);
+	float t_local_frc = fract(value);
 	float t_local_int = sub(value,t_local_frc);
 	float t_local_2 = greaterEqual(t_local_frc,0.5);
 	return add(t_local_int,t_local_2);
@@ -61,9 +78,6 @@ function reflect(vec3 incident,vec3 normal){
 	return sub(incident,t_vec);
 }
 function refract(vec3 incident,vec3 normal,vec3 etaRatio){
-	/** 
-	 *	refract
-	 */
 	float t_dotNI = dot3(normal,incident);
 	float t_dotNI2 = mul(t_dotNI,t_dotNI);
 	float t_eta2dot2 = mul(etaRatio.y,t_dotNI2);
@@ -75,25 +89,16 @@ function refract(vec3 incident,vec3 normal,vec3 etaRatio){
 	vec3 t_vec1 = mul(t_tmp,normal);
 	return sub(t_vec0,t_vec1);
 }
-function sign(float source1){
-	float t_local0;
-	float t_local1;
-	float t_local2;
-	float t_local3;
-	t_local0 = notEqual(source1,0.0);
-	t_local1 = lessThan(source1,0.0);
-	t_local1 = negate(t_local1);
-	t_local2 = lessThan(0.0,source1);
-	t_local3 = add(t_local1,t_local2);
-	return mul(t_local0,t_local3);
-}
+
 function maxDot(vec3 normal,vec3 light,float maxValue){
 	float t_local = dot3(normal,light);
 	return max(t_local,maxValue);
 }
+
 function pack(float depth){
 
 }
+
 function unpack(vec4 color){
 
 }

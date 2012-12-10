@@ -195,8 +195,8 @@ package org.angle3d.app
 			stage3D = stage.stage3Ds[0];
 			stage3D.addEventListener(Event.CONTEXT3D_CREATE, _context3DCreateHandler);
 
-			_context3DProfile = Context3DProfile.BASELINE;
-			stage3D.requestContext3D(Context3DRenderMode.AUTO, "baselineExtended");
+			_context3DProfile = "baselineExtended";
+			stage3D.requestContext3D(Context3DRenderMode.AUTO, _context3DProfile);
 		}
 
 		protected function _context3DCreateHandler(e:Event):void

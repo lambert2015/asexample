@@ -2,9 +2,6 @@ package org.angle3d.material.sgsl.node
 {
 	import flash.utils.Dictionary;
 
-	import org.angle3d.material.sgsl.OpCode;
-	import org.angle3d.material.sgsl.OpCodeManager;
-	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 
 	/**
@@ -95,6 +92,13 @@ package org.angle3d.material.sgsl.node
 				if (child is AgalNode)
 				{
 					agalNode = child as AgalNode;
+
+					//condition end
+					if (agalNode.numChildren == 0)
+					{
+						newChildren.push(child);
+						continue;
+					}
 
 					if (agalNode.numChildren == 1)
 					{

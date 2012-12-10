@@ -5,18 +5,18 @@ package org.angle3d.material.sgsl.node
 	 * ...
 	 * @author
 	 */
-	public class ConditionEndNode extends AgalNode
+	public class ConditionElseNode extends AgalNode
 	{
 
-		public function ConditionEndNode()
+		public function ConditionElseNode()
 		{
 			super();
-			this.name = "elf";
+			this.name = "els";
 		}
 
 		override public function clone():LeafNode
 		{
-			var node:ConditionEndNode = new ConditionEndNode();
+			var node:ConditionElseNode = new ConditionElseNode();
 			node.name = this.name;
 			cloneChildren(node);
 			return node;
@@ -25,7 +25,7 @@ package org.angle3d.material.sgsl.node
 		override public function toString(level:int = 0):String
 		{
 			var space:String = getSpace(level++);
-			return space + "}\n";
+			return space + "}" + this.name + "{\n";
 		}
 
 	}

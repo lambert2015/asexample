@@ -57,6 +57,10 @@ function main(){
 	if(t_interp > 0){
 		t_interp = 0;
 	}
+	else
+	{
+		t_interp = fract(t_interp);
+	}
 
 	/*判断是否生命结束,非循环时生命结束后保持最后一刻或者应该使其不可见*/
 	#ifdef(NOT_LOOP){ 

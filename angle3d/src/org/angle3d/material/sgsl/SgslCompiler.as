@@ -18,6 +18,7 @@ package org.angle3d.material.sgsl
 	import org.angle3d.material.sgsl.node.reg.TempReg;
 	import org.angle3d.material.sgsl.parser.SgslParser;
 	import org.angle3d.material.shader.Shader;
+	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.material.shader.ShaderVarType;
 	import org.angle3d.utils.Assert;
@@ -59,7 +60,7 @@ package org.angle3d.material.sgsl
 		{
 			this.profile = profile;
 
-			MAX_OPCODES = (profile == "baselineExtended") ? 1024 : 200;
+			MAX_OPCODES = (profile == ShaderProfile.BASELINE_EXTENDED) ? 1024 : 200;
 
 			_parser = sgslParser;
 			_opCodeManager = opCodeManager;
@@ -276,13 +277,26 @@ package org.angle3d.material.sgsl
 
 		private function writeNode(node:AgalNode):void
 		{
-			var dest:AtomNode;
 			var opCode:OpCode;
 			var numChildren:int = node.numChildren;
 			var children:Vector.<LeafNode> = node.children;
 
+			//if end
+			if (numChildren == 0)
+			{
+				opCode = _opCodeManager.getCode(node.name);
+
+				_byteArray.writeUnsignedInt(opCode.emitCode);
+
+				writeDest(null);
+				writeSrc(null);
+				writeSrc(null);
+				return;
+			}
+
+			var dest:AtomNode;
 			//kill(vt0.w)
-			if (numChildren <= 1)
+			if (numChildren == 1)
 			{
 				dest = null;
 				opCode = _opCodeManager.getCode(children[0].name);
