@@ -31,7 +31,7 @@
 		public static const ELSE:String = "else";
 
 		/** return */
-		public static const FUNCTION_RETURN:String = "RETURN";
+		public static const RETURN:String = "RETURN";
 
 		/**
 		 * Grouping, delimiting

@@ -180,7 +180,7 @@
 				case "function":
 					return TokenType.FUNCTION;
 				case "return":
-					return TokenType.FUNCTION_RETURN;
+					return TokenType.RETURN;
 				case "if":
 					return TokenType.IF;
 				case "else":
