@@ -1,25 +1,20 @@
 package examples.effect.gpu
 {
 	import flash.events.MouseEvent;
-	
-	import org.angle3d.utils.Stats;
-	
+
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.effect.gpu.ParticleShape;
 	import org.angle3d.effect.gpu.ParticleShapeGenerator;
 	import org.angle3d.effect.gpu.ParticleSystem;
-	import org.angle3d.effect.gpu.influencers.angle.EmptyAngleInfluencer;
-	import org.angle3d.effect.gpu.influencers.birth.DefaultBirthInfluencer;
 	import org.angle3d.effect.gpu.influencers.birth.PerSecondBirthInfluencer;
 	import org.angle3d.effect.gpu.influencers.life.SameLifeInfluencer;
 	import org.angle3d.effect.gpu.influencers.position.CirclePositionInfluencer;
 	import org.angle3d.effect.gpu.influencers.scale.DefaultScaleInfluencer;
-	import org.angle3d.effect.gpu.influencers.spin.DefaultSpinInfluencer;
 	import org.angle3d.effect.gpu.influencers.velocity.DefaultVelocityInfluencer;
-	import org.angle3d.material.MaterialGPUParticle;
 	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.texture.Texture2D;
+	import org.angle3d.utils.Stats;
 
 	/**
 	 * 下雪测试
@@ -61,7 +56,7 @@ package examples.effect.gpu
 			swordShape = particleGenerator.createParticleShape("sword", texture);
 			swordShape.useSpin = false;
 			swordShape.loop = true;
-			swordShape.setAlpha(0.7,0);
+			swordShape.setAlpha(0.7, 0);
 			swordShape.setColor(0xff0000, 0xffff00);
 			swordShape.setAcceleration(new Vector3f(0, -1.5, 0));
 			swordShape.setSize(3, 1);

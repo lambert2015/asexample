@@ -144,9 +144,13 @@ function main(){
 	t_pos.xyz = add(t_pos.xyz,a_position.xyz);
 
 	/*判断此时粒子是否已经发出，没有放出的话设置该点坐标为0，4个顶点皆为0，所以此粒子不可见*/
-	float t_negate = negate(t_time);
-	float t_lessThan = lessThan(t_negate,0.0);
-	t_pos.xyz = mul(t_pos.xyz,t_lessThan);
+	/*float t_negate = negate(t_time);*/
+	/*float t_lessThan = lessThan(t_negate,0.0);*/
+	/*t_pos.xyz = mul(t_pos.xyz,t_lessThan);*/
+	
+	if(t_time == 0.0){
+		t_pos.xyz = mul(t_pos.xyz,t_time);
+	}
 
 	/*最终位置*/
 	output = m44(t_pos,u_viewProjectionMat);

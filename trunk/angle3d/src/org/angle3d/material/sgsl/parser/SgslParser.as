@@ -36,8 +36,6 @@
 
 		private var _tok:Tokenizer;
 
-		private var _shaderVarMap:Dictionary;
-
 		/**
 		 *
 		 */
@@ -47,8 +45,6 @@
 
 		public function exec(source:String):BranchNode
 		{
-			_shaderVarMap = new Dictionary();
-
 			_tok = new Tokenizer(_cleanSource(source));
 			_tok.next();
 
@@ -57,32 +53,30 @@
 			return programNode;
 		}
 
-		public function execFunctions(source:String):Vector.<FunctionNode>
+		public function execFunctions(source:String, define:Vector.<String>):Vector.<FunctionNode>
 		{
-			_shaderVarMap = new Dictionary();
-
 			_tok = new Tokenizer(_cleanSource(source));
 			_tok.next();
 
-			var result:Vector.<FunctionNode> = new Vector.<FunctionNode>();
-
-//			while (_tok.token.type != TokenType.EOF)
-//			{
-//				result.push(parseFunction());
-//			}
-
-			//TODO 需要判断预定义
+			var programNode:BranchNode = new BranchNode();
 			while (_tok.token.type != TokenType.EOF)
 			{
 				if (_tok.token.type == TokenType.FUNCTION)
 				{
-					result.push(parseFunction());
+					programNode.addChild(parseFunction());
 				}
 				else if (_tok.token.type == TokenType.PREDEFINE)
 				{
-					parsePredefine();
-//					result.push(parsePredefine());
+					programNode.addChild(parsePredefine());
 				}
+			}
+
+			programNode.filter(define);
+
+			var result:Vector.<FunctionNode> = new Vector.<FunctionNode>();
+			for (var i:int = 0; i < programNode.numChildren; i++)
+			{
+				result.push(programNode.children[i] as FunctionNode);
 			}
 
 			return result;
@@ -138,7 +132,7 @@
 			condition.addChild(parseSubPredefine());
 
 			//接下来一个也是条件，并且不是新的条件，而是之前条件的延续
-			while (_tok.token.type == TokenType.PREDEFINE && _tok.peek.name != PredefineType.IFDEF)
+			while (_tok.token.type == TokenType.PREDEFINE && _tok.token.name != PredefineType.IFDEF)
 			{
 				condition.addChild(parseSubPredefine());
 			}
@@ -156,7 +150,7 @@
 		{
 			var predefine:Token = _tok.token;
 
-			var subNode:PredefineSubNode = new PredefineSubNode(predefine.name.slice(1));
+			var subNode:PredefineSubNode = new PredefineSubNode(predefine.name);
 
 			_tok.accept(TokenType.PREDEFINE); //SKIP '#ifdef'
 
@@ -265,7 +259,7 @@
 				{
 					parseIfCondition(fn);
 				}
-				else if (type == TokenType.FUNCTION_RETURN)
+				else if (type == TokenType.RETURN)
 				{
 					fn.result = parseReturn();
 				}
@@ -320,7 +314,7 @@
 					parseIfCondition(parent);
 				}
 				//不应该出现这种情况
-				else if (type == TokenType.FUNCTION_RETURN)
+				else if (type == TokenType.RETURN)
 				{
 					//fn.result = parseReturn();
 				}
@@ -370,7 +364,7 @@
 					parseIfCondition(parent);
 				}
 				//不应该出现这种情况
-				else if (type == TokenType.FUNCTION_RETURN)
+				else if (type == TokenType.RETURN)
 				{
 					//fn.result = parseReturn();
 				}
@@ -412,7 +406,7 @@
 
 		private function parseReturn():LeafNode
 		{
-			_tok.accept(TokenType.FUNCTION_RETURN); //SKIP "return"
+			_tok.accept(TokenType.RETURN); //SKIP "return"
 
 			var node:LeafNode = parseExpression();
 

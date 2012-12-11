@@ -12,6 +12,7 @@ package org.angle3d.app
 	import org.angle3d.app.state.AppStateManager;
 	import org.angle3d.input.InputManager;
 	import org.angle3d.manager.ShaderManager;
+	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.math.Vector3f;
 	import org.angle3d.renderer.Camera3D;
 	import org.angle3d.renderer.DefaultRenderer;
@@ -54,7 +55,7 @@ package org.angle3d.app
 		protected var timePerFrame:Number;
 		protected var oldTime:int;
 
-		protected var _context3DProfile:String;
+		protected var mProfile:String;
 
 		public function Application()
 		{
@@ -149,7 +150,7 @@ package org.angle3d.app
 
 		protected function initShaderManager():void
 		{
-			ShaderManager.init(stage3D.context3D, _context3DProfile);
+			ShaderManager.init(stage3D.context3D, mProfile);
 		}
 
 		/**
@@ -195,8 +196,8 @@ package org.angle3d.app
 			stage3D = stage.stage3Ds[0];
 			stage3D.addEventListener(Event.CONTEXT3D_CREATE, _context3DCreateHandler);
 
-			_context3DProfile = "baselineExtended";
-			stage3D.requestContext3D(Context3DRenderMode.AUTO, _context3DProfile);
+			mProfile = ShaderProfile.BASELINE_EXTENDED;
+			stage3D.requestContext3D(Context3DRenderMode.AUTO, mProfile);
 		}
 
 		protected function _context3DCreateHandler(e:Event):void
@@ -209,7 +210,7 @@ package org.angle3d.app
 
 			if (isSoftware(stage3D.context3D.driverInfo))
 			{
-				_context3DProfile = Context3DProfile.BASELINE_CONSTRAINED;
+				mProfile = Context3DProfile.BASELINE_CONSTRAINED;
 				stage3D.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.BASELINE_CONSTRAINED);
 			}
 			else
