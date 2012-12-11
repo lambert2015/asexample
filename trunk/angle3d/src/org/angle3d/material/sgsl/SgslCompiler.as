@@ -1,7 +1,6 @@
 package org.angle3d.material.sgsl
 {
 
-	import flash.display3D.Context3DProfile;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.Endian;
@@ -22,7 +21,6 @@ package org.angle3d.material.sgsl
 	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.material.shader.ShaderVarType;
-	import org.angle3d.scene.Node;
 	import org.angle3d.utils.Assert;
 	import org.angle3d.utils.Logger;
 
@@ -296,15 +294,25 @@ package org.angle3d.material.sgsl
 					source0 = node.children[0] as AtomNode;
 					source1 = node.children[1] as AtomNode;
 					break;
-				case ">":
+				case ">=":
 					opCode = _opCodeManager.getCode("ifg");
 					source0 = node.children[0] as AtomNode;
 					source1 = node.children[1] as AtomNode;
+					break;
+				case "<=":
+					opCode = _opCodeManager.getCode("ifg");
+					source0 = node.children[1] as AtomNode;
+					source1 = node.children[0] as AtomNode;
 					break;
 				case "<":
 					opCode = _opCodeManager.getCode("ifl");
 					source0 = node.children[0] as AtomNode;
 					source1 = node.children[1] as AtomNode;
+					break;
+				case ">":
+					opCode = _opCodeManager.getCode("ifl");
+					source0 = node.children[1] as AtomNode;
+					source1 = node.children[0] as AtomNode;
 					break;
 			}
 
