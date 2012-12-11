@@ -10,6 +10,7 @@ package org.angle3d.material.sgsl
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
 	import org.angle3d.material.sgsl.node.AtomNode;
 	import org.angle3d.material.sgsl.node.BranchNode;
+	import org.angle3d.material.sgsl.node.ConditionIfNode;
 	import org.angle3d.material.sgsl.node.ConstantNode;
 	import org.angle3d.material.sgsl.node.FunctionCallNode;
 	import org.angle3d.material.sgsl.node.LeafNode;
@@ -21,6 +22,7 @@ package org.angle3d.material.sgsl
 	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.material.shader.ShaderType;
 	import org.angle3d.material.shader.ShaderVarType;
+	import org.angle3d.scene.Node;
 	import org.angle3d.utils.Assert;
 	import org.angle3d.utils.Logger;
 
@@ -225,8 +227,9 @@ package org.angle3d.material.sgsl
 		 */
 		private function writeHeader(isFrag:Boolean):void
 		{
+			var version:uint = (profile == ShaderProfile.BASELINE_EXTENDED) ? 0x2 : 0x1;
 			_byteArray.writeByte(0xa0); // tag version
-			_byteArray.writeUnsignedInt(0x1); // AGAL version, big endian, bit pattern will be 0x01000000
+			_byteArray.writeUnsignedInt(version); // AGAL version, big endian, bit pattern will be 0x01000000
 			_byteArray.writeByte(0xa1); // tag program id
 			_byteArray.writeByte(isFrag ? 1 : 0); // vertex or fragment
 		}
@@ -275,8 +278,52 @@ package org.angle3d.material.sgsl
 			return reg.index;
 		}
 
+		private function writeConditionIfNode(node:ConditionIfNode):void
+		{
+			var opCode:OpCode;
+			var source0:AtomNode;
+			var source1:AtomNode;
+
+			switch (node.compareMethod)
+			{
+				case "==":
+					opCode = _opCodeManager.getCode("ife");
+					source0 = node.children[0] as AtomNode;
+					source1 = node.children[1] as AtomNode;
+					break;
+				case "!=":
+					opCode = _opCodeManager.getCode("ine");
+					source0 = node.children[0] as AtomNode;
+					source1 = node.children[1] as AtomNode;
+					break;
+				case ">":
+					opCode = _opCodeManager.getCode("ifg");
+					source0 = node.children[0] as AtomNode;
+					source1 = node.children[1] as AtomNode;
+					break;
+				case "<":
+					opCode = _opCodeManager.getCode("ifl");
+					source0 = node.children[0] as AtomNode;
+					source1 = node.children[1] as AtomNode;
+					break;
+			}
+
+
+			_byteArray.writeUnsignedInt(opCode.emitCode);
+			writeDest(null);
+			writeSrc(source0);
+			writeSrc(source1);
+		}
+
 		private function writeNode(node:AgalNode):void
 		{
+			if (node is ConditionIfNode)
+			{
+				var ifNode:ConditionIfNode = node as ConditionIfNode;
+				writeConditionIfNode(ifNode);
+				return;
+			}
+
 			var opCode:OpCode;
 			var numChildren:int = node.numChildren;
 			var children:Vector.<LeafNode> = node.children;

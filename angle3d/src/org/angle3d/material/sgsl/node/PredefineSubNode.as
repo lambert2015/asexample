@@ -114,7 +114,7 @@ package org.angle3d.material.sgsl.node
 		{
 			var result:String = "";
 
-			result += getSpace(level) + "#" + name;
+			result += getSpace(level) + name;
 
 			if (name != PredefineType.ELSE)
 			{

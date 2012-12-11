@@ -11,6 +11,7 @@ package org.angle3d.manager
 	import org.angle3d.material.sgsl.node.FunctionNode;
 	import org.angle3d.material.sgsl.parser.SgslParser;
 	import org.angle3d.material.shader.Shader;
+	import org.angle3d.material.shader.ShaderProfile;
 	import org.angle3d.utils.Logger;
 
 	/**
@@ -96,7 +97,24 @@ package org.angle3d.manager
 
 			var ba:ByteArray = new CustomOpCodeAsset();
 			var source:String = ba.readUTFBytes(ba.length);
-			var functionList:Vector.<FunctionNode> = mSgslParser.execFunctions(source);
+
+
+			var defines:Vector.<String> = new Vector.<String>();
+			if (mProfile == ShaderProfile.BASELINE_EXTENDED)
+			{
+				defines.push(ShaderProfile.BASELINE);
+				defines.push(ShaderProfile.BASELINE_EXTENDED);
+			}
+			else if (mProfile == ShaderProfile.BASELINE)
+			{
+				defines.push(ShaderProfile.BASELINE);
+			}
+			else if (mProfile == ShaderProfile.BASELINE_CONSTRAINED)
+			{
+				defines.push(ShaderProfile.BASELINE_CONSTRAINED);
+			}
+
+			var functionList:Vector.<FunctionNode> = mSgslParser.execFunctions(source, defines);
 
 			var fLength:int = functionList.length;
 			for (var i:int = 0; i < fLength; i++)
