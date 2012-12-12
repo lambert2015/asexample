@@ -51,6 +51,10 @@ package examples.textures
 			assetLoader.addFile("pngImage", "../asexample/angle3d/assets/crate256.png", AssetType.IMAGE);
 			assetLoader.onComplete.addOnce(_loadComplete);
 			assetLoader.start();
+
+			var result:String = "//dfsdfsf\nadfdsf".replace(/\/\*(.|[^.])*?\*\//g, "");
+			result = result.replace(/\/\/.*[^.]/g, "");
+			trace(result);
 		}
 
 		private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void

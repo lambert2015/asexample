@@ -7,17 +7,14 @@ package org.angle3d.material.sgsl.node
 	 */
 	public class ConditionEndNode extends AgalNode
 	{
-
 		public function ConditionEndNode()
 		{
 			super();
-			this.name = "elf";
 		}
 
 		override public function clone():LeafNode
 		{
 			var node:ConditionEndNode = new ConditionEndNode();
-			node.name = this.name;
 			cloneChildren(node);
 			return node;
 		}

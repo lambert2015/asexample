@@ -20,14 +20,14 @@ uniform vec4 u_vertexOffset[4];
 uniform vec4 u_curTime;
 uniform vec4 u_size;
 
-/*使用重力*/
+//使用重力
 #ifdef(USE_ACCELERATION){  
 	uniform vec4 u_acceleration;
 } 
 
 varying vec4 v_texCoord;
 
-/*全局颜色*/
+//全局颜色
 #ifdef(USE_COLOR){  
 	uniform vec4 u_beginColor;
 	uniform vec4 u_incrementColor;
@@ -38,54 +38,54 @@ varying vec4 v_texCoord;
 	varying vec4 v_color;
 } 
 
-/*使用SpriteSheet*/
+//使用SpriteSheet
 #ifdef(USE_SPRITESHEET){  
 	uniform vec4 u_spriteSheet;
 } 
 
 function main(){ 
-	/*计算粒子当前运行时间*/
+	//计算粒子当前运行时间
 	float t_time = sub(u_curTime.x,a_lifeScaleSpin.x);
-	/*时间少于0时，代表粒子还未触发，设置其时间为0*/
+	//时间少于0时，代表粒子还未触发，设置其时间为0
 	t_time = max(t_time,0.0);
 
-	/*进度  = 当前运行时间/总生命时间*/
+	//进度  = 当前运行时间/总生命时间
 	float t_interp = divide(t_time,a_lifeScaleSpin.y);
-	/*取小数部分*/
+	//取小数部分
 	t_interp = fract(t_interp);
 
-	/*判断是否生命结束,非循环时生命结束后保持最后一刻或者应该使其不可见*/
+	//判断是否生命结束,非循环时生命结束后保持最后一刻或者应该使其不可见
 	#ifdef(NOT_LOOP){ 
-		/*粒子生命周期结束，停在最后一次*/
-		/*float t_finish = greaterThanEqual(t_time,a_lifeScaleSpin.y);*/
-		/*t_interp = add(t_interp,t_finish);*/
-		/*t_interp = min(t_interp,1.0);*/
-		/*粒子生命周期结束，不可见*/
+		//粒子生命周期结束，停在最后一次
+		//float t_finish = greaterThanEqual(t_time,a_lifeScaleSpin.y);
+		//t_interp = add(t_interp,t_finish);
+		//t_interp = min(t_interp,1.0);
+		//粒子生命周期结束，不可见
 		float t_finish = greaterThanEqual(a_lifeScaleSpin.y,t_time);
 		t_interp = mul(t_interp,t_finish);
 	} 
 
-	/*使用全局颜色和自定义颜色*/
+	//使用全局颜色和自定义颜色
 	#ifdef(USE_COLOR && USE_LOCAL_COLOR){  
 		vec4 t_offsetColor = mul(u_incrementColor,t_interp);
 		t_offsetColor = add(u_beginColor,t_offsetColor);
-		/*混合全局颜色和粒子自定义颜色*/
+		//混合全局颜色和粒子自定义颜色
 		v_color = mul(a_color,t_offsetColor);
 	} 
-	/*只使用全局颜色*/
+	//只使用全局颜色
 	#elseif(USE_COLOR){  
 		vec4 t_offsetColor = mul(u_incrementColor,t_interp);
 		v_color = add(u_beginColor,t_offsetColor);
 	} 
-	/*只使用粒子本身颜色*/
+	//只使用粒子本身颜色
 	#elseif(USE_LOCAL_COLOR){  
 		v_color = a_color;
 	} 
 
-	/*当前运行时间*/
+	//当前运行时间
 	float t_curLife = mul(t_interp,a_lifeScaleSpin.y);
 
-	/*计算移动速度和重力影响*/
+	//计算移动速度和重力影响
 	vec3 t_offsetPos;	vec3 t_localAcceleration;
 	#ifdef(USE_ACCELERATION){  
 		#ifdef(USE_LOCAL_ACCELERATION){  
@@ -109,10 +109,10 @@ function main(){
 		}  
 	} 
 
-	/*顶点的偏移位置（2个三角形的4个顶点）*/
+	//顶点的偏移位置（2个三角形的4个顶点）
 	vec4 t_pos = u_vertexOffset[a_position.w];
 
-	/*自转*/
+	//自转
 	#ifdef(USE_SPIN){  
 		float t_angle = mul(t_curLife,a_velocity.w);
 		t_angle = add(t_angle,a_lifeScaleSpin.w);
@@ -128,36 +128,36 @@ function main(){
 		t_pos.xy = t_xy.xy;
 	} 
 
-	/*使其面向相机*/
+	//使其面向相机
 	t_pos.xyz = m33(t_pos.xyz,u_invertViewMat);
-	/*加上位移*/
+	//加上位移
 	t_pos.xyz = add(t_pos.xyz,t_offsetPos.xyz);
 
-	/*根据粒子大小确定未转化前的位置*/
-	/*u_size.x == start size,u_size.y == end size,u_size.z = end size - start size*/
-	/*a_lifeScaleSpin.z == particle scale*/
+	//根据粒子大小确定未转化前的位置
+	//u_size.x == start size,u_size.y == end size,u_size.z = end size - start size
+	//a_lifeScaleSpin.z == particle scale
 	float t_offsetSize = mul(u_size.z,t_interp);
 	float t_size = add(u_size.x,t_offsetSize);
 	t_size = mul(t_size,a_lifeScaleSpin.z);
 	t_pos.xyz = mul(t_pos.xyz,t_size);
-	/*加上中心点*/
+	//加上中心点
 	t_pos.xyz = add(t_pos.xyz,a_position.xyz);
 
-	/*判断此时粒子是否已经发出，没有放出的话设置该点坐标为0，4个顶点皆为0，所以此粒子不可见*/
-	/*float t_negate = negate(t_time);*/
-	/*float t_lessThan = lessThan(t_negate,0.0);*/
-	/*t_pos.xyz = mul(t_pos.xyz,t_lessThan);*/
+	//判断此时粒子是否已经发出，没有放出的话设置该点坐标为0，4个顶点皆为0，所以此粒子不可见
+	//float t_negate = negate(t_time);
+	//float t_lessThan = lessThan(t_negate,0.0);
+	//t_pos.xyz = mul(t_pos.xyz,t_lessThan);
 	
 	if(t_time == 0.0){
 		t_pos.xyz = mul(t_pos.xyz,t_time);
 	}
 
-	/*最终位置*/
+	//最终位置
 	output = m44(t_pos,u_viewProjectionMat);
 
-	/*计算当前动画所到达的帧数，没有使用SpriteSheet时则直接设置UV为a_texCoord*/
-	/*a_texCoord.x --> u,a_texCoord.y --> v*/
-	/*a_texCoord.z -->totalFrame,a_texCoord.w --> defaultFrame*/
+	//计算当前动画所到达的帧数，没有使用SpriteSheet时则直接设置UV为a_texCoord
+	//a_texCoord.x --> u,a_texCoord.y --> v
+	//a_texCoord.z -->totalFrame,a_texCoord.w --> defaultFrame
 	#ifdef(USE_SPRITESHEET){ 
 		float t_frame;   
 		#ifdef(USE_ANIMATION){ 
@@ -173,8 +173,8 @@ function main(){
 			t_frame = a_texCoord.z;
 		} 
 
-		/*计算当前帧时贴图的UV坐标*/
-		/*首先计算其在第几行，第几列*/
+		//计算当前帧时贴图的UV坐标
+		//首先计算其在第几行，第几列
 		float t_curRowIndex = divide(t_frame,u_spriteSheet.y);
 		t_curRowIndex = floor(t_curRowIndex);
 		float t_curColIndex = mul(t_curRowIndex,u_spriteSheet.y);
@@ -182,7 +182,7 @@ function main(){
 
 		vec2 t_texCoord;
 
-		/*每个单元格所占用的UV坐标*/
+		//每个单元格所占用的UV坐标
 		float t_dx = u_spriteSheet.y;
 		t_dx = reciprocal(t_dx);
 		float t_x0 = add(t_curColIndex,a_texCoord.x);
