@@ -8,5 +8,5 @@ function main()
 	t_normal = add(t_normal,u_scale);
 	t_color.xyz = t_normal.xyz;
 	t_color.w = 1.0;
-	output = t_color;
+	output0 = t_color;
 }

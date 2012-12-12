@@ -7,7 +7,7 @@ uniform vec4 u_alpha;
 varying vec4 v_color;
 
 function main(){
-	output = m44(a_position,u_WorldViewProjectionMatrix);
+	output0 = m44(a_position,u_WorldViewProjectionMatrix);
 	v_color.rgb = a_color.rgb;
 	v_color.a = u_alpha.x;
 }

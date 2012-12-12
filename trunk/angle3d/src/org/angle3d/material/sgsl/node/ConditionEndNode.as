@@ -10,6 +10,7 @@ package org.angle3d.material.sgsl.node
 		public function ConditionEndNode()
 		{
 			super();
+			this.name = "eif";
 		}
 
 		override public function clone():LeafNode

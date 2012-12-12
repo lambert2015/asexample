@@ -8,6 +8,7 @@ package org.angle3d.material.sgsl
 		public static const VARYING:String = "varying";
 		public static const TEMP:String = "temp";
 		public static const OUTPUT:String = "output";
+		public static const DEPTH:String = "depth";
 	}
 }
 

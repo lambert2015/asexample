@@ -13,5 +13,5 @@ function lerp(vec4 source1,vec4 source2,float percent){
 function main(){
 	vec4 t_reflectedColor = textureCube(v_R,u_environmentMap,nomip,linear,clamp);
 	vec4 t_decalColor = texture2D(v_texCoord,u_decalMap,nomip,linear,clamp);
-	output = lerp(t_decalColor.xyzw,t_reflectedColor.xyzw,u_reflectivity.x);
+	output0 = lerp(t_decalColor.xyzw,t_reflectedColor.xyzw,u_reflectivity.x);
 }

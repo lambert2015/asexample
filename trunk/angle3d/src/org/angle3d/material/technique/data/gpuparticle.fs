@@ -7,5 +7,5 @@ function main(){
 		t_diffuseColor = mul(t_diffuseColor,v_color);
 	}
 	
-	output = t_diffuseColor;
+	output0 = t_diffuseColor;
 }

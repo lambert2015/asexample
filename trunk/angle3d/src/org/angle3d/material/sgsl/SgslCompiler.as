@@ -142,6 +142,7 @@ package org.angle3d.material.sgsl
 			_regCodeMap[RegType.OUTPUT] = 0x3;
 			_regCodeMap[RegType.VARYING] = 0x4;
 			//_regCodeMap[RegType.TEXTURE] = 0x5;
+			_regCodeMap[RegType.DEPTH] = 0x6;
 		}
 
 		[Inline]

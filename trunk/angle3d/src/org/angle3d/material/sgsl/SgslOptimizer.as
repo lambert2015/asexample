@@ -31,7 +31,7 @@
 		 */
 		public function exec(data:SgslData, tree:BranchNode, defines:Vector.<String>):void
 		{
-			var cloneTree:BranchNode = tree.clone() as BranchNode;
+			var cloneTree:BranchNode = tree; //.clone() as BranchNode;
 
 			//条件过滤
 			cloneTree.filter(defines);

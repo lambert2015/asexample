@@ -11,7 +11,7 @@ package org.angle3d.material.sgsl.node
 		public function ConditionElseNode()
 		{
 			super();
-			this.name = "else";
+			this.name = "els";
 		}
 
 		override public function clone():LeafNode
@@ -25,7 +25,7 @@ package org.angle3d.material.sgsl.node
 		override public function toString(level:int = 0):String
 		{
 			var space:String = getSpace(level++);
-			return space + "}" + this.name + "{\n";
+			return space + "} else" + "{\n";
 		}
 
 	}

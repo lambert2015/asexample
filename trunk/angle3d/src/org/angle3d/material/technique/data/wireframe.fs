@@ -1,3 +1,3 @@
 function main(){
-    output = v_color;
+    output0 = v_color;
 }

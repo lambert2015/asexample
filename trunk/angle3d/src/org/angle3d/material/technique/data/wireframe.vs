@@ -24,6 +24,6 @@ function main(){
 	t_sideVec = mul(t_sideVec,t_distance);
 	
 	t_start = add(t_start,t_sideVec);
-	output = m44(t_start,u_projectionMatrix);
+	output0 = m44(t_start,u_projectionMatrix);
 	v_color = u_color;
 }

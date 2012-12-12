@@ -1,7 +1,6 @@
 package org.angle3d.material
 {
 	import org.angle3d.material.technique.TechniqueColorFill;
-	import org.angle3d.math.Color;
 
 
 	/**

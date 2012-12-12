@@ -11,7 +11,7 @@ uniform vec4 u_camPosition;
 uniform vec4 u_etaRatio;
 
 function main(){
-	output = m44(a_position,u_WorldViewProjectionMatrix);
+	output0 = m44(a_position,u_WorldViewProjectionMatrix);
 
 	vec3 t_N = m33(a_normal.xyz,u_worldMatrix);
 	t_N = normalize(t_N);
