@@ -13,7 +13,7 @@ package org.angle3d.material.technique
 	{
 		public function TechniquePreShadow(name:String)
 		{
-			super(name);
+			super();
 		}
 
 		override protected function getVertexSource():String

@@ -5,22 +5,24 @@ package org.angle3d.material.sgsl.node.reg
 	import org.angle3d.material.sgsl.node.LeafNode;
 
 	/**
-	 * output position|color
+	 * fragment depth output
 	 * @author andy
 	 */
-	public class OutputReg extends RegNode
+	//需要测试是否正确可用
+	public class DepthReg extends RegNode
 	{
-		public function OutputReg(index:int)
+		public function DepthReg(index:int = 0)
 		{
-			super(RegType.OUTPUT, DataType.VEC4, "output" + index);
+			super(RegType.DEPTH, DataType.VEC4, "depth" + index);
 
 			this.index = index;
 		}
 
 		override public function clone():LeafNode
 		{
-			return new OutputReg(this.index);
+			return new DepthReg(this.index);
 		}
 	}
 }
+
 

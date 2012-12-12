@@ -40,7 +40,7 @@ package com.adobe.utils
 	// ===========================================================================
 	//	Class
 	// ---------------------------------------------------------------------------
-	public class AGALMiniAssembler
+	public class AGALMiniAssembler2
 	{ // ======================================================================
 		//	Constants
 		// ----------------------------------------------------------------------				
@@ -74,7 +74,7 @@ package com.adobe.utils
 		// ======================================================================
 		//	Constructor
 		// ----------------------------------------------------------------------
-		public function AGALMiniAssembler(debugging:Boolean = false):void
+		public function AGALMiniAssembler2(debugging:Boolean = false):void
 		{
 			debugEnabled = debugging;
 			if (!initialized)

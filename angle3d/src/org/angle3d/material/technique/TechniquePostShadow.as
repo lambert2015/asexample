@@ -21,7 +21,7 @@ package org.angle3d.material.technique
 
 		public function TechniquePostShadow()
 		{
-			super("TechniquePostShadow");
+			super();
 
 			_lightViewProjection = new Matrix4f();
 

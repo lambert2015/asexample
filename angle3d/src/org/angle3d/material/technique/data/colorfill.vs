@@ -17,10 +17,10 @@ function main(){
         vec4 morphed;
         morphed.xyz = add(morphed0,morphed1);
         morphed.w = 1.0;
-        output = m44(morphed,u_WorldViewProjectionMatrix);
+        output0 = m44(morphed,u_WorldViewProjectionMatrix);
     }
     #else {
-        output = m44(a_position,u_WorldViewProjectionMatrix);
+        output0 = m44(a_position,u_WorldViewProjectionMatrix);
     }
     v_color = u_color;
 }

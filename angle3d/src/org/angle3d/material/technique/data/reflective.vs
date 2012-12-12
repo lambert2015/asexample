@@ -24,7 +24,7 @@ function main(){
 		vec4 t_position;
 		t_position.xyz = add(morphed0,morphed1);
 		t_position.w = 1.0;
-		output = m44(t_position,u_WorldViewProjectionMatrix);
+		output0 = m44(t_position,u_WorldViewProjectionMatrix);
 		
 		vec3 normalMorphed0;
 		normalMorphed0 = mul(a_normal,u_influences.x);
@@ -37,7 +37,7 @@ function main(){
 		vec4 t_position;
 		t_position.xyz = a_position;
 		t_position.w = 1.0;
-		output = m44(t_position,u_WorldViewProjectionMatrix);
+		output0 = m44(t_position,u_WorldViewProjectionMatrix);
 		vec3 t_normal = a_normal;
 	}
 
