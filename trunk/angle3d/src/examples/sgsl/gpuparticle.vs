@@ -56,9 +56,7 @@ function main(){
 
 	if(t_interp > 0){
 		t_interp = 0;
-	}
-	else
-	{
+	}else{
 		t_interp = fract(t_interp);
 	}
 
