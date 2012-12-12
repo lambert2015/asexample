@@ -1,5 +1,5 @@
 attribute vec3 a_position;
-/*a_position1.w代表当前点方向，1或者-1*/
+//a_position1.w代表当前点方向，1或者-1
 attribute vec4 a_position1;
 
 varying vec4 v_color;

@@ -1,10 +1,10 @@
 package org.angle3d.material.sgsl.node
 {
-	import org.angle3d.material.sgsl.parser.TokenType;
+
 
 	/**
 	 * ...
-	 * @author
+	 * @author andy
 	 */
 	public class ConditionIfNode extends AgalNode
 	{

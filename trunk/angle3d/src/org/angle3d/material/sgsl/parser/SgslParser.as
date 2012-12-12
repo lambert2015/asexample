@@ -45,7 +45,7 @@
 
 		public function exec(source:String):BranchNode
 		{
-			_tok = new Tokenizer(_cleanSource(source));
+			_tok = new Tokenizer(source);
 			_tok.next();
 
 			var programNode:BranchNode = new BranchNode();
@@ -55,7 +55,7 @@
 
 		public function execFunctions(source:String, define:Vector.<String>):Vector.<FunctionNode>
 		{
-			_tok = new Tokenizer(_cleanSource(source));
+			_tok = new Tokenizer(source);
 			_tok.next();
 
 			var programNode:BranchNode = new BranchNode();
@@ -79,16 +79,6 @@
 				result.push(programNode.children[i] as FunctionNode);
 			}
 
-			return result;
-		}
-
-		/**
-		 * 清理源代码，除去多余的空格换行符等等
-		 */
-		private function _cleanSource(source:String):String
-		{
-			var result:String = source.replace(/\t+|\x20+/g, " ");
-			result = result.replace(/\r\n|\n/g, "");
 			return result;
 		}
 

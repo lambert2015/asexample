@@ -11,7 +11,7 @@ package org.angle3d.material.sgsl.node
 		public function ConditionElseNode()
 		{
 			super();
-			this.name = "els";
+			this.name = "else";
 		}
 
 		override public function clone():LeafNode

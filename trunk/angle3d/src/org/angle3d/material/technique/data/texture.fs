@@ -7,7 +7,7 @@ uniform sampler2D s_texture;
     uniform sampler2D s_lightmap;
 }
 
-/*优化贴图格式选择部分，现在这样写太麻烦了*/
+//优化贴图格式选择部分，现在这样写太麻烦了
 function main(){
 	
 	#ifdef(texCoordCompressAlpha){

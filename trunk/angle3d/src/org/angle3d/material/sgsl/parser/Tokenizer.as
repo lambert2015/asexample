@@ -86,10 +86,7 @@
 		public function set source(value:String):void
 		{
 			//忽略注释
-			//删除/**/类型注释
-			_source = value.replace(/\/\*(.|[\r\n])*?\*\//g, "");
-			
-			
+			_source = cleanSource(value);
 
 			_sourceSize = _source.length;
 			_position = 0;
@@ -98,6 +95,23 @@
 			_nextToken = new Token(TokenType.NONE, "<NONE>");
 			_buildRegex();
 			next();
+		}
+
+		private function cleanSource(value:String):String
+		{
+			//删除/**/类型注释
+//			var result:String = value.replace(/\/\*(.|[\r\n])*?\*\//g, "");
+//			result = value.replace(/\/\/(.)*\\n/g, "");
+			var result:String = value.replace(/\/\*(.|[^.])*?\*\//g, "");
+			result = result.replace(/\/\/.*[^.]/g, "");
+
+			/**
+			 * 除去多余的空格换行符等等
+			 */
+			result = result.replace(/\t+|\x20+/g, " ");
+			result = result.replace(/\r\n|\n/g, "");
+
+			return result;
 		}
 
 		public function get token():Token
@@ -119,14 +133,14 @@
 				[TokenType.LPAREN, /\(/],
 				[TokenType.RPAREN, /\)/],
 				[TokenType.COMMA, /,/],
-				//if/else
+				//compare
 				[TokenType.GREATER_THAN, /\>/],
 				[TokenType.LESS_THAN, /\</],
 				[TokenType.GREATER_EQUAL, /\>=/],
 				[TokenType.LESS_EQUAL, /\<=/],
 				[TokenType.NOT_EQUAL, /\!=/],
 				[TokenType.DOUBLE_EQUAL, /==/],
-				// operators
+				//operators
 				[TokenType.DOT, /\./],
 				[TokenType.PLUS, /\+/],
 				[TokenType.EQUAL, /=/],
@@ -146,7 +160,7 @@
 
 			reg += ")";
 
-			_finalRegex = new RegExp(reg, "");
+			_finalRegex = new RegExp(reg);
 		}
 
 		private function _createNextToken(source:String):Token

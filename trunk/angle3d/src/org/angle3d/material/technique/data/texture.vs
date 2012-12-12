@@ -34,7 +34,7 @@ function main(){
 		vec4 t_vec1;
 		vec4 t_boneIndexVec = mul(a_boneIndices,3);
 
-		/*计算最终蒙皮矩阵*/
+		//计算最终蒙皮矩阵
 		t_vec1 = mul(a_boneWeights.x,u_boneMatrixs[t_boneIndexVec.x]);
 		t_vec  = mul(a_boneWeights.y,u_boneMatrixs[t_boneIndexVec.y]);
 		t_vec1 = add(t_vec1,t_vec);
