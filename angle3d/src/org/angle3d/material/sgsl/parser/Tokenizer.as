@@ -5,6 +5,7 @@
 	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.error.UnexpectedTokenError;
 
+	//TODO 优化解析速度
 	public class Tokenizer
 	{
 		private var _tokenRegex:Array;
@@ -52,8 +53,6 @@
 				return;
 			}
 
-
-
 			_token = _nextToken;
 			_nextToken = _createNextToken(_source.substr(_position));
 		}
@@ -87,7 +86,10 @@
 		public function set source(value:String):void
 		{
 			//忽略注释
+			//删除/**/类型注释
 			_source = value.replace(/\/\*(.|[\r\n])*?\*\//g, "");
+			
+			
 
 			_sourceSize = _source.length;
 			_position = 0;
