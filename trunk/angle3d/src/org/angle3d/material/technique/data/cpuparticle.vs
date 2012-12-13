@@ -8,7 +8,7 @@ varying vec4 v_color;
 uniform mat4 u_WorldViewProjectionMatrix;
 
 function main(){
-	output0 = m44(a_position,u_WorldViewProjectionMatrix);
+	output = m44(a_position,u_WorldViewProjectionMatrix);
 	v_texCoord = a_texCoord;
 	v_color = a_color;
 }

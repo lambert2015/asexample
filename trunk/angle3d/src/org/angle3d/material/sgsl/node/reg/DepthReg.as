@@ -13,9 +13,14 @@ package org.angle3d.material.sgsl.node.reg
 	{
 		public function DepthReg(index:int = 0)
 		{
-			super(RegType.DEPTH, DataType.VEC4, "depth" + index);
+			super(RegType.DEPTH, DataType.VEC4, "");
 
 			this.index = index;
+			this.name = "depth";
+			if (this.index > 0)
+			{
+				this.name += this.index.toString();
+			}
 		}
 
 		override public function clone():LeafNode
