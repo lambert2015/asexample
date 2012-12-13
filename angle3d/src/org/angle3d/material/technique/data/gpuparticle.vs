@@ -153,7 +153,7 @@ function main(){
 	}
 
 	//最终位置
-	output0 = m44(t_pos,u_viewProjectionMat);
+	output = m44(t_pos,u_viewProjectionMat);
 
 	//计算当前动画所到达的帧数，没有使用SpriteSheet时则直接设置UV为a_texCoord
 	//a_texCoord.x --> u,a_texCoord.y --> v

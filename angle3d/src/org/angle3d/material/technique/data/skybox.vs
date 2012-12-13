@@ -11,7 +11,7 @@ function main(){
 	t_temp.xyz = m33(a_position.xyz,u_ViewMatrix);
 	t_temp.w = 1.0;
 
-	output0 = m44(t_temp,u_ProjectionMatrix);
+	output = m44(t_temp,u_ProjectionMatrix);
 
 	t_temp.xyz = m33(a_position.xyz,u_WorldMatrix);
 	v_direction = t_temp.xyz;

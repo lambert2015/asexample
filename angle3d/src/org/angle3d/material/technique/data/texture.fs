@@ -47,5 +47,5 @@ function main(){
 
         t_textureMapColor = multiply(t_textureMapColor,t_lightMapColor);
     }
-    output0 = t_textureMapColor;
+    output = t_textureMapColor;
 }

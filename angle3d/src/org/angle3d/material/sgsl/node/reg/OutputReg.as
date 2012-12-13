@@ -12,9 +12,14 @@ package org.angle3d.material.sgsl.node.reg
 	{
 		public function OutputReg(index:int)
 		{
-			super(RegType.OUTPUT, DataType.VEC4, "output" + index);
+			super(RegType.OUTPUT, DataType.VEC4, "");
 
 			this.index = index;
+			this.name = "output";
+			if (this.index > 0)
+			{
+				this.name += this.index.toString();
+			}
 		}
 
 		override public function clone():LeafNode

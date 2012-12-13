@@ -26,7 +26,7 @@ function main(){
 		vec4 morphed;
 		morphed.xyz = add(morphed0,morphed1);
 		morphed.w = 1.0;
-		output0 = m44(morphed,u_WorldViewProjectionMatrix);
+		output = m44(morphed,u_WorldViewProjectionMatrix);
 	}
 	#elseif(USE_SKINNING){
 		mat3 t_skinTransform;
@@ -62,10 +62,10 @@ function main(){
 		vec4 t_localPos;
 		t_localPos.xyz = m34(a_position,t_skinTransform);
 		t_localPos.w = 1.0;
-		output0 = m44(t_localPos,u_WorldViewProjectionMatrix);
+		output = m44(t_localPos,u_WorldViewProjectionMatrix);
 	}
 	#else {
-		output0 = m44(a_position,u_WorldViewProjectionMatrix);
+		output = m44(a_position,u_WorldViewProjectionMatrix);
 	}
 	v_texCoord = a_texCoord;
 	#ifdef( lightmap && useTexCoord2){
