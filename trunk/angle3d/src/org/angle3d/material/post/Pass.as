@@ -33,6 +33,11 @@ package org.angle3d.material.post
 		{
 			renderFrameBuffer = new FrameBuffer();
 		}
+		
+		public function cleanup(r:IRenderer):void
+		{
+			
+		}
 	}
 }
 
