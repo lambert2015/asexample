@@ -2,6 +2,9 @@ package org.angle3d.material
 {
 
 	import flash.display3D.Context3DTriangleFace;
+	import org.angle3d.math.Matrix4f;
+	import org.angle3d.math.Vector3f;
+	import org.angle3d.math.Vector4f;
 
 	import org.angle3d.material.technique.Technique;
 	import org.angle3d.math.Color;
@@ -146,6 +149,21 @@ package org.angle3d.material
 		public function setTexture(key:String, texture:TextureMapBase):void
 		{
 
+		}
+		
+		public function setMatrix4(key:String, matrix4:Matrix4f):void
+		{
+			
+		}
+		
+		public function setVector4(key:String, vec:Vector4f):void
+		{
+			
+		}
+		
+		public function setVector3(key:String, vec:Vector3f):void
+		{
+			
 		}
 	}
 }
