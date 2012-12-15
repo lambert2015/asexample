@@ -8,7 +8,7 @@ uniform vec4 u_color;
     uniform vec4 u_influences;
 }
 
-function main(){
+void function main(){
 	#ifdef(USE_KEYFRAME){
         vec3 morphed0;
         morphed0 = mul(a_position,u_influences.x);

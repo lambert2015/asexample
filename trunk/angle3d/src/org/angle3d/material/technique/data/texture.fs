@@ -8,7 +8,7 @@ uniform sampler2D s_texture;
 }
 
 //优化贴图格式选择部分，现在这样写太麻烦了
-function main(){
+void function main(){
 	
 	#ifdef(texCoordCompressAlpha){
 		t_textureMapColor = texture2D(v_texCoord,s_texture,dxt5,linear,nomip,wrap);

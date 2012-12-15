@@ -61,7 +61,7 @@
 			var programNode:BranchNode = new BranchNode();
 			while (_tok.token.type != TokenType.EOF)
 			{
-				if (_tok.token.type == TokenType.FUNCTION)
+				if (_tok.token.type == TokenType.DATATYPE && _tok.nextToken.type == TokenType.FUNCTION)
 				{
 					programNode.addChild(parseFunction());
 				}
@@ -89,7 +89,7 @@
 		{
 			while (_tok.token.type != TokenType.EOF)
 			{
-				if (_tok.token.type == TokenType.FUNCTION)
+				if (_tok.token.type == TokenType.DATATYPE && _tok.nextToken.type == TokenType.FUNCTION)
 				{
 					program.addChild(parseFunction());
 				}
@@ -185,7 +185,7 @@
 				{
 					subNode.addChild(parseShaderVar());
 				}
-				else if (t.type == TokenType.FUNCTION)
+				else if (t.type == TokenType.DATATYPE && _tok.nextToken.type == TokenType.FUNCTION)
 				{
 					subNode.addChild(parseFunction());
 				}
@@ -210,10 +210,15 @@
 		 */
 		private function parseFunction():FunctionNode
 		{
+			var fn:FunctionNode = new FunctionNode();
+
+			//datatype
+			fn.dataType = _tok.accept(TokenType.DATATYPE).name;
+
 			// SKIP 'function'
 			_tok.accept(TokenType.FUNCTION);
 
-			var fn:FunctionNode = new FunctionNode(_tok.accept(TokenType.IDENTIFIER).name);
+			fn.name = _tok.accept(TokenType.IDENTIFIER).name;
 
 			//SKIP '('
 			_tok.accept(TokenType.LPAREN);
@@ -419,7 +424,7 @@
 			//临时变量定义
 			if (t == TokenType.DATATYPE)
 			{
-				var declarName:String = _tok.peek.name;
+				var declarName:String = _tok.nextToken.name;
 
 				parent.addChild(parseDeclaration());
 
@@ -437,7 +442,7 @@
 					parent.addChild(statement);
 				}
 			}
-			else if (_tok.peek.type == TokenType.LPAREN)
+			else if (_tok.nextToken.type == TokenType.LPAREN)
 			{
 				// function call
 
@@ -518,7 +523,7 @@
 		private function parseExpression():LeafNode
 		{
 			// a function call.
-			if (_tok.token.type == TokenType.IDENTIFIER && _tok.peek.type == TokenType.LPAREN)
+			if (_tok.token.type == TokenType.IDENTIFIER && _tok.nextToken.type == TokenType.LPAREN)
 			{
 				return parseFunctionCall();
 			}
@@ -543,7 +548,7 @@
 			var type:String = _tok.token.type;
 			if (type == TokenType.IDENTIFIER)
 			{
-				var pType:String = _tok.peek.type;
+				var pType:String = _tok.nextToken.type;
 
 				if (pType == TokenType.LBRACKET)
 				{
