@@ -1,7 +1,5 @@
 package org.angle3d.material
 {
-	import flash.display3D.textures.CubeTexture;
-	import flash.display3D.textures.TextureBase;
 	import org.angle3d.material.technique.TechniqueSkyBox;
 	import org.angle3d.texture.CubeTextureMap;
 

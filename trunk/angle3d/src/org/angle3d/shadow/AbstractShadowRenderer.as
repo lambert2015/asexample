@@ -150,13 +150,13 @@ package org.angle3d.shadow
 			{
 				if (filterMode == EdgeFilteringMode.Bilinear)
 				{
-					shadowMap.setMagFilter(MagFilter.Bilinear);
-					shadowMap.setMinFilter(MinFilter.NoMip);
+					shadowMap.setTextureFilter(MagFilter.Bilinear);
+					shadowMap.setMipFilter(MinFilter.NoMip);
 				}
 				else
 				{
-					shadowMap.setMagFilter(MagFilter.Nearest);
-					shadowMap.setMinFilter(MinFilter.NoMip);
+					shadowMap.setTextureFilter(MagFilter.Nearest);
+					shadowMap.setMipFilter(MinFilter.NoMip);
 				}
 			}
 		}

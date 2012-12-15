@@ -1,6 +1,9 @@
 package examples.textures
 {
 
+	import flash.display3D.Context3DMipFilter;
+	import flash.display3D.Context3DTextureFilter;
+	import flash.display3D.Context3DWrapMode;
 	import flash.utils.Dictionary;
 
 	import org.angle3d.app.SimpleApplication;
@@ -12,10 +15,7 @@ package examples.textures
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.shape.Sphere;
 	import org.angle3d.texture.ATFTexture;
-	import org.angle3d.texture.MagFilter;
-	import org.angle3d.texture.MinFilter;
 	import org.angle3d.texture.Texture2D;
-	import org.angle3d.texture.WrapMode;
 	import org.angle3d.utils.Stats;
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.AssetType;
@@ -60,9 +60,9 @@ package examples.textures
 		private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
 		{
 			var atfTexture:ATFTexture = new ATFTexture(assets["atfImage"]);
-			atfTexture.setMinFilter(MinFilter.NoMip);
-			atfTexture.setMagFilter(MagFilter.Bilinear);
-			atfTexture.setWrapMode(WrapMode.Repeat);
+			atfTexture.setMipFilter(Context3DMipFilter.MIPNONE);
+			atfTexture.setTextureFilter(Context3DTextureFilter.LINEAR);
+			atfTexture.setWrapMode(Context3DWrapMode.CLAMP);
 
 			var pngTexture:Texture2D = new Texture2D(assets["pngImage"].bitmapData);
 

@@ -1,6 +1,5 @@
 package org.angle3d.material.technique
 {
-	import flash.display3D.Context3DTextureFormat;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 
@@ -13,7 +12,6 @@ package org.angle3d.material.technique
 	import org.angle3d.material.shader.UniformBindingHelp;
 	import org.angle3d.scene.mesh.BufferType;
 	import org.angle3d.scene.mesh.MeshType;
-	import org.angle3d.texture.ATFTexture;
 	import org.angle3d.texture.TextureMapBase;
 	import org.angle3d.utils.StringUtil;
 
@@ -135,33 +133,8 @@ package org.angle3d.material.technique
 		{
 			var results:Vector.<Vector.<String>> = super.getOption(lightType, meshType);
 
-			if (_texture is ATFTexture)
-			{
-				var atf:ATFTexture = (_texture as ATFTexture);
-				if (atf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED_ALPHA)
-				{
-					results[1].push("texCoordCompressAlpha");
-				}
-				else if (atf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED)
-				{
-					results[1].push("texCoordCompress");
-				}
-			}
-
 			if (_lightmap != null)
 			{
-				if (_lightmap is ATFTexture)
-				{
-					var lightmapAtf:ATFTexture = (_lightmap as ATFTexture);
-					if (lightmapAtf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED_ALPHA)
-					{
-						results[1].push("lightmapCompressAlpha");
-					}
-					else if (lightmapAtf.context3DTextureFormat == Context3DTextureFormat.COMPRESSED)
-					{
-						results[1].push("lightmapCompress");
-					}
-				}
 				results[0].push("lightmap");
 				results[1].push("lightmap");
 				if (_useTexCoord2)

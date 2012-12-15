@@ -25,9 +25,10 @@ package org.angle3d.material.sgsl
 
 		public function TexFlag()
 		{
+			type = 0;
 			bias = 0;
 			dimension = 0;
-			special = 0;
+			special = 4;
 			wrap = 0;
 			mipmap = 0;
 			filter = 1;
@@ -86,9 +87,9 @@ package org.angle3d.material.sgsl
 						case "cube":
 							dimension = 1;
 							break;
-//						case "3d":
-//							dimension = 2;
-//						break;
+						case "3d":
+							dimension = 2;
+							break;
 						case "clamp":
 							wrap = 0;
 							break;
@@ -111,6 +112,15 @@ package org.angle3d.material.sgsl
 							break;
 						case "linear":
 							filter = 1;
+							break;
+						case "centroid":
+							special = 0;
+							break;
+						case "single":
+							special = 2;
+							break;
+						case "ignore":
+							special = 4;
 							break;
 					}
 				}
