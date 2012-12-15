@@ -10,7 +10,7 @@ uniform mat4 u_worldMatrix;
 uniform vec4 u_camPosition;
 uniform vec4 u_etaRatio;
 
-function main(){
+void function main(){
 	output = m44(a_position,u_WorldViewProjectionMatrix);
 
 	vec3 t_N = m33(a_normal.xyz,u_worldMatrix);

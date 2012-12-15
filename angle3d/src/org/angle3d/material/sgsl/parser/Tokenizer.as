@@ -17,8 +17,8 @@
 		private var _sourceSize:int;
 		private var _position:int;
 
-		private var _token:Token;
-		private var _nextToken:Token;
+		public var token:Token;
+		public var nextToken:Token;
 
 		public function Tokenizer(source:String)
 		{
@@ -42,24 +42,19 @@
 			{
 				if (_position == _sourceSize)
 				{
-					_token = _nextToken;
-					_nextToken = new Token(TokenType.EOF, "<EOF>");
+					token = nextToken;
+					nextToken = new Token(TokenType.EOF, "<EOF>");
 				}
 				else
 				{
-					_nextToken = new Token(TokenType.NONE, "<NONE>");
-					_token = new Token(TokenType.EOF, "<EOF>");
+					nextToken = new Token(TokenType.NONE, "<NONE>");
+					token = new Token(TokenType.EOF, "<EOF>");
 				}
 				return;
 			}
 
-			_token = _nextToken;
-			_nextToken = _createNextToken(_source.substr(_position));
-		}
-
-		public function get peek():Token
-		{
-			return _nextToken;
+			token = nextToken;
+			nextToken = _createNextToken(_source.substr(_position));
 		}
 
 		/**
@@ -68,10 +63,10 @@
 		public function accept(type:String):Token
 		{
 			//检查是否同一类型
-			if (_token.type != type)
-				throw new UnexpectedTokenError(_token, type);
+			if (token.type != type)
+				throw new UnexpectedTokenError(token, type);
 
-			var t:Token = _token;
+			var t:Token = token;
 
 			next();
 
@@ -91,8 +86,8 @@
 			_sourceSize = _source.length;
 			_position = 0;
 
-			_token = new Token(TokenType.NONE, "<NONE>");
-			_nextToken = new Token(TokenType.NONE, "<NONE>");
+			token = new Token(TokenType.NONE, "<NONE>");
+			nextToken = new Token(TokenType.NONE, "<NONE>");
 			_buildRegex();
 			next();
 		}
@@ -112,11 +107,6 @@
 			result = result.replace(/\r\n|\n/g, "");
 
 			return result;
-		}
-
-		public function get token():Token
-		{
-			return _token;
 		}
 
 		private function _buildRegex():void
@@ -201,6 +191,7 @@
 					return TokenType.IF;
 				case "else":
 					return TokenType.ELSE;
+				case DataType.VOID:
 				case DataType.FLOAT:
 				case DataType.VEC2:
 				case DataType.VEC3:

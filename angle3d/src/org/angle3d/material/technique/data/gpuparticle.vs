@@ -43,7 +43,7 @@ varying vec4 v_texCoord;
 	uniform vec4 u_spriteSheet;
 } 
 
-function main(){ 
+void function main(){ 
 	//计算粒子当前运行时间
 	float t_time = sub(u_curTime.x,a_lifeScaleSpin.x);
 	//时间少于0时，代表粒子还未触发，设置其时间为0

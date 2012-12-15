@@ -11,7 +11,7 @@ varying vec4 v_normal;
 
 uniform mat4 u_WorldViewProjectionMatrix;
 
-function main()
+void function main()
 {
 	#ifdef(USE_KEYFRAME){
 		vec3 morphed0;

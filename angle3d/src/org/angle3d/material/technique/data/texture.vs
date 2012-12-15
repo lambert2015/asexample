@@ -19,7 +19,7 @@ uniform mat4 u_WorldViewProjectionMatrix;
 	uniform vec4 u_boneMatrixs[{0}];
 }
 
-function main(){
+void function main(){
 	#ifdef(USE_KEYFRAME){
 		vec3 morphed0 = mul(a_position,u_influences.x);
 		vec3 morphed1 = mul(a_position1,u_influences.y);

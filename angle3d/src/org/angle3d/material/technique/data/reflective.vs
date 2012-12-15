@@ -15,7 +15,7 @@ uniform mat4 u_WorldViewProjectionMatrix;
 uniform mat4 u_worldMatrix;
 uniform vec4 u_camPosition;
 
-function main(){
+void function main(){
 	#ifdef(USE_KEYFRAME){
 		vec3 morphed0;
 		morphed0 = mul(a_position,u_influences.x);

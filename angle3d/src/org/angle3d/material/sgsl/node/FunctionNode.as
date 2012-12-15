@@ -23,12 +23,17 @@ package org.angle3d.material.sgsl.node
 
 		private var _needReplace:Boolean = true;
 
+		/**
+		 * 返回类型
+		 */
+		public var dataType:String;
+
 		//函数返回值
 		public var result:LeafNode;
 
-		public function FunctionNode(name:String)
+		public function FunctionNode()
 		{
-			super(name);
+			super();
 
 			_params = new Vector.<ParameterNode>();
 		}
@@ -173,7 +178,8 @@ package org.angle3d.material.sgsl.node
 
 		override public function clone():LeafNode
 		{
-			var node:FunctionNode = new FunctionNode(name);
+			var node:FunctionNode = new FunctionNode();
+			node.name = this.name;
 			node._needReplace = _needReplace;
 
 			if (result != null)
