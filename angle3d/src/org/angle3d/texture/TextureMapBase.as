@@ -1,6 +1,9 @@
 package org.angle3d.texture
 {
 	import flash.display3D.Context3D;
+	import flash.display3D.Context3DMipFilter;
+	import flash.display3D.Context3DTextureFilter;
+	import flash.display3D.Context3DWrapMode;
 	import flash.display3D.textures.TextureBase;
 
 	/**
@@ -13,10 +16,6 @@ package org.angle3d.texture
 	 * magnificationFilter - NearestNeighbor, wrap - EdgeClamp on S,T and R, apply -
 	 * Modulate, environment - None.
 	 *
-	 * @see com.jme3.texture.Image
-	 * @author Mark Powell
-	 * @author Joshua Slack
-	 * @version $Id: Texture.java 4131 2009-03-19 20:15:28Z blaine.dev $
 	 */
 	public class TextureMapBase
 	{
@@ -31,11 +30,13 @@ package org.angle3d.texture
 
 		protected var mOptimizeForRenderToTexture:Boolean;
 
-		private var minificationFilter:String = MinFilter.NoMip;
-		private var magnificationFilter:String = MagFilter.Bilinear;
+		private var mMipFilter:String = Context3DMipFilter.MIPNONE;
+		private var mTextureFilter:String = Context3DTextureFilter.LINEAR;
+		private var mWrapMode:String = Context3DWrapMode.CLAMP;
+
 		private var shadowCompareMode:int = ShadowCompareMode.Off;
-		private var wrapMode:String = WrapMode.Repeat;
-		private var format:String = TextureFormat.RGBA;
+
+		private var mFormat:String = TextureFormat.RGBA;
 		private var type:int = TextureType.TwoDimensional;
 
 		public function TextureMapBase(mipmap:Boolean = false)
@@ -47,27 +48,27 @@ package org.angle3d.texture
 
 		public final function get shaderKeys():Vector.<String>
 		{
-			return Vector.<String>([format, minificationFilter, magnificationFilter, wrapMode]);
+			return Vector.<String>([mFormat, mMipFilter, mTextureFilter, mWrapMode]);
 		}
 
 		public function getWrapMode():String
 		{
-			return wrapMode;
+			return mWrapMode;
 		}
 
 		public function setWrapMode(wrapMode:String):void
 		{
-			this.wrapMode = wrapMode;
+			this.mWrapMode = wrapMode;
 		}
 
 		public function getFormat():String
 		{
-			return format;
+			return mFormat;
 		}
 
 		public function setFormat(format:String):void
 		{
-			this.format = format;
+			this.mFormat = format;
 		}
 
 		public function getType():int
@@ -83,9 +84,9 @@ package org.angle3d.texture
 		/**
 		 * @return the MinificationFilterMode of this texture.
 		 */
-		public function getMinFilter():String
+		public function getMipFilter():String
 		{
-			return minificationFilter;
+			return mMipFilter;
 		}
 
 		/**
@@ -94,17 +95,17 @@ package org.angle3d.texture
 		 * @throws IllegalArgumentException
 		 *             if minificationFilter is null
 		 */
-		public function setMinFilter(minificationFilter:String):void
+		public function setMipFilter(minFilter:String):void
 		{
-			this.minificationFilter = minificationFilter;
+			this.mMipFilter = minFilter;
 		}
 
 		/**
 		 * @return the MagnificationFilterMode of this texture.
 		 */
-		public function getMagFilter():String
+		public function getTextureFilter():String
 		{
-			return magnificationFilter;
+			return mTextureFilter;
 		}
 
 		/**
@@ -113,9 +114,9 @@ package org.angle3d.texture
 		 * @throws IllegalArgumentException
 		 *             if magnificationFilter is null
 		 */
-		public function setMagFilter(magnificationFilter:String):void
+		public function setTextureFilter(magFilter:String):void
 		{
-			this.magnificationFilter = magnificationFilter;
+			this.mTextureFilter = magFilter;
 		}
 
 		/**

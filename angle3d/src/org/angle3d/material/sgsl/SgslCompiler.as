@@ -408,10 +408,10 @@ package org.angle3d.material.sgsl
 					{
 						texFlag.dimension = 1;
 					}
-//					else if (fc.name == "texture3D")
-//					{
-//						texFlag.dimension = 2;
-//					}
+					else if (fc.name == "texture3D")
+					{
+						texFlag.dimension = 2;
+					}
 
 					var fcReg:RegNode = _currentData.getRegNode(fChildren[1].name);
 

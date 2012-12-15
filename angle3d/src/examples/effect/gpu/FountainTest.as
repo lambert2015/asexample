@@ -25,7 +25,7 @@ package examples.effect.gpu
 	{
 		private var particleSystem:ParticleSystem;
 
-		[Embed(source = "../../../../assets/embed/water.png")]
+		[Embed(source = "../../../../assets/embed/smoke.png")]
 		private static var EMBED_SMOKE:Class;
 
 		public function FountainTest()
@@ -53,7 +53,7 @@ package examples.effect.gpu
 			particleGenerator.setLifeInfluencer(new SameLifeInfluencer(5));
 
 			var fountainShape:ParticleShape = particleGenerator.createParticleShape("Fountain", texture);
-			fountainShape.blendMode = BlendMode.AlphaAdditive;
+			fountainShape.blendMode = BlendMode.Alpha;
 			fountainShape.setAlpha(0.8, 0.2);
 			fountainShape.setColor(0x44ccff, 0xccffff);
 			fountainShape.setAcceleration(new Vector3f(0, -4, 0));
