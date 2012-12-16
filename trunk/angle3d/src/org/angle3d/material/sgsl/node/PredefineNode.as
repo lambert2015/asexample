@@ -19,13 +19,13 @@ package org.angle3d.material.sgsl.node
 		}
 
 		/**
-		 * 符合条件
+		 * 符合预定义条件
 		 */
 		public function isMatch(defines:Vector.<String>):Boolean
 		{
 			var subNode:PredefineSubNode;
 			var cLength:int = mChildren.length;
-			for (var i:int = 0; i < cLength; i++)
+			for (var i:uint = 0; i < cLength; i++)
 			{
 				subNode = mChildren[i] as PredefineSubNode;
 				if (subNode.isMatch(defines))

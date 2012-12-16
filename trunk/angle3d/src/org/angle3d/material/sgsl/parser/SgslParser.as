@@ -1,16 +1,10 @@
 ﻿package org.angle3d.material.sgsl.parser
 {
-	import flash.utils.Dictionary;
-
 	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.error.UnexpectedTokenError;
-	import org.angle3d.material.sgsl.node.agal.AgalNode;
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
 	import org.angle3d.material.sgsl.node.AtomNode;
 	import org.angle3d.material.sgsl.node.BranchNode;
-	import org.angle3d.material.sgsl.node.agal.ConditionElseNode;
-	import org.angle3d.material.sgsl.node.agal.ConditionEndNode;
-	import org.angle3d.material.sgsl.node.agal.ConditionIfNode;
 	import org.angle3d.material.sgsl.node.ConstantNode;
 	import org.angle3d.material.sgsl.node.FunctionCallNode;
 	import org.angle3d.material.sgsl.node.FunctionNode;
@@ -19,26 +13,19 @@
 	import org.angle3d.material.sgsl.node.PredefineNode;
 	import org.angle3d.material.sgsl.node.PredefineSubNode;
 	import org.angle3d.material.sgsl.node.PredefineType;
+	import org.angle3d.material.sgsl.node.agal.AgalNode;
+	import org.angle3d.material.sgsl.node.agal.ConditionElseNode;
+	import org.angle3d.material.sgsl.node.agal.ConditionEndNode;
+	import org.angle3d.material.sgsl.node.agal.ConditionIfNode;
 	import org.angle3d.material.sgsl.node.reg.RegFactory;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 
 	//TODO 添加更多的语法错误提示
-	//TODO 预定义部分应该提前排除
+	//TODO 预定义部分是否应该提前排除
 	public class SgslParser
 	{
-		/**
-		 * NOTE: next()/accept() etiquette! Always leave the current token on the
-		 *       FIRST token of the grammar rule function you are
-		 *       recursing to. Always leave the current token on the token
-		 *       AFTER your grammar rule's last token when returning from a
-		 *       function.
-		 */
-
 		private var _tok:Tokenizer;
 
-		/**
-		 *
-		 */
 		public function SgslParser()
 		{
 		}
@@ -226,13 +213,13 @@
 			//参数部分
 			if (_tok.token.type != TokenType.RPAREN)
 			{
-				fn.addParam(parseParams());
+				fn.addParam(parseFunctionParams());
 
 				while (_tok.token.type != TokenType.RPAREN)
 				{
 					//SKIP ','
 					_tok.accept(TokenType.COMMA);
-					fn.addParam(parseParams());
+					fn.addParam(parseFunctionParams());
 				}
 			}
 
@@ -256,7 +243,7 @@
 				}
 				else if (type == TokenType.RETURN)
 				{
-					fn.result = parseReturn();
+					fn.returnNode = parseReturn();
 				}
 				else
 				{
@@ -424,7 +411,7 @@
 			{
 				var declarName:String = _tok.nextToken.name;
 
-				parent.addChild(parseDeclaration());
+				parent.addChild(parseVarDeclaration());
 
 				// plain declaration
 				if (_tok.token.type != TokenType.SEMI)
@@ -470,7 +457,7 @@
 		/**
 		 *参数定义
 		 */
-		private function parseParams():ParameterNode
+		private function parseFunctionParams():ParameterNode
 		{
 			var dataType:String = _tok.accept(TokenType.DATATYPE).name;
 			var name:String = _tok.accept(TokenType.IDENTIFIER).name;
@@ -480,7 +467,7 @@
 		/**
 		 * 临时变量定义,方法内部定义的变量(都是临时变量)
 		 */
-		private function parseDeclaration():RegNode
+		private function parseVarDeclaration():RegNode
 		{
 			var dataType:String = _tok.accept(TokenType.DATATYPE).name;
 			var name:String = _tok.accept(TokenType.IDENTIFIER).name;
