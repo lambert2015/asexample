@@ -160,6 +160,7 @@ package org.angle3d.material.sgsl
 			var dimension:int = value >> 4 & 0xf;
 
 			value = _data.readUnsignedByte();
+			var special:int = value & 0xf;
 			var wrap:int = value >> 4 & 0xf;
 
 			value = _data.readUnsignedByte();
@@ -167,6 +168,12 @@ package org.angle3d.material.sgsl
 			var filter:int = value >> 4 & 0xf;
 
 			var option:Array = [];
+
+			if (special == 4)
+			{
+				option.push("ignoresampler");
+			}
+
 			if (format == 0)
 			{
 				option.push("rgba");
@@ -188,10 +195,10 @@ package org.angle3d.material.sgsl
 			{
 				option.push("cube");
 			}
-//			else if (dimension == 2)
-//			{
-//				option.push("3d");
-//			}
+			else if (dimension == 2)
+			{
+				option.push("3d");
+			}
 
 			if (wrap == 0)
 			{

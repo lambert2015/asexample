@@ -123,32 +123,31 @@ package org.angle3d.renderer
 
 			if (state.blendMode != _renderContext.blendMode)
 			{
-				var CBF:Class = Context3DBlendFactor;
 				switch (state.blendMode)
 				{
 					case BlendMode.Off:
-						_context3D.setBlendFactors(CBF.ONE, CBF.ZERO);
+						_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO);
 						break;
 					case BlendMode.Additive:
-						_context3D.setBlendFactors(CBF.ONE, CBF.ONE);
+						_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE);
 						break;
 					case BlendMode.AlphaAdditive:
-						_context3D.setBlendFactors(CBF.SOURCE_ALPHA, CBF.ONE);
+						_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE);
 						break;
 					case BlendMode.Color:
-						_context3D.setBlendFactors(CBF.ONE, CBF.ONE_MINUS_SOURCE_COLOR);
+						_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
 						break;
 					case BlendMode.Alpha:
-						_context3D.setBlendFactors(CBF.SOURCE_ALPHA, CBF.ONE_MINUS_SOURCE_COLOR);
+						_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
 						break;
 					case BlendMode.PremultAlpha:
-						_context3D.setBlendFactors(CBF.ONE, CBF.ONE_MINUS_SOURCE_ALPHA);
+						_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 						break;
 					case BlendMode.Modulate:
-						_context3D.setBlendFactors(CBF.DESTINATION_COLOR, CBF.ZERO);
+						_context3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ZERO);
 						break;
 					case BlendMode.ModulateX2:
-						_context3D.setBlendFactors(CBF.DESTINATION_COLOR, CBF.SOURCE_COLOR);
+						_context3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.SOURCE_COLOR);
 						break;
 				}
 
@@ -236,8 +235,6 @@ package org.angle3d.renderer
 
 				_shader = shader;
 
-				_shader.uploadTexture(this);
-
 				var program:Program3D = ShaderManager.instance.getProgram(_shader.name);
 
 				if (_lastProgram != program)
@@ -248,6 +245,7 @@ package org.angle3d.renderer
 			}
 
 			//上传Shader数据
+			_shader.uploadTexture(this);
 			_shader.upload(this);
 		}
 
