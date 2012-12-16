@@ -24,10 +24,10 @@ package org.angle3d.material.sgsl.node
 		public function isMatch(defines:Vector.<String>):Boolean
 		{
 			var subNode:PredefineSubNode;
-			var cLength:int = _children.length;
+			var cLength:int = mChildren.length;
 			for (var i:int = 0; i < cLength; i++)
 			{
-				subNode = _children[i] as PredefineSubNode;
+				subNode = mChildren[i] as PredefineSubNode;
 				if (subNode.isMatch(defines))
 				{
 					return true;
@@ -45,10 +45,10 @@ package org.angle3d.material.sgsl.node
 		public function getMatchChildren(defines:Vector.<String>):Vector.<LeafNode>
 		{
 			var subNode:PredefineSubNode;
-			var cLength:int = _children.length;
+			var cLength:int = mChildren.length;
 			for (var i:int = 0; i < cLength; i++)
 			{
-				subNode = _children[i] as PredefineSubNode;
+				subNode = mChildren[i] as PredefineSubNode;
 				//只执行最先符合条件的
 				if (subNode.isMatch(defines))
 				{

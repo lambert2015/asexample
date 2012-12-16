@@ -4,13 +4,13 @@
 
 	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.error.UnexpectedTokenError;
-	import org.angle3d.material.sgsl.node.AgalNode;
+	import org.angle3d.material.sgsl.node.agal.AgalNode;
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
 	import org.angle3d.material.sgsl.node.AtomNode;
 	import org.angle3d.material.sgsl.node.BranchNode;
-	import org.angle3d.material.sgsl.node.ConditionElseNode;
-	import org.angle3d.material.sgsl.node.ConditionEndNode;
-	import org.angle3d.material.sgsl.node.ConditionIfNode;
+	import org.angle3d.material.sgsl.node.agal.ConditionElseNode;
+	import org.angle3d.material.sgsl.node.agal.ConditionEndNode;
+	import org.angle3d.material.sgsl.node.agal.ConditionIfNode;
 	import org.angle3d.material.sgsl.node.ConstantNode;
 	import org.angle3d.material.sgsl.node.FunctionCallNode;
 	import org.angle3d.material.sgsl.node.FunctionNode;
@@ -383,12 +383,10 @@
 			var name:String = _tok.accept(TokenType.IDENTIFIER).name;
 
 			//只有uniform可以使用数组定义，并且数组大小必须一开始就定义好
-			var isArray:Boolean = false;
-			var arraySize:int = 0;
+			var arraySize:int = 1;
 			if (_tok.token.type == TokenType.LBRACKET)
 			{
-				_tok.next(); //Skip "["
-				isArray = true;
+				_tok.accept(TokenType.LBRACKET); //Skip "["
 				arraySize = parseInt(_tok.accept(TokenType.NUMBER).name);
 				_tok.accept(TokenType.RBRACKET); //Skip "]"
 			}
@@ -396,7 +394,7 @@
 			// skip ';'
 			_tok.accept(TokenType.SEMI);
 
-			return RegFactory.create(name, registerType, dataType, isArray, arraySize);
+			return RegFactory.create(name, registerType, dataType, arraySize);
 		}
 
 		private function parseReturn():LeafNode

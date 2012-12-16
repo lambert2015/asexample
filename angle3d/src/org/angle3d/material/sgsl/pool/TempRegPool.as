@@ -1,8 +1,5 @@
 package org.angle3d.material.sgsl.pool
 {
-	import flash.display3D.Context3DProfile;
-
-	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.material.sgsl.node.reg.TempReg;
 	import org.angle3d.material.shader.ShaderProfile;
@@ -71,7 +68,6 @@ package org.angle3d.material.sgsl.pool
 			var tVar:TempReg = (node as TempReg);
 
 			//除了矩阵外，其他类型的临时变量不能跨越寄存器，只能存在于某个寄存器中
-
 			//小于3时，可以在任意位置寻找
 			if (size < 3)
 			{

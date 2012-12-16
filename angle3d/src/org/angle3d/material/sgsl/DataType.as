@@ -15,9 +15,9 @@ package org.angle3d.material.sgsl
 
 		public static const SAMPLER2D:String = "sampler2D";
 		public static const SAMPLERCUBE:String = "samplerCube";
-//		public static const SAMPLER3D : String = "sampler3D";
+		public static const SAMPLER3D:String = "sampler3D";
 
-		public static var sizeDic:Dictionary = new Dictionary;
+		public static var sizeDic:Dictionary = new Dictionary();
 		{
 			sizeDic[FLOAT] = 1;
 			sizeDic[VEC2] = 2;
@@ -27,6 +27,18 @@ package org.angle3d.material.sgsl
 			sizeDic[MAT4] = 16;
 			sizeDic[SAMPLER2D] = 0;
 			sizeDic[SAMPLERCUBE] = 0;
+			sizeDic[SAMPLER3D] = 0;
+		}
+
+		/**
+		 *
+		 * @param dataType
+		 * @return
+		 *
+		 */
+		public static function isSampler(dataType:String):Boolean
+		{
+			return dataType == SAMPLER2D || dataType == SAMPLERCUBE || dataType == SAMPLERCUBE;
 		}
 
 		/**

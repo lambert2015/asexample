@@ -3,7 +3,7 @@
 	import flash.utils.Dictionary;
 
 	import org.angle3d.manager.ShaderManager;
-	import org.angle3d.material.sgsl.node.AgalNode;
+	import org.angle3d.material.sgsl.node.agal.AgalNode;
 	import org.angle3d.material.sgsl.node.BranchNode;
 	import org.angle3d.material.sgsl.node.FunctionNode;
 	import org.angle3d.material.sgsl.node.LeafNode;

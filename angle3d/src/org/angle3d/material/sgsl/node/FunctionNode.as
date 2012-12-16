@@ -3,6 +3,7 @@ package org.angle3d.material.sgsl.node
 	import flash.utils.Dictionary;
 
 	import org.angle3d.material.sgsl.node.reg.RegNode;
+	import org.angle3d.material.sgsl.node.agal.AgalNode;
 
 	/**
 	 * FunctionNode的Child只有两种
@@ -51,10 +52,10 @@ package org.angle3d.material.sgsl.node
 			var map:Dictionary = new Dictionary();
 
 			var child:LeafNode;
-			var cLength:int = _children.length;
+			var cLength:int = mChildren.length;
 			for (var i:int = 0; i < cLength; i++)
 			{
-				child = _children[i];
+				child = mChildren[i];
 				if (child is RegNode)
 				{
 					map[child.name] = getTempName(child.name, this.name);
@@ -89,10 +90,10 @@ package org.angle3d.material.sgsl.node
 			var agalNode:AgalNode;
 			var callNode:FunctionCallNode;
 
-			var cLength:int = _children.length;
+			var cLength:int = mChildren.length;
 			for (var i:int = 0; i < cLength; i++)
 			{
-				child = _children[i];
+				child = mChildren[i];
 
 				if (child is AgalNode)
 				{
@@ -151,7 +152,7 @@ package org.angle3d.material.sgsl.node
 				}
 			}
 
-			_children = newChildren;
+			mChildren = newChildren;
 
 			_needReplace = false;
 		}

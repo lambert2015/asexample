@@ -1,8 +1,6 @@
 package org.angle3d.material.sgsl.pool
 {
 
-	import flash.display3D.Context3DProfile;
-
 	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.material.shader.ShaderProfile;
