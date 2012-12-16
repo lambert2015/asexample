@@ -84,7 +84,7 @@ package org.angle3d.material.technique
 			_renderState.compareMode = Context3DCompareMode.LESS_EQUAL;
 
 			_renderState.applyBlendMode = true;
-			_renderState.blendMode = BlendMode.Alpha;
+			_renderState.blendMode = BlendMode.AlphaAdditive;
 
 			_offsetVector = new Vector.<Number>(16, true);
 			_offsetVector[0] = -0.5;

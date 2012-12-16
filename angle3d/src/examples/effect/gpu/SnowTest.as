@@ -1,7 +1,7 @@
 package examples.effect.gpu
 {
 	import flash.events.MouseEvent;
-	
+
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.effect.gpu.ParticleShape;
 	import org.angle3d.effect.gpu.ParticleShapeGenerator;
@@ -41,6 +41,8 @@ package examples.effect.gpu
 		{
 			super.initialize(width, height);
 
+			this.viewPort.setBackgroundColor(0x0);
+
 			flyCam.setDragToRotate(true);
 
 			var texture:Texture2D = new Texture2D(new EMBED_SNOW().bitmapData, false);
@@ -63,7 +65,7 @@ package examples.effect.gpu
 //			snowShape.setColor(0xffffff, 0xffffff);
 			snowShape.setAcceleration(new Vector3f(0, -1.5, 0));
 			snowShape.setSize(1, 1);
-			
+
 			var snowShape2:ParticleShape = particleGenerator.createParticleShape("Snow2", texture);
 			snowShape2.startTime = 1;
 			snowShape2.useSpin = true;
@@ -77,7 +79,7 @@ package examples.effect.gpu
 			particleSystem.addShape(snowShape);
 			particleSystem.addShape(snowShape2);
 			scene.attachChild(particleSystem);
-			
+
 			particleSystem.play();
 
 			cam.location.setTo(0, 8, 10);
@@ -90,7 +92,7 @@ package examples.effect.gpu
 		private function _doubleClickHandler(e:MouseEvent):void
 		{
 			particleSystem.playOrPause();
-			
+
 			//snowShape.reset();
 		}
 
