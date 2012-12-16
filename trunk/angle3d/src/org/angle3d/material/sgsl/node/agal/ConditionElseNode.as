@@ -1,5 +1,6 @@
-package org.angle3d.material.sgsl.node
+package org.angle3d.material.sgsl.node.agal
 {
+	import org.angle3d.material.sgsl.node.LeafNode;
 
 	/**
 	 * ...

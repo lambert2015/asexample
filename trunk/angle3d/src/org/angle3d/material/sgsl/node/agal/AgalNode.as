@@ -1,7 +1,10 @@
-package org.angle3d.material.sgsl.node
+package org.angle3d.material.sgsl.node.agal
 {
+	import org.angle3d.material.sgsl.node.BranchNode;
+	import org.angle3d.material.sgsl.node.LeafNode;
 
 	/**
+	 * 对应于一行agal代码
 	 * AgalNode最多有两个children
 	 */
 	public class AgalNode extends BranchNode
@@ -24,10 +27,10 @@ package org.angle3d.material.sgsl.node
 			var result:Array = [];
 
 			var m:LeafNode;
-			var length:int = _children.length;
+			var length:int = mChildren.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				m = _children[i];
+				m = mChildren[i];
 				result.push(m.toString(level));
 			}
 

@@ -2,6 +2,11 @@ package org.angle3d.material.sgsl.node
 {
 	import flash.utils.Dictionary;
 
+	/**
+	 *
+	 * @author andy
+	 *
+	 */
 	public class AtomNode extends LeafNode
 	{
 		public var mask:String;

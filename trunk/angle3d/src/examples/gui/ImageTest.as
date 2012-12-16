@@ -59,7 +59,7 @@ package examples.gui
 
 			material2 = image2.getMaterial() as MaterialTexture;
 			material2.technique.renderState.applyBlendMode = true;
-			material2.technique.renderState.blendMode = BlendMode.Additive;
+			material2.technique.renderState.blendMode = BlendMode.AlphaAdditive;
 		}
 
 		override public function simpleUpdate(tpf:Number):void

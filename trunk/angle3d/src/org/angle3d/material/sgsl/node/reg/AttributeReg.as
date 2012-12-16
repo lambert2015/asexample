@@ -2,7 +2,6 @@ package org.angle3d.material.sgsl.node.reg
 {
 	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.node.LeafNode;
-	import org.angle3d.material.shader.ShaderType;
 
 	/**
 	 * ...

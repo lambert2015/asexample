@@ -70,10 +70,10 @@ package org.angle3d.material.sgsl.node
 		{
 			var results:Array = [];
 			var m:LeafNode;
-			var length:int = _children.length;
+			var length:int = mChildren.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				m = _children[i];
+				m = mChildren[i];
 				results.push(m.toString(level));
 			}
 			return results.join(", ");

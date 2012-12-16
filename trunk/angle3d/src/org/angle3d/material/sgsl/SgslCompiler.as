@@ -5,11 +5,11 @@ package org.angle3d.material.sgsl
 	import flash.utils.Dictionary;
 	import flash.utils.Endian;
 
-	import org.angle3d.material.sgsl.node.AgalNode;
+	import org.angle3d.material.sgsl.node.agal.AgalNode;
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
 	import org.angle3d.material.sgsl.node.AtomNode;
 	import org.angle3d.material.sgsl.node.BranchNode;
-	import org.angle3d.material.sgsl.node.ConditionIfNode;
+	import org.angle3d.material.sgsl.node.agal.ConditionIfNode;
 	import org.angle3d.material.sgsl.node.ConstantNode;
 	import org.angle3d.material.sgsl.node.FunctionCallNode;
 	import org.angle3d.material.sgsl.node.LeafNode;

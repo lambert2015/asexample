@@ -4,62 +4,46 @@ package org.angle3d.material.sgsl.node
 
 	public class BranchNode extends LeafNode
 	{
-		protected var _children:Vector.<LeafNode>;
+		protected var mChildren:Vector.<LeafNode>;
 
 		public function BranchNode(name:String = "")
 		{
 			super(name);
 
-			_children = new Vector.<LeafNode>();
+			mChildren = new Vector.<LeafNode>();
 		}
 
-		public function get numChildren():int
+		public function addChild(node:LeafNode):void
 		{
-			return _children.length;
+			mChildren.push(node);
 		}
 
-		/**
-		 * 主要用于替换自定义变量的名称
-		 */
-		override public function renameLeafNode(map:Dictionary):void
+		public function removeChild(node:LeafNode):void
 		{
-			var length:int = _children.length;
-			for (var i:int = 0; i < length; i++)
+			var index:int = mChildren.indexOf(node);
+			if (index > -1)
 			{
-				_children[i].renameLeafNode(map);
+				mChildren.splice(index, 1);
 			}
 		}
 
-		/**
-		 * 如果LeafNode的名字在map中存在，则替换掉此LeafNode
-		 * @param map
-		 *
-		 */
-		override public function replaceLeafNode(paramMap:Dictionary):void
+		public function addChildren(list:Vector.<LeafNode>):void
 		{
-			var child:LeafNode;
-			for (var i:int = 0, length:int = _children.length; i < length; i++)
+			var count:int = list.length;
+			for (var i:int = 0; i < count; i++)
 			{
-				child = _children[i];
-				child.replaceLeafNode(paramMap);
+				addChild(list[i]);
 			}
 		}
 
-		override public function clone():LeafNode
+		public function get children():Vector.<LeafNode>
 		{
-			var node:BranchNode = new BranchNode(name);
-			cloneChildren(node);
-			return node;
+			return mChildren;
 		}
 
-		protected function cloneChildren(branch:BranchNode):void
+		public function get numChildren():uint
 		{
-			var m:LeafNode;
-			for (var i:int = 0, length:int = _children.length; i < length; i++)
-			{
-				m = _children[i];
-				branch.addChild(m.clone());
-			}
+			return mChildren.length;
 		}
 
 		/**
@@ -79,10 +63,10 @@ package org.angle3d.material.sgsl.node
 
 			var child:LeafNode;
 			var predefine:PredefineNode;
-			var cLength:int = _children.length;
+			var cLength:int = mChildren.length;
 			for (var i:int = 0; i < cLength; i++)
 			{
-				child = _children[i];
+				child = mChildren[i];
 
 				//预定义条件
 				if (child is PredefineNode)
@@ -109,35 +93,51 @@ package org.angle3d.material.sgsl.node
 				}
 			}
 
-			_children = results;
+			mChildren = results;
 		}
 
-		public function addChild(node:LeafNode):void
+		/**
+		 * 主要用于替换自定义变量的名称
+		 */
+		override public function renameLeafNode(map:Dictionary):void
 		{
-			_children.push(node);
-		}
-
-		public function removeChild(node:LeafNode):void
-		{
-			var index:int = _children.indexOf(node);
-			if (index > -1)
-			{
-				_children.splice(index, 1);
-			}
-		}
-
-		public function addChildren(list:Vector.<LeafNode>):void
-		{
-			var length:int = list.length;
+			var length:int = mChildren.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				addChild(list[i]);
+				mChildren[i].renameLeafNode(map);
 			}
 		}
 
-		public function get children():Vector.<LeafNode>
+		/**
+		 * 如果LeafNode的名字在map中存在，则替换掉此LeafNode
+		 * @param map
+		 *
+		 */
+		override public function replaceLeafNode(paramMap:Dictionary):void
 		{
-			return _children;
+			var child:LeafNode;
+			for (var i:int = 0, count:int = mChildren.length; i < count; i++)
+			{
+				child = mChildren[i];
+				child.replaceLeafNode(paramMap);
+			}
+		}
+
+		override public function clone():LeafNode
+		{
+			var node:BranchNode = new BranchNode(name);
+			cloneChildren(node);
+			return node;
+		}
+
+		protected function cloneChildren(branch:BranchNode):void
+		{
+			var m:LeafNode;
+			for (var i:int = 0, count:int = mChildren.length; i < count; i++)
+			{
+				m = mChildren[i];
+				branch.addChild(m.clone());
+			}
 		}
 
 		override public function toString(level:int = 0):String
@@ -161,10 +161,10 @@ package org.angle3d.material.sgsl.node
 			level++;
 			var result:String = "";
 			var m:LeafNode;
-			var length:int = _children.length;
+			var length:int = mChildren.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				m = _children[i];
+				m = mChildren[i];
 				result += m.toString(level);
 			}
 			return result;
