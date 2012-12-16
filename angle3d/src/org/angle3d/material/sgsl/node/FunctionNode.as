@@ -20,9 +20,9 @@ package org.angle3d.material.sgsl.node
 			return name + "_" + funcName + "_" + (TEPM_VAR_COUNT++);
 		}
 
-		private var _params:Vector.<ParameterNode>;
+		private var mParams:Vector.<ParameterNode>;
 
-		private var _needReplace:Boolean = true;
+		private var mNeedReplace:Boolean = true;
 
 		/**
 		 * 返回类型
@@ -30,13 +30,13 @@ package org.angle3d.material.sgsl.node
 		public var dataType:String;
 
 		//函数返回值
-		public var result:LeafNode;
+		public var returnNode:LeafNode;
 
 		public function FunctionNode()
 		{
 			super();
 
-			_params = new Vector.<ParameterNode>();
+			mParams = new Vector.<ParameterNode>();
 		}
 
 		/**
@@ -44,7 +44,7 @@ package org.angle3d.material.sgsl.node
 		 */
 		public function get needReplace():Boolean
 		{
-			return _needReplace;
+			return mNeedReplace;
 		}
 
 		public function renameTempVar():void
@@ -67,9 +67,9 @@ package org.angle3d.material.sgsl.node
 				}
 			}
 
-			if (result != null)
+			if (returnNode != null)
 			{
-				result.renameLeafNode(map);
+				returnNode.renameLeafNode(map);
 			}
 		}
 
@@ -80,7 +80,7 @@ package org.angle3d.material.sgsl.node
 		 */
 		public function replaceCustomFunction(functionMap:Dictionary):void
 		{
-			if (!_needReplace)
+			if (!mNeedReplace)
 				return;
 
 			//children
@@ -121,9 +121,9 @@ package org.angle3d.material.sgsl.node
 						//复制customFunc的children到这里
 						newChildren = newChildren.concat(customFunc.children);
 						//如果自定义函数有返回值，用返回值替换agalNode.children[1]
-						if (customFunc.result != null && agalNode.numChildren > 1)
+						if (customFunc.returnNode != null && agalNode.numChildren > 1)
 						{
-							agalNode.children[1] = customFunc.result;
+							agalNode.children[1] = customFunc.returnNode;
 							newChildren.push(agalNode);
 						}
 					}
@@ -139,22 +139,22 @@ package org.angle3d.material.sgsl.node
 			}
 
 			//check returnNode
-			callNode = result as FunctionCallNode;
+			callNode = returnNode as FunctionCallNode;
 			if (isCustomFunctionCall(callNode, functionMap))
 			{
 				customFunc = callNode.cloneCustomFunction(functionMap);
 				//复制customFunc的children到这里
 				newChildren = newChildren.concat(customFunc.children);
 				//如果自定义函数有返回值，这时应该用返回值替换函数的returnNode
-				if (customFunc.result != null)
+				if (customFunc.returnNode != null)
 				{
-					result = customFunc.result;
+					returnNode = customFunc.returnNode;
 				}
 			}
 
 			mChildren = newChildren;
 
-			_needReplace = false;
+			mNeedReplace = false;
 		}
 
 		/**
@@ -169,9 +169,9 @@ package org.angle3d.material.sgsl.node
 		{
 			super.replaceLeafNode(paramMap);
 
-			if (result != null)
+			if (returnNode != null)
 			{
-				result.replaceLeafNode(paramMap);
+				returnNode.replaceLeafNode(paramMap);
 			}
 
 			renameTempVar();
@@ -181,11 +181,11 @@ package org.angle3d.material.sgsl.node
 		{
 			var node:FunctionNode = new FunctionNode();
 			node.name = this.name;
-			node._needReplace = _needReplace;
+			node.mNeedReplace = mNeedReplace;
 
-			if (result != null)
+			if (returnNode != null)
 			{
-				node.result = result.clone();
+				node.returnNode = returnNode.clone();
 			}
 
 			var i:int;
@@ -194,10 +194,10 @@ package org.angle3d.material.sgsl.node
 
 			//clone Param
 			var m:ParameterNode;
-			var pLength:int = _params.length;
+			var pLength:int = mParams.length;
 			for (i = 0; i < pLength; i++)
 			{
-				m = _params[i];
+				m = mParams[i];
 				node.addParam(m.clone() as ParameterNode);
 			}
 
@@ -209,19 +209,19 @@ package org.angle3d.material.sgsl.node
 		 * @return
 		 *
 		 */
-		public function isMainFunction():Boolean
+		public function isMain():Boolean
 		{
 			return this.name == "main";
 		}
 
 		public function addParam(param:ParameterNode):void
 		{
-			_params.push(param);
+			mParams.push(param);
 		}
 
 		public function getParams():Vector.<ParameterNode>
 		{
-			return _params;
+			return mParams;
 		}
 
 		override public function toString(level:int = 0):String
@@ -231,10 +231,10 @@ package org.angle3d.material.sgsl.node
 			output = getSpace(level) + "function " + name + "(";
 
 			var paramStrings:Array = [];
-			var length:int = _params.length;
+			var length:int = mParams.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				paramStrings.push(_params[i].name);
+				paramStrings.push(mParams[i].name);
 			}
 
 			output += paramStrings.join(",") + ")\n";
@@ -242,9 +242,9 @@ package org.angle3d.material.sgsl.node
 			var space:String = getSpace(level);
 			output += space + "{\n";
 			output += getChildrenString(level);
-			if (result != null)
+			if (returnNode != null)
 			{
-				output += getSpace(level + 1) + "return " + result.toString(level) + ";\n";
+				output += getSpace(level + 1) + "return " + returnNode.toString(level) + ";\n";
 			}
 			output += space + "}\n";
 			return output;

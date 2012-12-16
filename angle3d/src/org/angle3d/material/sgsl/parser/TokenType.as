@@ -1,7 +1,7 @@
 ﻿package org.angle3d.material.sgsl.parser
 {
 
-	public class TokenType
+	final public class TokenType
 	{
 		public static const NONE:String = "NONE";
 		public static const EOF:String = "EOF";
