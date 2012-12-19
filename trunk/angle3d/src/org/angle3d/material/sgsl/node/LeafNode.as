@@ -4,6 +4,7 @@
 
 	public class LeafNode
 	{
+		public var type:int;
 		public var name:String;
 
 		public function LeafNode(name:String = "")

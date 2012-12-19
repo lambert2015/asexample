@@ -1,18 +1,18 @@
 package examples.sgsl
 {
-	import flash.events.MouseEvent;
 	import flash.utils.ByteArray;
-
 	import org.angle3d.app.SimpleApplication;
-	import org.angle3d.manager.ShaderManager;
+	import org.angle3d.material.sgsl.node.BranchNode;
+	import org.angle3d.material.sgsl.parser.SgslParser;
 	import org.angle3d.material.shader.Shader;
+
 
 	public class Sgsl2Test extends SimpleApplication
 	{
-		[Embed(source = "gpuparticle2.vs", mimeType = "application/octet-stream")]
-		private static var GPUParticleVS:Class;
-		[Embed(source = "gpuparticle2.fs", mimeType = "application/octet-stream")]
-		private static var GPUParticleFS:Class;
+		[Embed(source = "test.vs", mimeType = "application/octet-stream")]
+		private static var testVS:Class;
+		[Embed(source = "test.fs", mimeType = "application/octet-stream")]
+		private static var testFS:Class;
 
 		private var shader:Shader;
 
@@ -28,19 +28,20 @@ package examples.sgsl
 			var vertexSrc:String = getVertexSource();
 
 			var fragmentSrc:String = getFragmentSource();
-
-			shader = ShaderManager.instance.registerShader("gpuparticle", [vertexSrc, fragmentSrc]);
+			
+			var sgslParser:SgslParser = new SgslParser();
+			var node:BranchNode = sgslParser.exec(vertexSrc);
 		}
 
 		protected function getVertexSource():String
 		{
-			var ba:ByteArray = new GPUParticleVS();
+			var ba:ByteArray = new testVS();
 			return ba.readUTFBytes(ba.length);
 		}
 
 		protected function getFragmentSource():String
 		{
-			var ba:ByteArray = new GPUParticleFS();
+			var ba:ByteArray = new testFS();
 			return ba.readUTFBytes(ba.length);
 		}
 	}

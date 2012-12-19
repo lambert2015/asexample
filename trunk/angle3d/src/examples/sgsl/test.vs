@@ -72,7 +72,7 @@ function main(){
 	#ifdef(USE_COLOR && USE_LOCAL_COLOR){  
 		vec4 t_offsetColor = u_beginColor + (u_incrementColor * t_interp);
 		/*混合全局颜色和粒子自定义颜色*/
-		v_color = mul(a_color,t_offsetColor);
+		v_color = a_color * t_offsetColor;
 	} 
 	/*只使用全局颜色*/
 	#elseif(USE_COLOR){  
@@ -87,7 +87,8 @@ function main(){
 	float t_curLife = t_interp * a_lifeScaleSpin.y;
 
 	/*计算移动速度和重力影响*/
-	vec3 t_offsetPos;	vec3 t_localAcceleration;
+	vec3 t_offsetPos;	
+	vec3 t_localAcceleration;
 	#ifdef(USE_ACCELERATION){  
 		#ifdef(USE_LOCAL_ACCELERATION){  
 			t_localAcceleration = (u_acceleration.xyz + a_acceleration) * t_curLife;
