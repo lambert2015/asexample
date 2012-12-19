@@ -133,6 +133,9 @@
 				//operators
 				[TokenType.DOT, /\./],
 				[TokenType.PLUS, /\+/],
+				[TokenType.SUBTRACT, /-/],
+				[TokenType.MULTIPLY, /\*/],
+				[TokenType.DIVIDE, /\//],
 				[TokenType.EQUAL, /=/],
 				[TokenType.AND, /&&/],
 				[TokenType.OR, /\|\|/]];
