@@ -25,6 +25,15 @@ package org.angle3d.renderer.queue
 			_comparator = comparator;
 		}
 
+		/**
+		 * Returns the GeometryComparator that this Geometry list uses
+		 * for sorting.
+		 */
+		public function getComparator():GeometryComparator
+		{
+			return _comparator;
+		}
+
 		public function setCamera(cam:Camera3D):void
 		{
 			_comparator.setCamera(cam);
