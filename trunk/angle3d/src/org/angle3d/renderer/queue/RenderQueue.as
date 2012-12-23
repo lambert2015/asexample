@@ -86,6 +86,30 @@ package org.angle3d.renderer.queue
 		}
 
 		/**
+		 *  Returns the current GeometryComparator used by the specified bucket,
+		 *  one of Gui, Opaque, Sky, Transparent, or Translucent.
+		 */
+		public function getGeometryComparator(bucket:int):GeometryComparator
+		{
+			switch (bucket)
+			{
+				case QueueBucket.Gui:
+					return guiList.getComparator();
+				case QueueBucket.Opaque:
+					return opaqueList.getComparator();
+				case QueueBucket.Sky:
+					return skyList.getComparator();
+				case QueueBucket.Transparent:
+					return transparentList.getComparator();
+				case QueueBucket.Translucent:
+					return translucentList.getComparator();
+				default:
+					Assert.assert(false, "Unknown bucket type: " + bucket);
+			}
+			return null;
+		}
+
+		/**
 		 * Adds a geometry to a shadow bucket.
 		 * Note that this operation is done automatically by the
 		 * {@link RenderManager}. {@link SceneProcessor}s that handle
