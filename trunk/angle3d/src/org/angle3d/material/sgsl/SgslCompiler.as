@@ -498,7 +498,6 @@ package org.angle3d.material.sgsl
 				_byteArray.writeByte(relOffset);
 				_byteArray.writeByte(swizzleBits(reg, relativeNode.mask));
 
-				//haxe format agal里面这个和下一个写的位置与AGALMiniAssembler中写的相反，需要测试测试
 				_byteArray.writeByte(getRegCode(reg));
 				_byteArray.writeByte(getRegCode(accessReg));
 				_byteArray.writeShort((getCharIndex(relativeNode.access.mask) | (1 << 15)));

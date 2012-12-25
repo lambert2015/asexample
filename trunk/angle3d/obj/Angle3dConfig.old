@@ -37,7 +37,7 @@
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>E:\asexample\angle3d\src\examples\sgsl\Sgsl2Test.as</path-element>
+    <path-element>E:\asexample\angle3d\src\examples\effect\gpu\ExplosionTest.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
   <default-frame-rate>60</default-frame-rate>
