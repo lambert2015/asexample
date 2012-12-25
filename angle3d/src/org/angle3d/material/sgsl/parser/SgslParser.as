@@ -1,5 +1,6 @@
 ﻿package org.angle3d.material.sgsl.parser
 {
+	import org.angle3d.material.sgsl.node.NodeType;
 	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.error.UnexpectedTokenError;
 	import org.angle3d.material.sgsl.node.ArrayAccessNode;
@@ -489,9 +490,9 @@
 			{
 				//TODO 修改，目前不支持方法中嵌套方法
 				//以后考虑支持嵌套
-				//parseExpression(bn);
+				bn.addChild(parseExpression());
 
-				bn.addChild(parseAtomExpression());
+				//bn.addChild(parseAtomExpression());
 
 				if (_tok.token.type == TokenType.COMMA)
 					_tok.next(); // SKIP ','
@@ -516,6 +517,85 @@
 			{
 				return parseAtomExpression();
 			}
+		}
+		
+		private function parseAddExpression():LeafNode
+		{
+			var node:LeafNode = parseMulExpression();
+			while (true)
+			{
+				var newNode:BranchNode;
+				if (_tok.token.type == TokenType.PLUS)
+				{
+					newNode = new BranchNode();
+					newNode.type = NodeType.ADD;
+				}
+				else if (_tok.token.type == TokenType.SUBTRACT)
+				{
+					newNode = new BranchNode();
+					newNode.type = NodeType.SUBTRACT;
+				}
+				else
+				{
+					return node;
+				}
+				
+				_tok.next();//skip '+' or '-'
+				newNode.addChild(node);
+				newNode.addChild(parseMulExpression());
+				node = newNode;
+			}
+			
+			return node;
+		}
+		
+		private function parseMulExpression():LeafNode
+		{
+			var node:LeafNode = parseUnaryExpression();
+			while (true)
+			{
+				var newNode:BranchNode;
+				if (_tok.token.type == TokenType.MULTIPLY)
+				{
+					newNode = new BranchNode();
+					newNode.type = NodeType.MULTIPLTY;
+				}
+				else if (_tok.token.type == TokenType.DIVIDE)
+				{
+					newNode = new BranchNode();
+					newNode.type = NodeType.DIVIDE;
+				}
+				else
+				{
+					return node;
+				}
+				
+				_tok.next();//skip '*' or '/'
+				newNode.addChild(node);
+				newNode.addChild(parseUnaryExpression());
+				node = newNode;
+			}
+			
+			return node;
+		}
+		
+		/**
+		 * -vt0.x
+		 * @return
+		 */
+		private function parseUnaryExpression():LeafNode
+		{
+			if (_tok.token.type == TokenType.SUBTRACT)
+			{
+				var node:BranchNode = new BranchNode();
+				node.type = NodeType.NEG;
+				
+				_tok.next();//skip '-'
+				
+				node.addChild(parseAtomExpression());
+			}
+			
+			return parseAtomExpression();
 		}
 
 		/**
