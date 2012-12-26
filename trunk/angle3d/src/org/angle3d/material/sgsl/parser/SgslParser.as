@@ -466,7 +466,7 @@
 		}
 
 		/**
-		 * 临时变量定义,方法内部定义的变量(都是临时变量)
+		 * 临时变量定义,函数内部定义的变量(都是临时变量)
 		 */
 		private function parseVarDeclaration():RegNode
 		{
