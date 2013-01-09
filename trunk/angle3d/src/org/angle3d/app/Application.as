@@ -210,7 +210,7 @@ package org.angle3d.app
 
 			if (isSoftware(stage3D.context3D.driverInfo))
 			{
-				mProfile = Context3DProfile.BASELINE_CONSTRAINED;
+				mProfile = ShaderProfile.BASELINE_CONSTRAINED;
 				stage3D.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.BASELINE_CONSTRAINED);
 			}
 			else
