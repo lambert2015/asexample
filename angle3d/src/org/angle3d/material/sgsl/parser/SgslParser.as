@@ -490,9 +490,9 @@
 			{
 				//TODO 修改，目前不支持方法中嵌套方法
 				//以后考虑支持嵌套
-				bn.addChild(parseExpression());
+				//bn.addChild(parseExpression());
 
-				//bn.addChild(parseAtomExpression());
+				bn.addChild(parseAtomExpression());
 
 				if (_tok.token.type == TokenType.COMMA)
 					_tok.next(); // SKIP ','
