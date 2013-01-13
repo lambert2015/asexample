@@ -89,8 +89,8 @@ class Vector3f
 		return result;
 	}
 	
-	public inline var length(getLength, never):Float;
-	public inline var lengthSquared(getLengthSquared, never):Float;
+	public var length(getLength, never):Float;
+	public var lengthSquared(getLengthSquared, never):Float;
 	
 	
     /**

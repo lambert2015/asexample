@@ -1,5 +1,6 @@
 package examples.light;
 
+import examples.Stats;
 import flash.display.BitmapData;
 import flash.display3D.Context3DTextureFormat;
 import flash.display3D.textures.Texture;
@@ -8,8 +9,8 @@ import flash.Vector;
 import org.angle3d.app.SimpleApplication;
 import org.angle3d.light.DirectionalLight;
 import org.angle3d.light.LightType;
-import org.angle3d.material.MaterialFill;
 import org.angle3d.material.Material;
+import org.angle3d.material.MaterialFill;
 import org.angle3d.math.Color;
 import org.angle3d.math.FastMath;
 import org.angle3d.math.Vector3f;
@@ -20,7 +21,6 @@ import org.angle3d.scene.shape.Sphere;
 import org.angle3d.scene.shape.Torus;
 import org.angle3d.shader.basic.GouraudDirectionalLighting;
 import org.angle3d.shader.ShaderType;
-import examples.Stats;
 
 
 class TestDirectionalLight extends SimpleApplication
