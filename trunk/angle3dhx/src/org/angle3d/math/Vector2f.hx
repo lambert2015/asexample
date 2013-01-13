@@ -9,8 +9,8 @@ class Vector2f
 	public static inline var ZERO:Vector2f = new Vector2f(0, 0);
 	public static inline var UNIT:Vector2f = new Vector2f(1, 1);
 	
-	public inline var length(getLength, never):Float;
-	public inline var lengthSquared(getLengthSquared, never):Float;
+	public var length(getLength, never):Float;
+	public var lengthSquared(getLengthSquared, never):Float;
 	
 	/**
      * the x value of the vector.

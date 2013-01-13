@@ -3,4 +3,4 @@
 -swf-header 800:600:60:FFFFFF
 --flash-strict
 -swf-version 11.3
--main examples.light.TestDirectionalLight
+-main examples.material.MaterialWireframeTest
