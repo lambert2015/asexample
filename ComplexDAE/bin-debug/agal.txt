@@ -1,0 +1,149 @@
+mov vt7, vc8
+m34 vt1.xyz, va0.xyz, vc4
+
+// bone 1
+/////////////////////////////////////////////////////////////////////////////////////////////////
+mov vt0, va2
+
+mul vt3.x, vt1.x, vt0.x
+mul vt4.y, vt1.y, vt0.y
+mul vt5.z, vt1.z, vt0.z
+add vt6.x, vt3.x, vt4.y
+add vt3.x, vt6.x, vt5.z
+mov vt6, vc8
+neg vt6.w, vt3.x
+mov vt2, vt6
+
+mul vt3.x, vt0.w, vt1.x
+mul vt4.y, vt0.y, vt1.z
+mul vt5.z, vt0.z, vt1.y
+neg vt6.x, vt5.z
+add vt5.x, vt3.x, vt4.y
+mov vt3, vc8
+add vt3.x, vt6.x, vt5.x
+mov vt4, vt2
+add vt2, vt3, vt4
+
+mul vt3.x, vt0.w, vt1.y
+mul vt4.y, vt0.x, vt1.z
+mul vt5.z, vt0.z, vt1.x
+neg vt6.x, vt4.y
+add vt4.x, vt3.x, vt5.z
+mov vt3, vc8
+add vt3.y, vt4.x, vt6.x
+mov vt4, vt2
+add vt2, vt3, vt4
+
+mul vt3.x, vt0.w, vt1.z
+mul vt4.y, vt0.x, vt1.y
+mul vt5.z, vt0.y, vt1.x
+neg vt6.x, vt5.z
+add vt5.x, vt3.x, vt4.y
+mov vt3, vc8
+add vt3.z, vt6.x, vt5.x
+mov vt4, vt2
+add vt2, vt4, vt3
+
+mul vt4, vt2, va6.xxxx
+mov vt3, vt7
+add vt7, vt4, vt3
+
+// bone 2
+/////////////////////////////////////////////////////////////////////////////////////////////////
+mov vt0, va3
+
+mul vt3.x, vt1.x, vt0.x
+mul vt4.y, vt1.y, vt0.y
+mul vt5.z, vt1.z, vt0.z
+add vt6.x, vt3.x, vt4.y
+add vt3.x, vt6.x, vt5.z
+mov vt6, vc8
+neg vt6.w, vt3.x
+mov vt2, vt6
+
+mul vt3.x, vt0.w, vt1.x
+mul vt4.y, vt0.y, vt1.z
+mul vt5.z, vt0.z, vt1.y
+neg vt6.x, vt5.z
+add vt5.x, vt3.x, vt4.y
+mov vt3, vc8
+add vt3.x, vt6.x, vt5.x
+mov vt4, vt2
+add vt2, vt3, vt4
+
+mul vt3.x, vt0.w, vt1.y
+mul vt4.y, vt0.x, vt1.z
+mul vt5.z, vt0.z, vt1.x
+neg vt6.x, vt4.y
+add vt4.x, vt3.x, vt5.z
+mov vt3, vc8
+add vt3.y, vt4.x, vt6.x
+mov vt4, vt2
+add vt2, vt3, vt4
+
+mul vt3.x, vt0.w, vt1.z
+mul vt4.y, vt0.x, vt1.y
+mul vt5.z, vt0.y, vt1.x
+neg vt6.x, vt5.z
+add vt5.x, vt3.x, vt4.y
+mov vt3, vc8
+add vt3.z, vt6.x, vt5.x
+mov vt4, vt2
+add vt2, vt4, vt3
+
+mul vt4, vt2, va6.yyyy
+mov vt3, vt7
+add vt7, vt4, vt3
+
+// bone 3
+/////////////////////////////////////////////////////////////////////////////////////////////////
+mov vt0, va4
+
+mul vt3.x, vt1.x, vt0.x
+mul vt4.y, vt1.y, vt0.y
+mul vt5.z, vt1.z, vt0.z
+add vt6.x, vt3.x, vt4.y
+add vt3.x, vt6.x, vt5.z
+mov vt6, vc8
+neg vt6.w, vt3.x
+mov vt2, vt6
+
+mul vt3.x, vt0.w, vt1.x
+mul vt4.y, vt0.y, vt1.z
+mul vt5.z, vt0.z, vt1.y
+neg vt6.x, vt5.z
+add vt5.x, vt3.x, vt4.y
+mov vt3, vc8
+add vt3.x, vt6.x, vt5.x
+mov vt4, vt2
+add vt2, vt3, vt4
+
+mul vt3.x, vt0.w, vt1.y
+mul vt4.y, vt0.x, vt1.z
+mul vt5.z, vt0.z, vt1.x
+neg vt6.x, vt4.y
+add vt4.x, vt3.x, vt5.z
+mov vt3, vc8
+add vt3.y, vt4.x, vt6.x
+mov vt4, vt2
+add vt2, vt3, vt4
+
+mul vt3.x, vt0.w, vt1.z
+mul vt4.y, vt0.x, vt1.y
+mul vt5.z, vt0.y, vt1.x
+neg vt6.x, vt5.z
+add vt5.x, vt3.x, vt4.y
+
+mov vt3, vc8
+add vt3.z, vt6.x, vt5.x
+mov vt4, vt2
+add vt2, vt4, vt3
+
+mul vt4, vt2, va6.zzzz
+mov vt3, vt7
+add vt7, vt4, vt3
+
+// output
+/////////////////////////////////////////////////////////////////////////////////////////////////
+m44 op, vt7, vc0
+mov v0, va1
