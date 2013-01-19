@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<component id="Button">
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>upSkin</skinpart>
+		<skinpart>overSkin</skinpart>
+		<skinpart>downSkin</skinpart>
+	</component>
+	<component id="CheckBox">
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>upSkin</skinpart>
+		<skinpart>overSkin</skinpart>
+		<skinpart>downSkin</skinpart>
+	</component>
+	<component id="RadioButton">
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>upSkin</skinpart>
+		<skinpart>overSkin</skinpart>
+		<skinpart>downSkin</skinpart>
+	</component>
+	<component id="ComboBox">
+		<skinpart>popUp</skinpart>
+		<skinpart type="TextInput">textInput</skinpart>
+		<skinpart>dropDown</skinpart>
+		<skinpart type="Button">openButton</skinpart>
+		<skinpart type="Scroller">scroller</skinpart>
+		<skinpart>dataGroup</skinpart>
+	</component>
+	<component id="DropDownList">
+		<skinpart>popUp</skinpart>
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>dropDown</skinpart>
+		<skinpart type="Button">openButton</skinpart>
+		<skinpart type="Scroller">scroller</skinpart>
+		<skinpart>dataGroup</skinpart>
+	</component>
+	<component id="HScrollBar">
+		<skinpart type="Button">decrementButton</skinpart>
+		<skinpart type="Button">incrementButton</skinpart>
+		<skinpart type="Button">thumb</skinpart>
+		<skinpart type="Button">track</skinpart>
+	</component>
+	<component id="HSlider">
+		<skinpart type="Button">thumb</skinpart>
+		<skinpart type="Button">track</skinpart>
+	</component>
+	<component id="ItemRenderer">
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>upSkin</skinpart>
+		<skinpart>overSkin</skinpart>
+		<skinpart>downSkin</skinpart>
+	</component>
+	<component id="List">
+		<skinpart type="Scroller">scroller</skinpart>
+		<skinpart>dataGroup</skinpart>
+	</component>
+	<component id="Panel">
+		<skinpart>titleDisplay</skinpart>
+		<skinpart>contentGroup</skinpart>
+	</component>
+	<component id="TabNavigator">
+		<skinpart>contentGroup</skinpart>
+		<skinpart type="TabBar">tabBar</skinpart>
+	</component>
+	<component id="Scroller">
+		<skinpart type="HScrollBar">horizontalScrollBar</skinpart>
+		<skinpart type="VScrollBar">verticalScrollBar</skinpart>
+	</component>
+	<component id="SkinnableContainer">
+		<skinpart type="Group">contentGroup</skinpart>
+	</component>
+	<component id="SkinnableDataContainer">
+		<skinpart>dataGroup</skinpart>
+	</component>
+	<component id="TabBar">
+		<skinpart type="Scroller">scroller</skinpart>
+		<skinpart>dataGroup</skinpart>
+	</component>
+	<component id="TabBarButton">
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>upSkin</skinpart>
+		<skinpart>overSkin</skinpart>
+		<skinpart>downSkin</skinpart>
+	</component>
+	<component id="TextArea">
+		<skinpart type="Scroller">scroller</skinpart>
+		<skinpart>textDisplay</skinpart>
+	</component>
+	<component id="TextInput">
+		<skinpart>textDisplay</skinpart>
+	</component>
+	<component id="ToggleButton">
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>upSkin</skinpart>
+		<skinpart>overSkin</skinpart>
+		<skinpart>downSkin</skinpart>
+	</component>
+	<component id="VScrollBar">
+		<skinpart type="Button">decrementButton</skinpart>
+		<skinpart type="Button">incrementButton</skinpart>
+		<skinpart type="Button">thumb</skinpart>
+		<skinpart type="Button">track</skinpart>
+	</component>
+	<component id="VSlider">
+		<skinpart type="Button">thumb</skinpart>
+		<skinpart type="Button">track</skinpart>
+	</component>
+	<component id="ProgressBar">
+		<skinpart>thumb</skinpart>
+		<skinpart>track</skinpart>
+		<skinpart>labelDisplay</skinpart>
+	</component>
+	<component id="PageNavigator">
+		<skinpart type="Button">prevPageButton</skinpart>
+		<skinpart type="Button">nextPageButton</skinpart>
+		<skinpart type="Button">firstPageButton</skinpart>
+		<skinpart type="Button">lastPageButton</skinpart>
+		<skinpart>labelDisplay</skinpart>
+		<skinpart>contentGroup</skinpart>
+	</component>
+	<component id="TitleWindow">
+		<skinpart>titleDisplay</skinpart>
+		<skinpart>contentGroup</skinpart>
+		<skinpart>moveArea</skinpart>
+		<skinpart type="Button">closeButton</skinpart>
+	</component>
+	<component id="Alert">
+		<skinpart>titleDisplay</skinpart>
+		<skinpart>contentGroup</skinpart>
+		<skinpart>moveArea</skinpart>
+		<skinpart type="Button">closeButton</skinpart>
+		<skinpart type="Button">firstButton</skinpart>
+		<skinpart type="Button">secondButton</skinpart>
+		<skinpart>contentDisplay</skinpart>
+	</component>
+</root>
