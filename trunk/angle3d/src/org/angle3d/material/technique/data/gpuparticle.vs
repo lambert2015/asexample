@@ -148,9 +148,10 @@ void function main(){
 	//float t_lessThan = lessThan(t_negate,0.0);
 	//t_pos.xyz = mul(t_pos.xyz,t_lessThan);
 	
-	if(t_time == 0.0){
-		t_pos.xyz = mul(t_pos.xyz,t_time);
-	}
+	//11.6用不了分支语句
+	//if(t_time == 0.0){
+	//	t_pos.xyz = mul(t_pos.xyz,t_time);
+	//}
 
 	//最终位置
 	output = m44(t_pos,u_viewProjectionMat);
