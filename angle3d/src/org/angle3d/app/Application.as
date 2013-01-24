@@ -196,7 +196,7 @@ package org.angle3d.app
 			stage3D = stage.stage3Ds[0];
 			stage3D.addEventListener(Event.CONTEXT3D_CREATE, _context3DCreateHandler);
 
-			mProfile = ShaderProfile.BASELINE_EXTENDED;
+			mProfile = ShaderProfile.BASELINE;
 			stage3D.requestContext3D(Context3DRenderMode.AUTO, mProfile);
 		}
 

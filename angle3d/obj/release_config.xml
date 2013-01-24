@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <flex-config>
+   <target-player>11.6</target-player>
    <compiler locale="en_US" swf-version="19">
 		<define>
 			<name>CF::DEBUG</name>

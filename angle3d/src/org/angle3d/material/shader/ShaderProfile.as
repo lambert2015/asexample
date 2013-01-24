@@ -1,5 +1,6 @@
 package org.angle3d.material.shader
 {
+	import flash.display3D.Context3DProfile;
 
 	public class ShaderProfile
 	{
