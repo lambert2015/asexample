@@ -7,12 +7,11 @@ package org.flexlite.domUI.components
 	import org.flexlite.domCore.Injector;
 	import org.flexlite.domCore.dx_internal;
 	import org.flexlite.domUI.components.supportClasses.SkinBasicLayout;
-	import org.flexlite.domUI.core.IInvisibleSkin;
 	import org.flexlite.domUI.core.ISkin;
-	import org.flexlite.domUI.core.ISkinPartHost;
 	import org.flexlite.domUI.core.IStateClient;
 	import org.flexlite.domUI.core.Theme;
 	import org.flexlite.domUI.events.SkinPartEvent;
+	import org.flexlite.domUI.utils.SkinPartUtil;
 
 	use namespace dx_internal;
 
@@ -135,7 +134,7 @@ package org.flexlite.domUI.components
 		/**
 		 * 获取当前的skin对象，当附加的皮肤为非显示对象时，并不存储在skin属性中。返回非显示对象版本skin。
 		 */
-		protected function getCurrentSkin():Object
+		dx_internal function getCurrentSkin():Object
 		{
 			return _invisibleSkin ? _invisibleSkin : _skin;
 		}
@@ -145,36 +144,21 @@ package org.flexlite.domUI.components
 		 */
 		protected function attachSkin(skin:Object):void
 		{
-			if (hasCreatedSkinParts && (skin is ISkinPartHost))
-			{
-				removeSkinParts();
-				hasCreatedSkinParts = false;
-			}
-
-			if (skin is IInvisibleSkin)
-			{
-				(skin as IInvisibleSkin).getSkin(getCurrentSkinState(), super.onGetSkin, _skin);
-			}
 			if (skin is ISkin)
 			{
 				var newSkin:ISkin = skin as ISkin;
 				newSkin.hostComponent = this;
-			}
-
-			if (skin is ISkinPartHost)
-			{
 				skinLayoutEnabled = false;
 				findSkinParts();
 			}
 			else
 			{
 				skinLayoutEnabled = true;
-			}
-
-			if (!hasCreatedSkinParts && !(skin is ISkinPartHost))
-			{
-				createSkinParts();
-				hasCreatedSkinParts = true;
+				if (!hasCreatedSkinParts)
+				{
+					createSkinParts();
+					hasCreatedSkinParts = true;
+				}
 			}
 		}
 
@@ -185,9 +169,9 @@ package org.flexlite.domUI.components
 		public function findSkinParts():void
 		{
 			var curSkin:Object = getCurrentSkin();
-			if (!curSkin || !(curSkin is ISkinPartHost))
+			if (!curSkin || !(curSkin is ISkin))
 				return;
-			var skinParts:Vector.<String> = (curSkin as ISkinPartHost).getSkinParts();
+			var skinParts:Vector.<String> = SkinPartUtil.getSkinParts(this);
 			for each (var partName:String in skinParts)
 			{
 				if ((partName in this) && (partName in curSkin) && curSkin[partName] != null
@@ -200,7 +184,6 @@ package org.flexlite.domUI.components
 					}
 					catch (e:Error)
 					{
-//							trace("皮肤组件属性："+partName+"是只读的或类型不匹配!");
 					}
 				}
 			}
@@ -230,13 +213,15 @@ package org.flexlite.domUI.components
 		 */
 		protected function detachSkin(skin:Object):void
 		{
+			if (hasCreatedSkinParts)
+			{
+				removeSkinParts();
+				hasCreatedSkinParts = false;
+			}
 			if (skin is ISkin)
 			{
 				(skin as ISkin).hostComponent = null;
-			}
-			if (skin is ISkinPartHost)
-			{
-				var skinParts:Vector.<String> = (skin as ISkinPartHost).getSkinParts();
+				var skinParts:Vector.<String> = SkinPartUtil.getSkinParts(this);
 				for each (var partName:String in skinParts)
 				{
 					if (!(partName in this))
@@ -309,10 +294,6 @@ package org.flexlite.domUI.components
 		protected function validateSkinState():void
 		{
 			var curState:String = getCurrentSkinState();
-			if (_invisibleSkin && _invisibleSkin is IInvisibleSkin)
-			{
-				(_invisibleSkin as IInvisibleSkin).getSkin(curState, super.onGetSkin, _skin);
-			}
 			var hasState:Boolean = false;
 			var curSkin:Object = _invisibleSkin ? _invisibleSkin : _skin;
 			if (curSkin is IStateClient)
