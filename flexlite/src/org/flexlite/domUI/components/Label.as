@@ -445,6 +445,8 @@ package org.flexlite.domUI.components
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 		{
 			$updateDisplayList(unscaledWidth, unscaledHeight);
+			textField.x = _paddingLeft;
+			textField.y = _paddingTop;
 			if (isSpecialCase())
 			{
 				var firstTime:Boolean = isNaN(lastUnscaledWidth) ||
@@ -458,6 +460,8 @@ package org.flexlite.domUI.components
 					return;
 				}
 			}
+			if (!textField.visible) //解决初始化时文本闪烁问题
+				textField.visible = true;
 			if (_isTruncated)
 			{
 				textField.$text = _text;
@@ -471,8 +475,6 @@ package org.flexlite.domUI.components
 			var unscaledTextHeight:Number = unscaledHeight - _paddingTop - _paddingBottom;
 			textField.$height = unscaledTextHeight;
 
-			textField.x = _paddingLeft;
-			textField.y = _paddingTop;
 
 			if (Math.floor(width) < Math.floor(measuredWidth))
 				textField.wordWrap = true;
@@ -595,6 +597,7 @@ package org.flexlite.domUI.components
 			{
 				super.createTextField();
 				textField.wordWrap = true;
+				textField.visible = false;
 			}
 		}
 
