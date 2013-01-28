@@ -18,7 +18,7 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<location>D:/Users/weilichuang/git/angle3d_bin</location>
+			<locationURI>DOCUMENTS/angle3d_bin</locationURI>
 		</link>
 		<link>
 			<name>bin-release</name>
