@@ -24,6 +24,7 @@ package examples.model
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.signals.LoaderSignal;
+	import org.angle3d.animation.Bone;
 
 	public class MS3DSkinnedMeshTest extends SimpleApplication
 	{
