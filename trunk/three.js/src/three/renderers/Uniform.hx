@@ -1,7 +1,7 @@
 package three.renderers;
 
 import three.textures.Texture;
-import UserAgentContext;
+
 /**
  * ...
  * @author andy

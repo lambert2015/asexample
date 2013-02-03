@@ -6,7 +6,6 @@ import three.math.Vector3;
 import three.ThreeGlobal;
 import three.textures.Texture;
 import three.lights.Light;
-import UserAgentContext;
 /**
  * ...
  * @author andy

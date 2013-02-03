@@ -1,8 +1,8 @@
 package three.cameras;
+import js.html.Float32Array;
 import three.core.Object3D;
 import three.math.Matrix4;
 import three.math.Vector3;
-import UserAgentContext;
 /**
  * ...
  * @author andy

@@ -1,16 +1,19 @@
 package org.flexlite.domUtils
 {
 	import com.codeazur.as3swf.SWF;
+	import com.codeazur.as3swf.data.SWFColorTransform;
 	import com.codeazur.as3swf.data.SWFFillStyle;
 	import com.codeazur.as3swf.data.SWFMatrix;
 	import com.codeazur.as3swf.data.SWFShapeRecord;
 	import com.codeazur.as3swf.data.SWFShapeRecordStyleChange;
 	import com.codeazur.as3swf.data.SWFShapeWithStyle;
 	import com.codeazur.as3swf.data.SWFSymbol;
+	import com.codeazur.as3swf.data.filters.IFilter;
 	import com.codeazur.as3swf.tags.IDefinitionTag;
 	import com.codeazur.as3swf.tags.ITag;
 	import com.codeazur.as3swf.tags.TagDefineBits;
 	import com.codeazur.as3swf.tags.TagDefineBitsLossless;
+	import com.codeazur.as3swf.tags.TagDefineScalingGrid;
 	import com.codeazur.as3swf.tags.TagDefineSceneAndFrameLabelData;
 	import com.codeazur.as3swf.tags.TagDefineShape;
 	import com.codeazur.as3swf.tags.TagDefineSprite;
@@ -20,11 +23,13 @@ package org.flexlite.domUtils
 	import com.codeazur.as3swf.tags.TagMetadata;
 	import com.codeazur.as3swf.tags.TagPlaceObject;
 	import com.codeazur.as3swf.tags.TagPlaceObject2;
+	import com.codeazur.as3swf.tags.TagPlaceObject3;
 	import com.codeazur.as3swf.tags.TagSetBackgroundColor;
 	import com.codeazur.as3swf.tags.TagShowFrame;
 	import com.codeazur.as3swf.tags.TagSymbolClass;
 	import com.codeazur.as3swf.timeline.Frame;
 
+	import flash.geom.ColorTransform;
 	import flash.utils.ByteArray;
 
 	/**
@@ -223,8 +228,36 @@ package org.flexlite.domUtils
 					continue;
 				var symbol:SWFSymbol = new SWFSymbol();
 				symbol.name = symbols[i];
-				tag = swf.getCharacter(placeTag.characterId);
-				if (tag is TagDefineShape)
+				index = 0;
+				while (index < tags.length)
+				{
+					tag = tags[index];
+					if (tag is IDefinitionTag && IDefinitionTag(tag).characterId == placeTag.characterId)
+					{
+						break;
+					}
+					index++;
+				}
+				if (!(tag is TagDefineShape) && !(tag is TagDefineSprite))
+					continue;
+				var hasCT:Boolean = hasColorTransform(placeTag.colorTransform);
+				var numChildren:int = 0;
+				var childIndex:int = -1;
+				if (tag is TagDefineSprite)
+				{
+					index = 0;
+					while (index < TagDefineSprite(tag).tags.length)
+					{
+						if (TagDefineSprite(tag).tags[index] is TagPlaceObject)
+						{
+							if (childIndex == -1)
+								childIndex = index;
+							numChildren++;
+						}
+						index++;
+					}
+				}
+				if (tag is TagDefineShape || hasCT)
 				{
 					var spriteTag:TagDefineSprite = new TagDefineSprite();
 					spriteTag.characterId = tags.length - 2;
@@ -232,8 +265,24 @@ package org.flexlite.domUtils
 					place.hasCharacter = true;
 					place.hasMatrix = true;
 					place.depth = 1;
-					place.characterId = placeTag.characterId;
-					place.matrix = new SWFMatrix();
+					if (numChildren == 1)
+					{
+						var childPlace:TagPlaceObject = TagDefineSprite(tag).tags[childIndex] as TagPlaceObject;
+						place.characterId = childPlace.characterId
+						place.matrix = childPlace.matrix.clone();
+					}
+					else
+					{
+						place.characterId = placeTag.characterId;
+						place.matrix = new SWFMatrix();
+					}
+
+					if (hasCT)
+					{
+						place.hasColorTransform = true;
+						place.colorTransform = placeTag.colorTransform.clone();
+						place.colorTransform.aMult = 256;
+					}
 					spriteTag.tags.push(place);
 					spriteTag.tags.push(new TagShowFrame());
 					spriteTag.tags.push(new TagEnd());
@@ -251,6 +300,18 @@ package org.flexlite.domUtils
 				return null;
 			tags.splice(tags.length - 2, 0, symbolTag);
 			return extractFromSwf(swf, symbols);
+
+			function hasColorTransform(ct:SWFColorTransform):Boolean
+			{
+				if (!ct)
+					return false;
+				if (ct.rMult == 256 && ct.gMult == 256 && ct.bMult == 256 &&
+					ct.rAdd == 0 && ct.gAdd == 0 && ct.bAdd == 0 && ct.aAdd == 0)
+				{
+					return false;
+				}
+				return true;
+			}
 		}
 
 		/**
@@ -323,9 +384,17 @@ package org.flexlite.domUtils
 			newSwf.publish(newBytes);
 			return newBytes;
 
-			function compareFunction(tagA:ITag, tagB:ITag):int
+			function compareFunction(tagA:IDefinitionTag, tagB:IDefinitionTag):int
 			{
-				return tagA["characterId"] - tagB["characterId"];
+				var result:int = tagA.characterId - tagB.characterId;
+				if (result == 0)
+				{
+					if (tagA is TagDefineScalingGrid && !(tagB is TagDefineScalingGrid))
+						result = 1;
+					else if (!(tagA is TagDefineScalingGrid) && tagB is TagDefineScalingGrid)
+						result = -1;
+				}
+				return result;
 			}
 		}
 
@@ -335,17 +404,30 @@ package org.flexlite.domUtils
 		private static function getTags(swf:SWF, tagId:uint, tags:Array):void
 		{
 			var tag:ITag;
+			var defineTag:IDefinitionTag;
+			var scale9Tag:TagDefineScalingGrid;
 			for each (tag in swf.tags)
 			{
-				if (tag is IDefinitionTag && IDefinitionTag(tag).characterId == tagId)
+				if (!defineTag)
 				{
-					break;
+					if (tag is IDefinitionTag && IDefinitionTag(tag).characterId == tagId)
+						defineTag = tag as IDefinitionTag;
+				}
+				else
+				{
+					if (tag is TagDefineScalingGrid && TagDefineScalingGrid(tag).characterId == tagId)
+					{
+						scale9Tag = tag as TagDefineScalingGrid;
+						break;
+					}
 				}
 			}
+			if (!defineTag)
+				return;
 			var childTag:ITag;
-			if (tag is TagDefineSprite)
+			if (defineTag is TagDefineSprite)
 			{
-				for each (childTag in(tag as TagDefineSprite).tags)
+				for each (childTag in(defineTag as TagDefineSprite).tags)
 				{
 					if (childTag is TagPlaceObject)
 					{
@@ -353,9 +435,9 @@ package org.flexlite.domUtils
 					}
 				}
 			}
-			else if (tag is TagDefineShape)
+			else if (defineTag is TagDefineShape)
 			{
-				var shapes:SWFShapeWithStyle = TagDefineShape(tag).shapes;
+				var shapes:SWFShapeWithStyle = TagDefineShape(defineTag).shapes;
 				var fillStyle:SWFFillStyle;
 				for each (fillStyle in shapes.initialFillStyles)
 				{
@@ -373,8 +455,10 @@ package org.flexlite.domUtils
 					}
 				}
 			}
-			if (tags.indexOf(tag) == -1)
-				tags.push(tag);
+			if (tags.indexOf(defineTag) == -1)
+				tags.push(defineTag);
+			if (scale9Tag && tags.indexOf(scale9Tag) == -1)
+				tags.push(scale9Tag);
 
 			function checkSwfFillStyle(fillStyle:SWFFillStyle, swf:SWF, tags:Array):void
 			{
@@ -382,7 +466,7 @@ package org.flexlite.domUtils
 				if (type == 0x40 || type == 0x41 || type == 0x42 || type == 0x43)
 				{
 					childTag = swf.getCharacter(fillStyle.bitmapId);
-					if (childTag)
+					if (childTag && tags.indexOf(childTag) == -1)
 						tags.push(childTag);
 				}
 			}

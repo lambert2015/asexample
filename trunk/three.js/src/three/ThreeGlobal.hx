@@ -1,5 +1,6 @@
 package three;
-import UserAgentContext;
+import js.html.webgl.RenderingContext;
+
 /**
  * ...
  * @author 
@@ -125,95 +126,95 @@ class ThreeGlobal
 	public static inline var LuminanceFormat:Int = 1022;
 	public static inline var LuminanceAlphaFormat:Int = 1023;
 
-	public static var gl:WebGLRenderingContext;
+	public static var gl:RenderingContext;
 	// Map js constants to WebGL constants
 
-	public static function paramThreeToGL(p:Int):GLenum
+	public static function paramThreeToGL(p:Int):Int
 	{
 		if (p == RepeatWrapping)
-			return gl.REPEAT;
+			return GL.REPEAT;
 		if (p == ClampToEdgeWrapping)
-			return gl.CLAMP_TO_EDGE;
+			return GL.CLAMP_TO_EDGE;
 		if (p == MirroredRepeatWrapping)
-			return gl.MIRRORED_REPEAT;
+			return GL.MIRRORED_REPEAT;
 
 		if (p == NearestFilter)
-			return gl.NEAREST;
+			return GL.NEAREST;
 		if (p == NearestMipMapNearestFilter)
-			return gl.NEAREST_MIPMAP_NEAREST;
+			return GL.NEAREST_MIPMAP_NEAREST;
 		if (p == NearestMipMapLinearFilter)
-			return gl.NEAREST_MIPMAP_LINEAR;
+			return GL.NEAREST_MIPMAP_LINEAR;
 
 		if (p == LinearFilter)
-			return gl.LINEAR;
+			return GL.LINEAR;
 		if (p == LinearMipMapNearestFilter)
-			return gl.LINEAR_MIPMAP_NEAREST;
+			return GL.LINEAR_MIPMAP_NEAREST;
 		if (p == LinearMipMapLinearFilter)
-			return gl.LINEAR_MIPMAP_LINEAR;
+			return GL.LINEAR_MIPMAP_LINEAR;
 
 		if (p == UnsignedByteType)
-			return gl.UNSIGNED_BYTE;
+			return GL.UNSIGNED_BYTE;
 		if (p == UnsignedShort4444Type)
-			return gl.UNSIGNED_SHORT_4_4_4_4;
+			return GL.UNSIGNED_SHORT_4_4_4_4;
 		if (p == UnsignedShort5551Type)
-			return gl.UNSIGNED_SHORT_5_5_5_1;
+			return GL.UNSIGNED_SHORT_5_5_5_1;
 		if (p == UnsignedShort565Type)
-			return gl.UNSIGNED_SHORT_5_6_5;
+			return GL.UNSIGNED_SHORT_5_6_5;
 
 		if (p == ByteType)
-			return gl.BYTE;
+			return GL.BYTE;
 		if (p == ShortType)
-			return gl.SHORT;
+			return GL.SHORT;
 		if (p == UnsignedShortType)
-			return gl.UNSIGNED_SHORT;
+			return GL.UNSIGNED_SHORT;
 		if (p == IntType)
-			return gl.INT;
+			return GL.INT;
 		if (p == UnsignedIntType)
-			return gl.UNSIGNED_INT;
+			return GL.UNSIGNED_INT;
 		if (p == FloatType)
-			return gl.FLOAT;
+			return GL.FLOAT;
 
 		if (p == AlphaFormat)
-			return gl.ALPHA;
+			return GL.ALPHA;
 		if (p == RGBFormat)
-			return gl.RGB;
+			return GL.RGB;
 		if (p == RGBAFormat)
-			return gl.RGBA;
+			return GL.RGBA;
 		if (p == LuminanceFormat)
-			return gl.LUMINANCE;
+			return GL.LUMINANCE;
 		if (p == LuminanceAlphaFormat)
-			return gl.LUMINANCE_ALPHA;
+			return GL.LUMINANCE_ALPHA;
 
 		if (p == AddEquation)
-			return gl.FUNC_ADD;
+			return GL.FUNC_ADD;
 		if (p == SubtractEquation)
-			return gl.FUNC_SUBTRACT;
+			return GL.FUNC_SUBTRACT;
 		if (p == ReverseSubtractEquation)
-			return gl.FUNC_REVERSE_SUBTRACT;
+			return GL.FUNC_REVERSE_SUBTRACT;
 
 		if (p == ZeroFactor)
-			return gl.ZERO;
+			return GL.ZERO;
 		if (p == OneFactor)
-			return gl.ONE;
+			return GL.ONE;
 		if (p == SrcColorFactor)
-			return gl.SRC_COLOR;
+			return GL.SRC_COLOR;
 		if (p == OneMinusSrcColorFactor)
-			return gl.ONE_MINUS_SRC_COLOR;
+			return GL.ONE_MINUS_SRC_COLOR;
 		if (p == SrcAlphaFactor)
-			return gl.SRC_ALPHA;
+			return GL.SRC_ALPHA;
 		if (p == OneMinusSrcAlphaFactor)
-			return gl.ONE_MINUS_SRC_ALPHA;
+			return GL.ONE_MINUS_SRC_ALPHA;
 		if (p == DstAlphaFactor)
-			return gl.DST_ALPHA;
+			return GL.DST_ALPHA;
 		if (p == OneMinusDstAlphaFactor)
-			return gl.ONE_MINUS_DST_ALPHA;
+			return GL.ONE_MINUS_DST_ALPHA;
 
 		if (p == DstColorFactor)
-			return gl.DST_COLOR;
+			return GL.DST_COLOR;
 		if (p == OneMinusDstColorFactor)
-			return gl.ONE_MINUS_DST_COLOR;
+			return GL.ONE_MINUS_DST_COLOR;
 		if (p == SrcAlphaSaturateFactor)
-			return gl.SRC_ALPHA_SATURATE;
+			return GL.SRC_ALPHA_SATURATE;
 
 		return 0;
 	}
@@ -223,15 +224,15 @@ class ThreeGlobal
 	 * @param	f
 	 * @return
 	 */
-	public static function filterFallback(f:Int):GLenum
+	public static function filterFallback(f:Int):Int
 	{
 		if (f == NearestFilter || 
 			f == NearestMipMapNearestFilter || 
 			f == NearestMipMapLinearFilter) 
 		{
-			return gl.NEAREST;
+			return GL.NEAREST;
 		}
 
-		return gl.LINEAR;
+		return GL.LINEAR;
 	}
 }

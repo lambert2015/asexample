@@ -1,7 +1,7 @@
 package three.textures;
 
+import js.html.Uint8Array;
 import three.materials.UVMapping;
-import UserAgentContext;
 /**
  * ...
  * @author andy

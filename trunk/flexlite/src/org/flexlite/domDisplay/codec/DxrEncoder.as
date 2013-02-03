@@ -67,10 +67,6 @@ package org.flexlite.domDisplay.codec
 				var codec:String = codecList ? codecList[index] : DEFAULT_CODEC;
 				var key:String = keyList ? keyList[index] : null;
 				var dxrData:DxrData = drawDxrData(mc, key, codec);
-				if (key == null || key == "")
-				{
-					generateKey(dxrData);
-				}
 				dxrDataList.push(dxrData);
 				index++;
 			}
@@ -261,6 +257,10 @@ package org.flexlite.domDisplay.codec
 				drawDisplayObject(dp, dxrData);
 			}
 			dxrData._scale9Grid = dp.scale9Grid;
+			if (!key)
+			{
+				generateKey(dxrData);
+			}
 			return dxrData;
 		}
 
