@@ -1,6 +1,6 @@
 package three.math;
 
-import UserAgentContext;
+import js.html.Float32Array;
 import three.utils.Logger;
 /**
  * ...

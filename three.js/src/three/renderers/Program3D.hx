@@ -1,6 +1,6 @@
 package three.renderers;
+import js.html.webgl.Program;
 
-import UserAgentContext;
 /**
  * ...
  * @author andy
@@ -10,7 +10,7 @@ class Program3D
 {
 	public var id:Int;
 	
-	public var program:WebGLProgram;
+	public var program:Program;
 	
 	public var uniforms:Dynamic;
 	

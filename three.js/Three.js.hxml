@@ -1,5 +1,4 @@
 -cp src
 -js bin/Threejs.js
--main Main
+-main Test
 --js-modern
--lib xirsys_stdjs

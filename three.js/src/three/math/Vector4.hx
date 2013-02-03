@@ -1,6 +1,6 @@
 package three.math;
+import js.html.Float32Array;
 
-import UserAgentContext;
 /**
  * andy
  * @author 

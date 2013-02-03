@@ -1,7 +1,8 @@
 package three.renderers;
+import js.html.webgl.Texture;
 import three.math.Vector2;
-import UserAgentContext;
 import three.ThreeGlobal;
+import js.html.webgl.Framebuffer;
 /**
  * ...
  * @author 
@@ -35,9 +36,9 @@ class WebGLRenderTarget
 	
 	public var needsUpdate:Bool;
 	
-	public var __webglFramebuffer:Array<WebGLFramebuffer>;
-	public var __webglRenderbuffer:Array<WebGLRenderbuffer> ;
-	public var __webglTexture:WebGLTexture;
+	public var __webglFramebuffer:Array<Framebuffer>;
+	public var __webglRenderbuffer:Array<Framebuffer> ;
+	public var __webglTexture:Texture;
 	
 	public var __oldAnisotropy:Int;
 

@@ -4,7 +4,7 @@ package three.math;
  * ...
  * @author andy
  */
-import UserAgentContext;
+import js.html.Float32Array;
 import three.utils.TempVars;
 
 class Matrix4 

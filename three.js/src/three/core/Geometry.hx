@@ -1,10 +1,11 @@
 package three.core;
+import js.html.webgl.Buffer;
 import three.math.Matrix4;
 import three.math.Vector3;
 import three.math.Vector4;
 import three.math.Color;
 import three.materials.Material;
-import UserAgentContext;
+
 /**
  * ...
  * @author andy
@@ -44,8 +45,8 @@ class Geometry
 	
 	public var isDynamic:Bool;
 	
-	public var __webglVertexBuffer:WebGLBuffer;
-	public var __webglColorBuffer:WebGLBuffer;
+	public var __webglVertexBuffer:Buffer;
+	public var __webglColorBuffer:Buffer;
 	
 	public var animations:Dynamic;
 	public var firstAnimation:String;

@@ -1,10 +1,10 @@
 package three.math;
+import js.html.Float32Array;
 
 /**
  * ...
  * @author andy
  */
-import UserAgentContext;
 
 class Quaternion 
 {
