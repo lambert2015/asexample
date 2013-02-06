@@ -25,7 +25,7 @@ import org.angle3d.renderer.Camera3D;
  *  - WASD keys for moving forward/backward and strafing
  *  - QZ keys raise or lower the camera
  */
-class FlyByCamera implements AnalogListener,implements ActionListener
+class FlyByCamera implements AnalogListener implements ActionListener
 {
 	private var cam:Camera3D;
 	private var initialUpVec:Vector3f;

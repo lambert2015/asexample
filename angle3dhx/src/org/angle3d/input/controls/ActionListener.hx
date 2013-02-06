@@ -13,7 +13,7 @@ package org.angle3d.input.controls;
  *
  * @author Kirill Vainer
  */
-interface ActionListener implements InputListener
+interface ActionListener extends InputListener
 {
     /**
      * Called when an input to which this listener is registered to is invoked.
