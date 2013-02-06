@@ -20,65 +20,65 @@ class Color
 	/**
      * the color black (0,0,0).
      */
-    public static inline var Black:Color = new Color(0, 0, 0, 1);
+    public static var Black:Color = new Color(0, 0, 0, 1);
 	
 	/**
      * the color black (0,0,0).
      */
-    public static inline var BlackNoAlpha:Color = new Color(0, 0, 0, 0);
+    public static var BlackNoAlpha:Color = new Color(0, 0, 0, 0);
 	
     /**
      * the color white (1,1,1).
      */
-    public static inline var White:Color = new Color(1, 1, 1, 1);
+    public static var White:Color = new Color(1, 1, 1, 1);
     /**
      * the color gray (.2,.2,.2).
      */
-    public static inline var DarkGray:Color = new Color(0.2, 0.2, 0.2, 1.0);
+    public static var DarkGray:Color = new Color(0.2, 0.2, 0.2, 1.0);
     /**
      * the color gray (.5,.5,.5).
      */
-    public static inline var Gray:Color = new Color(0.5, 0.5, 0.5, 1.0);
+    public static var Gray:Color = new Color(0.5, 0.5, 0.5, 1.0);
     /**
      * the color gray (.8,.8,.8).
      */
-    public static inline var LightGray:Color = new Color(0.8, 0.8, 0.8, 1.0);
+    public static var LightGray:Color = new Color(0.8, 0.8, 0.8, 1.0);
     /**
      * the color red (1,0,0).
      */
-    public static inline var Red:Color = new Color(1, 0, 0, 1);
+    public static var Red:Color = new Color(1, 0, 0, 1);
     /**
      * the color green (0,1,0).
      */
-    public static inline var Green:Color = new Color(0, 1, 0, 1);
+    public static var Green:Color = new Color(0, 1, 0, 1);
     /**
      * the color blue (0,0,1).
      */
-    public static inline var Blue:Color = new Color(0, 0, 1, 1);
+    public static var Blue:Color = new Color(0, 0, 1, 1);
     /**
      * the color yellow (1,1,0).
      */
-    public static inline var Yellow:Color = new Color(1, 1, 0, 1);
+    public static var Yellow:Color = new Color(1, 1, 0, 1);
     /**
      * the color magenta (1,0,1).
      */
-    public static inline var Magenta:Color = new Color(1, 0, 1, 1);
+    public static var Magenta:Color = new Color(1, 0, 1, 1);
     /**
      * the color cyan (0,1,1).
      */
-    public static inline var Cyan:Color = new Color(0, 1, 1, 1);
+    public static var Cyan:Color = new Color(0, 1, 1, 1);
     /**
      * the color orange (251/255, 130/255,0).
      */
-    public static inline var Orange:Color = new Color(251/255, 130/255, 0, 1);
+    public static var Orange:Color = new Color(251/255, 130/255, 0, 1);
     /**
      * the color brown (65/255, 40/255, 25/255).
      */
-    public static inline var Brown:Color = new Color(65/255, 40/255, 25/255, 1);
+    public static var Brown:Color = new Color(65/255, 40/255, 25/255, 1);
     /**
      * the color pink (1, 0.68, 0.68).
      */
-    public static inline var Pink:Color = new Color(1, 0.68, 0.68, 1);
+    public static var Pink:Color = new Color(1, 0.68, 0.68, 1);
 
 	/**
      * The red component of the color.

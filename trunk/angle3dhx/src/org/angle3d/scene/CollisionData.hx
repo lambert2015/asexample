@@ -11,7 +11,7 @@ import org.angle3d.utils.Cloneable;
  *
  * @author Kirill Vainer
  */
-interface CollisionData implements Cloneable
+interface CollisionData extends Cloneable
 {
 	function collideWith(other:Collidable,
                          worldMatrix:Matrix4f,

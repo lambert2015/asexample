@@ -13,17 +13,17 @@ import org.angle3d.utils.Assert;
  */
 class Vector3f 
 {
-	public static inline var X_AXIS:Vector3f = new Vector3f(1.0, 0.0, 0.0);
-	public static inline var Y_AXIS:Vector3f = new Vector3f(0.0, 1.0, 0.0);
-	public static inline var Z_AXIS:Vector3f = new Vector3f(0.0, 0.0, 1.0);
+	public static var X_AXIS:Vector3f = new Vector3f(1.0, 0.0, 0.0);
+	public static var Y_AXIS:Vector3f = new Vector3f(0.0, 1.0, 0.0);
+	public static var Z_AXIS:Vector3f = new Vector3f(0.0, 0.0, 1.0);
 	
-	public static inline var NAN:Vector3f = new Vector3f(Math.NaN, Math.NaN, Math.NaN);
+	public static var NAN:Vector3f = new Vector3f(Math.NaN, Math.NaN, Math.NaN);
 	
-	public static inline var POSITIVE_INFINITY:Vector3f = new Vector3f(
+	public static var POSITIVE_INFINITY:Vector3f = new Vector3f(
             Math.POSITIVE_INFINITY,
             Math.POSITIVE_INFINITY,
             Math.POSITIVE_INFINITY);
-    public static inline var NEGATIVE_INFINITY:Vector3f = new Vector3f(
+    public static var NEGATIVE_INFINITY:Vector3f = new Vector3f(
             Math.NEGATIVE_INFINITY,
             Math.NEGATIVE_INFINITY,
             Math.NEGATIVE_INFINITY);
@@ -89,8 +89,8 @@ class Vector3f
 		return result;
 	}
 	
-	public var length(getLength, never):Float;
-	public var lengthSquared(getLengthSquared, never):Float;
+	public var length(get_length, never):Float;
+	public var lengthSquared(get_lengthSquared, never):Float;
 	
 	
     /**
@@ -297,7 +297,7 @@ class Vector3f
      * 
      * @return the length or magnitude of the vector.
      */
-	public inline function getLength():Float
+	public inline function get_length():Float
 	{
 		return Math.sqrt(x * x + y * y + z * z);
 	}
@@ -308,7 +308,7 @@ class Vector3f
      * 
      * @return the magnitude squared of the vector.
      */
-	public inline function getLengthSquared():Float
+	public inline function get_lengthSquared():Float
 	{
 		return x * x + y * y + z * z;
 	}

@@ -6,7 +6,7 @@ package org.angle3d.input.controls;
  *
  * @author Kirill Vainer
  */
-interface AnalogListener implements InputListener
+interface AnalogListener extends InputListener
 {
     /**
      * Called to notify the implementation that an analog event has occurred.

@@ -29,7 +29,7 @@ import org.angle3d.utils.HashMap;
  * <code>Geometry</code> are subclasses of <code>Spatial</code>.
  * @author andy
  */
-class Spatial implements Cloneable,implements Collidable
+class Spatial implements Cloneable implements Collidable
 {
 	/**
      * Refresh flag types

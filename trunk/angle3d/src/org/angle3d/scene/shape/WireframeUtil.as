@@ -26,7 +26,7 @@ package org.angle3d.scene.shape
 
 				if (subMesh.getVertexBuffer(BufferType.POSITION) == null || subMesh.getIndices() == null)
 				{
-					return null;
+					continue;
 				}
 
 				var vertices:Vector.<Number> = subMesh.getVertexBuffer(BufferType.POSITION).getData();
@@ -81,7 +81,7 @@ package org.angle3d.scene.shape
 				var subMesh:SubMesh = subMeshList[i];
 				if (subMesh.getVertexBuffer(BufferType.POSITION) == null || subMesh.getVertexBuffer(BufferType.NORMAL) == null)
 				{
-					return null;
+					continue;
 				}
 
 				var vertices:Vector.<Number> = subMesh.getVertexBuffer(BufferType.POSITION).getData();
