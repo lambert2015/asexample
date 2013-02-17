@@ -15,6 +15,7 @@ package org.angle3d.renderer
 	import org.angle3d.utils.TempVars;
 
 	/**
+	 * 相机
 	 * Camera is a standalone, purely mathematical public class for doing
 	 * camera-related computations.
 	 *
@@ -33,7 +34,6 @@ package org.angle3d.renderer
 	 * </p>
 	 *
 	 */
-	//TODO 简化，提出Frustum,Camera3D继承Frustum
 	public class Camera3D extends Frustum
 	{
 		/** The camera's name. */

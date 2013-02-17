@@ -42,6 +42,14 @@ package org.angle3d.texture
 		public var antiAlias:int;
 		public var surfaceSelector:int;
 
+		/**
+		 *
+		 * @param texture
+		 * @param enableDepthAndStencil
+		 * @param antiAlias
+		 * @param surfaceSelector
+		 *
+		 */
 		public function FrameBuffer(texture:TextureMapBase, enableDepthAndStencil:Boolean = false, antiAlias:int = 0, surfaceSelector:int = 0)
 		{
 			this.texture = texture;

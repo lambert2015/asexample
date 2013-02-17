@@ -98,6 +98,11 @@ package org.angle3d.renderer
 			_bgColor.setColor(color);
 		}
 
+		/**
+		 *
+		 * @param state
+		 *
+		 */
 		public function applyRenderState(state:RenderState):void
 		{
 			//TODO 这里有问题，需要检查
@@ -150,7 +155,6 @@ package org.angle3d.renderer
 						_context3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.SOURCE_COLOR);
 						break;
 				}
-
 				_renderContext.blendMode = state.blendMode;
 			}
 
@@ -187,7 +191,8 @@ package org.angle3d.renderer
 				_renderContext.clipRectEnabled = true;
 			}
 
-			if (_clipRect.x != x || _clipRect.y != y || _clipRect.width != width || _clipRect.height != height)
+			if (_clipRect.x != x || _clipRect.y != y ||
+				_clipRect.width != width || _clipRect.height != height)
 			{
 				_clipRect.setTo(x, y, width, height);
 				_context3D.setScissorRectangle(_clipRect);

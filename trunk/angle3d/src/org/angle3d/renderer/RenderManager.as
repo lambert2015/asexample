@@ -539,7 +539,6 @@ package org.angle3d.renderer
 					//渲染模型
 					_renderer.renderMesh(mesh);
 				}
-
 			}
 
 		}
