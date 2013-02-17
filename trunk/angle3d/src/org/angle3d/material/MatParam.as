@@ -7,7 +7,6 @@ package org.angle3d.material
 	 * Describes a material parameter. This is used for both defining a name and type
 	 * as well as a material parameter value.
 	 *
-	 * @author Kirill Vainer
 	 */
 	public class MatParam
 	{

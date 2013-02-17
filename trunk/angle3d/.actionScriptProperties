@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="examples/scene/BillboardTest.as" projectUUID="23c00e3a-64fa-4fe6-84c6-8a8e935cdba1" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="examples/scene/ShapeTest.as" projectUUID="23c00e3a-64fa-4fe6-84c6-8a8e935cdba1" version="11">
   <compiler additionalCompilerArguments="-locale zh_CN&#13;&#10;-swf-version 19&#13;&#10;-inline&#13;&#10;-load-config+=..\obj\debug_config.xml&#13;&#10;-default-frame-rate 60&#10;-default-size 1024 768" advancedTelemetry="true" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="false" includeNetmonSwc="false" outputFolderLocation="DOCUMENTS/angle3d_bin" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="11.6.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -44,19 +44,19 @@
     <application path="examples/animation/SurroundTest.as"/>
     <application path="examples/animation/SpatialAnimTest.as"/>
     <application path="examples/model/MS3DStaticModelParserTest.as"/>
-    <application path="examples/scene/BillboardTest.as"/>
-    <application path="examples/effect/gpu/CrazyFlash.as"/>
     <application path="examples/effect/gpu/FountainTest.as"/>
-    <application path="examples/material/MaterialReflectiveTest.as"/>
+    <application path="examples/effect/gpu/CrazyFlash.as"/>
+    <application path="examples/scene/ShapeTest.as"/>
     <application path="examples/effect/gpu/SnowTest.as"/>
-    <application path="examples/effect/gpu/ExplosionTest.as"/>
+    <application path="examples/material/MaterialReflectiveTest.as"/>
     <application path="examples/model/ShapeCollisionTest.as"/>
+    <application path="examples/effect/gpu/ExplosionTest.as"/>
     <application path="examples/sgsl/SaveSgsl.as"/>
     <application path="examples/effect/cpu/MovingParticleTest.as"/>
     <application path="examples/gui/ImageTest.as"/>
-    <application path="examples/textures/ATFTextureTest.as"/>
-    <application path="examples/animation/MotionPathTest.as"/>
     <application path="examples/material/MaterialRefractionTest.as"/>
+    <application path="examples/animation/MotionPathTest.as"/>
+    <application path="examples/textures/ATFTextureTest.as"/>
     <application path="examples/effect/gpu/SwordTest.as"/>
     <application path="examples/effect/gpu/TexCoordTest.as"/>
     <application path="examples/model/Max3DSParserTest.as"/>

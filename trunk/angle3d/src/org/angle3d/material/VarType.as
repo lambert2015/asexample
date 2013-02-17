@@ -16,5 +16,10 @@ package org.angle3d.material
 
 		public static const TEXTURE2D:String = "Texture2D";
 		public static const TEXTURECUBEMAP:String = "TextureCubeMap";
+
+		public static function isTextureType(type:String):Boolean
+		{
+			return type == TEXTURE2D || type == TEXTURECUBEMAP;
+		}
 	}
 }

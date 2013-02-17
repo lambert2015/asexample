@@ -155,6 +155,35 @@ package org.angle3d.material.technique
 		{
 			return _name;
 		}
+
+		/**
+		 * Called by the material to tell the technique a parameter was modified.
+		 * Specify <code>null</code> for value if the param is to be cleared.
+		 */
+		public function notifyParamChanged(paramName:String, type:String, value:Object):void
+		{
+			// Check if there's a define binding associated with this
+			// parameter.
+			var defineName:String = def.getShaderParamDefine(paramName);
+			if (defineName != null)
+			{
+				// There is a define. Change it on the define list.
+				// The "needReload" variable will determine
+				// if the shader will be reloaded when the material
+				// is rendered.
+
+//				if (value == null)
+//				{
+//					// Clear the define.
+//					needReload = defines.remove(defineName) || needReload;
+//				}
+//				else
+//				{
+//					// Set the define.
+//					needReload = defines.set(defineName, type, value) || needReload;
+//				}
+			}
+		}
 	}
 }
 

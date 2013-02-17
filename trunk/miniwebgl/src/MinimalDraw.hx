@@ -29,7 +29,7 @@ class MinimalDraw
 	private function onLoad(e:Event):Void
 	{
 		var canvas:CanvasElement = cast Browser.document.getElementById("webgl_canvas");
-		gl = cast(canvas.getContext("experimental-webgl"),RenderingContext);
+		gl = canvas.getContextWebGL();
 		gl.viewport(0, 0, canvas.width, canvas.height);
 		gl.clearColor(0, 0, 0.8, 1);
 		gl.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
