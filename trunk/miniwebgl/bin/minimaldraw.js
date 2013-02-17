@@ -1,86 +1,7 @@
 (function () { "use strict";
-var HxOverrides = function() { }
-HxOverrides.__name__ = true;
-HxOverrides.dateStr = function(date) {
-	var m = date.getMonth() + 1;
-	var d = date.getDate();
-	var h = date.getHours();
-	var mi = date.getMinutes();
-	var s = date.getSeconds();
-	return date.getFullYear() + "-" + (m < 10?"0" + m:"" + m) + "-" + (d < 10?"0" + d:"" + d) + " " + (h < 10?"0" + h:"" + h) + ":" + (mi < 10?"0" + mi:"" + mi) + ":" + (s < 10?"0" + s:"" + s);
-}
-HxOverrides.strDate = function(s) {
-	switch(s.length) {
-	case 8:
-		var k = s.split(":");
-		var d = new Date();
-		d.setTime(0);
-		d.setUTCHours(k[0]);
-		d.setUTCMinutes(k[1]);
-		d.setUTCSeconds(k[2]);
-		return d;
-	case 10:
-		var k = s.split("-");
-		return new Date(k[0],k[1] - 1,k[2],0,0,0);
-	case 19:
-		var k = s.split(" ");
-		var y = k[0].split("-");
-		var t = k[1].split(":");
-		return new Date(y[0],y[1] - 1,y[2],t[0],t[1],t[2]);
-	default:
-		throw "Invalid date format : " + s;
-	}
-}
-HxOverrides.cca = function(s,index) {
-	var x = s.charCodeAt(index);
-	if(x != x) return undefined;
-	return x;
-}
-HxOverrides.substr = function(s,pos,len) {
-	if(pos != null && pos != 0 && len != null && len < 0) return "";
-	if(len == null) len = s.length;
-	if(pos < 0) {
-		pos = s.length + pos;
-		if(pos < 0) pos = 0;
-	} else if(len < 0) len = s.length + len - pos;
-	return s.substr(pos,len);
-}
-HxOverrides.remove = function(a,obj) {
-	var i = 0;
-	var l = a.length;
-	while(i < l) {
-		if(a[i] == obj) {
-			a.splice(i,1);
-			return true;
-		}
-		i++;
-	}
-	return false;
-}
-HxOverrides.iter = function(a) {
-	return { cur : 0, arr : a, hasNext : function() {
-		return this.cur < this.arr.length;
-	}, next : function() {
-		return this.arr[this.cur++];
-	}};
-}
-var IntIter = function(min,max) {
-	this.min = min;
-	this.max = max;
-};
-IntIter.__name__ = true;
-IntIter.prototype = {
-	next: function() {
-		return this.min++;
-	}
-	,hasNext: function() {
-		return this.min < this.max;
-	}
-	,__class__: IntIter
-}
 var MinimalDraw = function() {
 	this.gl = null;
-	js.Lib.window.onload = $bind(this,this.onLoad);
+	js.Browser.window.onload = $bind(this,this.onLoad);
 };
 MinimalDraw.__name__ = true;
 MinimalDraw.main = function() {
@@ -88,49 +9,31 @@ MinimalDraw.main = function() {
 }
 MinimalDraw.prototype = {
 	onLoad: function(e) {
-		var canvas = js.Lib.document.getElementById("webgl_canvas");
+		var canvas = js.Browser.document.getElementById("webgl_canvas");
 		this.gl = js.Boot.__cast(canvas.getContext("experimental-webgl") , WebGLRenderingContext);
 		this.gl.viewport(0,0,canvas.width,canvas.height);
 		this.gl.clearColor(0,0,0.8,1);
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+		this.gl.clear(16640);
 		var vertexPosBuffer = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER,vertexPosBuffer);
+		this.gl.bindBuffer(34962,vertexPosBuffer);
 		var vertices = [-0.5,-0.5,0.5,-0.5,0,0.5];
 		var floatArray = new Float32Array(vertices);
-		this.gl.bufferData(this.gl.ARRAY_BUFFER,floatArray,this.gl.STATIC_DRAW);
+		this.gl.bufferData(34962,floatArray,35044);
 		var vs = "attribute vec2 pos;\n" + "void main(){ gl_Position = vec4(pos,0,1); }";
 		var fs = "precision mediump float;\n" + "void main() { gl_FragColor = vec4(0,0.8,0,1); }";
 		var program = WebGLUtil.createProgram(this.gl,vs,fs);
 		this.gl.useProgram(program);
 		var index = this.gl.getAttribLocation(program,"pos");
 		this.gl.enableVertexAttribArray(index);
-		this.gl.vertexAttribPointer(index,2,this.gl.FLOAT,false,0,0);
-		this.gl.drawArrays(this.gl.TRIANGLES,0,3);
+		this.gl.vertexAttribPointer(index,2,5126,false,0,0);
+		this.gl.drawArrays(4,0,3);
 	}
 	,__class__: MinimalDraw
 }
 var Std = function() { }
 Std.__name__ = true;
-Std["is"] = function(v,t) {
-	return js.Boot.__instanceof(v,t);
-}
 Std.string = function(s) {
 	return js.Boot.__string_rec(s,"");
-}
-Std["int"] = function(x) {
-	return x | 0;
-}
-Std.parseInt = function(x) {
-	var v = parseInt(x,10);
-	if(v == 0 && (HxOverrides.cca(x,1) == 120 || HxOverrides.cca(x,1) == 88)) v = parseInt(x);
-	if(isNaN(v)) return null;
-	return v;
-}
-Std.parseFloat = function(x) {
-	return parseFloat(x);
-}
-Std.random = function(x) {
-	return x <= 0?0:Math.floor(Math.random() * x);
 }
 var WebGLUtil = function() { }
 WebGLUtil.__name__ = true;
@@ -138,44 +41,20 @@ WebGLUtil.createShader = function(gl,shaderSource,type) {
 	var shader = gl.createShader(type);
 	gl.shaderSource(shader,shaderSource);
 	gl.compileShader(shader);
-	if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(shader);
 	return shader;
 }
 WebGLUtil.createProgram = function(gl,vertexSource,fragSource) {
 	var program = gl.createProgram();
-	var vshader = WebGLUtil.createShader(gl,vertexSource,gl.VERTEX_SHADER);
-	var fshader = WebGLUtil.createShader(gl,fragSource,gl.FRAGMENT_SHADER);
+	var vshader = WebGLUtil.createShader(gl,vertexSource,35633);
+	var fshader = WebGLUtil.createShader(gl,fragSource,35632);
 	gl.attachShader(program,vshader);
 	gl.attachShader(program,fshader);
 	gl.linkProgram(program);
-	if(!gl.getProgramParameter(program,gl.LINK_STATUS)) throw gl.getProgramInfoLog(program);
 	return program;
 }
 var js = {}
 js.Boot = function() { }
 js.Boot.__name__ = true;
-js.Boot.__unhtml = function(s) {
-	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
-}
-js.Boot.__trace = function(v,i) {
-	var msg = i != null?i.fileName + ":" + i.lineNumber + ": ":"";
-	msg += js.Boot.__string_rec(v,"");
-	var d;
-	if(typeof(document) != "undefined" && (d = document.getElementById("haxe:trace")) != null) d.innerHTML += js.Boot.__unhtml(msg) + "<br/>"; else if(typeof(console) != "undefined" && console.log != null) console.log(msg);
-}
-js.Boot.__clear_trace = function() {
-	var d = document.getElementById("haxe:trace");
-	if(d != null) d.innerHTML = "";
-}
-js.Boot.isClass = function(o) {
-	return o.__name__;
-}
-js.Boot.isEnum = function(e) {
-	return e.__ename__;
-}
-js.Boot.getClass = function(o) {
-	return o.__class__;
-}
 js.Boot.__string_rec = function(o,s) {
 	if(o == null) return "null";
 	if(s.length >= 5) return "<...>";
@@ -287,44 +166,14 @@ js.Boot.__instanceof = function(o,cl) {
 js.Boot.__cast = function(o,t) {
 	if(js.Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
 }
-js.Lib = function() { }
-js.Lib.__name__ = true;
-js.Lib.debug = function() {
-	debugger;
-}
-js.Lib.alert = function(v) {
-	alert(js.Boot.__string_rec(v,""));
-}
-js.Lib["eval"] = function(code) {
-	return eval(code);
-}
-js.Lib.setErrorHandler = function(f) {
-	js.Lib.onerror = f;
-}
+js.Browser = function() { }
+js.Browser.__name__ = true;
 var $_;
 function $bind(o,m) { var f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; return f; };
-if(Array.prototype.indexOf) HxOverrides.remove = function(a,o) {
-	var i = a.indexOf(o);
-	if(i == -1) return false;
-	a.splice(i,1);
-	return true;
-}; else null;
-Math.__name__ = ["Math"];
-Math.NaN = Number.NaN;
-Math.NEGATIVE_INFINITY = Number.NEGATIVE_INFINITY;
-Math.POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
-Math.isFinite = function(i) {
-	return isFinite(i);
-};
-Math.isNaN = function(i) {
-	return isNaN(i);
-};
 String.prototype.__class__ = String;
 String.__name__ = true;
 Array.prototype.__class__ = Array;
 Array.__name__ = true;
-Date.prototype.__class__ = Date;
-Date.__name__ = ["Date"];
 var Int = { __name__ : ["Int"]};
 var Dynamic = { __name__ : ["Dynamic"]};
 var Float = Number;
@@ -333,16 +182,8 @@ var Bool = Boolean;
 Bool.__ename__ = ["Bool"];
 var Class = { __name__ : ["Class"]};
 var Enum = { };
-var Void = { __ename__ : ["Void"]};
-if(typeof document != "undefined") js.Lib.document = document;
-if(typeof window != "undefined") {
-	js.Lib.window = window;
-	js.Lib.window.onerror = function(msg,url,line) {
-		var f = js.Lib.onerror;
-		if(f == null) return false;
-		return f(msg,[url + ":" + line]);
-	};
-}
+js.Browser.window = typeof window != "undefined" ? window : null;
+js.Browser.document = typeof window != "undefined" ? window.document : null;
 MinimalDraw.main();
 })();
 

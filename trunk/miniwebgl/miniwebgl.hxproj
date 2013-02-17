@@ -23,7 +23,7 @@
     <option flashStrict="False" />
     <option mainClass="MinimalDraw" />
     <option enabledebug="False" />
-    <option additional="--js-modern&#xA;-lib xirsys_stdjs" />
+    <option additional="--js-modern" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
@@ -45,7 +45,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="OpenDocument" />
-    <option testMovieCommand="bin/index.html" />
+    <option testMovieCommand="bin/minimaldraw.html" />
   </options>
   <!-- Plugin storage -->
   <storage />
