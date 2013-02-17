@@ -23,12 +23,7 @@
 		<link>
 			<name>bin-release</name>
 			<type>2</type>
-			<location>D:/Applications/Adobe Flash Builder 4.7/Adobe Flash Builder 4.7.app/Contents/MacOS/D::/SVNSpace/molehill/angle3d_bin</location>
-		</link>
-		<link>
-			<name>bin-release1</name>
-			<type>2</type>
-			<location>D:/Users/weilichuang/git/angle3d_bin</location>
+			<location>E:/source/angle3d_bin</location>
 		</link>
 	</linkedResources>
 </projectDescription>

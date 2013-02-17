@@ -1,7 +1,7 @@
 package examples.scene
 {
 	import org.angle3d.utils.Stats;
-	
+
 	import org.angle3d.app.SimpleApplication;
 	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.material.MaterialTexture;
@@ -15,14 +15,14 @@ package examples.scene
 	import org.angle3d.texture.Texture2D;
 
 	//各种形状测试
-	public class BillboardTest extends SimpleApplication
+	public class ShapeTest extends SimpleApplication
 	{
 		private var angle:Number;
 
 		[Embed(source = "../../../assets/embed/no-shader.png")]
 		private static var EmbedPositiveZ:Class;
 
-		public function BillboardTest()
+		public function ShapeTest()
 		{
 			super();
 
@@ -53,8 +53,8 @@ package examples.scene
 			gm.setMaterial(textureMat);
 			gm.addControl(billboardControl);
 			scene.attachChild(gm);
-			
-			var torusKnot : TorusKnot = new TorusKnot(50, 10, 100, 400, false, 2, 3, 1);
+
+			var torusKnot:TorusKnot = new TorusKnot(50, 10, 100, 400, false, 2, 3, 1);
 			var gm2:Geometry = new Geometry("torusKnot", torusKnot);
 			gm2.setMaterial(textureMat);
 			gm2.setTranslationXYZ(100, 0, -100);

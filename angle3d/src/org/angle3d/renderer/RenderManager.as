@@ -468,6 +468,11 @@ package org.angle3d.renderer
 		 */
 		public function renderGeometry(geom:Geometry):void
 		{
+			//没有模型数据，忽略
+			var mesh:Mesh = geom.getMesh();
+			if (mesh == null)
+				return;
+
 			if (geom.isIgnoreTransform())
 			{
 				setWorldMatrix(Matrix4f.IDENTITY);
@@ -478,6 +483,7 @@ package org.angle3d.renderer
 			}
 
 			var mat:Material;
+			//强制材质不为空时，需使用它
 			if (mForcedMaterial != null)
 			{
 				mat = mForcedMaterial;
@@ -487,29 +493,27 @@ package org.angle3d.renderer
 				mat = geom.getMaterial();
 			}
 
+			var lightList:LightList = geom.getWorldLightList();
+			var lightSize:int = lightList.getSize();
+
 			// for each technique in material
 			var techniques:Vector.<Technique> = mat.getTechniques();
 			var shader:Shader;
+			var technique:Technique;
+			var light:Light;
 			var size:int = techniques.length;
 			for (var i:int = 0; i < size; i++)
 			{
-				var technique:Technique = techniques[i];
-				var lightList:LightList = geom.getWorldLightList();
+				technique = techniques[i];
 
-				var mesh:Mesh = geom.getMesh();
-				if (mesh == null)
-					continue;
+				_renderer.applyRenderState(technique.renderState);
 
-				var state:RenderState = technique.renderState;
-				//culling,blend mode .....
-				_renderer.applyRenderState(state);
-
-				var lightSize:int = lightList.getSize();
+				//如何使用灯光的话
 				if (technique.requiresLight && lightSize > 0)
 				{
 					for (var j:int = 0; j < lightSize; j++)
 					{
-						var light:Light = lightList.getLightAt(j);
+						light = lightList.getLightAt(j);
 
 						shader = technique.getShader(light.type, mesh.type);
 
@@ -529,7 +533,10 @@ package org.angle3d.renderer
 					updateShaderBinding(shader);
 					technique.updateShader(shader);
 
+					//设置Shader
 					_renderer.setShader(shader);
+
+					//渲染模型
 					_renderer.renderMesh(mesh);
 				}
 
@@ -558,6 +565,7 @@ package org.angle3d.renderer
 		}
 
 		/**
+		 * TODO还未实现
 		 * If a spatial is not inside the eye frustum, it
 		 * is still rendered in the shadow frustum (shadow casting queue)
 		 * through this recursive method.

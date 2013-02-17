@@ -12,9 +12,13 @@ package org.angle3d.material
 	import org.angle3d.texture.TextureMapBase;
 
 	/**
-	 * <code>Material</code> describes the rendering style for a given
-	 * {@link Geometry}.
-	 *
+	 * <code>Material</code> describes the rendering style for a given <code>Geometry</code>.
+	 * <p>A material is essentially a list of {@link MatParam parameters},
+	 * those parameters map to uniforms which are defined in a shader.
+	 * Setting the parameters can modify the behavior of a
+	 * shader.
+	 * <p/>
+	 * 
 	 */
 	public class Material
 	{

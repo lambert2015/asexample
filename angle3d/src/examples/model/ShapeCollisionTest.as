@@ -1,6 +1,5 @@
 package examples.model
 {
-	import flash.display3D.Context3DCompareMode;
 	import flash.display3D.Context3DTriangleFace;
 
 	import org.angle3d.app.SimpleApplication;
@@ -8,10 +7,8 @@ package examples.model
 	import org.angle3d.collision.CollisionResults;
 	import org.angle3d.material.MaterialColorFill;
 	import org.angle3d.material.MaterialTexture;
-	import org.angle3d.math.FastMath;
 	import org.angle3d.math.Ray;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.scene.CullHint;
 	import org.angle3d.scene.Geometry;
 	import org.angle3d.scene.shape.Cube;
 	import org.angle3d.scene.shape.Sphere;
@@ -44,6 +41,7 @@ package examples.model
 
 		private var selectedMaterial:MaterialColorFill;
 		private var selectedGeometry:Geometry;
+
 		override protected function initialize(width:int, height:int):void
 		{
 			super.initialize(width, height);
@@ -66,7 +64,7 @@ package examples.model
 
 			selectedMaterial = new MaterialColorFill(0xFFff00);
 			selectedMaterial.technique.renderState.cullMode = Context3DTriangleFace.BACK;
-			
+
 			var torus:Torus = new Torus(50, 10, 10, 10, true);
 			gm = new Geometry("torus", torus);
 			gm.setMaterial(textureMat);
@@ -108,7 +106,7 @@ package examples.model
 			if (results.size > 0)
 			{
 				var closest:CollisionResult = results.getClosestCollision();
-				selectedGeometry = new Geometry(closest.geometry.name+"_selected", closest.geometry.getMesh());
+				selectedGeometry = new Geometry(closest.geometry.name + "_selected", closest.geometry.getMesh());
 				selectedGeometry.setScaleXYZ(1.03, 1.03, 1.03);
 				selectedGeometry.setMaterial(selectedMaterial);
 				selectedGeometry.translation = closest.geometry.translation;

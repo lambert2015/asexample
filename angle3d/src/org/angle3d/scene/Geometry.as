@@ -40,6 +40,7 @@ package org.angle3d.scene
 		}
 
 		/**
+		 * 渲染时只使用本地坐标
 		 * @return If ignoreTransform mode is set.
 		 *
 		 * @see Geometry#setIgnoreTransform(boolean)
