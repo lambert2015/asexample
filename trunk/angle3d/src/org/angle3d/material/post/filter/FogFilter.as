@@ -1,86 +1,103 @@
 package org.angle3d.material.post.filter
 {
+	import org.angle3d.material.Material;
 	import org.angle3d.material.post.Filter;
+	import org.angle3d.math.Color;
+	import org.angle3d.renderer.RenderManager;
+	import org.angle3d.renderer.ViewPort;
 
 	public class FogFilter extends Filter
 	{
+		private var material2:Material;
+		private var fogColor:Color;
+		private var fogDensity:Number;
+		private var fogDistance:Number;
+
 		public function FogFilter()
 		{
 			super("FogFilter");
 		}
-		
-		@Override
-		protected boolean isRequiresDepthTexture() {
+
+		override protected function isRequiresDepthTexture():Boolean
+		{
 			return true;
 		}
-		
-		@Override
-		protected void initFilter(AssetManager manager, RenderManager renderManager, ViewPort vp, int w, int h) {
+
+		override protected function initFilter(renderManager:RenderManager, vp:ViewPort, w:int, h:int):void
+		{
 			material = new Material(manager, "Common/MatDefs/Post/Fog.j3md");
 			material.setColor("FogColor", fogColor);
 			material.setFloat("FogDensity", fogDensity);
 			material.setFloat("FogDistance", fogDistance);
 		}
-		
-		@Override
-		protected Material getMaterial() {
-			
+
+		override public function getMaterial():Material
+		{
 			return material;
 		}
-		
-		
+
+
 		/**
 		 * returns the fog color
 		 * @return
 		 */
-		public ColorRGBA getFogColor() {
+		public function getFogColor():Color
+		{
 			return fogColor;
 		}
-		
+
 		/**
 		 * Sets the color of the fog
 		 * @param fogColor
 		 */
-		public void setFogColor(ColorRGBA fogColor) {
-			if (material != null) {
+		public function setFogColor(fogColor:Color):void
+		{
+			if (material != null)
+			{
 				material.setColor("FogColor", fogColor);
 			}
 			this.fogColor = fogColor;
 		}
-		
+
 		/**
 		 * returns the fog density
 		 * @return
 		 */
-		public float getFogDensity() {
+		public function getFogDensity():Boolean
+		{
 			return fogDensity;
 		}
-		
+
 		/**
 		 * Sets the density of the fog, a high value gives a thick fog
 		 * @param fogDensity
 		 */
-		public void setFogDensity(float fogDensity) {
-			if (material != null) {
+		public function setFogDensity(fogDensity:Number):void
+		{
+			if (material != null)
+			{
 				material.setFloat("FogDensity", fogDensity);
 			}
 			this.fogDensity = fogDensity;
 		}
-		
+
 		/**
 		 * returns the fog distance
 		 * @return
 		 */
-		public float getFogDistance() {
+		public function getFogDistance():Number
+		{
 			return fogDistance;
 		}
-		
+
 		/**
 		 * the distance of the fog. the higer the value the distant the fog looks
 		 * @param fogDistance
 		 */
-		public void setFogDistance(float fogDistance) {
-			if (material != null) {
+		public function setFogDistance(fogDistance:Number):void
+		{
+			if (material != null)
+			{
 				material.setFloat("FogDistance", fogDistance);
 			}
 			this.fogDistance = fogDistance;
