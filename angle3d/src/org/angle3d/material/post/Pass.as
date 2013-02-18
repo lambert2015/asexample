@@ -1,8 +1,12 @@
 package org.angle3d.material.post
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+
 	import org.angle3d.material.Material;
 	import org.angle3d.renderer.IRenderer;
 	import org.angle3d.texture.FrameBuffer;
+	import org.angle3d.texture.Texture2D;
 	import org.angle3d.texture.TextureMapBase;
 
 	/**
@@ -15,13 +19,12 @@ package org.angle3d.material.post
 	 * Any filter holds a frameBuffer and a texture<br>
 	 * The getMaterial must return a Material that use a GLSL shader immplementing the desired effect<br>
 	 *
-	 * @author Rémy Bouquet aka Nehon
 	 */
 	public class Pass
 	{
 		protected var renderFrameBuffer:FrameBuffer;
-		protected var renderTexture:TextureMapBase;
-		protected var depthTexture:TextureMapBase;
+		protected var renderedTexture:Texture2D;
+		protected var depthTexture:Texture2D;
 		protected var passMaterial:Material;
 
 		public function Pass()
@@ -31,12 +34,38 @@ package org.angle3d.material.post
 
 		public function init(render:IRenderer, width:int, height:int, numSamples:int, renderDepth:Boolean):void
 		{
-			renderFrameBuffer = new FrameBuffer();
+			var textureMap:Texture2D = new Texture2D(new BitmapData(width, height, true, 0x0));
+			renderFrameBuffer = new FrameBuffer(textureMap);
 		}
-		
+
+		public function getPassMaterial():Material
+		{
+			return passMaterial;
+		}
+
+		public function setPassMaterial(passMaterial:Material):void
+		{
+			this.passMaterial = passMaterial;
+		}
+
+		public function getDepthTexture():Texture2D
+		{
+			return depthTexture;
+		}
+
+		public function getRenderedTexture():Texture2D
+		{
+			return renderedTexture;
+		}
+
+		public function setRenderedTexture(renderedTexture:Texture2D):void
+		{
+			this.renderedTexture = renderedTexture;
+		}
+
 		public function cleanup(r:IRenderer):void
 		{
-			
+
 		}
 	}
 }

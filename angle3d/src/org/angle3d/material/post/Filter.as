@@ -2,9 +2,9 @@ package org.angle3d.material.post
 {
 	import org.angle3d.material.Material;
 	import org.angle3d.renderer.IRenderer;
-	import org.angle3d.renderer.queue.RenderQueue;
 	import org.angle3d.renderer.RenderManager;
 	import org.angle3d.renderer.ViewPort;
+	import org.angle3d.renderer.queue.RenderQueue;
 	import org.angle3d.texture.FrameBuffer;
 
 	/**
@@ -22,7 +22,7 @@ package org.angle3d.material.post
 	public class Filter
 	{
 		public var name:String;
-		
+
 		protected var defaultPass:Pass;
 		protected var postRenderPasses:Vector.<Pass>;
 		protected var material:Material;
@@ -51,7 +51,7 @@ package org.angle3d.material.post
 			defaultPass.init(renderManager.getRenderer(), w, h);
 			initFilter(renderManager, vp, w, h);
 		}
-		
+
 		/**
 		 * Initialization of sub classes filters
 		 * This method is called once when the filter is added to the FilterPostProcessor
@@ -64,21 +64,23 @@ package org.angle3d.material.post
 		 */
 		protected function initFilter(renderManager:RenderManager, vp:ViewPort, w:int, h:int):void
 		{
-			
+
 		}
-		
-		
+
+
 		/**
 		 * cleanup this filter
 		 * @param r
 		 */
-		protected final function cleanUp(r:IRenderer):void
+		public final function cleanup(r:IRenderer):void
 		{
 			processor = null;
-			if (defaultPass != null) {
+			if (defaultPass != null)
+			{
 				defaultPass.cleanup(r);
 			}
-			if (postRenderPasses != null) {
+			if (postRenderPasses != null)
+			{
 				for (var i:int = 0, il:int = postRenderPasses.length; i < il; i++)
 				{
 					var pass:Pass = postRenderPasses[i];
@@ -87,32 +89,32 @@ package org.angle3d.material.post
 			}
 			cleanUpFilter(r);
 		}
-		
+
 		/**
 		 * override this method if you have some cleanup to do
 		 * @param r the renderer
 		 */
 		protected function cleanUpFilter(r:IRenderer):void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Must return the material used for this filter.
 		 * this method is called every frame.
 		 *
 		 * @return the material used for this filter.
 		 */
-		protected function getMaterial():Material
+		public function getMaterial():Material
 		{
 			return null;
 		}
-		
+
 		/**
 		 * Override this method if you want to make a pre pass, before the actual rendering of the frame
 		 * @param queue
 		 */
-		protected function postQueue(queue:RenderQueue):void
+		public function postQueue(queue:RenderQueue):void
 		{
 		}
 
@@ -122,7 +124,7 @@ package org.angle3d.material.post
 		 * Also it can be the place to render pre passes
 		 * @param tpf the time used to render the previous frame
 		 */
-		protected function preFrame(tpf:Number):void 
+		public function preFrame(tpf:Number):void
 		{
 		}
 
@@ -133,11 +135,11 @@ package org.angle3d.material.post
 		 * @param prevFilterBuffer
 		 * @param sceneBuffer
 		 */
-		protected function postFrame(renderManager:RenderManager,viewPort:ViewPort, 
-									prevFilterBuffer:FrameBuffer,sceneBuffer:FrameBuffer):void
+		public function postFrame(renderManager:RenderManager, viewPort:ViewPort,
+			prevFilterBuffer:FrameBuffer, sceneBuffer:FrameBuffer):void
 		{
 		}
-		
+
 		public function setEnabled(enabled:Boolean):void
 		{
 			if (processor != null)
@@ -149,15 +151,35 @@ package org.angle3d.material.post
 				this.enabled = enabled;
 			}
 		}
-		
+
 		public function isEnabled():Boolean
 		{
 			return this.enabled;
 		}
-		
-		protected function setProcessor(proc:FilterPostProcessor):void
+
+		public function setProcessor(proc:FilterPostProcessor):void
 		{
 			this.processor = proc;
+		}
+
+		/**
+		 * Override this method and return true if your Filter needs the depth texture
+		 *
+		 * @return true if your Filter need the depth texture
+		 */
+		protected function get isRequiresDepthTexture():Boolean
+		{
+			return false;
+		}
+
+		/**
+		 * Override this method and return false if your Filter does not need the scene texture
+		 *
+		 * @return false if your Filter does not need the scene texture
+		 */
+		protected function get isRequiresSceneTexture():Boolean
+		{
+			return true;
 		}
 
 	}

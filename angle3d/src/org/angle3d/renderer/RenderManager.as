@@ -6,7 +6,6 @@ package org.angle3d.renderer
 	import org.angle3d.light.LightList;
 	import org.angle3d.light.LightType;
 	import org.angle3d.material.Material;
-	import org.angle3d.material.RenderState;
 	import org.angle3d.material.post.SceneProcessor;
 	import org.angle3d.material.shader.Shader;
 	import org.angle3d.material.shader.Uniform;
@@ -339,7 +338,7 @@ package org.angle3d.renderer
 			for (var i:int = 0; i < pLength; i++)
 			{
 				processor = processors[i];
-				if (!processor.initialized)
+				if (!processor.isInitialized)
 				{
 					processor.initialize(this, vp);
 				}
@@ -873,7 +872,7 @@ package org.angle3d.renderer
 		 * @param ortho True if to use orthographic projection (for GUI rendering),
 		 * false if to use the camera's view and projection matrices.
 		 */
-		public function setCamera(cam:Camera3D, ortho:Boolean):void
+		public function setCamera(cam:Camera3D, ortho:Boolean = false):void
 		{
 			setViewPort(cam);
 			setViewProjection(cam, ortho);
@@ -953,7 +952,7 @@ package org.angle3d.renderer
 			for (var i:int = 0; i < pLength; i++)
 			{
 				processor = processors[i];
-				if (!processor.initialized)
+				if (!processor.isInitialized)
 				{
 					processor.initialize(this, vp);
 				}

@@ -11,7 +11,11 @@ package org.angle3d.material
 	import org.angle3d.texture.TextureMapBase;
 	import org.angle3d.texture.TextureType;
 
-
+	/**
+	 * 一个Material可能有多个Technique
+	 * @author weilichuang
+	 *
+	 */
 	public class Material2
 	{
 		public var name:String;
