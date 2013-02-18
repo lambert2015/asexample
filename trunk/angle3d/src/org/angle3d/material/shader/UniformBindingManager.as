@@ -21,13 +21,13 @@ package org.angle3d.material.shader
 	//TODO 添加更多的指令
 	public class UniformBindingManager
 	{
-		private var timer:Timer;
+//		private var timer:Timer;
 		private var near:Number, far:Number;
 		private var viewX:int, viewY:int, viewWidth:int, viewHeight:int;
-		
+
 		private var camUp:Vector3f = new Vector3f();
 		private var camLeft:Vector3f = new Vector3f();
-		private var camDir:Vector3f = new Vector3f(); 
+		private var camDir:Vector3f = new Vector3f();
 		private var camLoc:Vector3f = new Vector3f();
 
 		private var tmpMatrix:Matrix4f = new Matrix4f();
@@ -66,11 +66,12 @@ package org.angle3d.material.shader
 		 */
 		public function updateUniformBindings(params:Vector.<Uniform>):void
 		{
+			var u:Uniform
 			// assums worldMatrix is properly set.
 			var pLength:int = params.length;
 			for (var i:int = 0; i < pLength; i++)
 			{
-				var u:Uniform = params[i];
+				u = params[i];
 				switch (u.binding)
 				{
 					case UniformBinding.WorldMatrix:
@@ -184,10 +185,10 @@ package org.angle3d.material.shader
 		 *
 		 * @param timer The timer to query time world parameters
 		 */
-		public function setTimer(timer:Timer):void
-		{
-			this.timer = timer;
-		}
+//		public function setTimer(timer:Timer):void
+//		{
+//			this.timer = timer;
+//		}
 
 		public function setCamera(cam:Camera3D, viewMatrix:Matrix4f, projMatrix:Matrix4f, viewProjMatrix:Matrix4f):void
 		{

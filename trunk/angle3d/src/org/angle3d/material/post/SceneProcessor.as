@@ -26,7 +26,7 @@ package org.angle3d.material.post
 		 * @return True if initialize() has been called on this SceneProcessor,
 		 * false if otherwise.
 		 */
-		function get initialized():Boolean;
+		function get isInitialized():Boolean;
 
 		/**
 		 * Called when the resolution of the viewport has been changed.

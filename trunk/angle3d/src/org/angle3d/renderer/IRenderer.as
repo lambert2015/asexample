@@ -131,7 +131,7 @@ package org.angle3d.renderer
 		 */
 		function renderMesh(mesh:Mesh):void;
 
-		function renderShadow(mesh:Mesh, light:Light, cam:Camera3D):void;
+//		function renderShadow(mesh:Mesh, light:Light, cam:Camera3D):void;
 
 		/**
 		 * Synchronize graphics subsytem rendering
