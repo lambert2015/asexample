@@ -18,14 +18,14 @@ package org.angle3d.material.post.filter
 			super("FogFilter");
 		}
 
-		override protected function isRequiresDepthTexture():Boolean
+		override public function isRequiresDepthTexture():Boolean
 		{
 			return true;
 		}
 
 		override protected function initFilter(renderManager:RenderManager, vp:ViewPort, w:int, h:int):void
 		{
-			material = new Material(manager, "Common/MatDefs/Post/Fog.j3md");
+			material = new Material();
 			material.setColor("FogColor", fogColor);
 			material.setFloat("FogDensity", fogDensity);
 			material.setFloat("FogDistance", fogDistance);
