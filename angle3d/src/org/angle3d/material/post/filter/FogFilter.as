@@ -8,7 +8,6 @@ package org.angle3d.material.post.filter
 
 	public class FogFilter extends Filter
 	{
-		private var material2:Material;
 		private var fogColor:Color;
 		private var fogDensity:Number;
 		private var fogDistance:Number;
