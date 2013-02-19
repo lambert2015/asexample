@@ -167,7 +167,7 @@ package org.angle3d.material.post
 		 *
 		 * @return true if your Filter need the depth texture
 		 */
-		protected function get isRequiresDepthTexture():Boolean
+		public function get isRequiresDepthTexture():Boolean
 		{
 			return false;
 		}
@@ -177,7 +177,7 @@ package org.angle3d.material.post
 		 *
 		 * @return false if your Filter does not need the scene texture
 		 */
-		protected function get isRequiresSceneTexture():Boolean
+		public function get isRequiresSceneTexture():Boolean
 		{
 			return true;
 		}
