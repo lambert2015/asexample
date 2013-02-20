@@ -1,0 +1,18 @@
+{
+	"parameters":
+	{
+		"ColorMap":{"type":"Texture2D","value":""},
+		"LightMap":{"type":"Texture2D","value":""},
+		"Color":{"type":"Color","value":""}
+	},
+	"techniques":[
+	{
+		"vs":"Common/MatDefs/Misc/Unshaded.vs",
+		"fs":"Common/MatDefs/Misc/Unshaded.fs",
+		"WorldParameters":["WorldViewProjectionMatrix","WorldViewMatrix","WorldMatrix"],
+		"defines":[{"name":"HAS_COLORMAP","condition":"ColorMap"},
+		{"name":"HAS_LIGHTMAP","condition":"LightMap"}],
+		"renderstate":[{"type":"DepthWrite","value":"true"},
+						{"type":"BlendMode","value":"AlphaAdditive"}]
+	}]
+}
