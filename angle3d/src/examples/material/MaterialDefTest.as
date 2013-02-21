@@ -3,6 +3,8 @@ package examples.material
 	import flash.display.Sprite;
 	import flash.utils.ByteArray;
 
+	import org.angle3d.io.MaterialLoader;
+
 	public class MaterialDefTest extends Sprite
 	{
 		[Embed(source = "unshaded.xml", mimeType = "application/octet-stream")]
@@ -15,14 +17,10 @@ package examples.material
 		{
 			super();
 
-			var ba:ByteArray = new UnShadedData();
-			var xml:XML = XML(ba.readUTFBytes(ba.length));
+			var ba:ByteArray = new UnShadedJsonData();
 
-			trace(xml.techniques[0].technique[0].bind.@data);
-
-			ba = new UnShadedJsonData();
-			var jsonObj:Object = JSON.parse(ba.readUTFBytes(ba.length));
-			trace(jsonObj);
+			var materialLoader:MaterialLoader = new MaterialLoader();
+			materialLoader.parse(ba.readUTFBytes(ba.length));
 		}
 	}
 }
