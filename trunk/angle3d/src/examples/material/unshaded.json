@@ -7,11 +7,12 @@
 	},
 	"techniques":[
 	{
-		"vs":"Common/MatDefs/Misc/Unshaded.vs",
-		"fs":"Common/MatDefs/Misc/Unshaded.fs",
-		"WorldParameters":["WorldViewProjectionMatrix","WorldViewMatrix","WorldMatrix"],
-		"defines":[{"name":"HAS_COLORMAP","condition":"ColorMap"},
-		{"name":"HAS_LIGHTMAP","condition":"LightMap"}],
+		"name":"default",
+		"vs":"unshaded.vs",
+		"fs":"unshaded.fs",
+		"worldparameters":["WorldViewProjectionMatrix","WorldViewMatrix","WorldMatrix"],
+		"defines":[{"define":"HAS_COLORMAP","param":"ColorMap"},
+					{"define":"HAS_LIGHTMAP","param":"LightMap"}],
 		"renderstate":[{"type":"DepthWrite","value":"true"},
 						{"type":"BlendMode","value":"AlphaAdditive"}]
 	}]
