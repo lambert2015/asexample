@@ -151,15 +151,15 @@ class LineSegment
 	 */
 	public function isPointInsideBounds(point:Vector3f, error:Float = 0.0001):Bool
 	{
-		if (FastMath.fabs(point.x - origin.x) > FastMath.fabs(direction.x * extent) + error)
+		if (FastMath.abs(point.x - origin.x) > FastMath.abs(direction.x * extent) + error)
 		{
 			return false;
 		}
-		if (FastMath.fabs(point.y - origin.y) > FastMath.fabs(direction.y * extent) + error)
+		if (FastMath.abs(point.y - origin.y) > FastMath.abs(direction.y * extent) + error)
 		{
 			return false;
 		}
-		if (FastMath.fabs(point.z - origin.z) > FastMath.fabs(direction.z * extent) + error)
+		if (FastMath.abs(point.z - origin.z) > FastMath.abs(direction.z * extent) + error)
 		{
 			return false;
 		}

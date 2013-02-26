@@ -10,6 +10,7 @@ import org.angle3d.math.Vector4f;
 import org.angle3d.math.VectorUtil;
 import org.angle3d.math.Line;
 import org.angle3d.math.LineSegment;
+import org.angle3d.math.Quaternion;
 /**
  * ...
  * @author 
