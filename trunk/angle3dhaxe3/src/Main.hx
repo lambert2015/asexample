@@ -11,6 +11,15 @@ import org.angle3d.math.VectorUtil;
 import org.angle3d.math.Line;
 import org.angle3d.math.LineSegment;
 import org.angle3d.math.Quaternion;
+import org.angle3d.math.Matrix3f;
+import org.angle3d.math.Matrix4f;
+import org.angle3d.math.Transform;
+import org.angle3d.math.Triangle;
+import org.angle3d.math.Spline;
+import org.angle3d.math.Ray;
+import org.angle3d.math.Rect;
+import org.angle3d.math.Plane;
+import org.angle3d.math.CurveAndSurfaceMath;
 /**
  * ...
  * @author 

@@ -249,107 +249,107 @@ class Quaternion
 	 * @param matrix
 	 *            the matrix that defines the rotation.
 	 */
-	//public function fromMatrix3f(mat:Matrix3f):Void
-	//{
-		//var s:Float;
-//
-		// Use the Graphics Gems code, from 
-		// ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
-		// *NOT* the "Matrix and Quaternions FAQ", which has errors!
-//
-		// the trace is the sum of the diagonal elements; see
-		// http://mathworld.wolfram.com/MatrixTrace.html
-		//var t:Float = mat.m00 + mat.m11 + mat.m22;
-//
-		// we protect the division by s by ensuring that s>=1
-		//if (t >= 0) // |w| >= .5
-		//{
-			//s = Math.sqrt(t + 1); // |s|>=1 ...
-			//w = 0.5 * s;
-			//s = 0.5 / s; // so this division isn't bad
-			//x = (mat.m21 - mat.m12) * s;
-			//y = (mat.m02 - mat.m20) * s;
-			//z = (mat.m10 - mat.m01) * s;
-		//}
-		//else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
-		//{
-			//s = Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
-			//x = s * 0.5; // |x| >= .5
-			//s = 0.5 / s;
-			//y = (mat.m10 + mat.m01) * s;
-			//z = (mat.m02 + mat.m20) * s;
-			//w = (mat.m21 - mat.m12) * s;
-		//}
-		//else if (mat.m11 > mat.m22)
-		//{
-			//s = Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
-			//y = s * 0.5; // |y| >= .5
-			//s = 0.5 / s;
-			//x = (mat.m10 + mat.m01) * s;
-			//z = (mat.m21 + mat.m12) * s;
-			//w = (mat.m02 - mat.m20) * s;
-		//}
-		//else
-		//{
-			//s = Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
-			//z = s * 0.5; // |z| >= .5
-			//s = 0.5 / s;
-			//x = (mat.m02 + mat.m20) * s;
-			//y = (mat.m21 + mat.m12) * s;
-			//w = (mat.m10 - mat.m01) * s;
-		//}
-	//}
+	public function fromMatrix3f(mat:Matrix3f):Void
+	{
+		var s:Float;
 
-	//public function fromMatrix4f(mat:Matrix4f):Void
-	//{
-		//var s:Float;
-//
-		// Use the Graphics Gems code, from 
-		// ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
-		// *NOT* the "Matrix and Quaternions FAQ", which has errors!
-//
-		// the trace is the sum of the diagonal elements; see
-		// http://mathworld.wolfram.com/MatrixTrace.html
-		//var t:Float = mat.m00 + mat.m11 + mat.m22;
-//
-		// we protect the division by s by ensuring that s>=1
-		//if (t >= 0) // |w| >= .5
-		//{
-			//s = Math.sqrt(t + 1); // |s|>=1 ...
-			//w = 0.5 * s;
-			//s = 0.5 / s; // so this division isn't bad
-			//x = (mat.m21 - mat.m12) * s;
-			//y = (mat.m02 - mat.m20) * s;
-			//z = (mat.m10 - mat.m01) * s;
-		//}
-		//else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
-		//{
-			//s = Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
-			//x = s * 0.5; // |x| >= .5
-			//s = 0.5 / s;
-			//y = (mat.m10 + mat.m01) * s;
-			//z = (mat.m02 + mat.m20) * s;
-			//w = (mat.m21 - mat.m12) * s;
-		//}
-		//else if (mat.m11 > mat.m22)
-		//{
-			//s = Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
-			//y = s * 0.5; // |y| >= .5
-			//s = 0.5 / s;
-			//x = (mat.m10 + mat.m01) * s;
-			//z = (mat.m21 + mat.m12) * s;
-			//w = (mat.m02 - mat.m20) * s;
-		//}
-		//else
-		//{
-			//s = Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
-			//z = s * 0.5; // |z| >= .5
-			//s = 0.5 / s;
-			//x = (mat.m02 + mat.m20) * s;
-			//y = (mat.m21 + mat.m12) * s;
-			//w = (mat.m10 - mat.m01) * s;
-		//}
-	//}
+		 //Use the Graphics Gems code, from 
+		 //ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
+		 //*NOT* the "Matrix and Quaternions FAQ", which has errors!
+
+		 //the trace is the sum of the diagonal elements; see
+		 //http://mathworld.wolfram.com/MatrixTrace.html
+		var t:Float = mat.m00 + mat.m11 + mat.m22;
+
+		 //we protect the division by s by ensuring that s>=1
+		if (t >= 0) // |w| >= .5
+		{
+			s = Math.sqrt(t + 1); // |s|>=1 ...
+			w = 0.5 * s;
+			s = 0.5 / s; // so this division isn't bad
+			x = (mat.m21 - mat.m12) * s;
+			y = (mat.m02 - mat.m20) * s;
+			z = (mat.m10 - mat.m01) * s;
+		}
+		else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
+		{
+			s = Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
+			x = s * 0.5; // |x| >= .5
+			s = 0.5 / s;
+			y = (mat.m10 + mat.m01) * s;
+			z = (mat.m02 + mat.m20) * s;
+			w = (mat.m21 - mat.m12) * s;
+		}
+		else if (mat.m11 > mat.m22)
+		{
+			s = Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
+			y = s * 0.5; // |y| >= .5
+			s = 0.5 / s;
+			x = (mat.m10 + mat.m01) * s;
+			z = (mat.m21 + mat.m12) * s;
+			w = (mat.m02 - mat.m20) * s;
+		}
+		else
+		{
+			s = Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
+			z = s * 0.5; // |z| >= .5
+			s = 0.5 / s;
+			x = (mat.m02 + mat.m20) * s;
+			y = (mat.m21 + mat.m12) * s;
+			w = (mat.m10 - mat.m01) * s;
+		}
+	}
+
+	public function fromMatrix4f(mat:Matrix4f):Void
+	{
+		var s:Float;
+
+		 //Use the Graphics Gems code, from 
+		 //ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
+		 //*NOT* the "Matrix and Quaternions FAQ", which has errors!
+
+		 //the trace is the sum of the diagonal elements; see
+		 //http://mathworld.wolfram.com/MatrixTrace.html
+		var t:Float = mat.m00 + mat.m11 + mat.m22;
+
+		 //we protect the division by s by ensuring that s>=1
+		if (t >= 0) // |w| >= .5
+		{
+			s = Math.sqrt(t + 1); // |s|>=1 ...
+			w = 0.5 * s;
+			s = 0.5 / s; // so this division isn't bad
+			x = (mat.m21 - mat.m12) * s;
+			y = (mat.m02 - mat.m20) * s;
+			z = (mat.m10 - mat.m01) * s;
+		}
+		else if ((mat.m00 > mat.m11) && (mat.m00 > mat.m22))
+		{
+			s = Math.sqrt(1.0 + mat.m00 - mat.m11 - mat.m22); // |s|>=1
+			x = s * 0.5; // |x| >= .5
+			s = 0.5 / s;
+			y = (mat.m10 + mat.m01) * s;
+			z = (mat.m02 + mat.m20) * s;
+			w = (mat.m21 - mat.m12) * s;
+		}
+		else if (mat.m11 > mat.m22)
+		{
+			s = Math.sqrt(1.0 + mat.m11 - mat.m00 - mat.m22); // |s|>=1
+			y = s * 0.5; // |y| >= .5
+			s = 0.5 / s;
+			x = (mat.m10 + mat.m01) * s;
+			z = (mat.m21 + mat.m12) * s;
+			w = (mat.m02 - mat.m20) * s;
+		}
+		else
+		{
+			s = Math.sqrt(1.0 + mat.m22 - mat.m00 - mat.m11); // |s|>=1
+			z = s * 0.5; // |z| >= .5
+			s = 0.5 / s;
+			x = (mat.m02 + mat.m20) * s;
+			y = (mat.m21 + mat.m12) * s;
+			w = (mat.m10 - mat.m01) * s;
+		}
+	}
 
 	/**
 	 * converts this quaternion to a rotational
@@ -359,74 +359,74 @@ class Quaternion
 	 *            The Matrix3f to store the result in.
 	 * @return the rotation matrix representation of this quaternion.
 	 */
-	//public function toMatrix3f(result:Matrix3f):Void
-	//{
-		//var norm:Float = x * x + y * y + z * z + w * w;
-//
-		// we explicitly test norm against one here, saving a division
-		// at the cost of a test and branch.  Is it worth it?
-		//var s:Float = (norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
-//
-		// compute xs/ys/zs first to save 6 multiplications, since xs/ys/zs
-		// will be used 2-4 times each.
-		//var xs:Float = x * s;
-		//var ys:Float = y * s;
-		//var zs:Float = z * s;
-		//var xx:Float = x * xs;
-		//var xy:Float = x * ys;
-		//var xz:Float = x * zs;
-		//var xw:Float = w * xs;
-		//var yy:Float = y * ys;
-		//var yz:Float = y * zs;
-		//var yw:Float = w * ys;
-		//var zz:Float = z * zs;
-		//var zw:Float = w * zs;
-//
-		// using s=2/norm (instead of 1/norm) saves 9 multiplications by 2 here
-		//result.m00 = 1 - (yy + zz);
-		//result.m01 = (xy - zw);
-		//result.m02 = (xz + yw);
-		//result.m10 = (xy + zw);
-		//result.m11 = 1 - (xx + zz);
-		//result.m12 = (yz - xw);
-		//result.m20 = (xz - yw);
-		//result.m21 = (yz + xw);
-		//result.m22 = 1 - (xx + yy);
-	//}
+	public function toMatrix3f(result:Matrix3f):Void
+	{
+		var norm:Float = x * x + y * y + z * z + w * w;
 
-	//public function toMatrix4f(result:Matrix4f):Void
-	//{
-		//var norm:Float = x * x + y * y + z * z + w * w;
-		// we explicitly test norm against one here, saving a division
-		// at the cost of a test and branch.  Is it worth it?
-		//var s:Float = (norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
-//
+		 //we explicitly test norm against one here, saving a division
+		 //at the cost of a test and branch.  Is it worth it?
+		var s:Float = (norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
+
 		// compute xs/ys/zs first to save 6 multiplications, since xs/ys/zs
 		// will be used 2-4 times each.
-		//var xs:Float = x * s;
-		//var ys:Float = y * s;
-		//var zs:Float = z * s;
-		//var xx:Float = x * xs;
-		//var xy:Float = x * ys;
-		//var xz:Float = x * zs;
-		//var xw:Float = w * xs;
-		//var yy:Float = y * ys;
-		//var yz:Float = y * zs;
-		//var yw:Float = w * ys;
-		//var zz:Float = z * zs;
-		//var zw:Float = w * zs;
-//
+		var xs:Float = x * s;
+		var ys:Float = y * s;
+		var zs:Float = z * s;
+		var xx:Float = x * xs;
+		var xy:Float = x * ys;
+		var xz:Float = x * zs;
+		var xw:Float = w * xs;
+		var yy:Float = y * ys;
+		var yz:Float = y * zs;
+		var yw:Float = w * ys;
+		var zz:Float = z * zs;
+		var zw:Float = w * zs;
+
 		// using s=2/norm (instead of 1/norm) saves 9 multiplications by 2 here
-		//result.m00 = 1 - (yy + zz);
-		//result.m01 = (xy - zw);
-		//result.m02 = (xz + yw);
-		//result.m10 = (xy + zw);
-		//result.m11 = 1 - (xx + zz);
-		//result.m12 = (yz - xw);
-		//result.m20 = (xz - yw);
-		//result.m21 = (yz + xw);
-		//result.m22 = 1 - (xx + yy);
-	//}
+		result.m00 = 1 - (yy + zz);
+		result.m01 = (xy - zw);
+		result.m02 = (xz + yw);
+		result.m10 = (xy + zw);
+		result.m11 = 1 - (xx + zz);
+		result.m12 = (yz - xw);
+		result.m20 = (xz - yw);
+		result.m21 = (yz + xw);
+		result.m22 = 1 - (xx + yy);
+	}
+
+	public function toMatrix4f(result:Matrix4f):Void
+	{
+		var norm:Float = x * x + y * y + z * z + w * w;
+		// we explicitly test norm against one here, saving a division
+		// at the cost of a test and branch.  Is it worth it?
+		var s:Float = (norm == 1) ? 2 : ((norm > 0) ? 2 / norm : 0);
+
+		// compute xs/ys/zs first to save 6 multiplications, since xs/ys/zs
+		// will be used 2-4 times each.
+		var xs:Float = x * s;
+		var ys:Float = y * s;
+		var zs:Float = z * s;
+		var xx:Float = x * xs;
+		var xy:Float = x * ys;
+		var xz:Float = x * zs;
+		var xw:Float = w * xs;
+		var yy:Float = y * ys;
+		var yz:Float = y * zs;
+		var yw:Float = w * ys;
+		var zz:Float = z * zs;
+		var zw:Float = w * zs;
+
+		// using s=2/norm (instead of 1/norm) saves 9 multiplications by 2 here
+		result.m00 = 1 - (yy + zz);
+		result.m01 = (xy - zw);
+		result.m02 = (xz + yw);
+		result.m10 = (xy + zw);
+		result.m11 = 1 - (xx + zz);
+		result.m12 = (yz - xw);
+		result.m20 = (xz - yw);
+		result.m21 = (yz + xw);
+		result.m22 = 1 - (xx + yy);
+	}
 	
 	
 	public inline function toUniform(list:Vector<Float>):Void
