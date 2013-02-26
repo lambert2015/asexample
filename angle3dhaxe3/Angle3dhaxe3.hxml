@@ -1,0 +1,5 @@
+-cp src
+-swf bin/Main.swf
+-swf-header 800:600:30:FFFFFF
+-swf-version 11.5
+-main Main

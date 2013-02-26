@@ -4,7 +4,7 @@ import haxe.ds.Vector;
 
 class VectorUtil
 {
-	public static function fillNumber(target:Vector<Float>, value:Float):Void
+	public static function fillFloat(target:Vector<Float>, value:Float):Void
 	{
 		var length:Int = target.length;
 		for (i in 0...length)
