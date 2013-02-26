@@ -25,10 +25,6 @@ class Main
 		trace(new Vector3f(4, 5,6));
 		trace(new Color(1, 0.5, 0.3, 1));
 		trace(new Vector4f(1, 23.3, 4, 4));
-		
-		var vector:haxe.ds.Vector<Float> = new haxe.ds.Vector(100);
-		vector[0] = 100;
-		trace(vector);
 	}
 	
 }
