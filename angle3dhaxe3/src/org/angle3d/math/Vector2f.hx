@@ -20,7 +20,7 @@ class Vector2f
 
 	public var y:Float;
 
-	public function new(?x:Float = 0, ?y:Float = 0) 
+	public function new(x:Float = 0, y:Float = 0) 
 	{
 		this.x = x;
 		this.y = y;
@@ -204,7 +204,7 @@ class Vector2f
 	 *            the value to multiply this vector by.
 	 * @return the new vector.
 	 */
-	public function scale(scalar:Float, ?result:Vector2f = null):Vector2f
+	public function scale(scalar:Float, result:Vector2f = null):Vector2f
 	{
 		if (null == result)
 		{

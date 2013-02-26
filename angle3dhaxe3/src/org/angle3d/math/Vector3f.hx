@@ -15,7 +15,7 @@ class Vector3f
 	
 	public var z:Float;
 
-	public function new(?x:Float = 0, ?y:Float = 0, ?z:Float = 0)
+	public function new(x:Float = 0, y:Float = 0, z:Float = 0)
 	{
 		this.x = x;
 		this.y = y;
@@ -144,7 +144,7 @@ class Vector3f
 	 *            the vector to subtract from this vector.
 	 * @return the result vector.
 	 */
-	public function subtract(vec:Vector3f, ?result:Vector3f = null):Vector3f
+	public function subtract(vec:Vector3f, result:Vector3f = null):Vector3f
 	{
 		if (result == null)
 			result = new Vector3f();
@@ -195,7 +195,7 @@ class Vector3f
 		return x * vec.x + y * vec.y + z * vec.z;
 	}
 
-	public function cross(vec:Vector3f, ?result:Vector3f = null):Vector3f
+	public function cross(vec:Vector3f, result:Vector3f = null):Vector3f
 	{
 		if (result == null)
 			result = new Vector3f();
@@ -283,7 +283,7 @@ class Vector3f
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
-	public function scale(scalar:Float, ?result:Vector3f = null):Vector3f
+	public function scale(scalar:Float, result:Vector3f = null):Vector3f
 	{
 		if (result == null)
 			result = new Vector3f();
@@ -302,7 +302,7 @@ class Vector3f
 		return this;
 	}
 
-	public function multiply(vec:Vector3f, ?result:Vector3f = null):Vector3f
+	public function multiply(vec:Vector3f, result:Vector3f = null):Vector3f
 	{
 		if (result == null)
 			result = new Vector3f();
