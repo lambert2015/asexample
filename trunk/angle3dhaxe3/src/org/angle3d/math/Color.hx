@@ -38,7 +38,7 @@ class Color
 	 * @param b the blue component of this color.
 	 * @param a the alpha component of this color.
 	 */
-	public function new(?r:Float = 0.0, ?g:Float = 0.0, ?b:Float = 0.0, ?a:Float = 1.0)
+	public function new(r:Float = 0.0, g:Float = 0.0, b:Float = 0.0, a:Float = 1.0)
 	{
 		this.r = r;
 		this.g = g;
@@ -47,7 +47,7 @@ class Color
 	}
 
 	
-	public inline function setRGBA(r:Float, g:Float, b:Float, ?a:Float = 255):Void
+	public inline function setRGBA(r:Float, g:Float, b:Float, a:Float = 255):Void
 	{
 		this.r = r * FastMath.INVERT_255;
 		this.g = g * FastMath.INVERT_255;
@@ -56,7 +56,7 @@ class Color
 	}
 
 //		
-	public inline function setTo(r:Float, g:Float, b:Float, ?a:Float = 1.0):Void
+	public inline function setTo(r:Float, g:Float, b:Float, a:Float = 1.0):Void
 	{
 		this.r = r;
 		this.g = g;
