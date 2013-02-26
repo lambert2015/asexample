@@ -97,17 +97,17 @@ class FastMath
 		}
 	}
 
-	public static inline function abs(x)
+	public static inline function abs(x:Float):Float
 	{
 		return (x < 0) ? -x : x;
 	}
 
-	public static inline function min(a, b)
+	public static inline function min(a:Float, b:Float):Float
 	{
 		return (a < b) ? a : b;
 	}
 
-	public static inline function max(a, b)
+	public static inline function max(a:Float, b:Float):Float
 	{
 		return (a > b) ? a : b;
 	}
