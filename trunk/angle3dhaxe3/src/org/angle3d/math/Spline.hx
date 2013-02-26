@@ -15,7 +15,7 @@ class Spline
 	private var totalLength:Float;
 	private var CRcontrolPoints:Array<Vector3f>;
 	private var curveTension:Float;
-	private var _type:Int;
+	private var _type:SplineType;
 
 	public function new()
 	{
@@ -39,7 +39,7 @@ class Spline
 	 * @param curveTension the tension of the spline
 	 * @param cycle true if the spline cycle.
 	 */
-	public function createNormal(splineType:Int, controlPoints:Array<Vector3f>, curveTension:Float = 0.5, cycle:Bool = false):Void
+	public function createNormal(splineType:SplineType, controlPoints:Array<Vector3f>, curveTension:Float = 0.5, cycle:Bool = false):Void
 	{
 		Assert.assert(splineType != SplineType.Nurb, "To create NURBS spline use createNURBS");
 
@@ -271,7 +271,6 @@ class Spline
 				CurveAndSurfaceMath.interpolateBezierVector(value, controlPoints[currentControlPoint], controlPoints[currentControlPoint + 1], controlPoints[currentControlPoint + 2], controlPoints[currentControlPoint + 3], store);
 			case SplineType.Nurb:
 				CurveAndSurfaceMath.interpolateNurbs(value, this, store);
-			default:
 		}
 		return store;
 	}
@@ -346,13 +345,13 @@ class Spline
 	/**
 	 * return the type of the spline
 	 */
-	public var type(get, set):Int;
-	private function get_type():Int
+	public var type(get, set):SplineType;
+	private function get_type():SplineType
 	{
 		return _type;
 	}
 
-	private function set_type(type:Int):Int
+	private function set_type(type:SplineType):SplineType
 	{
 		_type = type;
 		computeTotalLength();

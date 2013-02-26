@@ -57,8 +57,8 @@ class BoundingVolume implements Collidable
 	/**
 	 * getType returns the type of bounding volume this is.
 	 */
-	public var type(get, null):Int;
-	private function get_type():Int
+	public var type(get, null):BoundingVolumeType;
+	private function get_type():BoundingVolumeType
 	{
 		return BoundingVolumeType.NONE;
 	}
@@ -92,7 +92,7 @@ class BoundingVolume implements Collidable
 	 *            the plane to check against this bounding volume.
 	 * @return the side on which this bounding volume lies.
 	 */
-	public function whichSide(plane:Plane):Int
+	public function whichSide(plane:Plane):PlaneSide
 	{
 		return PlaneSide.None;
 	}
