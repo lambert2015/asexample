@@ -1,0 +1,5 @@
+-swf ../bin/Quake3Test.swf
+-main quake3.Quake3Test
+-swf-version 11.5
+-swf-header 800:600:60:cccccc
+-cp ../src
