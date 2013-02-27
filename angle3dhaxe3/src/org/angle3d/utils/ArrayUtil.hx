@@ -16,4 +16,10 @@ class ArrayUtil
 		#end
 	}
 	
+	public static inline function contain<T>(list:Array<T>, item:T):Bool
+	{
+		var index:Int = indexOf(list, item);
+		return index != -1;
+	}
+	
 }
