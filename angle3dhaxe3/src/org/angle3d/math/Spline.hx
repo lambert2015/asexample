@@ -1,9 +1,10 @@
 package org.angle3d.math;
 
-import flash.Vector;
+import haxe.ds.Vector;
 import org.angle3d.math.Vector3f;
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+
+
 class Spline
 {
 	private var controlPoints:Array<Vector3f>;

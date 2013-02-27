@@ -32,7 +32,8 @@ class CollisionResults
 		sorted = false;
 	}
 
-	public function getSize():Int
+	public var size(get, null):Int;
+	private function get_size():Int
 	{
 		return results.length;
 	}

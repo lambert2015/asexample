@@ -11,6 +11,7 @@ class MathTest
         var runner:TestRunner = new TestRunner();
 		
 		runner.add(new TestVector2());
+		runner.add(new ArrayUtilTest());
 		
         runner.run();
     }

@@ -9,6 +9,43 @@ import org.angle3d.utils.Assert;
  */
 class Vector3f
 {
+	public static inline function ZERO():Vector3f 
+	{
+		return new Vector3f(0, 0, 0);
+	}
+	public static inline function X_AXIS():Vector3f 
+	{
+		return new Vector3f(1, 0, 0);
+	}
+	public static inline function Y_AXIS():Vector3f 
+	{
+		return new Vector3f(0, 1, 0);
+	}
+	public static inline function Z_AXIS():Vector3f 
+	{
+		return new Vector3f(0, 0, 1);
+	}
+	public static inline function UNIT_SCALE():Vector3f 
+	{
+		return new Vector3f(1, 1, 1);
+	}
+		
+	public static function checkMinMax(min:Vector3f, max:Vector3f, point:Vector3f):Void
+	{
+		if (point.x < min.x)
+			min.x = point.x;
+		if (point.x > max.x)
+			max.x = point.x;
+		if (point.y < min.y)
+			min.y = point.y;
+		if (point.y > max.y)
+			max.y = point.y;
+		if (point.z < min.z)
+			min.z = point.z;
+		if (point.z > max.z)
+			max.z = point.z;
+	}
+		
 	public var x:Float;
 
 	public var y:Float;
