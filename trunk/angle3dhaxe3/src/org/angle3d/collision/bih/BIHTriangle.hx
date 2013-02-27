@@ -34,9 +34,9 @@ class BIHTriangle
 		return normal;
 	}
 
-	public function getExtreme(axis:int, left:Boolean):Number
+	public function getExtreme(axis:Int, left:Bool):Float
 	{
-		var v1:Number, v2:Number, v3:Number;
+		var v1:Float, v2:Float, v3:Float;
 		switch (axis)
 		{
 			case 0:
