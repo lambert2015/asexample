@@ -1,7 +1,5 @@
 package org.angle3d.collision.bih
 {
-	import flash.geom.Vector3D;
-
 	import org.angle3d.math.Vector3f;
 
 	/**

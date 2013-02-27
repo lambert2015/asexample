@@ -111,6 +111,16 @@ class FastMath
 	{
 		return (a > b) ? a : b;
 	}
+	
+	public static inline function minInt(a:Int, b:Int):Int
+	{
+		return (a < b) ? a : b;
+	}
+
+	public static inline function maxInt(a:Int, b:Int):Int
+	{
+		return (a > b) ? a : b;
+	}
 
 	public static function getPowerOfTwo(value:Int):Int
 	{

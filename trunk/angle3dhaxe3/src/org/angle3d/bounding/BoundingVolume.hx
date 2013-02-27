@@ -60,7 +60,7 @@ class BoundingVolume implements Collidable
 	public var type(get, null):BoundingVolumeType;
 	private function get_type():BoundingVolumeType
 	{
-		return BoundingVolumeType.NONE;
+		return null;
 	}
 
 	/**
@@ -246,10 +246,10 @@ class BoundingVolume implements Collidable
 	 *            the bounding sphere to test against.
 	 * @return true if this volume intersects the given bounding sphere.
 	 */
-	//public function intersectsSphere(bs:BoundingSphere):Bool
-	//{
-		//return false;
-	//}
+	public function intersectsSphere(bs:BoundingSphere):Bool
+	{
+		return false;
+	}
 
 	/**
 	 * determines if this bounding volume and a given bounding box are
@@ -259,10 +259,10 @@ class BoundingVolume implements Collidable
 	 *            the bounding box to test against.
 	 * @return true if this volume intersects the given bounding box.
 	 */
-	//public function intersectsBoundingBox(bb:BoundingBox):Bool
-	//{
-		//return false;
-	//}
+	public function intersectsBoundingBox(bb:BoundingBox):Bool
+	{
+		return false;
+	}
 
 	public function intersectsTriangle(tri:Triangle):Bool
 	{

@@ -12,7 +12,7 @@ package org.angle3d.scene.mesh
 	import org.angle3d.collision.bih.BIHTree;
 	import org.angle3d.math.Matrix4f;
 	import org.angle3d.math.Triangle;
-	import org.angle3d.scene.CollisionData;
+	import org.angle3d.collision.CollisionData;
 	import org.angle3d.utils.Assert;
 
 	/**

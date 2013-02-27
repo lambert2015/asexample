@@ -1,7 +1,5 @@
 package ;
 
-import flash.display.StageAlign;
-import flash.display.StageScaleMode;
 import flash.Lib;
 import org.angle3d.math.Vector2f;
 import org.angle3d.math.Vector3f;
@@ -20,6 +18,10 @@ import org.angle3d.math.Ray;
 import org.angle3d.math.Rect;
 import org.angle3d.math.Plane;
 import org.angle3d.math.CurveAndSurfaceMath;
+import org.angle3d.utils.TempVars;
+import org.angle3d.bounding.BoundingBox;
+import org.angle3d.bounding.BoundingSphere;
+import org.angle3d.bounding.Intersection;
 /**
  * ...
  * @author 
@@ -34,6 +36,8 @@ class Main
 		trace(new Vector3f(4, 5,6));
 		trace(new Color(1, 0.5, 0.3, 1));
 		trace(new Vector4f(1, 23.3, 4, 4));
+		
+		
 	}
 	
 }

@@ -10,9 +10,8 @@ package org.angle3d.collision.bih
 	import org.angle3d.math.Matrix4f;
 	import org.angle3d.math.Ray;
 	import org.angle3d.math.Vector3f;
-	import org.angle3d.scene.CollisionData;
+	import org.angle3d.collision.CollisionData;
 	import org.angle3d.scene.mesh.BufferType;
-	import org.angle3d.scene.mesh.Mesh;
 	import org.angle3d.scene.mesh.SubMesh;
 	import org.angle3d.utils.TempVars;
 

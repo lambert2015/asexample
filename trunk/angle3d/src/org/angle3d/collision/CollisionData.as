@@ -1,8 +1,6 @@
-package org.angle3d.scene
+package org.angle3d.collision
 {
 	import org.angle3d.bounding.BoundingVolume;
-	import org.angle3d.collision.Collidable;
-	import org.angle3d.collision.CollisionResults;
 	import org.angle3d.math.Matrix4f;
 	import org.angle3d.utils.Cloneable;
 
