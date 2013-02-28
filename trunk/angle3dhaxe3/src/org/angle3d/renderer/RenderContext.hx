@@ -6,10 +6,10 @@ package org.angle3d.renderer
 	import org.angle3d.material.BlendMode;
 
 	/**
-	 * Represents the current state of the graphics library. This public class is used
+	 * Represents the current state of the graphics library. This class is used
 	 * internally to reduce state changes.
 	 */
-	public class RenderContext
+	class RenderContext
 	{
 		/**
 		 * If back-face culling is enabled.
@@ -19,22 +19,22 @@ package org.angle3d.renderer
 		/**
 		 * If Depth testing is enabled.
 		 */
-		public var depthTest:Boolean;
+		public var depthTest:Bool;
 
 		public var compareMode:String;
 
-		public var colorWrite:Boolean;
+		public var colorWrite:Bool;
 
-		public var clipRectEnabled:Boolean;
+		public var clipRectEnabled:Bool;
 
-		public var blendMode:int;
+		public var blendMode:Int;
 
 		public function RenderContext()
 		{
 			reset();
 		}
 
-		public function reset():void
+		public function reset():Void
 		{
 			cullMode = Context3DTriangleFace.FRONT;
 			depthTest = false;

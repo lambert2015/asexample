@@ -3,7 +3,6 @@ package org.angle3d.math;
 import haxe.ds.Vector;
 import org.angle3d.math.Vector3f;
 
-
 /**
  * <code>Vector4f</code> defines a Vector for a four float value tuple.
  * <code>Vector4f</code> can represent any four dimensional value, such as a

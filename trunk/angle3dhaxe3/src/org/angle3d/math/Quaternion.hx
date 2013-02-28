@@ -5,7 +5,7 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.utils.Assert;
 
 /**
- * <code>Quaternion</code> defines a single example of a more general public class of
+ * <code>Quaternion</code> defines a single example of a more general class of
  * hypercomplex Floats. Quaternions extends a rotation in three dimensions to a
  * rotation in four dimensions. This aVoids "gimbal lock" and allows for smooth
  * continuous rotation.

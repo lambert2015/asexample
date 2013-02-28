@@ -6,7 +6,7 @@ import org.angle3d.math.Plane;
 import org.angle3d.math.PlaneSide;
 
 /**
- * This public class includes some utility methods for computing intersection
+ * This class includes some utility methods for computing intersection
  * between bounding volumes and triangles.
  * @author Kirill
  */

@@ -1,5 +1,8 @@
 package org.angle3d.texture;
 
+#if !flash
+#error "ATFTexture Only support flash"
+#end
 
 import flash.display3D.Context3D;
 import flash.display3D.Context3DTextureFormat;
@@ -7,8 +10,6 @@ import flash.display3D.textures.Texture;
 import flash.display3D.textures.TextureBase;
 import flash.utils.ByteArray;
 import org.angle3d.utils.Assert;
-
-
 
 /**
  * adobe atf file

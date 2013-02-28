@@ -35,6 +35,12 @@ import org.angle3d.texture.ShadowCompareMode;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.texture.TextureUtil;
 import org.angle3d.texture.TextureType;
+import org.angle3d.light.DirectionalLight;
+import org.angle3d.light.Light;
+import org.angle3d.light.LightType;
+import org.angle3d.light.PointLight;
+import org.angle3d.light.ShadowType;
+import org.angle3d.light.SpotLight;
 /**
  * ...
  * @author 

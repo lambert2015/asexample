@@ -23,7 +23,7 @@ package org.angle3d.renderer
 	import org.angle3d.utils.Assert;
 
 
-	public class DefaultRenderer implements IRenderer
+	class DefaultRenderer implements IRenderer
 	{
 		private var _context3D:Context3D;
 
@@ -41,8 +41,8 @@ package org.angle3d.renderer
 
 		private var _lastProgram:Program3D;
 
-		private var _registerTextureIndex:int = 0;
-		private var _registerBufferIndex:int = 0;
+		private var _registerTextureIndex:Int = 0;
+		private var _registerBufferIndex:Int = 0;
 
 		public function DefaultRenderer(stage3D:Stage3D)
 		{
@@ -66,12 +66,12 @@ package org.angle3d.renderer
 			return _context3D;
 		}
 
-		public function invalidateState():void
+		public function invalidateState():Void
 		{
 			_renderContext.reset();
 		}
 
-		public function clearBuffers(color:Boolean, depth:Boolean, stencil:Boolean):void
+		public function clearBuffers(color:Bool, depth:Bool, stencil:Bool):Void
 		{
 			var bits:uint = 0;
 			if (color)
@@ -93,7 +93,7 @@ package org.angle3d.renderer
 			}
 		}
 
-		public function setBackgroundColor(color:uint):void
+		public function setBackgroundColor(color:uint):Void
 		{
 			_bgColor.setColor(color);
 		}
@@ -103,7 +103,7 @@ package org.angle3d.renderer
 		 * @param state
 		 *
 		 */
-		public function applyRenderState(state:RenderState):void
+		public function applyRenderState(state:RenderState):Void
 		{
 			//TODO 这里有问题，需要检查
 			if (state.depthTest != _renderContext.depthTest || state.compareMode != _renderContext.compareMode)
@@ -115,7 +115,7 @@ package org.angle3d.renderer
 
 			if (state.colorWrite != _renderContext.colorWrite)
 			{
-				var colorWrite:Boolean = state.colorWrite;
+				var colorWrite:Bool = state.colorWrite;
 				_context3D.setColorMask(colorWrite, colorWrite, colorWrite, colorWrite);
 				_renderContext.colorWrite = colorWrite;
 			}
@@ -160,16 +160,16 @@ package org.angle3d.renderer
 
 		}
 
-		public function onFrame():void
+		public function onFrame():Void
 		{
 
 		}
 
 		//TODO 这里不应该经常调用，应该只在舞台大小变动时才修改，这些API很费时
-		private var _oldContext3DWidth:int;
-		private var _oldContext3DHeight:int;
+		private var _oldContext3DWidth:Int;
+		private var _oldContext3DHeight:Int;
 
-		public function setViewPort(x:int, y:int, width:int, height:int):void
+		public function setViewPort(x:Int, y:Int, width:Int, height:Int):Void
 		{
 			if (_stage3D.x != x)
 				_stage3D.x = x;
@@ -184,7 +184,7 @@ package org.angle3d.renderer
 			}
 		}
 
-		public function setClipRect(x:int, y:int, width:int, height:int):void
+		public function setClipRect(x:Int, y:Int, width:Int, height:Int):Void
 		{
 			if (!_renderContext.clipRectEnabled)
 			{
@@ -199,7 +199,7 @@ package org.angle3d.renderer
 			}
 		}
 
-		public function clearClipRect():void
+		public function clearClipRect():Void
 		{
 			if (_renderContext.clipRectEnabled)
 			{
@@ -210,7 +210,7 @@ package org.angle3d.renderer
 			}
 		}
 
-		public function setFrameBuffer(fb:FrameBuffer):void
+		public function setFrameBuffer(fb:FrameBuffer):Void
 		{
 			if (_frameBuffer == fb)
 				return;
@@ -227,7 +227,7 @@ package org.angle3d.renderer
 			}
 		}
 
-		public function setShader(shader:Shader):void
+		public function setShader(shader:Shader):Void
 		{
 			CF::DEBUG
 			{
@@ -254,7 +254,7 @@ package org.angle3d.renderer
 			_shader.upload(this);
 		}
 
-		public function setTextureAt(index:int, map:TextureMapBase):void
+		public function setTextureAt(index:Int, map:TextureMapBase):Void
 		{
 			if (index > _registerTextureIndex)
 			{
@@ -266,30 +266,30 @@ package org.angle3d.renderer
 		}
 
 		//耗时有点久
-		public function setShaderConstants(shaderType:String, firstRegister:int, data:Vector.<Number>, numRegisters:int = -1):void
+		public function setShaderConstants(shaderType:String, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void
 		{
 			_context3D.setProgramConstantsFromVector(shaderType, firstRegister, data, numRegisters);
 		}
 
-		public function setDepthTest(depthMask:Boolean, passCompareMode:String):void
+		public function setDepthTest(depthMask:Bool, passCompareMode:String):Void
 		{
 			_context3D.setDepthTest(depthMask, passCompareMode);
 		}
 
-		public function setCulling(triangleFaceToCull:String):void
+		public function setCulling(triangleFaceToCull:String):Void
 		{
 			_context3D.setCulling(triangleFaceToCull);
 		}
 
-		public function cleanup():void
+		public function cleanup():Void
 		{
 			invalidateState();
 		}
 
-		public function renderMesh(mesh:Mesh):void
+		public function renderMesh(mesh:Mesh):Void
 		{
-			var subMeshList:Vector.<SubMesh> = mesh.subMeshList;
-			for (var i:int = 0, length:int = subMeshList.length; i < length; i++)
+			var subMeshList:Vector<SubMesh> = mesh.subMeshList;
+			for (var i:Int = 0, length:Int = subMeshList.length; i < length; i++)
 			{
 				var subMesh:SubMesh = subMeshList[i];
 				setVertexBuffers(subMesh);
@@ -297,19 +297,19 @@ package org.angle3d.renderer
 			}
 		}
 
-		public function renderShadow(mesh:Mesh, light:Light, cam:Camera3D):void
+		public function renderShadow(mesh:Mesh, light:Light, cam:Camera3D):Void
 		{
 
 		}
 
-		public function present():void
+		public function present():Void
 		{
 			_context3D.present();
 		}
 
-		private function clearTextures():void
+		private function clearTextures():Void
 		{
-			for (var i:int = 0; i <= _registerTextureIndex; i++)
+			for (var i:Int = 0; i <= _registerTextureIndex; i++)
 			{
 				_context3D.setTextureAt(i, null);
 			}
@@ -319,11 +319,11 @@ package org.angle3d.renderer
 		/**
 		 * 清理之前遗留下来未使用的属性寄存器
 		 */
-		private function clearVertexBuffers(maxRegisterIndex:int):void
+		private function clearVertexBuffers(maxRegisterIndex:Int):Void
 		{
 			if (_registerBufferIndex > maxRegisterIndex)
 			{
-				for (var i:int = maxRegisterIndex + 1; i <= _registerBufferIndex; i++)
+				for (var i:Int = maxRegisterIndex + 1; i <= _registerBufferIndex; i++)
 				{
 					_context3D.setVertexBufferAt(i, null);
 				}
@@ -335,15 +335,15 @@ package org.angle3d.renderer
 		 * 传递相关信息
 		 * @param	vb
 		 */
-		protected function setVertexBuffers(subMesh:SubMesh):void
+		private function setVertexBuffers(subMesh:SubMesh):Void
 		{
 			//属性寄存器使用的最大索引
-			var maxRegisterIndex:int = 0;
+			var maxRegisterIndex:Int = 0;
 
 			var attributes:Dictionary = _shader.getAttributes();
 
 			var attribute:AttributeVar;
-			var location:int;
+			var location:Int;
 			var bufferType:String;
 			for (bufferType in attributes)
 			{

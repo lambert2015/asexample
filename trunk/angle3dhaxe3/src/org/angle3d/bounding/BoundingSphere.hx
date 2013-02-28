@@ -19,7 +19,7 @@ import haxe.ds.Vector;
  * group of vertices of a particular piece of geometry. This sphere defines a
  * radius and a center. <br>
  * <br>
- * A typical usage is to allow the public class define the center and radius by calling
+ * A typical usage is to allow the class define the center and radius by calling
  * either <code>containAABB</code> or <code>averagePoints</code>. A call to
  * <code>computeFramePoint</code> in turn calls <code>containAABB</code>.
  *

@@ -13,10 +13,10 @@ import org.angle3d.math.Vector4f;
 import haxe.ds.Vector;
 
 /**
- * Temporary variables . Engine public classes may access
+ * Temporary variables . Engine classes may access
  * these temp variables with TempVars.getTempVars(), all retrieved TempVars
  * instances must be returned via TempVars.release().
- * This returns an available instance of the TempVar public class ensuring this
+ * This returns an available instance of the TempVar class ensuring this
  * particular instance is never used elsewhere in the mean time.
  */
 class TempVars

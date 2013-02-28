@@ -5,7 +5,7 @@ import haxe.ds.Vector;
 import org.angle3d.utils.Assert;
 
 /**
- * This public class offers methods to help with curves and surfaces calculations.
+ * This class offers methods to help with curves and surfaces calculations.
  * @author Marcin Roguski (Kealthas)
  */
 class CurveAndSurfaceMath

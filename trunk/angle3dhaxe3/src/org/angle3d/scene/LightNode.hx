@@ -9,7 +9,7 @@ package org.angle3d.scene
 	 *
 	 * @author Tim8Dev
 	 */
-	public class LightNode extends Node
+	class LightNode extends Node
 	{
 		private var mLightControl:LightControl;
 
@@ -26,22 +26,22 @@ package org.angle3d.scene
 		 * @param enabled If false, the functionality of LightNode will
 		 * be disabled.
 		 */
-		public function setEnabled(enabled:Boolean):void
+		public function setEnabled(enabled:Bool):Void
 		{
 			mLightControl.enabled = enabled;
 		}
 
-		public function isEnabled():Boolean
+		public function isEnabled():Bool
 		{
 			return mLightControl.enabled;
 		}
 
-		public function setControlDir(dir:String):void
+		public function setControlDir(dir:String):Void
 		{
 			mLightControl.setControlDir(dir);
 		}
 
-		public function setLight(light:Light):void
+		public function setLight(light:Light):Void
 		{
 			mLightControl.setLight(light);
 		}

@@ -1,91 +1,91 @@
-package org.angle3d.renderer.queue
-{
-	import org.angle3d.renderer.Camera3D;
-	import org.angle3d.scene.Geometry;
+package org.angle3d.renderer.queue;
 
+import org.angle3d.renderer.Camera3D;
+import org.angle3d.scene.Geometry;
+import haxe.ds.Vector;
+
+/**
+ * This class is a special function list of Spatial objects for render
+ * queuing.
+ *
+ * @author Jack Lindamood
+ * @author Three Rings - better sorting alg.
+ */
+class GeometryList
+{
+	private var _geometries:Vector<Geometry>;
+	private var _comparator:GeometryComparator;
+	private var _size:uint;
+
+	public function new(comparator:GeometryComparator)
+	{
+		_geometries = new Vector<Geometry>();
+		_size = 0;
+
+		_comparator = comparator;
+	}
 
 	/**
-	 * This public class is a special function list of Spatial objects for render
-	 * queuing.
-	 *
-	 * @author Jack Lindamood
-	 * @author Three Rings - better sorting alg.
+	 * Returns the GeometryComparator that this Geometry list uses
+	 * for sorting.
 	 */
-	public class GeometryList
+	public function getComparator():GeometryComparator
 	{
-		private var _geometries:Vector.<Geometry>;
-		private var _comparator:GeometryComparator;
-		private var _size:uint;
+		return _comparator;
+	}
 
-		public function GeometryList(comparator:GeometryComparator)
+	public function setCamera(cam:Camera3D):Void
+	{
+		_comparator.setCamera(cam);
+	}
+
+	public var size(get, null):Int;
+	private function get_size():Int
+	{
+		return _size;
+	}
+	public var isEmpty(get, null):Bool;
+	private function get_isEmpty():Bool
+	{
+		return _size == 0;
+	}
+
+	public function getGeometry(i:Int):Geometry
+	{
+		return _geometries[i];
+	}
+
+	/**
+	 * Adds a geometry to the list. List size is doubled if there is no room.
+	 *
+	 * @param g
+	 *            The geometry to add.
+	 */
+	public function add(g:Geometry):Void
+	{
+		_geometries[_size++] = g;
+	}
+
+	/**
+	 * Resets list size to 0.
+	 */
+	public function clear():Void
+	{
+		_geometries.length = 0;
+
+		_size = 0;
+	}
+
+	/**
+	 * Sorts the elements in the list according to their Comparator.
+	 */
+	//TODO 需要优化，目前排序时间有点长
+	public function sort():Void
+	{
+		if (_size > 1)
 		{
-			_geometries = new Vector.<Geometry>();
-			_size = 0;
-
-			_comparator = comparator;
-		}
-
-		/**
-		 * Returns the GeometryComparator that this Geometry list uses
-		 * for sorting.
-		 */
-		public function getComparator():GeometryComparator
-		{
-			return _comparator;
-		}
-
-		public function setCamera(cam:Camera3D):void
-		{
-			_comparator.setCamera(cam);
-		}
-
-		public function get size():int
-		{
-			return _size;
-		}
-
-		public function get isEmpty():Boolean
-		{
-			return _size == 0;
-		}
-
-		public function getGeometry(i:int):Geometry
-		{
-			return _geometries[i];
-		}
-
-		/**
-		 * Adds a geometry to the list. List size is doubled if there is no room.
-		 *
-		 * @param g
-		 *            The geometry to add.
-		 */
-		public function add(g:Geometry):void
-		{
-			_geometries[_size++] = g;
-		}
-
-		/**
-		 * Resets list size to 0.
-		 */
-		public function clear():void
-		{
-			_geometries.length = 0;
-
-			_size = 0;
-		}
-
-		/**
-		 * Sorts the elements in the list according to their Comparator.
-		 */
-		//TODO 需要优化，目前排序时间有点长
-		public function sort():void
-		{
-			if (_size > 1)
-			{
-				// sort the spatial list using the comparator
-				_geometries.sort(_comparator.compare);
-			}
+			// sort the spatial list using the comparator
+			_geometries.sort(_comparator.compare);
 		}
 	}
 }

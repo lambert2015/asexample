@@ -36,25 +36,25 @@ package org.angle3d.renderer
 	 * @see ViewPort
 	 * @see Spatial
 	 */
-	public class RenderManager
+	class RenderManager
 	{
 		private var _renderer:IRenderer;
 		private var _uniformBindingManager:UniformBindingManager;
 
-		private var preViewPorts:Vector.<ViewPort>;
-		private var viewPorts:Vector.<ViewPort>;
-		private var postViewPorts:Vector.<ViewPort>;
+		private var preViewPorts:Vector<ViewPort>;
+		private var viewPorts:Vector<ViewPort>;
+		private var postViewPorts:Vector<ViewPort>;
 
 		private var camera:Camera3D;
 
-		private var viewX:int;
-		private var viewY:int;
-		private var viewWidth:int;
-		private var viewHeight:int;
+		private var viewX:Int;
+		private var viewY:Int;
+		private var viewWidth:Int;
+		private var viewHeight:Int;
 
 		private var _orthoMatrix:Matrix4f;
 
-		private var _handleTranlucentBucket:Boolean;
+		private var _handleTranlucentBucket:Bool;
 
 		private var mLastProgram:Program3D;
 
@@ -71,25 +71,25 @@ package org.angle3d.renderer
 			_init();
 		}
 
-		private function _init():void
+		private function _init():Void
 		{
 			_uniformBindingManager = new UniformBindingManager();
 
-			preViewPorts = new Vector.<ViewPort>();
-			viewPorts = new Vector.<ViewPort>();
-			postViewPorts = new Vector.<ViewPort>();
+			preViewPorts = new Vector<ViewPort>();
+			viewPorts = new Vector<ViewPort>();
+			postViewPorts = new Vector<ViewPort>();
 
 			_orthoMatrix = new Matrix4f();
 
 			_handleTranlucentBucket = false;
 		}
 
-		public function setForcedMaterial(mat:Material):void
+		public function setForcedMaterial(mat:Material):Void
 		{
 			mForcedMaterial = mat;
 		}
 
-		public function clearForcedMaterial():void
+		public function clearForcedMaterial():Void
 		{
 			mForcedMaterial = null;
 		}
@@ -104,8 +104,8 @@ package org.angle3d.renderer
 		 */
 		public function getPreView(viewName:String):ViewPort
 		{
-			var length:int = preViewPorts.length;
-			for (var i:int = 0; i < length; i++)
+			var length:Int = preViewPorts.length;
+			for (var i:Int = 0; i < length; i++)
 			{
 				if (preViewPorts[i].name == viewName)
 				{
@@ -123,9 +123,9 @@ package org.angle3d.renderer
 		 *
 		 * @see #createPreView(String, com.jme3.renderer.Camera)
 		 */
-		public function removePreView(view:ViewPort):Boolean
+		public function removePreView(view:ViewPort):Bool
 		{
-			var index:int = preViewPorts.indexOf(view);
+			var index:Int = preViewPorts.indexOf(view);
 			if (index > -1)
 			{
 				preViewPorts.splice(index, 1);
@@ -144,8 +144,8 @@ package org.angle3d.renderer
 		 */
 		public function getMainView(viewName:String):ViewPort
 		{
-			var length:int = viewPorts.length;
-			for (var i:int = 0; i < length; i++)
+			var length:Int = viewPorts.length;
+			for (var i:Int = 0; i < length; i++)
 			{
 				if (viewPorts[i].name == viewName)
 				{
@@ -163,10 +163,10 @@ package org.angle3d.renderer
 		 *
 		 * @see #createMainView(String, com.jme3.renderer.Camera)
 		 */
-		public function removeMainViewByName(viewName:String):Boolean
+		public function removeMainViewByName(viewName:String):Bool
 		{
-			var length:int = viewPorts.length;
-			for (var i:int = 0; i < length; i++)
+			var length:Int = viewPorts.length;
+			for (var i:Int = 0; i < length; i++)
 			{
 				if (viewPorts[i].name == viewName)
 				{
@@ -185,9 +185,9 @@ package org.angle3d.renderer
 		 *
 		 * @see #createMainView(String, com.jme3.renderer.Camera)
 		 */
-		public function removeMainView(view:ViewPort):Boolean
+		public function removeMainView(view:ViewPort):Bool
 		{
-			var index:int = viewPorts.indexOf(view);
+			var index:Int = viewPorts.indexOf(view);
 			if (index > -1)
 			{
 				viewPorts.splice(index, 1);
@@ -206,8 +206,8 @@ package org.angle3d.renderer
 		 */
 		public function getPostView(viewName:String):ViewPort
 		{
-			var length:int = postViewPorts.length;
-			for (var i:int = 0; i < length; i++)
+			var length:Int = postViewPorts.length;
+			for (var i:Int = 0; i < length; i++)
 			{
 				if (postViewPorts[i].name == viewName)
 				{
@@ -225,10 +225,10 @@ package org.angle3d.renderer
 		 *
 		 * @see #createPostView(String, com.jme3.renderer.Camera)
 		 */
-		public function removePostViewByName(viewName:String):Boolean
+		public function removePostViewByName(viewName:String):Bool
 		{
-			var pLength:int = postViewPorts.length;
-			for (var i:int = 0; i < pLength; i++)
+			var pLength:Int = postViewPorts.length;
+			for (var i:Int = 0; i < pLength; i++)
 			{
 				if (postViewPorts[i].name == viewName)
 				{
@@ -247,9 +247,9 @@ package org.angle3d.renderer
 		 *
 		 * @see #createPreView(String, com.jme3.renderer.Camera)
 		 */
-		public function removePostView(view:ViewPort):Boolean
+		public function removePostView(view:ViewPort):Bool
 		{
-			var index:int = postViewPorts.indexOf(view);
+			var index:Int = postViewPorts.indexOf(view);
 			if (index > -1)
 			{
 				postViewPorts.splice(index, 1);
@@ -263,7 +263,7 @@ package org.angle3d.renderer
 		 * @return a read-only list of all pre ViewPorts
 		 * @see #createPreView(String, com.jme3.renderer.Camera)
 		 */
-		public function getPreViews():Vector.<ViewPort>
+		public function getPreViews():Vector<ViewPort>
 		{
 			return preViewPorts;
 		}
@@ -273,7 +273,7 @@ package org.angle3d.renderer
 		 * @return a read-only list of all main ViewPorts
 		 * @see #createMainView(String, com.jme3.renderer.Camera)
 		 */
-		public function getMainViews():Vector.<ViewPort>
+		public function getMainViews():Vector<ViewPort>
 		{
 			return viewPorts;
 		}
@@ -283,7 +283,7 @@ package org.angle3d.renderer
 		 * @return a read-only list of all post ViewPorts
 		 * @see #createPostView(String, com.jme3.renderer.Camera)
 		 */
-		public function getPostViews():Vector.<ViewPort>
+		public function getPostViews():Vector<ViewPort>
 		{
 			return postViewPorts;
 		}
@@ -325,17 +325,17 @@ package org.angle3d.renderer
 			return vp;
 		}
 
-		private function reshapeViewPort(vp:ViewPort, w:int, h:int):void
+		private function reshapeViewPort(vp:ViewPort, w:Int, h:Int):Void
 		{
 			if (vp.frameBuffer == null)
 			{
 				vp.camera.resize(w, h, true);
 			}
 
-			var processors:Vector.<SceneProcessor> = vp.processors;
-			var pLength:int = processors.length;
+			var processors:Vector<SceneProcessor> = vp.processors;
+			var pLength:Int = processors.length;
 			var processor:SceneProcessor;
-			for (var i:int = 0; i < pLength; i++)
+			for (var i:Int = 0; i < pLength; i++)
 			{
 				processor = processors[i];
 				if (!processor.isInitialized)
@@ -354,11 +354,11 @@ package org.angle3d.renderer
 		 * Updates the resolution of all on-screen cameras to match
 		 * the given width and height.
 		 */
-		public function reshape(w:int, h:int):void
+		public function reshape(w:Int, h:Int):Void
 		{
 			var vp:ViewPort;
-			var vLength:int = preViewPorts.length;
-			for (var i:int = 0; i < vLength; i++)
+			var vLength:Int = preViewPorts.length;
+			for (var i:Int = 0; i < vLength; i++)
 			{
 				vp = preViewPorts[i];
 				reshapeViewPort(vp, w, h);
@@ -379,7 +379,7 @@ package org.angle3d.renderer
 			}
 		}
 
-		public function updateShaderBinding(shader:Shader):void
+		public function updateShaderBinding(shader:Shader):Void
 		{
 			updateUniformBindings(shader.getBindUniforms());
 		}
@@ -389,7 +389,7 @@ package org.angle3d.renderer
 		 * Updates the given list of uniforms with {@link UniformBinding uniform bindings}
 		 * based on the current world state.
 		 */
-		private function updateUniformBindings(params:Vector.<Uniform>):void
+		private function updateUniformBindings(params:Vector<Uniform>):Void
 		{
 			_uniformBindingManager.updateUniformBindings(params);
 		}
@@ -400,9 +400,9 @@ package org.angle3d.renderer
 		 *
 		 * @return Whether or not the translucent bucket is rendered.
 		 *
-		 * @see #setHandleTranslucentBucket(boolean)
+		 * @see #setHandleTranslucentBucket(Bool)
 		 */
-		public function isHandleTranslucentBucket():Boolean
+		public function isHandleTranslucentBucket():Bool
 		{
 			return _handleTranlucentBucket;
 		}
@@ -415,7 +415,7 @@ package org.angle3d.renderer
 		 * @param handleTranslucentBucket Whether or not the translucent bucket should
 		 * be rendered.
 		 */
-		public function setHandleTranslucentBucket(handleTranslucentBucket:Boolean):void
+		public function setHandleTranslucentBucket(handleTranslucentBucket:Bool):Void
 		{
 			this._handleTranlucentBucket = handleTranslucentBucket;
 		}
@@ -429,7 +429,7 @@ package org.angle3d.renderer
 		 *
 		 * @param mat The world matrix to set
 		 */
-		public function setWorldMatrix(mat:Matrix4f):void
+		public function setWorldMatrix(mat:Matrix4f):Void
 		{
 			_uniformBindingManager.setWorldMatrix(mat);
 		}
@@ -438,7 +438,7 @@ package org.angle3d.renderer
 		 * Renders the given geometry.
 		 * <p>
 		 * First the proper world matrix is set, if
-		 * the geometry's {@link Geometry#setIgnoreTransform(boolean) ignore transform}
+		 * the geometry's {@link Geometry#setIgnoreTransform(Bool) ignore transform}
 		 * feature is enabled, the identity world matrix is used, otherwise, the
 		 * geometry's {@link Geometry#getWorldMatrix() world transform matrix} is used.
 		 * <p>
@@ -465,7 +465,7 @@ package org.angle3d.renderer
 		 * @see Material#selectTechnique(String, com.jme3.renderer.RenderManager)
 		 * @see Material#render(com.jme3.scene.Geometry, com.jme3.renderer.RenderManager)
 		 */
-		public function renderGeometry(geom:Geometry):void
+		public function renderGeometry(geom:Geometry):Void
 		{
 			//没有模型数据，忽略
 			var mesh:Mesh = geom.getMesh();
@@ -493,15 +493,15 @@ package org.angle3d.renderer
 			}
 
 			var lightList:LightList = geom.getWorldLightList();
-			var lightSize:int = lightList.getSize();
+			var lightSize:Int = lightList.getSize();
 
 			// for each technique in material
-			var techniques:Vector.<Technique> = mat.getTechniques();
+			var techniques:Vector<Technique> = mat.getTechniques();
 			var shader:Shader;
 			var technique:Technique;
 			var light:Light;
-			var size:int = techniques.length;
-			for (var i:int = 0; i < size; i++)
+			var size:Int = techniques.length;
+			for (var i:Int = 0; i < size; i++)
 			{
 				technique = techniques[i];
 
@@ -510,7 +510,7 @@ package org.angle3d.renderer
 				//如何使用灯光的话
 				if (technique.requiresLight && lightSize > 0)
 				{
-					for (var j:int = 0; j < lightSize; j++)
+					for (var j:Int = 0; j < lightSize; j++)
 					{
 						light = lightList.getLightAt(j);
 
@@ -553,10 +553,10 @@ package org.angle3d.renderer
 		 * @see GeometryList
 		 * @see #renderGeometry(com.jme3.scene.Geometry)
 		 */
-		public function renderGeometryList(gl:GeometryList):void
+		public function renderGeometryList(gl:GeometryList):Void
 		{
-			var size:int = gl.size;
-			for (var i:int = 0; i < size; i++)
+			var size:Int = gl.size;
+			for (var i:Int = 0; i < size; i++)
 			{
 				renderGeometry(gl.getGeometry(i));
 			}
@@ -568,14 +568,14 @@ package org.angle3d.renderer
 		 * is still rendered in the shadow frustum (shadow casting queue)
 		 * through this recursive method.
 		 */
-		private function renderShadow(s:Spatial, rq:RenderQueue):void
+		private function renderShadow(s:Spatial, rq:RenderQueue):Void
 		{
 			if (s is Node)
 			{
 				var n:Node = s as Node;
-				var children:Vector.<Spatial> = n.children;
-				var length:int = children.length;
-				for (var i:int = 0; i < length; i++)
+				var children:Vector<Spatial> = n.children;
+				var length:Int = children.length;
+				for (var i:Int = 0; i < length; i++)
 				{
 					renderShadow(children[i], rq);
 				}
@@ -584,7 +584,7 @@ package org.angle3d.renderer
 			{
 				var gm:Geometry = s as Geometry;
 
-				var shadowMode:int = s.shadowMode;
+				var shadowMode:Int = s.shadowMode;
 				if (shadowMode != ShadowMode.Off && shadowMode != ShadowMode.Receive)
 				{
 					//forcing adding to shadow cast mode, culled objects doesn't have to be in the receiver queue
@@ -622,7 +622,7 @@ package org.angle3d.renderer
 		 * used for culling and the {@link ViewPort#getQueue() queue} used to
 		 * contain the flattened scene graph.
 		 */
-		public function renderScene(scene:Spatial, vp:ViewPort):void
+		public function renderScene(scene:Spatial, vp:ViewPort):Void
 		{
 			if (!scene.visible)
 				return;
@@ -650,11 +650,11 @@ package org.angle3d.renderer
 				//recurse for all children
 				var n:Node = scene as Node;
 
-				var children:Vector.<Spatial> = n.children;
+				var children:Vector<Spatial> = n.children;
 				//saving cam state for culling
-				var camState:int = vp.camera.planeState;
-				var cLength:int = children.length;
-				for (var i:int = 0; i < cLength; i++)
+				var camState:Int = vp.camera.planeState;
+				var cLength:Int = children.length;
+				for (var i:Int = 0; i < cLength; i++)
 				{
 					//restoring cam state before proceeding children recusively
 					vp.camera.planeState = camState;
@@ -674,7 +674,7 @@ package org.angle3d.renderer
 				vp.renderQueue.addToQueue(gm, gm.queueBucket);
 
 				//add to shadow queue if needed
-				var shadowMode:int = gm.shadowMode;
+				var shadowMode:Int = gm.shadowMode;
 				if (shadowMode != ShadowMode.Off)
 				{
 					vp.renderQueue.addToShadowQueue(gm, shadowMode);
@@ -685,7 +685,7 @@ package org.angle3d.renderer
 		/**
 		 * Returns the camera currently used for rendering.
 		 * <p>
-		 * The camera can be set with {@link #setCamera(com.jme3.renderer.Camera, boolean) }.
+		 * The camera can be set with {@link #setCamera(com.jme3.renderer.Camera, Bool) }.
 		 *
 		 * @return the camera currently used for rendering.
 		 */
@@ -718,7 +718,7 @@ package org.angle3d.renderer
 		 * @see RenderQueue#renderQueue(com.jme3.renderer.queue.RenderQueue.Bucket, com.jme3.renderer.RenderManager, com.jme3.renderer.Camera)
 		 * @see #renderGeometryList(com.jme3.renderer.queue.GeometryList)
 		 */
-		public function flushQueue(vp:ViewPort):void
+		public function flushQueue(vp:ViewPort):Void
 		{
 			renderViewPortQueues(vp, true);
 		}
@@ -733,7 +733,7 @@ package org.angle3d.renderer
 		 * @see RenderQueue#clear()
 		 * @see ViewPort#getQueue()
 		 */
-		public function clearQueue(vp:ViewPort):void
+		public function clearQueue(vp:ViewPort):Void
 		{
 			vp.renderQueue.clear();
 		}
@@ -743,7 +743,7 @@ package org.angle3d.renderer
 		 * <p>
 		 * Changes the {@link Renderer#setDepthRange(float, float) depth range}
 		 * appropriately as expected by each queue and then calls
-		 * {@link RenderQueue#renderQueue(com.jme3.renderer.queue.RenderQueue.Bucket, com.jme3.renderer.RenderManager, com.jme3.renderer.Camera, boolean) }
+		 * {@link RenderQueue#renderQueue(com.jme3.renderer.queue.RenderQueue.Bucket, com.jme3.renderer.RenderManager, com.jme3.renderer.Camera, Bool) }
 		 * on the queue. Makes sure to restore the depth range to [0, 1]
 		 * at the end of the call.
 		 * Note that the {@link Bucket#Translucent translucent bucket} is NOT
@@ -758,7 +758,7 @@ package org.angle3d.renderer
 		 * @see RenderQueue
 		 * @see #renderTranslucentQueue(com.jme3.renderer.ViewPort)
 		 */
-		private function renderViewPortQueues(vp:ViewPort, flush:Boolean):void
+		private function renderViewPortQueues(vp:ViewPort, flush:Bool):Void
 		{
 			var queue:RenderQueue = vp.renderQueue;
 			var cam:Camera3D = vp.camera;
@@ -784,7 +784,7 @@ package org.angle3d.renderer
 				queue.renderQueue(QueueBucket.Transparent, this, cam, flush);
 			}
 
-			var isParallelProjection:Boolean = cam.parallelProjection;
+			var isParallelProjection:Bool = cam.parallelProjection;
 
 			//绘制GUI
 			if (!queue.isQueueEmpty(QueueBucket.Gui))
@@ -800,16 +800,16 @@ package org.angle3d.renderer
 		/**
 		 * Renders the {@link Bucket#Translucent translucent queue} on the viewPort.
 		 * <p>
-		 * This call does nothing unless {@link #setHandleTranslucentBucket(boolean) }
+		 * This call does nothing unless {@link #setHandleTranslucentBucket(Bool) }
 		 * is set to true. This method clears the translucent queue after rendering
 		 * it.
 		 *
 		 * @param vp The viewport of which the translucent queue should be rendered.
 		 *
-		 * @see #renderViewPortQueues(com.jme3.renderer.ViewPort, boolean)
-		 * @see #setHandleTranslucentBucket(boolean)
+		 * @see #renderViewPortQueues(com.jme3.renderer.ViewPort, Bool)
+		 * @see #setHandleTranslucentBucket(Bool)
 		 */
-		public function renderTranslucentQueue(vp:ViewPort):void
+		public function renderTranslucentQueue(vp:ViewPort):Void
 		{
 			var rq:RenderQueue = vp.renderQueue;
 			if (!rq.isQueueEmpty(QueueBucket.Translucent) && _handleTranlucentBucket)
@@ -818,7 +818,7 @@ package org.angle3d.renderer
 			}
 		}
 
-		private function setViewPort(cam:Camera3D):void
+		private function setViewPort(cam:Camera3D):Void
 		{
 			// this will make sure to update viewport only if needed
 			if (cam != this.camera || cam.isViewportChanged())
@@ -843,7 +843,7 @@ package org.angle3d.renderer
 			_orthoMatrix.setScale(new Vector3f(2 / cam.width, 2 / cam.height, 0));
 		}
 
-		private function setViewProjection(cam:Camera3D, ortho:Boolean):void
+		private function setViewProjection(cam:Camera3D, ortho:Bool):Void
 		{
 			if (ortho)
 			{
@@ -872,7 +872,7 @@ package org.angle3d.renderer
 		 * @param ortho True if to use orthographic projection (for GUI rendering),
 		 * false if to use the camera's view and projection matrices.
 		 */
-		public function setCamera(cam:Camera3D, ortho:Boolean = false):void
+		public function setCamera(cam:Camera3D, ortho:Bool = false):Void
 		{
 			setViewPort(cam);
 			setViewProjection(cam, ortho);
@@ -886,12 +886,12 @@ package org.angle3d.renderer
 		 *
 		 * @see #renderViewPort(com.jme3.renderer.ViewPort, float)
 		 */
-		public function renderViewPortRaw(vp:ViewPort):void
+		public function renderViewPortRaw(vp:ViewPort):Void
 		{
 			setCamera(vp.camera, false);
 
-			var scenes:Vector.<Spatial> = vp.getScenes();
-			var i:int = scenes.length;
+			var scenes:Vector<Spatial> = vp.getScenes();
+			var i:Int = scenes.length;
 			while (i-- >= 0)
 			{
 				renderScene(scenes[i], vp);
@@ -914,12 +914,12 @@ package org.angle3d.renderer
 		 * <li>The ViewPort's {@link ViewPort#getOutputFrameBuffer() output framebuffer}
 		 * is set on the Renderer</li>
 		 * <li>The camera is set on the renderer, including its view port parameters.
-		 * (see {@link #setCamera(com.jme3.renderer.Camera, boolean) })</li>
+		 * (see {@link #setCamera(com.jme3.renderer.Camera, Bool) })</li>
 		 * <li>Any buffers that the ViewPort requests to be cleared are cleared
 		 * and the {@link ViewPort#getBackgroundColor() background color} is set</li>
 		 * <li>Every scene that is attached to the ViewPort is flattened into
 		 * the ViewPort's render queue
-		 * (see {@link #renderViewPortQueues(com.jme3.renderer.ViewPort, boolean) })
+		 * (see {@link #renderViewPortQueues(com.jme3.renderer.ViewPort, Bool) })
 		 * </li>
 		 * <li>The SceneProcessors' {@link SceneProcessor#postQueue(com.jme3.renderer.queue.RenderQueue) }
 		 * method is called.</li>
@@ -932,7 +932,7 @@ package org.angle3d.renderer
 		 * (see {@link #renderTranslucentQueue(com.jme3.renderer.ViewPort) })</li>
 		 * <li>If any objects remained in the render queue, they are removed
 		 * from the queue. This is generally objects added to the
-		 * {@link RenderQueue#renderShadowQueue(com.jme3.renderer.queue.RenderQueue.ShadowMode, com.jme3.renderer.RenderManager, com.jme3.renderer.Camera, boolean)
+		 * {@link RenderQueue#renderShadowQueue(com.jme3.renderer.queue.RenderQueue.ShadowMode, com.jme3.renderer.RenderManager, com.jme3.renderer.Camera, Bool)
 		 * shadow queue}
 		 * which were not rendered because of a missing shadow renderer.</li>
 		 * </ul>
@@ -941,15 +941,15 @@ package org.angle3d.renderer
 		 * @param tpf
 		 */
 		//TODO 
-		public function renderViewPort(vp:ViewPort, tpf:Number):void
+		public function renderViewPort(vp:ViewPort, tpf:Float):Void
 		{
 			if (!vp.enabled)
 				return;
 
-			var processors:Vector.<SceneProcessor> = vp.processors;
-			var pLength:int = processors.length;
+			var processors:Vector<SceneProcessor> = vp.processors;
+			var pLength:Int = processors.length;
 			var processor:SceneProcessor;
-			for (var i:int = 0; i < pLength; i++)
+			for (var i:Int = 0; i < pLength; i++)
 			{
 				processor = processors[i];
 				if (!processor.isInitialized)
@@ -973,7 +973,7 @@ package org.angle3d.renderer
 				_renderer.clearBuffers(vp.isClearColor(), vp.isClearDepth(), vp.isClearStencil());
 			}
 
-			var scenes:Vector.<Spatial> = vp.getScenes();
+			var scenes:Vector<Spatial> = vp.getScenes();
 			i = scenes.length;
 			while (i-- > 0)
 			{
@@ -1008,10 +1008,10 @@ package org.angle3d.renderer
 		 * Renders any viewports that were added using the following methods:
 		 * @param tpf Time per frame value
 		 */
-		public function render(tpf:Number):void
+		public function render(tpf:Float):Void
 		{
-			var i:int;
-			var size:int = preViewPorts.length;
+			var i:Int;
+			var size:Int = preViewPorts.length;
 			for (i = 0; i < size; i++)
 			{
 				renderViewPort(preViewPorts[i], tpf);

@@ -9,7 +9,7 @@ package org.angle3d.scene
 	 * @author andy
 	 */
 
-	public class CameraNode extends Node
+	class CameraNode extends Node
 	{
 		private var mCamControl:CameraControl;
 
@@ -27,24 +27,24 @@ package org.angle3d.scene
 			return mCamControl;
 		}
 
-		override protected function _init():void
+		override private function _init():Void
 		{
 			super._init();
 			mCamControl = new CameraControl();
 			addControl(mCamControl);
 		}
 
-		public function setEnabled(enabled:Boolean):void
+		public function setEnabled(enabled:Bool):Void
 		{
 			mCamControl.enabled = enabled;
 		}
 
-		public function isEnabled():Boolean
+		public function isEnabled():Bool
 		{
 			return mCamControl.enabled;
 		}
 
-		public function set controlDir(controlDir:String):void
+		public function set controlDir(controlDir:String):Void
 		{
 			mCamControl.controlDir = controlDir;
 		}
@@ -54,7 +54,7 @@ package org.angle3d.scene
 			return mCamControl.controlDir;
 		}
 
-		public function setCamera(camera:Camera3D):void
+		public function setCamera(camera:Camera3D):Void
 		{
 			mCamControl.camera = camera;
 		}

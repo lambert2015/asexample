@@ -9,14 +9,14 @@ package org.angle3d.scene
 	 * Use by calling {@link Spatial#depthFirstTraversal(org.angle3d.scene.SceneGraphVisitor) }
 	 * or {@link Spatial#breadthFirstTraversal(org.angle3d.scene.SceneGraphVisitor)}.
 	 */
-	public class SceneGraphVisitorAdapter implements SceneGraphVisitor
+	class SceneGraphVisitorAdapter implements SceneGraphVisitor
 	{
 
 		public function SceneGraphVisitorAdapter()
 		{
 		}
 
-		public function visit(spatial:Spatial):void
+		public function visit(spatial:Spatial):Void
 		{
 			if (spatial is Geometry)
 			{
@@ -34,7 +34,7 @@ package org.angle3d.scene
 		 *
 		 * @param geom The visited geometry
 		 */
-		private function visitGeometry(geom:Geometry):void
+		private function visitGeometry(geom:Geometry):Void
 		{
 		}
 
@@ -43,7 +43,7 @@ package org.angle3d.scene
 		 *
 		 * @param geom The visited node
 		 */
-		private function visitNode(node:Node):void
+		private function visitNode(node:Node):Void
 		{
 			if (node == null)
 			{
