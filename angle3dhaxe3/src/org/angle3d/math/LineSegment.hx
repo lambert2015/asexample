@@ -5,7 +5,7 @@ package org.angle3d.math;
  * that has a limited start and end points.</p>
  * <p>A LineSegment is defined by an origin, a direction and an extent (or length).
  * Direction should be a normalized vector. It is not internally normalized.</p>
- * <p>This public class provides methods to calculate distances between LineSegments, Rays and Vectors.
+ * <p>This class provides methods to calculate distances between LineSegments, Rays and Vectors.
  * It is also possible to retrieve both end points of the segment {@link LineSegment#getPositiveEnd(Vector3f)}
  * and {@link LineSegment#getNegativeEnd(Vector3f)}. There are also methods to check whether
  * a point is within the segment bounds.</p>

@@ -9,7 +9,7 @@ package org.angle3d.scene
 	 */
 	public interface SceneGraphVisitor
 	{
-		function visit(spatial:Spatial):void;
+		function visit(spatial:Spatial):Void;
 	}
 }
 

@@ -19,7 +19,7 @@ class Plane
 	public var normal:Vector3f;
 
 	/**
-	 * Constant of the plane. See formula in public class definition.
+	 * Constant of the plane. See formula in class definition.
 	 */
 	public var constant:Float;
 

@@ -16,7 +16,7 @@ package org.angle3d.renderer
 
 	/**
 	 * 相机
-	 * Camera is a standalone, purely mathematical public class for doing
+	 * Camera is a standalone, purely mathematical class for doing
 	 * camera-related computations.
 	 *
 	 * <p>
@@ -26,7 +26,7 @@ package org.angle3d.renderer
 	 * transforms objects from world space into eye space, while the projection
 	 * matrix transforms objects from eye space into clip space.
 	 * </p>
-	 * <p>Another purpose of the camera public class is to do frustum culling operations,
+	 * <p>Another purpose of the camera class is to do frustum culling operations,
 	 * defined by six planes which define a 3D frustum shape, it is possible to
 	 * test if an object bounded by a mathematically defined volume is inside
 	 * the camera frustum, and thus to avoid rendering objects that are outside
@@ -34,41 +34,41 @@ package org.angle3d.renderer
 	 * </p>
 	 *
 	 */
-	public class Camera3D extends Frustum
+	class Camera3D extends Frustum
 	{
 		/** The camera's name. */
 		public var name:String;
 
-		public var width:int;
-		public var height:int;
+		public var width:Int;
+		public var height:Int;
 
 		/**
 		 * Camera's location
 		 */
-		protected var mLocation:Vector3f;
+		private var mLocation:Vector3f;
 		/**
 		 * The orientation of the camera.
 		 */
-		protected var mRotation:Quaternion;
+		private var mRotation:Quaternion;
 
 		//view port coordinates
-		protected var mViewPortRect:Rect;
+		private var mViewPortRect:Rect;
 
-		protected var mViewPortChanged:Boolean;
+		private var mViewPortChanged:Bool;
 
-		protected var mViewMatrix:Matrix4f;
-		protected var mViewProjectionMatrix:Matrix4f;
-		protected var mProjectionMatrixOverride:Matrix4f;
+		private var mViewMatrix:Matrix4f;
+		private var mViewProjectionMatrix:Matrix4f;
+		private var mProjectionMatrixOverride:Matrix4f;
 
-		protected var mGuiBounding:BoundingBox;
+		private var mGuiBounding:BoundingBox;
 
 		/**
 		 * A mask value set during contains() that allows fast culling of a Node's
 		 * children.
 		 */
-		protected var mPlaneState:int;
+		private var mPlaneState:Int;
 
-		public function Camera3D(width:int, height:int)
+		public function Camera3D(width:Int, height:Int)
 		{
 			super();
 
@@ -79,7 +79,7 @@ package org.angle3d.renderer
 			onViewPortChange();
 		}
 
-		override protected function _init():void
+		override private function _init():Void
 		{
 			super._init();
 
@@ -96,7 +96,7 @@ package org.angle3d.renderer
 			mViewPortRect = new Rect(0.0, 1.0, 0.0, 1.0);
 		}
 
-		public function copyFrom(cam:Camera3D):void
+		public function copyFrom(cam:Camera3D):Void
 		{
 			mLocation.copyFrom(cam.mLocation);
 			mRotation.copyFrom(cam.mRotation);
@@ -121,7 +121,7 @@ package org.angle3d.renderer
 
 			this.mPlaneState = cam.mPlaneState;
 			this.mViewPortChanged = cam.mViewPortChanged;
-			for (var i:int = 0; i < FRUSTUM_PLANES; i++)
+			for (var i:Int = 0; i < FRUSTUM_PLANES; i++)
 			{
 				mWorldPlanes[i].normal.copyFrom(cam.mWorldPlanes[i].normal);
 				mWorldPlanes[i].constant = cam.mWorldPlanes[i].constant;
@@ -157,7 +157,7 @@ package org.angle3d.renderer
 			cam.mViewPortChanged = true;
 			cam.mPlaneState = PlaneSide.None;
 
-			for (var i:int = 0; i < FRUSTUM_PLANES; i++)
+			for (var i:Int = 0; i < FRUSTUM_PLANES; i++)
 			{
 				cam.mWorldPlanes[i].copyFrom(mWorldPlanes[i]);
 			}
@@ -194,14 +194,14 @@ package org.angle3d.renderer
 		 * @param clipPlane the plane
 		 * @param side the side the camera stands from the plane
 		 */
-		public function setClipPlane(clipPlane:Plane, side:int = -1):void
+		public function setClipPlane(clipPlane:Plane, side:Int = -1):Void
 		{
 			if (side <= -1)
 			{
 				side = clipPlane.whichSide(mLocation);
 			}
 
-			var sideFactor:Number = 1.0;
+			var sideFactor:Float = 1.0;
 			if (side == PlaneSide.Negative)
 			{
 				sideFactor = -1.0;
@@ -234,7 +234,7 @@ package org.angle3d.renderer
 			v.z = -1.0;
 			v.w = (1.0 + newProjectionMatrix.m22) / newProjectionMatrix.m23;
 
-			var dot:Number = clipPlaneV.dot(v);
+			var dot:Float = clipPlaneV.dot(v);
 			var c:Vector4f = clipPlaneV.scale(2.0 / dot);
 
 			newProjectionMatrix.m20 = c.x - newProjectionMatrix.m30;
@@ -255,7 +255,7 @@ package org.angle3d.renderer
 		 * @param fixAspect If true, the camera's aspect ratio will be recomputed.
 		 * Recomputing the aspect ratio requires changing the frustum values.
 		 */
-		public function resize(width:int, height:int, fixAspect:Boolean = true):void
+		public function resize(width:Int, height:Int, fixAspect:Bool = true):Void
 		{
 			this.width = width;
 			this.height = height;
@@ -331,7 +331,7 @@ package org.angle3d.renderer
 		 *
 		 * @return the current plane state int.
 		 */
-		public function get planeState():int
+		public function get planeState():Int
 		{
 			return mPlaneState;
 		}
@@ -342,7 +342,7 @@ package org.angle3d.renderer
 		 *
 		 * @param planeState the updated state.
 		 */
-		public function set planeState(planeState:int):void
+		public function set planeState(planeState:Int):Void
 		{
 			mPlaneState = planeState;
 		}
@@ -353,7 +353,7 @@ package org.angle3d.renderer
 		 * @param location the position of the camera.
 		 * @see Camera#setLocation(com.jme.math.Vector3f)
 		 */
-		public function set location(location:Vector3f):void
+		public function set location(location:Vector3f):Void
 		{
 			mLocation.copyFrom(location);
 			onFrameChange();
@@ -370,7 +370,7 @@ package org.angle3d.renderer
 		 *
 		 * @param rotation the rotation of this camera
 		 */
-		public function set rotation(rotation:Quaternion):void
+		public function set rotation(rotation:Quaternion):Void
 		{
 			mRotation.copyFrom(rotation);
 			onFrameChange();
@@ -382,7 +382,7 @@ package org.angle3d.renderer
 		 *
 		 * @param direction the direction this camera is facing.
 		 */
-		public function lookAtDirection(direction:Vector3f, upVector:Vector3f):void
+		public function lookAtDirection(direction:Vector3f, upVector:Vector3f):Void
 		{
 			mRotation.lookAt(direction, upVector);
 			onFrameChange();
@@ -397,7 +397,7 @@ package org.angle3d.renderer
 		 * @param direction the direction the camera is facing.
 		 * @see Camera#setAxes(com.jme.math.Vector3f,com.jme.math.Vector3f,com.jme.math.Vector3f)
 		 */
-		public function setAxes(left:Vector3f, up:Vector3f, direction:Vector3f):void
+		public function setAxes(left:Vector3f, up:Vector3f, direction:Vector3f):Void
 		{
 			mRotation.fromAxes(left, up, direction);
 			onFrameChange();
@@ -409,7 +409,7 @@ package org.angle3d.renderer
 		 *
 		 * @param axes the matrix that defines the orientation of the camera.
 		 */
-		public function setAxesFromQuat(axes:Quaternion):void
+		public function setAxesFromQuat(axes:Quaternion):Void
 		{
 			mRotation.copyFrom(axes);
 			onFrameChange();
@@ -418,7 +418,7 @@ package org.angle3d.renderer
 		/**
 		 * normalizes the camera vectors.
 		 */
-		public function normalize():void
+		public function normalize():Void
 		{
 			mRotation.normalizeLocal();
 			onFrameChange();
@@ -432,7 +432,7 @@ package org.angle3d.renderer
 		 * @param up        the up axis of the camera.
 		 * @param direction the facing of the camera.
 		 */
-		public function setFrame(location:Vector3f, left:Vector3f, up:Vector3f, direction:Vector3f):void
+		public function setFrame(location:Vector3f, left:Vector3f, up:Vector3f, direction:Vector3f):Void
 		{
 			mLocation.copyFrom(location);
 			mRotation.fromAxes(left, up, direction);
@@ -447,7 +447,7 @@ package org.angle3d.renderer
 		* @param axes
 		*            the orientation of the camera.
 		*/
-		public function setFrameFromQuat(location:Vector3f, axes:Quaternion):void
+		public function setFrameFromQuat(location:Vector3f, axes:Quaternion):Void
 		{
 			mLocation.copyFrom(location);
 			mRotation.copyFrom(axes);
@@ -465,7 +465,7 @@ package org.angle3d.renderer
 		 * @param upVector a normalized vector indicating the up direction of the world.
 		 */
 		//TODO 优化
-		public function lookAt(pos:Vector3f, upVector:Vector3f):void
+		public function lookAt(pos:Vector3f, upVector:Vector3f):Void
 		{
 			var newDirection:Vector3f = pos.subtract(mLocation);
 			newDirection.normalizeLocal();
@@ -507,7 +507,7 @@ package org.angle3d.renderer
 		 *
 		 * @see Camera#update()
 		 */
-		public function update():void
+		public function update():Void
 		{
 			onFrustumChange();
 			onViewPortChange();
@@ -527,7 +527,7 @@ package org.angle3d.renderer
 		 * @param bottom the bottom boundary of the viewport (default: 0)
 		 * @param top    the top boundary of the viewport (default: 1)
 		 */
-		public function setViewPortRect(left:Number, right:Number, bottom:Number, top:Number):void
+		public function setViewPortRect(left:Float, right:Float, bottom:Float, top:Float):Void
 		{
 			mViewPortRect.setTo(left, right, bottom, top);
 			onViewPortChange();
@@ -539,7 +539,7 @@ package org.angle3d.renderer
 		 * @param pos The position to compute a distance to.
 		 * @return Distance from the far plane to the point.
 		 */
-		public function distanceToNearPlane(pos:Vector3f):Number
+		public function distanceToNearPlane(pos:Vector3f):Float
 		{
 			return mWorldPlanes[NEAR_PLANE].pseudoDistance(pos);
 		}
@@ -564,17 +564,17 @@ package org.angle3d.renderer
 		 * @return See enums in <code>FrustumIntersect</code>
 		 */
 		//此函数很费时，需要进行优化
-		public function contains(bound:BoundingVolume):int
+		public function contains(bound:BoundingVolume):Int
 		{
 			if (bound == null)
 			{
 				return FrustumIntersect.Inside;
 			}
 
-			var mask:int;
-			var rVal:int = FrustumIntersect.Inside;
+			var mask:Int;
+			var rVal:Int = FrustumIntersect.Inside;
 
-			var planeCounter:int = FRUSTUM_PLANES;
+			var planeCounter:Int = FRUSTUM_PLANES;
 			while (planeCounter-- > 0)
 			{
 				if (planeCounter == bound.getCheckPlane())
@@ -582,12 +582,12 @@ package org.angle3d.renderer
 					continue; // we have already checked this plane at first iteration
 				}
 
-				var planeId:int = (planeCounter == FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
+				var planeId:Int = (planeCounter == FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
 
 				mask = 1 << planeId;
 				if ((mPlaneState & mask) == 0)
 				{
-					var side:int = bound.whichSide(mWorldPlanes[planeId]);
+					var side:Int = bound.whichSide(mWorldPlanes[planeId]);
 
 					if (side == PlaneSide.Negative)
 					{
@@ -621,7 +621,7 @@ package org.angle3d.renderer
 		 * @param bound the bound to check for culling
 		 * @return True if the camera contains the gui element bounding volume.
 		 */
-		public function containsGui(bound:BoundingVolume):Boolean
+		public function containsGui(bound:BoundingVolume):Bool
 		{
 			return mGuiBounding.intersects(bound);
 		}
@@ -644,7 +644,7 @@ package org.angle3d.renderer
 		 *
 		 * @param projMatrix
 		 */
-		public function setProjectionMatrix(mat:Matrix4f):void
+		public function setProjectionMatrix(mat:Matrix4f):Void
 		{
 			mProjectionMatrixOverride = mat;
 			updateViewProjection();
@@ -669,7 +669,7 @@ package org.angle3d.renderer
 		/**
 		 * Updates the view projection matrix.
 		 */
-		public function updateViewProjection():void
+		public function updateViewProjection():Void
 		{
 			if (mProjectionMatrixOverride != null)
 			{
@@ -700,7 +700,7 @@ package org.angle3d.renderer
 		 * has been changed. This is needed in the renderer so that the proper
 		 * viewport can be set-up.
 		 */
-		public function isViewportChanged():Boolean
+		public function isViewportChanged():Bool
 		{
 			return mViewPortChanged;
 		}
@@ -709,7 +709,7 @@ package org.angle3d.renderer
 		 * Clears the viewport changed flag once it has been updated inside
 		 * the renderer.
 		 */
-		public function clearViewportChanged():void
+		public function clearViewportChanged():Void
 		{
 			mViewPortChanged = false;
 		}
@@ -717,20 +717,20 @@ package org.angle3d.renderer
 		/**
 		 * Called when the viewport has been changed.
 		 */
-		public function onViewPortChange():void
+		public function onViewPortChange():Void
 		{
 			mViewPortChanged = true;
 			updateGuiBounding();
 		}
 
-		private function updateGuiBounding():void
+		private function updateGuiBounding():Void
 		{
-			var sx:Number = width * mViewPortRect.left;
-			var ex:Number = width * mViewPortRect.right;
-			var sy:Number = height * mViewPortRect.bottom;
-			var ey:Number = height * mViewPortRect.top;
-			var xExtent:Number = Math.max(0, (ex - sx) * 0.5);
-			var yExtent:Number = Math.max(0, (ey - sy) * 0.5);
+			var sx:Float = width * mViewPortRect.left;
+			var ex:Float = width * mViewPortRect.right;
+			var sy:Float = height * mViewPortRect.bottom;
+			var ey:Float = height * mViewPortRect.top;
+			var xExtent:Float = Math.max(0, (ex - sx) * 0.5);
+			var yExtent:Float = Math.max(0, (ey - sy) * 0.5);
 
 			mGuiBounding.setCenter(new Vector3f(sx + xExtent, sy + yExtent, 0));
 			mGuiBounding.xExtent = xExtent;
@@ -741,7 +741,7 @@ package org.angle3d.renderer
 		/**
 		 * <code>onFrameChange</code> updates the view frame of the camera.
 		 */
-		override public function onFrameChange():void
+		override public function onFrameChange():Void
 		{
 			var vars:TempVars = TempVars.getTempVars();
 
@@ -749,7 +749,7 @@ package org.angle3d.renderer
 			var direction:Vector3f = getDirection(vars.vect2);
 			var up:Vector3f = getUp(vars.vect3);
 
-			var dirDotLocation:Number = direction.dot(mLocation);
+			var dirDotLocation:Float = direction.dot(mLocation);
 
 			// left plane
 			var plane:Plane = mWorldPlanes[LEFT_PLANE];
@@ -814,12 +814,12 @@ package org.angle3d.renderer
 		 * @param viewZPos the z value in view space.
 		 * @return the z value in projection space.
 		 */
-		public function getViewToProjectionZ(viewZPos:Number):Number
+		public function getViewToProjectionZ(viewZPos:Float):Float
 		{
-			var far:Number = frustumFar;
-			var near:Number = frustumNear;
-			var a:Number = far / (far - near);
-			var b:Number = far * near / (near - far);
+			var far:Float = frustumFar;
+			var near:Float = frustumNear;
+			var a:Float = far / (far - near);
+			var b:Float = far * near / (near - far);
 			return a + b / viewZPos;
 		}
 
@@ -836,7 +836,7 @@ package org.angle3d.renderer
 		 * @param projectionZPos non linear z value in projection space
 		 * @return the position in world space.
 		 */
-		public function getWorldCoordinates(screenPos:Vector2f, projectionZPos:Number, result:Vector3f = null):Vector3f
+		public function getWorldCoordinates(screenPos:Vector2f, projectionZPos:Float, result:Vector3f = null):Vector3f
 		{
 			if (result == null)
 				result = new Vector3f();
@@ -847,7 +847,7 @@ package org.angle3d.renderer
 				(screenPos.y / height - mViewPortRect.bottom) / (mViewPortRect.top - mViewPortRect.bottom) * 2 - 1,
 				projectionZPos * 2 - 1);
 
-			var w:Number = inverseMat.multProj(result, result);
+			var w:Float = inverseMat.multProj(result, result);
 			result.scaleLocal(1 / w);
 
 			return result;
@@ -863,7 +863,7 @@ package org.angle3d.renderer
 			if (result == null)
 				result = new Vector3f();
 
-			var w:Number = mViewProjectionMatrix.multProj(worldPos, result);
+			var w:Float = mViewProjectionMatrix.multProj(worldPos, result);
 			result.scaleLocal(1 / w);
 
 			result.x = ((result.x + 1) * mViewPortRect.width * 0.5 + mViewPortRect.left) * width;

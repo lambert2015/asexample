@@ -5,72 +5,72 @@ package org.angle3d.renderer
 	import org.angle3d.math.Rect;
 	import org.angle3d.math.FastMath;
 
-	public class Frustum
+	class Frustum
 	{
 		/**
 		 * LEFT_PLANE represents the left plane of the camera frustum.
 		 */
-		public static const LEFT_PLANE:int = 0;
+		public static const LEFT_PLANE:Int = 0;
 		/**
 		 * RIGHT_PLANE represents the right plane of the camera frustum.
 		 */
-		public static const RIGHT_PLANE:int = 1;
+		public static const RIGHT_PLANE:Int = 1;
 		/**
 		 * BOTTOM_PLANE represents the bottom plane of the camera frustum.
 		 */
-		public static const BOTTOM_PLANE:int = 2;
+		public static const BOTTOM_PLANE:Int = 2;
 		/**
 		 * TOP_PLANE represents the top plane of the camera frustum.
 		 */
-		public static const TOP_PLANE:int = 3;
+		public static const TOP_PLANE:Int = 3;
 		/**
 		 * FAR_PLANE represents the far plane of the camera frustum.
 		 */
-		public static const FAR_PLANE:int = 4;
+		public static const FAR_PLANE:Int = 4;
 		/**
 		 * NEAR_PLANE represents the near plane of the camera frustum.
 		 */
-		public static const NEAR_PLANE:int = 5;
+		public static const NEAR_PLANE:Int = 5;
 		/**
 		 * FRUSTUM_PLANES represents the number of planes of the camera frustum.
 		 */
-		public static const FRUSTUM_PLANES:int = 6;
+		public static const FRUSTUM_PLANES:Int = 6;
 
 		/**
 		 * Distance from camera to near frustum plane.
 		 */
-		protected var mFrustumNear:Number;
+		private var mFrustumNear:Float;
 		/**
 		 * Distance from camera to far frustum plane.
 		 */
-		protected var mFrustumFar:Number;
+		private var mFrustumFar:Float;
 
-		protected var mFrustumRect:Rect;
+		private var mFrustumRect:Rect;
 
 		//Temporary values computed in onFrustumChange that are needed if a
 		//call is made to onFrameChange.
-		protected var mCoeffLeft:Vector.<Number>;
-		protected var mCoeffRight:Vector.<Number>;
-		protected var mCoeffBottom:Vector.<Number>;
-		protected var mCoeffTop:Vector.<Number>;
+		private var mCoeffLeft:Vector<Float>;
+		private var mCoeffRight:Vector<Float>;
+		private var mCoeffBottom:Vector<Float>;
+		private var mCoeffTop:Vector<Float>;
 
 		/**
 		 * Array holding the planes that this camera will check for culling.
 		 */
-		protected var mWorldPlanes:Vector.<Plane>;
+		private var mWorldPlanes:Vector<Plane>;
 
-		protected var mParallelProjection:Boolean;
-		protected var mProjectionMatrix:Matrix4f;
+		private var mParallelProjection:Bool;
+		private var mProjectionMatrix:Matrix4f;
 
 		public function Frustum()
 		{
 			_init();
 		}
 
-		protected function _init():void
+		private function _init():Void
 		{
-			mWorldPlanes = new Vector.<Plane>(FRUSTUM_PLANES, true);
-			for (var i:int = 0; i < FRUSTUM_PLANES; i++)
+			mWorldPlanes = new Vector<Plane>(FRUSTUM_PLANES, true);
+			for (var i:Int = 0; i < FRUSTUM_PLANES; i++)
 			{
 				mWorldPlanes[i] = new Plane();
 			}
@@ -81,10 +81,10 @@ package org.angle3d.renderer
 			mFrustumFar = 2.0;
 			mFrustumRect = new Rect(-0.5, 0.5, -0.5, 0.5);
 
-			mCoeffLeft = new Vector.<Number>(2);
-			mCoeffRight = new Vector.<Number>(2);
-			mCoeffBottom = new Vector.<Number>(2);
-			mCoeffTop = new Vector.<Number>(2);
+			mCoeffLeft = new Vector<Float>(2);
+			mCoeffRight = new Vector<Float>(2);
+			mCoeffBottom = new Vector<Float>(2);
+			mCoeffTop = new Vector<Float>(2);
 		}
 
 		/**
@@ -93,17 +93,17 @@ package org.angle3d.renderer
 		 * location for use when calculating the new frame. The projection
 		 * matrix is updated to reflect the current values of the frustum.
 		 */
-		public function onFrustumChange():void
+		public function onFrustumChange():Void
 		{
 			if (!parallelProjection)
 			{
-				var nearSquared:Number = mFrustumNear * mFrustumNear;
-				var leftSquared:Number = mFrustumRect.left * mFrustumRect.left;
-				var rightSquared:Number = mFrustumRect.right * mFrustumRect.right;
-				var bottomSquared:Number = mFrustumRect.bottom * mFrustumRect.bottom;
-				var topSquared:Number = mFrustumRect.top * mFrustumRect.top;
+				var nearSquared:Float = mFrustumNear * mFrustumNear;
+				var leftSquared:Float = mFrustumRect.left * mFrustumRect.left;
+				var rightSquared:Float = mFrustumRect.right * mFrustumRect.right;
+				var bottomSquared:Float = mFrustumRect.bottom * mFrustumRect.bottom;
+				var topSquared:Float = mFrustumRect.top * mFrustumRect.top;
 
-				var inverseLength:Number = 1 / Math.sqrt(nearSquared + leftSquared);
+				var inverseLength:Float = 1 / Math.sqrt(nearSquared + leftSquared);
 				mCoeffLeft[0] = mFrustumNear * inverseLength;
 				mCoeffLeft[1] = -mFrustumRect.left * inverseLength;
 
@@ -142,9 +142,9 @@ package org.angle3d.renderer
 
 		/**
 		 * @return true if parallel projection is enable, false if in normal perspective mode
-		 * @see #setParallelProjection(boolean)
+		 * @see #setParallelProjection(Bool)
 		 */
-		public function get parallelProjection():Boolean
+		public function get parallelProjection():Bool
 		{
 			return mParallelProjection;
 		}
@@ -154,7 +154,7 @@ package org.angle3d.renderer
 		 *
 		 * @param value true to set up this camera for parallel projection is enable, false to enter normal perspective mode
 		 */
-		public function set parallelProjection(value:Boolean):void
+		public function set parallelProjection(value:Bool):Void
 		{
 			mParallelProjection = value;
 			onFrustumChange();
@@ -171,7 +171,7 @@ package org.angle3d.renderer
 			return mFrustumRect;
 		}
 
-		public function get frustumBottom():Number
+		public function get frustumBottom():Float
 		{
 			return mFrustumRect.bottom;
 		}
@@ -182,7 +182,7 @@ package org.angle3d.renderer
 		 *
 		 * @param frustumBottom the value of the bottom frustum plane.
 		 */
-		public function set frustumBottom(frustumBottom:Number):void
+		public function set frustumBottom(frustumBottom:Float):Void
 		{
 			mFrustumRect.bottom = frustumBottom;
 			onFrustumChange();
@@ -194,7 +194,7 @@ package org.angle3d.renderer
 		 *
 		 * @return the value of the far frustum plane.
 		 */
-		public function get frustumFar():Number
+		public function get frustumFar():Float
 		{
 			return mFrustumFar;
 		}
@@ -205,13 +205,13 @@ package org.angle3d.renderer
 		 *
 		 * @param frustumFar the value of the far frustum plane.
 		 */
-		public function set frustumFar(frustumFar:Number):void
+		public function set frustumFar(frustumFar:Float):Void
 		{
 			this.mFrustumFar = frustumFar;
 			onFrustumChange();
 		}
 
-		public function get frustumLeft():Number
+		public function get frustumLeft():Float
 		{
 			return mFrustumRect.left;
 		}
@@ -222,7 +222,7 @@ package org.angle3d.renderer
 		 *
 		 * @param frustumLeft the value of the left frustum plane.
 		 */
-		public function set frustumLeft(frustumLeft:Number):void
+		public function set frustumLeft(frustumLeft:Float):Void
 		{
 			mFrustumRect.left = frustumLeft;
 			onFrustumChange();
@@ -234,7 +234,7 @@ package org.angle3d.renderer
 		 *
 		 * @return the value of the near frustum plane.
 		 */
-		public function get frustumNear():Number
+		public function get frustumNear():Float
 		{
 			return mFrustumNear;
 		}
@@ -245,14 +245,14 @@ package org.angle3d.renderer
 		 *
 		 * @param frustumNear the value of the near frustum plane.
 		 */
-		public function set frustumNear(frustumNear:Number):void
+		public function set frustumNear(frustumNear:Float):Void
 		{
 			this.mFrustumNear = frustumNear;
 			onFrustumChange();
 		}
 
 
-		public function get frustumRight():Number
+		public function get frustumRight():Float
 		{
 			return mFrustumRect.right;
 		}
@@ -263,13 +263,13 @@ package org.angle3d.renderer
 		 *
 		 * @param frustumRight the value of the right frustum plane.
 		 */
-		public function set frustumRight(frustumRight:Number):void
+		public function set frustumRight(frustumRight:Float):Void
 		{
 			mFrustumRect.right = frustumRight;
 			onFrustumChange();
 		}
 
-		public function get frustumTop():Number
+		public function get frustumTop():Float
 		{
 			return mFrustumRect.top;
 		}
@@ -280,7 +280,7 @@ package org.angle3d.renderer
 		 *
 		 * @param frustumRight the value of the top frustum plane.
 		 */
-		public function set frustumTop(frustumTop:Number):void
+		public function set frustumTop(frustumTop:Float):Void
 		{
 			mFrustumRect.top = frustumTop;
 			onFrustumChange();
@@ -296,7 +296,7 @@ package org.angle3d.renderer
 		 * @param top    the top plane.
 		 * @param bottom the bottom plane.
 		 */
-		public function setFrustum(near:Number, far:Number, left:Number, right:Number, bottom:Number, top:Number):void
+		public function setFrustum(near:Float, far:Float, left:Float, right:Float, bottom:Float, top:Float):Void
 		{
 			mFrustumNear = near;
 			mFrustumFar = far;
@@ -305,7 +305,7 @@ package org.angle3d.renderer
 			onFrustumChange();
 		}
 
-		public function setFrustumRect(left:Number, right:Number, bottom:Number, top:Number):void
+		public function setFrustumRect(left:Float, right:Float, bottom:Float, top:Float):Void
 		{
 			mFrustumRect.setTo(left, right, bottom, top);
 			onFrustumChange();
@@ -320,10 +320,10 @@ package org.angle3d.renderer
 		 * @param near   Near view plane distance
 		 * @param far    Far view plane distance
 		 */
-		public function setFrustumPerspective(fovY:Number, aspect:Number, near:Number, far:Number):void
+		public function setFrustumPerspective(fovY:Float, aspect:Float, near:Float, far:Float):Void
 		{
-			var h:Number = Math.tan(fovY * FastMath.DEGTORAD * 0.5) * near;
-			var w:Number = h * aspect;
+			var h:Float = Math.tan(fovY * FastMath.DEGTORAD * 0.5) * near;
+			var w:Float = h * aspect;
 
 			mFrustumNear = near;
 			mFrustumFar = far;
@@ -335,7 +335,7 @@ package org.angle3d.renderer
 		/**
 		 * <code>onFrameChange</code> updates the view frame of the camera.
 		 */
-		public function onFrameChange():void
+		public function onFrameChange():Void
 		{
 
 		}

@@ -22,7 +22,7 @@ import haxe.ds.Vector;
  * container for a group of vertices of a particular piece of geometry. This box
  * defines a center and extents from that center along the x, y and z axis. <br>
  * <br>
- * A typical usage is to allow the public class define the center and radius by calling
+ * A typical usage is to allow the class define the center and radius by calling
  * either <code>containAABB</code> or <code>averagePoints</code>. A call to
  * <code>computeFramePoint</code> in turn calls <code>containAABB</code>.
  *

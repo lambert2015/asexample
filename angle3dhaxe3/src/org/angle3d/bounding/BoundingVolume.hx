@@ -142,7 +142,7 @@ class BoundingVolume implements Collidable
 	 * same data as this one.
 	 *
 	 * @param store
-	 *            where to store the cloned information. if null or wrong public class,
+	 *            where to store the cloned information. if null or wrong class,
 	 *            a new store is created.
 	 * @return the new BoundingVolume
 	 */
