@@ -75,8 +75,6 @@ class Mesh implements IMesh
 		}
 	}
 
-	
-
 	public function validate():Void
 	{
 		updateBound();
