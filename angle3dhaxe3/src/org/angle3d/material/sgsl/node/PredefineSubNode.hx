@@ -1,130 +1,130 @@
-package org.angle3d.material.sgsl.node
+package org.angle3d.material.sgsl.node;
+
+import haxe.ds.Vector;
+
+class PredefineSubNode extends BranchNode
 {
+	private var _keywords:Vector<String>;
 
-	class PredefineSubNode extends BranchNode
+	private var _arrangeList:Vector<Vector<String>>;
+
+	public function new(name:String)
 	{
-		private var _keywords:Vector<String>;
+		super(name);
 
-		private var _arrangeList:Vector<Vector<String>>;
+		_keywords = new Vector<String>();
+	}
 
-		public function PredefineSubNode(name:String)
+	override public function clone():LeafNode
+	{
+		var node:PredefineSubNode = new PredefineSubNode(name);
+		node._keywords = _keywords.slice();
+
+		cloneChildren(node);
+
+		return node;
+	}
+
+	/**
+	 * 整理分类keywords，根据'||'划分为多个数组
+	 */
+	private function arrangeKeywords():Void
+	{
+		if (_arrangeList != null)
+			return;
+
+		_arrangeList = new Vector<Vector<String>>();
+
+		_arrangeList[0] = new Vector<String>();
+		_arrangeList[0].push(_keywords[0]);
+
+		var length:Int = _keywords.length;
+		for (i in 0...length)
 		{
-			super(name);
-
-			_keywords = new Vector<String>();
-		}
-
-		override public function clone():LeafNode
-		{
-			var node:PredefineSubNode = new PredefineSubNode(name);
-			node._keywords = _keywords.slice();
-
-			cloneChildren(node);
-
-			return node;
-		}
-
-		/**
-		 * 整理分类keywords，根据'||'划分为多个数组
-		 */
-		private function arrangeKeywords():Void
-		{
-			if (_arrangeList != null)
-				return;
-
-			_arrangeList = new Vector<Vector<String>>();
-
-			_arrangeList[0] = new Vector<String>();
-			_arrangeList[0].push(_keywords[0]);
-
-			var length:Int = _keywords.length;
-			for (var i:Int = 1; i < length; i++)
+			if (_keywords[i] == "||")
 			{
-				if (_keywords[i] == "||")
-				{
-					_arrangeList[_arrangeList.length] = new Vector<String>();
-				}
-				else if (_keywords[i] != "&&")
-				{
-					_arrangeList[_arrangeList.length - 1].push(_keywords[i]);
-				}
+				_arrangeList[_arrangeList.length] = new Vector<String>();
+			}
+			else if (_keywords[i] != "&&")
+			{
+				_arrangeList[_arrangeList.length - 1].push(_keywords[i]);
 			}
 		}
+	}
 
-		public function isMatch(defines:Vector<String>):Bool
+	public function isMatch(defines:Vector<String>):Bool
+	{
+		//到达这里时必定符合条件
+		if (name == PredefineType.ELSE)
 		{
-			//到达这里时必定符合条件
-			if (name == PredefineType.ELSE)
-			{
-				return true;
-			}
-
-			arrangeKeywords();
-
-			var length:Int = _arrangeList.length;
-			for (var i:Int = 0; i < length; i++)
-			{
-				if (matchDefines(defines, _arrangeList[i]))
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		/**
-		 * conditions是否包含了所有list中的字符串
-		 * @param conditions 条件
-		 * @param target
-		 * @return
-		 *
-		 */
-		private function matchDefines(defines:Vector<String>, list:Vector<String>):Bool
-		{
-			var length:Int = list.length;
-			for (var i:Int = 0; i < length; i++)
-			{
-				if (defines.indexOf(list[i]) == -1)
-				{
-					return false;
-				}
-			}
 			return true;
 		}
 
-		public function addKeyword(value:String):Void
+		arrangeKeywords();
+
+		var length:Int = _arrangeList.length;
+		for (i in 0...length)
 		{
-			_keywords.push(value);
-		}
-
-		override public function toString(level:Int = 0):String
-		{
-			var result:String = "";
-
-			result += getSelfString(level);
-			var space:String = getSpace(level);
-			result += space + "{\n";
-			result += getChildrenString(level);
-			result += space + "}\n";
-			return result;
-		}
-
-		override private function getSelfString(level:Int):String
-		{
-			var result:String = "";
-
-			result += getSpace(level) + name;
-
-			if (name != PredefineType.ELSE)
+			if (matchDefines(defines, _arrangeList[i]))
 			{
-				result += "(" + _keywords.join(" ") + ")";
+				return true;
 			}
-
-			result += "\n";
-
-			return result;
 		}
+
+		return false;
+	}
+
+	/**
+	 * conditions是否包含了所有list中的字符串
+	 * @param conditions 条件
+	 * @param target
+	 * @return
+	 *
+	 */
+	private function matchDefines(defines:Vector<String>, list:Vector<String>):Bool
+	{
+		var length:Int = list.length;
+		for (i in 0...length)
+		{
+			if (defines.indexOf(list[i]) == -1)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public function addKeyword(value:String):Void
+	{
+		_keywords.push(value);
+	}
+
+	override public function toString(level:Int = 0):String
+	{
+		var result:String = "";
+
+		result += getSelfString(level);
+		var space:String = getSpace(level);
+		result += space + "{\n";
+		result += getChildrenString(level);
+		result += space + "}\n";
+		return result;
+	}
+
+	override private function getSelfString(level:Int):String
+	{
+		var result:String = "";
+
+		result += getSpace(level) + name;
+
+		if (name != PredefineType.ELSE)
+		{
+			result += "(" + _keywords.join(" ") + ")";
+		}
+
+		result += "\n";
+
+		return result;
 	}
 }
 

@@ -1,31 +1,30 @@
-package org.angle3d.scene
+package org.angle3d.scene;
+
+
+/**
+ * CullHint
+ * @author andy
+ */
+enum CullHint
 {
-
 	/**
-	 * CullHint
-	 * @author andy
+	 * Do whatever our parent does. If no parent, we'll default to dynamic.
 	 */
-	class CullHint
-	{
-		/**
-		 * Do whatever our parent does. If no parent, we'll default to dynamic.
-		 */
-		public static const Inherit:Int = 0;
-		/**
-		 * Do not draw if we are not at least partially within the view frustum
-		 * of the renderer's camera.
-		 */
-		public static const Auto:Int = 1;
-		/**
-		 * Always cull this from view.
-		 */
-		public static const Always:Int = 2;
-		/**
-		 * Never cull this from view. Note that we will still get culled if our
-		 * parent is culled.
-		 */
-		public static const Never:Int = 3;
+	Inherit;
+	/**
+	 * Do not draw if we are not at least partially within the view frustum
+	 * of the renderer's camera.
+	 */
+	Auto;
+	/**
+	 * Always cull this from view.
+	 */
+	Always;
+	/**
+	 * Never cull this from view. Note that we will still get culled if our
+	 * parent is culled.
+	 */
+	Never;
 
-	}
 }
 

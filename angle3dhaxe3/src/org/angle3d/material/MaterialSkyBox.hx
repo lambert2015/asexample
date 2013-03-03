@@ -8,7 +8,7 @@ package org.angle3d.material
 	 * @author andy
 	 */
 
-	final class MaterialSkyBox extends Material
+	class MaterialSkyBox extends Material
 	{
 		private var _technique:TechniqueSkyBox;
 

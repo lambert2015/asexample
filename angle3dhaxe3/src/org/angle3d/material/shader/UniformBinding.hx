@@ -1,7 +1,7 @@
 package org.angle3d.material.shader
 {
 
-	public final class UniformBinding
+	public class UniformBinding
 	{
 
 		/**

@@ -64,7 +64,7 @@ class Color
 		this.a = a;
 	}
 
-	public inline function add(value:Color, ?result:Color = null):Color
+	public inline function add(value:Color, result:Color = null):Color
 	{
 		if (result == null)
 			result = new Color();

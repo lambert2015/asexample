@@ -1,11 +1,10 @@
-package org.angle3d.material.sgsl.node
-{
+package org.angle3d.material.sgsl.node;
 
-	class PredefineType
-	{
-		public static const IFDEF:String = "#ifdef";
-		public static const ELSEIF:String = "#elseif";
-		public static const ELSE:String = "#else";
-	}
+class PredefineType
+{
+	public static inline var IFDEF:String = "#ifdef";
+	public static inline var ELSEIF:String = "#elseif";
+	public static inline var ELSE:String = "#else";
 }
+
 

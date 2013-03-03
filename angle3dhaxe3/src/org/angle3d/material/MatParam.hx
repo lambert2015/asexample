@@ -1,45 +1,43 @@
-package org.angle3d.material
+package org.angle3d.material;
+
+import org.angle3d.material.technique.Technique;
+import org.angle3d.renderer.IRenderer;
+
+/**
+ * Describes a material parameter. This is used for both defining a name and type
+ * as well as a material parameter value.
+ *
+ */
+class MatParam
 {
-	import org.angle3d.material.technique.Technique;
-	import org.angle3d.renderer.IRenderer;
+	public var type:String;
+	public var name:String;
+	public var value:Dynamic;
 
-	/**
-	 * Describes a material parameter. This is used for both defining a name and type
-	 * as well as a material parameter value.
-	 *
-	 */
-	class MatParam
+	public function new(type:String, name:String, value:Dynamic)
 	{
-		public var type:String;
-		public var name:String;
-		public var value:Object;
+		this.type = type;
+		this.name = name;
+		this.value = value;
+	}
 
-		public function MatParam(type:String, name:String, value:Object)
-		{
-			this.type = type;
-			this.name = name;
-			this.value = value;
-		}
+	public function apply(r:IRenderer, technique:Technique):Void
+	{
+		var techDef:TechniqueDef = technique.def;
+		//			technique.updateUniformParam(name, type, value);
+	}
 
-		public function apply(r:IRenderer, technique:Technique):Void
-		{
-			var techDef:TechniqueDef = technique.def;
-			//			technique.updateUniformParam(name, type, value);
-		}
+	public function clone():MatParam
+	{
+		return new MatParam(this.type, this.name, this.value);
+	}
 
-		public function clone():MatParam
-		{
-			return new MatParam(this.type, this.name, this.value);
-		}
-
-		//TODO value不能这样比较
-		public function equals(other:MatParam):Bool
-		{
-			return this.type == other.type &&
-				this.name == other.name &&
-				this.value == other.value;
-		}
-
+	//TODO value不能这样比较
+	public function equals(other:MatParam):Bool
+	{
+		return this.type == other.type &&
+			this.name == other.name &&
+			this.value == other.value;
 	}
 
 }

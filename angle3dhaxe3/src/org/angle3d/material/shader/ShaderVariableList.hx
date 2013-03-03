@@ -7,7 +7,7 @@ package org.angle3d.material.shader
 	 */
 	class ShaderVariableList
 	{
-		protected var _variables:Vector<ShaderVariable>;
+		private var _variables:Vector<ShaderVariable>;
 
 		public function ShaderVariableList()
 		{

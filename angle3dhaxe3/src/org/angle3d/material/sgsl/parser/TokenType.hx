@@ -1,102 +1,100 @@
-﻿package org.angle3d.material.sgsl.parser
+﻿package org.angle3d.material.sgsl.parser;
+
+
+class TokenType
 {
+	public static inline var NONE:String = "NONE";
+	public static inline var EOF:String = "EOF";
 
-	final class TokenType
-	{
-		public static const NONE:String = "NONE";
-		public static const EOF:String = "EOF";
+	public static inline var IDENTIFIER:String = "IDENTIFIER";
+	public static inline var NUMBER:String = "NUMBER";
 
-		public static const IDENTIFIER:String = "IDENTIFIER";
-		public static const NUMBER:String = "NUMBER";
+	/**
+	 * Reserved words
+	 */
+	//数据类型
+	public static inline var DATATYPE:String = "DATATYPE";
 
-		/**
-		 * Reserved words
-		 */
-		//数据类型
-		public static const DATATYPE:String = "DATATYPE";
+	//寄存器
+	public static inline var REGISTER:String = "REGISTER";
 
-		//寄存器
-		public static const REGISTER:String = "REGISTER";
+	//函数
+	/** function */
+	public static inline var FUNCTION:String = "FUNCTION";
 
-		//函数
-		/** function */
-		public static const FUNCTION:String = "FUNCTION";
+	//预编译条件
+	/** # */
+	public static inline var PREDEFINE:String = "PREDEFINE";
 
-		//预编译条件
-		/** # */
-		public static const PREDEFINE:String = "PREDEFINE";
+	public static inline var IF:String = "if";
 
-		public static const IF:String = "if";
+	public static inline var ELSE:String = "else";
 
-		public static const ELSE:String = "else";
+	/** return */
+	public static inline var RETURN:String = "RETURN";
 
-		/** return */
-		public static const RETURN:String = "RETURN";
+	/**
+	 * Grouping, delimiting
+	 */
+	/** . */
+	public static inline var DOT:String = "DOT";
+	/** ; */
+	public static inline var SEMI:String = "SEMI";
+	/** { */
+	public static inline var LBRACE:String = "LBRACE";
+	/** } */
+	public static inline var RBRACE:String = "RBRACE";
+	/** ( */
+	public static inline var LPAREN:String = "LPAREN";
+	/** ) */
+	public static inline var RPAREN:String = "RPAREN";
+	/** , */
+	public static inline var COMMA:String = "COMMA";
 
-		/**
-		 * Grouping, delimiting
-		 */
-		/** . */
-		public static const DOT:String = "DOT";
-		/** ; */
-		public static const SEMI:String = "SEMI";
-		/** { */
-		public static const LBRACE:String = "LBRACE";
-		/** } */
-		public static const RBRACE:String = "RBRACE";
-		/** ( */
-		public static const LPAREN:String = "LPAREN";
-		/** ) */
-		public static const RPAREN:String = "RPAREN";
-		/** , */
-		public static const COMMA:String = "COMMA";
+	/** + */
+	public static inline var PLUS:String = "PLUS";
 
-		/** + */
-		public static const PLUS:String = "PLUS";
+	/** - */
+	public static inline var SUBTRACT:String = "SUBTRACT";
 
-		/** - */
-		public static const SUBTRACT:String = "SUBTRACT";
+	/** * */
+	public static inline var MULTIPLY:String = "MULTIPLY";
 
-		/** * */
-		public static const MULTIPLY:String = "MULTIPLY";
+	/** / */
+	public static inline var DIVIDE:String = "DIVIDE";
 
-		/** / */
-		public static const DIVIDE:String = "DIVIDE";
+	/** = */
+	public static inline var EQUAL:String = "EQUAL";
 
-		/** = */
-		public static const EQUAL:String = "EQUAL";
+	/** && */
+	public static inline var AND:String = "AND";
 
-		/** && */
-		public static const AND:String = "AND";
+	/** || */
+	public static inline var OR:String = "OR";
 
-		/** || */
-		public static const OR:String = "OR";
+	/** == */
+	public static inline var DOUBLE_EQUAL:String = "DOUBLE_EQUAL";
 
-		/** == */
-		public static const DOUBLE_EQUAL:String = "DOUBLE_EQUAL";
+	/** != */
+	public static inline var NOT_EQUAL:String = "NOT_EQUAL";
 
-		/** != */
-		public static const NOT_EQUAL:String = "NOT_EQUAL";
+	/** >= */
+	public static inline var GREATER_EQUAL:String = "GREATER_EQUAL";
 
-		/** >= */
-		public static const GREATER_EQUAL:String = "GREATER_EQUAL";
+	/** <= */
+	public static inline var LESS_EQUAL:String = "LESS_EQUAL";
 
-		/** <= */
-		public static const LESS_EQUAL:String = "LESS_EQUAL";
+	/** > */
+	public static inline var GREATER_THAN:String = "GREATER_THAN";
 
-		/** > */
-		public static const GREATER_THAN:String = "GREATER_THAN";
+	/** < */
+	public static inline var LESS_THAN:String = "LESS_THAN";
 
-		/** < */
-		public static const LESS_THAN:String = "LESS_THAN";
+	/** [ */
+	public static inline var LBRACKET:String = "LBRACKET";
 
-		/** [ */
-		public static const LBRACKET:String = "LBRACKET";
-
-		/** ] */
-		public static const RBRACKET:String = "RBRACKET";
-	}
-
+	/** ] */
+	public static inline var RBRACKET:String = "RBRACKET";
 }
 
 

@@ -1,23 +1,23 @@
-package org.angle3d.material.sgsl.node.reg
+package org.angle3d.material.sgsl.node.reg;
+
+import org.angle3d.material.sgsl.RegType;
+import org.angle3d.material.sgsl.node.LeafNode;
+
+/**
+ * ...
+ * @author andy
+ */
+class TextureReg extends RegNode
 {
-	import org.angle3d.material.sgsl.RegType;
-	import org.angle3d.material.sgsl.node.LeafNode;
-
-	/**
-	 * ...
-	 * @author andy
-	 */
-	class TextureReg extends RegNode
+	public function new(dataType:String, name:String)
 	{
-		public function TextureReg(dataType:String, name:String)
-		{
-			super(RegType.UNIFORM, dataType, name);
-		}
+		super(RegType.UNIFORM, dataType, name);
+	}
 
-		override public function clone():LeafNode
-		{
-			return new TextureReg(dataType, name);
-		}
+	override public function clone():LeafNode
+	{
+		return new TextureReg(dataType, name);
 	}
 }
+
 

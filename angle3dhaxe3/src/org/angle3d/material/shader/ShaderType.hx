@@ -1,11 +1,11 @@
-package org.angle3d.material.shader
-{
-	import flash.display3D.Context3DProgramType;
+package org.angle3d.material.shader;
 
-	final class ShaderType
-	{
-		public static const VERTEX:String = Context3DProgramType.VERTEX;
-		public static const FRAGMENT:String = Context3DProgramType.FRAGMENT;
-	}
+import flash.display3D.Context3DProgramType;
+
+class ShaderType
+{
+	public static inline var VERTEX:Context3DProgramType = Context3DProgramType.VERTEX;
+	public static inline var FRAGMENT:Context3DProgramType = Context3DProgramType.FRAGMENT;
 }
+
 

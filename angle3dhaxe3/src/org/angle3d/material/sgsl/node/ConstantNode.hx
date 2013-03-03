@@ -1,27 +1,25 @@
-package org.angle3d.material.sgsl.node
+package org.angle3d.material.sgsl.node;
+
+class ConstantNode extends AtomNode
 {
+	public var value:Float;
 
-	final class ConstantNode extends AtomNode
+	public function new(value:Float)
 	{
-		public var value:Float;
+		super(value.toString());
+		this.value = value;
+	}
 
-		public function ConstantNode(value:Float)
-		{
-			super(value.toString());
-			this.value = value;
-		}
+	override public function clone():LeafNode
+	{
+		return new ConstantNode(this.value);
+	}
 
-		override public function clone():LeafNode
-		{
-			return new ConstantNode(this.value);
-		}
+	override public function toString(level:Int = 0):String
+	{
+		var out:String = value + "";
 
-		override public function toString(level:Int = 0):String
-		{
-			var out:String = value + "";
-
-			return out;
-		}
+		return out;
 	}
 }
 

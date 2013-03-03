@@ -1,76 +1,69 @@
-package org.angle3d.material.sgsl.pool
-{
+package org.angle3d.material.sgsl.pool;
 
-	import org.angle3d.material.sgsl.node.reg.RegNode;
-	import org.angle3d.material.shader.ShaderProfile;
-	import org.angle3d.utils.Assert;
+
+import org.angle3d.material.sgsl.node.reg.RegNode;
+import org.angle3d.material.shader.ShaderProfile;
+import org.angle3d.utils.Assert;
+
+/**
+ * 取样器寄存器池
+ * @author andy
+ */
+class TextureRegPool extends RegPool
+{
+	private var _pool:Vector<Int>;
+
+	public function new(profile:String)
+	{
+		super(profile);
+
+		_pool = new Vector<Int>(mRegLimit, true);
+	}
+
+	override private function getRegLimit():Int
+	{
+		if (mProfile == ShaderProfile.BASELINE_EXTENDED)
+		{
+			return 16;
+		}
+		else if (mProfile == ShaderProfile.BASELINE)
+		{
+			return 8;
+		}
+		else
+		{
+			return 4;
+		}
+	}
+
+	override public function clear():Void
+	{
+		super.clear();
+		for (i in 0...mRegLimit)
+		{
+			_pool[i] = 0;
+		}
+	}
 
 	/**
-	 * 取样器寄存器池
-	 * @author andy
+	 * 设置value寄存器位置
+	 * @param value 对应的临时变量
 	 */
-	class TextureRegPool extends RegPool
+	override public function register(node:RegNode):Void
 	{
-		private var _pool:Vector<int>;
-
-		public function TextureRegPool(profile:String)
+		Assert.assert(!node.registered, node.name + "不能注册多次");
+		
+		for (i in 0...mRegLimit)
 		{
-			super(profile);
-
-			_pool = new Vector<int>(mRegLimit, true);
-		}
-
-		override private function getRegLimit():uint
-		{
-			if (mProfile == ShaderProfile.BASELINE_EXTENDED)
+			if (_pool[i] == 0)
 			{
-				return 16;
-			}
-			else if (mProfile == ShaderProfile.BASELINE)
-			{
-				return 8;
-			}
-			else
-			{
-				return 4;
+				node.index = i;
+				_pool[i] = 1;
+				return;
 			}
 		}
 
-		override public function clear():Void
-		{
-			super.clear();
-			for (var i:Int = 0; i < mRegLimit; i++)
-			{
-				_pool[i] = 0;
-			}
-		}
-
-		/**
-		 * 设置value寄存器位置
-		 * @param value 对应的临时变量
-		 */
-		override public function register(node:RegNode):Void
-		{
-			CF::DEBUG
-			{
-				Assert.assert(!node.registered, node.name + "不能注册多次");
-			}
-
-			for (var i:Int = 0; i < mRegLimit; i++)
-			{
-				if (_pool[i] == 0)
-				{
-					node.index = i;
-					_pool[i] = 1;
-					return;
-				}
-			}
-
-			CF::DEBUG
-			{
-				Assert.assert(false, "未能找到下一个空闲位置，寄存器已满");
-			}
-		}
+		Assert.assert(false, "未能找到下一个空闲位置，寄存器已满");
 	}
 }
 

@@ -87,13 +87,13 @@ class LightControl extends AbstractControl
 
 	private function _spatialToLight(light:Light):Void
 	{
-		if (light is PointLight)
+		if (Std.is(light,PointLight))
 		{
 			var pl:PointLight = light as PointLight;
 			pl.position = spatial.getWorldTranslation();
 		}
 
-		if (light is DirectionalLight)
+		if (Std.is(light,DirectionalLight))
 		{
 			var dl:DirectionalLight = light as DirectionalLight;
 			//TODO 这里是不是传错了
@@ -114,7 +114,7 @@ class LightControl extends AbstractControl
 	private function _lightToSpatial(light:Light):Void
 	{
 		var vecDiff:Vector3f;
-		if (light is PointLight)
+		if (Std.is(light,PointLight))
 		{
 			var pLight:PointLight = light as PointLight;
 
@@ -122,7 +122,7 @@ class LightControl extends AbstractControl
 			vecDiff.addLocal(spatial.translation);
 			spatial.setTranslation(vecDiff);
 		}
-		else if (light is DirectionalLight)
+		else if (Std.is(light,DirectionalLight))
 		{
 			var dLight:DirectionalLight = light as DirectionalLight;
 			vecDiff = dLight.direction.clone();
