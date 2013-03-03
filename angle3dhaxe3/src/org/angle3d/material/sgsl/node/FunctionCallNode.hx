@@ -1,6 +1,7 @@
 package org.angle3d.material.sgsl.node;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 /**
  * 如果是自定义函数的话，最终需要替换
@@ -18,21 +19,21 @@ class FunctionCallNode extends BranchNode
 	 * 克隆一个FunctionNode,并替换参数
 	 * 只有自定义函数才能调用此方法
 	 */
-	public function cloneCustomFunction(functionMap:Dictionary):FunctionNode
+	public function cloneCustomFunction(functionMap:StringMap<FunctionNode>):FunctionNode
 	{
-		var functionNode:FunctionNode = functionMap[this.name].clone();
+		var functionNode:FunctionNode = cast functionMap.get(this.name).clone();
 		if (functionNode.needReplace)
 		{
 			functionNode.replaceCustomFunction(functionMap);
 		}
 
-		var params:Vector<ParameterNode> = functionNode.getParams();
+		var params:Array<ParameterNode> = functionNode.getParams();
 		var length:Int = params.length;
-		var paramMap:Dictionary = new Dictionary();
+		var paramMap:StringMap<AtomNode> = new StringMap<AtomNode>();
 		for (i in 0...length)
 		{
 			var param:ParameterNode = params[i];
-			paramMap[param.name] = children[i];
+			paramMap.set(param.name, children[i]);
 		}
 
 		functionNode.replaceLeafNode(paramMap);

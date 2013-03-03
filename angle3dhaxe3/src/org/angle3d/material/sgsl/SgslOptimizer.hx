@@ -8,6 +8,7 @@ import org.angle3d.material.sgsl.node.BranchNode;
 import org.angle3d.material.sgsl.node.FunctionNode;
 import org.angle3d.material.sgsl.node.LeafNode;
 import org.angle3d.material.sgsl.node.reg.RegNode;
+import haxe.ds.Vector;
 
 /**
  * 对生成的BranchNode进行处理

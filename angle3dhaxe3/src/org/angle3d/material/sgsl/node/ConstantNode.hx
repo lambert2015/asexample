@@ -6,7 +6,7 @@ class ConstantNode extends AtomNode
 
 	public function new(value:Float)
 	{
-		super(value.toString());
+		super(value + "");
 		this.value = value;
 	}
 

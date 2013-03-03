@@ -4,7 +4,7 @@ import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.sgsl.node.reg.TempReg;
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.utils.Assert;
-
+import haxe.ds.Vector;
 /**
  * 临时变量寄存器池
  * @author andy

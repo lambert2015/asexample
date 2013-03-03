@@ -3,6 +3,7 @@ package org.angle3d.material.sgsl;
 
 import flash.display3D.Context3DProfile;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.utils.Logger;
@@ -74,7 +75,7 @@ class OpCodeManager
 	public static inline var OP_INCNEST:Int = 0x200;
 	public static inline var OP_DECNEST:Int = 0x400;
 
-	private var _opCodeMap:Dictionary; //<String,OpCode>
+	private var _opCodeMap:StringMap<OpCode>;
 
 	public var profile:String;
 
@@ -92,27 +93,26 @@ class OpCodeManager
 
 	public function isTexture(name:String):Bool
 	{
-		return _opCodeMap[name] == textureCode;
+		return _opCodeMap.get(name) == textureCode;
 	}
 
 	public function getCode(name:String):OpCode
 	{
-
-			if (_opCodeMap[name] == null)
-			{
-				Logger.warn("can not find opCode " + name + ",please check your sgsl version !");
-			}
-		return _opCodeMap[name];
+		if (!_opCodeMap.exists(name))
+		{
+			Logger.warn("can not find opCode " + name + ",please check your sgsl version !");
+		}
+		return _opCodeMap.get(name);
 	}
 
-	public function containCode(name:String):Bool
+	public inline function containCode(name:String):Bool
 	{
-		return _opCodeMap[name] != undefined;
+		return _opCodeMap.exists(name);
 	}
 
 	private function _initCodes():Void
 	{
-		_opCodeMap = new Dictionary();
+		_opCodeMap = new StringMap<OpCode>();
 
 		movCode = addCode(["mov"], 2, 0x00, 0);
 		addCode(["add"], 3, 0x01, 0);
@@ -179,14 +179,14 @@ class OpCodeManager
 	 * @param	name  原名
 	 * @param	nicknames 别名列表
 	 */
-	private function addCode(names:Array, numRegister:Int, emitCode:Int, flags:Int):OpCode
+	private function addCode(names:Array<String>, numRegister:Int, emitCode:Int, flags:Int):OpCode
 	{
 		var code:OpCode = new OpCode(names, numRegister, emitCode, flags);
 
 		var length:Int = names.length;
 		for (i in 0...length)
 		{
-			_opCodeMap[names[i]] = code;
+			_opCodeMap.set(names[i], code);
 		}
 
 		return code;

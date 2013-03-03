@@ -41,11 +41,11 @@ class LightList
 	 *
 	 * @param l The light to add.
 	 */
-	public function addLight(l:Light):Void
+	public function addLight(light:Light):Void
 	{
-		if (mList.indexOf(l) == -1)
+		if (ArrayUtil.indexOf(mList,light) == -1)
 		{
-			mList.push(l);
+			mList.push(light);
 		}
 	}
 
@@ -100,7 +100,11 @@ class LightList
 	 */
 	public function clear():Void
 	{
-		mList.length = 0;
+		#if flash
+			untyped mList.length = 0;
+		#else
+			mList = [];
+		#end
 	}
 
 	/**
@@ -163,7 +167,7 @@ class LightList
 		clear();
 
 		//copy local LightList
-		mList = local.getList().slice();
+		mList = local.getList().slice(0);
 
 		// if the spatial has a parent node, add the lights
 		// from the parent list as well
@@ -177,7 +181,7 @@ class LightList
 	{
 		var lightList:LightList = new LightList();
 		lightList.mOwner = null;
-		lightList.mList = mList.slice();
+		lightList.mList = mList.slice(0);
 		return lightList;
 	}
 }

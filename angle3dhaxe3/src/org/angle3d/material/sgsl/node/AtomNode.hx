@@ -1,6 +1,7 @@
 package org.angle3d.material.sgsl.node;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 /**
  *
@@ -18,9 +19,9 @@ class AtomNode extends LeafNode
 	}
 
 	//TODO 这个可能会有问题
-	override public function replaceLeafNode(paramMap:Dictionary):Void
+	override public function replaceLeafNode(paramMap:StringMap<AtomNode>):Void
 	{
-		var node:AtomNode = paramMap[this.name];
+		var node:AtomNode = paramMap.get(this.name);
 		if (node != null)
 		{
 			this.name = node.name;

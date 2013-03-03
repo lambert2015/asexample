@@ -1,17 +1,19 @@
 package org.angle3d.material.sgsl.node;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 import haxe.ds.Vector;
+import org.angle3d.utils.ArrayUtil;
 
 class BranchNode extends LeafNode
 {
-	private var mChildren:Vector<LeafNode>;
+	private var mChildren:Array<LeafNode>;
 
 	public function new(name:String = "")
 	{
 		super(name);
 
-		mChildren = new Vector<LeafNode>();
+		mChildren = new Array<LeafNode>();
 	}
 
 	public function addChild(node:LeafNode):Void
@@ -21,14 +23,14 @@ class BranchNode extends LeafNode
 
 	public function removeChild(node:LeafNode):Void
 	{
-		var index:Int = mChildren.indexOf(node);
+		var index:Int = ArrayUtil.indexOf(mChildren, node);
 		if (index > -1)
 		{
 			mChildren.splice(index, 1);
 		}
 	}
 
-	public function addChildren(list:Vector<LeafNode>):Void
+	public function addChildren(list:Array<LeafNode>):Void
 	{
 		var count:Int = list.length;
 		for (i in 0...count)
@@ -37,8 +39,8 @@ class BranchNode extends LeafNode
 		}
 	}
 
-	public var children(get, null):Vector<LeafNode>;
-	private function get_children():Vector<LeafNode>
+	public var children(get, null):Array<LeafNode>;
+	private function get_children():Array<LeafNode>
 	{
 		return mChildren;
 	}
@@ -55,14 +57,14 @@ class BranchNode extends LeafNode
 	 * @param defines
 	 *
 	 */
-	public function filter(defines:Vector<String>):Void
+	public function filter(defines:Array<String>):Void
 	{
 		if (defines == null)
 		{
-			defines = new Vector<String>();
+			defines = new Array<String>();
 		}
 
-		var results:Vector<LeafNode> = new Vector<LeafNode>();
+		var results:Array<LeafNode> = new Array<LeafNode>();
 
 		var child:LeafNode;
 		var predefine:PredefineNode;
@@ -78,7 +80,7 @@ class BranchNode extends LeafNode
 				//符合条件则替换掉，否则忽略
 				if (predefine.isMatch(defines))
 				{
-					var subList:Vector<LeafNode> = predefine.getMatchChildren(defines);
+					var subList:Array<LeafNode> = predefine.getMatchChildren(defines);
 					if (subList != null && subList.length > 0)
 					{
 						results = results.concat(subList);
@@ -102,7 +104,7 @@ class BranchNode extends LeafNode
 	/**
 	 * 主要用于替换自定义变量的名称
 	 */
-	override public function renameLeafNode(map:Dictionary):Void
+	override public function renameLeafNode(map:StringMap<String>):Void
 	{
 		var length:Int = mChildren.length;
 		for (i in 0...length)
@@ -116,7 +118,7 @@ class BranchNode extends LeafNode
 	 * @param map
 	 *
 	 */
-	override public function replaceLeafNode(paramMap:Dictionary):Void
+	override public function replaceLeafNode(paramMap:StringMap<LeafNode>):Void
 	{
 		var child:LeafNode;
 		for (i in 0...mChildren.length)

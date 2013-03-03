@@ -57,7 +57,7 @@ class TexFlag
 		return v;
 	}
 
-	public function parseFlags(list:Array):Void
+	public function parseFlags(list:Array<String>):Void
 	{
 		var length:Int = list.length;
 		for (i in 0...length)
