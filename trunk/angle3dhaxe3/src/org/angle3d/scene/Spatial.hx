@@ -1,5 +1,6 @@
 package org.angle3d.scene;
 
+import haxe.ds.Vector;
 import org.angle3d.bounding.BoundingBox;
 import org.angle3d.bounding.BoundingVolume;
 import org.angle3d.collision.Collidable;
@@ -13,16 +14,15 @@ import org.angle3d.math.Quaternion;
 import org.angle3d.math.Transform;
 import org.angle3d.math.Vector3f;
 import org.angle3d.renderer.Camera3D;
-import org.angle3d.renderer.RenderManager;
-import org.angle3d.renderer.ViewPort;
 import org.angle3d.renderer.queue.QueueBucket;
 import org.angle3d.renderer.queue.ShadowMode;
+import org.angle3d.renderer.RenderManager;
+import org.angle3d.renderer.ViewPort;
 import org.angle3d.scene.control.Control;
 import org.angle3d.utils.ArrayUtil;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Cloneable;
 import org.angle3d.utils.TempVars;
-import haxe.ds.Vector;
 
 //TODO API 优化
 //TODO 还需要添加更多常用属性
@@ -635,7 +635,7 @@ class Spatial implements Cloneable implements Collidable
 		return mControls[index];
 	}
 
-	public function getControlByClass(cls:Class<T>):Control
+	public function getControlByClass(cls:Class<Control>):Control
 	{
 		var length:Int = mControls.length;
 		for (i in 0...length)

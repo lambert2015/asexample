@@ -1,46 +1,46 @@
-package org.angle3d.material.sgsl
+package org.angle3d.material.sgsl;
+
+/**
+ * 操作符
+ * @author andy
+ */
+class OpCode
 {
+	public var emitCode:Int;
+	public var flags:Int;
+	public var numRegister:Int;
+
+	public var names:Array;
 
 	/**
-	 * 操作符
-	 * @author andy
+	 *
+	 * @param	names 名称
+	 * @param	numRegister 参数数量
+	 * @param	emitCode
+	 * @param	flags
 	 */
-	internal class OpCode
+	public function new(names:Array, numRegister:Int, emitCode:Int, flags:Int)
 	{
-		public var emitCode:uint;
-		public var flags:uint;
-		public var numRegister:uint;
+		this.names = names;
+		this.numRegister = numRegister;
+		this.emitCode = emitCode;
+		this.flags = flags;
+	}
 
-		public var names:Array;
+	/**
+	 * 只能在Fragment中使用
+	 * @return
+	 */
+	public var isFragOnly(get, null):Bool;
+	private function get_isFragOnly():Bool
+	{
+		return (flags & OpCodeManager.OP_FRAG_ONLY) != 0;
+	}
 
-		/**
-		 *
-		 * @param	names 名称
-		 * @param	numRegister 参数数量
-		 * @param	emitCode
-		 * @param	flags
-		 */
-		public function OpCode(names:Array, numRegister:uint, emitCode:uint, flags:uint)
-		{
-			this.names = names;
-			this.numRegister = numRegister;
-			this.emitCode = emitCode;
-			this.flags = flags;
-		}
-
-		/**
-		 * 只能在Fragment中使用
-		 * @return
-		 */
-		public function get isFragOnly():Bool
-		{
-			return (flags & OpCodeManager.OP_FRAG_ONLY) != 0;
-		}
-
-		public function get isVersion2():Bool
-		{
-			return (flags & OpCodeManager.OP_VERSION2) != 0;
-		}
+	public var isVersion2(get, null):Bool;
+	private function get_isVersion2():Bool
+	{
+		return (flags & OpCodeManager.OP_VERSION2) != 0;
 	}
 }
 

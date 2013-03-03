@@ -1,128 +1,109 @@
-package org.angle3d.material.sgsl
+package org.angle3d.material.sgsl;
+
+import org.angle3d.utils.StringUtil;
+
+/**
+ * ...
+ * @author andy
+ */
+
+class TexFlag
 {
-	import org.angle3d.utils.StringUtil;
+	public var type:Int;
 
-	/**
-	 * ...
-	 * @author andy
-	 */
+	public var bias:Int;
 
-	internal class TexFlag
+	public var dimension:Int;
+
+	public var mipmap:Int;
+
+	public var filter:Int;
+
+	public var wrap:Int;
+
+	public var special:Int;
+
+	public function new()
 	{
-		public var type:Int;
+		type = 0;
+		bias = 0;
+		dimension = 0;
+		special = 4;
+		wrap = 0;
+		mipmap = 0;
+		filter = 1;
+	}
 
-		public var bias:Int;
+	public function getTexFlagsBits():Int
+	{
+		return type | (dimension << 4) | (special << 8) | (wrap << 12) | (mipmap << 16) | (filter << 20);
+	}
 
-		public var dimension:Int;
-
-		public var mipmap:Int;
-
-		public var filter:Int;
-
-		public var wrap:Int;
-
-		public var special:Int;
-
-		public function TexFlag()
+	public function getLod():Int
+	{
+		var v:Int = Std.int(bias * 8);
+		if (v < -128)
 		{
-			type = 0;
-			bias = 0;
-			dimension = 0;
-			special = 4;
-			wrap = 0;
-			mipmap = 0;
-			filter = 1;
+			v = -128;
+		}
+		else if (v > 127)
+		{
+			v = 127;
 		}
 
-		public function getTexFlagsBits():uint
-		{
-			return type | (dimension << 4) | (special << 8) | (wrap << 12) | (mipmap << 16) | (filter << 20);
-		}
+		if (v < 0)
+			v = 0x100 + v;
 
-		public function get lod():Int
+		return v;
+	}
+
+	public function parseFlags(list:Array):Void
+	{
+		var length:Int = list.length;
+		for (i in 0...length)
 		{
-			var v:Int = int(bias * 8);
-			if (v < -128)
+			var str:String = list[i];
+
+			if (StringUtil.isDigit(str))
 			{
-				v = -128;
+				bias = Std.parseInt(str);
 			}
-			else if (v > 127)
+			else
 			{
-				v = 127;
-			}
-
-			if (v < 0)
-				v = 0x100 + v;
-
-			return v;
-		}
-
-		public function parseFlags(list:Array):Void
-		{
-			var length:Int = list.length;
-			for (var i:Int = 0; i < length; i++)
-			{
-				var str:String = list[i];
-
-				if (StringUtil.isDigit(str))
+				switch (str.toLowerCase())
 				{
-					bias = parseInt(str);
-				}
-				else
-				{
-					switch (str.toLowerCase())
-					{
-						case "rgba":
-							type = 0;
-							break;
-						case "dxt1":
-							type = 1;
-							break;
-						case "dxt5":
-							type = 2;
-							break;
-						case "2d":
-							dimension = 0;
-							break;
-						case "cube":
-							dimension = 1;
-							break;
-						case "3d":
-							dimension = 2;
-							break;
-						case "clamp":
-							wrap = 0;
-							break;
-						case "wrap":
-						case "repeat":
-							wrap = 1;
-							break;
-						case "nomip":
-						case "mipnone":
-							mipmap = 0;
-							break;
-						case "mipnearest":
-							mipmap = 1;
-							break;
-						case "miplinear":
-							mipmap = 2;
-							break;
-						case "nearest":
-							filter = 0;
-							break;
-						case "linear":
-							filter = 1;
-							break;
-						case "centroid":
-							special = 0;
-							break;
-						case "single":
-							special = 2;
-							break;
-						case "ignore":
-							special = 4;
-							break;
-					}
+					case "rgba":
+						type = 0;
+					case "dxt1":
+						type = 1;
+					case "dxt5":
+						type = 2;
+					case "2d":
+						dimension = 0;
+					case "cube":
+						dimension = 1;
+					case "3d":
+						dimension = 2;
+					case "clamp":
+						wrap = 0;
+					case "wrap","repeat":
+						wrap = 1;
+					case "nomip","mipnone":
+						mipmap = 0;
+					case "mipnearest":
+						mipmap = 1;
+					case "miplinear":
+						mipmap = 2;
+					case "nearest":
+						filter = 0;
+					case "linear":
+						filter = 1;
+					case "centroid":
+						special = 0;
+					case "single":
+						special = 2;
+					case "ignore":
+						special = 4;
 				}
 			}
 		}

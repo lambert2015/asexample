@@ -15,7 +15,7 @@ class GeometryList
 {
 	private var _geometries:Vector<Geometry>;
 	private var _comparator:GeometryComparator;
-	private var _size:uint;
+	private var _size:Int;
 
 	public function new(comparator:GeometryComparator)
 	{

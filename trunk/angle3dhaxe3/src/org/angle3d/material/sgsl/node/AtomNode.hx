@@ -1,52 +1,51 @@
-package org.angle3d.material.sgsl.node
+package org.angle3d.material.sgsl.node;
+
+import flash.utils.Dictionary;
+
+/**
+ *
+ * @author andy
+ *
+ */
+class AtomNode extends LeafNode
 {
-	import flash.utils.Dictionary;
+	public var mask:String;
 
-	/**
-	 *
-	 * @author andy
-	 *
-	 */
-	class AtomNode extends LeafNode
+	public function new(name:String = "")
 	{
-		public var mask:String;
+		super(name);
+		mask = "";
+	}
 
-		public function AtomNode(name:String = "")
+	//TODO 这个可能会有问题
+	override public function replaceLeafNode(paramMap:Dictionary):Void
+	{
+		var node:AtomNode = paramMap[this.name];
+		if (node != null)
 		{
-			super(name);
-			mask = "";
-		}
-
-		//TODO 这个可能会有问题
-		override public function replaceLeafNode(paramMap:Dictionary):Void
-		{
-			var node:AtomNode = paramMap[this.name];
-			if (node != null)
+			this.name = node.name;
+			if (node.mask.length > 0)
 			{
-				this.name = node.name;
-				if (node.mask.length > 0)
-				{
-					this.mask = node.mask;
-				}
+				this.mask = node.mask;
 			}
 		}
+	}
 
-		public function isRelative():Bool
-		{
-			return false;
-		}
+	public function isRelative():Bool
+	{
+		return false;
+	}
 
-		override public function clone():LeafNode
-		{
-			var node:AtomNode = new AtomNode(this.name);
-			node.mask = mask;
-			return node;
-		}
+	override public function clone():LeafNode
+	{
+		var node:AtomNode = new AtomNode(this.name);
+		node.mask = mask;
+		return node;
+	}
 
-		override public function toString(level:Int = 0):String
-		{
-			return (mask != "") ? (name + "." + mask) : name;
-		}
+	override public function toString(level:Int = 0):String
+	{
+		return (mask != "") ? (name + "." + mask) : name;
 	}
 }
 

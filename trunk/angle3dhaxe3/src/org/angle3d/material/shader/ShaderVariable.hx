@@ -1,54 +1,58 @@
-package org.angle3d.material.shader
+package org.angle3d.material.shader;
+
+
+/**
+ * ...
+ * @author
+ */
+class ShaderVariable
 {
+	private var _name:String;
 
-	/**
-	 * ...
-	 * @author
-	 */
-	class ShaderVariable
+	private var _location:Int;
+
+	private var _size:Int;
+
+	public function new(name:String, size:Int)
 	{
-		protected var _name:String;
+		_name = name;
+		_size = size;
+		_location = -1;
+	}
 
-		protected var _location:Int;
+	public var name(get, set):String;
+	private function set_name(value:String):String
+	{
+		_name = value;
+		return _name;
+	}
 
-		protected var _size:Int;
+	private function get_name():String
+	{
+		return _name;
+	}
 
-		public function ShaderVariable(name:String, size:Int)
-		{
-			_name = name;
-			_size = size;
-			_location = -1;
-		}
+	public var size(get, set):Int;
+	private function set_size(value:Int):Int
+	{
+		_size = value;
+		return _size;
+	}
 
-		public function set name(value:String):Void
-		{
-			_name = value;
-		}
+	private function get_size():Int
+	{
+		return _size;
+	}
 
-		public function get name():String
-		{
-			return _name;
-		}
+	public var location(get, set):Int;
+	private function set_location(location:Int):Int
+	{
+		_location = location;
+	}
 
-		public function set size(value:Int):Void
-		{
-			_size = value;
-		}
-
-		public function get size():Int
-		{
-			return _size;
-		}
-
-		public function set location(location:Int):Void
-		{
-			_location = location;
-		}
-
-		public function get location():Int
-		{
-			return _location;
-		}
+	private function get_location():Int
+	{
+		return _location;
 	}
 }
 

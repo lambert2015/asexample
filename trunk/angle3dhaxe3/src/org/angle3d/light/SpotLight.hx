@@ -140,17 +140,12 @@ class SpotLight extends Light
 	 * returns the spot inner angle
 	 * @return the spot inner angle
 	 */
-	public var invSpotRange(get, set):Float;
+	public var innerAngle(get, set):Float;
 	private function get_innerAngle():Float
 	{
 		return mInnerAngle;
 	}
 
-	/**
-	 * Sets the inner angle of the cone of influence.
-	 * This angle is the angle between the spot direction axis and the inner border of the cone of influence.
-	 * @param spotInnerAngle
-	 */
 	private function set_innerAngle(value:Float):Float
 	{
 		mInnerAngle = value;

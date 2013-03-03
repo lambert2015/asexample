@@ -1,217 +1,257 @@
-package org.angle3d.material.post
-{
-	import flash.display3D.textures.Texture;
+package org.angle3d.material.post;
 
-	import org.angle3d.material.Material;
-	import org.angle3d.renderer.Camera3D;
-	import org.angle3d.renderer.IRenderer;
-	import org.angle3d.renderer.RenderManager;
-	import org.angle3d.renderer.ViewPort;
-	import org.angle3d.renderer.queue.RenderQueue;
-	import org.angle3d.texture.FrameBuffer;
-	import org.angle3d.texture.Texture2D;
+import flash.display3D.textures.Texture;
+
+import org.angle3d.material.Material;
+import org.angle3d.renderer.Camera3D;
+import org.angle3d.renderer.IRenderer;
+import org.angle3d.renderer.RenderManager;
+import org.angle3d.renderer.ViewPort;
+import org.angle3d.renderer.queue.RenderQueue;
+import org.angle3d.texture.FrameBuffer;
+import org.angle3d.texture.Texture2D;
+
+/**
+ * A FilterPostProcessor is a processor that can apply several {@link Filter}s to a rendered scene<br>
+ * It manages a list of filters that will be applied in the order in which they've been added to the list
+ */
+class FilterPostProcessor implements SceneProcessor
+{
+	private var _initialized:Bool;
+
+
+	private var renderManager:RenderManager;
+	private var renderer:IRenderer;
+	private var viewPort:ViewPort;
+	private var renderFrameBufferMS:FrameBuffer;
+
+	private var filterTexture:Texture2D;
+	private var depthTexture:Texture2D;
+	private var filters:Vector<Filter> = new Vector<Filter>();
+
+	public function FilterPostProcessor()
+	{
+		_initialized = false;
+	}
 
 	/**
-	 * A FilterPostProcessor is a processor that can apply several {@link Filter}s to a rendered scene<br>
-	 * It manages a list of filters that will be applied in the order in which they've been added to the list
+	 * Adds a filter to the filters list<br>
+	 * @param filter the filter to add
 	 */
-	class FilterPostProcessor implements SceneProcessor
+	public function addFilter(filter:Filter):Void
 	{
-		private var _initialized:Bool;
-
-
-		private var renderManager:RenderManager;
-		private var renderer:IRenderer;
-		private var viewPort:ViewPort;
-		private var renderFrameBufferMS:FrameBuffer;
-
-		private var filterTexture:Texture2D;
-		private var depthTexture:Texture2D;
-		private var filters:Vector<Filter> = new Vector<Filter>();
-
-		public function FilterPostProcessor()
+		if (filter == null)
 		{
-			_initialized = false;
+			throw new Error("Filter cannot be null.");
 		}
 
-		/**
-		 * Adds a filter to the filters list<br>
-		 * @param filter the filter to add
-		 */
-		public function addFilter(filter:Filter):Void
+		filters.push(filter);
+
+		if (isInitialized)
 		{
-			if (filter == null)
-			{
-				throw new Error("Filter cannot be null.");
-			}
-
-			filters.push(filter);
-
-			if (isInitialized)
-			{
-				initFilter(filter, viewPort);
-			}
-
-			setFilterState(filter, filter.isEnabled());
-
+			initFilter(filter, viewPort);
 		}
 
-		/**
-		 * removes this filters from the filters list
-		 * @param filter
-		 */
-		public function removeFilter(filter:Filter):Void
+		setFilterState(filter, filter.isEnabled());
+
+	}
+
+	/**
+	 * removes this filters from the filters list
+	 * @param filter
+	 */
+	public function removeFilter(filter:Filter):Void
+	{
+		if (filter == null)
 		{
-			if (filter == null)
+			throw new Error("Filter cannot be null.");
+		}
+		var index:Int = filters.indexOf(filter);
+		if (index != -1)
+		{
+			filters.splice(index, 1);
+			filter.cleanup(renderer);
+			updateLastFilterIndex();
+		}
+	}
+
+	/**
+	 * init the given filter
+	 * @param filter
+	 * @param vp
+	 */
+	private function initFilter(filter:Filter, vp:ViewPort):Void
+	{
+		filter.setProcessor(this);
+		if (filter.isRequiresDepthTexture)
+		{
+			if (!computeDepth && renderFrameBuffer != null)
 			{
-				throw new Error("Filter cannot be null.");
+				depthTexture = new Texture2D(width, height, Format.Depth24);
+				renderFrameBuffer.setDepthTexture(depthTexture);
 			}
-			var index:Int = filters.indexOf(filter);
-			if (index != -1)
-			{
-				filters.splice(index, 1);
-				filter.cleanup(renderer);
-				updateLastFilterIndex();
-			}
+			computeDepth = true;
+			filter.init(assetManager, renderManager, vp, width, height);
+			filter.setDepthTexture(depthTexture);
+		}
+		else
+		{
+			filter.init(assetManager, renderManager, vp, width, height);
+		}
+	}
+
+
+	/**
+	 * renders a filter on a fullscreen quad
+	 * @param r
+	 * @param buff
+	 * @param mat
+	 */
+	private function renderProcessing(r:IRenderer, buff:FrameBuffer, mat:Material):Void
+	{
+		if (buff == outputBuffer)
+		{
+			fsQuad.setWidth(width);
+			fsQuad.setHeight(height);
+			filterCam.resize(originalWidth, originalHeight, true);
+			fsQuad.setPosition(left * originalWidth, bottom * originalHeight);
+		}
+		else
+		{
+			fsQuad.setWidth(buff.getWidth());
+			fsQuad.setHeight(buff.getHeight());
+			filterCam.resize(buff.getWidth(), buff.getHeight(), true);
+			fsQuad.setPosition(0, 0);
 		}
 
-		/**
-		 * init the given filter
-		 * @param filter
-		 * @param vp
-		 */
-		private function initFilter(filter:Filter, vp:ViewPort):Void
+		if (mat.getAdditionalRenderState().isDepthWrite())
 		{
-			filter.setProcessor(this);
-			if (filter.isRequiresDepthTexture)
-			{
-				if (!computeDepth && renderFrameBuffer != null)
-				{
-					depthTexture = new Texture2D(width, height, Format.Depth24);
-					renderFrameBuffer.setDepthTexture(depthTexture);
-				}
-				computeDepth = true;
-				filter.init(assetManager, renderManager, vp, width, height);
-				filter.setDepthTexture(depthTexture);
-			}
-			else
-			{
-				filter.init(assetManager, renderManager, vp, width, height);
-			}
+			mat.getAdditionalRenderState().setDepthTest(false);
+			mat.getAdditionalRenderState().setDepthWrite(false);
+		}
+
+		fsQuad.setMaterial(mat);
+		fsQuad.updateGeometricState();
+
+		renderManager.setCamera(filterCam, true);
+		r.setFrameBuffer(buff);
+		r.clearBuffers(clearColor, true, true);
+		renderManager.renderGeometry(fsQuad);
+
+	}
+
+	/**
+	 * Called in the render thread to initialize the scene processor.
+	 *
+	 * @param rm The render manager to which the SP was added to
+	 * @param vp The viewport to which the SP is assigned
+	 */
+	public function initialize(rm:RenderManager, vp:ViewPort):Void
+	{
+		_initialized = true;
+	}
+
+	/**
+	 * Called when the resolution of the viewport has been changed.
+	 * @param vp
+	 */
+	public function reshape(vp:ViewPort, w:Int, h:Int):Void
+	{
+		//this has no effect at first init but is useful when resizing the canvas with multi views
+		var cam:Camera3D = vp.camera;
+		cam.setViewPort(left, right, bottom, top);
+		//resizing the camera to fit the new viewport and saving original dimensions
+		cam.resize(w, h, false);
+		left = cam.getViewPortLeft();
+		right = cam.getViewPortRight();
+		top = cam.getViewPortTop();
+		bottom = cam.getViewPortBottom();
+		originalWidth = w;
+		originalHeight = h;
+		cam.setViewPort(0, 1, 0, 1);
+
+		//computing real dimension of the viewport and resizing he camera 
+		width = (w * (Math.abs(right - left)));
+		height = (h * (Math.abs(bottom - top)));
+		width = Math.max(1, width);
+		height = Math.max(1, height);
+
+		//Testing original versus actual viewport dimension.
+		//If they are different we are in a multiview situation and color from other view port must not be cleared.
+		//However, not clearing the color can cause issues when AlphaToCoverage is active on the renderer.        
+		if (originalWidth != width || originalHeight != height)
+		{
+			clearColor = false;
+		}
+		else
+		{
+			clearColor = true;
+		}
+
+		cam.resize(width, height, false);
+		cameraInit = true;
+		computeDepth = false;
+
+		if (renderFrameBuffer == null)
+		{
+			outputBuffer = viewPort.getOutputFrameBuffer();
 		}
 
 
-		/**
-		 * renders a filter on a fullscreen quad
-		 * @param r
-		 * @param buff
-		 * @param mat
-		 */
-		private function renderProcessing(r:IRenderer, buff:FrameBuffer, mat:Material):Void
+		if (numSamples <= 1 || !caps.contains(Caps.OpenGL31))
 		{
-			if (buff == outputBuffer)
-			{
-				fsQuad.setWidth(width);
-				fsQuad.setHeight(height);
-				filterCam.resize(originalWidth, originalHeight, true);
-				fsQuad.setPosition(left * originalWidth, bottom * originalHeight);
-			}
-			else
-			{
-				fsQuad.setWidth(buff.getWidth());
-				fsQuad.setHeight(buff.getHeight());
-				filterCam.resize(buff.getWidth(), buff.getHeight(), true);
-				fsQuad.setPosition(0, 0);
-			}
-
-			if (mat.getAdditionalRenderState().isDepthWrite())
-			{
-				mat.getAdditionalRenderState().setDepthTest(false);
-				mat.getAdditionalRenderState().setDepthWrite(false);
-			}
-
-			fsQuad.setMaterial(mat);
-			fsQuad.updateGeometricState();
-
-			renderManager.setCamera(filterCam, true);
-			r.setFrameBuffer(buff);
-			r.clearBuffers(clearColor, true, true);
-			renderManager.renderGeometry(fsQuad);
-
+			renderFrameBuffer = new FrameBuffer(width, height, 1);
+			renderFrameBuffer.setDepthBuffer(Format.Depth);
+			filterTexture = new Texture2D(width, height, Format.RGBA8);
+			renderFrameBuffer.setColorTexture(filterTexture);
 		}
 
-		/**
-		 * Called in the render thread to initialize the scene processor.
-		 *
-		 * @param rm The render manager to which the SP was added to
-		 * @param vp The viewport to which the SP is assigned
-		 */
-		public function initialize(rm:RenderManager, vp:ViewPort):Void
+		for (var i:Int = 0; i < filters.length; i++)
 		{
-			_initialized = true;
+			var filter:Filter = filters[i];
+			initFilter(filter, vp);
 		}
 
-		/**
-		 * Called when the resolution of the viewport has been changed.
-		 * @param vp
-		 */
-		public function reshape(vp:ViewPort, w:Int, h:Int):Void
+		if (renderFrameBufferMS != null)
 		{
-			//this has no effect at first init but is useful when resizing the canvas with multi views
-			var cam:Camera3D = vp.camera;
-			cam.setViewPort(left, right, bottom, top);
-			//resizing the camera to fit the new viewport and saving original dimensions
-			cam.resize(w, h, false);
-			left = cam.getViewPortLeft();
-			right = cam.getViewPortRight();
-			top = cam.getViewPortTop();
-			bottom = cam.getViewPortBottom();
-			originalWidth = w;
-			originalHeight = h;
-			cam.setViewPort(0, 1, 0, 1);
+			viewPort.setOutputFrameBuffer(renderFrameBufferMS);
+		}
+		else
+		{
+			viewPort.setOutputFrameBuffer(renderFrameBuffer);
+		}
+	}
 
-			//computing real dimension of the viewport and resizing he camera 
-			width = (w * (Math.abs(right - left)));
-			height = (h * (Math.abs(bottom - top)));
-			width = Math.max(1, width);
-			height = Math.max(1, height);
+	/**
+	 * @return True if initialize() has been called on this SceneProcessor,
+	 * false if otherwise.
+	 */
+	public function get isInitialized():Bool
+	{
+		return false;
+	}
 
-			//Testing original versus actual viewport dimension.
-			//If they are different we are in a multiview situation and color from other view port must not be cleared.
-			//However, not clearing the color can cause issues when AlphaToCoverage is active on the renderer.        
-			if (originalWidth != width || originalHeight != height)
+	/**
+	 * Called before a frame
+	 *
+	 * @param tpf Time per frame
+	 */
+	public function preFrame(tpf:Float):Void
+	{
+		if (filters.length == 0 || lastFilterIndex == -1)
+		{
+			//If the camera is initialized and there are no filter to render, the camera viewport is restored as it was
+			if (cameraInit)
 			{
-				clearColor = false;
-			}
-			else
-			{
-				clearColor = true;
-			}
-
-			cam.resize(width, height, false);
-			cameraInit = true;
-			computeDepth = false;
-
-			if (renderFrameBuffer == null)
-			{
-				outputBuffer = viewPort.getOutputFrameBuffer();
+				viewPort.getCamera().resize(originalWidth, originalHeight, true);
+				viewPort.getCamera().setViewPort(left, right, bottom, top);
+				viewPort.setOutputFrameBuffer(outputBuffer);
+				cameraInit = false;
 			}
 
-
-			if (numSamples <= 1 || !caps.contains(Caps.OpenGL31))
-			{
-				renderFrameBuffer = new FrameBuffer(width, height, 1);
-				renderFrameBuffer.setDepthBuffer(Format.Depth);
-				filterTexture = new Texture2D(width, height, Format.RGBA8);
-				renderFrameBuffer.setColorTexture(filterTexture);
-			}
-
-			for (var i:Int = 0; i < filters.length; i++)
-			{
-				var filter:Filter = filters[i];
-				initFilter(filter, vp);
-			}
-
+		}
+		else
+		{
 			if (renderFrameBufferMS != null)
 			{
 				viewPort.setOutputFrameBuffer(renderFrameBufferMS);
@@ -220,191 +260,150 @@ package org.angle3d.material.post
 			{
 				viewPort.setOutputFrameBuffer(renderFrameBuffer);
 			}
+			//init of the camera if it wasn't already
+			if (!cameraInit)
+			{
+				viewPort.getCamera().resize(width, height, true);
+				viewPort.getCamera().setViewPort(0, 1, 0, 1);
+			}
 		}
 
-		/**
-		 * @return True if initialize() has been called on this SceneProcessor,
-		 * false if otherwise.
-		 */
-		public function get isInitialized():Bool
+		for (var i:Int = 0; i < filters.length; i++)
 		{
-			return false;
+			var filter:Filter = filters[i];
+			if (filter.isEnabled())
+			{
+				filter.preFrame(tpf);
+			}
 		}
+	}
 
-		/**
-		 * Called before a frame
-		 *
-		 * @param tpf Time per frame
-		 */
-		public function preFrame(tpf:Float):Void
+	/**
+	 * Called after the scene graph has been queued, but before it is flushed.
+	 *
+	 * @param rq The render queue
+	 */
+	public function postQueue(rq:RenderQueue):Void
+	{
+		for (var i:Int = 0; i < filters.length; i++)
 		{
-			if (filters.length == 0 || lastFilterIndex == -1)
+			var filter:Filter = filters[i];
+			if (filter.isEnabled())
 			{
-				//If the camera is initialized and there are no filter to render, the camera viewport is restored as it was
-				if (cameraInit)
-				{
-					viewPort.getCamera().resize(originalWidth, originalHeight, true);
-					viewPort.getCamera().setViewPort(left, right, bottom, top);
-					viewPort.setOutputFrameBuffer(outputBuffer);
-					cameraInit = false;
-				}
+				filter.postQueue(rq);
+			}
+		}
+	}
 
-			}
-			else
-			{
-				if (renderFrameBufferMS != null)
-				{
-					viewPort.setOutputFrameBuffer(renderFrameBufferMS);
-				}
-				else
-				{
-					viewPort.setOutputFrameBuffer(renderFrameBuffer);
-				}
-				//init of the camera if it wasn't already
-				if (!cameraInit)
-				{
-					viewPort.getCamera().resize(width, height, true);
-					viewPort.getCamera().setViewPort(0, 1, 0, 1);
-				}
-			}
+	/**
+	 * Called after a frame has been rendered and the queue flushed.
+	 *
+	 * @param out The FB to which the scene was rendered.
+	 */
+	public function postFrame(out:FrameBuffer):Void
+	{
+		var sceneBuffer:FrameBuffer = renderFrameBuffer;
+		if (renderFrameBufferMS != null && !renderer.getCaps().contains(Caps.OpenGL31))
+		{
+			renderer.copyFrameBuffer(renderFrameBufferMS, renderFrameBuffer);
+		}
+		else if (renderFrameBufferMS != null)
+		{
+			sceneBuffer = renderFrameBufferMS;
+		}
+		renderFilterChain(renderer, sceneBuffer);
+		renderer.setFrameBuffer(outputBuffer);
+
+		//viewport can be null if no filters are enabled
+		if (viewPort != null)
+		{
+			renderManager.setCamera(viewPort.camera, false);
+		}
+	}
+
+	/**
+	 * Called when the SP is removed from the RM.
+	 */
+	public function cleanup():Void
+	{
+		if (viewPort != null)
+		{
+			//reseting the viewport camera viewport to its initial value
+			viewPort.camera.resize(originalWidth, originalHeight, true);
+			viewPort.camera.setViewPort(left, right, bottom, top);
+			viewPort.setOutputFrameBuffer(outputBuffer);
+			viewPort = null;
 
 			for (var i:Int = 0; i < filters.length; i++)
 			{
 				var filter:Filter = filters[i];
-				if (filter.isEnabled())
-				{
-					filter.preFrame(tpf);
-				}
+				filter.cleanup(renderer);
 			}
 		}
+	}
 
-		/**
-		 * Called after the scene graph has been queued, but before it is flushed.
-		 *
-		 * @param rq The render queue
-		 */
-		public function postQueue(rq:RenderQueue):Void
+	/**
+	 *
+	 * Removes all the filters from this processor
+	 */
+	public function removeAllFilters():Void
+	{
+		filters.length = 0;
+		updateLastFilterIndex();
+	}
+
+	/**
+	 * sets the filter to enabled or disabled
+	 * @param filter
+	 * @param enabled
+	 */
+	private function setFilterState(filter:Filter, enabled:Bool):Void
+	{
+		if (filters.indexOf(filter) != -1)
 		{
-			for (var i:Int = 0; i < filters.length; i++)
-			{
-				var filter:Filter = filters[i];
-				if (filter.isEnabled())
-				{
-					filter.postQueue(rq);
-				}
-			}
-		}
-
-		/**
-		 * Called after a frame has been rendered and the queue flushed.
-		 *
-		 * @param out The FB to which the scene was rendered.
-		 */
-		public function postFrame(out:FrameBuffer):Void
-		{
-			var sceneBuffer:FrameBuffer = renderFrameBuffer;
-			if (renderFrameBufferMS != null && !renderer.getCaps().contains(Caps.OpenGL31))
-			{
-				renderer.copyFrameBuffer(renderFrameBufferMS, renderFrameBuffer);
-			}
-			else if (renderFrameBufferMS != null)
-			{
-				sceneBuffer = renderFrameBufferMS;
-			}
-			renderFilterChain(renderer, sceneBuffer);
-			renderer.setFrameBuffer(outputBuffer);
-
-			//viewport can be null if no filters are enabled
-			if (viewPort != null)
-			{
-				renderManager.setCamera(viewPort.camera, false);
-			}
-		}
-
-		/**
-		 * Called when the SP is removed from the RM.
-		 */
-		public function cleanup():Void
-		{
-			if (viewPort != null)
-			{
-				//reseting the viewport camera viewport to its initial value
-				viewPort.camera.resize(originalWidth, originalHeight, true);
-				viewPort.camera.setViewPort(left, right, bottom, top);
-				viewPort.setOutputFrameBuffer(outputBuffer);
-				viewPort = null;
-
-				for (var i:Int = 0; i < filters.length; i++)
-				{
-					var filter:Filter = filters[i];
-					filter.cleanup(renderer);
-				}
-			}
-		}
-
-		/**
-		 *
-		 * Removes all the filters from this processor
-		 */
-		public function removeAllFilters():Void
-		{
-			filters.length = 0;
+			filter.enabled = enabled;
 			updateLastFilterIndex();
 		}
+	}
 
-		/**
-		 * sets the filter to enabled or disabled
-		 * @param filter
-		 * @param enabled
-		 */
-		private function setFilterState(filter:Filter, enabled:Bool):Void
+	/**
+	 * compute the index of the last filter to render
+	 */
+	private function updateLastFilterIndex():Void
+	{
+		lastFilterIndex = -1;
+		for (var i:Int = filters.length - 1; i >= 0 && lastFilterIndex == -1; i--)
 		{
-			if (filters.indexOf(filter) != -1)
+			if (filters[i].isEnabled())
 			{
-				filter.enabled = enabled;
-				updateLastFilterIndex();
+				lastFilterIndex = i;
+				return;
 			}
 		}
-
-		/**
-		 * compute the index of the last filter to render
-		 */
-		private function updateLastFilterIndex():Void
+		if (lastFilterIndex == -1)
 		{
-			lastFilterIndex = -1;
-			for (var i:Int = filters.length - 1; i >= 0 && lastFilterIndex == -1; i--)
-			{
-				if (filters[i].isEnabled())
-				{
-					lastFilterIndex = i;
-					return;
-				}
-			}
-			if (lastFilterIndex == -1)
-			{
-				cleanup();
-			}
+			cleanup();
 		}
+	}
 
-		/**
-		 * For internal use only<br>
-		 * returns the depth texture of the scene
-		 * @return the depth texture
-		 */
-		public function getDepthTexture():Texture2D
-		{
-			return depthTexture;
-		}
+	/**
+	 * For internal use only<br>
+	 * returns the depth texture of the scene
+	 * @return the depth texture
+	 */
+	public function getDepthTexture():Texture2D
+	{
+		return depthTexture;
+	}
 
-		/**
-		 * For internal use only<br>
-		 * returns the rendered texture of the scene
-		 * @return the filter texture
-		 */
-		public function getFilterTexture():Texture2D
-		{
-			return filterTexture;
-		}
+	/**
+	 * For internal use only<br>
+	 * returns the rendered texture of the scene
+	 * @return the filter texture
+	 */
+	public function getFilterTexture():Texture2D
+	{
+		return filterTexture;
 	}
 }
 

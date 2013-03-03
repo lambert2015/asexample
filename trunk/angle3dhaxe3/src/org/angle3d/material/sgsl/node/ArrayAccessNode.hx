@@ -1,63 +1,60 @@
-package org.angle3d.material.sgsl.node
+package org.angle3d.material.sgsl.node;
+
+class ArrayAccessNode extends AtomNode
 {
+	public var access:AtomNode;
+	public var offset:Int;
 
-
-	class ArrayAccessNode extends AtomNode
+	public function new(name:String)
 	{
-		public var access:AtomNode;
-		public var offset:Int;
+		super(name);
+		access = null;
+		offset = 0;
+	}
 
-		public function ArrayAccessNode(name:String)
+	override public function isRelative():Bool
+	{
+		return access != null;
+	}
+
+	override public function clone():LeafNode
+	{
+		var node:ArrayAccessNode = new ArrayAccessNode(name);
+		if (access != null)
 		{
-			super(name);
-			access = null;
-			offset = 0;
+			node.access = cast access.clone();
+		}
+		node.offset = offset;
+		node.mask = mask;
+		return node;
+	}
+
+	override public function toString(level:Int = 0):String
+	{
+		var out:String = this.name + "[";
+
+		if (access != null)
+		{
+			out += access.toString(level);
 		}
 
-		override public function isRelative():Bool
+		if (offset >= 0)
 		{
-			return access != null;
-		}
-
-		override public function clone():LeafNode
-		{
-			var node:ArrayAccessNode = new ArrayAccessNode(name);
 			if (access != null)
 			{
-				node.access = access.clone() as AtomNode;
+				out += " + ";
 			}
-			node.offset = offset;
-			node.mask = mask;
-			return node;
+			out += offset.toString();
 		}
 
-		override public function toString(level:Int = 0):String
+		out += "]";
+
+		if (mask != "")
 		{
-			var out:String = this.name + "[";
-
-			if (access != null)
-			{
-				out += access.toString(level);
-			}
-
-			if (offset >= 0)
-			{
-				if (access != null)
-				{
-					out += " + ";
-				}
-				out += offset.toString();
-			}
-
-			out += "]";
-
-			if (mask != "")
-			{
-				out += "." + mask;
-			}
-
-			return out;
+			out += "." + mask;
 		}
+
+		return out;
 	}
 }
 

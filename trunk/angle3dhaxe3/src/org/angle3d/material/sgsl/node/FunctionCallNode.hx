@@ -1,83 +1,82 @@
-package org.angle3d.material.sgsl.node
+package org.angle3d.material.sgsl.node;
+
+import flash.utils.Dictionary;
+
+/**
+ * 如果是自定义函数的话，最终需要替换
+ * @author andy
+ *
+ */
+class FunctionCallNode extends BranchNode
 {
-	import flash.utils.Dictionary;
+	public function new(name:String)
+	{
+		super(name);
+	}
 
 	/**
-	 * 如果是自定义函数的话，最终需要替换
-	 * @author andy
-	 *
+	 * 克隆一个FunctionNode,并替换参数
+	 * 只有自定义函数才能调用此方法
 	 */
-	class FunctionCallNode extends BranchNode
+	public function cloneCustomFunction(functionMap:Dictionary):FunctionNode
 	{
-		public function FunctionCallNode(name:String)
+		var functionNode:FunctionNode = functionMap[this.name].clone();
+		if (functionNode.needReplace)
 		{
-			super(name);
+			functionNode.replaceCustomFunction(functionMap);
 		}
 
-		/**
-		 * 克隆一个FunctionNode,并替换参数
-		 * 只有自定义函数才能调用此方法
-		 */
-		public function cloneCustomFunction(functionMap:Dictionary):FunctionNode
+		var params:Vector<ParameterNode> = functionNode.getParams();
+		var length:Int = params.length;
+		var paramMap:Dictionary = new Dictionary();
+		for (i in 0...length)
 		{
-			var functionNode:FunctionNode = functionMap[this.name].clone();
-			if (functionNode.needReplace)
-			{
-				functionNode.replaceCustomFunction(functionMap);
-			}
-
-			var params:Vector<ParameterNode> = functionNode.getParams();
-			var length:Int = params.length;
-			var paramMap:Dictionary = new Dictionary();
-			for (var i:Int = 0; i < length; i++)
-			{
-				var param:ParameterNode = params[i];
-				paramMap[param.name] = children[i];
-			}
-
-			functionNode.replaceLeafNode(paramMap);
-
-			return functionNode;
+			var param:ParameterNode = params[i];
+			paramMap[param.name] = children[i];
 		}
 
-		override public function clone():LeafNode
+		functionNode.replaceLeafNode(paramMap);
+
+		return functionNode;
+	}
+
+	override public function clone():LeafNode
+	{
+		var node:FunctionCallNode = new FunctionCallNode(name);
+		cloneChildren(node);
+		return node;
+	}
+
+	/**
+	 * only for debug
+	 * @param	level
+	 * @return
+	 */
+	override public function toString(level:Int = 0):String
+	{
+		var result:String = "";
+
+		result = name + "(" + getChildrenString(level) + ")";
+
+		return result;
+	}
+
+	/**
+	 * only for debug
+	 * @param	level
+	 * @return
+	 */
+	override private function getChildrenString(level:Int):String
+	{
+		var results:Array = [];
+		var m:LeafNode;
+		var length:Int = mChildren.length;
+		for (i in 0...length)
 		{
-			var node:FunctionCallNode = new FunctionCallNode(name);
-			cloneChildren(node);
-			return node;
+			m = mChildren[i];
+			results.push(m.toString(level));
 		}
-
-		/**
-		 * only for debug
-		 * @param	level
-		 * @return
-		 */
-		override public function toString(level:Int = 0):String
-		{
-			var result:String = "";
-
-			result = name + "(" + getChildrenString(level) + ")";
-
-			return result;
-		}
-
-		/**
-		 * only for debug
-		 * @param	level
-		 * @return
-		 */
-		override private function getChildrenString(level:Int):String
-		{
-			var results:Array = [];
-			var m:LeafNode;
-			var length:Int = mChildren.length;
-			for (var i:Int = 0; i < length; i++)
-			{
-				m = mChildren[i];
-				results.push(m.toString(level));
-			}
-			return results.join(", ");
-		}
+		return results.join(", ");
 	}
 }
 

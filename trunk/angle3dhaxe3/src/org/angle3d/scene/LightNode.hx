@@ -1,60 +1,59 @@
-package org.angle3d.scene
+package org.angle3d.scene;
+
+import org.angle3d.light.Light;
+import org.angle3d.scene.control.LightControl;
+
+/**
+ * <code>LightNode</code> is used to link together a {@link Light} object
+ * with a {@link Node} object.
+ *
+ * @author Tim8Dev
+ */
+class LightNode extends Node
 {
-	import org.angle3d.light.Light;
-	import org.angle3d.scene.control.LightControl;
+	private var mLightControl:LightControl;
+
+	public function new(name:String, light:Light)
+	{
+		super(name);
+		mLightControl = new LightControl(light);
+		addControl(mLightControl);
+	}
 
 	/**
-	 * <code>LightNode</code> is used to link together a {@link Light} object
-	 * with a {@link Node} object.
+	 * Enable or disable the <code>LightNode</code> functionality.
 	 *
-	 * @author Tim8Dev
+	 * @param enabled If false, the functionality of LightNode will
+	 * be disabled.
 	 */
-	class LightNode extends Node
+	public function setEnabled(enabled:Bool):Void
 	{
-		private var mLightControl:LightControl;
+		mLightControl.enabled = enabled;
+	}
 
-		public function LightNode(name:String, light:Light)
-		{
-			super(name);
-			mLightControl = new LightControl(light);
-			addControl(mLightControl);
-		}
+	public function isEnabled():Bool
+	{
+		return mLightControl.enabled;
+	}
 
-		/**
-		 * Enable or disable the <code>LightNode</code> functionality.
-		 *
-		 * @param enabled If false, the functionality of LightNode will
-		 * be disabled.
-		 */
-		public function setEnabled(enabled:Bool):Void
-		{
-			mLightControl.enabled = enabled;
-		}
+	public function setControlDir(dir:String):Void
+	{
+		mLightControl.setControlDir(dir);
+	}
 
-		public function isEnabled():Bool
-		{
-			return mLightControl.enabled;
-		}
+	public function setLight(light:Light):Void
+	{
+		mLightControl.setLight(light);
+	}
 
-		public function setControlDir(dir:String):Void
-		{
-			mLightControl.setControlDir(dir);
-		}
+	public function getControlDir():String
+	{
+		return mLightControl.getControlDir();
+	}
 
-		public function setLight(light:Light):Void
-		{
-			mLightControl.setLight(light);
-		}
-
-		public function getControlDir():String
-		{
-			return mLightControl.getControlDir();
-		}
-
-		public function getLight():Light
-		{
-			return mLightControl.getLight();
-		}
+	public function getLight():Light
+	{
+		return mLightControl.getLight();
 	}
 }
 

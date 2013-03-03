@@ -1,5 +1,6 @@
 package org.angle3d.renderer;
 
+import haxe.ds.Vector;
 import flash.display.Stage3D;
 import flash.display3D.Context3D;
 
@@ -19,9 +20,9 @@ import org.angle3d.texture.TextureMapBase;
 //TODO 添加设置 antiAlias
 interface IRenderer
 {
-	function get stage3D():Stage3D;
+	var stage3D(get,null):Stage3D;
 
-	function get context3D():Context3D;
+	var context3D(get,null):Context3D;
 
 	function setTextureAt(index:Int, map:TextureMapBase):Void;
 
@@ -60,7 +61,7 @@ interface IRenderer
 	 *
 	 * @param color The background color to set
 	 */
-	function setBackgroundColor(color:uint):Void;
+	function setBackgroundColor(color:Int):Void;
 
 	/**
 	 * Applies the given {@link RenderState}, making the necessary
