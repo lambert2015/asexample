@@ -1,22 +1,22 @@
-package org.angle3d.material.shader
+package org.angle3d.material.shader;
+
+
+/**
+ * An attribute is a shader variable mapping to a VertexBuffer data
+ * on the CPU.
+ *
+ * @author Andy
+ */
+class AttributeVar extends ShaderVariable
 {
+	public var index:Int;
 
-	/**
-	 * An attribute is a shader variable mapping to a VertexBuffer data
-	 * on the CPU.
-	 *
-	 * @author Andy
-	 */
-	class AttributeVar extends ShaderVariable
+	public var format:String;
+
+	public function new(name:String, size:Int)
 	{
-		public var index:Int;
-
-		public var format:String;
-
-		public function AttributeVar(name:String, size:Int)
-		{
-			super(name, size);
-		}
+		super(name, size);
 	}
 }
+
 

@@ -10,7 +10,7 @@ class OpCode
 	public var flags:Int;
 	public var numRegister:Int;
 
-	public var names:Array;
+	public var names:Array<String>;
 
 	/**
 	 *
@@ -19,7 +19,7 @@ class OpCode
 	 * @param	emitCode
 	 * @param	flags
 	 */
-	public function new(names:Array, numRegister:Int, emitCode:Int, flags:Int)
+	public function new(names:Array<String>, numRegister:Int, emitCode:Int, flags:Int)
 	{
 		this.names = names;
 		this.numRegister = numRegister;

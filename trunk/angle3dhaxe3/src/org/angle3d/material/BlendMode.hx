@@ -1,72 +1,70 @@
-package org.angle3d.material
+package org.angle3d.material;
+
+/**
+ * <code>BlendMode</code> specifies the blending operation to use.
+ *
+ * @see RenderState#setBlendMode(org.angle3d.material.RenderState.BlendMode)
+ */
+enum BlendMode
 {
 
 	/**
-	 * <code>BlendMode</code> specifies the blending operation to use.
-	 *
-	 * @see RenderState#setBlendMode(org.angle3d.material.RenderState.BlendMode)
+	 * No blending mode is used.
 	 */
-	class BlendMode
-	{
+	Off;
 
-		/**
-		 * No blending mode is used.
-		 */
-		public static const Off:Int = 0;
+	/**
+	 * Additive blending. For use with glows and particle emitters.
+	 * <p>
+	 * Result = Source Color + Destination Color
+	 */
+	Additive;
 
-		/**
-		 * Additive blending. For use with glows and particle emitters.
-		 * <p>
-		 * Result = Source Color + Destination Color
-		 */
-		public static const Additive:Int = 1;
+	/**
+	 * Premultiplied alpha blending, for use with premult alpha textures.
+	 * <p>
+	 * Result = Source Color + (Dest Color * (1 - Source Alpha) )
+	 */
+	PremultAlpha;
 
-		/**
-		 * Premultiplied alpha blending, for use with premult alpha textures.
-		 * <p>
-		 * Result = Source Color + (Dest Color * (1 - Source Alpha) )
-		 */
-		public static const PremultAlpha:Int = 2;
+	/**
+	 * Additive blending that is multiplied with source alpha.
+	 * For use with glows and particle emitters.
+	 * <p>
+	 * Result = (Source Alpha * Source Color) + Dest Color
+	 */
+	AlphaAdditive;
 
-		/**
-		 * Additive blending that is multiplied with source alpha.
-		 * For use with glows and particle emitters.
-		 * <p>
-		 * Result = (Source Alpha * Source Color) + Dest Color
-		 */
-		public static const AlphaAdditive:Int = 3;
+	/**
+	 * Color blending, blends in color from dest color
+	 * using source color.
+	 * <p>
+	 * Result = Source Color + (1 - Source Color) * Dest Color
+	 */
+	Color;
 
-		/**
-		 * Color blending, blends in color from dest color
-		 * using source color.
-		 * <p>
-		 * Result = Source Color + (1 - Source Color) * Dest Color
-		 */
-		public static const Color:Int = 4;
+	/**
+	 * Alpha blending, interpolates to source color from dest color
+	 * using source alpha.
+	 * <p>
+	 * Result = Source Alpha * Source Color +
+	 *          (1 - Source Alpha) * Dest Color
+	 */
+	Alpha;
 
-		/**
-		 * Alpha blending, interpolates to source color from dest color
-		 * using source alpha.
-		 * <p>
-		 * Result = Source Alpha * Source Color +
-		 *          (1 - Source Alpha) * Dest Color
-		 */
-		public static const Alpha:Int = 5;
+	/**
+	 * Multiplies the source and dest colors.
+	 * <p>
+	 * Result = Source Color * Dest Color
+	 */
+	Modulate;
 
-		/**
-		 * Multiplies the source and dest colors.
-		 * <p>
-		 * Result = Source Color * Dest Color
-		 */
-		public static const Modulate:Int = 6;
+	/**
+	 * Multiplies the source and dest colors then doubles the result.
+	 * <p>
+	 * Result = 2 * Source Color * Dest Color
+	 */
+	ModulateX2;
 
-		/**
-		 * Multiplies the source and dest colors then doubles the result.
-		 * <p>
-		 * Result = 2 * Source Color * Dest Color
-		 */
-		public static const ModulateX2:Int = 7;
-
-	}
 }
 

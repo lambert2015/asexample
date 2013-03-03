@@ -1,10 +1,11 @@
 package org.angle3d.material.sgsl.node;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.sgsl.node.agal.AgalNode;
-
+import haxe.ds.Vector;
 /**
  * FunctionNode的Child只有两种
  * 一个是临时变量定义
@@ -20,9 +21,9 @@ class FunctionNode extends BranchNode
 		return name + "_" + funcName + "_" + (TEPM_VAR_COUNT++);
 	}
 
-	private var mParams:Vector<ParameterNode>;
+	private var mParams:Array<ParameterNode>;
 
-	private var mNeedReplace:Bool = true;
+	private var mNeedReplace:Bool;
 
 	/**
 	 * 返回类型
@@ -36,7 +37,8 @@ class FunctionNode extends BranchNode
 	{
 		super();
 
-		mParams = new Vector<ParameterNode>();
+		mParams = new Array<ParameterNode>();
+		mNeedReplace = true;
 	}
 
 	/**
@@ -50,7 +52,7 @@ class FunctionNode extends BranchNode
 
 	public function renameTempVar():Void
 	{
-		var map:Dictionary = new Dictionary();
+		var map:StringMap<String> = new StringMap<String>();
 
 		var child:LeafNode;
 		var cLength:Int = mChildren.length;
@@ -59,8 +61,8 @@ class FunctionNode extends BranchNode
 			child = mChildren[i];
 			if (Std.is(child,RegNode))
 			{
-				map[child.name] = getTempName(child.name, this.name);
-				child.name = map[child.name];
+				map.set(child.name, getTempName(child.name, this.name));
+				child.name = map.get(child.name);
 			}
 			else
 			{
@@ -79,18 +81,18 @@ class FunctionNode extends BranchNode
 	 * 替换自定义函数
 	 * @param map 自定义函数Map <functionName,fcuntionNode>
 	 */
-	public function replaceCustomFunction(functionMap:Dictionary):Void
+	public function replaceCustomFunction(functionMap:StringMap<FunctionNode>):Void
 	{
 		if (!mNeedReplace)
 			return;
 
 		//children
-		var newChildren:Vector<LeafNode> = new Vector<LeafNode>();
+		var newChildren:Array<LeafNode> = new Array<LeafNode>();
 
 		var child:LeafNode;
 		var agalNode:AgalNode;
 		var callNode:FunctionCallNode;
-
+		var customFunc:FunctionNode; 
 		var cLength:Int = mChildren.length;
 		for (i in 0...cLength)
 		{
@@ -118,7 +120,7 @@ class FunctionNode extends BranchNode
 
 				if (isCustomFunctionCall(callNode, functionMap))
 				{
-					var customFunc:FunctionNode = callNode.cloneCustomFunction(functionMap);
+					customFunc = callNode.cloneCustomFunction(functionMap);
 					//复制customFunc的children到这里
 					newChildren = newChildren.concat(customFunc.children);
 					//如果自定义函数有返回值，用返回值替换agalNode.children[1]
@@ -161,12 +163,12 @@ class FunctionNode extends BranchNode
 	/**
 	 * 是否是自定义函数调用,检查自已定义的函数和系统默认自定义的函数
 	 */
-	private function isCustomFunctionCall(node:FunctionCallNode, functionMap:Dictionary):Bool
+	private function isCustomFunctionCall(node:FunctionCallNode, functionMap:StringMap<FunctionNode>):Bool
 	{
-		return node != null && (functionMap[node.name] != undefined);
+		return node != null && functionMap.exists(node.name);
 	}
 
-	override public function replaceLeafNode(paramMap:Dictionary):Void
+	override public function replaceLeafNode(paramMap:StringMap<LeafNode>):Void
 	{
 		super.replaceLeafNode(paramMap);
 
@@ -220,7 +222,7 @@ class FunctionNode extends BranchNode
 		mParams.push(param);
 	}
 
-	public function getParams():Vector<ParameterNode>
+	public function getParams():Array<ParameterNode>
 	{
 		return mParams;
 	}

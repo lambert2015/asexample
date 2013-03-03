@@ -57,12 +57,12 @@ class RenderState
 		ADDITIONAL.applyBlendMode = false;
 	}
 
-	public var cullMode:String;
+	public var cullMode:Context3DTriangleFace;
 	public var applyCullMode:Bool;
 
 	public var depthTest:Bool;
 	public var applyDepthTest:Bool;
-	public var compareMode:String;
+	public var compareMode:Context3DCompareMode;
 
 	public var colorWrite:Bool;
 	public var applyColorWrite:Bool;

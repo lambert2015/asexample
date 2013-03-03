@@ -22,7 +22,7 @@ class PredefineNode extends BranchNode
 	/**
 	 * 符合预定义条件
 	 */
-	public function isMatch(defines:Vector<String>):Bool
+	public function isMatch(defines:Array<String>):Bool
 	{
 		var subNode:PredefineSubNode;
 		var cLength:Int = mChildren.length;
@@ -43,7 +43,7 @@ class PredefineNode extends BranchNode
 	 * @return
 	 *
 	 */
-	public function getMatchChildren(defines:Vector<String>):Vector<LeafNode>
+	public function getMatchChildren(defines:Array<String>):Array<LeafNode>
 	{
 		var subNode:PredefineSubNode;
 		var cLength:Int = mChildren.length;

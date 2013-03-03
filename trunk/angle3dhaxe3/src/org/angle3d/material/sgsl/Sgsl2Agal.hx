@@ -121,7 +121,7 @@ class Sgsl2Agal
 		return agal;
 	}
 
-	private function addElement(list:Array, element:String):Void
+	private function addElement(list:Array<String>, element:String):Void
 	{
 		if (element.length > 0)
 		{

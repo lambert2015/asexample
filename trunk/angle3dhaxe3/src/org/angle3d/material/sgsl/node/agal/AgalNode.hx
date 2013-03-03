@@ -24,7 +24,7 @@ class AgalNode extends BranchNode
 	override public function toString(level:Int = 0):String
 	{
 		var space:String = getSpace(level++);
-		var result:Array = [];
+		var result:Array<String> = [];
 
 		var m:LeafNode;
 		var length:Int = mChildren.length;

@@ -44,7 +44,7 @@ class ArrayAccessNode extends AtomNode
 			{
 				out += " + ";
 			}
-			out += offset.toString();
+			out += offset + "";
 		}
 
 		out += "]";

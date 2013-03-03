@@ -1,20 +1,20 @@
-package org.angle3d.material.shader
+package org.angle3d.material.shader;
+
+import flash.display3D.textures.TextureBase;
+import org.angle3d.texture.TextureMapBase;
+
+/**
+ *
+ * @author Andy
+ */
+class TextureVariable extends ShaderVariable
 {
-	import flash.display3D.textures.TextureBase;
-	import org.angle3d.texture.TextureMapBase;
+	public var textureMap:TextureMapBase;
 
-	/**
-	 *
-	 * @author Andy
-	 */
-	class TextureVariable extends ShaderVariable
+	public function new(name:String, size:Int)
 	{
-		public var textureMap:TextureMapBase;
-
-		public function TextureVariable(name:String, size:Int)
-		{
-			super(name, size);
-		}
+		super(name, size);
 	}
 }
+
 

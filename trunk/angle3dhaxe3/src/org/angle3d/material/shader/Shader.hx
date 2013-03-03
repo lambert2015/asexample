@@ -5,7 +5,7 @@ import flash.utils.Dictionary;
 
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.renderer.IRenderer;
-
+import haxe.ds.Vector;
 /**
  * 一个Shader是一个Technique中的一个实现，Technique根据不同的条件生成不同的Shader
  */
@@ -91,7 +91,7 @@ class Shader
 		return (shaderType == ShaderType.VERTEX) ? _vUniformList : _fUniformList;
 	}
 
-	private var mShaderTypes:Array = [ShaderType.VERTEX, ShaderType.FRAGMENT];
+	private static var mShaderTypes:Array<String> = [ShaderType.VERTEX, ShaderType.FRAGMENT];
 
 	public function uploadTexture(render:IRenderer):Void
 	{

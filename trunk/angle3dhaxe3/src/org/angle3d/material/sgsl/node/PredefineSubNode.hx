@@ -33,9 +33,9 @@ class PredefineSubNode extends BranchNode
 		if (_arrangeList != null)
 			return;
 
-		_arrangeList = new Vector<Vector<String>>();
+		_arrangeList = new Array<Array<String>>();
 
-		_arrangeList[0] = new Vector<String>();
+		_arrangeList[0] = [];
 		_arrangeList[0].push(_keywords[0]);
 
 		var length:Int = _keywords.length;
@@ -43,7 +43,7 @@ class PredefineSubNode extends BranchNode
 		{
 			if (_keywords[i] == "||")
 			{
-				_arrangeList[_arrangeList.length] = new Vector<String>();
+				_arrangeList[_arrangeList.length] = [];
 			}
 			else if (_keywords[i] != "&&")
 			{
@@ -52,7 +52,7 @@ class PredefineSubNode extends BranchNode
 		}
 	}
 
-	public function isMatch(defines:Vector<String>):Bool
+	public function isMatch(defines:Array<String>):Bool
 	{
 		//到达这里时必定符合条件
 		if (name == PredefineType.ELSE)
@@ -81,7 +81,7 @@ class PredefineSubNode extends BranchNode
 	 * @return
 	 *
 	 */
-	private function matchDefines(defines:Vector<String>, list:Vector<String>):Bool
+	private function matchDefines(defines:Array<String>, list:Array<String>):Bool
 	{
 		var length:Int = list.length;
 		for (i in 0...length)

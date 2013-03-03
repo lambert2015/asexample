@@ -1,63 +1,62 @@
-package org.angle3d.material.shader
+package org.angle3d.material.shader;
+
+import haxe.ds.Vector;
+/**
+ * ShaderVariable List
+ * @author
+ */
+class ShaderVariableList
 {
+	private var _variables:Vector<ShaderVariable>;
+
+	public function new()
+	{
+		_variables = new Vector<ShaderVariable>();
+	}
+
+	public function addVariable(value:ShaderVariable):Void
+	{
+		_variables.push(value);
+	}
 
 	/**
-	 * ShaderVariable List
-	 * @author
+	 * read only
+	 * @return
 	 */
-	class ShaderVariableList
+	public function getVariables():Vector<ShaderVariable>
 	{
-		private var _variables:Vector<ShaderVariable>;
+		return _variables;
+	}
 
-		public function ShaderVariableList()
+	/**
+	 * 添加所有变量后，设置每个变量的位置
+	 */
+	public function build():Void
+	{
+		//默认是按照在数组中的顺序来设置location
+		var vLength:Int = _variables.length;
+		for (i in 0...vLength)
 		{
-			_variables = new Vector<ShaderVariable>();
+			_variables[i].location = i;
 		}
+	}
 
-		public function addVariable(value:ShaderVariable):Void
-		{
-			_variables.push(value);
-		}
+	public function getVariableAt(index:Int):ShaderVariable
+	{
+		return _variables[index];
+	}
 
-		/**
-		 * read only
-		 * @return
-		 */
-		public function getVariables():Vector<ShaderVariable>
+	public function getVariable(name:String):ShaderVariable
+	{
+		var length:Int = _variables.length;
+		for (i in 0...length)
 		{
-			return _variables;
-		}
-
-		/**
-		 * 添加所有变量后，设置每个变量的位置
-		 */
-		public function build():Void
-		{
-			//默认是按照在数组中的顺序来设置location
-			var vLength:Int = _variables.length;
-			for (var i:Int = 0; i < vLength; i++)
+			if (_variables[i].name == name)
 			{
-				_variables[i].location = i;
+				return _variables[i];
 			}
 		}
-
-		public function getVariableAt(index:Int):ShaderVariable
-		{
-			return _variables[index];
-		}
-
-		public function getVariable(name:String):ShaderVariable
-		{
-			var length:Int = _variables.length;
-			for (var i:Int = 0; i < length; i++)
-			{
-				if (_variables[i].name == name)
-				{
-					return _variables[i];
-				}
-			}
-			return null;
-		}
+		return null;
 	}
 }
 

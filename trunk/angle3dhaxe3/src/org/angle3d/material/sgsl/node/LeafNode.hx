@@ -1,6 +1,7 @@
 ﻿package org.angle3d.material.sgsl.node;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 class LeafNode
 {
@@ -12,15 +13,15 @@ class LeafNode
 		this.name = name;
 	}
 
-	public function renameLeafNode(map:Dictionary):Void
+	public function renameLeafNode(map:StringMap<String>):Void
 	{
-		if (map[this.name] != undefined)
+		if (map.exists(this.name))
 		{
-			this.name = map[this.name];
+			this.name = map.get(this.name);
 		}
 	}
 
-	public function replaceLeafNode(paramMap:Dictionary):Void
+	public function replaceLeafNode(paramMap:StringMap<LeafNode>):Void
 	{
 
 	}

@@ -29,7 +29,7 @@ class ConditionIfNode extends AgalNode
 	{
 		var space:String = getSpace(level++);
 
-		var result:Array = [];
+		var result:Array<String> = [];
 
 		var m:LeafNode;
 		var length:Int = mChildren.length;
