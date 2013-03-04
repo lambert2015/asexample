@@ -61,7 +61,7 @@ class ShaderManager
 		_initCustomFunctions();
 	}
 
-	public function getCustomFunctionMap():Dictionary
+	public function getCustomFunctionMap():StringMap<FunctionNode>
 	{
 		return mCustomFunctionMap;
 	}
@@ -98,7 +98,7 @@ class ShaderManager
 		var ba:ByteArray = new CustomOpCodeAsset();
 		var source:String = ba.readUTFBytes(ba.length);
 
-		var defines:Vector<String> = new Vector<String>();
+		var defines:Array<String> = new Array<String>();
 		if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 		{
 			defines.push(ShaderProfile.BASELINE);
@@ -119,7 +119,7 @@ class ShaderManager
 		for (i in 0...fLength)
 		{
 			functionList[i].renameTempVar();
-			mCustomFunctionMap[functionList[i].name] = functionList[i];
+			mCustomFunctionMap.set(functionList[i].name, functionList[i]);
 		}
 
 		for (i in 0...fLength)

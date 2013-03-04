@@ -34,7 +34,7 @@ class Technique
 	{
 		_initInternal();
 
-		_name = Type.getClassName(this);
+		_name = Type.getClassName(Type.getClass(this));
 		
 		_keys = [];
 	}
@@ -143,11 +143,11 @@ class Technique
 		results[0] = [];
 		results[1] = [];
 
-		if (meshType == MeshType.MT_KEYFRAME)
+		if (meshType == MeshType.KEYFRAME)
 		{
 			results[0].push("USE_KEYFRAME");
 		}
-		else if (meshType == MeshType.MT_SKINNING)
+		else if (meshType == MeshType.SKINNING)
 		{
 			results[0].push("USE_SKINNING");
 		}

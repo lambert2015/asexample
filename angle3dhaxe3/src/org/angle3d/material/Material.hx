@@ -50,13 +50,13 @@ class Material
 		mAlpha = 1.0;
 	}
 
-	public var skinningMatrices(null, set):Context3DTriangleFace;
+	public var skinningMatrices(null, set):Vector<Float>;
 	public function set_skinningMatrices(data:Vector<Float>):Vector<Float>
 	{
 		return data;
 	}
 
-	public var influence(null, set):Context3DTriangleFace;
+	public var influence(null, set):Float;
 	private function set_influence(value:Float):Float
 	{
 		return value;
@@ -72,7 +72,7 @@ class Material
 	private function set_cullMode(mode:Context3DTriangleFace):Context3DTriangleFace
 	{
 		if (mCullMode == mode)
-			return;
+			return mCullMode;
 
 		mCullMode = mode;
 
