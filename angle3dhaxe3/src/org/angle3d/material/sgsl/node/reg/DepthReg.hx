@@ -19,7 +19,7 @@ class DepthReg extends RegNode
 		this.name = "depth";
 		if (this.index > 0)
 		{
-			this.name += this.index.toString();
+			this.name += index + "";
 		}
 	}
 

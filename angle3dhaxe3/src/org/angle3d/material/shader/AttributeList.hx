@@ -14,7 +14,7 @@ class AttributeList extends ShaderVariableList
 	 * @param	name
 	 * @return
 	 */
-	private function getFormat(size:Int):String
+	private function getFormat(size:Int):Context3DVertexBufferFormat
 	{
 		switch (size)
 		{
@@ -26,10 +26,8 @@ class AttributeList extends ShaderVariableList
 				return Context3DVertexBufferFormat.FLOAT_3;
 			case 4:
 				return Context3DVertexBufferFormat.FLOAT_4;
-			default:
-				throw new Error("没有这种类型");
-				return "";
 		}
+		return null;
 	}
 
 	override public function build():Void

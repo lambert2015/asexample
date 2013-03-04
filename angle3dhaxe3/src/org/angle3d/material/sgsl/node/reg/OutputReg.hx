@@ -18,7 +18,7 @@ class OutputReg extends RegNode
 		this.name = "output";
 		if (this.index > 0)
 		{
-			this.name += this.index.toString();
+			this.name += index + "";
 		}
 	}
 

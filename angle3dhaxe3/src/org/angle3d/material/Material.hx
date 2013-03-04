@@ -108,7 +108,7 @@ class Material
 		return value;
 	}
 
-	public function getTechniques():Vector<Technique>
+	public function getTechniques():Array<Technique>
 	{
 		return _techniques;
 	}

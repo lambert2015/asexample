@@ -1,4 +1,5 @@
 package org.angle3d.material.shader;
+import flash.display3D.Context3DVertexBufferFormat;
 
 
 /**
@@ -11,7 +12,7 @@ class AttributeVar extends ShaderVariable
 {
 	public var index:Int;
 
-	public var format:String;
+	public var format:Context3DVertexBufferFormat;
 
 	public function new(name:String, size:Int)
 	{

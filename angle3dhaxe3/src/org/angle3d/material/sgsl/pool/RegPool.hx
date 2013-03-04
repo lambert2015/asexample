@@ -2,6 +2,7 @@ package org.angle3d.material.sgsl.pool;
 
 import org.angle3d.material.sgsl.node.reg.RegNode;
 import haxe.ds.Vector;
+import org.angle3d.utils.ArrayUtil;
 /**
  * 寄存器池
  * @author andy
@@ -12,14 +13,14 @@ class RegPool
 
 	private var mProfile:String;
 
-	private var mRegs:Vector<RegNode>;
+	private var mRegs:Array<RegNode>;
 
 	public function new(profile:String)
 	{
 		this.profile = profile;
 
 		mRegLimit = getRegLimit();
-		mRegs = new Vector<RegNode>();
+		mRegs = new Array<RegNode>();
 	}
 
 	private function getRegLimit():Int
@@ -34,20 +35,20 @@ class RegPool
 
 	public function addReg(value:RegNode):Void
 	{
-		if (mRegs.indexOf(value) == -1)
+		if (ArrayUtil.contain(mRegs, value))
 		{
 			mRegs.push(value);
 		}
 	}
 
-	public function getRegs():Vector<RegNode>
+	public function getRegs():Array<RegNode>
 	{
 		return mRegs;
 	}
 
 	public function clear():Void
 	{
-		mRegs.length = 0;
+		mRegs = [];
 	}
 
 	public function build():Void

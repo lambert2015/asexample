@@ -3,6 +3,7 @@ package org.angle3d.math;
 import haxe.ds.Vector;
 import org.angle3d.math.Vector3f;
 import org.angle3d.utils.Assert;
+import org.angle3d.utils.TempVars;
 
 /**
  * <code>Quaternion</code> defines a single example of a more general class of
@@ -794,17 +795,17 @@ class Quaternion
 	 * @param matrix
 	 *            the matrix to apply to this quaternion.
 	 */
-	//public function apply(matrix:Matrix3f):Void
-	//{
-		//var oldX:Float = x, oldY:Float = y, oldZ:Float = z, oldW:Float = w;
-		//fromMatrix3f(matrix);
-		//var tempX:Float = x, tempY:Float = y, tempZ:Float = z, tempW:Float = w;
-//
-		//x = oldX * tempW + oldY * tempZ - oldZ * tempY + oldW * tempX;
-		//y = -oldX * tempZ + oldY * tempW + oldZ * tempX + oldW * tempY;
-		//z = oldX * tempY - oldY * tempX + oldZ * tempW + oldW * tempZ;
-		//w = -oldX * tempX - oldY * tempY - oldZ * tempZ + oldW * tempW;
-	//}
+	public function apply(matrix:Matrix3f):Void
+	{
+		var oldX:Float = x, oldY:Float = y, oldZ:Float = z, oldW:Float = w;
+		fromMatrix3f(matrix);
+		var tempX:Float = x, tempY:Float = y, tempZ:Float = z, tempW:Float = w;
+
+		x = oldX * tempW + oldY * tempZ - oldZ * tempY + oldW * tempX;
+		y = -oldX * tempZ + oldY * tempW + oldZ * tempX + oldW * tempY;
+		z = oldX * tempY - oldY * tempX + oldZ * tempW + oldW * tempZ;
+		w = -oldX * tempX - oldY * tempY - oldZ * tempZ + oldW * tempW;
+	}
 
 	/**
 	 *
@@ -818,20 +819,20 @@ class Quaternion
 	 * @param yAxis vector representing the y-axis of the coordinate system.
 	 * @param zAxis vector representing the z-axis of the coordinate system.
 	 */
-	//public function fromAxes(xAxis:Vector3f, yAxis:Vector3f, zAxis:Vector3f):Void
-	//{
-		//var m:Matrix3f = new Matrix3f();
-		//m.m00 = xAxis.x; 
-		//m.m01 = yAxis.x; 
-		//m.m02 = zAxis.x; 
-		//m.m10 = xAxis.y; 
-		//m.m11 = yAxis.y; 
-		//m.m12 = zAxis.y; 
-		//m.m20 = xAxis.z; 
-		//m.m21 = yAxis.z; 
-		//m.m22 = zAxis.z;
-		//fromMatrix3f(m);
-	//}
+	public function fromAxes(xAxis:Vector3f, yAxis:Vector3f, zAxis:Vector3f):Void
+	{
+		var m:Matrix3f = new Matrix3f();
+		m.m00 = xAxis.x; 
+		m.m01 = yAxis.x; 
+		m.m02 = zAxis.x; 
+		m.m10 = xAxis.y; 
+		m.m11 = yAxis.y; 
+		m.m12 = zAxis.y; 
+		m.m20 = xAxis.z; 
+		m.m21 = yAxis.z; 
+		m.m22 = zAxis.z;
+		fromMatrix3f(m);
+	}
 
 	/**
 	 *
@@ -842,14 +843,14 @@ class Quaternion
 	 * @param axis
 	 *            the array of vectors to be filled.
 	 */
-	//public function toAxes(axis:Vector<Vector3f>):Void
-	//{
-		//var tempMat:Matrix3f = new Matrix3f();
-		//toMatrix3f(tempMat);
-		//axis[0] = tempMat.copyColumnTo(0, axis[0]);
-		//axis[1] = tempMat.copyColumnTo(1, axis[1]);
-		//axis[2] = tempMat.copyColumnTo(2, axis[2]);
-	//}
+	public function toAxes(axis:Array<Vector3f>):Void
+	{
+		var tempMat:Matrix3f = new Matrix3f();
+		toMatrix3f(tempMat);
+		axis[0] = tempMat.copyColumnTo(0, axis[0]);
+		axis[1] = tempMat.copyColumnTo(1, axis[1]);
+		axis[2] = tempMat.copyColumnTo(2, axis[2]);
+	}
 
 	/**
 	 * <code>mult</code> multiplies this quaternion by a parameter vector. The
@@ -1080,23 +1081,26 @@ class Quaternion
 	 *            a vector indicating the local up direction.
 	 *            (typically {0, 1, 0} in jME.)
 	 */
-	//public function lookAt(direction:Vector3f, up:Vector3f):Void
-	//{
-		//var tVars:TempVars = TempVars.getTempVars();
-//
-		//tVars.vect3.copyFrom(direction).normalizeLocal();
-		//tVars.vect1.copyFrom(up).crossLocal(direction).normalizeLocal();
-		//tVars.vect2.copyFrom(direction).crossLocal(tVars.vect1).normalizeLocal();
-		//fromAxes(tVars.vect1, tVars.vect2, tVars.vect3);
-//
-		//tVars.release();
-//
-		//var v1:Vector3f = direction.clone().normalizeLocal();
-		//var v2:Vector3f = up.cross(direction).normalizeLocal();
-		//var v3:Vector3f = direction.cross(v2).normalizeLocal();
-		//
-		//fromAxes(v2, v3, v1);
-	//}
+	public function lookAt(direction:Vector3f, up:Vector3f):Void
+	{
+		var tVars:TempVars = TempVars.getTempVars();
+
+		tVars.vect3.copyFrom(direction).normalizeLocal();
+		tVars.vect1.copyFrom(up).crossLocal(direction).normalizeLocal();
+		tVars.vect2.copyFrom(direction).crossLocal(tVars.vect1).normalizeLocal();
+		fromAxes(tVars.vect1, tVars.vect2, tVars.vect3);
+
+		tVars.release();
+
+		var v1:Vector3f = direction.clone();
+		v1.normalizeLocal();
+		var v2:Vector3f = up.cross(direction);
+		v2.normalizeLocal();
+		var v3:Vector3f = direction.cross(v2);
+		v3.normalizeLocal();
+		
+		fromAxes(v2, v3, v1);
+	}
 
 	public function equals(other:Quaternion):Bool
 	{

@@ -4,6 +4,7 @@ import org.angle3d.bounding.BoundingVolume;
 import org.angle3d.collision.Collidable;
 import org.angle3d.collision.CollisionResults;
 import org.angle3d.material.Material;
+import org.angle3d.utils.ArrayUtil;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Logger;
 import haxe.ds.Vector;
@@ -252,7 +253,7 @@ class Node extends Spatial
 	{
 		if (child.parent == this)
 		{
-			var index:Int = mChildren.indexOf(child);
+			var index:Int = ArrayUtil.indexOf(mChildren, child);
 			if (index != -1)
 			{
 				detachChildAt(index);
@@ -363,7 +364,7 @@ class Node extends Spatial
 	 */
 	public function getChildIndex(sp:Spatial):Int
 	{
-		return mChildren.indexOf(sp);
+		return ArrayUtil.indexOf(mChildren, sp);
 	}
 
 	/**
@@ -432,7 +433,7 @@ class Node extends Spatial
 	 */
 	public function hasChild(sp:Spatial):Bool
 	{
-		if (mChildren.indexOf(sp) != -1)
+		if (ArrayUtil.contain(mChildren, sp))
 		{
 			return true;
 		}

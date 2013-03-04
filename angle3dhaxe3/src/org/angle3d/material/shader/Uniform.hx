@@ -28,7 +28,7 @@ class Uniform extends ShaderVariable
 
 		_size = Std.int(_size / 4);
 
-		_data = new Vector<Float>(_size * 4, true);
+		_data = new Vector<Float>(_size * 4);
 	}
 
 	override private function get_size():Int

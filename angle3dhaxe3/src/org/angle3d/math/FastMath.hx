@@ -81,7 +81,7 @@ class FastMath
 	}
 
 	
-	public static function clamp(value, low, high)
+	public static function clamp(value:Float, low:Float, high:Float):Float
 	{
 		if (value < low)
 		{

@@ -1,6 +1,7 @@
 package org.angle3d.renderer;
 
 import flash.display3D.Program3D;
+import org.angle3d.utils.ArrayUtil;
 
 import org.angle3d.light.Light;
 import org.angle3d.light.LightList;
@@ -42,9 +43,9 @@ class RenderManager
 	private var _renderer:IRenderer;
 	private var _uniformBindingManager:UniformBindingManager;
 
-	private var preViewPorts:Vector<ViewPort>;
-	private var viewPorts:Vector<ViewPort>;
-	private var postViewPorts:Vector<ViewPort>;
+	private var preViewPorts:Array<ViewPort>;
+	private var viewPorts:Array<ViewPort>;
+	private var postViewPorts:Array<ViewPort>;
 
 	private var camera:Camera3D;
 
@@ -76,9 +77,9 @@ class RenderManager
 	{
 		_uniformBindingManager = new UniformBindingManager();
 
-		preViewPorts = new Vector<ViewPort>();
-		viewPorts = new Vector<ViewPort>();
-		postViewPorts = new Vector<ViewPort>();
+		preViewPorts = new Array<ViewPort>();
+		viewPorts = new Array<ViewPort>();
+		postViewPorts = new Array<ViewPort>();
 
 		_orthoMatrix = new Matrix4f();
 
@@ -126,7 +127,7 @@ class RenderManager
 	 */
 	public function removePreView(view:ViewPort):Bool
 	{
-		var index:Int = preViewPorts.indexOf(view);
+		var index:Int = ArrayUtil.indexOf(preViewPorts, view);
 		if (index > -1)
 		{
 			preViewPorts.splice(index, 1);
@@ -188,7 +189,7 @@ class RenderManager
 	 */
 	public function removeMainView(view:ViewPort):Bool
 	{
-		var index:Int = viewPorts.indexOf(view);
+		var index:Int = ArrayUtil.indexOf(viewPorts,view);
 		if (index > -1)
 		{
 			viewPorts.splice(index, 1);
@@ -250,7 +251,7 @@ class RenderManager
 	 */
 	public function removePostView(view:ViewPort):Bool
 	{
-		var index:Int = postViewPorts.indexOf(view);
+		var index:Int = ArrayUtil.indexOf(postViewPorts, view);
 		if (index > -1)
 		{
 			postViewPorts.splice(index, 1);
@@ -264,7 +265,7 @@ class RenderManager
 	 * @return a read-only list of all pre ViewPorts
 	 * @see #createPreView(String, com.jme3.renderer.Camera)
 	 */
-	public function getPreViews():Vector<ViewPort>
+	public function getPreViews():Array<ViewPort>
 	{
 		return preViewPorts;
 	}
@@ -274,7 +275,7 @@ class RenderManager
 	 * @return a read-only list of all main ViewPorts
 	 * @see #createMainView(String, com.jme3.renderer.Camera)
 	 */
-	public function getMainViews():Vector<ViewPort>
+	public function getMainViews():Array<ViewPort>
 	{
 		return viewPorts;
 	}
@@ -284,7 +285,7 @@ class RenderManager
 	 * @return a read-only list of all post ViewPorts
 	 * @see #createPostView(String, com.jme3.renderer.Camera)
 	 */
-	public function getPostViews():Vector<ViewPort>
+	public function getPostViews():Array<ViewPort>
 	{
 		return postViewPorts;
 	}
@@ -333,7 +334,7 @@ class RenderManager
 			vp.camera.resize(w, h, true);
 		}
 
-		var processors:Vector<SceneProcessor> = vp.processors;
+		var processors:Array<SceneProcessor> = vp.processors;
 		var pLength:Int = processors.length;
 		var processor:SceneProcessor;
 		for (i in 0...pLength)
@@ -390,7 +391,7 @@ class RenderManager
 	 * Updates the given list of uniforms with {@link UniformBinding uniform bindings}
 	 * based on the current world state.
 	 */
-	private function updateUniformBindings(params:Vector<Uniform>):Void
+	private function updateUniformBindings(params:Array<Uniform>):Void
 	{
 		_uniformBindingManager.updateUniformBindings(params);
 	}
@@ -475,7 +476,7 @@ class RenderManager
 
 		if (geom.isIgnoreTransform())
 		{
-			setWorldMatrix(Matrix4f.IDENTITY);
+			setWorldMatrix(Matrix4f.IDENTITY());
 		}
 		else
 		{
@@ -497,7 +498,7 @@ class RenderManager
 		var lightSize:Int = lightList.getSize();
 
 		// for each technique in material
-		var techniques:Vector<Technique> = mat.getTechniques();
+		var techniques:Array<Technique> = mat.getTechniques();
 		var shader:Shader;
 		var technique:Technique;
 		var light:Light;
@@ -574,7 +575,7 @@ class RenderManager
 		if (Std.is(s,Node))
 		{
 			var n:Node = cast s;
-			var children:Vector<Spatial> = n.children;
+			var children:Array<Spatial> = n.children;
 			var length:Int = children.length;
 			for (i in 0...length)
 			{
@@ -653,9 +654,9 @@ class RenderManager
 			//recurse for all children
 			var n:Node = cast scene;
 
-			var children:Vector<Spatial> = n.children;
+			var children:Array<Spatial> = n.children;
 			//saving cam state for culling
-			var camState:Int = vp.camera.planeState;
+			var camState:PlaneSide = vp.camera.planeState;
 			var cLength:Int = children.length;
 			for (i in 0...cLength)
 			{
@@ -674,7 +675,7 @@ class RenderManager
 			vp.renderQueue.addToQueue(gm, gm.queueBucket);
 
 			//add to shadow queue if needed
-			var shadowMode:Int = gm.shadowMode;
+			var shadowMode:ShadowMode = gm.shadowMode;
 			if (shadowMode != ShadowMode.Off)
 			{
 				vp.renderQueue.addToShadowQueue(gm, shadowMode);
@@ -825,10 +826,10 @@ class RenderManager
 		{
 			var rect:Rect = cam.viewPortRect;
 
-			viewX = int(rect.left * cam.width);
-			viewY = int(rect.bottom * cam.height);
-			viewWidth = int(rect.width * cam.width);
-			viewHeight = int(rect.height * cam.height);
+			viewX = Std.int(rect.left * cam.width);
+			viewY = Std.int(rect.bottom * cam.height);
+			viewWidth = Std.int(rect.width * cam.width);
+			viewHeight = Std.int(rect.height * cam.height);
 
 			_uniformBindingManager.setViewPort(viewX, viewY, viewWidth, viewHeight);
 			_renderer.setViewPort(viewX, viewY, viewWidth, viewHeight);
@@ -847,7 +848,7 @@ class RenderManager
 	{
 		if (ortho)
 		{
-			_uniformBindingManager.setCamera(cam, Matrix4f.IDENTITY, _orthoMatrix, _orthoMatrix);
+			_uniformBindingManager.setCamera(cam, Matrix4f.IDENTITY(), _orthoMatrix, _orthoMatrix);
 		}
 		else
 		{
@@ -890,7 +891,7 @@ class RenderManager
 	{
 		setCamera(vp.camera, false);
 
-		var scenes:Vector<Spatial> = vp.getScenes();
+		var scenes:Array<Spatial> = vp.getScenes();
 		var i:Int = scenes.length;
 		while (i-- >= 0)
 		{
@@ -946,7 +947,7 @@ class RenderManager
 		if (!vp.enabled)
 			return;
 
-		var processors:Vector<SceneProcessor> = vp.processors;
+		var processors:Array<SceneProcessor> = vp.processors;
 		var pLength:Int = processors.length;
 		var processor:SceneProcessor;
 		for (i in 0...pLength)
@@ -973,8 +974,8 @@ class RenderManager
 			_renderer.clearBuffers(vp.isClearColor(), vp.isClearDepth(), vp.isClearStencil());
 		}
 
-		var scenes:Vector<Spatial> = vp.getScenes();
-		i = scenes.length;
+		var scenes:Array<Spatial> = vp.getScenes();
+		var i:Int = scenes.length;
 		while (i-- > 0)
 		{
 			renderScene(scenes[i], vp);

@@ -2,6 +2,8 @@ package org.angle3d.collision;
 
 import org.angle3d.math.Triangle;
 import org.angle3d.math.Vector3f;
+import org.angle3d.scene.Geometry;
+import org.angle3d.scene.mesh.Mesh;
 
 /**
  * A <code>CollisionResult</code> represents a single collision instance
@@ -11,7 +13,7 @@ import org.angle3d.math.Vector3f;
  */
 class CollisionResult
 {
-	//public var geometry:Geometry;
+	public var geometry:Geometry;
 	public var contactPoint:Vector3f;
 	public var contactNormal:Vector3f;
 	public var distance:Float;
@@ -29,8 +31,8 @@ class CollisionResult
 			store = new Triangle();
 		}
 
-		//var m:Mesh = geometry.getMesh();
-		//m.getTriangle(triangleIndex, store);
+		var m:Mesh = geometry.getMesh();
+		m.getTriangle(triangleIndex, store);
 		store.calculateCenter();
 		store.calculateNormal();
 		return store;

@@ -3,6 +3,7 @@ package org.angle3d.renderer;
 import haxe.ds.Vector;
 import flash.display.Stage3D;
 import flash.display3D.Context3D;
+import org.angle3d.material.shader.ShaderType;
 
 import org.angle3d.light.Light;
 import org.angle3d.material.RenderState;
@@ -39,7 +40,7 @@ interface IRenderer
 	 * @param numRegisters 要设置的常量数量。指定 -1（默认值），设置足够的寄存器以使用所有可用数据。
 	 *
 	 */
-	function setShaderConstants(shaderType:String, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void;
+	function setShaderConstants(shaderType:ShaderType, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void;
 
 	/**
 	 * Invalidates the current rendering state.

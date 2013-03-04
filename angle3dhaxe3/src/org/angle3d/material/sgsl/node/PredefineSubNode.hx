@@ -1,24 +1,25 @@
 package org.angle3d.material.sgsl.node;
 
 import haxe.ds.Vector;
+import org.angle3d.utils.ArrayUtil;
 
 class PredefineSubNode extends BranchNode
 {
-	private var _keywords:Vector<String>;
+	private var _keywords:Array<String>;
 
-	private var _arrangeList:Vector<Vector<String>>;
+	private var _arrangeList:Array<Array<String>>;
 
 	public function new(name:String)
 	{
 		super(name);
 
-		_keywords = new Vector<String>();
+		_keywords = new Array<String>();
 	}
 
 	override public function clone():LeafNode
 	{
 		var node:PredefineSubNode = new PredefineSubNode(name);
-		node._keywords = _keywords.slice();
+		node._keywords = _keywords.slice(0);
 
 		cloneChildren(node);
 
@@ -35,7 +36,7 @@ class PredefineSubNode extends BranchNode
 
 		_arrangeList = new Array<Array<String>>();
 
-		_arrangeList[0] = [];
+		_arrangeList[0] = new Array<String>();
 		_arrangeList[0].push(_keywords[0]);
 
 		var length:Int = _keywords.length;
@@ -43,7 +44,7 @@ class PredefineSubNode extends BranchNode
 		{
 			if (_keywords[i] == "||")
 			{
-				_arrangeList[_arrangeList.length] = [];
+				_arrangeList[_arrangeList.length] = new Array<String>();
 			}
 			else if (_keywords[i] != "&&")
 			{
@@ -86,7 +87,7 @@ class PredefineSubNode extends BranchNode
 		var length:Int = list.length;
 		for (i in 0...length)
 		{
-			if (defines.indexOf(list[i]) == -1)
+			if (ArrayUtil.contain(defines, list[i]))
 			{
 				return false;
 			}

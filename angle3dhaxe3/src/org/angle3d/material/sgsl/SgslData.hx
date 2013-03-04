@@ -1,7 +1,9 @@
 package org.angle3d.material.sgsl;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 import haxe.ds.Vector;
+import org.angle3d.utils.ArrayUtil;
 
 import org.angle3d.material.sgsl.node.agal.AgalNode;
 import org.angle3d.material.sgsl.node.ArrayAccessNode;
@@ -32,11 +34,11 @@ class SgslData
 	/**
 	 * Shader类型
 	 */
-	public var shaderType:String;
+	public var shaderType:ShaderType;
 
 	public var profile:String;
 
-	private var _nodes:Vector<AgalNode>;
+	private var _nodes:Array<AgalNode>;
 
 	public var attributePool:AttributeRegPool;
 	public var uniformPool:UniformRegPool;
@@ -48,14 +50,14 @@ class SgslData
 	/**
 	 * 所有变量的集合
 	 */
-	private var _regsMap:Dictionary;
+	private var _regsMap:StringMap<RegNode>;
 
-	public function new(profile:String, shaderType:String)
+	public function new(profile:String, shaderType:ShaderType)
 	{
 		this.profile = profile;
 		this.shaderType = shaderType;
 
-		_nodes = new Vector<AgalNode>();
+		_nodes = new Array<AgalNode>();
 
 		_tempPool = new TempRegPool(this.profile);
 		uniformPool = new UniformRegPool(this.profile, shaderType);
@@ -69,7 +71,7 @@ class SgslData
 			texturePool = new TextureRegPool(this.profile);
 		}
 
-		_regsMap = new Dictionary();
+		_regsMap = new StringMap<RegNode>();
 
 		regOutput();
 	}
@@ -80,7 +82,7 @@ class SgslData
 		if (shaderType == ShaderType.VERTEX)
 		{
 			reg = new OutputReg(0);
-			_regsMap[reg.name] = reg;
+			_regsMap.set(reg.name, reg);
 		}
 		else
 		{
@@ -89,23 +91,23 @@ class SgslData
 				for(i in 0...4)
 				{
 					reg = new OutputReg(i);
-					_regsMap[reg.name] = reg;
+					_regsMap.set(reg.name, reg);
 				}
 
 				var depth:DepthReg = new DepthReg();
-				_regsMap[depth.name] = depth;
+				_regsMap.set(depth.name, depth);
 			}
 			else
 			{
 				reg = new OutputReg(0);
-				_regsMap[reg.name] = reg;
+				_regsMap.set(reg.name, reg);
 			}
 		}
 	}
 
 	public function clear():Void
 	{
-		_nodes.length = 0;
+		_nodes = [];
 
 		_tempPool.clear();
 		uniformPool.clear();
@@ -119,12 +121,12 @@ class SgslData
 			texturePool.clear();
 		}
 
-		_regsMap = new Dictionary();
+		_regsMap = new StringMap<RegNode>();
 		regOutput();
 	}
 
-	public var nodes(get, null):Vector<AgalNode>;
-	private function get_nodes():Vector<AgalNode>
+	public var nodes(get, null):Array<AgalNode>;
+	private function get_nodes():Array<AgalNode>
 	{
 		return _nodes;
 	}
@@ -133,7 +135,7 @@ class SgslData
 	{
 		var reg:LeafNode;
 
-		var children:Vector<LeafNode> = node.children;
+		var children:Array<LeafNode> = node.children;
 		var cLength:Int = children.length;
 		for (i in 0...cLength)
 		{
@@ -141,7 +143,7 @@ class SgslData
 
 			if (Std.is(reg,FunctionCallNode))
 			{
-				var regChildren:Vector<LeafNode> = (cast reg).children;
+				var regChildren:Array<LeafNode> = (cast reg).children;
 				var rLength:Int = regChildren.length;
 				var j:Int = 0;
 				while(j < rLength && j < 2)
@@ -189,7 +191,7 @@ class SgslData
 
 		var pool:VaryingRegPool = vertexData.varyingPool;
 
-		var regs:Vector<RegNode> = pool.getRegs();
+		var regs:Array<RegNode> = pool.getRegs();
 		var count:Int = regs.length;
 		for (i in 0...count)
 		{
@@ -207,7 +209,7 @@ class SgslData
 		#if debug
 			Assert.assert(reg != null, "变量不存在");
 			Assert.assert(reg.regType != RegType.OUTPUT, "output不需要定义");
-			Assert.assert(_regsMap[reg.name] == undefined, reg.name + "变量名定义重复");
+			Assert.assert(!_regsMap.exists(reg.name), reg.name + "变量名定义重复");
 
 			if (reg.regType == RegType.ATTRIBUTE)
 			{
@@ -237,7 +239,7 @@ class SgslData
 			case RegType.VARYING:
 				varyingPool.addReg(reg);
 		}
-		_regsMap[reg.name] = reg;
+		_regsMap.set(reg.name,reg);
 	}
 
 	/**
@@ -247,7 +249,7 @@ class SgslData
 	 */
 	public function getRegNode(name:String):RegNode
 	{
-		return _regsMap[name];
+		return _regsMap.get(name);
 	}
 
 	/**
@@ -268,7 +270,7 @@ class SgslData
 
 
 		//添加所有临时变量到一个数组中
-		var tempList:Vector<TempReg> = _getAllTempRegs();
+		var tempList:Array<TempReg> = _getAllTempRegs();
 		_registerTempReg(tempList);
 	}
 
@@ -276,7 +278,7 @@ class SgslData
 	 * 递归注册和释放临时变量
 	 * @param	list
 	 */
-	private function _registerTempReg(list:Vector<TempReg>):Void
+	private function _registerTempReg(list:Array<TempReg>):Void
 	{
 		if (list.length > 0)
 		{
@@ -290,7 +292,7 @@ class SgslData
 			}
 
 			//如果数组中剩余项不包含这个变量，也就代表无引用了
-			if (list.indexOf(reg) == -1)
+			if (ArrayUtil.contain(list, reg))
 			{
 				//可以释放其占用位置
 				_tempPool.logout(reg);
@@ -305,9 +307,9 @@ class SgslData
 	 * 获得所有临时变量引用
 	 * @return
 	 */
-	private function _getAllTempRegs():Vector<TempReg>
+	private function _getAllTempRegs():Array<TempReg>
 	{
-		var tempList:Vector<TempReg> = new Vector<TempReg>();
+		var tempList:Array<TempReg> = new Array<TempReg>();
 		var tLength:Int = _nodes.length;
 		for (i in 0...tLength)
 		{
@@ -316,7 +318,7 @@ class SgslData
 		return tempList;
 	}
 
-	private function _checkLeafTempReg(leaf:LeafNode, list:Vector<TempReg>):Void
+	private function _checkLeafTempReg(leaf:LeafNode, list:Array<TempReg>):Void
 	{
 		if (Std.is(leaf, ArrayAccessNode))
 		{
@@ -334,7 +336,7 @@ class SgslData
 		}
 	}
 
-	private function _addTempReg(name:String, list:Vector<TempReg>):Void
+	private function _addTempReg(name:String, list:Array<TempReg>):Void
 	{
 		var reg:RegNode = getRegNode(name);
 		if (Std.is(reg,TempReg))
@@ -347,20 +349,20 @@ class SgslData
 	 * 获得node所有的临时变量引用
 	 * @return
 	 */
-	private function _checkNodeTempRegs(node:AgalNode):Vector<TempReg>
+	private function _checkNodeTempRegs(node:AgalNode):Array<TempReg>
 	{
-		var list:Vector<TempReg> = new Vector<TempReg>();
+		var list:Array<TempReg> = new Array<TempReg>();
 
 		var leaf:LeafNode;
 
-		var children:Vector<LeafNode> = node.children;
+		var children:Array<LeafNode> = node.children;
 		var cLength:Int = children.length;
 		for (i in 0...cLength)
 		{
 			leaf = children[i];
 			if (Std.is(leaf,FunctionCallNode))
 			{
-				var leafChildren:Vector<LeafNode> = (cast leaf).children;
+				var leafChildren:Array<LeafNode> = (cast leaf).children;
 				var rLength:Int = leafChildren.length;
 				var j:Int = 0;
 				while(j < rLength && j < 2)

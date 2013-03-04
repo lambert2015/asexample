@@ -57,7 +57,7 @@ class OpaqueComparator implements GeometryComparator
 	//TODO 为什么要dot相机的方向？
 	private function distanceToCam(spat:Geometry):Float
 	{
-		if (spat.queueDistance != Number.NEGATIVE_INFINITY)
+		if (spat.queueDistance != Math.NEGATIVE_INFINITY)
 		{
 			return spat.queueDistance;
 		}

@@ -67,7 +67,7 @@ class RenderState
 	public var colorWrite:Bool;
 	public var applyColorWrite:Bool;
 
-	public var blendMode:Int;
+	public var blendMode:BlendMode;
 	public var applyBlendMode:Bool;
 
 	public function new()
@@ -114,7 +114,7 @@ class RenderState
 	 *
 	 * @param cullMode the face culling mode.
 	 */
-	public function setCullMode(cullMode:String):Void
+	public function setCullMode(cullMode:Context3DTriangleFace):Void
 	{
 		applyCullMode = true;
 		this.cullMode = cullMode;
@@ -134,7 +134,7 @@ class RenderState
 	 * @param blendMode The blend mode to use. Set to {@link BlendMode#Off}
 	 * to disable blending.
 	 */
-	public function setBlendMode(blendMode:Int):Void
+	public function setBlendMode(blendMode:BlendMode):Void
 	{
 		applyBlendMode = true;
 		this.blendMode = blendMode;
