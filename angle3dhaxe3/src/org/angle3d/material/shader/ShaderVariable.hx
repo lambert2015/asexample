@@ -48,6 +48,7 @@ class ShaderVariable
 	private function set_location(location:Int):Int
 	{
 		_location = location;
+		return _location;
 	}
 
 	private function get_location():Int

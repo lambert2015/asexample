@@ -4,25 +4,25 @@ import haxe.ds.Vector;
 
 class UniformList extends ShaderVariableList
 {
-	private var _constants:Vector<Vector<Float>>;
+	private var _constants:Array<Array<Float>>;
 
 	public function new()
 	{
 		super();
-		_constants = new Vector<Vector<Float>>();
+		_constants = new Array<Array<Float>>();
 	}
 
-	public function setConstants(value:Vector<Vector<Float>>):Void
+	public function setConstants(value:Array<Array<Float>>):Void
 	{
 		_constants = value;
 	}
 
-	public function getConstants():Vector<Vector<Float>>
+	public function getConstants():Array<Array<Float>>
 	{
 		return _constants;
 	}
 
-	public function getUniforms():Vector<ShaderVariable>
+	public function getUniforms():Array<ShaderVariable>
 	{
 		return _variables;
 	}
