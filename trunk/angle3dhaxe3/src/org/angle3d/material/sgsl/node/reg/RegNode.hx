@@ -2,6 +2,7 @@ package org.angle3d.material.sgsl.node.reg;
 
 import org.angle3d.material.sgsl.DataType;
 import org.angle3d.material.sgsl.node.LeafNode;
+import org.angle3d.material.sgsl.RegType;
 
 
 /**
@@ -10,14 +11,14 @@ import org.angle3d.material.sgsl.node.LeafNode;
  */
 class RegNode extends LeafNode
 {
-	public var regType:String;
+	public var regType:RegType;
 
 	public var dataType:String;
 
 	//注册地址
 	public var index:Int;
 
-	public function new(regType:String, dataType:String, name:String)
+	public function new(regType:RegType, dataType:String, name:String)
 	{
 		super(name);
 

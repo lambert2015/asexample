@@ -160,17 +160,18 @@ class SgslCompiler
 	 */
 	private function _updateShader(data:SgslData, shader:Shader):Void
 	{
-		var shaderType:String = data.shaderType;
+		var shaderType:ShaderType = data.shaderType;
 
 		shader.setConstants(shaderType, data.uniformPool.getConstants());
 
 		var regList:Array<RegNode> = data.uniformPool.getRegs();
 
-		var varType:Int = ShaderVarType.UNIFORM;
+		var reg:RegNode;
+		var varType:ShaderVarType = ShaderVarType.UNIFORM;
 		var count:Int = regList.length;
 		for (i in 0...count)
 		{
-			var reg:RegNode = regList[i];
+			reg = regList[i];
 			shader.addVariable(shaderType, varType, reg.name, reg.size);
 		}
 
@@ -205,7 +206,7 @@ class SgslCompiler
 
 		writeHeader(data.shaderType == ShaderType.FRAGMENT);
 
-		var nodes:Vector<AgalNode> = data.nodes;
+		var nodes:Array<AgalNode> = data.nodes;
 		var count:Int = nodes.length;
 
 		Assert.assert(count <= MAX_OPCODES, "too many opcodes. maximum is " + MAX_OPCODES + ".");
@@ -251,7 +252,7 @@ class SgslCompiler
 	private function writeTexture(regIndex:Int, flag:TexFlag):Void
 	{
 		_byteArray.writeShort(regIndex); //16 bits
-		_byteArray.writeByte(flag.lod); //8 bits
+		_byteArray.writeByte(flag.getLod()); //8 bits
 		_byteArray.writeByte(0); //8 bits
 		_byteArray.writeByte(5); //8 bits
 
@@ -288,32 +289,26 @@ class SgslCompiler
 				opCode = _opCodeManager.getCode("ife");
 				source0 = cast node.children[0];
 				source1 = cast node.children[1];
-				break;
 			case "!=":
 				opCode = _opCodeManager.getCode("ine");
 				source0 = cast node.children[0];
 				source1 = cast node.children[1];
-				break;
 			case ">=":
 				opCode = _opCodeManager.getCode("ifg");
 				source0 = cast node.children[0];
 				source1 = cast node.children[1];
-				break;
 			case "<=":
 				opCode = _opCodeManager.getCode("ifg");
 				source0 = cast node.children[1];
 				source1 = cast node.children[0];
-				break;
 			case "<":
 				opCode = _opCodeManager.getCode("ifl");
 				source0 = cast node.children[0];
 				source1 = cast node.children[1];
-				break;
 			case ">":
 				opCode = _opCodeManager.getCode("ifl");
 				source0 = cast node.children[1];
 				source1 = cast node.children[0];
-				break;
 		}
 
 
@@ -334,7 +329,7 @@ class SgslCompiler
 
 		var opCode:OpCode;
 		var numChildren:Int = node.numChildren;
-		var children:Vector<LeafNode> = node.children;
+		var children:Array<LeafNode> = node.children;
 
 		//if end
 		if (numChildren == 0)
@@ -382,7 +377,7 @@ class SgslCompiler
 		else
 		{
 			var fc:FunctionCallNode = cast source0;
-			var fChildren:Vector<LeafNode> = fc.children;
+			var fChildren:Array<LeafNode> = fc.children;
 			var fLength:Int = fChildren.length;
 
 			if (_opCodeManager.isTexture(fc.name))
@@ -512,7 +507,7 @@ class SgslCompiler
 
 				registerIndex = _currentData.getConstantIndex(constantNode.value);
 				swizzleBit = swizzleBits(null, _currentData.getConstantMask(constantNode.value));
-				regCode = _regCodeMap[RegType.UNIFORM];
+				regCode = _regCodeMap.get(RegType.UNIFORM);
 			}
 			else
 			{
@@ -561,7 +556,7 @@ class SgslCompiler
 		//header
 		result += readString(data, 7) + "\n";
 
-		var count:Int = int((data.length - 7) / 24);
+		var count:Int = Std.int((data.length - 7) / 24);
 		for (i in 0...count)
 		{
 			//opcode
@@ -583,7 +578,7 @@ class SgslCompiler
 
 	private function getCharIndex(char:String):Int
 	{
-		return _swizzleMap[char.toLowerCase()];
+		return _swizzleMap.get(char.toLowerCase());
 	}
 
 	private function maskBits(reg:RegNode, swizzle:String):Int
@@ -621,7 +616,7 @@ class SgslCompiler
 		var p:Int = 0;
 		var last:Int = 0;
 		var sLength:Int = comps.length;
-		for (i in 0..sLength)
+		for (i in 0...sLength)
 		{
 			last = getCharIndex(comps.charAt(i));
 			bits |= last << p;
@@ -650,8 +645,8 @@ class SgslCompiler
 		var sLength:Int = swizzle.length;
 		for (i in 0...sLength)
 		{
-			var index:Int = _swizzleMap[swizzle.charAt(i)] + tempReg.offset;
-			result += _swizzleMap[index];
+			var index:Int = _swizzleMap.get(swizzle.charAt(i)) + tempReg.offset;
+			result += _swizzleMap.get(index);
 		}
 
 		return result;

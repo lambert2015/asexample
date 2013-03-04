@@ -41,7 +41,7 @@ class Shader
 		_bindAttributes = new StringMap<ShaderVariable>();
 	}
 
-	public function addVariable(shaderType:ShaderType, type:Int, name:String, size:Int):Void
+	public function addVariable(shaderType:ShaderType, type:ShaderVarType, name:String, size:Int):Void
 	{
 		switch (type)
 		{

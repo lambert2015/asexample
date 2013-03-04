@@ -6,7 +6,7 @@ import org.angle3d.utils.Assert;
 
 class RegFactory
 {
-	public static function create(name:String, regType:String, dataType:String, arraySize:Int = 1):RegNode
+	public static function create(name:String, regType:RegType, dataType:String, arraySize:Int = 1):RegNode
 	{
 		//简单的语法检查
 		#if debug

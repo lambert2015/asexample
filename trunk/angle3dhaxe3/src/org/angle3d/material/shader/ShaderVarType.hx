@@ -4,11 +4,11 @@ package org.angle3d.material.shader;
  * ...
  * @author
  */
-class ShaderVarType
+enum ShaderVarType
 {
-	public static inline var ATTRIBUTE:Int = 0;
-	public static inline var UNIFORM:Int = 1;
-	public static inline var TEXTURE:Int = 2;
+	ATTRIBUTE;
+	UNIFORM;
+	TEXTURE;
 }
 
 
