@@ -1,11 +1,11 @@
 package org.angle3d.renderer;
 
-import org.angle3d.math.Color;
 import org.angle3d.material.post.SceneProcessor;
+import org.angle3d.math.Color;
 import org.angle3d.renderer.queue.RenderQueue;
 import org.angle3d.scene.Spatial;
 import org.angle3d.texture.FrameBuffer;
-import haxe.ds.Vector;
+import org.angle3d.utils.ArrayUtil;
 
 /**
  * A <code>ViewPort</code> represents a view inside the display
@@ -39,8 +39,8 @@ class ViewPort
 
 	public var renderQueue:RenderQueue;
 
-	private var _sceneList:Vector<Spatial>;
-	private var _processors:Vector<SceneProcessor>;
+	private var _sceneList:Array<Spatial>;
+	private var _processors:Array<SceneProcessor>;
 
 	private var _frameBuffer:FrameBuffer;
 
@@ -73,8 +73,8 @@ class ViewPort
 	private function _init():Void
 	{
 		renderQueue = new RenderQueue();
-		_sceneList = new Vector<Spatial>();
-		_processors = new Vector<SceneProcessor>();
+		_sceneList = new Array<Spatial>();
+		_processors = new Array<SceneProcessor>();
 		_bgColor = new Color();
 		_bgColor.setColor(0x0);
 		_clearDepth = false;
@@ -91,8 +91,8 @@ class ViewPort
 	 *
 	 * @see #addProcessor(org.angle3d.post.SceneProcessor)
 	 */
-	public var processors(get, null):Vector<SceneProcessor>;
-	private function get_processors():Vector<SceneProcessor>
+	public var processors(get, null):Array<SceneProcessor>;
+	private function get_processors():Array<SceneProcessor>
 	{
 		return _processors;
 	}
@@ -123,7 +123,7 @@ class ViewPort
 	 */
 	public function removeProcessor(processor:SceneProcessor):Void
 	{
-		var index:Int = _processors.indexOf(processor);
+		var index:Int = ArrayUtil.indexOf(_processors, processor);
 		if (index != -1)
 		{
 			_processors.splice(index, 1);
@@ -263,7 +263,7 @@ class ViewPort
 	 */
 	public function detachScene(scene:Spatial):Void
 	{
-		var index:Int = _sceneList.indexOf(scene);
+		var index:Int = ArrayUtil.indexOf(_sceneList, scene);
 		if (index != -1)
 		{
 			_sceneList.splice(index, 1);
@@ -277,7 +277,7 @@ class ViewPort
 	 */
 	public function clearScenes():Void
 	{
-		_sceneList.length = 0;
+		_sceneList = [];
 	}
 
 	/**
@@ -287,7 +287,7 @@ class ViewPort
 	 *
 	 * @see #attachScene(org.angle3d.scene.Spatial)
 	 */
-	public function getScenes():Vector<Spatial>
+	public function getScenes():Array<Spatial>
 	{
 		return _sceneList;
 	}

@@ -21,7 +21,7 @@ class Node extends Spatial
 	/**
 	 * This node's children.
 	 */
-	private var mChildren:Vector<Spatial>;
+	private var mChildren:Array<Spatial>;
 
 	/**
 	 * Constructor instantiates a new <code>Node</code> with a default empty
@@ -31,7 +31,7 @@ class Node extends Spatial
 	 *            the name of the scene element. This is required for
 	 *            identification and comparision purposes.
 	 */
-	public function Node(name:String)
+	public function new(name:String)
 	{
 		super(name);
 	}
@@ -39,7 +39,7 @@ class Node extends Spatial
 	override private function _init():Void
 	{
 		super._init();
-		mChildren = new Vector<Spatial>();
+		mChildren = new Array<Spatial>();
 	}
 
 	override public function setMaterial(material:Material):Void
@@ -345,7 +345,7 @@ class Node extends Spatial
 			}
 		}
 
-		mChildren.length = 0;
+		mChildren = [];
 
 		setBoundRefresh();
 
@@ -460,8 +460,8 @@ class Node extends Spatial
 	 *
 	 * @return a list containing all children to this node
 	 */
-	public var children(get, null):Vector<Spatial>;
-	private function get_children():Vector<Spatial>
+	public var children(get, null):Array<Spatial>;
+	private inline function get_children():Array<Spatial>
 	{
 		return mChildren;
 	}

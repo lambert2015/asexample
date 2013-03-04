@@ -20,7 +20,7 @@ class Uniform extends ShaderVariable
 	/**
 	 * Binding to a renderer value, or null if user-defined uniform
 	 */
-	public var binding:Int;
+	public var binding:UniformBinding;
 
 	public function new(name:String, size:Int)
 	{

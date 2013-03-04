@@ -38,8 +38,8 @@ class SpotLight extends Light
 		mPosition = new Vector3f();
 		mDirection = new Vector3f(0, -1, 0);
 
-		mInnerAngle = FastMath.PI / (4 * 8);
-		mOuterAngle = FastMath.PI / (4 * 6);
+		mInnerAngle = Math.PI / (4 * 8);
+		mOuterAngle = Math.PI / (4 * 6);
 		mSpotRange = 100;
 		mInvSpotRange = 1 / 100;
 		mPackedAngleCos = 0;
@@ -50,7 +50,7 @@ class SpotLight extends Light
 	{
 		var innerCos:Float = Math.cos(mInnerAngle);
 		var outerCos:Float = Math.cos(mOuterAngle);
-		mPackedAngleCos = int(innerCos * 1000);
+		mPackedAngleCos = Std.int(innerCos * 1000);
 		mPackedAngleCos += outerCos;
 	}
 
