@@ -233,7 +233,7 @@ class FunctionNode extends BranchNode
 
 		output = getSpace(level) + "function " + name + "(";
 
-		var paramStrings:Array = [];
+		var paramStrings:Array<String> = [];
 		var length:Int = mParams.length;
 		for (i in 0...length)
 		{

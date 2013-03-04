@@ -14,7 +14,7 @@ class TechniqueDef
 	public var lightMode:LightMode;
 	public var shadowMode:ShadowMode;
 
-	private var worldBinds:Vector<String>;
+	private var worldBinds:Array<String>;
 	private var defineParams:StringMap<String>;
 
 	private var renderState:RenderState;
@@ -120,7 +120,7 @@ class TechniqueDef
 	{
 		if (worldBinds == null)
 		{
-			worldBinds = new Vector<String>();
+			worldBinds = [];
 		}
 
 		//需要检查是否有这个绑定参数
@@ -134,7 +134,7 @@ class TechniqueDef
 	 *
 	 * @return The list of world parameters
 	 */
-	public function getWorldBindings():Vector<String>
+	public function getWorldBindings():Array<String>
 	{
 		return worldBinds;
 	}

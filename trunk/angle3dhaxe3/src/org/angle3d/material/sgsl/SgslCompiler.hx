@@ -4,6 +4,8 @@ package org.angle3d.material.sgsl;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 import flash.utils.Endian;
+import haxe.ds.ObjectMap;
+import haxe.ds.StringMap;
 
 import org.angle3d.material.sgsl.node.agal.AgalNode;
 import org.angle3d.material.sgsl.node.ArrayAccessNode;
@@ -34,9 +36,9 @@ class SgslCompiler
 {
 	private var MAX_OPCODES:Int = 200;
 
-	private var _swizzleMap:Dictionary;
+	private var _swizzleMap:StringMap<Int>;
 
-	private var _regCodeMap:Dictionary;
+	private var _regCodeMap:ObjectMap<RegType,Int>;
 
 	private var _vertexData:SgslData;
 
@@ -65,19 +67,20 @@ class SgslCompiler
 		_parser = sgslParser;
 		_opCodeManager = opCodeManager;
 
-		_swizzleMap = new Dictionary();
-		_swizzleMap["x"] = 0;
-		_swizzleMap["y"] = 1;
-		_swizzleMap["z"] = 2;
-		_swizzleMap["w"] = 3;
-		_swizzleMap["r"] = 0;
-		_swizzleMap["g"] = 1;
-		_swizzleMap["b"] = 2;
-		_swizzleMap["a"] = 3;
-		_swizzleMap[0] = "x";
-		_swizzleMap[1] = "y";
-		_swizzleMap[2] = "z";
-		_swizzleMap[3] = "w";
+		_swizzleMap = new StringMap<Int>();
+		_swizzleMap.set("x",0);
+		_swizzleMap.set("y",1);
+		_swizzleMap.set("z",2);
+		_swizzleMap.set("w",3);
+		_swizzleMap.set("r",0);
+		_swizzleMap.set("g",1);
+		_swizzleMap.set("b",2);
+		_swizzleMap.set("a", 3);
+		
+		//_swizzleMap.set(0,"x");
+		//_swizzleMap.set(1,"y");
+		//_swizzleMap.set(2,"z");
+		//_swizzleMap.set(3,"w");
 
 		_initEmitCodes();
 
@@ -134,20 +137,20 @@ class SgslCompiler
 
 	private function _initEmitCodes():Void
 	{
-		_regCodeMap = new Dictionary();
-		_regCodeMap[RegType.ATTRIBUTE] = 0x0;
-		_regCodeMap[RegType.UNIFORM] = 0x1;
-		_regCodeMap[RegType.TEMP] = 0x2;
-		_regCodeMap[RegType.OUTPUT] = 0x3;
-		_regCodeMap[RegType.VARYING] = 0x4;
-		//_regCodeMap[RegType.TEXTURE] = 0x5;
-		_regCodeMap[RegType.DEPTH] = 0x6;
+		_regCodeMap = new ObjectMap<RegType,Int>();
+		_regCodeMap.set(RegType.ATTRIBUTE, 0x0);
+		_regCodeMap.set(RegType.UNIFORM, 0x1);
+		_regCodeMap.set(RegType.TEMP, 0x2);
+		_regCodeMap.set(RegType.OUTPUT, 0x3);
+		_regCodeMap.set(RegType.VARYING, 0x4);
+		//_regCodeMap.set(RegType.TEXTURE, 0x5);
+		_regCodeMap.set(RegType.DEPTH, 0x6);
 	}
 
 	
 	private function getRegCode(reg:RegNode):Int
 	{
-		return _regCodeMap[reg.regType];
+		return _regCodeMap.get(reg.regType);
 	}
 
 	/**
@@ -161,7 +164,7 @@ class SgslCompiler
 
 		shader.setConstants(shaderType, data.uniformPool.getConstants());
 
-		var regList:Vector<RegNode> = data.uniformPool.getRegs();
+		var regList:Array<RegNode> = data.uniformPool.getRegs();
 
 		var varType:Int = ShaderVarType.UNIFORM;
 		var count:Int = regList.length;

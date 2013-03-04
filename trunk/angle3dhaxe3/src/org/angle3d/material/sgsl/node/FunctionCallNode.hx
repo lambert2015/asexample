@@ -29,7 +29,7 @@ class FunctionCallNode extends BranchNode
 
 		var params:Array<ParameterNode> = functionNode.getParams();
 		var length:Int = params.length;
-		var paramMap:StringMap<AtomNode> = new StringMap<AtomNode>();
+		var paramMap:StringMap<LeafNode> = new StringMap<LeafNode>();
 		for (i in 0...length)
 		{
 			var param:ParameterNode = params[i];
@@ -69,7 +69,7 @@ class FunctionCallNode extends BranchNode
 	 */
 	override private function getChildrenString(level:Int):String
 	{
-		var results:Array = [];
+		var results:Array<String> = [];
 		var m:LeafNode;
 		var length:Int = mChildren.length;
 		for (i in 0...length)

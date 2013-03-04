@@ -17,7 +17,7 @@ class TempRegPool extends RegPool
 	{
 		super(profile);
 
-		_pool = new Vector<Int>(4 * mRegLimit, true);
+		_pool = new Vector<Int>(4 * mRegLimit);
 	}
 
 	override private function getRegLimit():Int
@@ -51,7 +51,7 @@ class TempRegPool extends RegPool
 		Assert.assert(!node.registered, node.name + "不能注册多次");
 
 		var i:Int;
-		var freeList:Vector<TempFree>;
+		var freeList:Array<TempFree>;
 		var fLength:Int;
 		var m:Int;
 
@@ -102,7 +102,7 @@ class TempRegPool extends RegPool
 		else
 		{
 			//vec4,mat3,mat4
-			var matLength:Int = int(size / 4);
+			var matLength:Int = Std.int(size / 4);
 
 			//防止出界
 			var range:Int = 9 - matLength;
@@ -183,11 +183,11 @@ class TempRegPool extends RegPool
 	 * @param	index
 	 * @return Array 每两位代表一个连续空间，分别表示起始位置和大小
 	 */
-	private function _getFreesAt(index:Int):Vector<TempFree>
+	private function _getFreesAt(index:Int):Array<TempFree>
 	{
 		index *= 4;
 
-		var list:Vector<TempFree> = new Vector<TempFree>();
+		var list:Array<TempFree> = new Array<TempFree>();
 
 		var tempFree:TempFree = null;
 

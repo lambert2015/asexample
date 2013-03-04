@@ -4,6 +4,7 @@ import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.sgsl.node.reg.UniformReg;
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.material.shader.ShaderType;
+import org.angle3d.utils.ArrayUtil;
 import org.angle3d.utils.Assert;
 import haxe.ds.Vector;
 /**
@@ -16,19 +17,19 @@ class UniformRegPool extends RegPool
 {
 	private var _pool:Vector<Int>;
 
-	private var _constants:Vector<Float>;
+	private var _constants:Array<Float>;
 
-	private var shaderType:String;
+	private var shaderType:ShaderType;
 
-	public function new(profile:String, shaderType:String)
+	public function new(profile:String, shaderType:ShaderType)
 	{
 		this.shaderType = shaderType;
 
 		super(profile);
 
-		_pool = new Vector<Int>(mRegLimit, true);
+		_pool = new Vector<Int>(mRegLimit);
 
-		_constants = new Vector<Float>();
+		_constants = new Array<Float>();
 	}
 
 	override private function getRegLimit():Int
@@ -75,7 +76,7 @@ class UniformRegPool extends RegPool
 	 */
 	public function addConstant(value:Float):Void
 	{
-		if (_constants.indexOf(value) == -1)
+		if (ArrayUtil.contain(_constants,value))
 		{
 			_constants.push(value);
 		}
@@ -83,14 +84,14 @@ class UniformRegPool extends RegPool
 
 	public function getConstantIndex(value:Float):Int
 	{
-		var index:Int = _constants.indexOf(value);
-		return int(index / 4);
+		var index:Int = ArrayUtil.indexOf(_constants, value);
+		return Std.int(index / 4);
 	}
 
 	public function getConstantMask(value:Float):String
 	{
-		var index:Int = _constants.indexOf(value);
-		var register:Int = int(index / 4);
+		var index:Int = ArrayUtil.indexOf(_constants, value);
+		var register:Int = Std.int(index / 4);
 		var order:Int = index - register * 4;
 		var str:String = "xyzw";
 		return str.substr(order, 1);
@@ -100,7 +101,7 @@ class UniformRegPool extends RegPool
 	 * 返回常量数组，每4个分为一组,不够的补齐
 	 * @return
 	 */
-	public function getConstants():Vector<Vector<Float>>
+	public function getConstants():Array<Array<Float>>
 	{
 		var cLength:Int = _constants.length;
 		if (cLength == 0)
@@ -109,10 +110,10 @@ class UniformRegPool extends RegPool
 		}
 
 		var count:Int = Math.ceil(cLength / 4);
-		var result:Vector<Vector<Float>> = new Vector<Vector<Float>>(count, true);
+		var result:Array<Array<Float>> = new Array<Array<Float>>();
 		for (i in 0...count)
 		{
-			var list:Vector<Float> = new Vector<Float>(4, true);
+			var list:Array<Float> = new Array<Float>();
 			for (j in 0...4)
 			{
 				if (i * 4 + j < cLength)
@@ -161,7 +162,7 @@ class UniformRegPool extends RegPool
 			_pool[i] = 0;
 		}
 
-		_constants.length = 0;
+		_constants = [];
 	}
 
 	/**
@@ -174,7 +175,7 @@ class UniformRegPool extends RegPool
 
 		Assert.assert(uniformReg != null && !uniformReg.registered, uniformReg.name + "不能注册多次");
 
-		var size:Int = int(uniformReg.size / 4);
+		var size:Int = Std.int(uniformReg.size / 4);
 		for (i in 0...mRegLimit)
 		{
 			if (_pool[i] == 0)
@@ -182,7 +183,7 @@ class UniformRegPool extends RegPool
 				uniformReg.index = i;
 				for (j in 0...size)
 				{
-					_pool[int(i + j)] = 1;
+					_pool[i + j] = 1;
 				}
 				return;
 			}

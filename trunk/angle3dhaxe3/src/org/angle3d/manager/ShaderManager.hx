@@ -45,7 +45,7 @@ class ShaderManager
 
 	private var mCustomFunctionMap:StringMap<FunctionNode>;
 
-	public function ShaderManager(context3D:Context3D, profile:String)
+	public function new(context3D:Context3D, profile:String)
 	{
 		mContext3D = context3D;
 		mProfile = profile;
@@ -113,7 +113,7 @@ class ShaderManager
 			defines.push(ShaderProfile.BASELINE_CONSTRAINED);
 		}
 
-		var functionList:Vector<FunctionNode> = mSgslParser.execFunctions(source, defines);
+		var functionList:Array<FunctionNode> = mSgslParser.execFunctions(source, defines);
 
 		var fLength:Int = functionList.length;
 		for (i in 0...fLength)
@@ -167,7 +167,7 @@ class ShaderManager
 		}
 		else
 		{
-			mShaderRegisterCount[key] = 1;
+			mShaderRegisterCount.set(key, 1);
 		}
 
 		Logger.log("[REGISTER SHADER]" + key + " count:" + mShaderRegisterCount.get(key));

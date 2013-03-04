@@ -30,7 +30,7 @@ class SgslOptimizer
 	 * 2、替换用户自定义函数
 	 * 3、输出SgslData
 	 */
-	public function exec(data:SgslData, tree:BranchNode, defines:Vector<String>):Void
+	public function exec(data:SgslData, tree:BranchNode, defines:Array<String>):Void
 	{
 		var cloneTree:BranchNode = tree; //.clone() as BranchNode;
 
@@ -42,11 +42,12 @@ class SgslOptimizer
 		var mainFunction:FunctionNode;
 
 		//保存所有自定义函数
-		var children:Vector<LeafNode> = cloneTree.children;
+		var child:LeafNode;
+		var children:Array<LeafNode> = cloneTree.children;
 		var cLength:Int = children.length;
 		for (i in 0...cLength)
 		{
-			var child:LeafNode = children[i];
+			child = children[i];
 			if (Std.is(child,FunctionNode))
 			{
 				if (child.name == "main")

@@ -68,7 +68,7 @@ class Camera3D extends Frustum
 	 */
 	private var mPlaneState:Int;
 
-	public function Camera3D(width:Int, height:Int)
+	public function new(width:Int, height:Int)
 	{
 		super();
 
@@ -347,8 +347,8 @@ class Camera3D extends Frustum
 	 *
 	 * @return the current plane state int.
 	 */
-	public var planeState(get, set):Int;
-	private function get_planeState():Int
+	public var planeState(get, set):PlaneSide;
+	private function get_planeState():PlaneSide
 	{
 		return mPlaneState;
 	}
@@ -359,7 +359,7 @@ class Camera3D extends Frustum
 	 *
 	 * @param planeState the updated state.
 	 */
-	private function set_planeState(planeState:Int):Int
+	private function set_planeState(planeState:PlaneSide):PlaneSide
 	{
 		mPlaneState = planeState;
 		return mPlaneState;
@@ -554,7 +554,7 @@ class Camera3D extends Frustum
 	 * @return See enums in <code>FrustumIntersect</code>
 	 */
 	//此函数很费时，需要进行优化
-	public function contains(bound:BoundingVolume):Int
+	public function contains(bound:BoundingVolume):FrustumIntersect
 	{
 		if (bound == null)
 		{
@@ -562,7 +562,7 @@ class Camera3D extends Frustum
 		}
 
 		var mask:Int;
-		var rVal:Int = FrustumIntersect.Inside;
+		var rVal:FrustumIntersect = FrustumIntersect.Inside;
 
 		var planeCounter:Int = FRUSTUM_PLANES;
 		while (planeCounter-- > 0)
@@ -577,7 +577,7 @@ class Camera3D extends Frustum
 			mask = 1 << planeId;
 			if ((mPlaneState & mask) == 0)
 			{
-				var side:Int = bound.whichSide(mWorldPlanes[planeId]);
+				var side:PlaneSide = bound.whichSide(mWorldPlanes[planeId]);
 
 				if (side == PlaneSide.Negative)
 				{
@@ -725,7 +725,7 @@ class Camera3D extends Frustum
 		mGuiBounding.setCenter(new Vector3f(sx + xExtent, sy + yExtent, 0));
 		mGuiBounding.xExtent = xExtent;
 		mGuiBounding.yExtent = yExtent;
-		mGuiBounding.zExtent = Number.MAX_VALUE;
+		mGuiBounding.zExtent = Math.POSITIVE_INFINITY;
 	}
 
 	/**

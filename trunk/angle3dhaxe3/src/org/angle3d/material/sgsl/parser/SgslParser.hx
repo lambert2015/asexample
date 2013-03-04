@@ -43,7 +43,7 @@ class SgslParser
 		return programNode;
 	}
 
-	public function execFunctions(source:String, define:Vector<String>):Vector<FunctionNode>
+	public function execFunctions(source:String, define:Array<String>):Array<FunctionNode>
 	{
 		_tok = new Tokenizer(source);
 		_tok.next();
@@ -63,7 +63,7 @@ class SgslParser
 
 		programNode.filter(define);
 
-		var result:Vector<FunctionNode> = new Vector<FunctionNode>();
+		var result:Array<FunctionNode> = new Array<FunctionNode>();
 		for (i in 0...programNode.numChildren)
 		{
 			result.push(cast programNode.children[i]);
@@ -377,7 +377,7 @@ class SgslParser
 		if (_tok.token.type == TokenType.LBRACKET)
 		{
 			_tok.accept(TokenType.LBRACKET); //Skip "["
-			arraySize = parseInt(_tok.accept(TokenType.NUMBER).name);
+			arraySize = Std.parseInt(_tok.accept(TokenType.NUMBER).name);
 			_tok.accept(TokenType.RBRACKET); //Skip "]"
 		}
 
@@ -631,7 +631,7 @@ class SgslParser
 		// number literal
 		else if (type == TokenType.NUMBER)
 		{
-			ret = new ConstantNode(parseFloat(_tok.accept(TokenType.NUMBER).name));
+			ret = new ConstantNode(Std.parseFloat(_tok.accept(TokenType.NUMBER).name));
 		}
 		else
 		{
@@ -676,7 +676,7 @@ class SgslParser
 			{
 				if (_tok.token.type == TokenType.NUMBER)
 				{
-					bn.offset = parseInt(_tok.accept(TokenType.NUMBER).name);
+					bn.offset = Std.parseInt(_tok.accept(TokenType.NUMBER).name);
 				}
 				else if (_tok.token.type == TokenType.PLUS)
 				{

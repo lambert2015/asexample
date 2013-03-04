@@ -21,7 +21,7 @@ class AtomNode extends LeafNode
 	//TODO 这个可能会有问题
 	override public function replaceLeafNode(paramMap:StringMap<LeafNode>):Void
 	{
-		var node:AtomNode = paramMap.get(this.name);
+		var node:AtomNode = cast paramMap.get(this.name);
 		if (node != null)
 		{
 			this.name = node.name;

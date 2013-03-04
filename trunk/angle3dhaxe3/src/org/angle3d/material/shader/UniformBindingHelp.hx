@@ -6,13 +6,13 @@ package org.angle3d.material.shader;
  */
 class UniformBindingHelp
 {
-	public var shaderType:String;
+	public var shaderType:ShaderType;
 
 	public var name:String;
 
 	public var bindType:Int;
 
-	public function new(shaderType:String, name:String, bindType:Int)
+	public function new(shaderType:ShaderType, name:String, bindType:Int)
 	{
 		this.shaderType = shaderType;
 		this.name = name;

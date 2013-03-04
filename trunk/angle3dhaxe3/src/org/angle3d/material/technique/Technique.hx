@@ -2,6 +2,7 @@ package org.angle3d.material.technique;
 
 import flash.utils.Dictionary;
 import haxe.ds.StringMap;
+import org.angle3d.light.LightType;
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.material.RenderState;
 import org.angle3d.material.shader.Shader;
@@ -66,7 +67,7 @@ class Technique
 	 * @param	meshKey
 	 * @return
 	 */
-	public function getShader(lightType:String = "none", meshType:String = "static"):Shader
+	public function getShader(lightType:LightType, meshType:MeshType):Shader
 	{
 		var key:String = getKey(lightType, meshType);
 
@@ -116,12 +117,12 @@ class Technique
 		return _requiresLight;
 	}
 
-	private function getBindUniforms(lightType:String = "none", meshType:String = "static"):Vector<UniformBindingHelp>
+	private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
 		return null;
 	}
 
-	private function getBindAttributes(lightType:String = "none", meshType:String = "static"):Dictionary
+	private function getBindAttributes(lightType:LightType, meshType:MeshType):Dictionary
 	{
 		return null;
 	}
@@ -136,7 +137,7 @@ class Technique
 		return "";
 	}
 
-	private function getOption(lightType:String = "none", meshType:String = "static"):Array<Array<String>>
+	private function getOption(lightType:LightType, meshType:MeshType):Array<Array<String>>
 	{
 		var results:Array<Array<String>> = new Array<Array<String>>();
 		results[0] = [];
@@ -154,7 +155,7 @@ class Technique
 		return results;
 	}
 
-	private function getKey(lightType:String = "none", meshType:String = "static"):String
+	private function getKey(lightType:LightType, meshType:MeshType):String
 	{
 		return _name;
 	}

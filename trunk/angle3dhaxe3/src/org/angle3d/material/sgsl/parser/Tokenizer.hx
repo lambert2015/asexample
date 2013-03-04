@@ -21,7 +21,7 @@ class Tokenizer
 
 	public function new(source:String)
 	{
-		this.source = source;
+		setSource(source);
 	}
 
 	/**

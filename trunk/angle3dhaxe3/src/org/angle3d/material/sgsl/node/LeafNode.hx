@@ -5,7 +5,7 @@ import haxe.ds.StringMap;
 
 class LeafNode
 {
-	public var type:Int;
+	public var type:NodeType;
 	public var name:String;
 
 	public function new(name:String = "")

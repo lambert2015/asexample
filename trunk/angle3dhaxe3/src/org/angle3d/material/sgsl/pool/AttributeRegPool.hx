@@ -16,7 +16,7 @@ class AttributeRegPool extends RegPool
 	{
 		super(profile);
 
-		_pool = new Vector<Int>(mRegLimit, true);
+		_pool = new Vector<Int>(mRegLimit);
 	}
 
 	override private function getRegLimit():Int

@@ -7,11 +7,11 @@ import haxe.ds.Vector;
  */
 class ShaderVariableList
 {
-	private var _variables:Vector<ShaderVariable>;
+	private var _variables:Array<ShaderVariable>;
 
 	public function new()
 	{
-		_variables = new Vector<ShaderVariable>();
+		_variables = new Array<ShaderVariable>();
 	}
 
 	public function addVariable(value:ShaderVariable):Void
@@ -23,7 +23,7 @@ class ShaderVariableList
 	 * read only
 	 * @return
 	 */
-	public function getVariables():Vector<ShaderVariable>
+	public function getVariables():Array<ShaderVariable>
 	{
 		return _variables;
 	}

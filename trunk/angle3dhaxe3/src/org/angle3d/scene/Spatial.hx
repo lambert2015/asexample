@@ -150,7 +150,7 @@ class Spatial implements Cloneable implements Collidable
 
 		queueDistance = Math.NEGATIVE_INFINITY;
 
-		mControls = new Vector<Control>();
+		mControls = new Array<Control>();
 	}
 
 	/**
@@ -270,7 +270,7 @@ class Spatial implements Cloneable implements Collidable
 		Assert.assert(mRefreshFlags == 0, "Scene graph is not properly updated for rendering.\n" + "Make sure scene graph state was not changed after\n" + " rootNode.updateGeometricState() call. \n" +
 			"Problem spatial name: " + name);
 
-		var cm:Int = cullHint;
+		var cm:CullHint = cullHint;
 
 		Assert.assert(cm != CullHint.Inherit, "getCullHint() is not CullHint.Inherit");
 
@@ -502,7 +502,7 @@ class Spatial implements Cloneable implements Collidable
 		else
 		{
 			//TODO 此处未完全理解
-			var stack:Vector<Spatial> = new Vector<Spatial>();
+			var stack:Array<Spatial> = new Array<Spatial>();
 			var rootNode:Spatial = this;
 			var i:Int = 0;
 			while (true)
@@ -595,7 +595,7 @@ class Spatial implements Cloneable implements Collidable
 	 */
 	public function addControl(control:Control):Void
 	{
-		Assert.assert(mControls.indexOf(control) == -1, "controls already contain control");
+		Assert.assert(ArrayUtil.contain(mControls, control), "controls already contain control");
 
 		mControls.push(control);
 		control.spatial = this;

@@ -63,7 +63,7 @@ class ViewPort
 	 * @param cam The camera through which the viewport is rendered. The camera
 	 * cannot be swapped to a different one after creating the viewport.
 	 */
-	public function ViewPort(name:String, camera:Camera3D)
+	public function new(name:String, camera:Camera3D)
 	{
 		this.name = name;
 		this.camera = camera;

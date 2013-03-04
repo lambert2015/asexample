@@ -54,7 +54,7 @@ class PredefineNode extends BranchNode
 			if (subNode.isMatch(defines))
 			{
 				subNode.filter(defines);
-				return subNode.children.slice();
+				return subNode.children.slice(0);
 			}
 		}
 

@@ -60,7 +60,7 @@ class RenderQueue
 	 *  <li>Bucket.Gui: {@link org.angle3d.renderer.queue.GuiComparator} sorts geometries back to
 	 *                     front based on their Z values.
 	 */
-	public function setGeometryComparator(bucket:Int, c:GeometryComparator):Void
+	public function setGeometryComparator(bucket:QueueBucket, c:GeometryComparator):Void
 	{
 		switch (bucket)
 		{
@@ -83,7 +83,7 @@ class RenderQueue
 	 *  Returns the current GeometryComparator used by the specified bucket,
 	 *  one of Gui, Opaque, Sky, Transparent, or Translucent.
 	 */
-	public function getGeometryComparator(bucket:Int):GeometryComparator
+	public function getGeometryComparator(bucket:QueueBucket):GeometryComparator
 	{
 		switch (bucket)
 		{
@@ -116,7 +116,7 @@ class RenderQueue
 	 * {@link ShadowMode#CastAndReceive}, it is added to both the cast
 	 * and the receive buckets.
 	 */
-	public function addToShadowQueue(g:Geometry, shadeMode:Int):Void
+	public function addToShadowQueue(g:Geometry, shadeMode:ShadowMode):Void
 	{
 		switch (shadeMode)
 		{
@@ -127,11 +127,10 @@ class RenderQueue
 			case ShadowMode.CastAndReceive:
 				shadowCast.add(g);
 				shadowRecv.add(g);
-			case ShadowMode.Inherit:
-			case ShadowMode.Off:
+			case ShadowMode.Inherit,ShadowMode.Off:
 				trace("Inherit or Off");
-			default:
-				Assert.assert(false, "Unrecognized shadow bucket type: " + shadeMode);
+			//default:
+				//Assert.assert(false, "Unrecognized shadow bucket type: " + shadeMode);
 		}
 	}
 
@@ -145,7 +144,7 @@ class RenderQueue
 	 * @param bucket The bucket to add to, usually
 	 * {@link Geometry#getQueueBucket() }.
 	 */
-	public function addToQueue(g:Geometry, bucket:Int):Void
+	public function addToQueue(g:Geometry, bucket:QueueBucket):Void
 	{
 		switch (bucket)
 		{
@@ -169,7 +168,7 @@ class RenderQueue
 	 * @param shadBucket
 	 * @return
 	 */
-	public function getShadowQueueContent(shadeMode:Int):GeometryList
+	public function getShadowQueueContent(shadeMode:ShadowMode):GeometryList
 	{
 		switch (shadeMode)
 		{
@@ -197,7 +196,7 @@ class RenderQueue
 			Assert.assert(obj != null, "list.getGeometry(" + i + ") is not null");
 
 			rm.renderGeometry(obj);
-			obj.queueDistance = Number.NEGATIVE_INFINITY;
+			obj.queueDistance = Math.NEGATIVE_INFINITY;
 		}
 
 		if (clear)
@@ -211,7 +210,7 @@ class RenderQueue
 		renderGeometryList(list, rm, cam, clear);
 	}
 
-	public function renderShadowQueueByShadowMode(mode:Int, rm:RenderManager, cam:Camera3D, clear:Bool = true):Void
+	public function renderShadowQueueByShadowMode(mode:ShadowMode, rm:RenderManager, cam:Camera3D, clear:Bool = true):Void
 	{
 		switch (mode)
 		{
@@ -224,7 +223,7 @@ class RenderQueue
 		}
 	}
 
-	public function isQueueEmpty(bucket:Int):Bool
+	public function isQueueEmpty(bucket:QueueBucket):Bool
 	{
 		switch (bucket)
 		{
@@ -244,7 +243,7 @@ class RenderQueue
 		}
 	}
 
-	public function renderQueue(bucket:Int, rm:RenderManager, cam:Camera3D, clear:Bool = true):Void
+	public function renderQueue(bucket:QueueBucket, rm:RenderManager, cam:Camera3D, clear:Bool = true):Void
 	{
 		switch (bucket)
 		{

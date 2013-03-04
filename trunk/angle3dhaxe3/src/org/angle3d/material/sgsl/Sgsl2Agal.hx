@@ -13,7 +13,7 @@ class Sgsl2Agal
 
 	private var _swizzleMap:IntMap<String>;
 
-	private var _shaderType:String;
+	private var _shaderType:ShaderType;
 
 	private var _data:ByteArray;
 
@@ -92,9 +92,9 @@ class Sgsl2Agal
 		var offset:Int;
 		while (data.position < data.length)
 		{
-			var elements:Array = [];
+			var elements:Array<String> = [];
 
-			var opcode:String = _codeMap[data.readUnsignedInt()];
+			var opcode:String = _codeMap.get(data.readUnsignedInt());
 
 			addElement(elements, opcode);
 
@@ -168,7 +168,7 @@ class Sgsl2Agal
 		var mipmap:Int = value & 0xf;
 		var filter:Int = value >> 4 & 0xf;
 
-		var option:Array = [];
+		var option:Array<String> = [];
 
 		if (special == 4)
 		{
@@ -234,7 +234,7 @@ class Sgsl2Agal
 
 		if (lod > 0)
 		{
-			option.push(lod * 8);
+			option.push(lod * 8 + "");
 		}
 
 		return "fs" + index + " <" + option.join(",") + ">";
@@ -272,7 +272,7 @@ class Sgsl2Agal
 					var t:Int = maskBits & (1 << i);
 					if (t > 0)
 					{
-						mask += _swizzleMap[FastMath.log2(t)];
+						mask += _swizzleMap.get(FastMath.log2(t));
 					}
 				}
 			}
@@ -319,7 +319,7 @@ class Sgsl2Agal
 				for (i in 0...4)
 				{
 					var t:Int = swizzleBits >> (i * 2) & 3;
-					swizzle += _swizzleMap[t];
+					swizzle += _swizzleMap.get(t);
 				}
 			}
 			if (swizzle.length > 0)

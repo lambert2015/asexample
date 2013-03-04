@@ -13,13 +13,13 @@ import haxe.ds.Vector;
  */
 class GeometryList
 {
-	private var _geometries:Vector<Geometry>;
+	private var _geometries:Array<Geometry>;
 	private var _comparator:GeometryComparator;
 	private var _size:Int;
 
 	public function new(comparator:GeometryComparator)
 	{
-		_geometries = new Vector<Geometry>();
+		_geometries = new Array<Geometry>();
 		_size = 0;
 
 		_comparator = comparator;
@@ -71,7 +71,7 @@ class GeometryList
 	 */
 	public function clear():Void
 	{
-		_geometries.length = 0;
+		_geometries = [];
 
 		_size = 0;
 	}

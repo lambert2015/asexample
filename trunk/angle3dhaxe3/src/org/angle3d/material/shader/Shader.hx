@@ -2,6 +2,7 @@ package org.angle3d.material.shader;
 
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.renderer.IRenderer;
@@ -20,9 +21,9 @@ class Shader
 	private var _fUniformList:UniformList;
 	private var _textureList:ShaderVariableList;
 
-	private var _bindUniforms:Vector<Uniform>;
+	private var _bindUniforms:Array<Uniform>;
 
-	private var _bindAttributes:Dictionary;
+	private var _bindAttributes:StringMap<ShaderVariable>;
 
 	public var vertexData:ByteArray;
 	public var fragmentData:ByteArray;
@@ -36,23 +37,20 @@ class Shader
 		_fUniformList = new UniformList();
 		_textureList = new ShaderVariableList();
 
-		_bindUniforms = new Vector<Uniform>();
-		_bindAttributes = new Dictionary();
+		_bindUniforms = new Array<Uniform>();
+		_bindAttributes = new StringMap<ShaderVariable>();
 	}
 
-	public function addVariable(shaderType:String, type:Int, name:String, size:Int):Void
+	public function addVariable(shaderType:ShaderType, type:Int, name:String, size:Int):Void
 	{
 		switch (type)
 		{
 			case ShaderVarType.ATTRIBUTE:
 				_attributeList.addVariable(new AttributeVar(name, size));
-				break;
 			case ShaderVarType.UNIFORM:
 				getUniformList(shaderType).addVariable(new Uniform(name, size));
-				break;
 			case ShaderVarType.TEXTURE:
 				_textureList.addVariable(new TextureVariable(name, size));
-				break;
 		}
 	}
 
@@ -61,7 +59,7 @@ class Shader
 	 * @param	shaderType
 	 * @param	digits
 	 */
-	public function setConstants(shaderType:String, digits:Vector<Vector<Float>>):Void
+	public function setConstants(shaderType:ShaderType, digits:Array<Array<Float>>):Void
 	{
 		var list:UniformList = getUniformList(shaderType);
 
@@ -86,7 +84,7 @@ class Shader
 	}
 
 	
-	public function getUniformList(shaderType:String):UniformList
+	public function getUniformList(shaderType:ShaderType):UniformList
 	{
 		return (shaderType == ShaderType.VERTEX) ? _vUniformList : _fUniformList;
 	}
@@ -96,7 +94,7 @@ class Shader
 	public function uploadTexture(render:IRenderer):Void
 	{
 		//上传贴图
-		var textures:Vector<ShaderVariable> = _textureList.getVariables();
+		var textures:Array<ShaderVariable> = _textureList.getVariables();
 		var size:Int = textures.length;
 		for (i in 0...size)
 		{
@@ -132,9 +130,9 @@ class Shader
 	 * 常量总最先传
 	 * @param	type
 	 */
-	private function _uploadConstants(render:IRenderer, shaderType:String):Void
+	private function _uploadConstants(render:IRenderer, shaderType:ShaderType):Void
 	{
-		var digits:Vector<Vector<Float>> = getUniformList(shaderType).getConstants();
+		var digits:Array<Array<Float>> = getUniformList(shaderType).getConstants();
 
 		if (digits == null)
 			return;
@@ -146,7 +144,7 @@ class Shader
 		}
 	}
 
-	public function setUniform(type:String, name:String, data:Vector<Float>):Void
+	public function setUniform(type:ShaderType, name:String, data:Vector<Float>):Void
 	{
 		var uniform:Uniform = getUniform(type, name);
 		if (uniform != null)
@@ -155,7 +153,7 @@ class Shader
 		}
 	}
 
-	public function getUniform(type:String, name:String):Uniform
+	public function getUniform(type:ShaderType, name:String):Uniform
 	{
 		return cast getUniformList(type).getVariable(name);
 	}
@@ -167,12 +165,12 @@ class Shader
 
 	public function bindAttribute(bufferType:String, name:String):Void
 	{
-		_bindAttributes[bufferType] = _attributeList.getVariable(name);
+		_bindAttributes.set(bufferType,_attributeList.getVariable(name));
 	}
 
 	public function getAttribute(bufferType:String):AttributeVar
 	{
-		return _bindAttributes[bufferType];
+		return _bindAttributes.get(bufferType);
 	}
 
 	/**
@@ -181,7 +179,7 @@ class Shader
 	 * @param	name
 	 * @param	bd
 	 */
-	public function bindUniform(type:String, name:String, bd:Int):Void
+	public function bindUniform(type:ShaderType, name:String, bd:UniformBinding):Void
 	{
 		var uniform:Uniform = getUniform(type, name);
 		if (uniform != null)
@@ -197,7 +195,7 @@ class Shader
 	 *
 	 * @return a list of uniforms implementing the world parameters.
 	 */
-	public function getBindUniforms():Vector<Uniform>
+	public function getBindUniforms():Array<Uniform>
 	{
 		return _bindUniforms;
 	}
@@ -228,7 +226,7 @@ class Shader
 	/**
 	 * 设置系统绑定的Uniform
 	 */
-	public function setUniformBindings(binds:Vector<UniformBindingHelp>):Void
+	public function setUniformBindings(binds:Array<UniformBindingHelp>):Void
 	{
 		var bLength:Int = binds.length;
 		for (i in 0...bLength)

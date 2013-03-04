@@ -63,14 +63,14 @@ class Frustum
 	private var mParallelProjection:Bool;
 	private var mProjectionMatrix:Matrix4f;
 
-	public function Frustum()
+	public function new()
 	{
 		_init();
 	}
 
 	private function _init():Void
 	{
-		mWorldPlanes = new Vector<Plane>(FRUSTUM_PLANES, true);
+		mWorldPlanes = new Vector<Plane>(FRUSTUM_PLANES);
 		for (i in 0...FRUSTUM_PLANES)
 		{
 			mWorldPlanes[i] = new Plane();
@@ -307,7 +307,7 @@ class Frustum
 	 */
 	public function setFrustumPerspective(fovY:Float, aspect:Float, near:Float, far:Float):Void
 	{
-		var h:Float = Math.tan(fovY * FastMath.DEGTORAD * 0.5) * near;
+		var h:Float = Math.tan(fovY * FastMath.DEGTORAD() * 0.5) * near;
 		var w:Float = h * aspect;
 
 		mFrustumNear = near;
