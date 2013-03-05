@@ -59,6 +59,8 @@ class RegFactory
 				}
 			case RegType.VARYING:
 				return new VaryingReg(dataType, name);
+			case RegType.OUTPUT, RegType.DEPTH:
+				
 		}
 
 		Assert.assert(false, regType + "不是已知类型");
