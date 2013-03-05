@@ -10,9 +10,9 @@ class UniformBindingHelp
 
 	public var name:String;
 
-	public var bindType:Int;
+	public var bindType:UniformBinding;
 
-	public function new(shaderType:ShaderType, name:String, bindType:Int)
+	public function new(shaderType:ShaderType, name:String, bindType:UniformBinding)
 	{
 		this.shaderType = shaderType;
 		this.name = name;

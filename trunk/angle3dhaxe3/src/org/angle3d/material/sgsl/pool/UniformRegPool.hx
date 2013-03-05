@@ -1,12 +1,12 @@
 package org.angle3d.material.sgsl.pool;
 
+import haxe.ds.Vector;
 import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.sgsl.node.reg.UniformReg;
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.material.shader.ShaderType;
-import org.angle3d.utils.ArrayUtil;
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+using org.angle3d.utils.ArrayUtil;
 /**
  * 目前只接受vec4,mat3,mat4和对应的数组类型
  * 常量寄存器池
@@ -76,7 +76,7 @@ class UniformRegPool extends RegPool
 	 */
 	public function addConstant(value:Float):Void
 	{
-		if (ArrayUtil.contain(_constants,value))
+		if (_constants.contain(value))
 		{
 			_constants.push(value);
 		}
@@ -84,13 +84,13 @@ class UniformRegPool extends RegPool
 
 	public function getConstantIndex(value:Float):Int
 	{
-		var index:Int = ArrayUtil.indexOf(_constants, value);
+		var index:Int = _constants.indexOf(value);
 		return Std.int(index / 4);
 	}
 
 	public function getConstantMask(value:Float):String
 	{
-		var index:Int = ArrayUtil.indexOf(_constants, value);
+		var index:Int = _constants.indexOf(value);
 		var register:Int = Std.int(index / 4);
 		var order:Int = index - register * 4;
 		var str:String = "xyzw";

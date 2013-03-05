@@ -1,8 +1,8 @@
 package org.angle3d.material.sgsl.pool;
 
 import org.angle3d.material.sgsl.node.reg.RegNode;
-import haxe.ds.Vector;
-import org.angle3d.utils.ArrayUtil;
+
+using org.angle3d.utils.ArrayUtil;
 /**
  * 寄存器池
  * @author andy
@@ -17,7 +17,7 @@ class RegPool
 
 	public function new(profile:String)
 	{
-		this.profile = profile;
+		this.mProfile = profile;
 
 		mRegLimit = getRegLimit();
 		mRegs = new Array<RegNode>();
@@ -35,7 +35,7 @@ class RegPool
 
 	public function addReg(value:RegNode):Void
 	{
-		if (ArrayUtil.contain(mRegs, value))
+		if (mRegs.contain(value))
 		{
 			mRegs.push(value);
 		}

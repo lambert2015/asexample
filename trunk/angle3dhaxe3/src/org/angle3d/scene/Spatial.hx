@@ -1,6 +1,5 @@
 package org.angle3d.scene;
 
-import haxe.ds.Vector;
 import org.angle3d.bounding.BoundingBox;
 import org.angle3d.bounding.BoundingVolume;
 import org.angle3d.collision.Collidable;
@@ -19,10 +18,10 @@ import org.angle3d.renderer.queue.ShadowMode;
 import org.angle3d.renderer.RenderManager;
 import org.angle3d.renderer.ViewPort;
 import org.angle3d.scene.control.Control;
-import org.angle3d.utils.ArrayUtil;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Cloneable;
 import org.angle3d.utils.TempVars;
+using org.angle3d.utils.ArrayUtil;
 
 //TODO API 优化
 //TODO 还需要添加更多常用属性
@@ -595,7 +594,7 @@ class Spatial implements Cloneable implements Collidable
 	 */
 	public function addControl(control:Control):Void
 	{
-		Assert.assert(ArrayUtil.contain(mControls, control), "controls already contain control");
+		Assert.assert(mControls.contain(control), "controls already contain control");
 
 		mControls.push(control);
 		control.spatial = this;

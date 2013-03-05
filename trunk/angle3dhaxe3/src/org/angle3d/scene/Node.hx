@@ -4,10 +4,9 @@ import org.angle3d.bounding.BoundingVolume;
 import org.angle3d.collision.Collidable;
 import org.angle3d.collision.CollisionResults;
 import org.angle3d.material.Material;
-import org.angle3d.utils.ArrayUtil;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Logger;
-import haxe.ds.Vector;
+using org.angle3d.utils.ArrayUtil;
 
 /**
  * <code>Node</code> defines an internal node of a scene graph. The internal
@@ -253,7 +252,7 @@ class Node extends Spatial
 	{
 		if (child.parent == this)
 		{
-			var index:Int = ArrayUtil.indexOf(mChildren, child);
+			var index:Int = mChildren.indexOf(child);
 			if (index != -1)
 			{
 				detachChildAt(index);
@@ -364,7 +363,7 @@ class Node extends Spatial
 	 */
 	public function getChildIndex(sp:Spatial):Int
 	{
-		return ArrayUtil.indexOf(mChildren, sp);
+		return mChildren.indexOf(sp);
 	}
 
 	/**
@@ -433,7 +432,7 @@ class Node extends Spatial
 	 */
 	public function hasChild(sp:Spatial):Bool
 	{
-		if (ArrayUtil.contain(mChildren, sp))
+		if (mChildren.contain(sp))
 		{
 			return true;
 		}

@@ -1,8 +1,6 @@
 package org.angle3d.renderer;
 
 import flash.display3D.Program3D;
-import org.angle3d.utils.ArrayUtil;
-
 import org.angle3d.light.Light;
 import org.angle3d.light.LightList;
 import org.angle3d.light.LightType;
@@ -22,11 +20,12 @@ import org.angle3d.renderer.queue.RenderQueue;
 import org.angle3d.renderer.queue.ShadowMode;
 import org.angle3d.scene.CullHint;
 import org.angle3d.scene.Geometry;
+import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.Node;
 import org.angle3d.scene.Spatial;
-import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+using org.angle3d.utils.ArrayUtil;
+
 
 /**
  * <code>RenderManager</code> is a high-level rendering public interface that is
@@ -127,7 +126,7 @@ class RenderManager
 	 */
 	public function removePreView(view:ViewPort):Bool
 	{
-		var index:Int = ArrayUtil.indexOf(preViewPorts, view);
+		var index:Int = preViewPorts.indexOf(view);
 		if (index > -1)
 		{
 			preViewPorts.splice(index, 1);
@@ -189,7 +188,7 @@ class RenderManager
 	 */
 	public function removeMainView(view:ViewPort):Bool
 	{
-		var index:Int = ArrayUtil.indexOf(viewPorts,view);
+		var index:Int = viewPorts.indexOf(view);
 		if (index > -1)
 		{
 			viewPorts.splice(index, 1);
@@ -251,7 +250,7 @@ class RenderManager
 	 */
 	public function removePostView(view:ViewPort):Bool
 	{
-		var index:Int = ArrayUtil.indexOf(postViewPorts, view);
+		var index:Int = postViewPorts.indexOf(view);
 		if (index > -1)
 		{
 			postViewPorts.splice(index, 1);
@@ -656,7 +655,7 @@ class RenderManager
 
 			var children:Array<Spatial> = n.children;
 			//saving cam state for culling
-			var camState:PlaneSide = vp.camera.planeState;
+			var camState:Int = vp.camera.planeState;
 			var cLength:Int = children.length;
 			for (i in 0...cLength)
 			{

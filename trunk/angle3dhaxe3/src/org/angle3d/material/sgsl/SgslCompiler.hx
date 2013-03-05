@@ -4,6 +4,7 @@ package org.angle3d.material.sgsl;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 import flash.utils.Endian;
+import haxe.ds.IntMap;
 import haxe.ds.ObjectMap;
 import haxe.ds.StringMap;
 
@@ -26,6 +27,8 @@ import org.angle3d.material.shader.ShaderVarType;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Logger;
 
+using StringTools;
+
 /**
  * Stage3D Shader Language(sgsl) Complier
  * Shader编译器
@@ -37,6 +40,8 @@ class SgslCompiler
 	private var MAX_OPCODES:Int = 200;
 
 	private var _swizzleMap:StringMap<Int>;
+	
+	private var _xyzwMap:IntMap<String>;
 
 	private var _regCodeMap:ObjectMap<RegType,Int>;
 
@@ -77,10 +82,11 @@ class SgslCompiler
 		_swizzleMap.set("b",2);
 		_swizzleMap.set("a", 3);
 		
-		//_swizzleMap.set(0,"x");
-		//_swizzleMap.set(1,"y");
-		//_swizzleMap.set(2,"z");
-		//_swizzleMap.set(3,"w");
+		_xyzwMap = new IntMap<String>();
+		_xyzwMap.set(0,"x");
+		_xyzwMap.set(1,"y");
+		_xyzwMap.set(2,"z");
+		_xyzwMap.set(3,"w");
 
 		_initEmitCodes();
 
@@ -385,7 +391,7 @@ class SgslCompiler
 				writeSrc(cast fChildren[0]);
 
 				//提取出参数
-				var flags:Array = [];
+				var flags:Array<String> = [];
 				for (i in 2...fLength)
 				{
 					flags.push(fChildren[i].name);
@@ -535,8 +541,8 @@ class SgslCompiler
 		var end:Int = size + start;
 		for (i in start...end)
 		{
-			var byteStr:String = data[i].toString(16);
-			if (byteStr.length < 2)
+			var byteStr:String = data[i].hex(2);
+			//if (byteStr.length < 2)
 				byteStr = "0" + byteStr;
 
 			result += byteStr;
@@ -638,7 +644,7 @@ class SgslCompiler
 	{
 		if (swizzle == null || swizzle.length == 0)
 		{
-			return _xyzw.slice(tempReg.offset, tempReg.offset + tempReg.size);
+			return _xyzw.substr(tempReg.offset, tempReg.offset + tempReg.size);
 		}
 
 		var result:String = "";
@@ -646,7 +652,7 @@ class SgslCompiler
 		for (i in 0...sLength)
 		{
 			var index:Int = _swizzleMap.get(swizzle.charAt(i)) + tempReg.offset;
-			result += _swizzleMap.get(index);
+			result += _xyzwMap.get(index);
 		}
 
 		return result;
@@ -671,7 +677,7 @@ class SgslCompiler
 				var typeSize:Int = reg.size;
 				if (typeSize < 2)
 				{
-					return _xyzw.slice(0, typeSize);
+					return _xyzw.substr(0, typeSize);
 				}
 			}
 			return "";

@@ -116,7 +116,7 @@ class Plane
 	 *            the point to check.
 	 * @return the side at which the point lies.
 	 */
-	public function whichSide(point:Vector3f):PlaneSide
+	public function whichSide(point:Vector3f):Int
 	{
 		var dis:Float = pseudoDistance(point);
 		if (dis < 0)

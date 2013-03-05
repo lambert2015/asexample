@@ -6,8 +6,7 @@ import org.angle3d.collision.Collidable;
 import org.angle3d.collision.CollisionResults;
 import org.angle3d.math.Matrix4f;
 import org.angle3d.math.Triangle;
-import haxe.ds.Vector;
-import org.angle3d.utils.ArrayUtil;
+using org.angle3d.utils.ArrayUtil;
 
 class Mesh implements IMesh
 {
@@ -67,7 +66,7 @@ class Mesh implements IMesh
 
 	public function removeSubMesh(subMesh:SubMesh):Void
 	{
-		var index:Int = ArrayUtil.indexOf(mSubMeshList, subMesh);
+		var index:Int = mSubMeshList.indexOf(subMesh);
 		if (index > -1)
 		{
 			mSubMeshList.splice(index, 1);
