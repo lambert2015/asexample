@@ -152,7 +152,7 @@ class Tokenizer
 
 		reg += ")";
 
-		_finalRegex = new RegExp(reg);
+		//_finalRegex = new RegExp(reg);
 	}
 
 	private function _createNextToken(source:String):Token

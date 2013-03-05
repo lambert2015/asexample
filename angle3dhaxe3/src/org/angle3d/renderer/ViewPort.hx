@@ -5,7 +5,7 @@ import org.angle3d.math.Color;
 import org.angle3d.renderer.queue.RenderQueue;
 import org.angle3d.scene.Spatial;
 import org.angle3d.texture.FrameBuffer;
-import org.angle3d.utils.ArrayUtil;
+using org.angle3d.utils.ArrayUtil;
 
 /**
  * A <code>ViewPort</code> represents a view inside the display
@@ -123,7 +123,7 @@ class ViewPort
 	 */
 	public function removeProcessor(processor:SceneProcessor):Void
 	{
-		var index:Int = ArrayUtil.indexOf(_processors, processor);
+		var index:Int = _processors.indexOf(processor);
 		if (index != -1)
 		{
 			_processors.splice(index, 1);
@@ -263,7 +263,7 @@ class ViewPort
 	 */
 	public function detachScene(scene:Spatial):Void
 	{
-		var index:Int = ArrayUtil.indexOf(_sceneList, scene);
+		var index:Int = _sceneList.indexOf(scene);
 		if (index != -1)
 		{
 			_sceneList.splice(index, 1);

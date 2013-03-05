@@ -1,6 +1,8 @@
 ﻿package org.angle3d.material.sgsl;
 
+import flash.errors.Error;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.material.sgsl.node.agal.AgalNode;
@@ -37,7 +39,7 @@ class SgslOptimizer
 		//条件过滤
 		cloneTree.filter(defines);
 
-		var customFunctionMap:Dictionary = new Dictionary();
+		var customFunctionMap:StringMap<FunctionNode> = new StringMap<FunctionNode>();
 
 		var mainFunction:FunctionNode;
 
@@ -56,11 +58,11 @@ class SgslOptimizer
 				}
 				else
 				{
-					if (customFunctionMap[child.name] != undefined)
+					if (customFunctionMap.exists(child.name))
 					{
 						throw new Error("自定义函数" + child.name + "定义重复");
 					}
-					customFunctionMap[child.name] = child;
+					customFunctionMap.set(child.name,cast child);
 				}
 			}
 			else
@@ -70,11 +72,11 @@ class SgslOptimizer
 		}
 
 		//复制系统自定义函数到字典中
-		var systemMap:Dictionary = ShaderManager.instance.getCustomFunctionMap();
-		var key:String;
-		for (key in systemMap)
+		var systemMap:StringMap<FunctionNode> = ShaderManager.getInstance().getCustomFunctionMap();
+		var keys = systemMap.keys();
+		for (key in keys)
 		{
-			customFunctionMap[key] = systemMap[key];
+			customFunctionMap.set(key, systemMap.get(key));
 		}
 
 		//替换main中自定义函数

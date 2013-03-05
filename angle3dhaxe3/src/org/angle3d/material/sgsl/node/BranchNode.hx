@@ -3,7 +3,8 @@ package org.angle3d.material.sgsl.node;
 import flash.utils.Dictionary;
 import haxe.ds.StringMap;
 import haxe.ds.Vector;
-import org.angle3d.utils.ArrayUtil;
+
+using org.angle3d.utils.ArrayUtil;
 
 class BranchNode extends LeafNode
 {
@@ -23,7 +24,7 @@ class BranchNode extends LeafNode
 
 	public function removeChild(node:LeafNode):Void
 	{
-		var index:Int = ArrayUtil.indexOf(mChildren, node);
+		var index:Int = mChildren.indexOf(node);
 		if (index > -1)
 		{
 			mChildren.splice(index, 1);

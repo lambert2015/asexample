@@ -75,7 +75,7 @@ class Technique
 
 		if (shader == null)
 		{
-			if (!_optionMap.exist(key))
+			if (!_optionMap.exists(key))
 			{
 				_optionMap.set(key, getOption(lightType, meshType));
 			}
@@ -85,7 +85,7 @@ class Technique
 
 			var option:Array<Array<String>> = _optionMap.get(key);
 
-			shader = ShaderManager.instance.registerShader(key, [vstr, fstr], option);
+			shader = ShaderManager.getInstance().registerShader(key, [vstr, fstr], option);
 
 			shader.setUniformBindings(getBindUniforms(lightType, meshType));
 			shader.setAttributeBindings(getBindAttributes(lightType, meshType));
@@ -122,7 +122,7 @@ class Technique
 		return null;
 	}
 
-	private function getBindAttributes(lightType:LightType, meshType:MeshType):Dictionary
+	private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
 		return null;
 	}

@@ -3,7 +3,6 @@ package org.angle3d.material.sgsl;
 import flash.utils.Dictionary;
 import haxe.ds.StringMap;
 import haxe.ds.Vector;
-import org.angle3d.utils.ArrayUtil;
 
 import org.angle3d.material.sgsl.node.agal.AgalNode;
 import org.angle3d.material.sgsl.node.ArrayAccessNode;
@@ -25,6 +24,7 @@ import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.material.shader.ShaderType;
 import org.angle3d.utils.Assert;
 
+using org.angle3d.utils.ArrayUtil;
 /**
  * ...
  * @author andy
@@ -238,6 +238,8 @@ class SgslData
 				}
 			case RegType.VARYING:
 				varyingPool.addReg(reg);
+			case RegType.OUTPUT, RegType.DEPTH:
+				//do nothing
 		}
 		_regsMap.set(reg.name,reg);
 	}
@@ -292,7 +294,7 @@ class SgslData
 			}
 
 			//如果数组中剩余项不包含这个变量，也就代表无引用了
-			if (ArrayUtil.contain(list, reg))
+			if (list.contain(reg))
 			{
 				//可以释放其占用位置
 				_tempPool.logout(reg);

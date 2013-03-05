@@ -1,12 +1,11 @@
 package org.angle3d.material.shader;
 
 import flash.utils.ByteArray;
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-
+import haxe.ds.Vector;
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.renderer.IRenderer;
-import haxe.ds.Vector;
+
 /**
  * 一个Shader是一个Technique中的一个实现，Technique根据不同的条件生成不同的Shader
  */
@@ -89,7 +88,7 @@ class Shader
 		return (shaderType == ShaderType.VERTEX) ? _vUniformList : _fUniformList;
 	}
 
-	private static var mShaderTypes:Array<String> = [ShaderType.VERTEX, ShaderType.FRAGMENT];
+	private static var mShaderTypes:Array<ShaderType> = [ShaderType.VERTEX, ShaderType.FRAGMENT];
 
 	public function uploadTexture(render:IRenderer):Void
 	{
@@ -108,14 +107,14 @@ class Shader
 	{
 		for (i in 0...2)
 		{
-			var type:String = mShaderTypes[i];
+			var type:ShaderType = mShaderTypes[i];
 
 			//上传常量
 			_uploadConstants(render, type);
 
 			//其他自定义数据
 			var list:UniformList = getUniformList(type);
-			var uniforms:Vector<ShaderVariable> = list.getUniforms();
+			var uniforms:Array<ShaderVariable> = list.getUniforms();
 			var size:Int = uniforms.length;
 			var uniform:Uniform;
 			for (j in 0...size)
@@ -140,7 +139,8 @@ class Shader
 		var length:Int = digits.length;
 		for (i in 0...length)
 		{
-			render.setShaderConstants(shaderType, i, digits[i], 1);
+			var vDigits:Vector<Float> = Vector.fromArrayCopy(digits[i]);
+			render.setShaderConstants(shaderType, i, vDigits, 1);
 		}
 	}
 
@@ -158,7 +158,7 @@ class Shader
 		return cast getUniformList(type).getVariable(name);
 	}
 
-	public function getAttributes():Dictionary
+	public function getAttributes():StringMap<ShaderVariable>
 	{
 		return _bindAttributes;
 	}
@@ -170,7 +170,7 @@ class Shader
 
 	public function getAttribute(bufferType:String):AttributeVar
 	{
-		return _bindAttributes.get(bufferType);
+		return cast _bindAttributes.get(bufferType);
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Shader
 		_bindUniforms = null;
 		vertexData = null;
 		fragmentData = null;
-		ShaderManager.instance.unregisterShader(name);
+		ShaderManager.getInstance().unregisterShader(name);
 	}
 
 	/**
@@ -239,12 +239,12 @@ class Shader
 	/**
 	 * 设置系统绑定的Attribute
 	 */
-	public function setAttributeBindings(attributeMap:Dictionary):Void
+	public function setAttributeBindings(attributeMap:StringMap<String>):Void
 	{
 		var bufferType:String;
 		for (bufferType in attributeMap)
 		{
-			bindAttribute(bufferType, attributeMap[bufferType]);
+			bindAttribute(bufferType, attributeMap.get(bufferType));
 		}
 	}
 }

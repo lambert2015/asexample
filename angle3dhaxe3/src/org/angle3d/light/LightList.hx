@@ -2,7 +2,9 @@ package org.angle3d.light;
 
 import org.angle3d.scene.Spatial;
 import haxe.ds.Vector;
-import org.angle3d.utils.ArrayUtil;
+
+
+using org.angle3d.utils.ArrayUtil;
 
 /**
  * <code>LightList</code> is used internally by <code>Spatial</code> to manage
@@ -43,7 +45,7 @@ class LightList
 	 */
 	public function addLight(light:Light):Void
 	{
-		if (ArrayUtil.indexOf(mList,light) == -1)
+		if (mList.contain(light))
 		{
 			mList.push(light);
 		}
@@ -64,9 +66,9 @@ class LightList
 	 *
 	 * @param l the light to remove
 	 */
-	public function removeLight(l:Light):Void
+	public function removeLight(light:Light):Void
 	{
-		var index:Int = ArrayUtil.indexOf(mList, l);
+		var index:Int = mList.indexOf(light);
 		if (index > -1)
 		{
 			removeLightAt(index);

@@ -225,3 +225,4 @@ class ShaderManager
 	}
 }
 
+@:file("customOpCode.lib") class CustomOpCodeAsset extends ByteArray{}

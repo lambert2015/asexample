@@ -308,7 +308,7 @@ class Sgsl2Agal
 			else
 			{
 				result = getRegPrex(code) + "[";
-				result += getRegPrex(accessCode) + index + "." + _swizzleMap[accessCompBits];
+				result += getRegPrex(accessCode) + index + "." + _swizzleMap.get(accessCompBits);
 				result += "+" + offset + "]";
 			}
 
@@ -344,7 +344,7 @@ class Sgsl2Agal
 		var char:String = swizzle.charAt(size - 1);
 		while (swizzle.charAt(size - 2) == char)
 		{
-			swizzle = swizzle.slice(0, size - 1);
+			swizzle = swizzle.substr(0, size - 1);
 			size = swizzle.length;
 			if (size < 2)
 			{

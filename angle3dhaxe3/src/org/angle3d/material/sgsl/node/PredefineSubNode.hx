@@ -1,7 +1,7 @@
 package org.angle3d.material.sgsl.node;
 
 import haxe.ds.Vector;
-import org.angle3d.utils.ArrayUtil;
+using org.angle3d.utils.ArrayUtil;
 
 class PredefineSubNode extends BranchNode
 {
@@ -87,7 +87,7 @@ class PredefineSubNode extends BranchNode
 		var length:Int = list.length;
 		for (i in 0...length)
 		{
-			if (ArrayUtil.contain(defines, list[i]))
+			if (defines.contain(list[i]))
 			{
 				return false;
 			}

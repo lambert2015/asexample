@@ -121,7 +121,7 @@ class Camera3D extends Frustum
 
 		this.mPlaneState = cam.mPlaneState;
 		this.mViewPortChanged = cam.mViewPortChanged;
-		for (i in 0...FRUSTUM_PLANES)
+		for (i in 0...Frustum.FRUSTUM_PLANES)
 		{
 			mWorldPlanes[i].normal.copyFrom(cam.mWorldPlanes[i].normal);
 			mWorldPlanes[i].constant = cam.mWorldPlanes[i].constant;
@@ -157,7 +157,7 @@ class Camera3D extends Frustum
 		cam.mViewPortChanged = true;
 		cam.mPlaneState = PlaneSide.None;
 
-		for (i in 0...FRUSTUM_PLANES)
+		for (i in 0...Frustum.FRUSTUM_PLANES)
 		{
 			cam.mWorldPlanes[i].copyFrom(mWorldPlanes[i]);
 		}
@@ -347,8 +347,8 @@ class Camera3D extends Frustum
 	 *
 	 * @return the current plane state int.
 	 */
-	public var planeState(get, set):PlaneSide;
-	private function get_planeState():PlaneSide
+	public var planeState(get, set):Int;
+	private function get_planeState():Int
 	{
 		return mPlaneState;
 	}
@@ -359,7 +359,7 @@ class Camera3D extends Frustum
 	 *
 	 * @param planeState the updated state.
 	 */
-	private function set_planeState(planeState:PlaneSide):PlaneSide
+	private function set_planeState(planeState:Int):Int
 	{
 		mPlaneState = planeState;
 		return mPlaneState;
@@ -531,7 +531,7 @@ class Camera3D extends Frustum
 	 */
 	public function distanceToNearPlane(pos:Vector3f):Float
 	{
-		return mWorldPlanes[NEAR_PLANE].pseudoDistance(pos);
+		return mWorldPlanes[Frustum.NEAR_PLANE].pseudoDistance(pos);
 	}
 
 	/**
@@ -564,7 +564,7 @@ class Camera3D extends Frustum
 		var mask:Int;
 		var rVal:FrustumIntersect = FrustumIntersect.Inside;
 
-		var planeCounter:Int = FRUSTUM_PLANES;
+		var planeCounter:Int = Frustum.FRUSTUM_PLANES;
 		while (planeCounter-- > 0)
 		{
 			if (planeCounter == bound.getCheckPlane())
@@ -572,12 +572,12 @@ class Camera3D extends Frustum
 				continue; // we have already checked this plane at first iteration
 			}
 
-			var planeId:Int = (planeCounter == FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
+			var planeId:Int = (planeCounter == Frustum.FRUSTUM_PLANES) ? bound.getCheckPlane() : planeCounter;
 
 			mask = 1 << planeId;
 			if ((mPlaneState & mask) == 0)
 			{
-				var side:PlaneSide = bound.whichSide(mWorldPlanes[planeId]);
+				var side:Int = bound.whichSide(mWorldPlanes[planeId]);
 
 				if (side == PlaneSide.Negative)
 				{
@@ -742,7 +742,7 @@ class Camera3D extends Frustum
 		var dirDotLocation:Float = direction.dot(mLocation);
 
 		// left plane
-		var plane:Plane = mWorldPlanes[LEFT_PLANE];
+		var plane:Plane = mWorldPlanes[Frustum.LEFT_PLANE];
 		var normal:Vector3f = plane.normal;
 		normal.x = left.x * mCoeffLeft[0] + direction.x * mCoeffLeft[1];
 		normal.y = left.y * mCoeffLeft[0] + direction.y * mCoeffLeft[1];
@@ -750,7 +750,7 @@ class Camera3D extends Frustum
 		plane.constant = mLocation.dot(normal);
 
 		// right plane
-		plane = mWorldPlanes[RIGHT_PLANE];
+		plane = mWorldPlanes[Frustum.RIGHT_PLANE];
 		normal = plane.normal;
 		normal.x = left.x * mCoeffRight[0] + direction.x * mCoeffRight[1];
 		normal.y = left.y * mCoeffRight[0] + direction.y * mCoeffRight[1];
@@ -758,7 +758,7 @@ class Camera3D extends Frustum
 		plane.constant = mLocation.dot(normal);
 
 		// bottom plane
-		plane = mWorldPlanes[BOTTOM_PLANE];
+		plane = mWorldPlanes[Frustum.BOTTOM_PLANE];
 		normal = plane.normal;
 		normal.x = up.x * mCoeffBottom[0] + direction.x * mCoeffBottom[1];
 		normal.y = up.y * mCoeffBottom[0] + direction.y * mCoeffBottom[1];
@@ -766,7 +766,7 @@ class Camera3D extends Frustum
 		plane.constant = mLocation.dot(normal);
 
 		// top plane
-		plane = mWorldPlanes[TOP_PLANE];
+		plane = mWorldPlanes[Frustum.TOP_PLANE];
 		normal = plane.normal;
 		normal.x = up.x * mCoeffTop[0] + direction.x * mCoeffTop[1];
 		normal.y = up.y * mCoeffTop[0] + direction.y * mCoeffTop[1];
@@ -775,19 +775,19 @@ class Camera3D extends Frustum
 
 		if (parallelProjection)
 		{
-			mWorldPlanes[LEFT_PLANE].constant += mFrustumRect.left;
-			mWorldPlanes[RIGHT_PLANE].constant -= mFrustumRect.right;
-			mWorldPlanes[TOP_PLANE].constant -= mFrustumRect.top;
-			mWorldPlanes[BOTTOM_PLANE].constant += mFrustumRect.bottom;
+			mWorldPlanes[Frustum.LEFT_PLANE].constant += mFrustumRect.left;
+			mWorldPlanes[Frustum.RIGHT_PLANE].constant -= mFrustumRect.right;
+			mWorldPlanes[Frustum.TOP_PLANE].constant -= mFrustumRect.top;
+			mWorldPlanes[Frustum.BOTTOM_PLANE].constant += mFrustumRect.bottom;
 		}
 
 		// far plane
-		mWorldPlanes[FAR_PLANE].normal.setTo(-direction.x, -direction.y, -direction.z);
-		mWorldPlanes[FAR_PLANE].constant = -(dirDotLocation + mFrustumFar);
+		mWorldPlanes[Frustum.FAR_PLANE].normal.setTo(-direction.x, -direction.y, -direction.z);
+		mWorldPlanes[Frustum.FAR_PLANE].constant = -(dirDotLocation + mFrustumFar);
 
 		// near plane
-		mWorldPlanes[NEAR_PLANE].normal.setTo(direction.x, direction.y, direction.z);
-		mWorldPlanes[NEAR_PLANE].constant = dirDotLocation + mFrustumNear;
+		mWorldPlanes[Frustum.NEAR_PLANE].normal.setTo(direction.x, direction.y, direction.z);
+		mWorldPlanes[Frustum.NEAR_PLANE].constant = dirDotLocation + mFrustumNear;
 
 		mViewMatrix.fromFrame(mLocation, direction, up, left);
 
