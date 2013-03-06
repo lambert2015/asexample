@@ -3,16 +3,15 @@ package org.angle3d.manager;
 import flash.display3D.Context3D;
 import flash.display3D.Program3D;
 import flash.utils.ByteArray;
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-
-import org.angle3d.material.sgsl.OpCodeManager;
-import org.angle3d.material.sgsl.SgslCompiler;
 import org.angle3d.material.sgsl.node.FunctionNode;
+import org.angle3d.material.sgsl.OpCodeManager;
 import org.angle3d.material.sgsl.parser.SgslParser;
+import org.angle3d.material.sgsl.SgslCompiler;
 import org.angle3d.material.shader.Shader;
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.utils.Logger;
+
 
 /**
  * 注册和注销Shader管理
@@ -32,9 +31,9 @@ class ShaderManager
 		_instance = new ShaderManager(context3D, profile);
 	}
 
-	private var mShaderMap:StringMap<Shader>; //<String,Shader>;
-	private var mProgramMap:StringMap<Program3D>; //<String,Program3D>;
-	private var mShaderRegisterCount:StringMap<Int>; //<String,int>;
+	private var mShaderMap:StringMap<Shader>;
+	private var mProgramMap:StringMap<Program3D>;
+	private var mShaderRegisterCount:StringMap<Int>;
 
 	private var mContext3D:Context3D;
 	private var mProfile:String;
@@ -225,4 +224,5 @@ class ShaderManager
 	}
 }
 
-@:file("customOpCode.lib") class CustomOpCodeAsset extends ByteArray{}
+@:file("org/angle3d/manager/customOpCode.lib") class CustomOpCodeAsset extends flash.utils.ByteArray
+{}

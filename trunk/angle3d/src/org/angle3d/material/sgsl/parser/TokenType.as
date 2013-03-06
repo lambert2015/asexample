@@ -3,12 +3,6 @@
 
 	final public class TokenType
 	{
-		public static const NONE:String = "NONE";
-		public static const EOF:String = "EOF";
-
-		public static const IDENTIFIER:String = "IDENTIFIER";
-		public static const NUMBER:String = "NUMBER";
-
 		/**
 		 * Reserved words
 		 */
@@ -20,18 +14,25 @@
 
 		//函数
 		/** function */
-		public static const FUNCTION:String = "FUNCTION";
-
-		//预编译条件
-		/** # */
-		public static const PREDEFINE:String = "PREDEFINE";
+		public static const FUNCTION:String = "function";
 
 		public static const IF:String = "if";
 
 		public static const ELSE:String = "else";
 
 		/** return */
-		public static const RETURN:String = "RETURN";
+		public static const RETURN:String = "return";
+
+
+		public static const NONE:String = "NONE";
+		public static const EOF:String = "EOF";
+
+		public static const IDENTIFIER:String = "IDENTIFIER";
+		public static const NUMBER:String = "NUMBER";
+
+		//预编译条件
+		/** # */
+		public static const PREDEFINE:String = "PREDEFINE";
 
 		/**
 		 * Grouping, delimiting
