@@ -43,7 +43,7 @@ class SgslCompiler
 	
 	private var _xyzwMap:IntMap<String>;
 
-	private var _regCodeMap:ObjectMap<RegType,Int>;
+	private var _regCodeMap:StringMap<Int>;
 
 	private var _vertexData:SgslData;
 
@@ -143,7 +143,7 @@ class SgslCompiler
 
 	private function _initEmitCodes():Void
 	{
-		_regCodeMap = new ObjectMap<RegType,Int>();
+		_regCodeMap = new  StringMap<Int>();
 		_regCodeMap.set(RegType.ATTRIBUTE, 0x0);
 		_regCodeMap.set(RegType.UNIFORM, 0x1);
 		_regCodeMap.set(RegType.TEMP, 0x2);
@@ -285,10 +285,9 @@ class SgslCompiler
 
 	private function writeConditionIfNode(node:ConditionIfNode):Void
 	{
-		var opCode:OpCode;
-		var source0:AtomNode;
-		var source1:AtomNode;
-
+		var opCode:OpCode = null;
+		var source0:AtomNode = null;
+		var source1:AtomNode = null;
 		switch (node.compareMethod)
 		{
 			case "==":

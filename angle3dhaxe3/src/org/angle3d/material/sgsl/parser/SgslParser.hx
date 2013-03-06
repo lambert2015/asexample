@@ -368,8 +368,7 @@ class SgslParser
 	 */
 	private function parseShaderVar():RegNode
 	{
-		var registerType:RegType = Type.createEnum(RegType, _tok.accept(TokenType.REGISTER).name);
-		//RegType.createByName(_tok.accept(TokenType.REGISTER).name);
+		var registerType:String = _tok.accept(TokenType.REGISTER).name;
 		var dataType:String = _tok.accept(TokenType.DATATYPE).name;
 		var name:String = _tok.accept(TokenType.IDENTIFIER).name;
 

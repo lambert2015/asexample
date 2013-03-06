@@ -41,7 +41,7 @@ class SgslOptimizer
 
 		var customFunctionMap:StringMap<FunctionNode> = new StringMap<FunctionNode>();
 
-		var mainFunction:FunctionNode;
+		var mainFunction:FunctionNode = null;
 
 		//保存所有自定义函数
 		var child:LeafNode;

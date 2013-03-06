@@ -1,6 +1,8 @@
 ﻿package org.angle3d.material.sgsl.parser
 {
 
+	import flash.utils.Dictionary;
+
 	import org.angle3d.material.sgsl.DataType;
 	import org.angle3d.material.sgsl.RegType;
 	import org.angle3d.material.sgsl.error.UnexpectedTokenError;
@@ -9,7 +11,9 @@
 	public class Tokenizer
 	{
 		private var _tokenRegex:Array;
-		private var _tokenRegexSize:int;
+		private var _tokenRegexpCount:int;
+
+		private var _reservedMap:Dictionary;
 
 		private var _finalRegex:RegExp;
 
@@ -22,6 +26,25 @@
 
 		public function Tokenizer(source:String)
 		{
+			_reservedMap = new Dictionary();
+			_reservedMap["function"] = TokenType.FUNCTION;
+			_reservedMap["return"] = TokenType.RETURN;
+			_reservedMap["if"] = TokenType.IF;
+			_reservedMap["else"] = TokenType.ELSE;
+			_reservedMap[DataType.VOID] = TokenType.DATATYPE;
+			_reservedMap[DataType.FLOAT] = TokenType.DATATYPE;
+			_reservedMap[DataType.VEC2] = TokenType.DATATYPE;
+			_reservedMap[DataType.VEC3] = TokenType.DATATYPE;
+			_reservedMap[DataType.VEC4] = TokenType.DATATYPE;
+			_reservedMap[DataType.MAT3] = TokenType.DATATYPE;
+			_reservedMap[DataType.MAT4] = TokenType.DATATYPE;
+			_reservedMap[DataType.SAMPLER2D] = TokenType.DATATYPE;
+			_reservedMap[DataType.SAMPLERCUBE] = TokenType.DATATYPE;
+			_reservedMap[RegType.ATTRIBUTE] = TokenType.REGISTER;
+			_reservedMap[RegType.VARYING] = TokenType.REGISTER;
+			_reservedMap[RegType.UNIFORM] = TokenType.REGISTER;
+			_reservedMap[RegType.TEMP] = TokenType.REGISTER;
+
 			this.source = source;
 		}
 
@@ -67,9 +90,7 @@
 				throw new UnexpectedTokenError(token, type);
 
 			var t:Token = token;
-
 			next();
-
 			return t;
 		}
 
@@ -95,8 +116,8 @@
 		private function cleanSource(value:String):String
 		{
 			//删除/**/类型注释
-//			var result:String = value.replace(/\/\*(.|[\r\n])*?\*\//g, "");
-//			result = value.replace(/\/\/(.)*\\n/g, "");
+			//			var result:String = value.replace(/\/\*(.|[\r\n])*?\*\//g, "");
+			//			result = value.replace(/\/\/(.)*\\n/g, "");
 			var result:String = value.replace(/\/\*(.|[^.])*?\*\//g, "");
 			result = result.replace(/\/\/.*[^.]/g, "");
 
@@ -111,43 +132,42 @@
 
 		private function _buildRegex():void
 		{
-			_tokenRegex = [[TokenType.IDENTIFIER, /[a-zA-Z_][a-zA-Z0-9_]*/],
-				[TokenType.NUMBER, /[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?/],
-				[TokenType.PREDEFINE, /#[elsdif]{4,6}/],
+			_tokenRegex = [TokenType.IDENTIFIER, "[a-zA-Z_][a-zA-Z0-9_]*",
+				TokenType.NUMBER, "[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?",
+				TokenType.PREDEFINE, "#[elsdif]{4,6}",
 				// grouping
-				[TokenType.SEMI, /;/],
-				[TokenType.LBRACE, /{/],
-				[TokenType.RBRACE, /}/],
-				[TokenType.LBRACKET, /\[/],
-				[TokenType.RBRACKET, /\]/],
-				[TokenType.LPAREN, /\(/],
-				[TokenType.RPAREN, /\)/],
-				[TokenType.COMMA, /,/],
+				TokenType.SEMI, ";",
+				TokenType.LBRACE, "{",
+				TokenType.RBRACE, "}",
+				TokenType.LBRACKET, "\\[",
+				TokenType.RBRACKET, "\\]",
+				TokenType.LPAREN, "\\(",
+				TokenType.RPAREN, "\\)",
+				TokenType.COMMA, ",",
 				//compare
-				[TokenType.GREATER_THAN, /\>/],
-				[TokenType.LESS_THAN, /\</],
-				[TokenType.GREATER_EQUAL, /\>=/],
-				[TokenType.LESS_EQUAL, /\<=/],
-				[TokenType.NOT_EQUAL, /\!=/],
-				[TokenType.DOUBLE_EQUAL, /==/],
+				TokenType.GREATER_THAN, "\\>",
+				TokenType.LESS_THAN, "\\<",
+				TokenType.GREATER_EQUAL, "\\>=",
+				TokenType.LESS_EQUAL, "\\<=",
+				TokenType.NOT_EQUAL, "\\!=",
+				TokenType.DOUBLE_EQUAL, "==",
 				//operators
-				[TokenType.DOT, /\./],
-				[TokenType.PLUS, /\+/],
-				[TokenType.SUBTRACT, /-/],
-				[TokenType.MULTIPLY, /\*/],
-				[TokenType.DIVIDE, /\//],
-				[TokenType.EQUAL, /=/],
-				[TokenType.AND, /&&/],
-				[TokenType.OR, /\|\|/]];
+				TokenType.DOT, "\\.",
+				TokenType.PLUS, "\\+",
+				TokenType.SUBTRACT, "-",
+				TokenType.MULTIPLY, "\\*",
+				TokenType.DIVIDE, "\\/",
+				TokenType.EQUAL, "=",
+				TokenType.AND, "&&",
+				TokenType.OR, "\\|\\|"];
 
-			_tokenRegexSize = _tokenRegex.length;
+			_tokenRegexpCount = int(_tokenRegex.length * 0.5);
 
 			var reg:String = "^(";
-			for (var i:int = 0; i < _tokenRegexSize; i++)
+			for (var i:int = 0; i < _tokenRegexpCount; i++)
 			{
-				var arr:Array = _tokenRegex[i];
-				reg += "?P<" + arr[0] + ">" + arr[1].source;
-				if (i < _tokenRegexSize)
+				reg += "?P<" + _tokenRegex[i * 2] + ">" + _tokenRegex[i * 2 + 1];
+				if (i < _tokenRegexpCount)
 					reg += ")|^(";
 			}
 
@@ -165,54 +185,27 @@
 			_position += result0.length;
 
 			var type:String;
-			for (var i:int = 0; i < _tokenRegexSize; i++)
+			//首先检查关键字
+			if (_reservedMap[result0] != undefined)
 			{
-				var list:Array = _tokenRegex[i];
-
-				var curType:String = list[0];
-				if (result[curType] == result0)
+				type = _reservedMap[result0];
+			}
+			else
+			{
+				for (var i:int = 0; i < _tokenRegexpCount; i++)
 				{
-					type = curType;
-					break;
+					var curType:String = _tokenRegex[i * 2];
+					if (result[curType] == result0)
+					{
+						type = curType;
+						break;
+					}
 				}
 			}
 
-			type = _reservedWords(result0, type);
-
+			//做个缓存池
 			return new Token(type, result0);
 		}
-
-		private function _reservedWords(text:String, type:String):String
-		{
-			switch (text)
-			{
-				case "function":
-					return TokenType.FUNCTION;
-				case "return":
-					return TokenType.RETURN;
-				case "if":
-					return TokenType.IF;
-				case "else":
-					return TokenType.ELSE;
-				case DataType.VOID:
-				case DataType.FLOAT:
-				case DataType.VEC2:
-				case DataType.VEC3:
-				case DataType.VEC4:
-				case DataType.MAT4:
-				case DataType.MAT3:
-				case DataType.SAMPLER2D:
-				case DataType.SAMPLERCUBE:
-					return TokenType.DATATYPE;
-				case RegType.ATTRIBUTE:
-				case RegType.VARYING:
-				case RegType.UNIFORM:
-				case RegType.TEMP:
-					return TokenType.REGISTER;
-			}
-			return type;
-		}
-
 	}
 
 }

@@ -1,14 +1,7 @@
 ﻿package org.angle3d.material.sgsl.parser;
 
-
 class TokenType
 {
-	public static inline var NONE:String = "NONE";
-	public static inline var EOF:String = "EOF";
-
-	public static inline var IDENTIFIER:String = "IDENTIFIER";
-	public static inline var NUMBER:String = "NUMBER";
-
 	/**
 	 * Reserved words
 	 */
@@ -20,18 +13,25 @@ class TokenType
 
 	//函数
 	/** function */
-	public static inline var FUNCTION:String = "FUNCTION";
-
-	//预编译条件
-	/** # */
-	public static inline var PREDEFINE:String = "PREDEFINE";
+	public static inline var FUNCTION:String = "function";
 
 	public static inline var IF:String = "if";
 
 	public static inline var ELSE:String = "else";
 
 	/** return */
-	public static inline var RETURN:String = "RETURN";
+	public static inline var RETURN:String = "return";
+
+
+	public static inline var NONE:String = "NONE";
+	public static inline var EOF:String = "EOF";
+
+	public static inline var IDENTIFIER:String = "IDENTIFIER";
+	public static inline var NUMBER:String = "NUMBER";
+
+	//预编译条件
+	/** # */
+	public static inline var PREDEFINE:String = "PREDEFINE";
 
 	/**
 	 * Grouping, delimiting
