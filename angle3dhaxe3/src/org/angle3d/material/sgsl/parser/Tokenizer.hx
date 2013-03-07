@@ -135,33 +135,33 @@ class Tokenizer
 	private function _buildRegex():Void
 	{
 		_tokenRegex = [TokenType.IDENTIFIER, "[a-zA-Z_][a-zA-Z0-9_]*",
-			TokenType.NUMBER, "[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?",
-			TokenType.PREDEFINE, "#[elsdif]{4,6}",
-			// grouping
-			TokenType.SEMI, ";",
-			TokenType.LBRACE, "{",
-			TokenType.RBRACE, "}",
-			TokenType.LBRACKET, "\\[",
-			TokenType.RBRACKET, "\\]",
-			TokenType.LPAREN, "\\(",
-			TokenType.RPAREN, "\\)",
-			TokenType.COMMA, ",",
-			//compare
-			TokenType.GREATER_THAN, "\\>",
-			TokenType.LESS_THAN, "\\<",
-			TokenType.GREATER_EQUAL, "\\>=",
-			TokenType.LESS_EQUAL, "\\<=",
-			TokenType.NOT_EQUAL, "\\!=",
-			TokenType.DOUBLE_EQUAL, "==",
-			//operators
-			TokenType.DOT, "\\.",
-			TokenType.PLUS, "\\+",
-			TokenType.SUBTRACT, "-",
-			TokenType.MULTIPLY, "\\*",
-			TokenType.DIVIDE, "\\/",
-			TokenType.EQUAL, "=",
-			TokenType.AND, "&&",
-			TokenType.OR, "\\|\\|"];
+						TokenType.NUMBER, "[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?",
+						TokenType.PREDEFINE, "#[elsdif]{4,6}",
+						// grouping
+						TokenType.SEMI, ";",
+						TokenType.LBRACE, "{",
+						TokenType.RBRACE, "}",
+						TokenType.LBRACKET, "\\[",
+						TokenType.RBRACKET, "\\]",
+						TokenType.LPAREN, "\\(",
+						TokenType.RPAREN, "\\)",
+						TokenType.COMMA, ",",
+						//compare
+						TokenType.GREATER_THAN, "\\>",
+						TokenType.LESS_THAN, "\\<",
+						TokenType.GREATER_EQUAL, "\\>=",
+						TokenType.LESS_EQUAL, "\\<=",
+						TokenType.NOT_EQUAL, "\\!=",
+						TokenType.DOUBLE_EQUAL, "==",
+						//operators
+						TokenType.DOT, "\\.",
+						TokenType.PLUS, "\\+",
+						TokenType.SUBTRACT, "-",
+						TokenType.MULTIPLY, "\\*",
+						TokenType.DIVIDE, "\\/",
+						TokenType.EQUAL, "=",
+						TokenType.AND, "&&",
+						TokenType.OR, "\\|\\|"];
 
 		_tokenRegexpCount = Std.int(_tokenRegex.length * 0.5);
 
