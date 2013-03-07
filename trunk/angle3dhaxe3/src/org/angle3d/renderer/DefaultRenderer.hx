@@ -4,9 +4,13 @@ import flash.display.Stage3D;
 import flash.display3D.Context3D;
 import flash.display3D.Context3DBlendFactor;
 import flash.display3D.Context3DClearMask;
+import flash.display3D.Context3DCompareMode;
+import flash.display3D.Context3DProgramType;
+import flash.display3D.Context3DTriangleFace;
 import flash.display3D.Program3D;
 import flash.geom.Rectangle;
-import flash.utils.Dictionary;
+import haxe.ds.StringMap;
+import org.angle3d.material.shader.ShaderVariable;
 
 import org.angle3d.light.Light;
 import org.angle3d.manager.ShaderManager;
@@ -20,6 +24,8 @@ import org.angle3d.scene.mesh.SubMesh;
 import org.angle3d.texture.FrameBuffer;
 import org.angle3d.texture.TextureMapBase;
 import org.angle3d.utils.Assert;
+
+import haxe.ds.Vector;
 
 
 class DefaultRenderer implements IRenderer
@@ -43,7 +49,7 @@ class DefaultRenderer implements IRenderer
 	private var _registerTextureIndex:Int = 0;
 	private var _registerBufferIndex:Int = 0;
 
-	public function DefaultRenderer(stage3D:Stage3D)
+	public function new(stage3D:Stage3D)
 	{
 		_stage3D = stage3D;
 		_context3D = _stage3D.context3D;
@@ -55,12 +61,14 @@ class DefaultRenderer implements IRenderer
 		_clipRect = new Rectangle();
 	}
 
-	public function get stage3D():Stage3D
+	public var stage3D(get, null):Stage3D;
+	private inline function get_stage3D():Stage3D
 	{
 		return _stage3D;
 	}
 
-	public function get context3D():Context3D
+	public var context3D(get, null):Context3D;
+	private inline function get_context3D():Context3D
 	{
 		return _context3D;
 	}
@@ -72,7 +80,7 @@ class DefaultRenderer implements IRenderer
 
 	public function clearBuffers(color:Bool, depth:Bool, stencil:Bool):Void
 	{
-		var bits:uint = 0;
+		var bits:UInt = 0;
 		if (color)
 		{
 			bits = Context3DClearMask.COLOR;
@@ -92,7 +100,7 @@ class DefaultRenderer implements IRenderer
 		}
 	}
 
-	public function setBackgroundColor(color:uint):Void
+	public function setBackgroundColor(color:UInt):Void
 	{
 		_bgColor.setColor(color);
 	}
@@ -131,28 +139,20 @@ class DefaultRenderer implements IRenderer
 			{
 				case BlendMode.Off:
 					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO);
-					break;
 				case BlendMode.Additive:
 					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE);
-					break;
 				case BlendMode.AlphaAdditive:
 					_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE);
-					break;
 				case BlendMode.Color:
 					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
-					break;
 				case BlendMode.Alpha:
 					_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
-					break;
 				case BlendMode.PremultAlpha:
 					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
-					break;
 				case BlendMode.Modulate:
 					_context3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ZERO);
-					break;
 				case BlendMode.ModulateX2:
 					_context3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.SOURCE_COLOR);
-					break;
 			}
 			_renderContext.blendMode = state.blendMode;
 		}
@@ -237,7 +237,7 @@ class DefaultRenderer implements IRenderer
 
 			_shader = shader;
 
-			var program:Program3D = ShaderManager.instance.getProgram(_shader.name);
+			var program:Program3D = ShaderManager.getInstance().getProgram(_shader.name);
 
 			if (_lastProgram != program)
 			{
@@ -263,17 +263,17 @@ class DefaultRenderer implements IRenderer
 	}
 
 	//耗时有点久
-	public function setShaderConstants(shaderType:String, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void
+	public function setShaderConstants(shaderType:Context3DProgramType, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void
 	{
-		_context3D.setProgramConstantsFromVector(shaderType, firstRegister, data, numRegisters);
+		_context3D.setProgramConstantsFromVector(shaderType, firstRegister, data.toData(), numRegisters);
 	}
 
-	public function setDepthTest(depthMask:Bool, passCompareMode:String):Void
+	public function setDepthTest(depthMask:Bool, passCompareMode:Context3DCompareMode):Void
 	{
 		_context3D.setDepthTest(depthMask, passCompareMode);
 	}
 
-	public function setCulling(triangleFaceToCull:String):Void
+	public function setCulling(triangleFaceToCull:Context3DTriangleFace):Void
 	{
 		_context3D.setCulling(triangleFaceToCull);
 	}
@@ -285,8 +285,8 @@ class DefaultRenderer implements IRenderer
 
 	public function renderMesh(mesh:Mesh):Void
 	{
-		var subMeshList:Vector<SubMesh> = mesh.subMeshList;
-		for (var i:Int = 0, length:Int = subMeshList.length; i < length; i++)
+		var subMeshList:Array<SubMesh> = mesh.subMeshList;
+		for (i in 0...subMeshList.length)
 		{
 			var subMesh:SubMesh = subMeshList[i];
 			setVertexBuffers(subMesh);
@@ -306,7 +306,7 @@ class DefaultRenderer implements IRenderer
 
 	private function clearTextures():Void
 	{
-		for (var i:Int = 0; i <= _registerTextureIndex; i++)
+		for (i in 0..._registerTextureIndex+1)
 		{
 			_context3D.setTextureAt(i, null);
 		}
@@ -320,7 +320,7 @@ class DefaultRenderer implements IRenderer
 	{
 		if (_registerBufferIndex > maxRegisterIndex)
 		{
-			for (var i:Int = maxRegisterIndex + 1; i <= _registerBufferIndex; i++)
+			for (i in maxRegisterIndex + 1..._registerBufferIndex + 1)
 			{
 				_context3D.setVertexBufferAt(i, null);
 			}
@@ -337,14 +337,14 @@ class DefaultRenderer implements IRenderer
 		//属性寄存器使用的最大索引
 		var maxRegisterIndex:Int = 0;
 
-		var attributes:Dictionary = _shader.getAttributes();
+		var attributes:StringMap<ShaderVariable> = _shader.getAttributes();
 
 		var attribute:AttributeVar;
 		var location:Int;
-		var bufferType:String;
-		for (bufferType in attributes)
+		var bufferTypes = attributes.keys();
+		for (bufferType in bufferTypes)
 		{
-			attribute = attributes[bufferType];
+			attribute = cast attributes.get(bufferType);
 			location = subMesh.merge ? attribute.location : 0;
 			_context3D.setVertexBufferAt(attribute.index, subMesh.getVertexBuffer3D(_context3D, bufferType), location, attribute.format);
 			if (attribute.index > maxRegisterIndex)

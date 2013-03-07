@@ -1,60 +1,59 @@
-package org.angle3d.input.event
+package org.angle3d.input.event;
+
+
+/**
+ * An abstract input event.
+ */
+class InputEvent
 {
+	private var time:Float;
+
+	private var consumed:Bool;
+
+	public function new()
+	{
+		consumed = false;
+	}
 
 	/**
-	 * An abstract input event.
+	 * The time when the event occurred. This is relative to
+	 * {@link Input#getInputTimeNanos() }.
+	 *
+	 * @return time when the event occured
 	 */
-	public class InputEvent
+	public function getTime():Float
 	{
-		private var time:Float;
+		return time;
+	}
 
-		private var consumed:Bool;
+	/**
+	 * Set the time when the event occurred.
+	 *
+	 * @param time time when the event occurred.
+	 */
+	public function setTime(time:Int):Void
+	{
+		this.time = time;
+	}
 
-		public function InputEvent()
-		{
-			consumed = false;
-		}
+	/**
+	 * Returns true if the input event has been consumed, meaning it is no longer valid
+	 * and should not be forwarded to input listeners.
+	 *
+	 * @return true if the input event has been consumed
+	 */
+	public function isConsumed():Bool
+	{
+		return consumed;
+	}
 
-		/**
-		 * The time when the event occurred. This is relative to
-		 * {@link Input#getInputTimeNanos() }.
-		 *
-		 * @return time when the event occured
-		 */
-		public function getTime():Float
-		{
-			return time;
-		}
-
-		/**
-		 * Set the time when the event occurred.
-		 *
-		 * @param time time when the event occurred.
-		 */
-		public function setTime(time:int):Void
-		{
-			this.time = time;
-		}
-
-		/**
-		 * Returns true if the input event has been consumed, meaning it is no longer valid
-		 * and should not be forwarded to input listeners.
-		 *
-		 * @return true if the input event has been consumed
-		 */
-		public function isConsumed():Bool
-		{
-			return consumed;
-		}
-
-		/**
-		 * Call to mark this input event as consumed, meaning it is no longer valid
-		 * and should not be forwarded to input listeners.
-		 */
-		public function setConsumed():Void
-		{
-			this.consumed = true;
-		}
+	/**
+	 * Call to mark this input event as consumed, meaning it is no longer valid
+	 * and should not be forwarded to input listeners.
+	 */
+	public function setConsumed():Void
+	{
+		this.consumed = true;
 	}
 }
 

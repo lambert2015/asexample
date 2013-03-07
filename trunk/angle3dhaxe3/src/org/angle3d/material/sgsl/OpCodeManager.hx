@@ -77,7 +77,7 @@ class OpCodeManager
 
 	private var _opCodeMap:StringMap<OpCode>;
 
-	public var profile:String;
+	public var profile:ShaderProfile;
 
 	public var movCode:OpCode;
 
@@ -85,7 +85,7 @@ class OpCodeManager
 
 	public var killCode:OpCode;
 
-	public function new(profile:String)
+	public function new(profile:ShaderProfile)
 	{
 		this.profile = profile;
 		_initCodes();

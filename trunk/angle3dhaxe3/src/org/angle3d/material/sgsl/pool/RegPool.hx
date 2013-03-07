@@ -1,6 +1,7 @@
 package org.angle3d.material.sgsl.pool;
 
 import org.angle3d.material.sgsl.node.reg.RegNode;
+import org.angle3d.material.shader.ShaderProfile;
 
 using org.angle3d.utils.ArrayUtil;
 /**
@@ -11,11 +12,11 @@ class RegPool
 {
 	private var mRegLimit:Int;
 
-	private var mProfile:String;
+	private var mProfile:ShaderProfile;
 
 	private var mRegs:Array<RegNode>;
 
-	public function new(profile:String)
+	public function new(profile:ShaderProfile)
 	{
 		this.mProfile = profile;
 
@@ -28,7 +29,7 @@ class RegPool
 		return 0;
 	}
 
-	public function setProfile(value:String):Void
+	public function setProfile(value:ShaderProfile):Void
 	{
 		mProfile = value;
 	}

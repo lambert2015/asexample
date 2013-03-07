@@ -1,104 +1,103 @@
-package org.angle3d.animation
-{
-	import flash.utils.Dictionary;
+package org.angle3d.animation;
 
-	import org.angle3d.scene.control.AbstractControl;
-	import org.angle3d.utils.Assert;
-	import org.angle3d.utils.TempVars;
+import flash.utils.Dictionary;
+import haxe.ds.StringMap;
+
+import org.angle3d.scene.control.AbstractControl;
+import org.angle3d.utils.Assert;
+import org.angle3d.utils.TempVars;
+using org.angle3d.utils.ArrayUtil;
+/**
+ * AnimControl is a Spatial control that allows manipulation
+ * of animation.
+ *
+ */
+class AnimControl extends AbstractControl
+{
 
 	/**
-	 * AnimControl is a Spatial control that allows manipulation
-	 * of animation.
-	 *
+	 * List of animations
 	 */
-	public class AnimControl extends AbstractControl
+	private var mAnimationMap:StringMap<Animation>;
+
+	/**
+	 * Animation channels
+	 */
+	private var mChannels:Array<AnimChannel>;
+
+	private var mNumchannels:Int;
+
+	public function new()
 	{
+		super();
 
-		/**
-		 * List of animations
-		 */
-		protected var mAnimationMap:Dictionary;
+		mAnimationMap = new StringMap<Animation>();
 
-		/**
-		 * Animation channels
-		 */
-		protected var mChannels:Vector<AnimChannel>;
+		mChannels = new Array<AnimChannel>();
+		mNumchannels = 0;
+	}
 
-		protected var mNumchannels:int;
+	public function addAnimation(name:String, animation:Animation):Void
+	{
+		mAnimationMap.set(name, animation);
+	}
 
-		public function AnimControl()
+	public function getAnimation(name:String):Animation
+	{
+		return mAnimationMap.get(name);
+	}
+
+	public function getAnimationLength(name:String):Float
+	{
+		var a:Animation = mAnimationMap.get(name);
+
+		#if debug
+		Assert.assert(a != null, "The animation " + name + " does not exist in this AnimControl");
+		#end
+
+		return a.time;
+	}
+
+	public function removeChannel(channel:AnimChannel):Void
+	{
+		var index:Int = mChannels.indexOf(channel);
+		if (index > -1)
 		{
-			super();
-
-			mAnimationMap = new Dictionary();
-
-			mChannels = new Vector<AnimChannel>();
-			mNumchannels = 0;
+			mChannels.splice(index, 1);
+			mNumchannels--;
 		}
+	}
 
-		public function addAnimation(name:String, animation:Animation):Void
+	/**
+	 * Create a new animation channel, by default assigned to all bones
+	 * in the skeleton.
+	 *
+	 * @return A new animation channel for this <code>AnimControl</code>.
+	 */
+	public function createChannel():AnimChannel
+	{
+		var channel:AnimChannel = new AnimChannel(this);
+		mChannels.push(channel);
+		mNumchannels++;
+		return channel;
+	}
+
+	/**
+	 * Internal use only.
+	 */
+	override private function controlUpdate(tpf:Float):Void
+	{
+		if (mNumchannels > 0)
 		{
-			mAnimationMap[name] = animation;
-		}
+			var tempVars:TempVars = TempVars.getTempVars();
 
-		public function getAnimation(name:String):Animation
-		{
-			return mAnimationMap[name];
-		}
-
-		public function getAnimationLength(name:String):Float
-		{
-			var a:Animation = mAnimationMap[name];
-
-			CF::DEBUG
+			for (i in 0...mNumchannels)
 			{
-				Assert.assert(a != null, "The animation " + name + " does not exist in this AnimControl");
+				mChannels[i].update(tpf, tempVars);
 			}
 
-			return a.time;
-		}
-
-		public function removeChannel(channel:AnimChannel):Void
-		{
-			var index:int = mChannels.indexOf(channel);
-			if (index > -1)
-			{
-				mChannels.splice(index, 1);
-				mNumchannels--;
-			}
-		}
-
-		/**
-		 * Create a new animation channel, by default assigned to all bones
-		 * in the skeleton.
-		 *
-		 * @return A new animation channel for this <code>AnimControl</code>.
-		 */
-		public function createChannel():AnimChannel
-		{
-			var channel:AnimChannel = new AnimChannel(this);
-			mChannels.push(channel);
-			mNumchannels++;
-			return channel;
-		}
-
-		/**
-		 * Internal use only.
-		 */
-		override protected function controlUpdate(tpf:Float):Void
-		{
-			if (mNumchannels > 0)
-			{
-				var tempVars:TempVars = TempVars.getTempVars();
-
-				for (var i:int = 0; i < mNumchannels; i++)
-				{
-					mChannels[i].update(tpf, tempVars);
-				}
-
-				//释放临时变量
-				tempVars.release();
-			}
+			//释放临时变量
+			tempVars.release();
 		}
 	}
 }

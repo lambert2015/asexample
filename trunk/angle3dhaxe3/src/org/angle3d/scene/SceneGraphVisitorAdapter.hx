@@ -3,7 +3,7 @@ package org.angle3d.scene;
 
 /**
  * <code>SceneGraphVisitorAdapter</code> is used to traverse the scene
- * graph tree. The adapter version of the public interface simply separates
+ * graph tree. The adapter version of the interface simply separates
  * between the {@link Geometry geometries} and the {@link Node nodes} by
  * supplying visit methods that take them.
  * Use by calling {@link Spatial#depthFirstTraversal(org.angle3d.scene.SceneGraphVisitor) }

@@ -6,7 +6,7 @@ import org.angle3d.utils.Assert;
 
 class DataType
 {
-	public static inline var VOID:String = "void";
+	public static inline var VOID:String = "Void";
 	public static inline var FLOAT:String = "float";
 	public static inline var VEC2:String = "vec2";
 	public static inline var VEC3:String = "vec3";

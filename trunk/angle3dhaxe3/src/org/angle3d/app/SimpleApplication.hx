@@ -1,149 +1,150 @@
-package org.angle3d.app
-{
-	import flash.ui.Keyboard;
+package org.angle3d.app;
 
-	import org.angle3d.input.FlyByCamera;
-	import org.angle3d.input.controls.ActionListener;
-	import org.angle3d.input.controls.KeyTrigger;
-	import org.angle3d.math.Quaternion;
-	import org.angle3d.math.Vector3f;
-	import org.angle3d.renderer.RenderManager;
-	import org.angle3d.renderer.queue.QueueBucket;
-	import org.angle3d.scene.CullHint;
-	import org.angle3d.scene.Node;
-	import org.angle3d.utils.Logger;
+import flash.ui.Keyboard;
+
+import org.angle3d.input.FlyByCamera;
+import org.angle3d.input.controls.ActionListener;
+import org.angle3d.input.controls.KeyTrigger;
+import org.angle3d.math.Quaternion;
+import org.angle3d.math.Vector3f;
+import org.angle3d.renderer.RenderManager;
+import org.angle3d.renderer.queue.QueueBucket;
+import org.angle3d.scene.CullHint;
+import org.angle3d.scene.Node;
+import org.angle3d.utils.Logger;
+
+/**
+ * <code>SimpleApplication</code> extends the {@link com.jme3.app.Application}
+ * class to provide default functionality like a first-person camera,
+ * and an accessible root node that is updated and rendered regularly.
+ * Additionally, <code>SimpleApplication</code> will display a statistics view
+ * using the {@link com.jme3.app.StatsView} class. It will display
+ * the current frames-per-second value on-screen in addition to the statistics.
+ * Several keys have special functionality in <code>SimpleApplication</code>:<br/>
+ *
+ * <table>
+ * <tr><td>Esc</td><td>- Close the application</td></tr>
+ * <tr><td>C</td><td>- Display the camera position and rotation in the console.</td></tr>
+ * <tr><td>M</td><td>- Display memory usage in the console.</td></tr>
+ * </table>
+ */
+class SimpleApplication extends Application implements ActionListener
+{
+	public static inline var INPUT_MAPPING_EXIT:String = "SIMPLEAPP_Exit";
+	public static inline var INPUT_MAPPING_CAMERA_POS:String = "SIMPLEAPP_CameraPos";
+
+	private var _scene:Node;
+	private var _gui:Node;
+
+	private var flyCam:FlyByCamera;
+
+	public function new()
+	{
+		super();
+	}
+
+	public function onAction(name:String, value:Bool, tpf:Float):Void
+	{
+		if (!value)
+		{
+			return;
+		}
+
+		if (name == INPUT_MAPPING_EXIT)
+		{
+			stop();
+		}
+		else if (name == INPUT_MAPPING_CAMERA_POS)
+		{
+			if (cam != null)
+			{
+				var loc:Vector3f = cam.location;
+				var rot:Quaternion = cam.rotation;
+
+				#if debug
+				Logger.log("Camera Position: (" + loc.x + ", " + loc.y + ", " + loc.z + ")");
+				Logger.log("Camera Rotation: " + rot);
+				Logger.log("Camera Direction: " + cam.getDirection());
+				#end
+
+			}
+		}
+	}
 
 	/**
-	 * <code>SimpleApplication</code> extends the {@link com.jme3.app.Application}
-	 * public class to provide default functionality like a first-person camera,
-	 * and an accessible root node that is updated and rendered regularly.
-	 * Additionally, <code>SimpleApplication</code> will display a statistics view
-	 * using the {@link com.jme3.app.StatsView} public class. It will display
-	 * the current frames-per-second value on-screen in addition to the statistics.
-	 * Several keys have special functionality in <code>SimpleApplication</code>:<br/>
+	 * Retrieves flyCam
+	 * @return flyCam Camera object
 	 *
-	 * <table>
-	 * <tr><td>Esc</td><td>- Close the application</td></tr>
-	 * <tr><td>C</td><td>- Display the camera position and rotation in the console.</td></tr>
-	 * <tr><td>M</td><td>- Display memory usage in the console.</td></tr>
-	 * </table>
 	 */
-	public class SimpleApplication extends Application implements ActionListener
+	public function getFlyByCamera():FlyByCamera
 	{
-		public static const INPUT_MAPPING_EXIT:String = "SIMPLEAPP_Exit";
-		public static const INPUT_MAPPING_CAMERA_POS:String = "SIMPLEAPP_CameraPos";
+		return flyCam;
+	}
 
-		protected var _scene:Node;
-		protected var _gui:Node;
+	/**
+	 * Retrieves guiNode
+	 * @return guiNode Node object
+	 *
+	 */
+	public var gui(get, null):Node;
+	private inline function get_gui():Node
+	{
+		return _gui;
+	}
 
-		protected var flyCam:FlyByCamera;
+	/**
+	 * Retrieves rootNode
+	 * @return rootNode Node object
+	 *
+	 */
+	public var scene(get, null):Node;
+	private inline function get_scene():Node
+	{
+		return _scene;
+	}
 
-		public function SimpleApplication()
+	override private function initialize(width:Int, height:Int):Void
+	{
+		super.initialize(width, height);
+
+		_scene = new Node("Root Node");
+		mViewPort.attachScene(_scene);
+
+		_gui = new Node("Gui Node");
+		_gui.localQueueBucket = QueueBucket.Gui;
+		_gui.localCullHint = CullHint.Never;
+		mGuiViewPort.attachScene(_gui);
+
+		if (inputManager != null)
 		{
-			super();
+			flyCam = new FlyByCamera(cam);
+			flyCam.setMoveSpeed(1.0);
+			flyCam.setRotationSpeed(3.0);
+			flyCam.registerWithInput(inputManager);
+
+			inputManager.addSingleMapping(INPUT_MAPPING_CAMERA_POS, new KeyTrigger(Keyboard.C));
+
+			var arr:Array<String> = [INPUT_MAPPING_CAMERA_POS];
+
+			inputManager.addListener(this, arr);
 		}
 
-		public function onAction(name:String, value:Bool, tpf:Float):Void
-		{
-			if (!value)
-			{
-				return;
-			}
+		// call user code
+		simpleInitApp();
+	}
 
-			if (name == INPUT_MAPPING_EXIT)
-			{
-				stop();
-			}
-			else if (name == INPUT_MAPPING_CAMERA_POS)
-			{
-				if (cam != null)
-				{
-					var loc:Vector3f = cam.location;
-					var rot:Quaternion = cam.rotation;
+	override public function update():Void
+	{
+		super.update();
 
-					CF::DEBUG
-					{
-						Logger.log("Camera Position: (" + loc.x + ", " + loc.y + ", " + loc.z + ")");
-						Logger.log("Camera Rotation: " + rot);
-						Logger.log("Camera Direction: " + cam.getDirection());
-					}
+		//update states
+		stateManager.update(timePerFrame);
 
-				}
-			}
-		}
+		// simple update and root node
+		simpleUpdate(timePerFrame);
 
-		/**
-		 * Retrieves flyCam
-		 * @return flyCam Camera object
-		 *
-		 */
-		public function getFlyByCamera():FlyByCamera
-		{
-			return flyCam;
-		}
-
-		/**
-		 * Retrieves guiNode
-		 * @return guiNode Node object
-		 *
-		 */
-		public function get gui():Node
-		{
-			return _gui;
-		}
-
-		/**
-		 * Retrieves rootNode
-		 * @return rootNode Node object
-		 *
-		 */
-		public function get scene():Node
-		{
-			return _scene;
-		}
-
-		override protected function initialize(width:int, height:int):Void
-		{
-			super.initialize(width, height);
-
-			_scene = new Node("Root Node");
-			mViewPort.attachScene(_scene);
-
-			_gui = new Node("Gui Node");
-			_gui.localQueueBucket = QueueBucket.Gui;
-			_gui.localCullHint = CullHint.Never;
-			mGuiViewPort.attachScene(_gui);
-
-			if (inputManager != null)
-			{
-				flyCam = new FlyByCamera(cam);
-				flyCam.setMoveSpeed(1.0);
-				flyCam.setRotationSpeed(3.0);
-				flyCam.registerWithInput(inputManager);
-
-				inputManager.addSingleMapping(INPUT_MAPPING_CAMERA_POS, new KeyTrigger(Keyboard.C));
-
-				var arr:Array = [INPUT_MAPPING_CAMERA_POS];
-
-				inputManager.addListener(this, arr);
-			}
-
-			// call user code
-			simpleInitApp();
-		}
-
-		override public function update():Void
-		{
-			super.update();
-
-			//update states
-			stateManager.update(timePerFrame);
-
-			// simple update and root node
-			simpleUpdate(timePerFrame);
-
-			_scene.update(timePerFrame);
-			_gui.update(timePerFrame);
+		_scene.update(timePerFrame);
+		_gui.update(timePerFrame);
 
 //			_scene.updateLogicalState(timePerFrame);
 //			_scene.updateGeometricState();
@@ -151,30 +152,29 @@ package org.angle3d.app
 //			_gui.updateLogicalState(timePerFrame);
 //			_gui.updateGeometricState();
 
-			// render states
-			stateManager.render(renderManager);
+		// render states
+		stateManager.render(renderManager);
 
-			renderManager.render(timePerFrame);
+		renderManager.render(timePerFrame);
 
-			simpleRender(renderManager);
+		simpleRender(renderManager);
 
-			stateManager.postRender();
-		}
+		stateManager.postRender();
+	}
 
-		public function simpleInitApp():Void
-		{
-			start();
-		}
+	public function simpleInitApp():Void
+	{
+		start();
+	}
 
-		public function simpleUpdate(tpf:Float):Void
-		{
+	public function simpleUpdate(tpf:Float):Void
+	{
 
-		}
+	}
 
-		public function simpleRender(rm:RenderManager):Void
-		{
+	public function simpleRender(rm:RenderManager):Void
+	{
 
-		}
 	}
 }
 

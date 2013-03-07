@@ -14,7 +14,7 @@ import org.angle3d.math.Triangle;
 import haxe.ds.Vector;
 
 /**
- * <code>BoundingVolume</code> defines an public interface for dealing with
+ * <code>BoundingVolume</code> defines an interface for dealing with
  * containment of a collection of points.
  *
  */

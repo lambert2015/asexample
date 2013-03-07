@@ -36,7 +36,7 @@ class SgslData
 	 */
 	public var shaderType:ShaderType;
 
-	public var profile:String;
+	public var profile:ShaderProfile;
 
 	private var _nodes:Array<AgalNode>;
 
@@ -52,7 +52,7 @@ class SgslData
 	 */
 	private var _regsMap:StringMap<RegNode>;
 
-	public function new(profile:String, shaderType:ShaderType)
+	public function new(profile:ShaderProfile, shaderType:ShaderType)
 	{
 		this.profile = profile;
 		this.shaderType = shaderType;

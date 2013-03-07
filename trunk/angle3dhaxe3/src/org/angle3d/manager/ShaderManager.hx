@@ -26,7 +26,7 @@ class ShaderManager
 		return _instance;
 	}
 
-	public static function init(context3D:Context3D, profile:String):Void
+	public static function init(context3D:Context3D, profile:ShaderProfile):Void
 	{
 		_instance = new ShaderManager(context3D, profile);
 	}
@@ -36,7 +36,7 @@ class ShaderManager
 	private var mShaderRegisterCount:StringMap<Int>;
 
 	private var mContext3D:Context3D;
-	private var mProfile:String;
+	private var mProfile:ShaderProfile;
 
 	private var mSgslParser:SgslParser;
 	private var mShaderCompiler:SgslCompiler;
@@ -44,7 +44,7 @@ class ShaderManager
 
 	private var mCustomFunctionMap:StringMap<FunctionNode>;
 
-	public function new(context3D:Context3D, profile:String)
+	public function new(context3D:Context3D, profile:ShaderProfile)
 	{
 		mContext3D = context3D;
 		mProfile = profile;
@@ -100,16 +100,16 @@ class ShaderManager
 		var defines:Array<String> = new Array<String>();
 		if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 		{
-			defines.push(ShaderProfile.BASELINE);
-			defines.push(ShaderProfile.BASELINE_EXTENDED);
+			defines.push(ShaderProfile.BASELINE.getName());
+			defines.push(ShaderProfile.BASELINE_EXTENDED.getName());
 		}
 		else if (mProfile == ShaderProfile.BASELINE)
 		{
-			defines.push(ShaderProfile.BASELINE);
+			defines.push(ShaderProfile.BASELINE.getName());
 		}
 		else if (mProfile == ShaderProfile.BASELINE_CONSTRAINED)
 		{
-			defines.push(ShaderProfile.BASELINE_CONSTRAINED);
+			defines.push(ShaderProfile.BASELINE_CONSTRAINED.getName());
 		}
 
 		var functionList:Array<FunctionNode> = mSgslParser.execFunctions(source, defines);

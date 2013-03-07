@@ -1,20 +1,21 @@
-package org.angle3d.input
+package org.angle3d.input;
+
+import org.angle3d.input.controls.InputListener;
+import org.angle3d.input.controls.Trigger;
+
+class InputMapping
 {
-	import org.angle3d.input.controls.InputListener;
+	public var name:String;
+	public var triggers:Array<Int>;
+	public var listeners:Array<InputListener>;
 
-	public class InputMapping
+	public function new(name:String)
 	{
-		public var name:String;
-		public var triggers:Array;
-		public var listeners:Array;
+		this.name = name;
 
-		public function InputMapping(name:String)
-		{
-			this.name = name;
-
-			this.triggers = new Array();
-			this.listeners = new Array();
-		}
+		this.triggers = [];
+		this.listeners = [];
 	}
 }
+
 

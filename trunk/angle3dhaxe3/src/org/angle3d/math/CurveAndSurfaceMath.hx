@@ -94,7 +94,7 @@ class CurveAndSurfaceMath
 
 	/**
 	 * This method prepares the knots to be used. If the knots represent non-uniform B-splines (first and last knot values are being
-	 * repeated) it leads to NaN results during calculations. This method adds a small Float to each of such knots to avoid NaN's.
+	 * repeated) it leads to NaN results during calculations. This method adds a small Float to each of such knots to aVoid NaN's.
 	 * @param knots
 	 *            the knots to be prepared to use
 	 * @param basisFunctionDegree

@@ -14,22 +14,22 @@ class RenderContext
 	/**
 	 * If back-face culling is enabled.
 	 */
-	public var cullMode:String;
+	public var cullMode:Context3DTriangleFace;
 
 	/**
 	 * If Depth testing is enabled.
 	 */
 	public var depthTest:Bool;
 
-	public var compareMode:String;
+	public var compareMode:Context3DCompareMode;
 
 	public var colorWrite:Bool;
 
 	public var clipRectEnabled:Bool;
 
-	public var blendMode:Int;
+	public var blendMode:BlendMode;
 
-	public function RenderContext()
+	public function new()
 	{
 		reset();
 	}

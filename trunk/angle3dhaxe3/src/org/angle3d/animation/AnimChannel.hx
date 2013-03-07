@@ -3,7 +3,6 @@ package org.angle3d.animation;
 import org.angle3d.cinematic.LoopMode;
 import org.angle3d.math.FastMath;
 import org.angle3d.utils.Assert;
-import org.angle3d.ds.BitVector;
 import org.angle3d.utils.TempVars;
 
 /**
@@ -20,9 +19,9 @@ class AnimChannel
 {
 	private static var DEFAULT_BLEND_TIME:Float = 0.15;
 
-	private static function clampWrapTime(t:Float, max:Float, loopMode:int):Float
+	private static function clampWrapTime(t:Float, max:Float, loopMode:Int):Float
 	{
-		if (max == Number.POSITIVE_INFINITY)
+		if (max == Math.POSITIVE_INFINITY)
 			return t;
 
 		if (t < 0)
@@ -62,13 +61,13 @@ class AnimChannel
 	private var timeBlendFrom:Float;
 	private var speedBlendFrom:Float;
 
-	private var loopMode:int;
-	private var loopModeBlendFrom:int;
+	private var loopMode:Int;
+	private var loopModeBlendFrom:Int;
 
 	private var blendAmount:Float;
 	private var blendRate:Float;
 
-	public function AnimChannel(control:AnimControl)
+	public function new(control:AnimControl)
 	{
 		blendAmount = 1.0;
 		blendRate = 0.0;
@@ -92,11 +91,11 @@ class AnimChannel
 	 * determines what will happen to the animation once it finishes
 	 * playing.
 	 *
-	 * For more information, see the LoopMode enum public class.
+	 * For more information, see the LoopMode enum class.
 	 * @see LoopMode
 	 * @see AnimChannel#setLoopMode(com.jme3.animation.LoopMode)
 	 */
-	public function getLoopMode():int
+	public function getLoopMode():Int
 	{
 		return loopMode;
 	}
@@ -106,10 +105,10 @@ class AnimChannel
 	 * determines what will happen to the animation once it finishes
 	 * playing.
 	 *
-	 * For more information, see the LoopMode enum public class.
+	 * For more information, see the LoopMode enum class.
 	 * @see LoopMode
 	 */
-	public function setLoopMode(mode:int):Void
+	public function setLoopMode(mode:Int):Void
 	{
 		this.loopMode = mode;
 	}
@@ -154,7 +153,7 @@ class AnimChannel
 	 */
 	public function setTime(time:Float):Void
 	{
-		this.time = FastMath.fclamp(time, 0, getAnimMaxTime());
+		this.time = FastMath.clamp(time, 0, getAnimMaxTime());
 	}
 
 	/**
@@ -180,15 +179,14 @@ class AnimChannel
 	 * with the old one. If zero, then no blending will occur and the new
 	 * animation will be applied instantly.
 	 */
-	public function playAnimation(name:String, loopMode:int, speed:Float = 1.0, blendTime:Float = 0.0):Void
+	public function playAnimation(name:String, loopMode:Int, speed:Float = 1.0, blendTime:Float = 0.0):Void
 	{
 		var newAnimation:Animation = control.getAnimation(name);
 
-		CF::DEBUG
-		{
-			Assert.assert(blendTime >= 0.0, "blendTime cannot be less than zero");
-			Assert.assert(newAnimation != null, "Cannot find animation named: '" + name + "'");
-		}
+		#if debug
+		Assert.assert(blendTime >= 0.0, "blendTime cannot be less than zero");
+		Assert.assert(newAnimation != null, "Cannot find animation named: '" + name + "'");
+		#end
 
 		if (animation != null && blendTime > 0)
 		{

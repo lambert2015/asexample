@@ -5,7 +5,7 @@ import org.angle3d.renderer.ViewPort;
 import org.angle3d.scene.Spatial;
 
 /**
- * An public interface for scene-graph controls.
+ * An interface for scene-graph controls.
  * <p>
  * <code>Control</code>s are used to specify certain update and render logic
  * for a {@link Spatial}.

@@ -29,7 +29,7 @@ import org.angle3d.utils.TempVars;
  * <p>Another purpose of the camera class is to do frustum culling operations,
  * defined by six planes which define a 3D frustum shape, it is possible to
  * test if an object bounded by a mathematically defined volume is inside
- * the camera frustum, and thus to avoid rendering objects that are outside
+ * the camera frustum, and thus to aVoid rendering objects that are outside
  * the frustum
  * </p>
  *
