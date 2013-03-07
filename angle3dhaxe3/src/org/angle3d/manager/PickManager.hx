@@ -1,7 +1,7 @@
 package org.angle3d.manager
 {
 
-	public class PickManager
+	class PickManager
 	{
 		public function PickManager()
 		{

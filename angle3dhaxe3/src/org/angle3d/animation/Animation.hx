@@ -3,7 +3,7 @@ package org.angle3d.animation;
 import org.angle3d.utils.TempVars;
 import haxe.ds.Vector;
 /**
- * The animation public class updates the animation target with the tracks of a given type.
+ * The animation class updates the animation target with the tracks of a given type.
  *
  */
 class Animation
@@ -21,17 +21,17 @@ class Animation
 	/**
 	 * The tracks of the animation.
 	 */
-	public var tracks:Vector<Track>;
+	public var tracks:Array<Track>;
 
 	public function new(name:String, time:Float)
 	{
 		this.name = name;
 		this.time = time;
 
-		tracks = new Vector<Track>();
+		tracks = new Array<Track>();
 	}
 
-	public function setTracks(tracks:Vector<Track>):Void
+	public function setTracks(tracks:Array<Track>):Void
 	{
 		this.tracks = tracks;
 	}
@@ -56,8 +56,8 @@ class Animation
 		if (tracks == null)
 			return;
 
-		var length:int = tracks.length;
-		for (var i:int = 0; i < length; i++)
+		var length:Int = tracks.length;
+		for (i in 0...length)
 		{
 			tracks[i].setCurrentTime(time, blendWeight, control, channel, vars);
 		}
@@ -70,9 +70,10 @@ class Animation
 	public function clone(newName:String):Animation
 	{
 		var result:Animation = new Animation(newName, this.time);
-		result.tracks = new Vector<Track>();
-		var length:int = tracks.length;
-		for (var i:int = 0; i < length; i++)
+		
+		var length:Int = tracks.length;
+		result.tracks = new Array<Track>();
+		for (i in 0...length)
 		{
 			result.tracks[i] = tracks[i].clone();
 		}

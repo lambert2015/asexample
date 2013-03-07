@@ -51,7 +51,7 @@ class SubMesh implements ISubMesh
 	//不合并时使用
 	private var _vertexBuffer3DMap:StringMap<VertexBuffer3D>;
 
-	public function SubMesh()
+	public function new()
 	{
 		mBound = new BoundingBox();
 

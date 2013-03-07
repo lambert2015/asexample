@@ -28,7 +28,7 @@ using org.angle3d.utils.ArrayUtil;
 
 
 /**
- * <code>RenderManager</code> is a high-level rendering public interface that is
+ * <code>RenderManager</code> is a high-level rendering interface that is
  * above the Renderer implementation. RenderManager takes care
  * of rendering the scene graphs attached to each viewport and
  * handling SceneProcessors.
@@ -62,11 +62,11 @@ class RenderManager
 	private var mForcedMaterial:Material;
 
 	/**
-	 * Create a high-level rendering public interface over the
-	 * low-level rendering public interface.
+	 * Create a high-level rendering interface over the
+	 * low-level rendering interface.
 	 * @param renderer
 	 */
-	public function RenderManager(renderer:IRenderer)
+	public function new(renderer:IRenderer)
 	{
 		_renderer = renderer;
 		_init();

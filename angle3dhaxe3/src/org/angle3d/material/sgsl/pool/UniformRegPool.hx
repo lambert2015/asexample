@@ -21,7 +21,7 @@ class UniformRegPool extends RegPool
 
 	private var shaderType:ShaderType;
 
-	public function new(profile:String, shaderType:ShaderType)
+	public function new(profile:ShaderProfile, shaderType:ShaderType)
 	{
 		this.shaderType = shaderType;
 
@@ -47,7 +47,7 @@ class UniformRegPool extends RegPool
 		}
 		else
 		{
-			if (mProfile == "baselineExtended")
+			if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 			{
 				return 64;
 			}

@@ -15,7 +15,7 @@ package examples.material
 	import org.angle3d.scene.shape.WireframeUtil;
 	import org.angle3d.utils.Stats;
 
-	public class MaterialWireframeTest extends SimpleApplication
+	class MaterialWireframeTest extends SimpleApplication
 	{
 		private var geometry : Geometry;
 
@@ -35,7 +35,7 @@ package examples.material
 			this.addChild(new Stats());
 		}
 
-		override protected function initialize(width : int, height : int) : void
+		override private function initialize(width : int, height : int) : Void
 		{
 			super.initialize(width, height);
 
@@ -75,7 +75,7 @@ package examples.material
 			cam.location.setTo(0, 0, 300);
 		}
 
-		override public function simpleUpdate(tpf : Number) : void
+		override public function simpleUpdate(tpf : Number) : Void
 		{
 			angle += 0.03;
 			angle %= FastMath.TWO_PI;

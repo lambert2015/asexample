@@ -13,7 +13,7 @@ class TempRegPool extends RegPool
 {
 	private var _pool:Vector<Int>;
 
-	public function new(profile:String)
+	public function new(profile:ShaderProfile)
 	{
 		super(profile);
 

@@ -1,23 +1,22 @@
-package org.angle3d.input.controls
+package org.angle3d.input.controls;
+
+
+/**
+ * A trigger represents a physical input, such as a keyboard key, a mouse
+ * button, or joystick axis.
+ */
+interface Trigger
 {
+	/**
+	 * @return A user friendly name for the trigger.
+	 */
+	function getName():String;
 
 	/**
-	 * A trigger represents a physical input, such as a keyboard key, a mouse
-	 * button, or joystick axis.
+	 * Returns the hash code for the trigger.
+	 *
+	 * @return the hash code for the trigger.
 	 */
-	public interface Trigger
-	{
-		/**
-		 * @return A user friendly name for the trigger.
-		 */
-		function getName():String;
-
-		/**
-		 * Returns the hash code for the trigger.
-		 *
-		 * @return the hash code for the trigger.
-		 */
-		function triggerHashCode():int;
-	}
+	function triggerHashCode():Int;
 }
 

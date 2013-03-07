@@ -6,6 +6,7 @@ import haxe.ds.Vector;
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.renderer.IRenderer;
 
+
 /**
  * 一个Shader是一个Technique中的一个实现，Technique根据不同的条件生成不同的Shader
  */

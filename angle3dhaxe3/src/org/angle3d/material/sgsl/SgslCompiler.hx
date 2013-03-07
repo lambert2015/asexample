@@ -61,9 +61,9 @@ class SgslCompiler
 
 	private var _opCodeManager:OpCodeManager;
 
-	public var profile:String;
+	public var profile:ShaderProfile;
 
-	public function new(profile:String, sgslParser:SgslParser, opCodeManager:OpCodeManager)
+	public function new(profile:ShaderProfile, sgslParser:SgslParser, opCodeManager:OpCodeManager)
 	{
 		this.profile = profile;
 

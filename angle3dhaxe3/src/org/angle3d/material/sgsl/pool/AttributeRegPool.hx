@@ -2,6 +2,7 @@ package org.angle3d.material.sgsl.pool;
 
 
 import org.angle3d.material.sgsl.node.reg.RegNode;
+import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.utils.Assert;
 import haxe.ds.Vector;
 /**
@@ -12,7 +13,7 @@ class AttributeRegPool extends RegPool
 {
 	private var _pool:Vector<Int>;
 
-	public function new(profile:String)
+	public function new(profile:ShaderProfile)
 	{
 		super(profile);
 
