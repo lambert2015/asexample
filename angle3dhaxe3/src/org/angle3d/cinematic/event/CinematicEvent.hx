@@ -6,7 +6,7 @@ import org.angle3d.cinematic.PlayState;
 import org.angle3d.cinematic.Cinematic;
 
 /**
- * ...
+ * andy
  * @author andy
  */
 

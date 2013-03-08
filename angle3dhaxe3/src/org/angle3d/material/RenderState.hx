@@ -1,8 +1,5 @@
 package org.angle3d.material;
 
-import flash.display3D.Context3DCompareMode;
-import flash.display3D.Context3DTriangleFace;
-
 /**
  * <code>RenderState</code> specifies material rendering properties that cannot
  * be controlled by a shader on a {@link Material}. The properties
@@ -47,7 +44,7 @@ class RenderState
 		DEFAULT = new RenderState();
 
 		NULL = new RenderState();
-		NULL.cullMode = Context3DTriangleFace.NONE;
+		NULL.cullMode = CullMode.NONE;
 		NULL.depthTest = false;
 
 		ADDITIONAL = new RenderState();
@@ -57,12 +54,12 @@ class RenderState
 		ADDITIONAL.applyBlendMode = false;
 	}
 
-	public var cullMode:Context3DTriangleFace;
+	public var cullMode:CullMode;
 	public var applyCullMode:Bool;
 
 	public var depthTest:Bool;
 	public var applyDepthTest:Bool;
-	public var compareMode:Context3DCompareMode;
+	public var compareMode:TestFunction;
 
 	public var colorWrite:Bool;
 	public var applyColorWrite:Bool;
@@ -72,10 +69,10 @@ class RenderState
 
 	public function new()
 	{
-		cullMode = Context3DTriangleFace.FRONT;
+		cullMode = CullMode.FRONT;
 		applyCullMode = true;
 
-		compareMode = Context3DCompareMode.LESS_EQUAL;
+		compareMode = TestFunction.LESS_EQUAL;
 
 		depthTest = true;
 		applyDepthTest = true;
@@ -114,7 +111,7 @@ class RenderState
 	 *
 	 * @param cullMode the face culling mode.
 	 */
-	public function setCullMode(cullMode:Context3DTriangleFace):Void
+	public function setCullMode(cullMode:CullMode):Void
 	{
 		applyCullMode = true;
 		this.cullMode = cullMode;

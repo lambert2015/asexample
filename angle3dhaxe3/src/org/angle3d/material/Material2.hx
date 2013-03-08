@@ -34,7 +34,7 @@ package org.angle3d.material
 
 		private var nextTexUnit:Int = 0;
 
-		public function Material2(def:MaterialDef)
+		public function new(def:MaterialDef)
 		{
 			this.def = def;
 

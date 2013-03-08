@@ -4,20 +4,20 @@ import flash.display.Stage3D;
 import flash.display3D.Context3D;
 import flash.display3D.Context3DBlendFactor;
 import flash.display3D.Context3DClearMask;
-import flash.display3D.Context3DCompareMode;
 import flash.display3D.Context3DProgramType;
-import flash.display3D.Context3DTriangleFace;
 import flash.display3D.Program3D;
 import flash.geom.Rectangle;
 import haxe.ds.StringMap;
-import org.angle3d.material.shader.ShaderVariable;
-
+import haxe.ds.Vector;
 import org.angle3d.light.Light;
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.material.BlendMode;
+import org.angle3d.material.CullMode;
 import org.angle3d.material.RenderState;
 import org.angle3d.material.shader.AttributeVar;
 import org.angle3d.material.shader.Shader;
+import org.angle3d.material.shader.ShaderVariable;
+import org.angle3d.material.TestFunction;
 import org.angle3d.math.Color;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
@@ -25,7 +25,7 @@ import org.angle3d.texture.FrameBuffer;
 import org.angle3d.texture.TextureMapBase;
 import org.angle3d.utils.Assert;
 
-import haxe.ds.Vector;
+
 
 
 class DefaultRenderer implements IRenderer
@@ -268,14 +268,14 @@ class DefaultRenderer implements IRenderer
 		_context3D.setProgramConstantsFromVector(shaderType, firstRegister, data.toData(), numRegisters);
 	}
 
-	public function setDepthTest(depthMask:Bool, passCompareMode:Context3DCompareMode):Void
+	public function setDepthTest(depthMask:Bool, passCompareMode:TestFunction):Void
 	{
 		_context3D.setDepthTest(depthMask, passCompareMode);
 	}
 
-	public function setCulling(triangleFaceToCull:Context3DTriangleFace):Void
+	public function setCulling(cullMode:CullMode):Void
 	{
-		_context3D.setCulling(triangleFaceToCull);
+		_context3D.setCulling(cullMode);
 	}
 
 	public function cleanup():Void

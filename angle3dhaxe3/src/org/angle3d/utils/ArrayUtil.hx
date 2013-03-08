@@ -1,7 +1,7 @@
 package org.angle3d.utils;
 
 /**
- * ...
+ * andy
  * @author 
  */
 class ArrayUtil

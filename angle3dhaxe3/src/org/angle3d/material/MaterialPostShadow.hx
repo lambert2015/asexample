@@ -1,30 +1,29 @@
-package org.angle3d.material
+package org.angle3d.material;
+
+import org.angle3d.material.technique.TechniquePostShadow;
+import org.angle3d.math.Matrix4f;
+import org.angle3d.texture.TextureMap;
+import org.angle3d.texture.TextureMapBase;
+
+class MaterialPostShadow extends Material
 {
-	import org.angle3d.material.technique.TechniquePostShadow;
-	import org.angle3d.math.Matrix4f;
-	import org.angle3d.texture.TextureMap;
-	import org.angle3d.texture.TextureMapBase;
+	private var _postShadowTechnique:TechniquePostShadow;
 
-	class MaterialPostShadow extends Material
+	public function new()
 	{
-		private var _postShadowTechnique:TechniquePostShadow;
+		super();
 
-		public function MaterialPostShadow()
-		{
-			super();
+		_postShadowTechnique = new TechniquePostShadow();
+		addTechnique(_postShadowTechnique);
+	}
 
-			_postShadowTechnique = new TechniquePostShadow();
-			addTechnique(_postShadowTechnique);
-		}
+	public function setTexture(texture:TextureMap):Void
+	{
+		_postShadowTechnique.setTexture(texture);
+	}
 
-		public function setTexture(texture:TextureMap):Void
-		{
-			_postShadowTechnique.setTexture(texture);
-		}
-
-		public function setLightViewProjection(matrix:Matrix4f):Void
-		{
-			_postShadowTechnique.setLightViewProjection(matrix);
-		}
+	public function setLightViewProjection(matrix:Matrix4f):Void
+	{
+		_postShadowTechnique.setLightViewProjection(matrix);
 	}
 }

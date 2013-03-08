@@ -3,7 +3,7 @@ package org.angle3d.cinematic;
 import flash.utils.Dictionary;
 
 /**
- * ...
+ * andy
  * @author andy
  */
 //TODO 换一种实现

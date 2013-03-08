@@ -3,7 +3,7 @@ package tests;
 import haxe.unit.TestCase;
 using org.angle3d.utils.ArrayUtil;
 /**
- * ...
+ * andy
  * @author 
  */
 class ArrayUtilTest extends TestCase

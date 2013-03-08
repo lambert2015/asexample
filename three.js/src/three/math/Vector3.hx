@@ -128,13 +128,13 @@ class Vector3
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}
 	
-	public var length(getLength, never):Float;
-	public function getLength():Float
+	public var length(get, never):Float;
+	private function get_length():Float
 	{
 		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
 	}
 	
-	public function setLength(value:Float):Vector3
+	private function setLength(value:Float):Vector3
 	{
 		return this.normalize().multiplyScalar(value);
 	}

@@ -1,9 +1,6 @@
 package org.angle3d.scene.mesh;
 
-import flash.display3D.VertexBuffer3D;
-import flash.media.Video;
-import flash.utils.Dictionary;
-
+import haxe.ds.Vector;
 
 /**
  * 变形动画
@@ -12,45 +9,45 @@ class MorphSubMesh extends SubMesh
 {
 	private var mTotalFrame:Int;
 
-	private var mVerticesList:Vector<Vector<Float>>;
+	private var mVerticesList:Array<Vector<Float>>;
 
-	private var mNormalList:Vector<Vector<Float>>;
+	private var mNormalList:Array<Vector<Float>>;
 
 	public function new()
 	{
 		super();
 
 		_merge = false;
-		_vertexBuffer3DMap = new Dictionary();
 
-		mVerticesList = new Vector<Vector<Float>>();
-		mNormalList = new Vector<Vector<Float>>();
+		mVerticesList = new Array<Vector<Float>>();
+		mNormalList = new Array<Vector<Float>>();
 	}
 
-	override public function set merge(value:Bool):Void
+	override private function set_merge(value:Bool):Bool
 	{
 		//不可用合并模式
+		return value;
 	}
 
 	override public function validate():Void
 	{
-		mVerticesList.fixed = true;
-
-		mNormalList.length = mTotalFrame;
-		mNormalList.fixed = true;
+		//mNormalList.length = mTotalFrame;
 
 		updateBound();
 	}
 
-	public function set totalFrame(value:Int):Void
-	{
-		mTotalFrame = value;
-	}
-
-	public function get totalFrame():Int
+	public var totalFrame(get, set):Int;
+	private function get_totalFrame():Int
 	{
 		return mTotalFrame;
 	}
+	private function set_totalFrame(value:Int):Int
+	{
+		mTotalFrame = value;
+		return mTotalFrame;
+	}
+
+	
 
 	public function getNormals(frame:Int):Vector<Float>
 	{

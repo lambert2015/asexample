@@ -30,7 +30,7 @@ class Filter
 	private var processor:FilterPostProcessor;
 
 
-	public function Filter(name:String)
+	public function new(name:String)
 	{
 		this.name = name;
 	}

@@ -23,7 +23,7 @@ import org.angle3d.texture.TextureMapBase;
  */
 class Material
 {
-	private var mCullMode:Context3DTriangleFace;
+	private var mCullMode:CullMode;
 
 	private var mEmissiveColor:Color;
 	private var mAmbientColor:Color;
@@ -45,13 +45,13 @@ class Material
 		mDiffuseColor = new Color(1, 1, 1, 1);
 		mSpecularColor = new Color(1, 1, 1, 1);
 
-		mCullMode = Context3DTriangleFace.FRONT;
+		mCullMode = CullMode.FRONT;
 
 		mAlpha = 1.0;
 	}
 
 	public var skinningMatrices(null, set):Vector<Float>;
-	public function set_skinningMatrices(data:Vector<Float>):Vector<Float>
+	private function set_skinningMatrices(data:Vector<Float>):Vector<Float>
 	{
 		return data;
 	}
@@ -62,14 +62,14 @@ class Material
 		return value;
 	}
 
-	public var cullMode(get, set):Context3DTriangleFace;
+	public var cullMode(get, set):CullMode;
 	
-	private function get_cullMode():Context3DTriangleFace
+	private function get_cullMode():CullMode
 	{
 		return mCullMode;
 	}
 	
-	private function set_cullMode(mode:Context3DTriangleFace):Context3DTriangleFace
+	private function set_cullMode(mode:CullMode):CullMode
 	{
 		if (mCullMode == mode)
 			return mCullMode;
@@ -89,14 +89,14 @@ class Material
 	
 	private function get_doubleSide():Bool
 	{
-		return mCullMode == Context3DTriangleFace.NONE;
+		return mCullMode == CullMode.NONE;
 	}
 	
 	private function set_doubleSide(value:Bool):Bool
 	{
 		if (value)
 		{
-			mCullMode = Context3DTriangleFace.NONE;
+			mCullMode = CullMode.NONE;
 		}
 
 		var size:Int = _techniques.length;
