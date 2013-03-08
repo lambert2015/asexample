@@ -1,5 +1,5 @@
 package three.textures;
-import js.Dom;
+import js.html.ImageElement;
 import three.materials.UVMapping;
 import three.math.Vector2;
 import three.ThreeGlobal;
@@ -13,7 +13,7 @@ class Texture
 	public static var TextureCount:Int = 0;
 	
 	public var id:Int;
-	public var image:Image;
+	public var image:ImageElement;
 	
 	public var mapping:UVMapping;
 	
@@ -41,7 +41,7 @@ class Texture
 	
 	public var __oldAnisotropy:Int;
 	
-	public function new(image:Image, mapping:UVMapping = null) 
+	public function new(image:ImageElement, mapping:UVMapping = null) 
 	{
 		this.id = TextureCount++;
 

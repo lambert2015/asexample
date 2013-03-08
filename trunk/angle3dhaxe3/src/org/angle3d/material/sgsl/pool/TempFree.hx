@@ -1,7 +1,7 @@
 package org.angle3d.material.sgsl.pool;
 
 /**
- * ...
+ * andy
  * @author andy
  */
 class TempFree

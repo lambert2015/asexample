@@ -1,9 +1,9 @@
 package org.angle3d.renderer;
 
-import flash.display3D.Context3DCompareMode;
-import flash.display3D.Context3DTriangleFace;
-
 import org.angle3d.material.BlendMode;
+import org.angle3d.material.CullMode;
+import org.angle3d.material.TestFunction;
+
 
 /**
  * Represents the current state of the graphics library. This class is used
@@ -14,14 +14,14 @@ class RenderContext
 	/**
 	 * If back-face culling is enabled.
 	 */
-	public var cullMode:Context3DTriangleFace;
+	public var cullMode:CullMode;
 
 	/**
 	 * If Depth testing is enabled.
 	 */
 	public var depthTest:Bool;
 
-	public var compareMode:Context3DCompareMode;
+	public var compareMode:TestFunction;
 
 	public var colorWrite:Bool;
 
@@ -36,9 +36,9 @@ class RenderContext
 
 	public function reset():Void
 	{
-		cullMode = Context3DTriangleFace.FRONT;
+		cullMode = CullMode.FRONT;
 		depthTest = false;
-		compareMode = Context3DCompareMode.LESS_EQUAL;
+		compareMode = TestFunction.LESS_EQUAL;
 		colorWrite = false;
 		clipRectEnabled = false;
 		blendMode = BlendMode.Off;

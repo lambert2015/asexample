@@ -52,8 +52,17 @@ import org.angle3d.animation.SkeletonAnimControl;
 import org.angle3d.animation.SkeletonControl;
 import org.angle3d.animation.SpatialTrack;
 import org.angle3d.animation.Track;
+import org.angle3d.app.Application;
+import org.angle3d.app.state.AppStateManager;
+import org.angle3d.material.Material;
+import org.angle3d.material.RenderState;
+import org.angle3d.material.technique.Technique;
+import org.angle3d.material.MaterialSkyBox;
+import org.angle3d.material.MaterialTexture;
+import org.angle3d.material.MaterialColorFill;
+import org.angle3d.scene.mesh.MorphMesh;
 /**
- * ...
+ * andy
  * @author 
  */
 
@@ -66,6 +75,9 @@ class Main
 		trace(new Vector3f(4, 5,6));
 		trace(new Color(1, 0.5, 0.3, 1));
 		trace(new Vector4f(1, 23.3, 4, 4));
+		
+		var technique = new Technique();
+		trace(technique.name);
 		
 		//var context3d:Context3D = new Context3D();
 		//context3d.setSamplerStateAt(0, Context3DWrapMode.CLAMP, Context3DTextureFilter.LINEAR, Context3DMipFilter.MIPLINEAR);

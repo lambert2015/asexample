@@ -9,7 +9,7 @@ import flash.display3D.textures.TextureBase;
 import org.angle3d.utils.Assert;
 import haxe.ds.Vector;
 /**
- * ...
+ * andy
  * @author andy
  */
 //TODO FIXME 为何CubeTexture必须要生成mipmap,否则报错

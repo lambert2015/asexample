@@ -1,8 +1,6 @@
 package org.angle3d.scene.mesh;
 
-import flash.display3D.VertexBuffer3D;
-import flash.media.Video;
-import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 
 /**
@@ -15,7 +13,7 @@ class MorphMesh extends Mesh
 	private var mNextFrame:Int;
 	private var mTotalFrame:Int;
 
-	private var mAnimationMap:Dictionary;
+	private var mAnimationMap:StringMap<MorphData>;
 
 	private var mUseNormal:Bool;
 
@@ -25,40 +23,44 @@ class MorphMesh extends Mesh
 
 		mType = MeshType.KEYFRAME;
 
-		mAnimationMap = new Dictionary();
+		mAnimationMap = new StringMap<MorphData>();
 	}
 
 	/**
 	 * 不需要使用normal时设置为false，提高速度
 	 */
-	public function get useNormal():Bool
+	public var useNormal(get, set):Bool;
+	private function get_useNormal():Bool
 	{
 		return mUseNormal;
 	}
 
-	public function set useNormal(value:Bool):Void
+	private function set_useNormal(value:Bool):Bool
 	{
 		mUseNormal = value;
+		return mUseNormal;
 	}
 
-	public function set totalFrame(value:Int):Void
+	public var totalFrame(get, set):Int;
+	private function set_totalFrame(value:Int):Int
 	{
 		mTotalFrame = value;
+		return mTotalFrame;
 	}
 
-	public function get totalFrame():Int
+	private function get_totalFrame():Int
 	{
 		return mTotalFrame;
 	}
 
 	public function addAnimation(name:String, start:Int, end:Int):Void
 	{
-		mAnimationMap[name] = new MorphData(name, start, end);
+		mAnimationMap.set(name,new MorphData(name, start, end));
 	}
 
 	public function getAnimation(name:String):MorphData
 	{
-		return mAnimationMap[name];
+		return mAnimationMap.get(name);
 	}
 
 	public function setFrame(curFrame:Int, nextFrame:Int):Void
@@ -69,9 +71,9 @@ class MorphMesh extends Mesh
 		mCurrentFrame = curFrame;
 		mNextFrame = nextFrame;
 
-		for (var i:Int = 0, length:Int = mSubMeshList.length; i < length; i++)
+		for (i in 0...mSubMeshList.length)
 		{
-			var morphSubMesh:MorphSubMesh = mSubMeshList[i] as MorphSubMesh;
+			var morphSubMesh:MorphSubMesh = cast mSubMeshList[i];
 			morphSubMesh.setFrame(curFrame, nextFrame, mUseNormal);
 		}
 	}

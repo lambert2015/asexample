@@ -1,26 +1,26 @@
-package org.angle3d.material
+package org.angle3d.material;
+
+import org.angle3d.material.technique.TechniqueSkyBox;
+import org.angle3d.texture.CubeTextureMap;
+
+/**
+ * andy
+ * @author andy
+ */
+
+class MaterialSkyBox extends Material
 {
-	import org.angle3d.material.technique.TechniqueSkyBox;
-	import org.angle3d.texture.CubeTextureMap;
+	private var _technique:TechniqueSkyBox;
 
-	/**
-	 * ...
-	 * @author andy
-	 */
-
-	class MaterialSkyBox extends Material
+	public function new(cubeTexture:CubeTextureMap)
 	{
-		private var _technique:TechniqueSkyBox;
+		super();
 
-		public function MaterialSkyBox(cubeTexture:CubeTextureMap)
-		{
-			super();
+		_technique = new TechniqueSkyBox(cubeTexture);
 
-			_technique = new TechniqueSkyBox(cubeTexture);
-
-			addTechnique(_technique);
-		}
-
+		addTechnique(_technique);
 	}
+
 }
+
 

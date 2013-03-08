@@ -1,34 +1,33 @@
-package org.angle3d.material
+package org.angle3d.material;
+
+import org.angle3d.material.technique.TechniqueNormalColor;
+
+
+/**
+ * 顶点法线的Material
+ * @author andy
+ */
+class MaterialNormalColor extends Material
 {
-	import org.angle3d.material.technique.TechniqueNormalColor;
+	private var _technique:TechniqueNormalColor;
 
-
-	/**
-	 * 顶点法线的Material
-	 * @author andy
-	 */
-	class MaterialNormalColor extends Material
+	public function new()
 	{
-		private var _technique:TechniqueNormalColor;
+		super();
 
-		public function MaterialNormalColor()
-		{
-			super();
+		_technique = new TechniqueNormalColor();
 
-			_technique = new TechniqueNormalColor();
+		addTechnique(_technique);
+	}
 
-			addTechnique(_technique);
-		}
+	override public function set influence(value:Float):Void
+	{
+		_technique.influence = value;
+	}
 
-		override public function set influence(value:Float):Void
-		{
-			_technique.influence = value;
-		}
-
-		public function get technique():TechniqueNormalColor
-		{
-			return _technique;
-		}
+	public function get technique():TechniqueNormalColor
+	{
+		return _technique;
 	}
 }
 

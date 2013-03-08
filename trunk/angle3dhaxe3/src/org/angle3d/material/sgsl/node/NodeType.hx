@@ -1,7 +1,7 @@
 package org.angle3d.material.sgsl.node; 
 
 /**
- * ...
+ * andy
  * @author 
  */
 enum NodeType 

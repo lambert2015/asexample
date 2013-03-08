@@ -4,7 +4,7 @@ import haxe.unit.TestCase;
 import org.angle3d.math.Vector2f;
 
 /**
- * ...
+ * andy
  * @author 
  */
 class TestVector2 extends TestCase

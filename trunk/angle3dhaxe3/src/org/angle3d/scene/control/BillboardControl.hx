@@ -12,7 +12,7 @@ package org.angle3d.scene.control
 	import org.angle3d.scene.Spatial;
 
 	/**
-	 * ...
+	 * andy
 	 * @author andy
 	 */
 

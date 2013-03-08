@@ -1,19 +1,17 @@
 package org.angle3d.renderer;
 
-import flash.display3D.Context3DCompareMode;
-import flash.display3D.Context3DProgramType;
-import flash.display3D.Context3DTriangleFace;
-import haxe.ds.Vector;
 import flash.display.Stage3D;
 import flash.display3D.Context3D;
-import org.angle3d.material.shader.ShaderType;
-
-import org.angle3d.light.Light;
+import haxe.ds.Vector;
+import org.angle3d.material.CullMode;
 import org.angle3d.material.RenderState;
 import org.angle3d.material.shader.Shader;
+import org.angle3d.material.shader.ShaderType;
+import org.angle3d.material.TestFunction;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.texture.FrameBuffer;
 import org.angle3d.texture.TextureMapBase;
+
 
 /**
  * The <code>Renderer</code> is responsible for taking rendering commands and
@@ -43,7 +41,7 @@ interface IRenderer
 	 * @param numRegisters 要设置的常量数量。指定 -1（默认值），设置足够的寄存器以使用所有可用数据。
 	 *
 	 */
-	function setShaderConstants(shaderType:Context3DProgramType, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void;
+	function setShaderConstants(shaderType:ShaderType, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void;
 
 	/**
 	 * Invalidates the current rendering state.
@@ -74,9 +72,9 @@ interface IRenderer
 	function applyRenderState(state:RenderState):Void;
 
 
-	function setDepthTest(depthMask:Bool, passCompareMode:Context3DCompareMode):Void;
+	function setDepthTest(depthMask:Bool, passCompareMode:TestFunction):Void;
 
-	function setCulling(triangleFaceToCull:Context3DTriangleFace):Void;
+	function setCulling(cullMode:CullMode):Void;
 
 	/**
 	 * Called when a new frame has been rendered.

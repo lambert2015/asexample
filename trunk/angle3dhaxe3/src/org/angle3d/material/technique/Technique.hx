@@ -30,7 +30,7 @@ class Technique
 
 	private var _keys:Array<String>;
 
-	public function Technique()
+	public function new()
 	{
 		_initInternal();
 

@@ -27,7 +27,7 @@ class Pass
 	private var depthTexture:Texture2D;
 	private var passMaterial:Material;
 
-	public function Pass()
+	public function new()
 	{
 
 	}

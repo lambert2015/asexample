@@ -26,7 +26,7 @@ import org.angle3d.utils.Assert;
 
 using org.angle3d.utils.ArrayUtil;
 /**
- * ...
+ * andy
  * @author andy
  */
 class SgslData

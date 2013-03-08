@@ -29,7 +29,7 @@ class FilterPostProcessor implements SceneProcessor
 	private var depthTexture:Texture2D;
 	private var filters:Vector<Filter> = new Vector<Filter>();
 
-	public function FilterPostProcessor()
+	public function new()
 	{
 		_initialized = false;
 	}

@@ -1,11 +1,11 @@
-package org.angle3d.material
-{
+package org.angle3d.material;
 
-	class MaterialPreShadow extends Material
+
+class MaterialPreShadow extends Material
+{
+	public function new()
 	{
-		public function MaterialPreShadow()
-		{
-			super();
-		}
+		super();
 	}
 }
+
