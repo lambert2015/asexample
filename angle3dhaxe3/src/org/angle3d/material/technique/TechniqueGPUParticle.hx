@@ -108,22 +108,22 @@ class TechniqueGPUParticle extends Technique
 		_offsetVector[15] = 1;
 	}
 
-	public function set useLocalColor(value:Bool):Void
+	private function set_useLocalColor(value:Bool):Void
 	{
 		_useLocalColor = value;
 	}
 
-	public function get useLocalColor():Bool
+	private function get_useLocalColor():Bool
 	{
 		return _useLocalColor;
 	}
 
-	public function set useLocalAcceleration(value:Bool):Void
+	private function set_useLocalAcceleration(value:Bool):Void
 	{
 		_useLocalAcceleration = value;
 	}
 
-	public function get useLocalAcceleration():Bool
+	private function get_useLocalAcceleration():Bool
 	{
 		return _useLocalAcceleration;
 	}
@@ -172,12 +172,12 @@ class TechniqueGPUParticle extends Technique
 		_useSpriteSheet = col > 1 || row > 1;
 	}
 
-	public function set curTime(value:Float):Void
+	private function set_curTime(value:Float):Void
 	{
 		_curTime.x = value;
 	}
 
-	public function get curTime():Float
+	private function get_curTime():Float
 	{
 		return _curTime.x;
 	}
@@ -216,12 +216,12 @@ class TechniqueGPUParticle extends Technique
 		_useAcceleration = _acceleration != null && !_acceleration.isZero();
 	}
 
-	public function get texture():TextureMapBase
+	private function get_texture():TextureMapBase
 	{
 		return _texture;
 	}
 
-	public function set texture(value:TextureMapBase):Void
+	private function set_texture(value:TextureMapBase):Void
 	{
 		_texture = value;
 	}

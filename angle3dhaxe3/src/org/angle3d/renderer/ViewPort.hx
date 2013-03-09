@@ -12,11 +12,11 @@ using org.angle3d.utils.ArrayUtil;
  * window or a {@link FrameBuffer} to which scenes will be rendered.
  * <p>
  * A viewport has a {@link #ViewPort(java.lang.String, org.angle3d.renderer.Camera) camera}
- * which is used to render a set of {@link #attachScene(org.angle3d.scene.Spatial) scenes}.
- * A view port has a location on the screen as set by the
+ * which is used to render a set_of {@link #attachScene(org.angle3d.scene.Spatial) scenes}.
+ * A view port has a location on the screen as set_by the
  * {@link Camera#setViewPort(float, float, float, float) } method.
  * By default, a view port does not clear the framebuffer, but it can be
- * set to {@link #setClearFlags(Bool, Bool, Bool) clear the framebuffer}.
+ * set_to {@link #setClearFlags(Bool, Bool, Bool) clear the framebuffer}.
  * The background color which the color buffer is cleared to can be specified
  * via the {@link #setBackgroundColor(org.angle3d.math.ColorRGBA)} method.
  * <p>
@@ -84,7 +84,7 @@ class ViewPort
 	}
 
 	/**
-	 * Get the list of {@link SceneProcessor scene processors} that were
+	 * get_the list of {@link SceneProcessor scene processors} that were
 	 * added to this <code>ViewPort</code>
 	 *
 	 * @return the list of processors attached to this ViewPort
@@ -204,7 +204,7 @@ class ViewPort
 	}
 
 	/**
-	 * Set the clear flags (color, depth, stencil) in one call.
+	 * set_the clear flags (color, depth, stencil) in one call.
 	 *
 	 * @param color If color buffer clearing should be enabled.
 	 * @param depth If depth buffer clearing should be enabled.
@@ -236,7 +236,7 @@ class ViewPort
 		return _frameBuffer;
 	}
 
-	public function set_frameBuffer(out:FrameBuffer):FrameBuffer
+	private function set_frameBuffer(out:FrameBuffer):FrameBuffer
 	{
 		_frameBuffer = out;
 		return _frameBuffer;
@@ -297,7 +297,7 @@ class ViewPort
 	 * <p>
 	 * When the ViewPort's color buffer is cleared
 	 * (if {@link #setClearColor(Bool) color clearing} is enabled),
-	 * this specifies the color to which the color buffer is set to.
+	 * this specifies the color to which the color buffer is set_to.
 	 * By default the background color is black without alpha.
 	 *
 	 * @param background the background color.

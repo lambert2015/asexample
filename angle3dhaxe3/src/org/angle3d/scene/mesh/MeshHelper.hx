@@ -16,13 +16,13 @@ class MeshHelper
 	{
 		var normals:Vector<Float> = new Vector<Float>(vertices.length);
 
-		var adjs:Vector<Vector<UInt>> = buildVertexAdjancency(indices, vertices);
+		var adjs:Array<Array<UInt>> = buildVertexAdjancency(indices, vertices);
 		var faceNormals:Vector<Float> = buildFaceNormal(indices, vertices);
 
 		var i:Int;
 		var index:Int;
 		var refIndex:Int;
-		var adj:Vector<UInt>;
+		var adj:Array<UInt>;
 		var iLength:Int = indices.length;
 		for (i in 0...iLength)
 		{
@@ -49,11 +49,11 @@ class MeshHelper
 		return normals;
 	}
 
-	public static function buildVertexAdjancency(indices:Vector<UInt>, vertices:Vector<Float>):Vector<Vector<UInt>>
+	public static function buildVertexAdjancency(indices:Vector<UInt>, vertices:Vector<Float>):Array<Array<UInt>>
 	{
 		var i:Int, j:Int, m:Int;
 
-		var adjs:Vector<Vector<UInt>> = new Vector<Vector<UInt>>(Std.int(vertices.length / 3));
+		var adjs:Array<Array<UInt>> = new Array<Array<UInt>>();
 
 		i = 0;
 		j = 0;
@@ -63,7 +63,7 @@ class MeshHelper
 			{
 				var index:Int = indices[i + m];
 				if (adjs[index] == null)
-					adjs[index] = new Vector<UInt>();
+					adjs[index] = new Array<UInt>();
 				//对应一个三角形
 				adjs[index].push(j);
 			}

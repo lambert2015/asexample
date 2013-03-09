@@ -226,7 +226,7 @@ class FilterPostProcessor implements SceneProcessor
 	 * @return True if initialize() has been called on this SceneProcessor,
 	 * false if otherwise.
 	 */
-	public function get isInitialized():Bool
+	private function get_isInitialized():Bool
 	{
 		return false;
 	}

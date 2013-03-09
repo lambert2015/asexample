@@ -21,7 +21,7 @@ enum CullHint
 	 */
 	Always;
 	/**
-	 * Never cull this from view. Note that we will still get culled if our
+	 * Never cull this from view. Note that we will still get_culled if our
 	 * parent is culled.
 	 */
 	Never;

@@ -82,7 +82,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	/**
 	 * Constructs the chase camera, and registers inputs
 	 * @param cam the application camera
-	 * @param target the spatial to follow
+	 * @param target_the spatial to follow
 	 * @param inputManager the inputManager of the application to register inputs
 	 */
 	public function new(cam:Camera3D, target:Spatial, inputManager:InputManager)
@@ -92,7 +92,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 		this.cam = cam;
 		initialUpVec = cam.getUp().clone();
 
-		this.target = target;
+		this.target_= target;
 		this.target.addControl(this);
 
 		registerWithInput(inputManager);
@@ -148,7 +148,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 		pos = new Vector3f();
 		targetLocation = new Vector3f(0, 0, 0);
 		dragToRotate = false;
-		lookAtOffset = new Vector3f(0, 0, 0);
+		lookAtoffset= new Vector3f(0, 0, 0);
 		leftClickRotate = true;
 		rightClickRotate = true;
 		temp = new Vector3f(0, 0, 0);
@@ -301,7 +301,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 		pos.addLocal(target.getWorldTranslation());
 	}
 
-	//rotate the camera around the target on the horizontal plane
+	//rotate the camera around the target_on the horizontal plane
 	private function rotateCamera(value:Float):Void
 	{
 		if (!canRotate || !_enabled)
@@ -334,7 +334,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 		}
 	}
 
-	//rotate the camera around the target on the vertical plane
+	//rotate the camera around the target_on the vertical plane
 	private function vRotateCamera(value:Float):Void
 	{
 		if (!canRotate || !_enabled)
@@ -381,28 +381,28 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 			targetLocation.addLocal(lookAtOffset);
 			if (smoothMotion)
 			{
-				//computation of target direction
+				//computation of target_direction
 				targetDir.copyFrom(targetLocation);
 				targetDir.subtractLocal(prevPos);
 
 				var dist:Float = targetDir.length;
 
-				//Low pass filtering on the target postition to aVoid shaking when physics are enabled.
+				//Low pass filtering on the target_postition to aVoid shaking when physics are enabled.
 				if (offsetDistance < dist)
 				{
-					//target moves, start chasing.
+					//target_moves, start chasing.
 					chasing = true;
-					//target moves, start trailing if it has to.
+					//target_moves, start trailing if it has to.
 					if (trailingEnabled)
 					{
 						trailing = true;
 					}
-					//target moves...
+					//target_moves...
 					targetMoves = true;
 				}
 				else
 				{
-					//if target was moving, we compute a slight offset in rotation to aVoid a rought stop of the cam
+					//if target_was moving, we compute a slight offsetin rotation to aVoid a rought stop of the cam
 					//We do not if the player is rotationg the cam
 					if (targetMoves && !canRotate)
 					{
@@ -415,7 +415,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 							targetRotation = rotation - trailingRotationInertia;
 						}
 					}
-					//Target stops
+					//Target_stops
 					targetMoves = false;
 				}
 
@@ -455,7 +455,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 							targetRotation -= FastMath.TWO_PI;
 						}
 
-						//if there is an important change in the direction while trailing reset of the lerp factor to aVoid jumpy movements
+						//if there is an important change in the direction while trailing reset_of the lerp factor to aVoid jumpy movements
 						if (targetRotation != previousTargetRotation && FastMath.fabs(targetRotation - previousTargetRotation) > FastMath.PI / 8)
 						{
 							trailingLerpFactor = 0;
@@ -467,7 +467,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 					//computing rotation by linear interpolation
 					rotation = FastMath.lerp(rotation, targetRotation, trailingLerpFactor);
 
-					//if the rotation is near the target rotation we're good, that's over
+					//if the rotation is near the target_rotation we're good, that's over
 					if (FastMath.nearEqual(targetRotation, rotation, 0.01))
 					{
 						trailing = false;
@@ -546,7 +546,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 			//keeping track on the previous position of the target
 			prevPos.copyFrom(targetLocation);
 
-			//the cam looks at the target            
+			//the cam looks at the target_           
 			cam.lookAt(targetLocation, initialUpVec);
 		}
 	}
@@ -555,7 +555,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	 * Return the enabled/disabled state of the camera
 	 * @return true if the camera is enabled
 	 */
-	public function get enabled():Bool
+	private function get_enabled():Bool
 	{
 		return _enabled;
 	}
@@ -564,12 +564,12 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	 * Enable or disable the camera
 	 * @param enabled true to enable
 	 */
-	public function set enabled(value:Bool):Void
+	private function set_enabled(value:Bool):Void
 	{
 		_enabled = value;
 		if (!_enabled)
 		{
-			canRotate = false; // reset this flag in-case it was on before
+			canRotate = false; // reset_this flag in-case it was on before
 		}
 	}
 
@@ -634,9 +634,9 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	 * Sets the spacial for the camera control, should only be used internally
 	 * @param spatial
 	 */
-	public function set spatial(value:Spatial):Void
+	private function set_spatial(value:Spatial):Void
 	{
-		this.target = value;
+		this.target_= value;
 		if (spatial == null)
 		{
 			return;
@@ -647,7 +647,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 		cam.location = pos;
 	}
 
-	public function get spatial():Spatial
+	private function get_spatial():Spatial
 	{
 		return this.target;
 	}
@@ -681,7 +681,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * sets the maximal vertical rotation angle of the camera around the target default is Pi/2;
+	 * sets the maximal vertical rotation angle of the camera around the target_default is Pi/2;
 	 * @param maxVerticalRotation
 	 */
 	public function setMaxVerticalRotation(maxVerticalRotation:Float):Void
@@ -699,7 +699,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * sets the minimal vertical rotation angle of the camera around the target default is 0;
+	 * sets the minimal vertical rotation angle of the camera around the target_default is 0;
 	 * @param minHeight
 	 */
 	public function setMinVerticalRotation(minHeight:Float):Void
@@ -736,9 +736,9 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 
 	/**
 	 *
-	 * Sets the chasing sensitivity, the lower the value the slower the camera will follow the target when it moves
+	 * Sets the chasing sensitivity, the lower the value the slower the camera will follow the target_when it moves
 	 * default is 5
-	 * Only has an effect if smoothMotion is set to true and trailing is enabled
+	 * Only has an effect if smoothMotion is set_to true and trailing is enabled
 	 * @param chasingSensitivity
 	 */
 	public function setChasingSensitivity(chasingSensitivity:Float):Void
@@ -756,10 +756,10 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * Sets the rotation sensitivity, the lower the value the slower the camera will rotates around the target when draging with the mouse
+	 * Sets the rotation sensitivity, the lower the value the slower the camera will rotates around the target_when draging with the mouse
 	 * default is 5, values over 5 should have no effect.
 	 * If you want a significant slow down try values below 1.
-	 * Only has an effect if smoothMotion is set to true
+	 * Only has an effect if smoothMotion is set_to true
 	 * @param rotationSensitivity
 	 */
 	public function setRotationSensitivity(rotationSensitivity:Float):Void
@@ -778,7 +778,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 
 	/**
 	 * Enable the camera trailing : The camera smoothly go in the targets trail when it moves.
-	 * Only has an effect if smoothMotion is set to true
+	 * Only has an effect if smoothMotion is set_to true
 	 * @param trailingEnabled
 	 */
 	public function setTrailingEnabled(trailingEnabled:Bool):Void
@@ -797,9 +797,9 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * Sets the trailing rotation inertia : default is 0.1. This prevent the camera to roughtly stop when the target stops moving
+	 * Sets the trailing rotation inertia : default is 0.1. This prevent the camera to roughtly stop when the target_stops moving
 	 * before the camera reached the trail position.
-	 * Only has an effect if smoothMotion is set to true and trailing is enabled
+	 * Only has an effect if smoothMotion is set_to true and trailing is enabled
 	 * @param trailingRotationInertia
 	 */
 	public function setTrailingRotationInertia(trailingRotationInertia:Float):Void
@@ -817,8 +817,8 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * Only has an effect if smoothMotion is set to true and trailing is enabled
-	 * Sets the trailing sensitivity, the lower the value, the slower the camera will go in the target trail when it moves.
+	 * Only has an effect if smoothMotion is set_to true and trailing is enabled
+	 * Sets the trailing sensitivity, the lower the value, the slower the camera will go in the target_trail when it moves.
 	 * default is 0.5;
 	 * @param trailingSensitivity
 	 */
@@ -932,7 +932,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * returns the current horizontal rotation around the target in radians
+	 * returns the current horizontal rotation around the target_in radians
 	 * @return
 	 */
 	public function getHorizontalRotation():Float
@@ -941,7 +941,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * returns the current vertical rotation around the target in radians.
+	 * returns the current vertical rotation around the target_in radians.
 	 * @return
 	 */
 	public function getVerticalRotation():Float
@@ -950,7 +950,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * returns the offset from the target's position where the camera looks at
+	 * returns the offsetfrom the target's position where the camera looks at
 	 * @return
 	 */
 	public function getLookAtOffset():Vector3f
@@ -959,12 +959,12 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 	}
 
 	/**
-	 * Sets the offset from the target's position where the camera looks at
+	 * Sets the offsetfrom the target's position where the camera looks at
 	 * @param lookAtOffset
 	 */
 	public function setLookAtOffset(lookAtOffset:Vector3f):Void
 	{
-		this.lookAtOffset = lookAtOffset;
+		this.lookAtoffset= lookAtOffset;
 	}
 
 	/**

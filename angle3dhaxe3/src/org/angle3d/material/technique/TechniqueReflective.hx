@@ -2,6 +2,7 @@ package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 import org.angle3d.light.LightType;
 import org.angle3d.material.CullMode;
 import org.angle3d.material.shader.Shader;
@@ -14,7 +15,7 @@ import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.MeshType;
 import org.angle3d.texture.CubeTextureMap;
 import org.angle3d.texture.TextureMapBase;
-
+import haxe.ds.Vector;
 
 /**
  * Reflection mapping
@@ -24,11 +25,6 @@ import org.angle3d.texture.TextureMapBase;
  */
 class TechniqueReflective extends Technique
 {
-	[Embed(source = "data/reflective.vs", mimeType = "application/octet-stream")]
-	private static var ReflectiveVS:Class;
-	[Embed(source = "data/reflective.fs", mimeType = "application/octet-stream")]
-	private static var ReflectiveFS:Class;
-
 	private var _influences:Vector<Float>;
 
 	private var _decalMap:TextureMapBase;
@@ -55,52 +51,62 @@ class TechniqueReflective extends Technique
 		this.reflectivity = reflectivity;
 	}
 
-	public function set influence(value:Float):Void
-	{
-		if (_influences == null)
-			_influences = new Vector<Float>(4, true);
-		_influences[0] = 1 - value;
-		_influences[1] = value;
-	}
-
-	public function get influence():Float
+	public var influence(get, set):Float;
+	private function get_influence():Float
 	{
 		return _influences[1];
 	}
+	
+	private function set_influence(value:Float):Float
+	{
+		if (_influences == null)
+			_influences = new Vector<Float>(4);
+		_influences[0] = 1 - value;
+		_influences[1] = value;
+		return value;
+	}
+
+	
 
 	/**
 	 * 反射率，一般应该设置在0~1之间
 	 */
-	public function set reflectivity(value:Float):Void
+	public var reflectivity(get, set):Float;
+	private function get_reflectivity():Float
+	{
+		return _reflectivity;
+	}
+	private function set_reflectivity(value:Float):Float
 	{
 		_reflectivity = value;
 		if (_reflectivity < 0)
 			_reflectivity = 0;
-	}
-
-	public function get reflectivity():Float
-	{
 		return _reflectivity;
 	}
 
-	public function get decalMap():TextureMapBase
+	
+	public var decalMap(get, set):TextureMapBase;
+	private function get_decalMap():TextureMapBase
 	{
 		return _decalMap;
 	}
 
-	public function set decalMap(value:TextureMapBase):Void
+	private function set_decalMap(value:TextureMapBase):TextureMapBase
 	{
 		_decalMap = value;
+		return _decalMap;
 	}
 
-	public function get environmentMap():CubeTextureMap
+	public var environmentMap(get, set):CubeTextureMap;
+	private function get_environmentMap():CubeTextureMap
 	{
 		return _environmentMap;
 	}
 
-	public function set environmentMap(value:CubeTextureMap):Void
+	private function set_environmentMap(value:CubeTextureMap):CubeTextureMap
 	{
 		_environmentMap = value;
+		return _environmentMap;
 	}
 
 	override public function updateShader(shader:Shader):Void
@@ -130,27 +136,27 @@ class TechniqueReflective extends Technique
 
 	override private function getKey(lightType:LightType, meshType:MeshType):String
 	{
-		var result:Array = [name, meshType];
+		var result:Array<String> = [name, meshType.getName()];
 		return result.join("_");
 	}
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.TEXCOORD] = "a_texCoord";
-		map[BufferType.NORMAL] = "a_normal";
-		if (meshType == MeshType.MT_KEYFRAME)
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION, "a_position");
+		map.set(BufferType.TEXCOORD, "a_texCoord");
+		map.set(BufferType.NORMAL, "a_normal");
+		if (meshType == MeshType.KEYFRAME)
 		{
-			map[BufferType.POSITION1] = "a_position1";
-			map[BufferType.NORMAL1] = "a_normal1";
+			map.set(BufferType.POSITION1, "a_position1");
+			map.set(BufferType.NORMAL1, "a_normal1");
 		}
 		return map;
 	}
 
 	override private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
-		var list:Vector<UniformBindingHelp> = new Vector<UniformBindingHelp>();
+		var list:Array<UniformBindingHelp> = new Array<UniformBindingHelp>();
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_worldMatrix", UniformBinding.WorldMatrix));
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_camPosition", UniformBinding.CameraPosition));
@@ -159,3 +165,7 @@ class TechniqueReflective extends Technique
 	}
 }
 
+@:file("org/angle3d/material/technique/data/reflective.vs") 
+class ReflectiveVS extends flash.utils.ByteArray{}
+@:file("org/angle3d/material/technique/data/reflective.fs") 
+class ReflectiveFS extends flash.utils.ByteArray{}

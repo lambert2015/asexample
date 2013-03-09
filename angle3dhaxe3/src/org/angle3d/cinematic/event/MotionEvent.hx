@@ -252,7 +252,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * this method is meant to be called by the motion path only
 	 * @return
 	 */
-	public function get currentWayPoint():Int
+	private function get_currentWayPoint():Int
 	{
 		return _currentWayPoint;
 	}
@@ -261,7 +261,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * this method is meant to be called by the motion path only
 	 *
 	 */
-	public function set currentWayPoint(currentWayPoint:Int):Void
+	private function set_currentWayPoint(currentWayPoint:Int):Void
 	{
 		_currentWayPoint = currentWayPoint;
 	}
@@ -270,7 +270,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * returns the direction the spatial is moving
 	 * @return
 	 */
-	public function get direction():Vector3f
+	private function get_direction():Vector3f
 	{
 		return _direction;
 	}
@@ -280,7 +280,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * This method is used by the motion path.
 	 * @param direction
 	 */
-	public function set direction(vec:Vector3f):Void
+	private function set_direction(vec:Vector3f):Void
 	{
 		_direction.copyFrom(vec);
 	}
@@ -289,24 +289,24 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * returns the direction type of the target
 	 * @return the direction type
 	 */
-	public function get directionType():Int
+	private function get_directionType():Int
 	{
 		return _directionType;
 	}
 
 	/**
 	 * Sets the direction type of the target
-	 * On each update the direction given to the target can have different behavior
+	 * On each update the direction given to the target_can have different behavior
 	 * See the Direction Enum for explanations
 	 * @param directionType the direction type
 	 */
-	public function set directionType(value:Int):Void
+	private function set_directionType(value:Int):Void
 	{
 		_directionType = value;
 	}
 
 	/**
-	 * Set the lookAt for the target
+	 * set_the lookAt for the target
 	 * This can be used only if direction Type is Direction.LookAt
 	 * @param lookAt the position to look at
 	 * @param upVector the up vector
@@ -329,8 +329,8 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	/**
 	 * sets the rotation of the target
 	 * This can be used only if direction Type is Direction.PathAndRotation or Direction.Rotation
-	 * With PathAndRotation the target will face the direction of the path multiplied by the given Quaternion.
-	 * With Rotation the rotation of the target will be set with the given Quaternion.
+	 * With PathAndRotation the target_will face the direction of the path multiplied by the given Quaternion.
+	 * With Rotation the rotation of the target_will be set_with the given Quaternion.
 	 * @param rotation the rotation quaternion
 	 */
 	public function setRotation(rotation:Quaternion):Void
@@ -356,7 +356,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		this.path = path;
 	}
 
-	public function set enabled(enabled:Bool):Void
+	private function set_enabled(enabled:Bool):Void
 	{
 		if (enabled)
 		{
@@ -368,7 +368,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		}
 	}
 
-	public function get enabled():Bool
+	private function get_enabled():Bool
 	{
 		return playState != PlayState.Stopped;
 	}
@@ -377,12 +377,12 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	{
 	}
 
-	public function set spatial(spatial:Spatial):Void
+	private function set_spatial(spatial:Spatial):Void
 	{
 		this._spatial = spatial;
 	}
 
-	public function get spatial():Spatial
+	private function get_spatial():Spatial
 	{
 		return _spatial;
 	}

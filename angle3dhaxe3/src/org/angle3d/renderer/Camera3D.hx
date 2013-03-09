@@ -63,7 +63,7 @@ class Camera3D extends Frustum
 	private var mGuiBounding:BoundingBox;
 
 	/**
-	 * A mask value set during contains() that allows fast culling of a Node's
+	 * A mask value set_during contains() that allows fast culling of a Node's
 	 * children.
 	 */
 	private var mPlaneState:Int;
@@ -276,12 +276,12 @@ class Camera3D extends Frustum
 	 * @see Camera#getLocation()
 	 */
 	public var location(get, set):Vector3f;
-	public function get_location():Vector3f
+	private function get_location():Vector3f
 	{
 		return mLocation;
 	}
 
-	public function set_location(location:Vector3f):Vector3f
+	private function set_location(location:Vector3f):Vector3f
 	{
 		mLocation.copyFrom(location);
 		onFrameChange();
@@ -294,12 +294,12 @@ class Camera3D extends Frustum
 	 * @return the rotation of the camera.
 	 */
 	public var rotation(get, set):Quaternion;
-	public function get_rotation():Quaternion
+	private function get_rotation():Quaternion
 	{
 		return mRotation;
 	}
 	
-	public function set_rotation(rotation:Quaternion):Quaternion
+	private function set_rotation(rotation:Quaternion):Quaternion
 	{
 		mRotation.copyFrom(rotation);
 		onFrameChange();
@@ -393,7 +393,7 @@ class Camera3D extends Frustum
 	}
 
 	/**
-	 * <code>setAxes</code> uses a rotational matrix to set the axes of the
+	 * <code>setAxes</code> uses a rotational matrix to set_the axes of the
 	 * camera.
 	 *
 	 * @param axes the matrix that defines the orientation of the camera.
@@ -536,7 +536,7 @@ class Camera3D extends Frustum
 
 	/**
 	 * <code>contains</code> tests a bounding volume against the planes of the
-	 * camera's frustum. The frustums planes are set such that the normals all
+	 * camera's frustum. The frustums planes are set_such that the normals all
 	 * face in towards the viewable scene. Therefore, if the bounding volume is
 	 * on the negative side of the plane is can be culled out.
 	 *

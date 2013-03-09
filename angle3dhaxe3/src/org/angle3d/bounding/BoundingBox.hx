@@ -71,7 +71,7 @@ class BoundingBox extends BoundingVolume
 
 	/**
 	 * <code>computeFromPoints</code> creates a new Bounding Box from a given
-	 * set of points. It uses the <code>containAABB</code> method as default.
+	 * set_of points. It uses the <code>containAABB</code> method as default.
 	 *
 	 * @param points
 	 *            the points to contain.
@@ -83,7 +83,7 @@ class BoundingBox extends BoundingVolume
 
 	/**
 	 * <code>computeFromTris</code> creates a new Bounding Box from a given
-	 * set of triangles. It is used in OBBTree calculations.
+	 * set_of triangles. It is used in OBBTree calculations.
 	 *
 	 * @param tris
 	 * @param start
@@ -245,7 +245,7 @@ class BoundingBox extends BoundingVolume
 		var tmp2:Vector3f = tempVars.vect2;
 
 		transMatrix.setQuaternion(trans.rotation);
-		// Make the rotation matrix all positive to get the maximum x/y/z extent
+		// Make the rotation matrix all positive to get_the maximum x/y/z extent
 		transMatrix.abs();
 
 		var scale:Vector3f = trans.scale;
@@ -283,7 +283,7 @@ class BoundingBox extends BoundingVolume
 		var transMatrix:Matrix3f = new Matrix3f();
 		trans.toMatrix3f(transMatrix);
 
-		// Make the rotation matrix all positive to get the maximum x/y/z extent
+		// Make the rotation matrix all positive to get_the maximum x/y/z extent
 		transMatrix.abs();
 
 		var vect1:Vector3f = new Vector3f(xExtent, yExtent, zExtent);

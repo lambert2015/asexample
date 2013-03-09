@@ -19,7 +19,7 @@ class TempReg extends RegNode
 	{
 		super(RegType.TEMP, dataType, name);
 
-		offset = 0;
+		offset= 0;
 	}
 
 	override public function clone():LeafNode

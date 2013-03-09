@@ -53,8 +53,8 @@ class Spline
 	}
 
 	/**
-	 * Create a NURBS spline. A spline type is automatically set to SplineType.Nurb.
-	 * The cycle is set to <b>false</b> by default.
+	 * Create a NURBS spline. A spline type is automatically set_to SplineType.Nurb.
+	 * The cycle is set_to <b>false</b> by default.
 	 * @param controlPoints a list of vector to use as control points of the spline
 	 * @param nurbKnots the nurb's spline knots
 	 */
@@ -307,7 +307,7 @@ class Spline
 	}
 
 	/**
-	 * set to true to make the spline cycle
+	 * set_to true to make the spline cycle
 	 * @param cycle
 	 */
 	public function setCycle(cycle:Bool):Void

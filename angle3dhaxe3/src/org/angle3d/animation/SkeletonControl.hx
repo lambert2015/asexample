@@ -73,7 +73,7 @@ class SkeletonControl extends AbstractControl
 		if (!mWasMeshUpdated)
 		{
 			//CPU计算骨骼动画
-//				resetToBind(); // reset morph meshes to bind pose
+//				resetToBind(); // reset_morph meshes to bind pose
 //
 //				var offsetMatrices:Vector<Matrix4f> = skeleton.computeSkinningMatrices();
 //				var count:Int = mesh.subMeshList.length;

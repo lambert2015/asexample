@@ -148,7 +148,7 @@ class Skeleton
 	}
 
 	/**
-	 * Reset the skeleton to bind pose.
+	 * Reset_the skeleton to bind pose.
 	 */
 	public function reset():Void
 	{
@@ -160,7 +160,7 @@ class Skeleton
 	}
 
 	/**
-	 * Reset the skeleton to bind pose and updates the bones
+	 * Reset_the skeleton to bind pose and updates the bones
 	 */
 	public function resetAndUpdate():Void
 	{

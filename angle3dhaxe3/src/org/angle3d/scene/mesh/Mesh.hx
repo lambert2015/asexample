@@ -37,13 +37,13 @@ class Mesh implements IMesh
 	}
 
 	public var type(get, null):MeshType;
-	public function get_type():MeshType
+	private function get_type():MeshType
 	{
 		return mType;
 	}
 
 	public var subMeshList(get,set):Array<SubMesh>;
-	public function set_subMeshList(subMeshs:Array<SubMesh>):Array<SubMesh>
+	private function set_subMeshList(subMeshs:Array<SubMesh>):Array<SubMesh>
 	{
 		mSubMeshList = subMeshs;
 		mBoundDirty = true;
@@ -51,7 +51,7 @@ class Mesh implements IMesh
 		return mSubMeshList;
 	}
 	
-	public function get_subMeshList():Array<SubMesh>
+	private function get_subMeshList():Array<SubMesh>
 	{
 		return mSubMeshList;
 	}

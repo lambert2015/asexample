@@ -82,7 +82,7 @@ interface IRenderer
 	function onFrame():Void;
 
 	/**
-	 * Set the viewport location and resolution on the screen.
+	 * set_the viewport location and resolution on the screen.
 	 *
 	 * @param x The x coordinate of the viewport
 	 * @param y The y coordinate of the viewport
@@ -104,7 +104,7 @@ interface IRenderer
 	function setClipRect(x:Int, y:Int, width:Int, height:Int):Void;
 
 	/**
-	 * Clears the clipping rectangle set with
+	 * Clears the clipping rectangle set_with
 	 * {@link #setClipRect(int, int, int, int) }.
 	 */
 	function clearClipRect():Void;
@@ -126,7 +126,7 @@ interface IRenderer
 
 	/**
 	 * Renders <code>count</code> meshes, with the geometry data supplied.
-	 * The shader which is currently set with <code>setShader</code> is
+	 * The shader which is currently set_with <code>setShader</code> is
 	 * responsible for transforming the input verticies into clip space
 	 * and shading it based on the given vertex attributes.
 	 *

@@ -52,7 +52,7 @@ package org.angle3d.scene.control
 			return mControlDir;
 		}
 		
-		private function get controlDir():String
+		private function get_controlDir():String
 		{
 			return mControlDir;
 		}
@@ -79,7 +79,7 @@ package org.angle3d.scene.control
 						mCamera.location = spatial.getWorldTranslation();
 						mCamera.rotation = spatial.getWorldRotation();
 					case CameraToSpatial:
-						// set the localtransform, so that the worldtransform would be equal to the camera's transform.
+						// set_the localtransform, so that the worldtransform would be equal to the camera's transform.
 						// Location:
 						var vecDiff:Vector3f = mCamera.location.subtract(spatial.getWorldTranslation());
 						vecDiff.addLocal(spatial.translation);

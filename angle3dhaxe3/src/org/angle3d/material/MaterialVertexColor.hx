@@ -23,7 +23,7 @@ class MaterialVertexColor extends Material
 		sortingId = 4;
 	}
 
-	override public function set alpha(alpha:Float):Void
+	override private function set_alpha(alpha:Float):Void
 	{
 		_technique.setAlpha(alpha);
 

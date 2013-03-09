@@ -87,7 +87,7 @@ class AnimChannel
 	}
 
 	/**
-	 * @return The loop mode currently set for the animation. The loop mode
+	 * @return The loop mode currently set_for the animation. The loop mode
 	 * determines what will happen to the animation once it finishes
 	 * playing.
 	 *
@@ -101,7 +101,7 @@ class AnimChannel
 	}
 
 	/**
-	 * @param loopMode Set the loop mode for the channel. The loop mode
+	 * @param loopMode set_the loop mode for the channel. The loop mode
 	 * determines what will happen to the animation once it finishes
 	 * playing.
 	 *
@@ -126,7 +126,7 @@ class AnimChannel
 	}
 
 	/**
-	 * @param speed Set the speed of the animation channel. The speed
+	 * @param speed set_the speed of the animation channel. The speed
 	 * is a scale value starting from 0.0, at 1.0 the animation will play
 	 * at its default speed.
 	 */
@@ -147,7 +147,7 @@ class AnimChannel
 	}
 
 	/**
-	 * @param speed Set the speed of the animation channel. The speed
+	 * @param speed set_the speed of the animation channel. The speed
 	 * is a scale value starting from 0.0, at 1.0 the animation will play
 	 * at its default speed.
 	 */
@@ -168,11 +168,11 @@ class AnimChannel
 	}
 
 	/**
-	 * Set the current animation that is played by this AnimChannel.
+	 * set_the current animation that is played by this AnimChannel.
 	 * <p>
 	 * This resets the time to zero, and optionally blends the animation
 	 * over <code>blendTime</code> seconds with the currently playing animation.
-	 * Notice that this method will reset the control's speed to 1.0.
+	 * Notice that this method will reset_the control's speed to 1.0.
 	 *
 	 * @param name The name of the animation to play
 	 * @param blendTime The blend time over which to blend the new animation

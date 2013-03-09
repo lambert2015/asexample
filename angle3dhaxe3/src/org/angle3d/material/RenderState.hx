@@ -33,7 +33,7 @@ class RenderState
 	/**
 	 * The <code>ADDITIONAL</code> render state is identical to the
 	 * {@link RenderState#DEFAULT} render state except that all apply
-	 * values are set to false. This allows the <code>ADDITIONAL</code> render
+	 * values are set_to false. This allows the <code>ADDITIONAL</code> render
 	 * state to be combined with other state but only influencing values
 	 * that were changed from the original.
 	 */
@@ -91,7 +91,7 @@ class RenderState
 	 * <code>gl_FragColor</code>, will be rendered into the color buffer
 	 * (including alpha).
 	 *
-	 * @param colorWrite Set to true to enable color writing.
+	 * @param colorWrite set_to true to enable color writing.
 	 */
 	public function setColorWrite(colorWrite:Bool):Void
 	{
@@ -100,7 +100,7 @@ class RenderState
 	}
 
 	/**
-	 * Set the face culling mode.
+	 * set_the face culling mode.
 	 *
 	 * <p>See the {@link FaceCullMode} enum on what each value does.
 	 * Face culling will project the triangle's points onto the screen
@@ -118,7 +118,7 @@ class RenderState
 	}
 
 	/**
-	 * Set the blending mode.
+	 * set_the blending mode.
 	 *
 	 * <p>When blending is enabled, (<code>blendMode</code> is not {@link BlendMode#Off})
 	 * the input pixel will be blended with the pixel
@@ -128,7 +128,7 @@ class RenderState
 	 * <br/>
 	 * <code>Result = Source Color + Destination Color</code>
 	 *
-	 * @param blendMode The blend mode to use. Set to {@link BlendMode#Off}
+	 * @param blendMode The blend mode to use. set_to {@link BlendMode#Off}
 	 * to disable blending.
 	 */
 	public function setBlendMode(blendMode:BlendMode):Void

@@ -197,7 +197,7 @@ class UniformBindingManager
 	}
 
 	/**
-	 * Set the timer that should be used to query the time based
+	 * set_the timer that should be used to query the time based
 	 * {@link UniformBinding}s for material world parameters.
 	 *
 	 * @param timer The timer to query time world parameters

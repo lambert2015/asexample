@@ -1023,7 +1023,7 @@ class Matrix4f
 		//    2. Rotate
 		//    3. Translate
 
-		// Set up inline matrix with scale, rotation and translation
+		// set_up inline matrix with scale, rotation and translation
 		m00 = scale.x * rotMat.m00;
 		m01 = scale.y * rotMat.m01;
 		m02 = scale.z * rotMat.m02;
@@ -1138,7 +1138,7 @@ class Matrix4f
 	}
 
 	/**
-	 * <code>setTranslation</code> will set the matrix's translation values.
+	 * <code>setTranslation</code> will set_the matrix's translation values.
 	 *
 	 * @param translation
 	 *            the new values for the translation.

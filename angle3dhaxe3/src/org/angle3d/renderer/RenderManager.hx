@@ -445,17 +445,17 @@ class RenderManager
 	 * <p>
 	 * Once the world matrix is applied, the proper material is chosen for rendering.
 	 * If a {@link #setForcedMaterial(com.jme3.material.Material) forced material} is
-	 * set on this RenderManager, then it is used for rendering the geometry,
+	 * set_on this RenderManager, then it is used for rendering the geometry,
 	 * otherwise, the {@link Geometry#getMaterial() geometry's material} is used.
 	 * <p>
 	 * If a {@link #setForcedTechnique(String) forced technique} is
-	 * set on this RenderManager, then it is selected automatically
+	 * set_on this RenderManager, then it is selected automatically
 	 * on the geometry's material and is used for rendering. Otherwise, one
 	 * of the {@link MaterialDef#getDefaultTechniques() default techniques} is
 	 * used.
 	 * <p>
 	 * If a {@link #setForcedRenderState(com.jme3.material.RenderState) forced
-	 * render state} is set on this RenderManager, then it is used
+	 * render state} is set_on this RenderManager, then it is used
 	 * for rendering the material, and the material's own render state is ignored.
 	 * Otherwise, the material's render state is used as intended.
 	 *
@@ -613,7 +613,7 @@ class RenderManager
 	 * {@link RenderQueue#addToShadowQueue(com.jme3.scene.Geometry, com.jme3.renderer.queue.RenderQueue.ShadowMode)
 	 * shadow queue}. Each Spatial which has its
 	 * {@link Spatial#setShadowMode(com.jme3.renderer.queue.RenderQueue.ShadowMode) shadow mode}
-	 * set to not off, will be put into the appropriate shadow queue, note that
+	 * set_to not off, will be put into the appropriate shadow queue, note that
 	 * this process does not check for frustum culling on any
 	 * {@link ShadowMode#Cast shadow casters}, as they don't have to be
 	 * in the eye camera frustum to cast shadows on objects that are inside it.
@@ -669,7 +669,7 @@ class RenderManager
 			// add to the render queue
 			var gm:Geometry = cast scene;
 
-			Assert.assert(gm.getMaterial() != null, "No material is set for Geometry: " + gm.name);
+			Assert.assert(gm.getMaterial() != null, "No material is set_for Geometry: " + gm.name);
 
 			vp.renderQueue.addToQueue(gm, gm.queueBucket);
 
@@ -685,7 +685,7 @@ class RenderManager
 	/**
 	 * Returns the camera currently used for rendering.
 	 * <p>
-	 * The camera can be set with {@link #setCamera(com.jme3.renderer.Camera, Bool) }.
+	 * The camera can be set_with {@link #setCamera(com.jme3.renderer.Camera, Bool) }.
 	 *
 	 * @return the camera currently used for rendering.
 	 */
@@ -763,7 +763,7 @@ class RenderManager
 		var queue:RenderQueue = vp.renderQueue;
 		var cam:Camera3D = vp.camera;
 
-		// render the sky, with depth range set to the farthest
+		// render the sky, with depth range set_to the farthest
 		//首先绘制天空体
 		if (!queue.isQueueEmpty(QueueBucket.Sky))
 		{
@@ -801,7 +801,7 @@ class RenderManager
 	 * Renders the {@link Bucket#Translucent translucent queue} on the viewPort.
 	 * <p>
 	 * This call does nothing unless {@link #setHandleTranslucentBucket(Bool) }
-	 * is set to true. This method clears the translucent queue after rendering
+	 * is set_to true. This method clears the translucent queue after rendering
 	 * it.
 	 *
 	 * @param vp The viewport of which the translucent queue should be rendered.
@@ -856,7 +856,7 @@ class RenderManager
 	}
 
 	/**
-	 * Set the camera to use for rendering.
+	 * set_the camera to use for rendering.
 	 * <p>
 	 * First, the camera's
 	 * {@link Camera#setViewPort(float, float, float, float) view port parameters}
@@ -912,8 +912,8 @@ class RenderManager
 	 * <li>The SceneProcessors' {@link SceneProcessor#preFrame(float) } method
 	 * is called.</li>
 	 * <li>The ViewPort's {@link ViewPort#getOutputFrameBuffer() output framebuffer}
-	 * is set on the Renderer</li>
-	 * <li>The camera is set on the renderer, including its view port parameters.
+	 * is set_on the Renderer</li>
+	 * <li>The camera is set_on the renderer, including its view port parameters.
 	 * (see {@link #setCamera(com.jme3.renderer.Camera, Bool) })</li>
 	 * <li>Any buffers that the ViewPort requests to be cleared are cleared
 	 * and the {@link ViewPort#getBackgroundColor() background color} is set</li>

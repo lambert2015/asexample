@@ -61,6 +61,8 @@ import org.angle3d.material.MaterialSkyBox;
 import org.angle3d.material.MaterialTexture;
 import org.angle3d.material.MaterialColorFill;
 import org.angle3d.scene.mesh.MorphMesh;
+import org.angle3d.material.MaterialReflective;
+import org.angle3d.material.MaterialRefraction;
 /**
  * andy
  * @author 

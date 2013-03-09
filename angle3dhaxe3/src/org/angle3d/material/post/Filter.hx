@@ -167,7 +167,7 @@ class Filter
 	 *
 	 * @return true if your Filter need the depth texture
 	 */
-	public function get isRequiresDepthTexture():Bool
+	private function get_isRequiresDepthTexture():Bool
 	{
 		return false;
 	}
@@ -177,7 +177,7 @@ class Filter
 	 *
 	 * @return false if your Filter does not need the scene texture
 	 */
-	public function get isRequiresSceneTexture():Bool
+	private function get_isRequiresSceneTexture():Bool
 	{
 		return true;
 	}

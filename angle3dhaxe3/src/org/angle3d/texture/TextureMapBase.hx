@@ -57,7 +57,7 @@ class TextureMapBase
 	}
 
 	public var shaderKeys(get, null):Vector<String>;
-	public function get_shaderKeys():Vector<String>
+	private function get_shaderKeys():Vector<String>
 	{
 		return Vector.fromArrayCopy([mFormat, mMipFilter.getName(), 
 		mTextureFilter.getName(), mWrapMode.getName()]);

@@ -76,7 +76,7 @@ class VertexBuffer
 	}
 
 	public var count(get, null):Int;
-	public function get_count():Int
+	private function get_count():Int
 	{
 		return mCount;
 	}

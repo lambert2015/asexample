@@ -17,7 +17,7 @@ class ShadowCompareMode
 	/**
 	 * Compares the 3rd texture coordinate R to the value
 	 * in this depth texture. If R <= texture value then result is 1.0,
-	 * otherwise, result is 0.0. If filtering is set to bilinear or trilinear
+	 * otherwise, result is 0.0. If filtering is set_to bilinear or trilinear
 	 * the implementation may sample the texture multiple times to provide
 	 * smoother results in the range [0, 1].
 	 */
@@ -26,7 +26,7 @@ class ShadowCompareMode
 	/**
 	 * Compares the 3rd texture coordinate R to the value
 	 * in this depth texture. If R >= texture value then result is 1.0,
-	 * otherwise, result is 0.0. If filtering is set to bilinear or trilinear
+	 * otherwise, result is 0.0. If filtering is set_to bilinear or trilinear
 	 * the implementation may sample the texture multiple times to provide
 	 * smoother results in the range [0, 1].
 	 */

@@ -676,7 +676,7 @@ class SgslParser
 			{
 				if (_tok.token.type == TokenType.NUMBER)
 				{
-					bn.offset = Std.parseInt(_tok.accept(TokenType.NUMBER).name);
+					bn.offset= Std.parseInt(_tok.accept(TokenType.NUMBER).name);
 				}
 				else if (_tok.token.type == TokenType.PLUS)
 				{

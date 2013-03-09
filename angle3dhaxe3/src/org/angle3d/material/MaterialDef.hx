@@ -17,10 +17,10 @@ class MaterialDef
 	public var name:String;
 
 	/**
-	 * Returns the asset key name of the asset from which this material
+	 * Returns the asset_key name of the asset_from which this material
 	 * definition was loaded.
 	 *
-	 * @return Asset key name of the j3md file
+	 * @return Asset_key name of the j3md file
 	 */
 	public var assetName:String;
 

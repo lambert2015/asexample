@@ -21,43 +21,48 @@ class MaterialReflective extends Material
 		addTechnique(_technique);
 	}
 
-	override public function set influence(value:Float):Void
+	override private function set_influence(value:Float):Float
 	{
 		_technique.influence = value;
+		return _technique.influence;
 	}
 
-	public function get technique():TechniqueReflective
+	public var technique(get, null):TechniqueReflective;
+	private function get_technique():TechniqueReflective
 	{
 		return _technique;
 	}
 
-	public function set decalMap(map:TextureMapBase):Void
-	{
-		_technique.decalMap = map;
-	}
-
-	public function set environmentMap(map:CubeTextureMap):Void
-	{
-		_technique.environmentMap = map;
-	}
-
-	public function set reflectivity(reflectivity:Float):Void
-	{
-		_technique.reflectivity = reflectivity;
-	}
-
-	public function get decalMap():TextureMapBase
+	public var decalMap(get, set):TextureMapBase;
+	private function get_decalMap():TextureMapBase
 	{
 		return _technique.decalMap;
 	}
+	private function set_decalMap(map:TextureMapBase):TextureMapBase
+	{
+		_technique.decalMap = map;
+		return _technique.decalMap;
+	}
 
-	public function get environmentMap():CubeTextureMap
+	public var environmentMap(get, set):CubeTextureMap;
+	private function get_environmentMap():CubeTextureMap
 	{
 		return _technique.environmentMap;
 	}
-
-	public function get reflectivity():Float
+	private function set_environmentMap(map:CubeTextureMap):CubeTextureMap
 	{
+		_technique.environmentMap = map;
+		return _technique.environmentMap;
+	}
+
+	public var reflectivity(get, set):Float;
+	private function get_reflectivity():Float
+	{
+		return _technique.reflectivity;
+	}
+	private function set_reflectivity(reflectivity:Float):Float
+	{
+		_technique.reflectivity = reflectivity;
 		return _technique.reflectivity;
 	}
 }

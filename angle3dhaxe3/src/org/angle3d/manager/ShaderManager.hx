@@ -1,8 +1,11 @@
 package org.angle3d.manager;
 
+#if flash
 import flash.display3D.Context3D;
 import flash.display3D.Program3D;
 import flash.utils.ByteArray;
+#end
+
 import haxe.ds.StringMap;
 import org.angle3d.material.sgsl.node.FunctionNode;
 import org.angle3d.material.sgsl.OpCodeManager;

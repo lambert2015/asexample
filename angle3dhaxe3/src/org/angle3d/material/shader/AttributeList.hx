@@ -41,7 +41,7 @@ class AttributeList extends ShaderVariableList
 			att.index = i;
 			att.location = offset;
 			att.format = getFormat(att.size);
-			offset += att.size;
+			offset+= att.size;
 		}
 	}
 }
