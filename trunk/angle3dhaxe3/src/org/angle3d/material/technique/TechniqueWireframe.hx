@@ -1,7 +1,6 @@
 package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
 import org.angle3d.light.LightType;
 import org.angle3d.material.CullMode;
@@ -15,7 +14,6 @@ import org.angle3d.math.FastMath;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.MeshType;
 
-
 /**
  * andy
  * @author andy
@@ -23,11 +21,6 @@ import org.angle3d.scene.mesh.MeshType;
 //TODO 算法可能有些问题，线条过于不平滑了。Away3D中好像没这种现象
 class TechniqueWireframe extends Technique
 {
-	[Embed(source = "data/wireframe.vs", mimeType = "application/octet-stream")]
-	private static var WireframeVS:Class;
-	[Embed(source = "data/wireframe.fs", mimeType = "application/octet-stream")]
-	private static var WireframeFS:Class;
-
 	private var _color:Color;
 	private var _thickness:Float;
 
@@ -50,32 +43,34 @@ class TechniqueWireframe extends Technique
 		this.thickness = thickness;
 	}
 
-	public function set color(color:UInt):Void
-	{
-		_color.setRGB(color);
-	}
-
-	public function get color():UInt
+	public var color(get, set):UInt;
+	private function get_color():UInt
 	{
 		return _color.getColor();
 	}
-
-	public function set alpha(alpha:Float):Void
+	private function set_color(color:UInt):UInt
 	{
-		_color.a = FastMath.fclamp(alpha, 0.0, 1.0);
+		_color.setRGB(color);
+		return color;
 	}
 
-	public function get alpha():Float
+	public var alpha(get, set):Float;
+	private function get_alpha():Float
 	{
 		return _color.a;
 	}
+	private function set_alpha(alpha:Float):Float
+	{
+		_color.a = FastMath.fclamp(alpha, 0.0, 1.0);
+		return _color.a;
+	}
 
-	public function set thickness(thickness:Float):Void
+	private function set_thickness(thickness:Float):Void
 	{
 		_thickness = thickness * 0.001;
 	}
 
-	public function get thickness():Float
+	private function get_thickness():Float
 	{
 		return _thickness;
 	}
@@ -100,9 +95,9 @@ class TechniqueWireframe extends Technique
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.POSITION1] = "a_position1";
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION, "a_position");
+		map.set(BufferType.POSITION1, "a_position1");
 		return map;
 	}
 
@@ -116,3 +111,7 @@ class TechniqueWireframe extends Technique
 	}
 }
 
+@:file("org/angle3d/material/technique/data/wireframe.vs") 
+class WireframeVS extends flash.utils.ByteArray{}
+@:file("org/angle3d/material/technique/data/wireframe.fs") 
+class WireframeFS extends flash.utils.ByteArray{}

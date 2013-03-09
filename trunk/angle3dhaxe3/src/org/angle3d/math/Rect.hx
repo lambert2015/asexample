@@ -120,12 +120,12 @@ class Rect
 
 	public var width(get, null):Float;
 	public var height(get, null):Float;
-	public function get_width():Float
+	private function get_width():Float
 	{
 		return mWidth;
 	}
 
-	public function get_height():Float
+	private function get_height():Float
 	{
 		return mHeight;
 	}

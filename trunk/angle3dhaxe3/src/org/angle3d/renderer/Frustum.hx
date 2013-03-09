@@ -154,7 +154,7 @@ class Frustum
 	/**
 	 * Enable/disable parallel projection.
 	 *
-	 * @param value true to set up this camera for parallel projection is enable, false to enter normal perspective mode
+	 * @param value true to set_up this camera for parallel projection is enable, false to enter normal perspective mode
 	 */
 	private function set_parallelProjection(value:Bool):Bool
 	{

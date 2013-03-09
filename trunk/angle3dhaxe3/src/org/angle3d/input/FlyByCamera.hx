@@ -116,7 +116,7 @@ class FlyByCamera implements AnalogListener implements ActionListener
 	}
 
 	/**
-	 * Set if drag to rotate mode is enabled.
+	 * set_if drag to rotate mode is enabled.
 	 *
 	 * When true, the user must hold the mouse button
 	 * and drag over the screen to rotate the camera, and the cursor is

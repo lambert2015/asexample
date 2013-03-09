@@ -635,13 +635,13 @@ class Quaternion
 			result = -result;
 		}
 
-		// Set the first and second scale for the interpolation
+		// set_the first and second scale for the interpolation
 		var scale0:Float = 1 - interp;
 		var scale1:Float = interp;
 
 		// Check if the angle between the 2 quaternions was big enough to
 		// warrant such calculations
-		if (result < 1.0 - epsilon) // Get the angle between the 2 quaternions,
+		if (result < 1.0 - epsilon) // get_the angle between the 2 quaternions,
 		{
 			// and then store the sin() of that angle
 			var theta:Float = Math.acos(result);

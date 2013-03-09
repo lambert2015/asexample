@@ -122,7 +122,7 @@ class Node extends Spatial
 			}
 			else
 			{
-				// set world bound to first non-null child world bound
+				// set_world bound to first non-null child world bound
 				if (child.worldBound != null)
 				{
 					resultBound = child.worldBound.clone(mWorldBound);

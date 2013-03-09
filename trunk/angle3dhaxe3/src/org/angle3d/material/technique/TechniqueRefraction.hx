@@ -2,6 +2,7 @@ package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 import org.angle3d.light.LightType;
 import org.angle3d.material.CullMode;
 import org.angle3d.material.shader.Shader;
@@ -13,7 +14,7 @@ import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.MeshType;
 import org.angle3d.texture.CubeTextureMap;
 import org.angle3d.texture.TextureMapBase;
-
+import haxe.ds.Vector;
 
 /**
  * Reflection mapping
@@ -23,11 +24,6 @@ import org.angle3d.texture.TextureMapBase;
  */
 class TechniqueRefraction extends Technique
 {
-	[Embed(source = "data/refraction.vs", mimeType = "application/octet-stream")]
-	private static var RefractionVS:Class;
-	[Embed(source = "data/refraction.fs", mimeType = "application/octet-stream")]
-	private static var RefractionFS:Class;
-
 	private var _decalMap:TextureMapBase;
 
 	private var _environmentMap:CubeTextureMap;
@@ -49,7 +45,7 @@ class TechniqueRefraction extends Technique
 
 		_renderState.applyBlendMode = false;
 
-		_etaRatios = new Vector<Float>(4, true);
+		_etaRatios = new Vector<Float>(4);
 
 		this.decalMap = decalMap;
 		this.environmentMap = environmentMap;
@@ -57,53 +53,64 @@ class TechniqueRefraction extends Technique
 		this.transmittance = transmittance;
 	}
 
-	public function set etaRatio(value:Float):Void
+	public var etaRatio(get, set):Float;
+	private function get_etaRatio():Float
+	{
+		return _etaRatios[0];
+	}
+	
+	private function set_etaRatio(value:Float):Float
 	{
 //			if (value < 1.0)
 //				value = 1.0;
 		_etaRatios[0] = value;
 		_etaRatios[1] = value * value;
 		_etaRatios[2] = 1.0 - _etaRatios[1];
-	}
-
-	public function get etaRatio():Float
-	{
 		return _etaRatios[0];
 	}
+
+	
 
 	/**
 	 * 反射率，一般应该设置在0~1之间
 	 */
-	public function set transmittance(value:Float):Void
+	public var transmittance(get, set):Float;
+	private function get_transmittance():Float
+	{
+		return _transmittance;
+	}
+	
+	private function set_transmittance(value:Float):Float
 	{
 		_transmittance = value;
 		if (_transmittance < 0)
 			_transmittance = 0;
-	}
-
-	public function get transmittance():Float
-	{
 		return _transmittance;
 	}
 
-	public function get decalMap():TextureMapBase
+	
+	public var decalMap(get, set):TextureMapBase;
+	private function get_decalMap():TextureMapBase
 	{
 		return _decalMap;
 	}
 
-	public function set decalMap(value:TextureMapBase):Void
+	private function set_decalMap(value:TextureMapBase):TextureMapBase
 	{
 		_decalMap = value;
+		return _decalMap;
 	}
 
-	public function get environmentMap():CubeTextureMap
+	public var environmentMap(get, set):CubeTextureMap;
+	private function get_environmentMap():CubeTextureMap
 	{
 		return _environmentMap;
 	}
 
-	public function set environmentMap(value:CubeTextureMap):Void
+	private function set_environmentMap(value:CubeTextureMap):CubeTextureMap
 	{
 		_environmentMap = value;
+		return _environmentMap;
 	}
 
 	override public function updateShader(shader:Shader):Void
@@ -128,16 +135,16 @@ class TechniqueRefraction extends Technique
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.TEXCOORD] = "a_texCoord";
-		map[BufferType.NORMAL] = "a_normal";
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION, "a_position");
+		map.set(BufferType.TEXCOORD, "a_texCoord");
+		map.set(BufferType.NORMAL, "a_normal");
 		return map;
 	}
 
 	override private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
-		var list:Vector<UniformBindingHelp> = new Vector<UniformBindingHelp>();
+		var list:Array<UniformBindingHelp> = new Array<UniformBindingHelp>();
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_worldMatrix", UniformBinding.WorldMatrix));
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_camPosition", UniformBinding.CameraPosition));
@@ -146,3 +153,8 @@ class TechniqueRefraction extends Technique
 	}
 }
 
+
+@:file("org/angle3d/material/technique/data/refraction.vs") 
+class RefractionVS extends flash.utils.ByteArray{}
+@:file("org/angle3d/material/technique/data/refraction.fs") 
+class RefractionFS extends flash.utils.ByteArray{}

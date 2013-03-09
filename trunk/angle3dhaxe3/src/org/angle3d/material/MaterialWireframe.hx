@@ -22,34 +22,34 @@ class MaterialWireframe extends Material
 		sortingId = 3;
 	}
 
-	public function set thickness(thickness:Float):Void
+	private function set_thickness(thickness:Float):Void
 	{
 		_technique.thickness = thickness;
 	}
 
-	public function get thickness():Float
+	private function get_thickness():Float
 	{
 		return _technique.thickness;
 	}
 
-	public function get technique():TechniqueWireframe
+	private function get_technique():TechniqueWireframe
 	{
 		return _technique;
 	}
 
-	override public function set alpha(alpha:Float):Void
+	override private function set_alpha(alpha:Float):Void
 	{
 		_technique.alpha = alpha;
 
 		super.alpha = alpha;
 	}
 
-	public function set color(color:UInt):Void
+	private function set_color(color:UInt):Void
 	{
 		_technique.color = color;
 	}
 
-	public function get color():UInt
+	private function get_color():UInt
 	{
 		return _technique.color;
 	}

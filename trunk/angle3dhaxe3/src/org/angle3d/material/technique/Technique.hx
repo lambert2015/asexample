@@ -183,7 +183,7 @@ class Technique
 //				}
 //				else
 //				{
-//					// Set the define.
+//					// set_the define.
 //					needReload = defines.set(defineName, type, value) || needReload;
 //				}
 		}

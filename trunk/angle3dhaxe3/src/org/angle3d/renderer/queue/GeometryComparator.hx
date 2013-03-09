@@ -13,7 +13,7 @@ import org.angle3d.scene.Geometry;
 interface GeometryComparator
 {
 	/**
-	 * Set the camera to use for sorting.
+	 * set_the camera to use for sorting.
 	 *
 	 * @param cam The camera to use for sorting
 	 */

@@ -11,10 +11,10 @@ import org.angle3d.renderer.RenderManager;
 class AbstractAppState implements AppState
 {
 	/**
-	 * <code>initialized</code> is set to true when the method
+	 * <code>initialized</code> is set_to true when the method
 	 * {@link AbstractAppState#initialize(org.angle3d.app.state.AppStateManager, org.angle3d.app.Application) }
 	 * is called. When {@link AbstractAppState#cleanup() } is called, <code>initialized</code>
-	 * is set back to false.
+	 * is set_back to false.
 	 */
 	private var mInitialized:Bool;
 	private var mEnabled:Bool;

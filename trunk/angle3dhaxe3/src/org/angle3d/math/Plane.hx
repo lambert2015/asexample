@@ -25,7 +25,7 @@ class Plane
 
 	/**
 	 * Constructor instantiates a new <code>Plane</code> object. The normal
-	 * and constant values are set at creation.
+	 * and constant values are set_at creation.
 	 *
 	 * @param normal
 	 *            the normal of the plane.

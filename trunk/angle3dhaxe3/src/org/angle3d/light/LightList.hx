@@ -30,7 +30,7 @@ class LightList
 	}
 
 	/**
-	 * Set the owner of the LightList. Only used for cloning.
+	 * set_the owner of the LightList. Only used for cloning.
 	 * @param owner
 	 */
 	public function setOwner(owner:Spatial):Void

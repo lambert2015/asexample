@@ -147,7 +147,7 @@ class Triangle implements Collidable
 	}
 
 	/**
-	 * obtains the unit length normal vector of this triangle, if set or
+	 * obtains the unit length normal vector of this triangle, if set_or
 	 * calculated
 	 *
 	 * @return the normal vector

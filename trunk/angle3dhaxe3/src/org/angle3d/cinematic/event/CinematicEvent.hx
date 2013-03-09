@@ -51,7 +51,7 @@ interface CinematicEvent
 	function getPlayState():Int;
 
 	/**
-	 * @param loopMode Set the loop mode for the channel. The loop mode
+	 * @param loopMode set_the loop mode for the channel. The loop mode
 	 * determines what will happen to the animation once it finishes
 	 * playing.
 	 *
@@ -61,7 +61,7 @@ interface CinematicEvent
 	function setLoopMode(loop:Int):Void;
 
 	/**
-	 * @return The loop mode currently set for the animation. The loop mode
+	 * @return The loop mode currently set_for the animation. The loop mode
 	 * determines what will happen to the animation once it finishes
 	 * playing.
 	 *

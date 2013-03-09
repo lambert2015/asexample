@@ -117,7 +117,7 @@ class CurveAndSurfaceMath
 			}
 			else
 			{
-				delta = KNOTS_MINIMUM_DELTA; //reset the delta's value
+				delta = KNOTS_MINIMUM_DELTA; //reset_the delta's value
 			}
 
 			prevValue = value;

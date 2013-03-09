@@ -53,7 +53,7 @@ class BoundingSphere extends BoundingVolume
 
 	/**
 	 * <code>computeFromPoints</code> creates a new Bounding Sphere from a
-	 * given set of points. It uses the <code>calcWelzl</code> method as
+	 * given set_of points. It uses the <code>calcWelzl</code> method as
 	 * default.
 	 *
 	 * @param points
@@ -66,7 +66,7 @@ class BoundingSphere extends BoundingVolume
 
 	/**
 	 * <code>computeFromTris</code> creates a new Bounding Box from a given
-	 * set of triangles. It is used in OBBTree calculations.
+	 * set_of triangles. It is used in OBBTree calculations.
 	 *
 	 * @param tris
 	 * @param start
@@ -91,7 +91,7 @@ class BoundingSphere extends BoundingVolume
 	}
 
 	/**
-	 * Calculates a minimum bounding sphere for the set of points. The algorithm
+	 * Calculates a minimum bounding sphere for the set_of points. The algorithm
 	 * was originally found at
 	 * http://www.flipcode.com/cgi-bin/msg.cgi?showThread=COTD-SmallestEnclosingSpheres&forum=cotd&id=-1
 	 * in C++ and translated to java by Cep21

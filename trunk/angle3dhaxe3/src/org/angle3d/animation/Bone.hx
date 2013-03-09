@@ -292,7 +292,7 @@ class Bone
 		mBindRot.copyFrom(localRot);
 		mBindScale.copyFrom(localScale);
 
-		// Save inverse derived position/scale/orientation, used for calculate offset transform later
+		// Save inverse derived position/scale/orientation, used for calculate offsettransform later
 		mWorldBindInversePos.copyFrom(mWorldPos);
 		mWorldBindInversePos.scaleLocal(-1);
 
@@ -310,7 +310,7 @@ class Bone
 	}
 
 	/**
-	 * Reset the bone and it's children to bind pose.
+	 * Reset_the bone and it's children to bind pose.
 	 */
 	public function reset():Void
 	{
@@ -403,7 +403,7 @@ class Bone
 
 	/**
 	 * Sets local bind transform for bone.
-	 * Call setBindingPose() after all of the skeleton bones' bind transforms are set to save them.
+	 * Call setBindingPose() after all of the skeleton bones' bind transforms are set_to save them.
 	 */
 	public function setBindTransforms(translation:Vector3f, rotation:Quaternion, scale:Vector3f = null):Void
 	{

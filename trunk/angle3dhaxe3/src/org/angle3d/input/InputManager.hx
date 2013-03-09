@@ -49,7 +49,7 @@ using org.angle3d.utils.ArrayUtil;
  * activates or deactivates. For a digital input such as key press, the <code>onAction()</code>
  * event will be raised with the <code>isPressed</code> argument equal to true,
  * when the key is released, <code>onAction</code> is called again but this time
- * with the <code>isPressed</code> argument set to false.
+ * with the <code>isPressed</code> argument set_to false.
  * For analog inputs, the <code>onAction</code> method will be called any time
  * the input is non-zero, however an exception to this is for joystick axis inputs,
  * which are only called when the input is above the {@link InputManager#setAxisDeadZone(float) dead zone}.
@@ -160,7 +160,7 @@ class InputManager implements RawInputListener
 	 * Called after a batch of input was sent to this
 	 * <code>RawInputListener</code>.
 	 *
-	 * The listener should set the {@link InputEvent#setConsumed() consumed flag}
+	 * The listener should set_the {@link InputEvent#setConsumed() consumed flag}
 	 * on any events that have been consumed either at this call or previous calls.
 	 */
 	public function afterInput():Void
@@ -224,7 +224,7 @@ class InputManager implements RawInputListener
 
 
 	/**
-	 * Set the deadzone for joystick axes.
+	 * set_the deadzone for joystick axes.
 	 *
 	 * <p>{@link ActionListener#onAction(java.lang.String, Bool, float) }
 	 * events will only be raised if the joystick axis value is greater than
@@ -440,7 +440,7 @@ class InputManager implements RawInputListener
 
 	/**
 	 * Do not use.
-	 * Called to reset pressed keys or buttons when focus is restored.
+	 * Called to reset_pressed keys or buttons when focus is restored.
 	 */
 	public function reset():Void
 	{
@@ -463,7 +463,7 @@ class InputManager implements RawInputListener
 	}
 
 	/**
-	 * Set whether the mouse cursor should be visible or not.
+	 * set_whether the mouse cursor should be visible or not.
 	 *
 	 * @param visible whether the mouse cursor should be visible or not.
 	 */
@@ -492,12 +492,12 @@ class InputManager implements RawInputListener
 	 *
 	 * <p>
 	 * Any raw input listeners registered to this <code>InputManager</code>
-	 * will receive raw input events first, before they get handled
+	 * will receive raw input events first, before they get_handled
 	 * by the <code>InputManager</code> itself. The listeners are
 	 * each processed in the order they were added, e.g. FIFO.
 	 * <p>
 	 * If a raw input listener has handled the event and does not wish
-	 * other listeners down the list to process the event, it may set the
+	 * other listeners down the list to process the event, it may set_the
 	 * {@link InputEvent#setConsumed() consumed flag} to indicate the
 	 * event was consumed and shouldn't be processed any further.
 	 * The listener may do this either at each of the event callbacks

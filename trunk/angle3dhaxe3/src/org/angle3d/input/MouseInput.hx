@@ -59,7 +59,7 @@ class MouseInput implements Input
 	}
 
 	/**
-	 * Set whether the mouse cursor should be visible or not.
+	 * set_whether the mouse cursor should be visible or not.
 	 *
 	 * @param visible Whether the mouse cursor should be visible or not.
 	 */
@@ -135,7 +135,7 @@ class MouseInput implements Input
 
 	/**
 	 * Queries the device for input. All events should be sent to the
-	 * RawInputListener set with setInputListener.
+	 * RawInputListener set_with setInputListener.
 	 *
 	 * @see #setInputListener(com.jme3.input.RawInputListener)
 	 */

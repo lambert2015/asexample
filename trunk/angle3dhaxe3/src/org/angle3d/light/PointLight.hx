@@ -44,7 +44,7 @@ class PointLight extends Light
 	}
 
 	/**
-	 * Set the world space position of the light.
+	 * set_the world space position of the light.
 	 *
 	 * @param position the world space position of the light.
 	 */
@@ -89,7 +89,7 @@ class PointLight extends Light
 	 * @return the inverse of the radius
 	 */
 	public var invRadius(get, null):Float;
-	public function get_invRadius():Float
+	private function get_invRadius():Float
 	{
 		return mInvRadius;
 	}

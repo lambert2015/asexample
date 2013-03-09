@@ -116,7 +116,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		initialized = true;
 	}
 
-	public function set enabled(value:Bool):Void
+	private function set_enabled(value:Bool):Void
 	{
 		if (value)
 		{
@@ -124,7 +124,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		}
 	}
 
-	public function get enabled():Bool
+	private function get_enabled():Bool
 	{
 		return playState == PlayState.Playing;
 	}
@@ -201,7 +201,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		var keyFrameIndex:Int = timeLine.getKeyFrameIndexFromTime(time);
 
 		//triggering all the event from start to "time" 
-		//then computing timeOffset for each event
+		//then computing timeoffsetfor each event
 		for (var i:Int = 0; i < (keyFrameIndex + 1); i++)
 		{
 			var keyFrame:KeyFrame = timeLine.getKeyFrameAtIndex(i);

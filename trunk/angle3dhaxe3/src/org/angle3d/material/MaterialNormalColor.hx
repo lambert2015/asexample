@@ -20,12 +20,12 @@ class MaterialNormalColor extends Material
 		addTechnique(_technique);
 	}
 
-	override public function set influence(value:Float):Void
+	override private function set_influence(value:Float):Void
 	{
 		_technique.influence = value;
 	}
 
-	public function get technique():TechniqueNormalColor
+	private function get_technique():TechniqueNormalColor
 	{
 		return _technique;
 	}

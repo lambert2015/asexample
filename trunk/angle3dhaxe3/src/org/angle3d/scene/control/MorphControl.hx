@@ -41,7 +41,7 @@ package org.angle3d.scene.control
 			_fps = value / 60;
 		}
 
-		private function get material():Material
+		private function get_material():Material
 		{
 			if (_material == null)
 			{
@@ -50,7 +50,7 @@ package org.angle3d.scene.control
 			return _material;
 		}
 
-		private function get mesh():MorphMesh
+		private function get_mesh():MorphMesh
 		{
 			if (_mesh == null)
 			{

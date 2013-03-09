@@ -50,7 +50,7 @@ class TechniqueNormalColor extends Technique
 		normalScale = new Vector3f(1, 1, 1);
 	}
 
-	public function set influence(value:Float):Void
+	private function set_influence(value:Float):Void
 	{
 		if (_influences == null)
 			_influences = new Vector<Float>(4, true);
@@ -58,12 +58,12 @@ class TechniqueNormalColor extends Technique
 		_influences[1] = value;
 	}
 
-	public function get influence():Float
+	private function get_influence():Float
 	{
 		return _influences[1];
 	}
 
-	public function set normalScale(value:Vector3f):Void
+	private function set_normalScale(value:Vector3f):Void
 	{
 		_normalScales[0] = value.x;
 		_normalScales[1] = value.y;
@@ -114,7 +114,7 @@ class TechniqueNormalColor extends Technique
 		map[BufferType.POSITION] = "a_position";
 		map[BufferType.NORMAL] = "a_normal";
 
-		if (meshType == MeshType.MT_KEYFRAME)
+		if (meshType == MeshType.KEYFRAME)
 		{
 			map[BufferType.POSITION1] = "a_position1";
 			map[BufferType.NORMAL1] = "a_normal1";

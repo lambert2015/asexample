@@ -20,7 +20,7 @@ interface Input
 
 	/**
 	 * Queries the device for input. All events should be sent to the
-	 * RawInputListener set with setInputListener.
+	 * RawInputListener set_with setInputListener.
 	 *
 	 * @see #setInputListener(com.jme3.input.RawInputListener)
 	 */

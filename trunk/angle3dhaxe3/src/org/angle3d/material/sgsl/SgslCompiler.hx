@@ -465,7 +465,7 @@ class SgslCompiler
 	 * I = Index register type (4 bits)
 	 * T = Register type (4 bits)
 	 * S = Swizzle (8 bits, 2 bits per component)
-	 * O = Indirect offset (8 bits)
+	 * O = Indirect offset(8 bits)
 	 * N = Register number (16 bits)
 	 * - = undefined, must be 0
 	 */
@@ -487,7 +487,7 @@ class SgslCompiler
 			var relativeNode:ArrayAccessNode = cast node;
 
 			//TODO 这里的offset可能不正确，是否需要加上reg.index呢
-			var relOffset:Int = relativeNode.offset + reg.index;
+			var relOffset:Int = relativeNode.offset+ reg.index;
 
 			var accessReg:RegNode = _currentData.getRegNode(relativeNode.access.name);
 
@@ -643,7 +643,7 @@ class SgslCompiler
 	{
 		if (swizzle == null || swizzle.length == 0)
 		{
-			return _xyzw.substr(tempReg.offset, tempReg.offset + tempReg.size);
+			return _xyzw.substr(tempReg.offset, tempReg.offset+ tempReg.size);
 		}
 
 		var result:String = "";

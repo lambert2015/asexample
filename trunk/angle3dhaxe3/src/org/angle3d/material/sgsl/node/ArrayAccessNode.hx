@@ -9,7 +9,7 @@ class ArrayAccessNode extends AtomNode
 	{
 		super(name);
 		access = null;
-		offset = 0;
+		offset= 0;
 	}
 
 	override public function isRelative():Bool
@@ -24,7 +24,7 @@ class ArrayAccessNode extends AtomNode
 		{
 			node.access = cast access.clone();
 		}
-		node.offset = offset;
+		node.offset= offset;
 		node.mask = mask;
 		return node;
 	}
@@ -38,13 +38,13 @@ class ArrayAccessNode extends AtomNode
 			out += access.toString(level);
 		}
 
-		if (offset >= 0)
+		if (offset>= 0)
 		{
 			if (access != null)
 			{
 				out += " + ";
 			}
-			out += offset + "";
+			out += offset+ "";
 		}
 
 		out += "]";

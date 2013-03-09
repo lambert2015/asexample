@@ -30,7 +30,7 @@ enum QueueBucket
 
 	/**
 	 * A special mode used for rendering really far away, flat objects -
-	 * e.g. skies. In this mode, the depth is set to infinity so
+	 * e.g. skies. In this mode, the depth is set_to infinity so
 	 * spatials in this bucket will appear behind everything, the downside
 	 * to this bucket is that 3D objects will not be rendered correctly
 	 * due to lack of depth testing.

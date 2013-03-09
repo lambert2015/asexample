@@ -240,7 +240,7 @@ class Vector4f
 	/**
 	 *
 	 * <code>negate</code> returns the negative of this vector. All values are
-	 * negated and set to a new vector.
+	 * negated and set_to a new vector.
 	 *
 	 * @return the negated vector.
 	 */

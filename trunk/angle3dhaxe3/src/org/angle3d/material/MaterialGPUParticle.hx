@@ -23,37 +23,37 @@ class MaterialGPUParticle extends Material
 		this.texture = texture;
 	}
 
-	public function set useLocalColor(value:Bool):Void
+	private function set_useLocalColor(value:Bool):Void
 	{
 		_technique.useLocalColor = value;
 	}
 
-	public function get useLocalColor():Bool
+	private function get_useLocalColor():Bool
 	{
 		return _technique.useLocalColor;
 	}
 
-	public function set useLocalAcceleration(value:Bool):Void
+	private function set_useLocalAcceleration(value:Bool):Void
 	{
 		_technique.useLocalAcceleration = value;
 	}
 
-	public function get useLocalAcceleration():Bool
+	private function get_useLocalAcceleration():Bool
 	{
 		return _technique.useLocalAcceleration;
 	}
 
-	public function set blendMode(mode:Int):Void
+	private function set_blendMode(mode:Int):Void
 	{
 		_technique.renderState.blendMode = mode;
 	}
 
-	public function set loop(value:Bool):Void
+	private function set_loop(value:Bool):Void
 	{
 		_technique.setLoop(value);
 	}
 
-	public function get loop():Bool
+	private function get_loop():Bool
 	{
 		return _technique.getLoop();
 	}
@@ -61,12 +61,12 @@ class MaterialGPUParticle extends Material
 	/**
 	 * 使用自转
 	 */
-	public function set useSpin(value:Bool):Void
+	private function set_useSpin(value:Bool):Void
 	{
 		_technique.setUseSpin(value);
 	}
 
-	public function get useSpin():Bool
+	private function get_useSpin():Bool
 	{
 		return _technique.getUseSpin();
 	}
@@ -113,22 +113,22 @@ class MaterialGPUParticle extends Material
 		_technique.setSize(start, end);
 	}
 
-	override public function set influence(value:Float):Void
+	override private function set_influence(value:Float):Void
 	{
 	}
 
-	public function get technique():TechniqueGPUParticle
+	private function get_technique():TechniqueGPUParticle
 	{
 		return _technique;
 	}
 
-	public function set texture(value:TextureMapBase):Void
+	private function set_texture(value:TextureMapBase):Void
 	{
 		_technique.texture = value;
 	}
 
 
-	public function get texture():TextureMapBase
+	private function get_texture():TextureMapBase
 	{
 		return _technique.texture;
 	}

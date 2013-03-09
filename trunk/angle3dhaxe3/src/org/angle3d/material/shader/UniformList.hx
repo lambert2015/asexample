@@ -43,7 +43,7 @@ class UniformList extends ShaderVariableList
 		{
 			var sv:ShaderVariable = _variables[i];
 			sv.location = offset;
-			offset += sv.size;
+			offset+= sv.size;
 		}
 	}
 }

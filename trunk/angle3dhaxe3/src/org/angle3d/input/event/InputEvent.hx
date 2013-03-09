@@ -27,7 +27,7 @@ class InputEvent
 	}
 
 	/**
-	 * Set the time when the event occurred.
+	 * set_the time when the event occurred.
 	 *
 	 * @param time time when the event occurred.
 	 */

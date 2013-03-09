@@ -25,8 +25,8 @@ enum LightMode
 	 * The geometry will be rendered once for each light. Each time the
 	 * light position and light color uniforms are updated to contain
 	 * the values for the current light. The ambient light color uniform
-	 * is only set to the ambient light color on the first pass, future
-	 * passes have it set to black.
+	 * is only set_to the ambient light color on the first pass, future
+	 * passes have it set_to black.
 	 */
 	MultiPass;
 	

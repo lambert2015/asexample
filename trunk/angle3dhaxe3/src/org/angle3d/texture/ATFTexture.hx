@@ -67,12 +67,12 @@ class ATFTexture extends TextureMapBase
 	}
 
 	public var context3DTextureFormat(get, set):Context3DTextureFormat;
-	public function get_context3DTextureFormat():Context3DTextureFormat
+	private function get_context3DTextureFormat():Context3DTextureFormat
 	{
 		return mContext3DTextureFormat;
 	}
 
-	public function set_context3DTextureFormat(value:Context3DTextureFormat):Context3DTextureFormat
+	private function set_context3DTextureFormat(value:Context3DTextureFormat):Context3DTextureFormat
 	{
 		mContext3DTextureFormat = value;
 		switch (mContext3DTextureFormat)

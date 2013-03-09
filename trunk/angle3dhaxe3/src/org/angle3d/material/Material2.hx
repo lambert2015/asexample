@@ -43,7 +43,7 @@ package org.angle3d.material
 		}
 
 		/**
-		 * Get the material definition (j3md file info) that <code>this</code>
+		 * get_the material definition (j3md file info) that <code>this</code>
 		 * material is implementing.
 		 *
 		 * @return the material definition this material implements.
@@ -107,7 +107,7 @@ package org.angle3d.material
 		}
 
 		/**
-		 * Returns the parameter set on this material with the given name,
+		 * Returns the parameter set_on this material with the given name,
 		 * returns <code>null</code> if the parameter is not set.
 		 *
 		 * @param name The parameter name to look up.
@@ -159,7 +159,7 @@ package org.angle3d.material
 
 
 		/**
-		 * Set a texture parameter.
+		 * set_a texture parameter.
 		 *
 		 * @param name The name of the parameter
 		 * @param type The variable type {@link VarType}
@@ -195,7 +195,7 @@ package org.angle3d.material
 		}
 
 		/**
-		 * Returns the texture parameter set on this material with the given name,
+		 * Returns the texture parameter set_on this material with the given name,
 		 * returns <code>null</code> if the parameter is not set.
 		 *
 		 * @param name The parameter name to look up.
@@ -216,7 +216,7 @@ package org.angle3d.material
 		 *
 		 * @param name the name of the texture defined in the material definition
 		 * (j3md) (for example Texture for Lighting.j3md)
-		 * @param value the Texture object previously loaded by the asset manager
+		 * @param value the Texture object previously loaded by the asset_manager
 		 */
 		public function setTexture(name:String, value:TextureMapBase):Void
 		{
@@ -332,8 +332,8 @@ package org.angle3d.material
 		}
 
 		/**
-		 * Check if the transparent value marker is set on this material.
-		 * @return True if the transparent value marker is set on this material.
+		 * Check if the transparent value marker is set_on this material.
+		 * @return True if the transparent value marker is set_on this material.
 		 * @see #setTransparent(Bool)
 		 */
 		public function isTransparent():Bool
@@ -342,7 +342,7 @@ package org.angle3d.material
 		}
 
 		/**
-		 * Set the transparent value marker.
+		 * set_the transparent value marker.
 		 *
 		 * <p>This value is merely a marker, by itself it does nothing.
 		 * Generally model loaders will use this marker to indicate further
@@ -370,7 +370,7 @@ package org.angle3d.material
 		}
 
 		/**
-		 * Set if the material should receive shadows or not.
+		 * set_if the material should receive shadows or not.
 		 *
 		 * <p>This value is merely a marker, by itself it does nothing.
 		 * Generally model loaders will use this marker to indicate

@@ -60,17 +60,17 @@ class AbstractCinematicEvent implements CinematicEvent
 		_onStopSignal = new CinematicSignal();
 	}
 
-	public function get onStartSignal():CinematicSignal
+	private function get_onStartSignal():CinematicSignal
 	{
 		return _onStartSignal;
 	}
 
-	public function get onPauseSignal():CinematicSignal
+	private function get_onPauseSignal():CinematicSignal
 	{
 		return _onPauseSignal;
 	}
 
-	public function get onStopSignal():CinematicSignal
+	private function get_onStopSignal():CinematicSignal
 	{
 		return _onStopSignal;
 	}

@@ -14,7 +14,7 @@ class BufferUtils
 	 * index provided.
 	 *
 	 * @param vector
-	 *            the vector to set data on
+	 *            the vector to set_data on
 	 * @param buf
 	 *            the buffer to read from
 	 * @param index

@@ -43,7 +43,7 @@ class MotionPath
 		_wayPointReach = new MotionPathSignal();
 	}
 
-	public function get onWayPointReach():MotionPathSignal
+	private function get_onWayPointReach():MotionPathSignal
 	{
 		return _wayPointReach;
 	}
@@ -231,7 +231,7 @@ class MotionPath
 	 * return the type of spline used for the path interpolation for this path
 	 * @return the path interpolation spline type
 	 */
-	public function get splineType():Int
+	private function get_splineType():Int
 	{
 		return _spline.type;
 	}
@@ -240,7 +240,7 @@ class MotionPath
 	 * sets the type of spline used for the path interpolation for this path
 	 * @param pathSplineType
 	 */
-	public function set splineType(type:Int):Void
+	private function set_splineType(type:Int):Void
 	{
 		_spline.type = type;
 	}
@@ -280,7 +280,7 @@ class MotionPath
 	 * return the number of waypoints of this path
 	 * @return
 	 */
-	public function get numWayPoints():Int
+	private function get_numWayPoints():Int
 	{
 		return _spline.getControlPoints().length;
 	}

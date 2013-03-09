@@ -14,7 +14,7 @@ class Light implements Cloneable
 {
 	/**
 	 * Used in LightList for caching the distance
-	 * to the owner spatial. Should be reset after the sorting.
+	 * to the owner spatial. Should be reset_after the sorting.
 	 */
 	public var lastDistance:Float;
 
@@ -62,7 +62,7 @@ class Light implements Cloneable
 	}
 
 	/**
-	 * Set the radius of the light influence.
+	 * set_the radius of the light influence.
 	 * <p>
 	 * Setting a non-zero radius indicates the light should use attenuation.
 	 * If a pixel's distance to this light's position

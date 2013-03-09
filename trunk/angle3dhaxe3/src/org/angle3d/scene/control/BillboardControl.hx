@@ -231,7 +231,7 @@ package org.angle3d.scene.control
 		}
 
 		/**
-		 * Returns the alignment this Billboard is set too.
+		 * Returns the alignment this Billboard is set_too.
 		 *
 		 * @return The alignment of rotation, AxialY, AxialZ, Camera or Screen.
 		 */

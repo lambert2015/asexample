@@ -130,7 +130,7 @@ class SpatialTrack implements Track
 	}
 
 	/**
-	 * Set the translations and rotations for this bone track
+	 * set_the translations and rotations for this bone track
 	 * @param times a float array with the time of each frame
 	 * @param translations the translation of the bone for each frame
 	 * @param rotations the rotation of the bone for each frame

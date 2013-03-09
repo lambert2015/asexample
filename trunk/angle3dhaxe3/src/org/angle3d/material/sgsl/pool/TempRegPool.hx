@@ -91,7 +91,7 @@ class TempRegPool extends RegPool
 				{
 					var free:TempFree = freeList[m];
 					//空闲空间大于等于需要的大小,并且无偏移
-					if (free.size >= size && free.offset == 0)
+					if (free.size >= size && free.offset== 0)
 					{
 						_registerVar(tVar, i, free.offset, size);
 						return;
@@ -125,13 +125,13 @@ class TempRegPool extends RegPool
 	 * 注册一个临时变量
 	 * @param	tVar
 	 * @param	index 起始寄存器位置
-	 * @param	offset 偏移量
+	 * @param	offset偏移量
 	 * @param	size 需要注册的寄存器大小
 	 */
 	private function _registerVar(reg:TempReg, index:Int, offset:Int, size:Int):Void
 	{
 		reg.index = index;
-		reg.offset = offset;
+		reg.offset= offset;
 		_registerPool(index * 4 + offset, size);
 	}
 
@@ -204,7 +204,7 @@ class TempRegPool extends RegPool
 				{
 					//写入起始位置
 					tempFree = new TempFree();
-					tempFree.offset = j;
+					tempFree.offset= j;
 					list.push(tempFree);
 					isFirst = false;
 				}

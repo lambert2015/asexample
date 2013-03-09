@@ -178,7 +178,7 @@ class BoundingVolume implements Collidable
 	 * point.
 	 *
 	 * @param point
-	 *            The point to get the distance to
+	 *            The point to get_the distance to
 	 * @return distance
 	 */
 	public function distanceTo(t:Vector3f):Float
@@ -191,7 +191,7 @@ class BoundingVolume implements Collidable
 	 * given point.
 	 *
 	 * @param point
-	 *            The point to get the distance to
+	 *            The point to get_the distance to
 	 * @return distance
 	 */
 	public function distanceSquaredTo(t:Vector3f):Float
@@ -204,7 +204,7 @@ class BoundingVolume implements Collidable
 	 * point.
 	 *
 	 * @param point
-	 *            The point to get the distance to
+	 *            The point to get_the distance to
 	 * @return distance
 	 */
 	public function distanceToEdge(point:Vector3f):Float

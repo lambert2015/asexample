@@ -57,7 +57,7 @@ class TechniqueTexture extends Technique
 	}
 
 	public var skinningMatrices(null, set):Vector<Float>;
-	public function set_skinningMatrices(data:Vector<Float>):Vector<Float>
+	private function set_skinningMatrices(data:Vector<Float>):Vector<Float>
 	{
 		_skinningMatrices = data;
 		return data;
@@ -65,11 +65,11 @@ class TechniqueTexture extends Technique
 
 	
 	public var useTexCoord2(get, set):Bool;
-	public function get_useTexCoord2():Bool
+	private function get_useTexCoord2():Bool
 	{
 		return _useTexCoord2;
 	}
-	public function set_useTexCoord2(value:Bool):Bool
+	private function set_useTexCoord2(value:Bool):Bool
 	{
 		_useTexCoord2 = value;
 		return value;

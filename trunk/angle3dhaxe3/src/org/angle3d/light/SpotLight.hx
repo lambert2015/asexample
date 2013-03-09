@@ -98,7 +98,7 @@ class SpotLight extends Light
 	}
 
 	/**
-	 * Set the range of the light influence.
+	 * set_the range of the light influence.
 	 * <p>
 	 * Setting a non-zero range indicates the light should use attenuation.
 	 * If a pixel's distance to this light's position
