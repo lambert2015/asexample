@@ -3,15 +3,15 @@
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
-
+import haxe.ds.Vector;
 /**
  * A UV Sphere primitive mesh.
  */
 class Sphere extends Mesh
 {
 	private var _radius:Float;
-	private var _segmentsW:uint;
-	private var _segmentsH:uint;
+	private var _segmentsW:Int;
+	private var _segmentsH:Int;
 	private var _yUp:Bool;
 
 	/**
@@ -21,7 +21,7 @@ class Sphere extends Mesh
 	 * @param segmentsH Defines the number of vertical segments that make up the sphere. Defaults to 12.
 	 * @param yUp Defines whether the sphere poles should lay on the Y-axis (true) or on the Z-axis (false).
 	 */
-	public function new(radius:Float = 50, segmentsW:uint = 16, segmentsH:uint = 12, yUp:Bool = true)
+	public function new(radius:Float = 50, segmentsW:Int = 16, segmentsH:Int = 12, yUp:Bool = true)
 	{
 		super();
 
@@ -39,27 +39,22 @@ class Sphere extends Mesh
 	 */
 	private function buildGeometry():Void
 	{
-		var vertices:Vector<Float>;
-		var vertexNormals:Vector<Float>;
-		var vertexTangents:Vector<Float>;
-		var indices:Vector<UInt>;
+		var triIndex:Int = 0;
+		var numVerts:Int = (_segmentsH + 1) * (_segmentsW + 1);
 
-		var i:uint, j:uint, triIndex:uint;
-		var numVerts:uint = (_segmentsH + 1) * (_segmentsW + 1);
-
-		vertices = new Vector<Float>(numVerts * 3, true);
-		vertexNormals = new Vector<Float>(numVerts * 3, true);
-		vertexTangents = new Vector<Float>(numVerts * 3, true);
-		indices = new Vector<UInt>((_segmentsH - 1) * _segmentsW * 6, true);
+		var vertices:Vector<Float> = new Vector<Float>(numVerts * 3);
+		var vertexNormals:Vector<Float> = new Vector<Float>(numVerts * 3);
+		var vertexTangents:Vector<Float> = new Vector<Float>(numVerts * 3);
+		var indices:Vector<UInt> = new Vector<UInt>((_segmentsH - 1) * _segmentsW * 6);
 
 		numVerts = 0;
-		for (j = 0; j <= _segmentsH; ++j)
+		for (j in 0..._segmentsH+1)
 		{
 			var horangle:Float = Math.PI * j / _segmentsH;
 			var z:Float = -_radius * Math.cos(horangle);
 			var ringradius:Float = _radius * Math.sin(horangle);
 
-			for (i = 0; i <= _segmentsW; ++i)
+			for (i in 0..._segmentsW+1)
 			{
 				var verangle:Float = 2 * Math.PI * i / _segmentsW;
 				var x:Float = ringradius * Math.cos(verangle);
@@ -124,18 +119,17 @@ class Sphere extends Mesh
 			}
 		}
 
-		var numUvs:uint = (_segmentsH + 1) * (_segmentsW + 1) * 2;
-		var uvData:Vector<Float> = new Vector<Float>(numUvs, true);
+		var numUvs:Int = (_segmentsH + 1) * (_segmentsW + 1) * 2;
+		var uvData:Vector<Float> = new Vector<Float>(numUvs);
 		numUvs = 0;
-		for (j = 0; j <= _segmentsH; ++j)
+		for (j in 0..._segmentsH+1)
 		{
-			for (i = 0; i <= _segmentsW; ++i)
+			for (i in 0..._segmentsW+1)
 			{
 				uvData[numUvs++] = i / _segmentsW;
 				uvData[numUvs++] = j / _segmentsH;
 			}
 		}
-
 
 		var subMesh:SubMesh = new SubMesh();
 		subMesh.setVertexBuffer(BufferType.POSITION, 3, vertices);
@@ -151,56 +145,60 @@ class Sphere extends Mesh
 	/**
 	 * The radius of the sphere.
 	 */
-	public function get radius():Float
+	public var radius(get, set):Float;
+	private function get_radius():Float
 	{
 		return _radius;
 	}
-
-	public function set radius(value:Float):Void
+	private function set_radius(value:Float):Float
 	{
 		_radius = value;
 		buildGeometry();
+		return _radius;
 	}
 
 	/**
 	 * Defines the number of horizontal segments that make up the sphere. Defaults to 16.
 	 */
-	public function get segmentsW():uint
+	public var segmentsW(get, set):Int;
+	private function get_segmentsW():Int
 	{
 		return _segmentsW;
 	}
-
-	public function set segmentsW(value:uint):Void
+	private function set_segmentsW(value:Int):Int
 	{
 		_segmentsW = value;
 		buildGeometry();
+		return _segmentsW;
 	}
 
 	/**
 	 * Defines the number of vertical segments that make up the sphere. Defaults to 12.
 	 */
-	public function get segmentsH():uint
+	public var segmentsH(get, set):Int;
+	private function get_segmentsH():Int
 	{
 		return _segmentsH;
 	}
-
-	public function set segmentsH(value:uint):Void
+	private function set_segmentsH(value:Int):Int
 	{
 		_segmentsH = value;
 		buildGeometry();
+		return _segmentsH;
 	}
 
 	/**
 	 * Defines whether the sphere poles should lay on the Y-axis (true) or on the Z-axis (false).
 	 */
-	public function get yUp():Bool
+	public var yUp(get, set):Bool;
+	private function get_yUp():Bool
 	{
 		return _yUp;
 	}
-
-	public function set yUp(value:Bool):Void
+	private function set_yUp(value:Bool):Bool
 	{
 		_yUp = value;
 		buildGeometry();
+		return _yUp;
 	}
 }
