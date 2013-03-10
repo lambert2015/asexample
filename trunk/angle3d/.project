@@ -25,5 +25,10 @@
 			<type>2</type>
 			<location>E:/source/angle3d_bin</location>
 		</link>
+		<link>
+			<name>bin-release1</name>
+			<type>2</type>
+			<location>D:/SVNSpace/molehill/angle3d_bin</location>
+		</link>
 	</linkedResources>
 </projectDescription>

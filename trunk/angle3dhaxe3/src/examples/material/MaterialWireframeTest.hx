@@ -1,6 +1,5 @@
 package examples.material;
 
-import flash.Lib;
 import org.angle3d.app.SimpleApplication;
 import org.angle3d.math.FastMath;
 import org.angle3d.math.Vector3f;
@@ -18,11 +17,6 @@ import org.angle3d.utils.Stats;
 
 class MaterialWireframeTest extends SimpleApplication
 {
-	static function main()
-	{
-		Lib.current.addChild(new MaterialWireframeTest());
-	}
-	
 	private var geometry : Geometry;
 
 	private var angle : Float;
@@ -80,6 +74,8 @@ class MaterialWireframeTest extends SimpleApplication
 
 	override public function simpleUpdate(tpf : Float) : Void
 	{
+		super.simpleUpdate(tpf);
+		
 		angle += 0.03;
 		angle %= FastMath.TWO_PI();
 

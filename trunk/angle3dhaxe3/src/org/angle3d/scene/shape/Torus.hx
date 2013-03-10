@@ -21,12 +21,12 @@ class Torus extends Mesh
 		var _indices:Vector<UInt> = new Vector<UInt>();
 		var _verticesIndex:Int = 0;
 		var _indiceIndex:Int = 0;
-		var _grid:Vector<Vector<int>> = new Vector<Vector<int>>(segmentsR, true);
+		var _grid:Vector<Vector<Int>> = new Vector<Vector<Int>>(segmentsR, true);
 
 
 		for (var i:Int = 0; i < segmentsR; i++)
 		{
-			_grid[i] = new Vector<int>(segmentsT, true);
+			_grid[i] = new Vector<Int>(segmentsT, true);
 			for (var j:Int = 0; j < segmentsT; j++)
 			{
 				var u:Float = i / segmentsR * 2 * Math.PI;
