@@ -595,7 +595,7 @@ class InputManager implements RawInputListener
 				var listener:InputListener = listeners[j];
 				if (Std.is(listener,ActionListener))
 				{
-					(cast listener).onAction(mapping.name, pressed, frameTPF);
+					cast(listener,ActionListener).onAction(mapping.name, pressed, frameTPF);
 				}
 			}
 		}
@@ -659,19 +659,19 @@ class InputManager implements RawInputListener
 
 				if (Std.is(event,MouseMotionEvent))
 				{
-					listener.onMouseMotionEvent(cast event);
+					listener.onMouseMotionEvent(cast(event, MouseMotionEvent));
 				}
 				else if (Std.is(event,KeyInputEvent))
 				{
-					listener.onKeyEvent(cast event);
+					listener.onKeyEvent(cast(event, KeyInputEvent));
 				}
 				else if (Std.is(event,MouseButtonEvent))
 				{
-					listener.onMouseButtonEvent(cast event);
+					listener.onMouseButtonEvent(cast(event, MouseButtonEvent));
 				}
 				else if (Std.is(event,MouseWheelEvent))
 				{
-					listener.onMouseWheelEvent(cast event);
+					listener.onMouseWheelEvent(cast(event, MouseWheelEvent));
 				}
 				else
 				{
@@ -693,19 +693,19 @@ class InputManager implements RawInputListener
 
 			if (Std.is(event,MouseMotionEvent))
 			{
-				onMouseMotionEventQueued(cast event);
+				onMouseMotionEventQueued(cast(event, MouseMotionEvent));
 			}
 			else if (Std.is(event,KeyInputEvent))
 			{
-				onKeyEventQueued(cast event);
+				onKeyEventQueued(cast(event, KeyInputEvent));
 			}
 			else if (Std.is(event,MouseButtonEvent))
 			{
-				onMouseButtonEventQueued(cast event);
+				onMouseButtonEventQueued(cast(event, MouseButtonEvent));
 			}
 			else if (Std.is(event,MouseWheelEvent))
 			{
-				onMouseWheelEventQueued(cast event);
+				onMouseWheelEventQueued(cast(event, MouseWheelEvent));
 			}
 			else
 			{
@@ -763,7 +763,7 @@ class InputManager implements RawInputListener
 				if (Std.is(listener,AnalogListener))
 				{
 					// NOTE: multiply by TPF for any button bindings
-					(cast listener).onAnalog(mapping.name, value, frameTPF);
+					cast(listener,AnalogListener).onAnalog(mapping.name, value, frameTPF);
 				}
 			}
 		}
@@ -801,13 +801,13 @@ class InputManager implements RawInputListener
 
 				if (Std.is(listener,ActionListener))
 				{
-					(cast listener).onAction(mapping.name, true, frameTPF);
+					cast(listener,ActionListener).onAction(mapping.name, true, frameTPF);
 				}
 
 
 				if (Std.is(listener,AnalogListener))
 				{
-					(cast listener).onAnalog(mapping.name, value, frameTPF);
+					cast(listener,AnalogListener).onAnalog(mapping.name, value, frameTPF);
 				}
 			}
 		}

@@ -2,8 +2,8 @@ package org.angle3d.material.sgsl.node
 {
 	import flash.utils.Dictionary;
 
-	import org.angle3d.material.sgsl.node.reg.RegNode;
 	import org.angle3d.material.sgsl.node.agal.AgalNode;
+	import org.angle3d.material.sgsl.node.reg.RegNode;
 
 	/**
 	 * FunctionNode的Child只有两种
@@ -112,7 +112,14 @@ package org.angle3d.material.sgsl.node
 					}
 					else
 					{
-						callNode = agalNode.children[1] as FunctionCallNode;
+						if (agalNode.children[1] is FunctionCallNode)
+						{
+							callNode = agalNode.children[1] as FunctionCallNode;
+						}
+						else
+						{
+							callNode = null;
+						}
 					}
 
 					if (isCustomFunctionCall(callNode, functionMap))

@@ -143,21 +143,22 @@ class SgslData
 
 			if (Std.is(reg,FunctionCallNode))
 			{
-				var regChildren:Array<LeafNode> = (cast reg).children;
+				var callNode:FunctionCallNode = cast(reg,FunctionCallNode);
+				var regChildren:Array<LeafNode> = callNode.children;
 				var rLength:Int = regChildren.length;
 				var j:Int = 0;
 				while(j < rLength && j < 2)
 				{
 					if (Std.is(regChildren[j], ConstantNode))
 					{
-						addConstantNode(cast regChildren[j]);
+						addConstantNode(cast(regChildren[j], ConstantNode));
 					}
 					j++;
 				}
 			}
 			else if (Std.is(reg, ConstantNode))
 			{
-				addConstantNode(cast reg);
+				addConstantNode(cast(reg, ConstantNode));
 			}
 		}
 
@@ -240,6 +241,7 @@ class SgslData
 				varyingPool.addReg(reg);
 			case RegType.OUTPUT, RegType.DEPTH:
 				//do nothing
+				trace(reg.name);
 		}
 		_regsMap.set(reg.name,reg);
 	}
@@ -326,7 +328,7 @@ class SgslData
 		{
 			_addTempReg(leaf.name, list);
 
-			var access:AtomNode = (cast leaf).access;
+			var access:AtomNode = cast(leaf,ArrayAccessNode).access;
 			if (access != null)
 			{
 				_addTempReg(access.name, list);
@@ -343,7 +345,7 @@ class SgslData
 		var reg:RegNode = getRegNode(name);
 		if (Std.is(reg,TempReg))
 		{
-			list.push(cast reg);
+			list.push(cast(reg, TempReg));
 		}
 	}
 
@@ -364,7 +366,8 @@ class SgslData
 			leaf = children[i];
 			if (Std.is(leaf,FunctionCallNode))
 			{
-				var leafChildren:Array<LeafNode> = (cast leaf).children;
+				var callNode:FunctionCallNode = cast(leaf,FunctionCallNode);
+				var leafChildren:Array<LeafNode> = callNode.children;
 				var rLength:Int = leafChildren.length;
 				var j:Int = 0;
 				while(j < rLength && j < 2)

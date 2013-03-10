@@ -77,7 +77,7 @@ class BranchNode extends LeafNode
 			//预定义条件
 			if (Std.is(child,PredefineNode))
 			{
-				predefine = cast child;
+				predefine = cast(child, PredefineNode);
 				//符合条件则替换掉，否则忽略
 				if (predefine.isMatch(defines))
 				{
@@ -93,7 +93,7 @@ class BranchNode extends LeafNode
 				//在自身内部filter
 				if (Std.is(child,BranchNode))
 				{
-					(cast child).filter(defines);
+					cast(child, BranchNode).filter(defines);
 				}
 				results.push(child);
 			}

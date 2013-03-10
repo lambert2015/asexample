@@ -26,7 +26,7 @@ class WireframeGeometry extends Geometry
 	public var materialWireframe(get, null):MaterialWireframe;
 	private function get_materialWireframe():MaterialWireframe
 	{
-		return cast this.mMaterial;
+		return cast(this.mMaterial, MaterialWireframe);
 	}
 }
 

@@ -263,10 +263,10 @@ class Geometry extends Spatial
 		}
 		else
 		{
-			geom = cast result;
+			geom = cast(result, Geometry);
 		}
 
-		geom = cast super.clone(newName, cloneMaterial, geom);
+		geom = cast(super.clone(newName, cloneMaterial, geom), Geometry);
 
 		geom.mCachedWorldMat.copyFrom(mCachedWorldMat);
 		if (mMaterial != null)

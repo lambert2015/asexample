@@ -68,13 +68,13 @@ class Shader
 
 	public function getTextureVar(name:String):TextureVariable
 	{
-		return cast _textureList.getVariable(name);
+		return cast(_textureList.getVariable(name), TextureVariable);
 	}
 
 	//TODO 添加方法根据类型来获得AttributeVar
 	public function getAttributeByName(name:String):AttributeVar
 	{
-		return cast _attributeList.getVariable(name);
+		return cast(_attributeList.getVariable(name), AttributeVar);
 	}
 
 	
@@ -98,7 +98,7 @@ class Shader
 		var size:Int = textures.length;
 		for (i in 0...size)
 		{
-			var tex:TextureVariable = cast textures[i];
+			var tex:TextureVariable = cast(textures[i], TextureVariable);
 			render.setTextureAt(tex.location, tex.textureMap);
 		}
 	}
@@ -156,7 +156,7 @@ class Shader
 
 	public function getUniform(type:ShaderType, name:String):Uniform
 	{
-		return cast getUniformList(type).getVariable(name);
+		return cast(getUniformList(type).getVariable(name), Uniform);
 	}
 
 	public function getAttributes():StringMap<ShaderVariable>
@@ -171,7 +171,7 @@ class Shader
 
 	public function getAttribute(bufferType:String):AttributeVar
 	{
-		return cast _bindAttributes.get(bufferType);
+		return cast(_bindAttributes.get(bufferType), AttributeVar);
 	}
 
 	/**

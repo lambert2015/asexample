@@ -247,14 +247,14 @@ class BIHTree implements CollisionData
 		if (pivot < l)
 		{
 			//Only right
-			rbbox = cast currentBox.clone();
+			rbbox = cast(currentBox.clone(), BoundingBox);
 			setMinMax(rbbox, true, axis, split);
 			return createNode(l, r, rbbox, depth + 1);
 		}
 		else if (pivot > r)
 		{
 			//Only left
-			lbbox = cast currentBox.clone();
+			lbbox = cast(currentBox.clone(), BoundingBox);
 			setMinMax(lbbox, false, axis, split);
 			return createNode(l, r, lbbox, depth + 1);
 		}
@@ -265,7 +265,7 @@ class BIHTree implements CollisionData
 			node.axis = axis;
 
 			//Left child
-			lbbox = cast currentBox.clone();
+			lbbox = cast(currentBox.clone(), BoundingBox);
 			setMinMax(lbbox, false, axis, split);
 
 			//The left node right border is the plane most right
@@ -273,7 +273,7 @@ class BIHTree implements CollisionData
 			node.left = createNode(l, FastMath.maxInt(l, pivot - 1), lbbox, depth + 1); //Recursive call
 
 			//Right Child
-			rbbox = cast currentBox.clone();
+			rbbox = cast(currentBox.clone(), BoundingBox);
 			setMinMax(rbbox, true, axis, split);
 			//The right node left border is the plane most left
 			node.rightPlane = getMinMax(createBox(pivot, r), true, axis);
@@ -380,13 +380,13 @@ class BIHTree implements CollisionData
 		var bbox:BoundingBox = null;
 		if (Std.is(bv,BoundingSphere))
 		{
-			var sphere:BoundingSphere = cast bv;
+			var sphere:BoundingSphere = cast(bv,BoundingSphere);
 			bbox = new BoundingBox(bv.center.clone());
 			bbox.setExtent(sphere.radius, sphere.radius, sphere.radius);
 		}
 		else if (Std.is(bv,BoundingBox))
 		{
-			bbox = cast bv.clone();
+			bbox = cast(bv.clone(), BoundingBox);
 		}
 		else
 		{
@@ -404,12 +404,12 @@ class BIHTree implements CollisionData
 	{
 		if (Std.is(other,Ray))
 		{
-			var ray:Ray = cast other;
+			var ray:Ray = cast(other, Ray);
 			return collideWithRay(ray, worldMatrix, worldBound, results);
 		}
 		else if (Std.is(other,BoundingVolume))
 		{
-			var bv:BoundingVolume = cast other;
+			var bv:BoundingVolume = cast(other, BoundingVolume);
 			return collideWithBoundingVolume(bv, worldMatrix, results);
 		}
 		else
