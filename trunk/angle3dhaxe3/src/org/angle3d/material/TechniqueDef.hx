@@ -1,8 +1,6 @@
 package org.angle3d.material;
 
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-import haxe.ds.Vector;
 
 /**
  * Describes a technique definition.
