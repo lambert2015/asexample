@@ -11,6 +11,7 @@ import flash.system.System;
 import flash.text.StyleSheet;
 import flash.text.TextField;
 import flash.xml.XML;
+import flash.xml.XMLList;
 
 
 class Stats extends Sprite 
@@ -45,12 +46,12 @@ class Stats extends Sprite
 	/**
 	 * <b>Stats</b> FPS, MS and MEM, all in one.
 	 */
-	public function new() {
-
+	public function new() 
+	{
 		super();
+		
 		mem_max = 0;
 		fps = 0;
-
 
 		xml = new XML("<xml><fps>FPS:</fps><ms>MS:</ms><mem>MEM:</mem><memMax>MAX:</memMax></xml>");
 
@@ -73,11 +74,10 @@ class Stats extends Sprite
 
 		this.addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
 		this.addEventListener(Event.REMOVED_FROM_STAGE, destroy, false, 0, true);
-		
 	}
 
-	private function init(e : Event) {
-
+	private function init(e : Event):Void  
+	{
 		_stage = flash.Lib.current.stage;
 		graphics.beginFill(Colors.bg);
 		graphics.drawRect(0, 0, GRAPH_WIDTH, TEXT_HEIGHT);
@@ -93,8 +93,8 @@ class Stats extends Sprite
 		
 	}
 
-	private function destroy(e : Event) {
-		
+	private function destroy(e : Event):Void  
+	{
 		graphics.clear();
 		
 		while(numChildren > 0)
@@ -106,12 +106,14 @@ class Stats extends Sprite
 		
 	}
 
-	private function update(e : Event) {
+	private function update(e : Event):Void 
+	{
 
 		timer = flash.Lib.getTimer();
 		
 		//after a second has passed 
-		if( timer - 1000 > ms_prev ) {
+		if ( timer - 1000 > ms_prev ) 
+		{
 
 			mem = System.totalMemory * 0.000000954;
 			mem_max = mem_max > mem ? mem_max : mem;
@@ -132,9 +134,9 @@ class Stats extends Sprite
 			graph.setPixel(XPOS, ms_graph, Colors.ms);
 			graph.unlock();
 
-			xml.fps = "FPS: " + fps + " / " + stage.frameRate; 
-			xml.mem = "MEM: " + mem;
-			xml.memMax = "MAX: " + mem_max;			
+			xml.fps = new XMLList("FPS: " + fps + " / " + stage.frameRate); 
+			xml.mem = new XMLList("MEM: " + mem);
+			xml.memMax = new XMLList("MAX: " + mem_max);			
 
 			//reset frame and time counters
 			fps = 0;
@@ -145,15 +147,14 @@ class Stats extends Sprite
 		//increment number of frames which have occurred in current second
 		fps++;
 
-		xml.ms = "MS: " + (timer - ms);
+		xml.ms = new XMLList("MS: " + (timer - ms));
 		ms = timer;
 		
 		text.htmlText = xml.toString();
 	}
 
-
-	
-	function normalizeMem(_mem:Float):Int {
+	private function normalizeMem(_mem:Float):Int 
+	{
 		return Std.int( Math.min( GRAPH_HEIGHT, Math.sqrt(Math.sqrt(_mem * 5000)) ) - 2);
 	}
 	

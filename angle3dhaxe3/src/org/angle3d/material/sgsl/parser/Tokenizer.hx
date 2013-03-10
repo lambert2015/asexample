@@ -12,6 +12,7 @@ import org.angle3d.material.sgsl.error.UnexpectedTokenError;
 class Tokenizer
 {
 	private var _tokenRegex:Array<String>;
+	private var _regSource:String;
 	private var _tokenRegexpCount:Int;
 
 	private var _reservedMap:StringMap<String>;
@@ -55,12 +56,6 @@ class Tokenizer
 	//TODO 优化，每次检查之后应该去掉之前的字符串
 	public function next():Void
 	{
-		// skip spaces
-		while (_source.charCodeAt(_position) <= 32)
-		{
-			_position++;
-		}
-
 		// end of script
 		if (_position >= _sourceSize)
 		{
@@ -75,6 +70,12 @@ class Tokenizer
 				token = new Token(TokenType.EOF, "<EOF>");
 			}
 			return;
+		}
+		
+		// skip spaces
+		while (_source.charCodeAt(_position) <= 32)
+		{
+			_position++;
 		}
 
 		token = nextToken;
@@ -127,64 +128,65 @@ class Tokenizer
 		 */
 		result = untyped result.replace(new RegExp("\\t+|\\x20+", "g"), " ");
 		result = untyped result.replace(new RegExp("\\r\n|\\n", "g"), "");
-
-		//return result;
-		return value;
+		
+		return result;
 	}
 
 	private function _buildRegex():Void
 	{
-		_tokenRegex = [TokenType.IDENTIFIER, "[a-zA-Z_][a-zA-Z0-9_]*",
-						TokenType.NUMBER, "[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?",
-						TokenType.PREDEFINE, "#[elsdif]{4,6}",
-						// grouping
-						TokenType.SEMI, ";",
-						TokenType.LBRACE, "{",
-						TokenType.RBRACE, "}",
-						TokenType.LBRACKET, "\\[",
-						TokenType.RBRACKET, "\\]",
-						TokenType.LPAREN, "\\(",
-						TokenType.RPAREN, "\\)",
-						TokenType.COMMA, ",",
-						//compare
-						TokenType.GREATER_THAN, "\\>",
-						TokenType.LESS_THAN, "\\<",
-						TokenType.GREATER_EQUAL, "\\>=",
-						TokenType.LESS_EQUAL, "\\<=",
-						TokenType.NOT_EQUAL, "\\!=",
-						TokenType.DOUBLE_EQUAL, "==",
-						//operators
-						TokenType.DOT, "\\.",
-						TokenType.PLUS, "\\+",
-						TokenType.SUBTRACT, "-",
-						TokenType.MULTIPLY, "\\*",
-						TokenType.DIVIDE, "\\/",
-						TokenType.EQUAL, "=",
-						TokenType.AND, "&&",
-						TokenType.OR, "\\|\\|"];
-
-		_tokenRegexpCount = Std.int(_tokenRegex.length * 0.5);
-
-		var reg:String = "^(";
-		for (i in 0..._tokenRegexpCount)
+		if (_tokenRegex == null)
 		{
-			reg += "?P<" + _tokenRegex[i * 2] + ">" + _tokenRegex[i * 2 + 1];
-			if (i < _tokenRegexpCount)
-				reg += ")|^(";
+			_tokenRegex = [TokenType.IDENTIFIER, "[a-zA-Z_][a-zA-Z0-9_]*",
+							TokenType.NUMBER, "[-]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?",
+							TokenType.PREDEFINE, "#[elsdif]{4,6}",
+							// grouping
+							TokenType.SEMI, ";",
+							TokenType.LBRACE, "{",
+							TokenType.RBRACE, "}",
+							TokenType.LBRACKET, "\\[",
+							TokenType.RBRACKET, "\\]",
+							TokenType.LPAREN, "\\(",
+							TokenType.RPAREN, "\\)",
+							TokenType.COMMA, ",",
+							//compare
+							TokenType.GREATER_THAN, "\\>",
+							TokenType.LESS_THAN, "\\<",
+							TokenType.GREATER_EQUAL, "\\>=",
+							TokenType.LESS_EQUAL, "\\<=",
+							TokenType.NOT_EQUAL, "\\!=",
+							TokenType.DOUBLE_EQUAL, "==",
+							//operators
+							TokenType.DOT, "\\.",
+							TokenType.PLUS, "\\+",
+							TokenType.SUBTRACT, "-",
+							TokenType.MULTIPLY, "\\*",
+							TokenType.DIVIDE, "\\/",
+							TokenType.EQUAL, "=",
+							TokenType.AND, "&&",
+							TokenType.OR, "\\|\\|"];
+
+			_tokenRegexpCount = Std.int(_tokenRegex.length * 0.5);
+
+			_regSource = "^(";
+			for (i in 0..._tokenRegexpCount)
+			{
+				_regSource += "?P<" + _tokenRegex[i * 2] + ">" + _tokenRegex[i * 2 + 1];
+				if (i < _tokenRegexpCount)
+					_regSource += ")|^(";
+			}
+
+			_regSource += ")";
 		}
-
-		reg += ")";
-
-		_finalRegex = new RegExp(reg);
+		
+		_finalRegex = new RegExp(_regSource);
 	}
 
 	private function _createNextToken(source:String):Token
 	{
 		var result:Dynamic = _finalRegex.exec(source);
-
 		var result0:String = result[0];
-
 		_position += result0.length;
+		trace("result0=" + result0 + ",_position=" + _position);
 
 		var type:String = "";
 		//首先检查关键字

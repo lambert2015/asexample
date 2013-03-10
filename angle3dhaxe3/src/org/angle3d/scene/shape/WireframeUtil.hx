@@ -1,6 +1,6 @@
 package org.angle3d.scene.shape;
 
-import org.angle3d.renderer.queue.NullComparator;
+import haxe.ds.Vector;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
@@ -75,7 +75,7 @@ class WireframeUtil
 
 		var shape:WireframeShape = new WireframeShape();
 
-		var subMeshList:Vector<SubMesh> = mesh.subMeshList;
+		var subMeshList:Array<SubMesh> = mesh.subMeshList;
 		for (i in 0...subMeshList.length)
 		{
 			var subMesh:SubMesh = subMeshList[i];

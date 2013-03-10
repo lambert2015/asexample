@@ -1,8 +1,8 @@
 package org.angle3d.material;
 
+import haxe.ds.Vector;
 import org.angle3d.material.technique.TechniqueTexture;
 import org.angle3d.texture.TextureMapBase;
-import haxe.ds.Vector;
 /**
  * andy
  * @author andy

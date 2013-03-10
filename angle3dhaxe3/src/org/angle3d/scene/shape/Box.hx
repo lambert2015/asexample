@@ -1,8 +1,8 @@
 package org.angle3d.scene.shape;
 
+import haxe.ds.Vector;
 import org.angle3d.math.Vector3f;
 import org.angle3d.scene.mesh.BufferType;
-import haxe.ds.Vector;
 /**
  * A box with solid (filled) faces.
  *
@@ -11,15 +11,23 @@ import haxe.ds.Vector;
 //TODO 重构
 class Box extends AbstractBox
 {
-	private static var GEOMETRY_INDICES_DATA:Vector<UInt> = Vector.fromArrayCopy<UInt>([2, 1, 0, 3, 2, 0, // back
+	private static var GEOMETRY_INDICES_DATA:Vector<UInt>;
+	private static var GEOMETRY_NORMALS_DATA:Vector<Float>;
+	private static var GEOMETRY_COLORS_DATA:Vector<Float>;
+	private static var GEOMETRY_TEXTURE_DATA:Vector<Float>;
+	static function __init__():Void
+	{
+		var array:Array<UInt> = [2, 1, 0, 3, 2, 0, // back
 		6, 5, 4, 7, 6, 4, // right
 		10, 9, 8, 11, 10, 8, // front
 		14, 13, 12, 15, 14, 12, // left
 		18, 17, 16, 19, 18, 16, // top
 		22, 21, 20, 23, 22, 20 // bottom
-		]);
+		];
+		
+		GEOMETRY_INDICES_DATA = Vector.fromArrayCopy(array);
 
-	private static var GEOMETRY_NORMALS_DATA:Vector<Float> = Vector.fromArrayCopy<Float>([0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, // back
+		GEOMETRY_NORMALS_DATA = Vector.fromArrayCopy([0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, // back
 		1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, // right
 		0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, // front
 		-1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, // left
@@ -27,7 +35,7 @@ class Box extends AbstractBox
 		0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0 // bottom
 		]);
 
-	private static var GEOMETRY_COLORS_DATA:Vector<Float> = Vector.fromArrayCopy<Float>([1.0, 0.5, 0.3, 1.0, 0.0, 0.0, 1.0, 0.1, 0.3, 1.0, 0.4, 0.2, // back
+		GEOMETRY_COLORS_DATA = Vector.fromArrayCopy([1.0, 0.5, 0.3, 1.0, 0.0, 0.0, 1.0, 0.1, 0.3, 1.0, 0.4, 0.2, // back
 		0.0, 0.4, 1.0, 0.0, 0.1, 1.0, 0.0, 0.2, 1.0, 0.9, 0.5, 1.0, // right
 		1.0, 0.8, 0.0, 1.0, 0.6, 0.0, 1.0, 0.0, 0.4, 1.0, 0.8, 0.0, // front
 		0.2, 0.2, 1.0, 0.7, 0.7, 1.0, 0.2, 0.3, 1.0, 0.0, 0.2, 1.0, // left
@@ -35,13 +43,15 @@ class Box extends AbstractBox
 		0.0, 1.0, 0.8, 0.6, 1.0, 0.4, 0.3, 1.0, 0.5, 0.7, 1.0, 0.1 // bottom
 		]);
 
-	private static var GEOMETRY_TEXTURE_DATA:Vector<Float> = Vector.fromArrayCopy<Float>([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, // back
+		GEOMETRY_TEXTURE_DATA = Vector.fromArrayCopy([1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, // back
 		1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, // right
 		1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, // front
 		1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, // left
 		1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, // top
 		1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0 // bottom
 		]);
+	}
+	
 
 	/**
 	 * Creates a new box.
@@ -94,7 +104,7 @@ class Box extends AbstractBox
 	{
 		var v:Vector<Vector3f> = computeVertices();
 
-		var vertices:Vector<Float> = Vector<Float>([v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, v[3].x, v[3].y, v[3].z, // back
+		var vertices:Vector<Float> = Vector.fromArrayCopy([v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z, v[3].x, v[3].y, v[3].z, // back
 			v[1].x, v[1].y, v[1].z, v[4].x, v[4].y, v[4].z, v[6].x, v[6].y, v[6].z, v[2].x, v[2].y, v[2].z, // right
 			v[4].x, v[4].y, v[4].z, v[5].x, v[5].y, v[5].z, v[7].x, v[7].y, v[7].z, v[6].x, v[6].y, v[6].z, // front
 			v[5].x, v[5].y, v[5].z, v[0].x, v[0].y, v[0].z, v[3].x, v[3].y, v[3].z, v[7].x, v[7].y, v[7].z, // left

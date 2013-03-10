@@ -1,11 +1,11 @@
 package org.angle3d.scene.shape;
 
+import haxe.ds.Vector;
 import org.angle3d.math.Vector3f;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.MeshHelper;
 import org.angle3d.scene.mesh.SubMesh;
-import haxe.ds.Vector;
 
 class TorusKnot extends Mesh
 {
@@ -24,38 +24,31 @@ class TorusKnot extends Mesh
 									yUp:Bool, p:Int, 
 									q:Int, heightScale:Float):Void
 	{
-
-		var _vertices:Vector<Float> = new Vector<Float>();
-		var _indices:Vector<UInt> = new Vector<UInt>();
-		var _verticesIndex:Int = 0;
+		var verticesIndex:Int = 0;
 		var _indiceIndex:Int = 0;
 		var _grid:Vector<Vector<Int>> = new Vector<Vector<Int>>(segmentsR);
 		var _tang:Vector3f = new Vector3f();
 		var _n:Vector3f = new Vector3f();
 		var _bitan:Vector3f = new Vector3f();
 
-		var i:Int;
-		var j:Int;
-
+		var vertices:Vector<Float> = new Vector<Float>(segmentsR * segmentsT * 3);
 		for (i in 0...segmentsR)
 		{
 			_grid[i] = new Vector<Int>(segmentsT);
-
 			for (j in 0...segmentsT)
 			{
-
 				var u:Float = i / segmentsR * 2 * p * Math.PI;
 				var v:Float = j / segmentsT * 2 * Math.PI;
-				var p:Vector3f = getPos(radius, p, q, heightScale, u, v);
-				var p2:Vector3f = getPos(radius, p, q, heightScale, u + .01, v);
+				var vec:Vector3f = getPos(radius, p, q, heightScale, u, v);
+				var vec2:Vector3f = getPos(radius, p, q, heightScale, u + .01, v);
 				var cx:Float, cy:Float;
 
-				_tang.x = p2.x - p.x;
-				_tang.y = p2.y - p.y;
-				_tang.z = p2.z - p.z;
-				_n.x = p2.x + p.x;
-				_n.y = p2.y + p.y;
-				_n.z = p2.z + p.z;
+				_tang.x = vec2.x - vec.x;
+				_tang.y = vec2.y - vec.y;
+				_tang.z = vec2.z - vec.z;
+				_n.x = vec2.x + vec.x;
+				_n.y = vec2.y + vec.y;
+				_n.z = vec2.z + vec.z;
 				_bitan = _n.cross(_tang);
 				_n = _tang.cross(_bitan);
 				_bitan.normalizeLocal();
@@ -63,43 +56,35 @@ class TorusKnot extends Mesh
 
 				cx = tubeRadius * Math.cos(v);
 				cy = tubeRadius * Math.sin(v);
-				p.x += cx * _n.x + cy * _bitan.x;
-				p.y += cx * _n.y + cy * _bitan.y;
-				p.z += cx * _n.z + cy * _bitan.z;
+				vec.x += cx * _n.x + cy * _bitan.x;
+				vec.y += cx * _n.y + cy * _bitan.y;
+				vec.z += cx * _n.z + cy * _bitan.z;
 
+				
+				vertices[verticesIndex] = vec.x;
 				if (yUp)
 				{
-					_vertices[_verticesIndex] = p.x;
-					_vertices[_verticesIndex + 1] = p.z;
-					_vertices[_verticesIndex + 2] = p.y;
-
-					_grid[i][j] = _indiceIndex;
-					_indiceIndex++;
-					_verticesIndex += 3;
-
+					vertices[verticesIndex + 1] = vec.z;
+					vertices[verticesIndex + 2] = vec.y;
 				}
-				else
+				else 
 				{
-					_vertices[_verticesIndex] = p.x;
-					_vertices[_verticesIndex + 1] = -p.y;
-					_vertices[_verticesIndex + 2] = p.z;
-
-					_grid[i][j] = _indiceIndex;
-					_indiceIndex++;
-					_verticesIndex += 3;
-
+					vertices[verticesIndex + 1] = -vec.y;
+					vertices[verticesIndex + 2] = vec.z;
 				}
-
+				_grid[i][j] = _indiceIndex;
+				_indiceIndex++;
+				verticesIndex += 3;
 			}
 		}
 
-		var _uvt:Vector<Float> = new Vector<Float>(_indiceIndex * 2);
-
+		var uvt:Vector<Float> = new Vector<Float>(_indiceIndex * 2);
+		var indices:Vector<UInt> = new Vector<UInt>(segmentsR * segmentsT * 6);
+		var indicesSize:Int = 0;
 		for (i in 0...segmentsR)
 		{
 			for (j in 0...segmentsT)
 			{
-
 				var ip:Int = (i + 1) % segmentsR;
 				var jp:Int = (j + 1) % segmentsT;
 				var a:Int = _grid[i][j];
@@ -108,32 +93,35 @@ class TorusKnot extends Mesh
 				var d:Int = _grid[ip][jp];
 
 				// uvt
-				_uvt[a * 2] = i / segmentsR;
-				_uvt[a * 2 + 1] = j / segmentsT;
+				uvt[a * 2] = i / segmentsR;
+				uvt[a * 2 + 1] = j / segmentsT;
 
-				_uvt[b * 2] = (i + 1) / segmentsR;
-				_uvt[b * 2 + 1] = j / segmentsT;
+				uvt[b * 2] = (i + 1) / segmentsR;
+				uvt[b * 2 + 1] = j / segmentsT;
 
-				_uvt[c * 2] = i / segmentsR;
-				_uvt[c * 2 + 1] = (j + 1) / segmentsT;
+				uvt[c * 2] = i / segmentsR;
+				uvt[c * 2 + 1] = (j + 1) / segmentsT;
 
-				_uvt[d * 2] = (i + 1) / segmentsR;
-				_uvt[d * 2 + 1] = (j + 1) / segmentsT;
+				uvt[d * 2] = (i + 1) / segmentsR;
+				uvt[d * 2 + 1] = (j + 1) / segmentsT;
 
 				//indices
-				_indices.push(a, c, b);
-				_indices.push(d, b, c);
-
+				indices[indicesSize] = a;
+				indices[indicesSize + 1] = c;
+				indices[indicesSize + 2] = b;
+				indices[indicesSize + 3] = d;
+				indices[indicesSize + 4] = b;
+				indices[indicesSize + 5] = c;
+				indicesSize += 6;
 			}
 		}
 
-		var _normals:Vector<Float> = MeshHelper.buildVertexNormals(_indices, _vertices);
-
+		var normals:Vector<Float> = MeshHelper.buildVertexNormals(indices, vertices);
 		var subMesh:SubMesh = new SubMesh();
-		subMesh.setVertexBuffer(BufferType.POSITION, 3, _vertices);
-		subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, _uvt);
-		subMesh.setVertexBuffer(BufferType.NORMAL, 3, _normals);
-		subMesh.setIndices(_indices);
+		subMesh.setVertexBuffer(BufferType.POSITION, 3, vertices);
+		subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, uvt);
+		subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
+		subMesh.setIndices(indices);
 		subMesh.validate();
 		this.addSubMesh(subMesh);
 		validate();

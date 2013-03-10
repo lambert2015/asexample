@@ -41,13 +41,13 @@ class BranchNode extends LeafNode
 	}
 
 	public var children(get, null):Array<LeafNode>;
-	private function get_children():Array<LeafNode>
+	private inline function get_children():Array<LeafNode>
 	{
 		return mChildren;
 	}
 
 	public var numChildren(get, null):Int;
-	private function get_numChildren():Int
+	private inline function get_numChildren():Int
 	{
 		return mChildren.length;
 	}

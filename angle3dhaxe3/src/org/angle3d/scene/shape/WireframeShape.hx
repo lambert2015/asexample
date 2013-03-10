@@ -1,9 +1,10 @@
 package org.angle3d.scene.shape;
 
+import haxe.ds.Vector;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
-import haxe.ds.Vector;
+using org.angle3d.utils.ArrayUtil;
 /**
  * 3角形顺序理的不太清楚
  * @author andy
@@ -11,6 +12,8 @@ import haxe.ds.Vector;
 
 class WireframeShape extends Mesh
 {
+	private var _indices:Vector<UInt>;
+	
 	private var _posVector:Vector<Float>;
 	private var _pos1Vector:Vector<Float>;
 
@@ -25,17 +28,12 @@ class WireframeShape extends Mesh
 		_subMesh = new SubMesh();
 		this.addSubMesh(_subMesh);
 
-		_posVector = new Vector<Float>();
-		_pos1Vector = new Vector<Float>();
-
-		_indices = new Vector<UInt>();
-
 		_segments = new Array<WireframeLineSet>();
 	}
 
 	public function clearSegment():Void
 	{
-		_segments.length = 0;
+		_segments = _segments.clear();
 	}
 
 	public function addSegment(segment:WireframeLineSet):Void
@@ -46,24 +44,18 @@ class WireframeShape extends Mesh
 	/**
 	 * 生成线框模式需要的数据
 	 */
-	private var _indices:Vector<UInt>;
-
 	public function build(updateIndices:Bool = true):Void
 	{
-		_posVector.fixed = false;
-		_posVector.length = 0;
-
-		_pos1Vector.fixed = false;
-		_pos1Vector.length = 0;
-
+		var sLength:Int = _segments.length;
+		
+		_posVector = new Vector<Float>(sLength * 12);
+		_pos1Vector = new Vector<Float>(sLength * 16);
 		if (updateIndices)
 		{
-			_indices.fixed = false;
-			_indices.length = 0;
+			_indices = new Vector<UInt>(sLength * 6);
 		}
 
-
-		var sLength:Int = _segments.length;
+		var indicesSize:Int = 0;
 		for (i in 0...sLength)
 		{
 			var segment:WireframeLineSet = _segments[i];
@@ -71,12 +63,13 @@ class WireframeShape extends Mesh
 			var index:Int = i << 2;
 			if (updateIndices)
 			{
-				_indices.push(index);
-				_indices.push(index + 1);
-				_indices.push(index + 2);
-				_indices.push(index + 3);
-				_indices.push(index + 2);
-				_indices.push(index + 1);
+				_indices[indicesSize] = index;
+				_indices[indicesSize + 1] = index + 1;
+				_indices[indicesSize + 2] = index + 2;
+				_indices[indicesSize + 3] = index + 3;
+				_indices[indicesSize + 4] = index + 2;
+				_indices[indicesSize + 5] = index + 1;
+				indicesSize += 6;
 			}
 
 			var i12:Int = i * 12;
@@ -132,12 +125,8 @@ class WireframeShape extends Mesh
 
 	private function updateBuffer(updateIndices:Bool = true):Void
 	{
-		_posVector.fixed = true;
-		_pos1Vector.fixed = true;
-
 		if (updateIndices)
 		{
-			_indices.fixed = true;
 			_subMesh.setIndices(_indices);
 		}
 

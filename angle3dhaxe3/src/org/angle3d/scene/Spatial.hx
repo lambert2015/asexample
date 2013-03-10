@@ -923,33 +923,23 @@ class Spatial implements Cloneable implements Collidable
 		return value;
 	}
 
-	public var translation(get, set):Vector3f;
 	/**
-	 * <code>getLocalTranslation</code> retrieves the local translation of
-	 * this node.
-	 *
-	 * @return the local translation of this node.
+	 * the local translation of this node.
 	 */
+	public var translation(get, set):Vector3f;
 	private function get_translation():Vector3f
 	{
 		return mLocalTransform.translation;
 	}
-
-	/**
-	 * <code>setLocalTranslation</code> sets the local translation of this
-	 * spatial.
-	 *
-	 * @param localTranslation
-	 *            the local translation of this spatial.
-	 */
 	private function set_translation(localTranslation:Vector3f):Vector3f
 	{
 		mLocalTransform.setTranslation(localTranslation);
 		setTransformRefresh();
 		return mLocalTransform.translation;
 	}
+	
 
-	private function setTranslationXYZ(x:Float, y:Float, z:Float):Void
+	public function setTranslationXYZ(x:Float, y:Float, z:Float):Void
 	{
 		mLocalTransform.setTranslationXYZ(x, y, z);
 		setTransformRefresh();

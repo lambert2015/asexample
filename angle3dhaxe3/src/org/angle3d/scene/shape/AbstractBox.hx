@@ -1,9 +1,9 @@
 package org.angle3d.scene.shape;
 
+import haxe.ds.Vector;
 import org.angle3d.math.Vector3f;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
-import haxe.ds.Vector;
 
 /**
  * An eight sided box.
@@ -42,7 +42,7 @@ class AbstractBox extends Mesh
 		var cx:Float = center.x;
 		var cy:Float = center.y;
 		var cz:Float = center.z;
-		return Vector<Vector3f>([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent),
+		return Vector.fromArrayCopy([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent),
 			new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx +
 			xExtent, cy + yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
 	}

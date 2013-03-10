@@ -61,17 +61,18 @@ class TechniqueWireframe extends Technique
 	}
 	private function set_alpha(alpha:Float):Float
 	{
-		_color.a = FastMath.fclamp(alpha, 0.0, 1.0);
+		_color.a = FastMath.clamp(alpha, 0.0, 1.0);
 		return _color.a;
 	}
 
-	private function set_thickness(thickness:Float):Void
-	{
-		_thickness = thickness * 0.001;
-	}
-
+	public var thickness(get, set):Float;
 	private function get_thickness():Float
 	{
+		return _thickness;
+	}
+	private function set_thickness(thickness:Float):Float
+	{
+		_thickness = thickness * 0.001;
 		return _thickness;
 	}
 

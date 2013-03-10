@@ -5,13 +5,13 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\Main.swf" />
-    <movie fps="30" />
-    <movie width="800" />
-    <movie height="600" />
+    <movie fps="60" />
+    <movie width="1024" />
+    <movie height="768" />
     <movie version="11" />
     <movie minorVersion="5" />
     <movie platform="Flash Player" />
-    <movie background="#FFFFFF" />
+    <movie background="#368DA7" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>

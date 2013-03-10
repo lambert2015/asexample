@@ -37,16 +37,18 @@ class MaterialWireframe extends Material
 		return _technique;
 	}
 
-	override private function set_alpha(alpha:Float):Void
+	override private function set_alpha(alpha:Float):Float
 	{
 		_technique.alpha = alpha;
 
-		super.alpha = alpha;
+		return _technique.alpha;
 	}
 
-	private function set_color(color:UInt):Void
+	public var color(get, set):UInt;
+	private function set_color(color:UInt):UInt
 	{
 		_technique.color = color;
+		return _technique.color;
 	}
 
 	private function get_color():UInt

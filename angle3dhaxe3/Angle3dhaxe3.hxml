@@ -1,6 +1,6 @@
 -cp src
 -swf bin/Main.swf
--swf-header 800:600:30:FFFFFF
+-swf-header 1024:768:60:368DA7
 --flash-strict
 -swf-version 11.5
 -main examples.material.MaterialWireframeTest
