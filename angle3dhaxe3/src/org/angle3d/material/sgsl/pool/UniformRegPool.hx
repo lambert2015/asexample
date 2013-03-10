@@ -171,7 +171,7 @@ class UniformRegPool extends RegPool
 	 */
 	override public function register(node:RegNode):Void
 	{
-		var uniformReg:UniformReg = cast node;
+		var uniformReg:UniformReg = cast(node, UniformReg);
 
 		Assert.assert(uniformReg != null && !uniformReg.registered, uniformReg.name + "不能注册多次");
 

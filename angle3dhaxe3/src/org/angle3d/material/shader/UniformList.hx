@@ -29,7 +29,7 @@ class UniformList extends ShaderVariableList
 
 	public function getUniformAt(i:Int):Uniform
 	{
-		return cast _variables[i];
+		return cast(_variables[i], Uniform);
 	}
 
 	/**

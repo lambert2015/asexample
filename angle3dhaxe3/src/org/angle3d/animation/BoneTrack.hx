@@ -112,7 +112,7 @@ class BoneTrack implements Track
 			}
 		}
 
-		var target:Bone = (cast control).skeleton.getBoneAt(boneIndex);
+		var target:Bone = cast(control,SkeletonAnimControl).skeleton.getBoneAt(boneIndex);
 		if (weight < 1.0)
 		{
 			target.blendAnimTransforms(tmpTranslation, tmpQuat, useScale ? tmpScale : null, weight);

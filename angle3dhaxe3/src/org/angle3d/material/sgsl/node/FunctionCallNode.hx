@@ -21,7 +21,7 @@ class FunctionCallNode extends BranchNode
 	 */
 	public function cloneCustomFunction(functionMap:StringMap<FunctionNode>):FunctionNode
 	{
-		var functionNode:FunctionNode = cast functionMap.get(this.name).clone();
+		var functionNode:FunctionNode = cast(functionMap.get(this.name).clone(), FunctionNode);
 		if (functionNode.needReplace)
 		{
 			functionNode.replaceCustomFunction(functionMap);

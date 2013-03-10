@@ -66,7 +66,7 @@ class SgslParser
 		var result:Array<FunctionNode> = new Array<FunctionNode>();
 		for (i in 0...programNode.numChildren)
 		{
-			result.push(cast programNode.children[i]);
+			result.push(cast(programNode.children[i], FunctionNode));
 		}
 
 		return result;
@@ -445,7 +445,7 @@ class SgslParser
 			statement = new AgalNode();
 
 			//左侧的不能是方法调用，所以用parseAtomExpression
-			statement.addChild(cast parseAtomExpression());
+			statement.addChild(parseAtomExpression());
 
 			_tok.accept(TokenType.EQUAL); // SKIP '='
 

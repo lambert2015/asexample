@@ -23,7 +23,7 @@ class DataType
 	/**
 	 * 特殊函数，用于执行一些static变量的定义等(有这个函数时，static变量预先赋值必须也放到这里面)
 	 */
-	public static function init():Void
+	public static function __init__():Void
 	{
 		sizeDic = new StringMap<Int>();
 		sizeDic.set(FLOAT, 1);

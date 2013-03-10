@@ -56,7 +56,7 @@ class SkeletonControl extends AbstractControl
 		mWasMeshUpdated = false;
 
 		mGeometry = geometry;
-		mMesh = cast mGeometry.getMesh();
+		mMesh = cast(mGeometry.getMesh(), SkinnedMesh);
 		mSkeleton = skeleton;
 
 		mNumBones = skeleton.numBones;
@@ -125,7 +125,7 @@ class SkeletonControl extends AbstractControl
 		}
 
 		var node:Node = b.getAttachmentsNode();
-		(cast _spatial).attachChild(node);
+		cast(_spatial,Node).attachChild(node);
 		return node;
 	}
 
@@ -142,7 +142,7 @@ class SkeletonControl extends AbstractControl
 		var count:Int = mMesh.subMeshList.length;
 		for (i in 0...count)
 		{
-			var subMesh:SkinnedSubMesh = cast mMesh.subMeshList[i];
+			var subMesh:SkinnedSubMesh = cast(mMesh.subMeshList[i], SkinnedSubMesh);
 
 			var buffer:VertexBuffer = subMesh.getVertexBuffer(BufferType.BIND_POSE_POSITION);
 			var posBuffer:VertexBuffer = subMesh.getVertexBuffer(BufferType.POSITION);

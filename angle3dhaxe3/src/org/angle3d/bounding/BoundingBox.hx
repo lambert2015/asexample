@@ -231,7 +231,7 @@ class BoundingBox extends BoundingVolume
 		}
 		else
 		{
-			box = cast result;
+			box = cast(result, BoundingBox);
 		}
 
 		center.multiply(trans.scale, box.center);
@@ -274,7 +274,7 @@ class BoundingBox extends BoundingVolume
 		}
 		else
 		{
-			box = cast result;
+			box = cast(result, BoundingBox);
 		}
 
 		var w:Float = trans.multProj(center, box.center);
@@ -344,10 +344,10 @@ class BoundingBox extends BoundingVolume
 		switch (volume.type)
 		{
 			case BoundingVolumeType.AABB:
-				var box:BoundingBox = cast volume;
+				var box:BoundingBox = cast(volume, BoundingBox);
 				return mergeToBoundingBox(box.center, box.xExtent, box.yExtent, box.zExtent);
 			case BoundingVolumeType.Sphere:
-				var sphere:BoundingSphere = cast volume;
+				var sphere:BoundingSphere = cast(volume, BoundingSphere);
 				return mergeToBoundingBox(sphere.center, sphere.radius, sphere.radius, sphere.radius);
 			default:
 				return null;
@@ -431,10 +431,10 @@ class BoundingBox extends BoundingVolume
 		switch (volume.type)
 		{
 			case BoundingVolumeType.AABB:
-				var box:BoundingBox = cast volume;
+				var box:BoundingBox = cast(volume, BoundingBox);
 				mergeToBoundingBox(box.center, box.xExtent, box.yExtent, box.zExtent, this);
 			case BoundingVolumeType.Sphere:
-				var sphere:BoundingSphere = cast volume;
+				var sphere:BoundingSphere = cast(volume, BoundingSphere);
 				mergeToBoundingBox(sphere.center, sphere.radius, sphere.radius, sphere.radius, this);
 			case BoundingVolumeType.Capsule:
 			case BoundingVolumeType.OBB:
@@ -443,7 +443,7 @@ class BoundingBox extends BoundingVolume
 
 	override public function copyFrom(volume:BoundingVolume):Void
 	{
-		var box:BoundingBox = cast volume;
+		var box:BoundingBox = cast(volume, BoundingBox);
 
 		Assert.assert(box != null, "volume is not a BoundingBox");
 
@@ -463,10 +463,10 @@ class BoundingBox extends BoundingVolume
 		}
 		else
 		{
-			box = cast result;
+			box = cast(result, BoundingBox);
 		}
 
-		box = cast super.clone(box);
+		box = cast(super.clone(box), BoundingBox);
 
 		box.center.copyFrom(center);
 		box.xExtent = xExtent;
@@ -662,12 +662,12 @@ class BoundingBox extends BoundingVolume
 	{
 		if (Std.is(other,Ray))
 		{
-			var ray:Ray = cast other;
+			var ray:Ray = cast(other, Ray);
 			return collideWithRay(ray, results);
 		}
 		else if (Std.is(other,Triangle))
 		{
-			var t:Triangle = cast other;
+			var t:Triangle = cast(other, Triangle);
 			if (intersectsTriangle(t))
 			{
 				var r:CollisionResult = new CollisionResult();

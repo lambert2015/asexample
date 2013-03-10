@@ -103,16 +103,16 @@ class ShaderManager
 		var defines:Array<String> = new Array<String>();
 		if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 		{
-			defines.push(cast ShaderProfile.BASELINE);
-			defines.push(cast ShaderProfile.BASELINE_EXTENDED);
+			defines.push(cast(ShaderProfile.BASELINE, String) );
+			defines.push(cast(ShaderProfile.BASELINE_EXTENDED, String) );
 		}
 		else if (mProfile == ShaderProfile.BASELINE)
 		{
-			defines.push(cast ShaderProfile.BASELINE);
+			defines.push(cast(ShaderProfile.BASELINE, String) );
 		}
 		else if (mProfile == ShaderProfile.BASELINE_CONSTRAINED)
 		{
-			defines.push(cast ShaderProfile.BASELINE_CONSTRAINED);
+			defines.push(cast(ShaderProfile.BASELINE_CONSTRAINED, String) );
 		}
 
 		var functionList:Array<FunctionNode> = mSgslParser.execFunctions(source, defines);

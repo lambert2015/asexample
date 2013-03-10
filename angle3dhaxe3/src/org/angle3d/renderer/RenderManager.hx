@@ -573,7 +573,7 @@ class RenderManager
 	{
 		if (Std.is(s,Node))
 		{
-			var n:Node = cast s;
+			var n:Node = cast(s, Node);
 			var children:Array<Spatial> = n.children;
 			var length:Int = children.length;
 			for (i in 0...length)
@@ -583,7 +583,7 @@ class RenderManager
 		}
 		else if (Std.is(s,Geometry))
 		{
-			var gm:Geometry = cast s;
+			var gm:Geometry = cast(s, Geometry);
 
 			var shadowMode:ShadowMode = s.shadowMode;
 			if (shadowMode != ShadowMode.Off && shadowMode != ShadowMode.Receive)
@@ -651,7 +651,7 @@ class RenderManager
 		if (Std.is(scene,Node))
 		{
 			//recurse for all children
-			var n:Node = cast scene;
+			var n:Node = cast(scene, Node);
 
 			var children:Array<Spatial> = n.children;
 			//saving cam state for culling
@@ -667,7 +667,7 @@ class RenderManager
 		else if (Std.is(scene,Geometry))
 		{
 			// add to the render queue
-			var gm:Geometry = cast scene;
+			var gm:Geometry = cast(scene, Geometry);
 
 			Assert.assert(gm.getMaterial() != null, "No material is set_for Geometry: " + gm.name);
 

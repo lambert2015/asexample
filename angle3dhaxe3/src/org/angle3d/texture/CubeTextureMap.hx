@@ -59,7 +59,7 @@ class CubeTextureMap extends TextureMapBase
 
 	override private function uploadTexture():Void
 	{
-		var cubeTexture:CubeTexture = cast mTexture;
+		var cubeTexture:CubeTexture = cast(mTexture, CubeTexture);
 
 		for (i in 0...6)
 		{

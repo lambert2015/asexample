@@ -344,7 +344,7 @@ class DefaultRenderer implements IRenderer
 		var bufferTypes = attributes.keys();
 		for (bufferType in bufferTypes)
 		{
-			attribute = cast attributes.get(bufferType);
+			attribute = cast(attributes.get(bufferType), AttributeVar);
 			location = subMesh.merge ? attribute.location : 0;
 			_context3D.setVertexBufferAt(attribute.index, subMesh.getVertexBuffer3D(_context3D, bufferType), location, attribute.format);
 			if (attribute.index > maxRegisterIndex)

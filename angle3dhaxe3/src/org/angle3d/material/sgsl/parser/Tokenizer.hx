@@ -186,7 +186,6 @@ class Tokenizer
 		var result:Dynamic = _finalRegex.exec(source);
 		var result0:String = result[0];
 		_position += result0.length;
-		trace("result0=" + result0 + ",_position=" + _position);
 
 		var type:String = "";
 		//首先检查关键字

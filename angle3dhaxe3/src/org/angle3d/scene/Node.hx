@@ -411,7 +411,7 @@ class Node extends Spatial
 			}
 			else if (Std.is(child,Node))
 			{
-				var node:Node = cast child;
+				var node:Node = cast(child,Node);
 				var out:Spatial = node.getChildByName(name);
 				if (out != null)
 				{
@@ -443,7 +443,7 @@ class Node extends Spatial
 			var child:Spatial = mChildren[i];
 			if (Std.is(child,Node))
 			{
-				var node:Node = cast child;
+				var node:Node = cast(child,Node);
 				if (node.hasChild(sp))
 				{
 					return true;
@@ -527,10 +527,10 @@ class Node extends Spatial
 		}
 		else
 		{
-			node = cast result;
+			node = cast(result, Node);
 		}
 
-		node = cast super.clone(newName, cloneMaterial, node);
+		node = cast(super.clone(newName, cloneMaterial, node), Node);
 
 		var cLength:Int = mChildren.length;
 		for (i in 0...cLength)

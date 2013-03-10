@@ -14,7 +14,7 @@ class WireframeUtil
 	{
 		if (Std.is(mesh,WireframeShape))
 		{
-			return cast mesh;
+			return cast(mesh,WireframeShape);
 		}
 
 		var shape:WireframeShape = new WireframeShape();

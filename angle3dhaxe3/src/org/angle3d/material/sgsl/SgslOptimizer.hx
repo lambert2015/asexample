@@ -54,7 +54,7 @@ class SgslOptimizer
 			{
 				if (child.name == "main")
 				{
-					mainFunction = cast child;
+					mainFunction = cast(child, FunctionNode);
 				}
 				else
 				{
@@ -62,12 +62,12 @@ class SgslOptimizer
 					{
 						throw new Error("自定义函数" + child.name + "定义重复");
 					}
-					customFunctionMap.set(child.name,cast child);
+					customFunctionMap.set(child.name, cast(child, FunctionNode));
 				}
 			}
 			else
 			{
-				data.addReg(cast child);
+				data.addReg(cast(child, RegNode));
 			}
 		}
 
@@ -90,11 +90,11 @@ class SgslOptimizer
 			child = children[i];
 			if (Std.is(child, RegNode))
 			{
-				data.addReg(cast child);
+				data.addReg(cast(child, RegNode));
 			}
 			else
 			{
-				data.addNode(cast child);
+				data.addNode(cast(child, AgalNode));
 			}
 		}
 

@@ -37,7 +37,7 @@ class AttributeList extends ShaderVariableList
 		var length:Int = _variables.length;
 		for (i in 0...length)
 		{
-			att = cast _variables[i];
+			att = cast(_variables[i], AttributeVar);
 			att.index = i;
 			att.location = offset;
 			att.format = getFormat(att.size);
