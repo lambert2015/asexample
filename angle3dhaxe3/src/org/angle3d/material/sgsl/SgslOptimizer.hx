@@ -3,6 +3,7 @@
 import flash.errors.Error;
 import flash.utils.Dictionary;
 import haxe.ds.StringMap;
+import org.angle3d.utils.Assert;
 
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.material.sgsl.node.agal.AgalNode;
@@ -58,10 +59,7 @@ class SgslOptimizer
 				}
 				else
 				{
-					if (customFunctionMap.exists(child.name))
-					{
-						throw new Error("自定义函数" + child.name + "定义重复");
-					}
+					Assert.assert(!customFunctionMap.exists(child.name),"自定义函数" + child.name + "定义重复");
 					customFunctionMap.set(child.name, cast(child, FunctionNode));
 				}
 			}

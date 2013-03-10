@@ -594,10 +594,11 @@ class Spatial implements Cloneable implements Collidable
 	 */
 	public function addControl(control:Control):Void
 	{
-		Assert.assert(mControls.contain(control), "controls already contain control");
-
-		mControls.push(control);
-		control.spatial = this;
+		if (!mControls.contain(control))
+		{
+			control.spatial = this;
+			mControls.push(control);
+		}
 	}
 
 	/**

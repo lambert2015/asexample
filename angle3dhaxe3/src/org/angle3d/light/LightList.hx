@@ -45,7 +45,7 @@ class LightList
 	 */
 	public function addLight(light:Light):Void
 	{
-		if (mList.contain(light))
+		if (!mList.contain(light))
 		{
 			mList.push(light);
 		}

@@ -183,7 +183,7 @@ class ShaderManager
 	 */
 	public function unregisterShader(key:String):Void
 	{
-		if (mProgramMap.exists(key))
+		if (!mProgramMap.exists(key))
 		{
 			return;
 		}
@@ -211,7 +211,7 @@ class ShaderManager
 
 	public function getProgram(key:String):Program3D
 	{
-		if (mProgramMap.exists(key))
+		if (!mProgramMap.exists(key))
 		{
 			var shader:Shader = mShaderMap.get(key);
 			if (shader == null)

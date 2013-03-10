@@ -228,8 +228,7 @@ class DefaultRenderer implements IRenderer
 
 	public function setShader(shader:Shader):Void
 	{
-
-			Assert.assert(shader != null, "shader cannot be null");
+		Assert.assert(shader != null, "shader cannot be null");
 
 		if (_shader != shader)
 		{

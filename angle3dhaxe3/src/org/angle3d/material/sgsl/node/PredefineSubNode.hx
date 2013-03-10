@@ -87,7 +87,7 @@ class PredefineSubNode extends BranchNode
 		var length:Int = list.length;
 		for (i in 0...length)
 		{
-			if (defines.contain(list[i]))
+			if (!defines.contain(list[i]))
 			{
 				return false;
 			}
