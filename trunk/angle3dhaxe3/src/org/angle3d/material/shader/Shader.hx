@@ -242,10 +242,10 @@ class Shader
 	 */
 	public function setAttributeBindings(attributeMap:StringMap<String>):Void
 	{
-		var bufferType:String;
-		for (bufferType in attributeMap)
+		var keys:Iterator<String> = attributeMap.keys();
+		for (key in keys)
 		{
-			bindAttribute(bufferType, attributeMap.get(bufferType));
+			bindAttribute(key, attributeMap.get(key));
 		}
 	}
 }

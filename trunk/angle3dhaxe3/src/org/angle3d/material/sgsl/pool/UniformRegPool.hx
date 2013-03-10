@@ -76,7 +76,7 @@ class UniformRegPool extends RegPool
 	 */
 	public function addConstant(value:Float):Void
 	{
-		if (_constants.contain(value))
+		if (!_constants.contain(value))
 		{
 			_constants.push(value);
 		}

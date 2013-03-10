@@ -186,9 +186,10 @@ class SgslData
 	 */
 	public function shareWith(vertexData:SgslData):Void
 	{
-
+		#if debug
 		Assert.assert(vertexData.shaderType == ShaderType.VERTEX, "vertexData类型应该为" + ShaderType.VERTEX);
 		Assert.assert(shaderType == ShaderType.FRAGMENT, "shareWith只能在Fragment中调用");
+		#end
 
 		var pool:VaryingRegPool = vertexData.varyingPool;
 
@@ -243,6 +244,7 @@ class SgslData
 				//do nothing
 				trace(reg.name);
 		}
+
 		_regsMap.set(reg.name,reg);
 	}
 
@@ -251,7 +253,7 @@ class SgslData
 	 * @param	name
 	 * @return
 	 */
-	public function getRegNode(name:String):RegNode
+	public inline function getRegNode(name:String):RegNode
 	{
 		return _regsMap.get(name);
 	}
@@ -296,7 +298,7 @@ class SgslData
 			}
 
 			//如果数组中剩余项不包含这个变量，也就代表无引用了
-			if (list.contain(reg))
+			if (!list.contain(reg))
 			{
 				//可以释放其占用位置
 				_tempPool.logout(reg);

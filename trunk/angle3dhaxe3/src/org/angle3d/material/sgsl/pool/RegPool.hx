@@ -36,7 +36,7 @@ class RegPool
 
 	public function addReg(value:RegNode):Void
 	{
-		if (mRegs.contain(value))
+		if (!mRegs.contain(value))
 		{
 			mRegs.push(value);
 		}

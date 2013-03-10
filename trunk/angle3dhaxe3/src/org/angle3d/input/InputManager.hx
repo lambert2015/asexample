@@ -278,7 +278,7 @@ class InputManager implements RawInputListener
 				mappings.set(mappingName, im);
 			}
 
-			if (!ArrayUtil.contain(im.listeners, listener))
+			if (!im.listeners.contain(listener))
 			{
 				im.listeners.push(listener);
 			}
@@ -338,7 +338,7 @@ class InputManager implements RawInputListener
 				bindings.set(hash,names);
 			}
 
-			if (!ArrayUtil.contain(names, mapping))
+			if (!names.contain(mapping))
 			{
 				names.push(mapping);
 				mapping.triggers.push(hash);
