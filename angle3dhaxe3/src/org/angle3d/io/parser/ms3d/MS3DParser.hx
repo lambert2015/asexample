@@ -2,17 +2,12 @@ package org.angle3d.io.parser.ms3d;
 
 import flash.utils.ByteArray;
 import flash.utils.Endian;
-
+import haxe.ds.Vector;
 import org.angle3d.animation.Animation;
 import org.angle3d.animation.Bone;
 import org.angle3d.animation.BoneTrack;
-import org.angle3d.animation.Skeleton;
-import org.angle3d.animation.SkeletonAnimControl;
-import org.angle3d.animation.SkeletonControl;
 import org.angle3d.math.Quaternion;
 import org.angle3d.math.Vector3f;
-import org.angle3d.scene.Geometry;
-import org.angle3d.scene.Node;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SkinnedMesh;
@@ -20,7 +15,7 @@ import org.angle3d.scene.mesh.SkinnedSubMesh;
 import org.angle3d.scene.mesh.SubMesh;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Logger;
-import haxe.ds.Vector;
+
 
 class MS3DParser
 {
@@ -57,10 +52,10 @@ class MS3DParser
 		{
 			var subMesh:SubMesh = new SubMesh();
 			
-			var indices:Vector<UInt> = new Vector<UInt>();
-			var vertices:Vector<Float> = new Vector<Float>();
-			var normals:Vector<Float> = new Vector<Float>();
-			var uvData:Vector<Float> = new Vector<Float>();
+			var indices:Array<UInt> = new Array<UInt>();
+			var vertices:Array<Float> = new Array<Float>();
+			var normals:Array<Float> = new Array<Float>();
+			var uvData:Array<Float> = new Array<Float>();
 
 			var triangle:MS3DTriangle;
 			for (t in 0...numTriangle)
@@ -93,10 +88,10 @@ class MS3DParser
 				}
 			}
 
-			subMesh.setVertexBuffer(BufferType.POSITION, 3, vertices);
-			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, uvData);
-			subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
-			subMesh.setIndices(indices);
+			subMesh.setVertexBuffer(BufferType.POSITION, 3, Vector.fromArrayCopy(vertices));
+			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, Vector.fromArrayCopy(uvData));
+			subMesh.setVertexBuffer(BufferType.NORMAL, 3, Vector.fromArrayCopy(normals));
+			subMesh.setIndices(Vector.fromArrayCopy(indices));
 			subMesh.validate();
 
 			mesh.addSubMesh(subMesh);
@@ -133,13 +128,13 @@ class MS3DParser
 		for (i in 0...numGroups)
 		{
 			var subMesh:SkinnedSubMesh = new SkinnedSubMesh();
-			var indices:Vector<UInt> = new Vector<UInt>();
-
-			var vertices:Vector<Float> = new Vector<Float>();
-			var normals:Vector<Float> = new Vector<Float>();
-			var uvData:Vector<Float> = new Vector<Float>();
-			var boneIndices:Vector<Float> = new Vector<Float>();
-			var weights:Vector<Float> = new Vector<Float>();
+			
+			var indices:Array<UInt> = new Array<UInt>();
+			var vertices:Array<Float> = new Array<Float>();
+			var normals:Array<Float> = new Array<Float>();
+			var uvData:Array<Float> = new Array<Float>();
+			var boneIndices:Array<Float> = new Array<Float>();
+			var weights:Array<Float> = new Array<Float>();
 
 			var triangle:MS3DTriangle;
 			for (t in 0...numTriangle)
@@ -182,13 +177,13 @@ class MS3DParser
 				}
 			}
 
-			subMesh.setVertexBuffer(BufferType.POSITION, 3, vertices);
-			subMesh.setVertexBuffer(BufferType.BIND_POSE_POSITION, 3, vertices.concat());
-			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, uvData);
-			subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
-			subMesh.setVertexBuffer(BufferType.BONE_INDICES, 4, boneIndices);
-			subMesh.setVertexBuffer(BufferType.BONE_WEIGHTS, 4, weights);
-			subMesh.setIndices(indices);
+			subMesh.setVertexBuffer(BufferType.POSITION, 3, Vector.fromArrayCopy(vertices));
+			subMesh.setVertexBuffer(BufferType.BIND_POSE_POSITION, 3, Vector.fromArrayCopy(vertices.slice(0)));
+			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, Vector.fromArrayCopy(uvData));
+			subMesh.setVertexBuffer(BufferType.NORMAL, 3, Vector.fromArrayCopy(normals));
+			subMesh.setVertexBuffer(BufferType.BONE_INDICES, 4, Vector.fromArrayCopy(boneIndices));
+			subMesh.setVertexBuffer(BufferType.BONE_WEIGHTS, 4, Vector.fromArrayCopy(weights));
+			subMesh.setIndices(Vector.fromArrayCopy(indices));
 			subMesh.validate();
 
 			mesh.addSubMesh(subMesh);
@@ -201,21 +196,23 @@ class MS3DParser
 
 	public function buildSkeleton():Dynamic
 	{
-		var bones:Vector<Bone> = new Vector<Bone>();
-		var tracks:Vector<BoneTrack> = new Vector<BoneTrack>();
+		var length:Int = mMs3dJoints.length;
+		
+		var bones:Vector<Bone> = new Vector<Bone>(length);
+		var tracks:Vector<BoneTrack> = new Vector<BoneTrack>(length);
 
 		var animation:Animation = new Animation("default", mNumFrames);
 
 		var q:Quaternion = new Quaternion();
 
-		var length:Int = mMs3dJoints.length;
+		
 		var bone:Bone;
 		var joint:MS3DJoint;
 		var track:BoneTrack;
 		for (i in 0...length)
 		{
 			bone = new Bone("");
-			bones.push(bone);
+			bones[i] = bone;
 
 			joint = mMs3dJoints[i];
 
@@ -225,9 +222,9 @@ class MS3DParser
 			bone.localPos.copyFrom(joint.translation);
 			bone.localRot.fromAngles(joint.rotation.x, joint.rotation.y, joint.rotation.z);
 
-			var times:Vector<Float> = new Vector<Float>();
-			var rotations:Vector<Float> = new Vector<Float>();
-			var translations:Vector<Float> = new Vector<Float>();
+			var times:Vector<Float> = new Vector<Float>(mNumFrames);
+			var rotations:Vector<Float> = new Vector<Float>(mNumFrames * 4);
+			var translations:Vector<Float> = new Vector<Float>(mNumFrames * 3);
 
 			var position:Vector3f = new Vector3f();
 			var rotation:Quaternion = new Quaternion();
@@ -238,11 +235,17 @@ class MS3DParser
 			{
 				getKeyFramePositionAt(joint, j, position);
 				getKeyFrameRotationAt(joint, j, rotation);
+				
+				translations[j * 3] = position.x;
+				translations[j * 3 + 1] = position.y;
+				translations[j * 3 + 2] = position.z;
+				
+				rotations[j * 4] = rotation.x;
+				rotations[j * 4 + 1] = rotation.y;
+				rotations[j * 4 + 2] = rotation.z;
+				rotations[j * 4 + 3] = rotation.w;
 
-				translations.push(position.x, position.y, position.z);
-				rotations.push(rotation.x, rotation.y, rotation.z, rotation.w);
-
-				times.push(j);
+				times[j] = j;
 			}
 
 			track = new BoneTrack(i, times, translations, rotations);
@@ -309,8 +312,8 @@ class MS3DParser
 	/**
 	 * 获得joint动画某个时间点的旋转
 	 */
-	private var _tmpQ1:Quaternion = new Quaternion();
-	private var _tmpQ2:Quaternion = new Quaternion();
+	private static var _tmpQ1:Quaternion = new Quaternion();
+	private static var _tmpQ2:Quaternion = new Quaternion();
 
 	private function getKeyFrameRotationAt(joint:MS3DJoint, time:Float, store:Quaternion):Void
 	{

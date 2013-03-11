@@ -7,14 +7,14 @@ import org.angle3d.scene.mesh.SubMesh;
 
 class Torus extends Mesh
 {
-	public function new(radius:Float = 100.0, tubeRadius:Float = 40.0, segmentsR:uint = 8, segmentsT:uint = 6, yUp:Bool = false)
+	public function new(radius:Float = 100.0, tubeRadius:Float = 40.0, segmentsR:UInt = 8, segmentsT:UInt = 6, yUp:Bool = false)
 	{
 		super();
 
 		_createTorus(radius, tubeRadius, segmentsR, segmentsT, yUp);
 	}
 
-	private function _createTorus(radius:Float, tubeRadius:Float, segmentsR:uint, segmentsT:uint, yUp:Bool):Void
+	private function _createTorus(radius:Float, tubeRadius:Float, segmentsR:UInt, segmentsT:UInt, yUp:Bool):Void
 	{
 
 		var _vertices:Vector<Float> = new Vector<Float>();
@@ -63,10 +63,10 @@ class Torus extends Mesh
 
 				var ip:Int = (i + 1) % segmentsR;
 				var jp:Int = (j + 1) % segmentsT;
-				var a:uint = _grid[i][j];
-				var b:uint = _grid[ip][j];
-				var c:uint = _grid[i][jp];
-				var d:uint = _grid[ip][jp];
+				var a:UInt = _grid[i][j];
+				var b:UInt = _grid[ip][j];
+				var c:UInt = _grid[i][jp];
+				var d:UInt = _grid[ip][jp];
 
 				// uvt
 				_uvt[a * 2] = i / segmentsR;
