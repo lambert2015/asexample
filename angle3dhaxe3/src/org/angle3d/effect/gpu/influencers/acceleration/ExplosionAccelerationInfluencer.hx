@@ -1,27 +1,26 @@
-package org.angle3d.effect.gpu.influencers.acceleration
+package org.angle3d.effect.gpu.influencers.acceleration;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+import org.angle3d.math.Vector3f;
+
+class ExplosionAccelerationInfluencer extends AbstractInfluencer implements IAccelerationInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-	import org.angle3d.math.Vector3f;
+	private var _scale:Float;
 
-	class ExplosionAccelerationInfluencer extends AbstractInfluencer implements IAccelerationInfluencer
+	public function new(scale:Float)
 	{
-		private var _scale:Float;
+		super();
+		_scale = scale;
+	}
 
-		public function ExplosionAccelerationInfluencer(scale:Float)
-		{
-			super();
-			_scale = scale;
-		}
-
-		/**
-		 * 沿着原来运动方向
-		 */
-		public function getAcceleration(velocity:Vector3f, store:Vector3f):Vector3f
-		{
-			store.x = velocity.x * _scale;
-			store.y = velocity.y * _scale;
-			store.z = velocity.z * _scale;
-			return store;
-		}
+	/**
+	 * 沿着原来运动方向
+	 */
+	public function getAcceleration(velocity:Vector3f, store:Vector3f):Vector3f
+	{
+		store.x = velocity.x * _scale;
+		store.y = velocity.y * _scale;
+		store.z = velocity.z * _scale;
+		return store;
 	}
 }

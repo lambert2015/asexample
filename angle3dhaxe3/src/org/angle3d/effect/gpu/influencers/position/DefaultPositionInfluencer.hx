@@ -1,21 +1,20 @@
-package org.angle3d.effect.gpu.influencers.position
+package org.angle3d.effect.gpu.influencers.position;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+import org.angle3d.math.Vector3f;
+
+class DefaultPositionInfluencer extends AbstractInfluencer implements IPositionInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-	import org.angle3d.math.Vector3f;
+	private var _point:Vector3f;
 
-	class DefaultPositionInfluencer extends AbstractInfluencer implements IPositionInfluencer
+	public function new(point:Vector3f = null)
 	{
-		private var _point:Vector3f;
+		_point = point != null ? point.clone() : new Vector3f(0, 0, 0);
+	}
 
-		public function DefaultPositionInfluencer(point:Vector3f = null)
-		{
-			_point = point != null ? point.clone() : new Vector3f(0, 0, 0);
-		}
-
-		public function getPosition(index:Int, vector3:Vector3f):Vector3f
-		{
-			vector3.copyFrom(_point);
-			return vector3;
-		}
+	public function getPosition(index:Int, vector3:Vector3f):Vector3f
+	{
+		vector3.copyFrom(_point);
+		return vector3;
 	}
 }

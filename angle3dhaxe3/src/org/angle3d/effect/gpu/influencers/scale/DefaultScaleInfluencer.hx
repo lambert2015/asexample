@@ -1,25 +1,24 @@
-package org.angle3d.effect.gpu.influencers.scale
+package org.angle3d.effect.gpu.influencers.scale;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+import org.angle3d.math.FastMath;
+
+/**
+ * 粒子缩放
+ */
+class DefaultScaleInfluencer extends AbstractInfluencer implements IScaleInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-	import org.angle3d.math.FastMath;
+	private var _scale:Float;
+	private var _variation:Float;
 
-	/**
-	 * 粒子缩放
-	 */
-	class DefaultScaleInfluencer extends AbstractInfluencer implements IScaleInfluencer
+	public function new(scale:Float = 1.0, variation:Float = 0.0)
 	{
-		private var _scale:Float;
-		private var _variation:Float;
+		_scale = scale;
+		_variation = variation;
+	}
 
-		public function DefaultScaleInfluencer(scale:Float = 1.0, variation:Float = 0.0)
-		{
-			_scale = scale;
-			_variation = variation;
-		}
-
-		public function getDefaultScale(index:Int):Float
-		{
-			return FastMath.lerp(_scale, Math.random() * 2 - 1, _variation);
-		}
+	public function getDefaultScale(index:Int):Float
+	{
+		return FastMath.lerp(_scale, Math.random() * 2 - 1, _variation);
 	}
 }

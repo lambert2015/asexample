@@ -1,19 +1,19 @@
-package org.angle3d.effect.gpu.influencers.life
+package org.angle3d.effect.gpu.influencers.life;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+
+class SameLifeInfluencer extends AbstractInfluencer implements ILifeInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+	private var _life:Float;
 
-	class SameLifeInfluencer extends AbstractInfluencer implements ILifeInfluencer
+	public function new(life:Float)
 	{
-		private var _life:Float;
+		_life = life;
+	}
 
-		public function SameLifeInfluencer(life:Float)
-		{
-			_life = life;
-		}
-
-		public function getLife(index:Int):Float
-		{
-			return _life;
-		}
+	public function getLife(index:Int):Float
+	{
+		return _life;
 	}
 }
+

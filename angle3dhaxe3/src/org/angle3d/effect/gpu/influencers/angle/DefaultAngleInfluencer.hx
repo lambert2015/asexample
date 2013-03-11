@@ -1,16 +1,16 @@
-package org.angle3d.effect.gpu.influencers.angle
+package org.angle3d.effect.gpu.influencers.angle;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+
+class DefaultAngleInfluencer extends AbstractInfluencer implements IAngleInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-
-	class DefaultAngleInfluencer extends AbstractInfluencer implements IAngleInfluencer
+	public function new()
 	{
-		public function DefaultAngleInfluencer()
-		{
-		}
+	}
 
-		public function getDefaultAngle(index:Int):Float
-		{
-			return Math.PI * 2 * Math.random();
-		}
+	public function getDefaultAngle(index:Int):Float
+	{
+		return Math.PI * 2 * Math.random();
 	}
 }
+

@@ -1,10 +1,9 @@
-package org.angle3d.particles
-{
+package org.angle3d.particles;
 
-	class ParticleSystemManager
+
+class ParticleSystemManager
+{
+	public function ParticleSystemManager()
 	{
-		public function ParticleSystemManager()
-		{
-		}
 	}
 }

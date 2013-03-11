@@ -1,20 +1,20 @@
-package org.angle3d.effect.gpu.influencers.birth
+package org.angle3d.effect.gpu.influencers.birth;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+
+/**
+ *
+ */
+class EmptyBirthInfluencer extends AbstractInfluencer implements IBirthInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-
-	/**
-	 *
-	 */
-	class EmptyBirthInfluencer extends AbstractInfluencer implements IBirthInfluencer
+	public function new()
 	{
-		public function EmptyBirthInfluencer()
-		{
-			super();
-		}
+		super();
+	}
 
-		public function getBirth(index:Int):Float
-		{
-			return 0;
-		}
+	public function getBirth(index:Int):Float
+	{
+		return 0;
 	}
 }
+

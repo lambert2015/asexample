@@ -1,22 +1,21 @@
-package org.angle3d.effect.gpu.influencers.color
+package org.angle3d.effect.gpu.influencers.color;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+import org.angle3d.math.Color;
+
+class DefaultColorInfluencer extends AbstractInfluencer implements IColorInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-	import org.angle3d.math.Color;
+	private var _color:UInt;
 
-	class DefaultColorInfluencer extends AbstractInfluencer implements IColorInfluencer
+	public function new(color:UInt = 0x0)
 	{
-		private var _color:UInt;
+		super();
+		_color = color;
+	}
 
-		public function DefaultColorInfluencer(color:UInt = 0x0)
-		{
-			super();
-			_color = color;
-		}
-
-		public function getColor(index:Int, color:Color):Color
-		{
-			color.setRGB(_color);
-			return color;
-		}
+	public function getColor(index:Int, color:Color):Color
+	{
+		color.setRGB(_color);
+		return color;
 	}
 }

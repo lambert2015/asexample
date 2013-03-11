@@ -1,20 +1,19 @@
-package org.angle3d.effect.gpu.influencers.alpha
+package org.angle3d.effect.gpu.influencers.alpha;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+
+class DefaultAlphaInfluencer extends AbstractInfluencer implements IAlphaInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+	private var _alpha:Float;
 
-	class DefaultAlphaInfluencer extends AbstractInfluencer implements IAlphaInfluencer
+	public function new(alpha:Float = 1.0)
 	{
-		private var _alpha:Float;
+		super();
+		_alpha = alpha;
+	}
 
-		public function DefaultAlphaInfluencer(alpha:Float = 1.0)
-		{
-			super();
-			_alpha = alpha;
-		}
-
-		public function getAlpha(index:Int):Float
-		{
-			return _alpha;
-		}
+	public function getAlpha(index:Int):Float
+	{
+		return _alpha;
 	}
 }
