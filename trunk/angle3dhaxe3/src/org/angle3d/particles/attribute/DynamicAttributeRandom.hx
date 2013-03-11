@@ -1,0 +1,59 @@
+package org.angle3d.particles.attribute
+{
+
+	/* This class generates random values within a given minimum and maximum interval.
+	*/
+	class DynamicAttributeRandom extends DynamicAttribute
+	{
+		protected var mMin:Float;
+		protected var mMax:Float;
+
+		public function DynamicAttributeRandom()
+		{
+			super();
+
+			type = DynamicAttributeType.DAT_RANDOM;
+		}
+
+		public function setMin(min:Float):Void
+		{
+			mMin = min;
+		}
+
+		public function getMin():Float
+		{
+			return mMin;
+		}
+
+		public function setMax(max:Float):Void
+		{
+			mMax = max;
+		}
+
+		public function getMax():Float
+		{
+			return mMax;
+		}
+
+		public function setMinMax(min:Float, max:Float):Void
+		{
+			mMin = min;
+			mMax = max;
+		}
+
+		override public function getValue(x:Float):Float
+		{
+			return mMin + (mMax - mMin) * Math.random();
+		}
+
+		override public function copyAttributesTo(dynamicAttribute:DynamicAttribute):Void
+		{
+			if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_RANDOM)
+				return;
+
+			var dynAttr:DynamicAttributeRandom = dynamicAttribute as DynamicAttributeRandom;
+			dynAttr.mMin = mMin;
+			dynAttr.mMax = mMax;
+		}
+	}
+}
