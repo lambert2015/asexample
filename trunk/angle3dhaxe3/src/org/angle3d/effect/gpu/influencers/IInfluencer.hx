@@ -1,11 +1,11 @@
-package org.angle3d.effect.gpu.influencers
+package org.angle3d.effect.gpu.influencers;
+
+import org.angle3d.effect.gpu.ParticleShapeGenerator;
+
+interface IInfluencer
 {
-	import org.angle3d.effect.gpu.ParticleShapeGenerator;
+	function set generator(value:ParticleShapeGenerator):Void;
 
-	public interface IInfluencer
-	{
-		function set generator(value:ParticleShapeGenerator):Void;
-
-		function get generator():ParticleShapeGenerator;
-	}
+	function get generator():ParticleShapeGenerator;
 }
+

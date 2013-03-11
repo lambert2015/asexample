@@ -1,10 +1,10 @@
-package org.angle3d.particles.attribute
-{
+package org.angle3d.particles.attribute;
 
-	class SimpleSpline
+
+class SimpleSpline
+{
+	public function new()
 	{
-		public function SimpleSpline()
-		{
-		}
 	}
 }
+

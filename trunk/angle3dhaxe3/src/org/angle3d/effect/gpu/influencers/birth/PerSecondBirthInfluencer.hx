@@ -1,23 +1,22 @@
-package org.angle3d.effect.gpu.influencers.birth
+package org.angle3d.effect.gpu.influencers.birth;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+
+/**
+ * 根据每秒发射数量分开发射
+ */
+class PerSecondBirthInfluencer extends AbstractInfluencer implements IBirthInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+	private var _scale:Float;
 
-	/**
-	 * 根据每秒发射数量分开发射
-	 */
-	class PerSecondBirthInfluencer extends AbstractInfluencer implements IBirthInfluencer
+	public function new(scale:Float = 1.0)
 	{
-		private var _scale:Float;
+		super();
+		_scale = scale;
+	}
 
-		public function PerSecondBirthInfluencer(scale:Float = 1.0)
-		{
-			super();
-			_scale = scale;
-		}
-
-		public function getBirth(index:Int):Float
-		{
-			return int(index / _generator.perSecondParticleCount) * _scale;
-		}
+	public function getBirth(index:Int):Float
+	{
+		return int(index / _generator.perSecondParticleCount) * _scale;
 	}
 }

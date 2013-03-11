@@ -1,21 +1,21 @@
-package org.angle3d.effect.gpu.influencers.birth
+package org.angle3d.effect.gpu.influencers.birth;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+
+class DefaultBirthInfluencer extends AbstractInfluencer implements IBirthInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-
-	class DefaultBirthInfluencer extends AbstractInfluencer implements IBirthInfluencer
+	public function new()
 	{
-		public function DefaultBirthInfluencer()
-		{
-			super();
-		}
+		super();
+	}
 
-		public function getBirth(index:Int):Float
-		{
-			var perCount:Int = _generator.perSecondParticleCount;
+	public function getBirth(index:Int):Float
+	{
+		var perCount:Int = _generator.perSecondParticleCount;
 
-			var count:Int = int(index / perCount);
+		var count:Int = int(index / perCount);
 
-			return count + (index - count * perCount) / perCount;
-		}
+		return count + (index - count * perCount) / perCount;
 	}
 }
+

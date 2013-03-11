@@ -1,23 +1,22 @@
-package org.angle3d.effect.gpu.influencers
+package org.angle3d.effect.gpu.influencers;
+
+import org.angle3d.effect.gpu.ParticleShapeGenerator;
+
+class AbstractInfluencer implements IInfluencer
 {
-	import org.angle3d.effect.gpu.ParticleShapeGenerator;
+	private var _generator:ParticleShapeGenerator;
 
-	class AbstractInfluencer implements IInfluencer
+	public function new()
 	{
-		protected var _generator:ParticleShapeGenerator;
+	}
 
-		public function AbstractInfluencer()
-		{
-		}
+	public function set generator(value:ParticleShapeGenerator):Void
+	{
+		_generator = value;
+	}
 
-		public function set generator(value:ParticleShapeGenerator):Void
-		{
-			_generator = value;
-		}
-
-		public function get generator():ParticleShapeGenerator
-		{
-			return _generator;
-		}
+	public function get generator():ParticleShapeGenerator
+	{
+		return _generator;
 	}
 }

@@ -1,11 +1,11 @@
-package org.angle3d.particles.emitters
-{
+package org.angle3d.particles.emitters;
 
-	class PointEmitter extends ParticleEmitter
+
+class PointEmitter extends ParticleEmitter
+{
+	public function new()
 	{
-		public function PointEmitter()
-		{
-			super();
-		}
+		super();
 	}
 }
+

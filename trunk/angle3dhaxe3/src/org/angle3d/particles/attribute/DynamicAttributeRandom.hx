@@ -1,59 +1,58 @@
-package org.angle3d.particles.attribute
+package org.angle3d.particles.attribute;
+
+
+/* This class generates random values within a given minimum and maximum interval.
+*/
+class DynamicAttributeRandom extends DynamicAttribute
 {
+	private var mMin:Float;
+	private var mMax:Float;
 
-	/* This class generates random values within a given minimum and maximum interval.
-	*/
-	class DynamicAttributeRandom extends DynamicAttribute
+	public function new()
 	{
-		protected var mMin:Float;
-		protected var mMax:Float;
+		super();
 
-		public function DynamicAttributeRandom()
-		{
-			super();
+		type = DynamicAttributeType.DAT_RANDOM;
+	}
 
-			type = DynamicAttributeType.DAT_RANDOM;
-		}
+	public function setMin(min:Float):Void
+	{
+		mMin = min;
+	}
 
-		public function setMin(min:Float):Void
-		{
-			mMin = min;
-		}
+	public function getMin():Float
+	{
+		return mMin;
+	}
 
-		public function getMin():Float
-		{
-			return mMin;
-		}
+	public function setMax(max:Float):Void
+	{
+		mMax = max;
+	}
 
-		public function setMax(max:Float):Void
-		{
-			mMax = max;
-		}
+	public function getMax():Float
+	{
+		return mMax;
+	}
 
-		public function getMax():Float
-		{
-			return mMax;
-		}
+	public function setMinMax(min:Float, max:Float):Void
+	{
+		mMin = min;
+		mMax = max;
+	}
 
-		public function setMinMax(min:Float, max:Float):Void
-		{
-			mMin = min;
-			mMax = max;
-		}
+	override public function getValue(x:Float):Float
+	{
+		return mMin + (mMax - mMin) * Math.random();
+	}
 
-		override public function getValue(x:Float):Float
-		{
-			return mMin + (mMax - mMin) * Math.random();
-		}
+	override public function copyAttributesTo(dynamicAttribute:DynamicAttribute):Void
+	{
+		if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_RANDOM)
+			return;
 
-		override public function copyAttributesTo(dynamicAttribute:DynamicAttribute):Void
-		{
-			if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_RANDOM)
-				return;
-
-			var dynAttr:DynamicAttributeRandom = dynamicAttribute as DynamicAttributeRandom;
-			dynAttr.mMin = mMin;
-			dynAttr.mMax = mMax;
-		}
+		var dynAttr:DynamicAttributeRandom = dynamicAttribute as DynamicAttributeRandom;
+		dynAttr.mMin = mMin;
+		dynAttr.mMax = mMax;
 	}
 }

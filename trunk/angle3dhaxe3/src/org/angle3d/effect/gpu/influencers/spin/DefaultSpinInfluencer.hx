@@ -1,22 +1,21 @@
-package org.angle3d.effect.gpu.influencers.spin
+package org.angle3d.effect.gpu.influencers.spin;
+
+import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
+import org.angle3d.math.FastMath;
+
+class DefaultSpinInfluencer extends AbstractInfluencer implements ISpinInfluencer
 {
-	import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
-	import org.angle3d.math.FastMath;
+	private var _spin:Float;
+	private var _variation:Float;
 
-	class DefaultSpinInfluencer extends AbstractInfluencer implements ISpinInfluencer
+	public function new(spin:Float = 0, variation:Float = 0.0)
 	{
-		private var _spin:Float;
-		private var _variation:Float;
+		_spin = spin;
+		_variation = variation;
+	}
 
-		public function DefaultSpinInfluencer(spin:Float = 0, variation:Float = 0.0)
-		{
-			_spin = spin;
-			_variation = variation;
-		}
-
-		public function getSpin(index:Int):Float
-		{
-			return FastMath.lerp(_spin, (Math.random() * 2 - 1) * _spin, _variation);
-		}
+	public function getSpin(index:Int):Float
+	{
+		return FastMath.lerp(_spin, (Math.random() * 2 - 1) * _spin, _variation);
 	}
 }

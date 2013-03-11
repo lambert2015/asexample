@@ -1,15 +1,15 @@
-package org.angle3d.particles.emitters
+package org.angle3d.particles.emitters;
+
+import org.angle3d.particles.ParticleTechnique;
+
+class ParticleEmitter
 {
-	import org.angle3d.particles.ParticleTechnique;
+	public var technique:ParticleTechnique;
 
-	class ParticleEmitter
+	public var name:String;
+
+	public function new()
 	{
-		public var technique:ParticleTechnique;
-
-		public var name:String;
-
-		public function ParticleEmitter()
-		{
-		}
 	}
 }
+
