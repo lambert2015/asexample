@@ -471,6 +471,21 @@ class Vector3f
 		vec[2] = z;
 	}
 	
+	public function isValid():Bool
+	{
+		if (Math.isNaN(x) || 
+			Math.isNaN(y) || 
+			Math.isNaN(z))
+			return false;
+
+		if (!Math.isFinite(x) || 
+			!Math.isFinite(y) || 
+			!Math.isFinite(z))
+			return false;
+
+		return true;
+	}
+	
 	public function toString():String
 	{
 		//return "Vector2f(" + x + "," + y + ")";

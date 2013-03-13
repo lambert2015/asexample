@@ -1,5 +1,6 @@
 package org.angle3d.effect.cpu;
 
+import haxe.ds.Vector;
 import org.angle3d.bounding.BoundingBox;
 import org.angle3d.effect.cpu.influencers.DefaultParticleInfluencer;
 import org.angle3d.effect.cpu.influencers.IParticleInfluencer;
@@ -9,14 +10,12 @@ import org.angle3d.math.Color;
 import org.angle3d.math.FastMath;
 import org.angle3d.math.Matrix3f;
 import org.angle3d.math.Vector3f;
-import org.angle3d.renderer.Camera3D;
-import org.angle3d.renderer.RenderManager;
-import org.angle3d.renderer.ViewPort;
 import org.angle3d.renderer.queue.QueueBucket;
 import org.angle3d.renderer.queue.ShadowMode;
+import org.angle3d.renderer.RenderManager;
+import org.angle3d.renderer.ViewPort;
 import org.angle3d.scene.Geometry;
 import org.angle3d.utils.TempVars;
-
 /**
  * <code>ParticleEmitter</code> is a special kind of geometry which simulates
  * a particle system.
@@ -109,7 +108,7 @@ class ParticleEmitter extends Geometry
 		_gravity = new Vector3f(0.0, 0.1, 0.0);
 		_rotateSpeed = 0;
 
-		_faceNormal = new Vector3f(NaN, NaN, NaN);
+		_faceNormal = new Vector3f(Math.NaN, Math.NaN, Math.NaN);
 		_imagesX = 1;
 		_imagesY = 1;
 
@@ -159,24 +158,18 @@ class ParticleEmitter extends Geometry
 	 *
 	 * @see ParticleInfluencer
 	 */
-	public function set particleInfluencer(influencer:IParticleInfluencer):Void
-	{
-		_particleInfluencer = influencer;
-	}
-
-	/**
-	 * Returns the {@link ParticleInfluencer} that influences this
-	 * particle emitter.
-	 *
-	 * @return the {@link ParticleInfluencer} that influences this
-	 * particle emitter.
-	 *
-	 * @see ParticleInfluencer
-	 */
-	public function get particleInfluencer():IParticleInfluencer
+	public var particleInfluencer(get, set):IParticleInfluencer;
+	private function get_particleInfluencer():IParticleInfluencer
 	{
 		return _particleInfluencer;
 	}
+	private function set_particleInfluencer(influencer:IParticleInfluencer):IParticleInfluencer
+	{
+		_particleInfluencer = influencer;
+		return _particleInfluencer;
+	}
+
+	
 
 	/**
 	 * Returns true if particles should spawn in world space.
@@ -185,26 +178,16 @@ class ParticleEmitter extends Geometry
 	 *
 	 * @see ParticleEmitter#setInWorldSpace(Bool)
 	 */
-	public function get inWorldSpace():Bool
+	public var inWorldSpace(get, set):Bool;
+	private function get_inWorldSpace():Bool
 	{
 		return _worldSpace;
 	}
-
-	/**
-	 * Set to true if particles should spawn in world space.
-	 *
-	 * <p>If set to true and the particle emitter is moved in the scene,
-	 * then particles that have already spawned won't be effected by this
-	 * motion. If set to false, the particles will emit in local space
-	 * and when the emitter is moved, so are all the particles that
-	 * were emitted previously.
-	 *
-	 * @param worldSpace true if particles should spawn in world space.
-	 */
-	public function set inWorldSpace(worldSpace:Bool):Void
+	private function set_inWorldSpace(worldSpace:Bool):Bool
 	{
 		setIgnoreTransform(worldSpace);
 		_worldSpace = worldSpace;
+		return _worldSpace;
 	}
 
 	/**
@@ -228,8 +211,8 @@ class ParticleEmitter extends Geometry
 	 */
 	public function setNumParticles(numParticles:Int):Void
 	{
-		_particles = new Vector<Particle>(numParticles, true);
-		for (var i:Int = 0; i < numParticles; i++)
+		_particles = new Vector<Particle>(numParticles);
+		for (i in 0...numParticles)
 		{
 			_particles[i] = new Particle();
 		}
@@ -271,7 +254,7 @@ class ParticleEmitter extends Geometry
 	 */
 	public function getFaceNormal():Vector3f
 	{
-		if (Vector3f.isValidVector(_faceNormal))
+		if (_faceNormal.isValid())
 		{
 			return _faceNormal;
 		}
@@ -295,9 +278,9 @@ class ParticleEmitter extends Geometry
 	 */
 	public function setFaceNormal(faceNormal:Vector3f):Void
 	{
-		if (faceNormal == null || !Vector3f.isValidVector(faceNormal))
+		if (faceNormal == null || !faceNormal.isValid())
 		{
-			this._faceNormal.copyFrom(Vector3f.NAN);
+			this._faceNormal.setTo(Math.NaN, Math.NaN, Math.NaN);
 		}
 		else
 		{
@@ -330,43 +313,21 @@ class ParticleEmitter extends Geometry
 	}
 
 	/**
-	 * Returns true if every particle spawned
-	 * should have a random facing angle.
-	 *
-	 * @return true if every particle spawned
-	 * should have a random facing angle.
-	 *
-	 * @see ParticleEmitter#setRandomAngle(Bool)
-	 */
-	public function isRandomAngle():Bool
-	{
-		return _randomAngle;
-	}
-
-	/**
 	 * Set to true if every particle spawned
 	 * should have a random facing angle.
 	 *
 	 * @param randomAngle if every particle spawned
 	 * should have a random facing angle.
 	 */
-	public function setRandomAngle(randomAngle:Bool):Void
+	public var randomAngle(get, set):Bool;
+	private function get_randomAngle():Bool
+	{
+		return _randomAngle;
+	}
+	private function set_randomAngle(randomAngle:Bool):Bool
 	{
 		this._randomAngle = randomAngle;
-	}
-
-	/**
-	 * Returns true if every particle spawned should get a random
-	 * image.
-	 *
-	 * @return True if every particle spawned should get a random
-	 * image.
-	 *
-	 * @see ParticleEmitter#setSelectRandomImage(Bool)
-	 */
-	public function get randomImage():Bool
-	{
-		return _randomImage;
+		return _randomAngle;
 	}
 
 	/**
@@ -385,9 +346,15 @@ class ParticleEmitter extends Geometry
 	 * @param selectRandomImage True if every particle spawned should get a random
 	 * image.
 	 */
-	public function set randomImage(randomImage:Bool):Void
+	public var randomImage(get, set):Bool;
+	private function get_randomImage():Bool
+	{
+		return _randomImage;
+	}
+	public function set_randomImage(randomImage:Bool):Bool
 	{
 		_randomImage = randomImage;
+		return _randomImage;
 	}
 
 	/**
@@ -704,7 +671,7 @@ class ParticleEmitter extends Geometry
 
 		var vars:TempVars = TempVars.getTempVars();
 
-		var bbox:BoundingBox = this.getMesh().getBound() as BoundingBox;
+		var bbox:BoundingBox = cast(this.getMesh().getBound(),BoundingBox);
 
 		var min:Vector3f = vars.vect1;
 		var max:Vector3f = vars.vect2;
@@ -712,13 +679,13 @@ class ParticleEmitter extends Geometry
 		bbox.getMin(min);
 		bbox.getMax(max);
 
-		if (!Vector3f.isValidVector(min))
+		if (!min.isValid())
 		{
-			min.copyFrom(Vector3f.POSITIVE_INFINITY);
+			min.setTo(Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY);
 		}
-		if (!Vector3f.isValidVector(max))
+		if (!max.isValid())
 		{
-			max.copyFrom(Vector3f.NEGATIVE_INFINITY);
+			max.setTo(Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY);
 		}
 
 		while (emitParticle(min, max) != null)
@@ -738,7 +705,7 @@ class ParticleEmitter extends Geometry
 	public function killAllParticles():Void
 	{
 		var len:Int = _particles.length;
-		for (var i:Int = 0; i < len; i++)
+		for (i in 0...len)
 		{
 			if (_particles[i].life > 0)
 			{
@@ -766,9 +733,15 @@ class ParticleEmitter extends Geometry
 	 *
 	 * @param enabled True to enable the particle emitter
 	 */
-	public function set enabled(enabled:Bool):Void
+	public var enabled(get, set):Bool;
+	private function get_enabled():Bool
+	{
+		return _enabled;
+	}
+	private function set_enabled(enabled:Bool):Bool
 	{
 		this._enabled = enabled;
+		return _enabled;
 	}
 
 	/**
@@ -778,10 +751,7 @@ class ParticleEmitter extends Geometry
 	 *
 	 * @see ParticleEmitter#setEnabled(Bool)
 	 */
-	public function get enabled():Bool
-	{
-		return _enabled;
-	}
+	
 
 	/**
 	 * Callback from Control.update(), do not use.
@@ -801,7 +771,7 @@ class ParticleEmitter extends Geometry
 	 * @param rm
 	 * @param vp
 	 */
-	private var _inverseRotation:Matrix3f = new Matrix3f();
+	private static var _inverseRotation:Matrix3f = new Matrix3f();
 
 	public function renderFromControl(rm:RenderManager, vp:ViewPort):Void
 	{
@@ -821,7 +791,7 @@ class ParticleEmitter extends Geometry
 	 */
 	private function emitParticle(min:Vector3f, max:Vector3f):Particle
 	{
-		var idx:UInt = _lastUsed + 1;
+		var idx:Int = _lastUsed + 1;
 		if (idx >= _particles.length)
 		{
 			return null;
@@ -831,7 +801,8 @@ class ParticleEmitter extends Geometry
 
 		if (_randomImage)
 		{
-			p.frame = int(Math.random() * _imagesY) * _imagesX + int(Math.random() * _imagesX);
+			p.frame = Std.int(Math.random() * _imagesY) * _imagesX + 
+						Std.int(Math.random() * _imagesX);
 		}
 
 		p.totalLife = _lowLife + Math.random() * (_highLife - _lowLife);
@@ -850,7 +821,7 @@ class ParticleEmitter extends Geometry
 
 		if (_randomAngle)
 		{
-			p.angle = Math.random() * FastMath.TWO_PI;
+			p.angle = Math.random() * FastMath.TWO_PI();
 		}
 
 		if (_rotateSpeed != 0)
@@ -906,7 +877,7 @@ class ParticleEmitter extends Geometry
 	/**
 	 * 每次循环都更新粒子信息
 	 */
-	private var _tColor:Color = new Color();
+	private static var _tColor:Color = new Color();
 
 	/**
 	 *
@@ -941,7 +912,7 @@ class ParticleEmitter extends Geometry
 
 		if (!_randomImage)
 		{
-			p.frame = int(interp * _imagesX * _imagesY);
+			p.frame = Std.int(interp * _imagesX * _imagesY);
 		}
 
 		// Computing bounding volume
@@ -959,20 +930,20 @@ class ParticleEmitter extends Geometry
 		min.minLocal(temp);
 	}
 
-	private var _tMin:Vector3f = new Vector3f();
-	private var _tMax:Vector3f = new Vector3f();
+	private static var _tMin:Vector3f = new Vector3f();
+	private static var _tMax:Vector3f = new Vector3f();
 
 	private function updateParticleState(tpf:Float):Void
 	{
 		// Force world transform to update
 		checkDoTransformUpdate();
 
-		_tMin.copyFrom(Vector3f.POSITIVE_INFINITY);
-		_tMax.copyFrom(Vector3f.NEGATIVE_INFINITY);
+		_tMin.setTo(Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY);
+		_tMax.setTo(Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY);
 
 		var p:Particle;
 		var numPaticle:Int = _particles.length;
-		for (var i:Int = 0; i < numPaticle; i++)
+		for (i in 0...numPaticle)
 		{
 			p = _particles[i];
 
@@ -1024,7 +995,7 @@ class ParticleEmitter extends Geometry
 		}
 		_timeDifference = tpf;
 
-		var bbox:BoundingBox = this.getMesh().getBound() as BoundingBox;
+		var bbox:BoundingBox = cast(this.getMesh().getBound(),BoundingBox);
 		bbox.setMinMax(_tMin, _tMax);
 		this.setBoundRefresh();
 	}

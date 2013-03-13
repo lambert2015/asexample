@@ -47,7 +47,7 @@ class DefaultParticleInfluencer implements IParticleInfluencer
 	{
 		particle.velocity.copyFrom(initialVelocity);
 
-		var nlegth:Float = initialVelocity.length;
+		var length:Float = initialVelocity.length;
 		temp.x = (Math.random() * 2 - 1) * length;
 		temp.y = (Math.random() * 2 - 1) * length;
 		temp.z = (Math.random() * 2 - 1) * length;

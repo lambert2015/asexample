@@ -8,7 +8,7 @@ import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
 import org.angle3d.scene.mesh.VertexBuffer;
-
+import haxe.ds.Vector;
 /**
  * The <code>ParticleMesh</code> is the underlying visual implementation of a particle emitter.
  *
@@ -22,9 +22,12 @@ class ParticleCPUMesh extends Mesh
 
 	private var _subMesh:SubMesh;
 
+	private var _color:Color;
 	public function new()
 	{
 		super();
+		
+		_color = new Color();
 
 		imageX = 1;
 		imageY = 1;
@@ -42,17 +45,17 @@ class ParticleCPUMesh extends Mesh
 		_emitter = emitter;
 
 		// set positions
-		var posVector:Vector<Float> = new Vector<Float>(numParticles * 4 * 3, true);
+		var posVector:Vector<Float> = new Vector<Float>(numParticles * 4 * 3);
 		_subMesh.setVertexBuffer(BufferType.POSITION, 3, posVector);
 
 		// set colors
-		var colorVector:Vector<Float> = new Vector<Float>(numParticles * 4 * 4, true);
+		var colorVector:Vector<Float> = new Vector<Float>(numParticles * 4 * 4);
 		_subMesh.setVertexBuffer(BufferType.COLOR, 4, colorVector);
 
 		// set texcoords
 		uniqueTexCoords = false;
-		var texVector:Vector<Float> = new Vector<Float>(numParticles * 4 * 2, true);
-		for (var i:Int = 0; i < numParticles; i++)
+		var texVector:Vector<Float> = new Vector<Float>(numParticles * 4 * 2);
+		for (i in 0...numParticles)
 		{
 			texVector[i * 8 + 0] = 0;
 			texVector[i * 8 + 1] = 1;
@@ -70,8 +73,8 @@ class ParticleCPUMesh extends Mesh
 		_subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, texVector);
 
 		// set indices
-		var indices:Vector<UInt> = new Vector<UInt>(numParticles * 6, true);
-		for (i = 0; i < numParticles; i++)
+		var indices:Vector<UInt> = new Vector<UInt>(numParticles * 6);
+		for (i in 0...numParticles)
 		{
 			var idx:Int = i * 6;
 
@@ -104,7 +107,7 @@ class ParticleCPUMesh extends Mesh
 		}
 	}
 
-	private var _color:Color = new Color();
+	
 
 	public function updateParticleData(particles:Vector<Particle>, cam:Camera3D, inverseRotation:Matrix3f):Void
 	{
@@ -141,13 +144,13 @@ class ParticleCPUMesh extends Mesh
 		//update data in vertex buffers
 		var p:Particle;
 		var numParticle:Int = particles.length;
-		for (var i:Int = 0; i < numParticle; i++)
+		for (i in 0...numParticle)
 		{
 			p = particles[i];
 
 			if (p.life == 0)
 			{
-				for (var j:Int = 0; j < 12; j++)
+				for (j in 0...12)
 				{
 					positions[i * 12 + j] = 0;
 				}
@@ -165,7 +168,7 @@ class ParticleCPUMesh extends Mesh
 			else if (faceNormal != null)
 			{
 				up.copyFrom(faceNormal);
-				up.crossLocal(Vector3f.X_AXIS);
+				up.crossLocal(Vector3f.X_AXIS());
 				faceNormal.cross(up, left);
 				up.scaleLocal(p.size);
 				left.scaleLocal(p.size);
@@ -220,7 +223,7 @@ class ParticleCPUMesh extends Mesh
 			if (uniqueTexCoords)
 			{
 				var imgX:Int = p.frame % imageX;
-				var imgY:Int = (p.frame - imgX) / imageY;
+				var imgY:Int = Std.int((p.frame - imgX) / imageY);
 
 				var startX:Float = imgX / imageX;
 				var startY:Float = imgY / imageY;
@@ -245,7 +248,7 @@ class ParticleCPUMesh extends Mesh
 			var pg:Float = _color.g;
 			var pb:Float = _color.b;
 			var pa:Float = p.alpha;
-			for (var m:Int = 0; m < 4; m++)
+			for (m in 0...4)
 			{
 				colors[i * 16 + m * 4 + 0] = pr;
 				colors[i * 16 + m * 4 + 1] = pg;
