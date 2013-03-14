@@ -6,6 +6,7 @@ class DefaultAngleInfluencer extends AbstractInfluencer implements IAngleInfluen
 {
 	public function new()
 	{
+		super();
 	}
 
 	public function getDefaultAngle(index:Int):Float

@@ -25,25 +25,28 @@ class ParticleSystemControl implements Control
 		return this;
 	}
 
-	public function set spatial(spatial:Spatial):Void
+	public var spatial(get, set):Spatial;
+	private function get_spatial():Spatial
 	{
-
+		return null;
 	}
-
-	public function get spatial():Spatial
+	private function set_spatial(spatial:Spatial):Spatial
 	{
 		return null;
 	}
 
-	public function set enabled(enabled:Bool):Void
-	{
-		_enabled = enabled;
-	}
-
-	public function get enabled():Bool
+	public var enabled(get, set):Bool;
+	private function get_enabled():Bool
 	{
 		return _enabled;
 	}
+	private function set_enabled(enabled:Bool):Bool
+	{
+		_enabled = enabled;
+		return _enabled;
+	}
+
+	
 
 	public function update(tpf:Float):Void
 	{

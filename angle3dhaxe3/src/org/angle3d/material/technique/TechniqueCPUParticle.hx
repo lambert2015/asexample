@@ -2,6 +2,8 @@ package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
+import org.angle3d.light.LightType;
 import org.angle3d.material.BlendMode;
 import org.angle3d.material.CullMode;
 import org.angle3d.material.shader.Shader;
@@ -10,6 +12,7 @@ import org.angle3d.material.shader.UniformBinding;
 import org.angle3d.material.shader.UniformBindingHelp;
 import org.angle3d.material.TestFunction;
 import org.angle3d.scene.mesh.BufferType;
+import org.angle3d.scene.mesh.MeshType;
 import org.angle3d.texture.TextureMapBase;
 
 
@@ -20,11 +23,6 @@ import org.angle3d.texture.TextureMapBase;
 
 class TechniqueCPUParticle extends Technique
 {
-	[Embed(source = "data/cpuparticle.vs", mimeType = "application/octet-stream")]
-	private static var CPUParticleVS:Class;
-	[Embed(source = "data/cpuparticle.fs", mimeType = "application/octet-stream")]
-	private static var CPUParticleFS:Class;
-
 	private var _texture:TextureMapBase;
 
 	public function new()
@@ -73,33 +71,38 @@ class TechniqueCPUParticle extends Technique
 		return ba.readUTFBytes(ba.length);
 	}
 
-	override private function getOption(lightType:String = "none", meshType:String = "static"):Vector<Vector<String>>
+	override private function getOption(lightType:LightType, meshType:MeshType):Array<Array<String>>
 	{
-		var results:Vector<Vector<String>> = super.getOption(lightType, meshType);
+		var results:Array<Array<String>> = super.getOption(lightType, meshType);
 		return results;
 	}
 
-	override private function getKey(lightType:String = "none", meshType:String = "static"):String
+	override private function getKey(lightType:LightType, meshType:MeshType):String
 	{
-		var result:Array = [name, meshType];
+		var result:Array<String> = [name, meshType.getName()];
 		return result.join("_");
 	}
 
-	override private function getBindAttributes(lightType:String = "none", meshType:String = "static"):Dictionary
+	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.TEXCOORD] = "a_texCoord";
-		map[BufferType.COLOR] = "a_color";
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION, "a_position");
+		map.set(BufferType.TEXCOORD, "a_texCoord");
+		map.set(BufferType.COLOR, "a_color");
 		return map;
 	}
 
-	override private function getBindUniforms(lightType:String = "none", meshType:String = "static"):Vector<UniformBindingHelp>
+	override private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
-		var list:Vector<UniformBindingHelp> = new Vector<UniformBindingHelp>();
+		var list:Array<UniformBindingHelp> = new Array<UniformBindingHelp>();
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 		
 		return list;
 	}
 }
+
+@:file("org/angle3d/material/technique/data/cpuparticle.vs") 
+class CPUParticleVS extends flash.utils.ByteArray{}
+@:file("org/angle3d/material/technique/data/cpuparticle.fs") 
+class CPUParticleFS extends flash.utils.ByteArray{}
 

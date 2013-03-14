@@ -10,13 +10,14 @@ class AbstractInfluencer implements IInfluencer
 	{
 	}
 
-	public function set generator(value:ParticleShapeGenerator):Void
+	public var generator(get, set):ParticleShapeGenerator;
+	private function get_generator():ParticleShapeGenerator
+	{
+		return _generator;
+	}
+	private function set_generator(value:ParticleShapeGenerator):ParticleShapeGenerator
 	{
 		_generator = value;
-	}
-
-	public function get generator():ParticleShapeGenerator
-	{
 		return _generator;
 	}
 }

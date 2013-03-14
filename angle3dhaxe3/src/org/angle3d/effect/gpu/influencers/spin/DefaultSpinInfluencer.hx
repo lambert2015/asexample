@@ -10,6 +10,7 @@ class DefaultSpinInfluencer extends AbstractInfluencer implements ISpinInfluence
 
 	public function new(spin:Float = 0, variation:Float = 0.0)
 	{
+		super();
 		_spin = spin;
 		_variation = variation;
 	}

@@ -13,6 +13,7 @@ class DefaultScaleInfluencer extends AbstractInfluencer implements IScaleInfluen
 
 	public function new(scale:Float = 1.0, variation:Float = 0.0)
 	{
+		super();
 		_scale = scale;
 		_variation = variation;
 	}

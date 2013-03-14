@@ -14,6 +14,8 @@ import org.angle3d.io.parser.ms3d.MS3DTriangle;
 import org.angle3d.io.parser.ms3d.MS3DVertex;
 import org.angle3d.io.parser.ms3d.MS3DWeight;
 import org.angle3d.effect.cpu.ParticleEmitterControl;
+import org.angle3d.effect.gpu.ParticleSystemControl;
+import org.angle3d.effect.gpu.ParticleShapeGenerator;
 //import msignal.Signal;
 /**
  * andy

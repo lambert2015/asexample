@@ -10,6 +10,7 @@ class EmptyVelocityInfluencer extends AbstractInfluencer implements IVelocityInf
 {
 	public function new()
 	{
+		super();
 	}
 
 	public function getVelocity(index:Int, vector3:Vector3f):Vector3f
