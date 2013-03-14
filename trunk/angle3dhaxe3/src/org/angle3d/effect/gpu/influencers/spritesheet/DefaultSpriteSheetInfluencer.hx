@@ -8,6 +8,7 @@ class DefaultSpriteSheetInfluencer extends AbstractInfluencer implements ISprite
 
 	public function new(totalFrame:Int = 1)
 	{
+		super();
 		_totalFrame = totalFrame;
 	}
 
@@ -18,6 +19,6 @@ class DefaultSpriteSheetInfluencer extends AbstractInfluencer implements ISprite
 
 	public function getDefaultFrame():Int
 	{
-		return int(Math.random() * _totalFrame);
+		return Std.int(Math.random() * _totalFrame);
 	}
 }

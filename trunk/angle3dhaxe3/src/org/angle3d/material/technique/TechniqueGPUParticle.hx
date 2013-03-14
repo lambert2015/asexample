@@ -2,6 +2,7 @@ package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 import org.angle3d.light.LightType;
 import org.angle3d.material.BlendMode;
 import org.angle3d.material.CullMode;
@@ -15,7 +16,7 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.MeshType;
 import org.angle3d.texture.TextureMapBase;
-
+import haxe.ds.Vector;
 
 /**
  * andy
@@ -23,58 +24,72 @@ import org.angle3d.texture.TextureMapBase;
  */
 class TechniqueGPUParticle extends Technique
 {
-	[Embed(source = "data/gpuparticle.vs", mimeType = "application/octet-stream")]
-	private static var GPUParticleVS:Class;
-	[Embed(source = "data/gpuparticle.fs", mimeType = "application/octet-stream")]
-	private static var GPUParticleFS:Class;
-
 	private var _texture:TextureMapBase;
 
 	private var _offsetVector:Vector<Float>;
 
-	private var _beginColor:Color = new Color(1, 1, 1, 0);
-	private var _endColor:Color = new Color(0, 0, 0, 0);
-	private var _incrementColor:Color = new Color(0, 0, 0, 1);
-	private var _useColor:Bool = false;
+	private var _beginColor:Color;
+	private var _endColor:Color;
+	private var _incrementColor:Color;
+	private var _useColor:Bool;
 
-	private var _curTime:Vector3f = new Vector3f(0, 0, 0);
-	private var _size:Vector3f = new Vector3f(1, 1, 0);
+	private var _curTime:Vector3f;
+	private var _size:Vector3f;
 
-	private var _loop:Bool = true;
+	private var _loop:Bool;
 
-	private var _useAcceleration:Bool = false;
+	private var _useAcceleration:Bool;
 	private var _acceleration:Vector3f;
 
 	/**
 	 * 是否自转
 	 */
-	private var _useSpin:Bool = false;
+	private var _useSpin:Bool;
 
 
-	private var _useSpriteSheet:Bool = false;
-	private var _useAnimation:Bool = false;
-	private var _spriteSheetData:Vector<Float> = new Vector<Float>(4, true);
+	private var _useSpriteSheet:Bool;
+	private var _useAnimation:Bool;
+	private var _spriteSheetData:Vector<Float>;
 
-	private var _useLocalAcceleration:Bool = false;
-	private var _useLocalColor:Bool = false;
+	private var _useLocalAcceleration:Bool;
+	private var _useLocalColor:Bool;
 
-	private static const USE_ACCELERATION:String = "USE_ACCELERATION";
-	private static const USE_LOCAL_ACCELERATION:String = "USE_LOCAL_ACCELERATION";
+	private static inline var USE_ACCELERATION:String = "USE_ACCELERATION";
+	private static inline var USE_LOCAL_ACCELERATION:String = "USE_LOCAL_ACCELERATION";
 
-	private static const USE_SPRITESHEET:String = "USE_SPRITESHEET";
-	private static const USE_ANIMATION:String = "USE_ANIMATION";
+	private static inline var USE_SPRITESHEET:String = "USE_SPRITESHEET";
+	private static inline var USE_ANIMATION:String = "USE_ANIMATION";
 
-	private static const USE_COLOR:String = "USE_COLOR";
+	private static inline var USE_COLOR:String = "USE_COLOR";
 
-	private static const USE_LOCAL_COLOR:String = "USE_LOCAL_COLOR";
+	private static inline var USE_LOCAL_COLOR:String = "USE_LOCAL_COLOR";
 
-	private static const USE_SPIN:String = "USE_SPIN";
+	private static inline var USE_SPIN:String = "USE_SPIN";
 
-	private static const NOT_LOOP:String = "NOT_LOOP";
+	private static inline var NOT_LOOP:String = "NOT_LOOP";
 
 	public function new()
 	{
 		super();
+		
+		_beginColor = new Color(1, 1, 1, 0);
+		_endColor = new Color(0, 0, 0, 0);
+		_incrementColor = new Color(0, 0, 0, 1);
+		_useColor = false;
+
+		_curTime = new Vector3f(0, 0, 0);
+		_size = new Vector3f(1, 1, 0);
+
+		_loop = true;
+
+		_useAcceleration = false;
+		_useSpin = false;
+		_useSpriteSheet = false;
+		_useAnimation = false;
+		_spriteSheetData = new Vector<Float>(4);
+
+		_useLocalAcceleration = false;
+		_useLocalColor = false;
 
 		_renderState.applyCullMode = true;
 		_renderState.cullMode = CullMode.FRONT;
@@ -86,7 +101,7 @@ class TechniqueGPUParticle extends Technique
 		_renderState.applyBlendMode = true;
 		_renderState.blendMode = BlendMode.AlphaAdditive;
 
-		_offsetVector = new Vector<Float>(16, true);
+		_offsetVector = new Vector<Float>(16);
 		_offsetVector[0] = -0.5;
 		_offsetVector[1] = -0.5;
 		_offsetVector[2] = 0;
@@ -108,34 +123,36 @@ class TechniqueGPUParticle extends Technique
 		_offsetVector[15] = 1;
 	}
 
-	private function set_useLocalColor(value:Bool):Void
-	{
-		_useLocalColor = value;
-	}
-
+	public var useLocalColor(get, set):Bool;
 	private function get_useLocalColor():Bool
 	{
 		return _useLocalColor;
 	}
-
-	private function set_useLocalAcceleration(value:Bool):Void
+	private function set_useLocalColor(value:Bool):Bool
 	{
-		_useLocalAcceleration = value;
+		_useLocalColor = value;
+		return _useLocalColor;
 	}
 
+	public var useLocalAcceleration(get, set):Bool;
 	private function get_useLocalAcceleration():Bool
 	{
 		return _useLocalAcceleration;
 	}
-
-	public function setUseSpin(value:Bool):Void
+	private function set_useLocalAcceleration(value:Bool):Bool
 	{
-		_useSpin = value;
+		_useLocalAcceleration = value;
+		return _useLocalAcceleration;
 	}
 
 	public function getUseSpin():Bool
 	{
 		return _useSpin;
+	}
+	
+	public function setUseSpin(value:Bool):Void
+	{
+		_useSpin = value;
 	}
 
 	public function setLoop(value:Bool):Void
@@ -172,13 +189,14 @@ class TechniqueGPUParticle extends Technique
 		_useSpriteSheet = col > 1 || row > 1;
 	}
 
-	private function set_curTime(value:Float):Void
-	{
-		_curTime.x = value;
-	}
-
+	public var curTime(get, set):Float;
 	private function get_curTime():Float
 	{
+		return _curTime.x;
+	}
+	private function set_curTime(value:Float):Float
+	{
+		_curTime.x = value;
 		return _curTime.x;
 	}
 
@@ -216,14 +234,16 @@ class TechniqueGPUParticle extends Technique
 		_useAcceleration = _acceleration != null && !_acceleration.isZero();
 	}
 
+	public var texture(get, set):TextureMapBase;
 	private function get_texture():TextureMapBase
 	{
 		return _texture;
 	}
 
-	private function set_texture(value:TextureMapBase):Void
+	private function set_texture(value:TextureMapBase):TextureMapBase
 	{
 		_texture = value;
+		return _texture;
 	}
 
 	/**
@@ -274,7 +294,7 @@ class TechniqueGPUParticle extends Technique
 
 	override private function getOption(lightType:LightType, meshType:MeshType):Array<Array<String>>
 	{
-		var results:Vector<Vector<String>> = super.getOption(lightType, meshType);
+		var results:Array<Array<String>> = super.getOption(lightType, meshType);
 		if (_useAcceleration)
 		{
 			results[0].push(USE_ACCELERATION);
@@ -321,7 +341,7 @@ class TechniqueGPUParticle extends Technique
 
 	override private function getKey(lightType:LightType, meshType:MeshType):String
 	{
-		var result:Array = [name, meshType];
+		var result:Array<String> = [name, meshType.getName()];
 
 		if (_useAcceleration)
 		{
@@ -367,25 +387,25 @@ class TechniqueGPUParticle extends Technique
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.TEXCOORD] = "a_texCoord";
-		map[BufferType.PARTICLE_VELOCITY] = "a_velocity";
-		map[BufferType.PARTICLE_LIFE_SCALE_ANGLE] = "a_lifeScaleSpin";
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION,"a_position");
+		map.set(BufferType.TEXCOORD,"a_texCoord");
+		map.set(BufferType.PARTICLE_VELOCITY,"a_velocity");
+		map.set(BufferType.PARTICLE_LIFE_SCALE_ANGLE,"a_lifeScaleSpin");
 		if (_useLocalAcceleration)
 		{
-			map[BufferType.PARTICLE_ACCELERATION] = "a_acceleration";
+			map.set(BufferType.PARTICLE_ACCELERATION,"a_acceleration");
 		}
 		if (_useLocalColor)
 		{
-			map[BufferType.COLOR] = "a_color";
+			map.set(BufferType.COLOR,"a_color");
 		}
 		return map;
 	}
 
 	override private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
-		var list:Vector<UniformBindingHelp> = new Vector<UniformBindingHelp>();
+		var list:Array<UniformBindingHelp> = new Array<UniformBindingHelp>();
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_invertViewMat", UniformBinding.ViewMatrixInverse));
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_viewProjectionMat", UniformBinding.WorldViewProjectionMatrix));
 		
@@ -393,3 +413,7 @@ class TechniqueGPUParticle extends Technique
 	}
 }
 
+@:file("org/angle3d/material/technique/data/gpuparticle.vs") 
+class GPUParticleVS extends flash.utils.ByteArray{}
+@:file("org/angle3d/material/technique/data/gpuparticle.fs") 
+class GPUParticleFS extends flash.utils.ByteArray{}

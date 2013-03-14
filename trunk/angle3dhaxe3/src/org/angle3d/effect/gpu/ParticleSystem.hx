@@ -1,6 +1,7 @@
 package org.angle3d.effect.gpu;
 
 import org.angle3d.scene.Node;
+using org.angle3d.utils.ArrayUtil;
 
 class ParticleSystem extends Node
 {
@@ -9,7 +10,7 @@ class ParticleSystem extends Node
 	private var _isPlay:Bool = false;
 	private var _isPaused:Bool = false;
 
-	private var _shapes:Vector<ParticleShape>;
+	private var _shapes:Array<ParticleShape>;
 
 	private var _control:ParticleSystemControl;
 
@@ -17,7 +18,7 @@ class ParticleSystem extends Node
 	{
 		super(name);
 
-		_shapes = new Vector<ParticleShape>();
+		_shapes = new Array<ParticleShape>();
 
 		_control = new ParticleSystemControl(this);
 		addControl(_control);
@@ -27,7 +28,7 @@ class ParticleSystem extends Node
 	{
 		shape.visible = false;
 		this.attachChild(shape);
-		if (_shapes.indexOf(shape) == -1)
+		if (!_shapes.contain(shape))
 			_shapes.push(shape);
 	}
 
@@ -49,7 +50,7 @@ class ParticleSystem extends Node
 		_currentTime = 0;
 
 		var numShape:Int = _shapes.length;
-		for (var i:Int = 0; i < numShape; i++)
+		for (i in 0...numShape)
 		{
 			_shapes[i].reset();
 		}
@@ -97,27 +98,31 @@ class ParticleSystem extends Node
 		isPlay = false;
 	}
 
-	public function set isPlay(value:Bool):Void
-	{
-		_isPlay = value;
-		_control.enabled = _isPlay && !_isPaused;
-	}
-
-	public function get isPlay():Bool
+	public var isPlay(get, set):Bool;
+	private function get_isPlay():Bool
 	{
 		return _isPlay;
 	}
-
-	public function set isPaused(value:Bool):Void
+	private function set_isPlay(value:Bool):Bool
 	{
-		_isPaused = value;
+		_isPlay = value;
 		_control.enabled = _isPlay && !_isPaused;
+		return _isPlay;
 	}
 
-	public function get isPaused():Bool
+	public var isPaused(get, set):Bool;
+	private function get_isPaused():Bool
 	{
 		return _isPaused;
 	}
+	private function set_isPaused(value:Bool):Bool
+	{
+		_isPaused = value;
+		_control.enabled = _isPlay && !_isPaused;
+		return _isPaused;
+	}
+
+	
 
 	/**
 	 * Callback from Control.update(), do not use.
@@ -134,7 +139,7 @@ class ParticleSystem extends Node
 	private function updateParticleShape(tpf:Float):Void
 	{
 		var numShape:Int = _shapes.length;
-		for (var i:Int = 0; i < numShape; i++)
+		for (i in 0...numShape)
 		{
 			var shape:ParticleShape = _shapes[i];
 			//粒子未开始或者已死亡

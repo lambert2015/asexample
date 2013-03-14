@@ -1,5 +1,6 @@
 package org.angle3d.effect.gpu;
 
+import org.angle3d.material.BlendMode;
 import org.angle3d.material.MaterialGPUParticle;
 import org.angle3d.math.Vector3f;
 import org.angle3d.renderer.queue.QueueBucket;
@@ -47,41 +48,51 @@ class ParticleShape extends Geometry
 	/**
 	 * 使用粒子单独加速度
 	 */
-	public function set useLocalAcceleration(value:Bool):Void
-	{
-		_gpuMaterial.useLocalAcceleration = value;
-	}
-
-	public function get useLocalAcceleration():Bool
+	public var useLocalAcceleration(get, set):Bool;
+	private function get_useLocalAcceleration():Bool
 	{
 		return _gpuMaterial.useLocalAcceleration;
 	}
-
-	public function set useLocalColor(value:Bool):Void
+	private function set_useLocalAcceleration(value:Bool):Bool
 	{
-		_gpuMaterial.useLocalColor = value;
+		_gpuMaterial.useLocalAcceleration = value;
+		return _gpuMaterial.useLocalAcceleration;
 	}
 
-	public function get useLocalColor():Bool
+	public var useLocalColor(get, set):Bool;
+	private function get_useLocalColor():Bool
 	{
 		return _gpuMaterial.useLocalColor;
 	}
+	private function set_useLocalColor(value:Bool):Bool
+	{
+		_gpuMaterial.useLocalColor = value;
+		return _gpuMaterial.useLocalColor;
+	}
 
-	public function set blendMode(mode:Int):Void
+	
+	public var blendMode(get, set):BlendMode;
+	private function get_blendMode():BlendMode
+	{
+		return _gpuMaterial.blendMode;
+	}
+	private function set_blendMode(mode:BlendMode):BlendMode
 	{
 		_gpuMaterial.blendMode = mode;
+		return _gpuMaterial.blendMode;
 	}
 
 	/**
 	 * 使用自转
 	 */
-	public function set useSpin(value:Bool):Void
+	public var useSpin(get, set):Bool;
+	private function get_useSpin():Bool
+	{
+		return _gpuMaterial.useSpin;
+	}
+	private function set_useSpin(value:Bool):Bool
 	{
 		_gpuMaterial.useSpin = value;
-	}
-
-	public function get useSpin():Bool
-	{
 		return _gpuMaterial.useSpin;
 	}
 
@@ -120,13 +131,14 @@ class ParticleShape extends Geometry
 		_gpuMaterial.setSize(start, end);
 	}
 
-	public function set loop(value:Bool):Void
+	public var loop(get, set):Bool;
+	private function get_loop():Bool
+	{
+		return _gpuMaterial.loop;
+	}
+	private function set_loop(value:Bool):Bool
 	{
 		_gpuMaterial.loop = value;
-	}
-
-	public function get loop():Bool
-	{
 		return _gpuMaterial.loop;
 	}
 
@@ -137,17 +149,19 @@ class ParticleShape extends Geometry
 		visible = false;
 	}
 
-	public function set startTime(value:Float):Void
-	{
-		_startTime = value;
-	}
-
-	public function get startTime():Float
+	public var startTime(get, set):Float;
+	private function get_startTime():Float
 	{
 		return _startTime;
 	}
+	private function set_startTime(value:Float):Float
+	{
+		_startTime = value;
+		return _startTime;
+	}
 
-	public function get isDead():Bool
+	public var isDead(get, null):Bool;
+	private function get_isDead():Bool
 	{
 		return !loop && (_currentTime - _startTime) >= _totalLife * 2;
 	}

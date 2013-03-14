@@ -13,7 +13,7 @@ class DefaultBirthInfluencer extends AbstractInfluencer implements IBirthInfluen
 	{
 		var perCount:Int = _generator.perSecondParticleCount;
 
-		var count:Int = int(index / perCount);
+		var count:Int = Std.int(index / perCount);
 
 		return count + (index - count * perCount) / perCount;
 	}

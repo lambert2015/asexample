@@ -26,7 +26,7 @@ import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
 import org.angle3d.texture.TextureMapBase;
-
+import haxe.ds.Vector;
 /**
  * 粒子生成器
  */
@@ -57,11 +57,9 @@ class ParticleShapeGenerator
 	 */
 	public function new(numParticles:Int, totalLife:Float)
 	{
-		super();
-
 		_numParticles = numParticles;
 		_totalLife = totalLife;
-		_perSecondParticleCount = int(_numParticles / _totalLife);
+		_perSecondParticleCount = Std.int(_numParticles / _totalLife);
 
 		setPositionInfluencer(new DefaultPositionInfluencer());
 		setVelocityInfluencer(new EmptyVelocityInfluencer());
@@ -73,17 +71,20 @@ class ParticleShapeGenerator
 		setSpinInfluencer(new DefaultSpinInfluencer());
 	}
 
-	public function get numParticles():Int
+	public var numParticles(get, null):Int;
+	private inline function get_numParticles():Int
 	{
 		return _numParticles;
 	}
 
-	public function get totalLife():Int
+	public var totalLife(get, null):Float;
+	private inline function get_totalLife():Float
 	{
 		return _totalLife;
 	}
 
-	public function get perSecondParticleCount():Int
+	public var perSecondParticleCount(get, null):Int;
+	private function get_perSecondParticleCount():Int
 	{
 		return _perSecondParticleCount;
 	}
@@ -164,30 +165,34 @@ class ParticleShapeGenerator
 
 		var subMesh:SubMesh = new SubMesh();
 
-		var _vertices:Vector<Float> = new Vector<Float>();
-		var _indices:Vector<UInt> = new Vector<UInt>();
-		var _texCoords:Vector<Float> = new Vector<Float>();
+		var _vertices:Vector<Float> = new Vector<Float>(_numParticles*16);
+		var _indices:Vector<UInt> = new Vector<UInt>(_numParticles*6);
+		var _texCoords:Vector<Float> = new Vector<Float>(_numParticles*16);
 
-		var _velocities:Vector<Float> = new Vector<Float>();
-		var _lifeScaleAngles:Vector<Float> = new Vector<Float>();
+		var _velocities:Vector<Float> = new Vector<Float>(_numParticles*16);
+		var _lifeScaleAngles:Vector<Float> = new Vector<Float>(_numParticles*16);
 
+		var _accelerationList:Vector<Float> = null;
+		var _acceleration:Vector3f = null;
 		if (shape.useLocalAcceleration)
 		{
-			var _accelerationList:Vector<Float> = new Vector<Float>();
-			var _acceleration:Vector3f = new Vector3f();
+			_accelerationList = new Vector<Float>(_numParticles*12);
+			_acceleration = new Vector3f();
 		}
 
+		var _color:Color = null;
+		var _colorList:Vector<Float> = null;
 		if (shape.useLocalColor)
 		{
-			var _colorList:Vector<Float> = new Vector<Float>();
-			var _color:Color = new Color(0, 0, 0, 1);
+			_colorList = new Vector<Float>(_numParticles*16);
+			_color = new Color(0, 0, 0, 1);
 		}
 
 		var _pos:Vector3f = new Vector3f();
 		var _velocity:Vector3f = new Vector3f();
 		var totalFrame:Int = _spriteSheetInfluencer.getTotalFrame();
 
-		for (var i:Int = 0; i < _numParticles; i++)
+		for (i in 0..._numParticles)
 		{
 			var id4:Int = i * 4;
 			var id6:Int = i * 6;
@@ -264,7 +269,7 @@ class ParticleShapeGenerator
 			var angle:Float = _angleInfluencer.getDefaultAngle(i);
 
 			var uniformIndex:Int = 0;
-			for (var j:Int = 0; j < 4; j++)
+			for (j in 0...4)
 			{
 				var id16j4:Int = id16 + j * 4;
 				var id12j3:Int = id12 + j * 3;

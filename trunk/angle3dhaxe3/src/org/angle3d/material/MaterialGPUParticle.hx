@@ -23,51 +23,64 @@ class MaterialGPUParticle extends Material
 		this.texture = texture;
 	}
 
-	private function set_useLocalColor(value:Bool):Void
-	{
-		_technique.useLocalColor = value;
-	}
-
+	public var useLocalColor(get, set):Bool;
 	private function get_useLocalColor():Bool
 	{
 		return _technique.useLocalColor;
 	}
-
-	private function set_useLocalAcceleration(value:Bool):Void
+	private function set_useLocalColor(value:Bool):Bool
 	{
-		_technique.useLocalAcceleration = value;
+		_technique.useLocalColor = value;
+		return _technique.useLocalColor;
 	}
 
+	
+	public var useLocalAcceleration(get, set):Bool;
 	private function get_useLocalAcceleration():Bool
 	{
 		return _technique.useLocalAcceleration;
 	}
+	private function set_useLocalAcceleration(value:Bool):Bool
+	{
+		_technique.useLocalAcceleration = value;
+		return _technique.useLocalAcceleration;
+	}
 
-	private function set_blendMode(mode:Int):Void
+	public var blendMode(get, set):BlendMode;
+	private function get_blendMode():BlendMode
+	{
+		return _technique.renderState.blendMode;
+	}
+	private function set_blendMode(mode:BlendMode):BlendMode
 	{
 		_technique.renderState.blendMode = mode;
+		return _technique.renderState.blendMode;
 	}
 
-	private function set_loop(value:Bool):Void
-	{
-		_technique.setLoop(value);
-	}
-
+	public var loop(get, set):Bool;
 	private function get_loop():Bool
 	{
 		return _technique.getLoop();
 	}
+	private function set_loop(value:Bool):Bool
+	{
+		_technique.setLoop(value);
+		return _technique.getLoop();
+	}
+
+	
 
 	/**
 	 * 使用自转
 	 */
-	private function set_useSpin(value:Bool):Void
-	{
-		_technique.setUseSpin(value);
-	}
-
+	public var useSpin(get, set):Bool;
 	private function get_useSpin():Bool
 	{
+		return _technique.getUseSpin();
+	}
+	private function set_useSpin(value:Bool):Bool
+	{
+		_technique.setUseSpin(value);
 		return _technique.getUseSpin();
 	}
 
@@ -113,23 +126,25 @@ class MaterialGPUParticle extends Material
 		_technique.setSize(start, end);
 	}
 
-	override private function set_influence(value:Float):Void
+	override private function set_influence(value:Float):Float
 	{
+		return value;
 	}
 
+	public var technique(get, null):TechniqueGPUParticle;
 	private function get_technique():TechniqueGPUParticle
 	{
 		return _technique;
 	}
 
-	private function set_texture(value:TextureMapBase):Void
-	{
-		_technique.texture = value;
-	}
-
-
+	public var texture(get, set):TextureMapBase;
 	private function get_texture():TextureMapBase
 	{
 		return _technique.texture;
 	}
+	private function set_texture(value:TextureMapBase):TextureMapBase
+	{
+		_technique.texture = value;
+		return _technique.texture;
+	}	
 }

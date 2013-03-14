@@ -50,7 +50,7 @@ class ParticleSystem
 		return null;
 	}
 
-	public function get numTechniques():Int
+	private function get_numTechniques():Int
 	{
 		return _numTechniques;
 	}

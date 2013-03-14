@@ -9,6 +9,7 @@ class DefaultPositionInfluencer extends AbstractInfluencer implements IPositionI
 
 	public function new(point:Vector3f = null)
 	{
+		super();
 		_point = point != null ? point.clone() : new Vector3f(0, 0, 0);
 	}
 

@@ -39,7 +39,8 @@ package org.angle3d.scene
 			super.setMesh(mesh);
 		}
 
-		public function get morphMesh():MorphMesh
+		public var morphMesh(get, null):MorphMesh;
+		private function get_morphMesh():MorphMesh
 		{
 			return mMorphMesh;
 		}

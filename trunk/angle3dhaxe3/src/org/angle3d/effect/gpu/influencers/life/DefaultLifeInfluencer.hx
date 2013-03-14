@@ -9,6 +9,7 @@ class DefaultLifeInfluencer extends AbstractInfluencer implements ILifeInfluence
 
 	public function new(lowLife:Float, highLife:Float)
 	{
+		super();
 		_lowLife = lowLife;
 		_highLife = highLife;
 	}
