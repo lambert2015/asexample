@@ -3,6 +3,7 @@ package ;
 //import examples.material.MaterialRefractionTest;
 import examples.material.MaterialWireframeTest;
 import examples.material.MaterialReflectiveTest;
+import examples.model.ShapeCollisionTest;
 import flash.Lib;
 import org.angle3d.io.parser.md2.MD2Parser;
 import org.angle3d.io.parser.ms3d.MS3DGroup;
@@ -31,7 +32,9 @@ class Main
 		//signal.dispatch();
 		
 		//Lib.current.addChild(new MaterialWireframeTest());
-		Lib.current.addChild(new MaterialReflectiveTest());
+		//Lib.current.addChild(new MaterialReflectiveTest());
+
 		//Lib.current.addChild(new MaterialRefractionTest());
+		Lib.current.addChild(new ShapeCollisionTest());
 	}
 }
