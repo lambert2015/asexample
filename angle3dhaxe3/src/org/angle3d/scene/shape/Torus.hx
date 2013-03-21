@@ -4,6 +4,7 @@ import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.MeshHelper;
 import org.angle3d.scene.mesh.SubMesh;
+import haxe.ds.Vector;
 
 class Torus extends Mesh
 {
@@ -17,17 +18,17 @@ class Torus extends Mesh
 	private function _createTorus(radius:Float, tubeRadius:Float, segmentsR:UInt, segmentsT:UInt, yUp:Bool):Void
 	{
 
-		var _vertices:Vector<Float> = new Vector<Float>();
-		var _indices:Vector<UInt> = new Vector<UInt>();
+		var _vertices:Vector<Float> = new Vector<Float>(segmentsR*segmentsT*3);
+		var _indices:Vector<UInt> = new Vector<UInt>(segmentsR*segmentsT*6);
 		var _verticesIndex:Int = 0;
 		var _indiceIndex:Int = 0;
-		var _grid:Vector<Vector<Int>> = new Vector<Vector<Int>>(segmentsR, true);
+		var _grid:Vector<Vector<Int>> = new Vector<Vector<Int>>(segmentsR);
 
 
-		for (var i:Int = 0; i < segmentsR; i++)
+		for (i in 0...segmentsR)
 		{
-			_grid[i] = new Vector<Int>(segmentsT, true);
-			for (var j:Int = 0; j < segmentsT; j++)
+			_grid[i] = new Vector<Int>(segmentsT);
+			for (j in 0...segmentsT)
 			{
 				var u:Float = i / segmentsR * 2 * Math.PI;
 				var v:Float = j / segmentsT * 2 * Math.PI;
@@ -54,13 +55,13 @@ class Torus extends Mesh
 			}
 		}
 
-		var _uvt:Vector<Float> = new Vector<Float>(_indiceIndex * 2, true);
+		var _uvt:Vector<Float> = new Vector<Float>(_indiceIndex * 2);
 
-		for (i = 0; i < segmentsR; ++i)
+		var indiceIndex:Int = 0;
+		for (i in 0...segmentsR)
 		{
-			for (j = 0; j < segmentsT; ++j)
+			for (j in 0...segmentsT)
 			{
-
 				var ip:Int = (i + 1) % segmentsR;
 				var jp:Int = (j + 1) % segmentsT;
 				var a:UInt = _grid[i][j];
@@ -82,9 +83,15 @@ class Torus extends Mesh
 				_uvt[d * 2 + 1] = (j + 1) / segmentsT;
 
 				//indices
-				_indices.push(a, c, b);
-				_indices.push(d, b, c);
+				_indices[indiceIndex] = a;
+				_indices[indiceIndex+1] = c;
+				_indices[indiceIndex+2] = b;
+				
+				_indices[indiceIndex+3] = d;
+				_indices[indiceIndex+4] = b;
+				_indices[indiceIndex+5] = c;
 
+				indiceIndex += 6;
 			}
 		}
 

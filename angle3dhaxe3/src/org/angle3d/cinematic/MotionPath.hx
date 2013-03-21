@@ -113,8 +113,7 @@ class MotionPath
 			_debugNode = new Node("MotionPath_debug");
 
 			var points:Vector<Vector3f> = _spline.getControlPoints();
-			var pLength:Int = points.length;
-			for (var i:Int = 0; i < pLength; i++)
+			for (i in 0...points.length)
 			{
 				var geo:WireframeGeometry = new WireframeGeometry("sphere" + i, new WireframeCube(0.5, 0.5, 0.5));
 				geo.translation = points[i];
@@ -125,13 +124,10 @@ class MotionPath
 			{
 				case SplineType.CatmullRom:
 					_debugNode.attachChild(_createCatmullRomPath());
-					break;
 				case SplineType.Linear:
 					_debugNode.attachChild(_createLinearPath());
-					break;
 				default:
 					_debugNode.attachChild(_createLinearPath());
-					break;
 			}
 
 			root.attachChild(_debugNode);
@@ -164,7 +160,7 @@ class MotionPath
 		distance = distance % _spline.getTotalLength();
 		var list:Vector<Float> = _spline.getSegmentsLength();
 		var length:Int = list.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...length)
 		{
 			var len:Float = list[i];
 			if (sum + len >= distance)
