@@ -34,7 +34,7 @@ class MS3DStaticModelParserTest extends SimpleApplication
 		this.addChild(new Stats());
 	}
 
-	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
+	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):Void
 	{
 		flyCam.setDragToRotate(true);
 
@@ -53,14 +53,14 @@ class MS3DStaticModelParserTest extends SimpleApplication
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 
-	private function _loadError(signal:LoaderSignal):void
+	private function _loadError(signal:LoaderSignal):Void
 	{
 
 	}
 
 	private var angle:Number = 0;
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Number):Void
 	{
 		angle += 0.02;
 		angle %= FastMath.TWO_PI;

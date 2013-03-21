@@ -38,7 +38,7 @@ class MD2ParserTest extends SimpleApplication
 		super();
 	}
 
-	private function _changeAnimation(e:Event):void
+	private function _changeAnimation(e:Event):Void
 	{
 		if (animationIndex > animations.length - 1)
 		{
@@ -67,12 +67,12 @@ class MD2ParserTest extends SimpleApplication
 		assetLoader.start();
 	}
 
-	private function _loadError(signal:LoaderSignal):void
+	private function _loadError(signal:LoaderSignal):Void
 	{
 		trace(signal.loader);
 	}
 
-	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
+	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):Void
 	{
 		var monsterMaterial:MaterialTexture = new MaterialTexture(new Texture2D(assets["ratamahatta_texture"].bitmapData));
 		var weaponMaterial:MaterialTexture = new MaterialTexture(new Texture2D(assets["w_rlauncher_texture"].bitmapData));
@@ -112,19 +112,19 @@ class MD2ParserTest extends SimpleApplication
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 
-	private function playAnimation(name:String, loop:Boolean):void
+	private function playAnimation(name:String, loop:Boolean):Void
 	{
 		monster.playAnimation(name, loop);
 		weapon.playAnimation(name, loop);
 	}
 
-	private function setAnimationSpeed(speed:Number):void
+	private function setAnimationSpeed(speed:Number):Void
 	{
 		monster.setAnimationSpeed(speed);
 		weapon.setAnimationSpeed(speed);
 	}
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Number):Void
 	{
 		angle += 0.02;
 		angle %= FastMath.TWO_PI;
