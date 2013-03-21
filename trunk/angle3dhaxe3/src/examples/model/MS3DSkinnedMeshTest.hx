@@ -47,7 +47,7 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 	private var animation:Animation;
 	private var bones:Vector.<Bone>;
 
-	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):void
+	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):Void
 	{
 		flyCam.setDragToRotate(true);
 
@@ -116,14 +116,14 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		return ninjaNode;
 	}
 
-	private function _loadError(signal:LoaderSignal):void
+	private function _loadError(signal:LoaderSignal):Void
 	{
 		trace(signal.numListeners);
 	}
 
 	private var angle:Number = 0;
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Number):Void
 	{
 		angle += 0.01;
 		angle %= FastMath.TWO_PI;
