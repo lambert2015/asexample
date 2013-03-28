@@ -30,9 +30,10 @@ class MaterialCPUParticle extends Material
 		return _technique;
 	}
 
-	private function set_texture(value:TextureMapBase):Void
+	public var texture(get, set):TextureMapBase;
+	private function set_texture(value:TextureMapBase):TextureMapBase
 	{
-		_technique.texture = value;
+		return _technique.texture = value;
 	}
 
 

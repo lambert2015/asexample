@@ -75,8 +75,7 @@ class Light implements Cloneable
 	 */
 	private function set_radius(value:Float):Float
 	{
-		mRadius = value;
-		return mRadius;
+		return mRadius = value;
 	}
 
 	/**
@@ -94,8 +93,7 @@ class Light implements Cloneable
 
 	private function set_enabled(value:Bool):Bool
 	{
-		mEnabled = value;
-		return mEnabled;
+		return mEnabled = value;
 	}
 
 	/**
@@ -106,8 +104,7 @@ class Light implements Cloneable
 	public var intensity(get, set):Float;
 	private function set_intensity(value:Float):Float
 	{
-		mColor.a = value;
-		return mColor.a;
+		return mColor.a = value;
 	}
 
 	private function get_intensity():Float

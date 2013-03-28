@@ -37,8 +37,7 @@ class ParticleEmitterControl implements Control
 	public var enabled(get, set):Bool;
 	private function set_enabled(enabled:Bool):Bool
 	{
-		particleEmitter.enabled = enabled;
-		return enabled;
+		return particleEmitter.enabled = enabled;
 	}
 
 	private function get_enabled():Bool

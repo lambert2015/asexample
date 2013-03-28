@@ -50,8 +50,7 @@ class PointLight extends Light
 	 */
 	private function set_position(value:Vector3f):Vector3f
 	{
-		mPosition.copyFrom(value);
-		return mPosition;
+		return mPosition.copyFrom(value);
 	}
 
 	override private function set_radius(value:Float):Float

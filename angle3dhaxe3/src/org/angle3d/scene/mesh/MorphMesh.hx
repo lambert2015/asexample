@@ -37,15 +37,13 @@ class MorphMesh extends Mesh
 
 	private function set_useNormal(value:Bool):Bool
 	{
-		mUseNormal = value;
-		return mUseNormal;
+		return mUseNormal = value;
 	}
 
 	public var totalFrame(get, set):Int;
 	private function set_totalFrame(value:Int):Int
 	{
-		mTotalFrame = value;
-		return mTotalFrame;
+		return mTotalFrame = value;
 	}
 
 	private function get_totalFrame():Int

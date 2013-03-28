@@ -48,8 +48,7 @@ package org.angle3d.scene.control
 		public var controlDir(get, set):String;
 		private function set_controlDir(dir:String):String
 		{
-			this.mControlDir = dir;
-			return mControlDir;
+			return this.mControlDir = dir;
 		}
 		
 		private function get_controlDir():String
@@ -60,8 +59,7 @@ package org.angle3d.scene.control
 		public var camera(get, set):Camera3D;
 		private function set_camera(camera:Camera3D):Camera3D
 		{
-			this.mCamera = camera;
-			return mCamera;
+			return this.mCamera = camera;
 		}
 
 		private function get_camera():Camera3D

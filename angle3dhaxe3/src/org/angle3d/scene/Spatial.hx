@@ -108,8 +108,7 @@ class Spatial implements Cloneable implements Collidable
 	
 	private function set_visible(value:Bool):Bool
 	{
-		mVisible = value;
-		return mVisible;
+		return mVisible = value;
 	}
 
 	
@@ -777,8 +776,7 @@ class Spatial implements Cloneable implements Collidable
 	 */
 	private function set_parent(parent:Node):Node
 	{
-		mParent = parent;
-		return mParent;
+		return mParent = parent;
 	}
 
 	/**
@@ -1241,8 +1239,7 @@ class Spatial implements Cloneable implements Collidable
 	public var localCullHint(get, set):CullHint;
 	private function set_localCullHint(hint:CullHint):CullHint
 	{
-		mCullHint = hint;
-		return mCullHint;
+		return mCullHint = hint;
 	}
 
 	/**
@@ -1296,8 +1293,7 @@ class Spatial implements Cloneable implements Collidable
 	
 	private function set_localQueueBucket(queueBucket:QueueBucket):QueueBucket
 	{
-		mQueueBucket = queueBucket;
-		return mQueueBucket;
+		return mQueueBucket = queueBucket;
 	}
 
 	
@@ -1323,8 +1319,7 @@ class Spatial implements Cloneable implements Collidable
 	
 	private function set_localShadowMode(shadowMode:ShadowMode):ShadowMode
 	{
-		mShadowMode = shadowMode;
-		return mShadowMode;
+		return mShadowMode = shadowMode;
 	}
 
 	
@@ -1354,8 +1349,7 @@ class Spatial implements Cloneable implements Collidable
 	 */
 	private function set_lastFrustumIntersection(intersects:FrustumIntersect):FrustumIntersect
 	{
-		mFrustrumIntersects = intersects;
-		return mFrustrumIntersects;
+		return mFrustrumIntersects = intersects;
 	}
 
 	/**

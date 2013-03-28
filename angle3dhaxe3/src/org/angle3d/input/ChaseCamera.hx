@@ -551,6 +551,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 		}
 	}
 
+	public var enabled(get, set):Bool;
 	/**
 	 * Return the enabled/disabled state of the camera
 	 * @return true if the camera is enabled
@@ -571,6 +572,7 @@ class ChaseCamera implements ActionListener, AnalogListener, Control
 		{
 			canRotate = false; // reset_this flag in-case it was on before
 		}
+		return _enabled;
 	}
 
 	/**

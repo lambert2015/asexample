@@ -75,8 +75,7 @@ class SpotLight extends Light
 
 	private function set_direction(direction:Vector3f):Vector3f
 	{
-		mDirection.copyFrom(direction);
-		return mDirection;
+		return mDirection.copyFrom(direction);
 	}
 
 	public var position(get, set):Vector3f;
@@ -87,8 +86,7 @@ class SpotLight extends Light
 
 	private function set_position(position:Vector3f):Vector3f
 	{
-		mPosition.copyFrom(position);
-		return mPosition;
+		return mPosition.copyFrom(position);
 	}
 
 	public var spotRange(get, set):Float;

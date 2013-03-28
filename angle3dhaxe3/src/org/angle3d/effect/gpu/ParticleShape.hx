@@ -55,8 +55,7 @@ class ParticleShape extends Geometry
 	}
 	private function set_useLocalAcceleration(value:Bool):Bool
 	{
-		_gpuMaterial.useLocalAcceleration = value;
-		return _gpuMaterial.useLocalAcceleration;
+		return _gpuMaterial.useLocalAcceleration = value;
 	}
 
 	public var useLocalColor(get, set):Bool;
@@ -66,8 +65,7 @@ class ParticleShape extends Geometry
 	}
 	private function set_useLocalColor(value:Bool):Bool
 	{
-		_gpuMaterial.useLocalColor = value;
-		return _gpuMaterial.useLocalColor;
+		return _gpuMaterial.useLocalColor = value;
 	}
 
 	
@@ -78,8 +76,7 @@ class ParticleShape extends Geometry
 	}
 	private function set_blendMode(mode:BlendMode):BlendMode
 	{
-		_gpuMaterial.blendMode = mode;
-		return _gpuMaterial.blendMode;
+		return _gpuMaterial.blendMode = mode;
 	}
 
 	/**
@@ -92,8 +89,7 @@ class ParticleShape extends Geometry
 	}
 	private function set_useSpin(value:Bool):Bool
 	{
-		_gpuMaterial.useSpin = value;
-		return _gpuMaterial.useSpin;
+		return _gpuMaterial.useSpin = value;
 	}
 
 	/**
@@ -138,8 +134,7 @@ class ParticleShape extends Geometry
 	}
 	private function set_loop(value:Bool):Bool
 	{
-		_gpuMaterial.loop = value;
-		return _gpuMaterial.loop;
+		return _gpuMaterial.loop = value;
 	}
 
 	public function reset():Void
@@ -156,8 +151,7 @@ class ParticleShape extends Geometry
 	}
 	private function set_startTime(value:Float):Float
 	{
-		_startTime = value;
-		return _startTime;
+		return _startTime = value;
 	}
 
 	public var isDead(get, null):Bool;

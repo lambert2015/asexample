@@ -223,11 +223,12 @@ class MotionPath
 		_spline.clearControlPoints();
 	}
 
+	public var splineType(get, set):SplineType;
 	/**
 	 * return the type of spline used for the path interpolation for this path
 	 * @return the path interpolation spline type
 	 */
-	private function get_splineType():Int
+	private function get_splineType():SplineType
 	{
 		return _spline.type;
 	}
@@ -236,9 +237,9 @@ class MotionPath
 	 * sets the type of spline used for the path interpolation for this path
 	 * @param pathSplineType
 	 */
-	private function set_splineType(type:Int):Void
+	private function set_splineType(type:SplineType):SplineType
 	{
-		_spline.type = type;
+		return _spline.type = type;
 	}
 
 	/**

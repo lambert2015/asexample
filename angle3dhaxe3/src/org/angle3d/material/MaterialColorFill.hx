@@ -32,8 +32,7 @@ class MaterialColorFill extends Material
 
 	override private function set_influence(value:Float):Float
 	{
-		_technique.influence = value;
-		return value;
+		return _technique.influence = value;
 	}
 
 	override private function set_alpha(alpha:Float):Float
@@ -52,8 +51,7 @@ class MaterialColorFill extends Material
 	}
 	private function set_color(color:UInt):UInt
 	{
-		_technique.color = color;
-		return _technique.color;
+		return _technique.color = color;
 	}
 }
 

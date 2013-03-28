@@ -23,8 +23,7 @@ class ShaderVariable
 	public var name(get, set):String;
 	private function set_name(value:String):String
 	{
-		_name = value;
-		return _name;
+		return _name = value;
 	}
 
 	private function get_name():String
@@ -35,8 +34,7 @@ class ShaderVariable
 	public var size(get, set):Int;
 	private function set_size(value:Int):Int
 	{
-		_size = value;
-		return _size;
+		return _size = value;
 	}
 
 	private function get_size():Int
@@ -47,8 +45,7 @@ class ShaderVariable
 	public var location(get, set):Int;
 	private function set_location(location:Int):Int
 	{
-		_location = location;
-		return _location;
+		return _location = location;
 	}
 
 	private function get_location():Int

@@ -126,8 +126,7 @@ class Material
 	public var alpha(get, set):Float;
 	private function set_alpha(alpha:Float):Float
 	{
-		mAlpha = FastMath.clamp(alpha, 0.0, 1.0);
-		return mAlpha;
+		return mAlpha = FastMath.clamp(alpha, 0.0, 1.0);
 	}
 
 	private function get_alpha():Float
