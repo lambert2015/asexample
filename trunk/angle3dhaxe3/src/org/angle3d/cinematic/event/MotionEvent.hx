@@ -248,6 +248,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		this.currentValue = currentValue;
 	}
 
+	public var currentWayPoint(get, set):Int;
 	/**
 	 * this method is meant to be called by the motion path only
 	 * @return
@@ -261,11 +262,12 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * this method is meant to be called by the motion path only
 	 *
 	 */
-	private function set_currentWayPoint(currentWayPoint:Int):Void
+	private function set_currentWayPoint(currentWayPoint:Int):Int
 	{
-		_currentWayPoint = currentWayPoint;
+		return _currentWayPoint = currentWayPoint;
 	}
 
+	public var direction(get, set):Vector3f;
 	/**
 	 * returns the direction the spatial is moving
 	 * @return
@@ -280,9 +282,9 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * This method is used by the motion path.
 	 * @param direction
 	 */
-	private function set_direction(vec:Vector3f):Void
+	private function set_direction(vec:Vector3f):Vector3f
 	{
-		_direction.copyFrom(vec);
+		return _direction.copyFrom(vec);
 	}
 
 	/**
@@ -356,7 +358,8 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		this.path = path;
 	}
 
-	private function set_enabled(enabled:Bool):Void
+	public var enabled(get, set):Bool;
+	private function set_enabled(enabled:Bool):Bool
 	{
 		if (enabled)
 		{
@@ -366,6 +369,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		{
 			pause();
 		}
+		return enabled;
 	}
 
 	private function get_enabled():Bool
@@ -377,9 +381,10 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	{
 	}
 
-	private function set_spatial(spatial:Spatial):Void
+	public var spatial(get, set):Spatial;
+	private function set_spatial(spatial:Spatial):Spatial
 	{
-		this._spatial = spatial;
+		return this._spatial = spatial;
 	}
 
 	private function get_spatial():Spatial

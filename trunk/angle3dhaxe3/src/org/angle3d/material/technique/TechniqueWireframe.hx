@@ -61,8 +61,7 @@ class TechniqueWireframe extends Technique
 	}
 	private function set_alpha(alpha:Float):Float
 	{
-		_color.a = FastMath.clamp(alpha, 0.0, 1.0);
-		return _color.a;
+		return _color.a = FastMath.clamp(alpha, 0.0, 1.0);
 	}
 
 	public var thickness(get, set):Float;
@@ -72,8 +71,7 @@ class TechniqueWireframe extends Technique
 	}
 	private function set_thickness(thickness:Float):Float
 	{
-		_thickness = thickness * 0.001;
-		return _thickness;
+		return _thickness = thickness * 0.001;
 	}
 
 	override public function updateShader(shader:Shader):Void

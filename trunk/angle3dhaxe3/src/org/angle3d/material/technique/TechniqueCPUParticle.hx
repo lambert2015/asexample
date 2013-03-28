@@ -40,14 +40,15 @@ class TechniqueCPUParticle extends Technique
 		_renderState.blendMode = BlendMode.AlphaAdditive;
 	}
 
+	public var texture(get, set):TextureMapBase;
 	private function get_texture():TextureMapBase
 	{
 		return _texture;
 	}
 
-	private function set_texture(value:TextureMapBase):Void
+	private function set_texture(value:TextureMapBase):TextureMapBase
 	{
-		_texture = value;
+		return _texture = value;
 	}
 
 	/**

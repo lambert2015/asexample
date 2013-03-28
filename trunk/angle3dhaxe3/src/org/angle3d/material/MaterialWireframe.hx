@@ -22,9 +22,9 @@ class MaterialWireframe extends Material
 		sortingId = 3;
 	}
 
-	private function set_thickness(thickness:Float):Void
+	private function set_thickness(thickness:Float):Float
 	{
-		_technique.thickness = thickness;
+		return _technique.thickness = thickness;
 	}
 
 	private function get_thickness():Float
@@ -39,16 +39,13 @@ class MaterialWireframe extends Material
 
 	override private function set_alpha(alpha:Float):Float
 	{
-		_technique.alpha = alpha;
-
-		return _technique.alpha;
+		return _technique.alpha = alpha;
 	}
 
 	public var color(get, set):UInt;
 	private function set_color(color:UInt):UInt
 	{
-		_technique.color = color;
-		return _technique.color;
+		return _technique.color = color;
 	}
 
 	private function get_color():UInt

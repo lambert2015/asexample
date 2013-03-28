@@ -44,8 +44,7 @@ class LightControl extends AbstractControl
 	public var controlDir(get, set):String;
 	private function set_controlDir(dir:String):String
 	{
-		this.mControlDir = dir;
-		return mControlDir;
+		return this.mControlDir = dir;
 	}
 	
 	private function get_controlDir():String

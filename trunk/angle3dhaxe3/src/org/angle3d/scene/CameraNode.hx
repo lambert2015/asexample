@@ -47,8 +47,7 @@ class CameraNode extends Node
 	public var controlDir(get, set):String;
 	private function set_controlDir(controlDir:String):String
 	{
-		mCamControl.controlDir = controlDir;
-		return mCamControl.controlDir;
+		return mCamControl.controlDir = controlDir;
 	}
 
 	private function get_controlDir():String

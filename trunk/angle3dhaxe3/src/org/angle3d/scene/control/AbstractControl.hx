@@ -29,8 +29,7 @@ class AbstractControl implements Control
 			Assert.assert(false,"This control has already been added to a Spatial");
 		}
 
-		_spatial = value;
-		return _spatial;
+		return _spatial = value;
 	}
 
 	private function get_spatial():Spatial
@@ -41,8 +40,7 @@ class AbstractControl implements Control
 	public var enabled(get,set):Bool;
 	private function set_enabled(value:Bool):Bool
 	{
-		_enabled = value;
-		return _enabled;
+		return _enabled = value;
 	}
 
 	private function get_enabled():Bool

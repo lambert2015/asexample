@@ -42,8 +42,7 @@ class ParticleSystemControl implements Control
 	}
 	private function set_enabled(enabled:Bool):Bool
 	{
-		_enabled = enabled;
-		return _enabled;
+		return _enabled = enabled;
 	}
 
 	

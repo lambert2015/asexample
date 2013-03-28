@@ -130,8 +130,7 @@ class TechniqueGPUParticle extends Technique
 	}
 	private function set_useLocalColor(value:Bool):Bool
 	{
-		_useLocalColor = value;
-		return _useLocalColor;
+		return _useLocalColor = value;
 	}
 
 	public var useLocalAcceleration(get, set):Bool;
@@ -141,8 +140,7 @@ class TechniqueGPUParticle extends Technique
 	}
 	private function set_useLocalAcceleration(value:Bool):Bool
 	{
-		_useLocalAcceleration = value;
-		return _useLocalAcceleration;
+		return _useLocalAcceleration = value;
 	}
 
 	public function getUseSpin():Bool
@@ -155,12 +153,13 @@ class TechniqueGPUParticle extends Technique
 		_useSpin = value;
 	}
 
-	public function setLoop(value:Bool):Void
+	public var loop(get, set):Bool;
+	private function set_loop(value:Bool):Bool
 	{
-		_loop = value;
+		return _loop = value;
 	}
 
-	public function getLoop():Bool
+	private function get_loop():Bool
 	{
 		return _loop;
 	}

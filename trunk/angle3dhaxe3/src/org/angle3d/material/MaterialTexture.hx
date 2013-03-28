@@ -28,14 +28,12 @@ class MaterialTexture extends Material
 
 	override private function set_skinningMatrices(data:Vector<Float>):Vector<Float>
 	{
-		_technique.skinningMatrices = data;
-		return data;
+		return _technique.skinningMatrices = data;
 	}
 
 	override private function set_influence(value:Float):Float
 	{
-		_technique.influence = value;
-		return value;
+		return _technique.influence = value;
 	}
 
 	public var technique(get, null):TechniqueTexture;
@@ -52,8 +50,7 @@ class MaterialTexture extends Material
 	
 	private function set_useTexCoord2(value:Bool):Bool
 	{
-		_technique.useTexCoord2 = value;
-		return _technique.useTexCoord2;
+		return _technique.useTexCoord2 = value;
 	}
 	
 	public var texture(get, set):TextureMapBase;
@@ -64,8 +61,7 @@ class MaterialTexture extends Material
 
 	private function set_texture(value:TextureMapBase):TextureMapBase
 	{
-		_technique.texture = value;
-		return value;
+		return _technique.texture = value;
 	}
 
 	public var lightmap(get, set):TextureMapBase;
@@ -76,8 +72,7 @@ class MaterialTexture extends Material
 	
 	private function set_lightmap(value:TextureMapBase):TextureMapBase
 	{
-		_technique.lightmap = value;
-		return value;
+		return _technique.lightmap = value;
 	}
 }
 

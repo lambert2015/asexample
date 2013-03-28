@@ -30,8 +30,7 @@ class MaterialGPUParticle extends Material
 	}
 	private function set_useLocalColor(value:Bool):Bool
 	{
-		_technique.useLocalColor = value;
-		return _technique.useLocalColor;
+		return _technique.useLocalColor = value;
 	}
 
 	
@@ -42,8 +41,7 @@ class MaterialGPUParticle extends Material
 	}
 	private function set_useLocalAcceleration(value:Bool):Bool
 	{
-		_technique.useLocalAcceleration = value;
-		return _technique.useLocalAcceleration;
+		return _technique.useLocalAcceleration = value;
 	}
 
 	public var blendMode(get, set):BlendMode;
@@ -53,19 +51,17 @@ class MaterialGPUParticle extends Material
 	}
 	private function set_blendMode(mode:BlendMode):BlendMode
 	{
-		_technique.renderState.blendMode = mode;
-		return _technique.renderState.blendMode;
+		return _technique.renderState.blendMode = mode;
 	}
 
 	public var loop(get, set):Bool;
 	private function get_loop():Bool
 	{
-		return _technique.getLoop();
+		return _technique.loop;
 	}
 	private function set_loop(value:Bool):Bool
 	{
-		_technique.setLoop(value);
-		return _technique.getLoop();
+		return _technique.loop = value;
 	}
 
 	
@@ -144,7 +140,6 @@ class MaterialGPUParticle extends Material
 	}
 	private function set_texture(value:TextureMapBase):TextureMapBase
 	{
-		_technique.texture = value;
-		return _technique.texture;
+		return _technique.texture = value;
 	}	
 }

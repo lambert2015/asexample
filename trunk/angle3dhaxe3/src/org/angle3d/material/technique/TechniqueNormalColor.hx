@@ -50,12 +50,14 @@ class TechniqueNormalColor extends Technique
 		normalScale = new Vector3f(1, 1, 1);
 	}
 
-	private function set_influence(value:Float):Void
+	public var influence(get, set):Float;
+	private function set_influence(value:Float):Float
 	{
 		if (_influences == null)
 			_influences = new Vector<Float>(4, true);
 		_influences[0] = 1 - value;
 		_influences[1] = value;
+		return value;
 	}
 
 	private function get_influence():Float

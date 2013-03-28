@@ -23,8 +23,7 @@ class MaterialReflective extends Material
 
 	override private function set_influence(value:Float):Float
 	{
-		_technique.influence = value;
-		return _technique.influence;
+		return _technique.influence = value;
 	}
 
 	public var technique(get, null):TechniqueReflective;
@@ -40,8 +39,7 @@ class MaterialReflective extends Material
 	}
 	private function set_decalMap(map:TextureMapBase):TextureMapBase
 	{
-		_technique.decalMap = map;
-		return _technique.decalMap;
+		return _technique.decalMap = map;
 	}
 
 	public var environmentMap(get, set):CubeTextureMap;
@@ -51,8 +49,7 @@ class MaterialReflective extends Material
 	}
 	private function set_environmentMap(map:CubeTextureMap):CubeTextureMap
 	{
-		_technique.environmentMap = map;
-		return _technique.environmentMap;
+		return _technique.environmentMap = map;
 	}
 
 	public var reflectivity(get, set):Float;
@@ -62,8 +59,7 @@ class MaterialReflective extends Material
 	}
 	private function set_reflectivity(reflectivity:Float):Float
 	{
-		_technique.reflectivity = reflectivity;
-		return _technique.reflectivity;
+		return _technique.reflectivity = reflectivity;
 	}
 }
 

@@ -17,7 +17,6 @@ class AbstractInfluencer implements IInfluencer
 	}
 	private function set_generator(value:ParticleShapeGenerator):ParticleShapeGenerator
 	{
-		_generator = value;
-		return _generator;
+		return _generator = value;
 	}
 }

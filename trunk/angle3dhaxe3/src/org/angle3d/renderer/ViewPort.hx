@@ -238,8 +238,7 @@ class ViewPort
 
 	private function set_frameBuffer(out:FrameBuffer):FrameBuffer
 	{
-		_frameBuffer = out;
-		return _frameBuffer;
+		return _frameBuffer = out;
 	}
 
 	/**
@@ -330,8 +329,7 @@ class ViewPort
 	public var enabled(get, set):Bool;
 	private function set_enabled(enabled:Bool):Bool
 	{
-		_enabled = enabled;
-		return _enabled;
+		return _enabled = enabled;
 	}
 
 	/**

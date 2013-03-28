@@ -93,8 +93,7 @@ class TechniqueReflective extends Technique
 
 	private function set_decalMap(value:TextureMapBase):TextureMapBase
 	{
-		_decalMap = value;
-		return _decalMap;
+		return _decalMap = value;
 	}
 
 	public var environmentMap(get, set):CubeTextureMap;
@@ -105,8 +104,7 @@ class TechniqueReflective extends Technique
 
 	private function set_environmentMap(value:CubeTextureMap):CubeTextureMap
 	{
-		_environmentMap = value;
-		return _environmentMap;
+		return _environmentMap = value;
 	}
 
 	override public function updateShader(shader:Shader):Void

@@ -116,12 +116,14 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		initialized = true;
 	}
 
-	private function set_enabled(value:Bool):Void
+	public var enabled(get, set):Bool;
+	private function set_enabled(value:Bool):Bool
 	{
 		if (value)
 		{
 			play();
 		}
+		return value;
 	}
 
 	private function get_enabled():Bool

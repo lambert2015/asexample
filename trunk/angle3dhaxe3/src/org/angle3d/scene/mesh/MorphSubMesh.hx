@@ -43,8 +43,7 @@ class MorphSubMesh extends SubMesh
 	}
 	private function set_totalFrame(value:Int):Int
 	{
-		mTotalFrame = value;
-		return mTotalFrame;
+		return mTotalFrame = value;
 	}
 
 	

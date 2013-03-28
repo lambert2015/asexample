@@ -165,8 +165,7 @@ class ParticleEmitter extends Geometry
 	}
 	private function set_particleInfluencer(influencer:IParticleInfluencer):IParticleInfluencer
 	{
-		_particleInfluencer = influencer;
-		return _particleInfluencer;
+		return _particleInfluencer = influencer;
 	}
 
 	
@@ -186,8 +185,7 @@ class ParticleEmitter extends Geometry
 	private function set_inWorldSpace(worldSpace:Bool):Bool
 	{
 		setIgnoreTransform(worldSpace);
-		_worldSpace = worldSpace;
-		return _worldSpace;
+		return _worldSpace = worldSpace;
 	}
 
 	/**
@@ -326,8 +324,7 @@ class ParticleEmitter extends Geometry
 	}
 	private function set_randomAngle(randomAngle:Bool):Bool
 	{
-		this._randomAngle = randomAngle;
-		return _randomAngle;
+		return this._randomAngle = randomAngle;
 	}
 
 	/**
@@ -740,8 +737,7 @@ class ParticleEmitter extends Geometry
 	}
 	private function set_enabled(enabled:Bool):Bool
 	{
-		this._enabled = enabled;
-		return _enabled;
+		return this._enabled = enabled;
 	}
 
 	/**
