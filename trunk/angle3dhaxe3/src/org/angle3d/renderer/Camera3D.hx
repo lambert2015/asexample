@@ -361,8 +361,7 @@ class Camera3D extends Frustum
 	 */
 	private function set_planeState(planeState:Int):Int
 	{
-		mPlaneState = planeState;
-		return mPlaneState;
+		return mPlaneState = planeState;
 	}
 
 	/**
