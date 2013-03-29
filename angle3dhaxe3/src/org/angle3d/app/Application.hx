@@ -168,7 +168,7 @@ class Application extends Sprite
 
 		cam.setFrustumPerspective(60, width / height, 1, 5000);
 		cam.location = new Vector3f(0, 0, 10);
-		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS());
+		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 
 		renderer = new DefaultRenderer(stage3D);
 		renderManager = new RenderManager(renderer);

@@ -79,7 +79,7 @@ class ShapeCollisionTest extends SimpleApplication
 
 		cam.location.setTo(0, 0, 300);
 		cam.location.setTo(Math.cos(angle) * 300, 100, Math.sin(angle) * 300);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS());
+		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 
 	override public function simpleUpdate(tpf:Float):Void

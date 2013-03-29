@@ -9,10 +9,7 @@ import haxe.ds.Vector;
  */
 class Matrix3f
 {
-	public static inline function IDENTITY():Matrix3f 
-	{
-		return new Matrix3f();
-	}
+	public static var IDENTITY:Matrix3f = new Matrix3f();
 
 	public var m00:Float;
 	public var m01:Float;

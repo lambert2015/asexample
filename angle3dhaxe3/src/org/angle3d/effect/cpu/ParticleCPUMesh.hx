@@ -168,7 +168,7 @@ class ParticleCPUMesh extends Mesh
 			else if (faceNormal != null)
 			{
 				up.copyFrom(faceNormal);
-				up.crossLocal(Vector3f.X_AXIS());
+				up.crossLocal(Vector3f.X_AXIS);
 				faceNormal.cross(up, left);
 				up.scaleLocal(p.size);
 				left.scaleLocal(p.size);

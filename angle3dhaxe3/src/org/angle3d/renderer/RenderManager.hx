@@ -475,7 +475,7 @@ class RenderManager
 
 		if (geom.isIgnoreTransform())
 		{
-			setWorldMatrix(Matrix4f.IDENTITY());
+			setWorldMatrix(Matrix4f.IDENTITY);
 		}
 		else
 		{
@@ -847,7 +847,7 @@ class RenderManager
 	{
 		if (ortho)
 		{
-			_uniformBindingManager.setCamera(cam, Matrix4f.IDENTITY(), _orthoMatrix, _orthoMatrix);
+			_uniformBindingManager.setCamera(cam, Matrix4f.IDENTITY, _orthoMatrix, _orthoMatrix);
 		}
 		else
 		{

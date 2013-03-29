@@ -59,7 +59,7 @@ class MaterialRefractionTest extends SimpleApplication
 		//cubeG.setTranslationTo(-100, 0, 0);
 
 		cam.location.setTo(0, 0, -200);
-		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS());
+		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 	}
 
 	private var angle : Float = 0;
@@ -73,7 +73,7 @@ class MaterialRefractionTest extends SimpleApplication
 
 
 		cam.location.setTo(Math.cos(angle) * 200, 50, Math.sin(angle) * 200);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS());
+		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
 

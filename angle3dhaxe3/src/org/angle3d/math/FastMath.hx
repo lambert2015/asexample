@@ -7,30 +7,15 @@ class FastMath
 	public static inline var ONE_THIRD:Float = 1.0 / 3.0;
 	public static inline var INVERT_255:Float = 1.0 / 255;
 	
-	public static inline function INV_PI():Float 
-	{
-		return 1 / Math.PI;
-	}
-	
-	public static inline function HALF_PI():Float
-	{
-		return Math.PI * 0.5;
-	}
-	
-	public static inline function TWO_PI():Float
-	{
-		return Math.PI * 2.0;
-	}
+	public static var INV_PI:Float = 1 / Math.PI;
 
-	public static inline function RADTODEG():Float
-	{
-		return 180 / Math.PI;
-	}
+	public static var HALF_PI:Float = Math.PI * 0.5;
 	
-	public static inline function DEGTORAD():Float
-	{
-		return Math.PI / 180;
-	}
+	public static var TWO_PI:Float = Math.PI * 2.0;
+
+	public static var RADTODEG:Float = 180 / Math.PI;
+	
+	public static var DEGTORAD:Float = Math.PI / 180;
 
 	public static inline var ROUNDING_ERROR:Float = 0.0001;
 

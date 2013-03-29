@@ -7,14 +7,10 @@ import haxe.ds.Vector;
  */
 class Vector2f
 {
-	public static inline function ZERO():Vector2f
-	{
-		return new Vector2f(0, 0);
-	}
-	public static inline function UNIT():Vector2f
-	{
-		return new Vector2f(1, 1);
-	}
+	public static var ZERO:Vector2f = new Vector2f(0, 0);
+
+	public static var UNIT:Vector2f = new Vector2f(1, 1);
+
 	
 	public var x:Float;
 

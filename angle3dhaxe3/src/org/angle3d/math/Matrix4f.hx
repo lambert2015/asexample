@@ -20,10 +20,7 @@ import haxe.ds.Vector;
  */
 class Matrix4f
 {
-	public static inline function IDENTITY():Matrix4f 
-	{
-		return new Matrix4f();
-	}
+	public static var IDENTITY:Matrix4f = new Matrix4f();
 
 	public var m00:Float;
 	public var m01:Float;
