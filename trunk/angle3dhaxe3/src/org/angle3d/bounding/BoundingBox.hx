@@ -552,27 +552,27 @@ class BoundingBox extends BoundingVolume
 		var fADdU:Array<Float> = [];
 		var fAWxDdU:Array<Float> = [];
 
-		fWdU[0] = ray.direction.dot(Vector3f.X_AXIS());
+		fWdU[0] = ray.direction.dot(Vector3f.X_AXIS);
 		fAWdU[0] = FastMath.abs(fWdU[0]);
-		fDdU[0] = diff.dot(Vector3f.X_AXIS());
+		fDdU[0] = diff.dot(Vector3f.X_AXIS);
 		fADdU[0] = FastMath.abs(fDdU[0]);
 		if (fADdU[0] > xExtent && fDdU[0] * fWdU[0] >= 0.0)
 		{
 			return false;
 		}
 
-		fWdU[1] = ray.direction.dot(Vector3f.Y_AXIS());
+		fWdU[1] = ray.direction.dot(Vector3f.Y_AXIS);
 		fAWdU[1] = FastMath.abs(fWdU[1]);
-		fDdU[1] = diff.dot(Vector3f.Y_AXIS());
+		fDdU[1] = diff.dot(Vector3f.Y_AXIS);
 		fADdU[1] = FastMath.abs(fDdU[1]);
 		if (fADdU[1] > yExtent && fDdU[1] * fWdU[1] >= 0.0)
 		{
 			return false;
 		}
 
-		fWdU[2] = ray.direction.dot(Vector3f.Z_AXIS());
+		fWdU[2] = ray.direction.dot(Vector3f.Z_AXIS);
 		fAWdU[2] = FastMath.abs(fWdU[2]);
-		fDdU[2] = diff.dot(Vector3f.Z_AXIS());
+		fDdU[2] = diff.dot(Vector3f.Z_AXIS);
 		fADdU[2] = FastMath.abs(fDdU[2]);
 		if (fADdU[2] > zExtent && fDdU[2] * fWdU[2] >= 0.0)
 		{
@@ -581,21 +581,21 @@ class BoundingBox extends BoundingVolume
 
 		var wCrossD:Vector3f = ray.direction.cross(diff);
 
-		fAWxDdU[0] = FastMath.abs(wCrossD.dot(Vector3f.X_AXIS()));
+		fAWxDdU[0] = FastMath.abs(wCrossD.dot(Vector3f.X_AXIS));
 		rhs = yExtent * fAWdU[2] + zExtent * fAWdU[1];
 		if (fAWxDdU[0] > rhs)
 		{
 			return false;
 		}
 
-		fAWxDdU[1] = FastMath.abs(wCrossD.dot(Vector3f.Y_AXIS()));
+		fAWxDdU[1] = FastMath.abs(wCrossD.dot(Vector3f.Y_AXIS));
 		rhs = xExtent * fAWdU[2] + zExtent * fAWdU[0];
 		if (fAWxDdU[1] > rhs)
 		{
 			return false;
 		}
 
-		fAWxDdU[2] = FastMath.abs(wCrossD.dot(Vector3f.Z_AXIS()));
+		fAWxDdU[2] = FastMath.abs(wCrossD.dot(Vector3f.Z_AXIS));
 		rhs = xExtent * fAWdU[1] + yExtent * fAWdU[0];
 		if (fAWxDdU[2] > rhs)
 		{
