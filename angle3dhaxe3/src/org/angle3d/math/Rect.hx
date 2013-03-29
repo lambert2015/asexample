@@ -49,9 +49,10 @@ class Rect
 	}
 
 	public var left(get, set):Float;
-	public var right(get, set):Float;
-	public var top(get, set):Float;
-	public var bottom(get, set):Float;
+	private inline function get_left():Float
+	{
+		return mLeft;
+	}
 	private function set_left(value:Float):Float
 	{
 		mLeft = value;
@@ -61,6 +62,11 @@ class Rect
 		return mLeft;
 	}
 
+	public var right(get, set):Float;
+	private inline function get_right():Float
+	{
+		return mRight;
+	}
 	private function set_right(value:Float):Float
 	{
 		mRight = value;
@@ -70,6 +76,11 @@ class Rect
 		return mRight;
 	}
 
+	public var top(get, set):Float;
+	private inline function get_top():Float
+	{
+		return mTop;
+	}
 	private function set_top(value:Float):Float
 	{
 		mTop = value;
@@ -79,6 +90,11 @@ class Rect
 		return mTop;
 	}
 
+	public var bottom(get, set):Float;
+	private inline function get_bottom():Float
+	{
+		return mBottom;
+	}
 	private function set_bottom(value:Float):Float
 	{
 		mBottom = value;
@@ -98,34 +114,14 @@ class Rect
 		mHeight = mTop - mBottom;
 	}
 
-	private function get_left():Float
-	{
-		return mLeft;
-	}
-
-	private function get_right():Float
-	{
-		return mRight;
-	}
-
-	private function get_top():Float
-	{
-		return mTop;
-	}
-
-	private function get_bottom():Float
-	{
-		return mBottom;
-	}
-
 	public var width(get, null):Float;
-	public var height(get, null):Float;
-	private function get_width():Float
+	private inline function get_width():Float
 	{
 		return mWidth;
 	}
-
-	private function get_height():Float
+	
+	public var height(get, null):Float;
+	private inline function get_height():Float
 	{
 		return mHeight;
 	}
