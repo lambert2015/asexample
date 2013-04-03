@@ -63,14 +63,14 @@ class Mesh implements IMesh
 		mBoundDirty = true;
 	}
 
-	public function removeSubMesh(subMesh:SubMesh):Void
+	public function removeSubMesh(subMesh:SubMesh):Bool
 	{
-		var index:Int = mSubMeshList.indexOf(subMesh);
-		if (index > -1)
+		if (mSubMeshList.remove(subMesh))
 		{
-			mSubMeshList.splice(index, 1);
 			mBoundDirty = true;
+			return true;
 		}
+		return false;
 	}
 
 	public function validate():Void

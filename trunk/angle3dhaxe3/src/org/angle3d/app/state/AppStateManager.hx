@@ -53,13 +53,7 @@ class AppStateManager
 
 	private function removeState(state:AppState):Bool
 	{
-		var i:Int = states.indexOf(state);
-		if (i != -1)
-		{
-			states.splice(i, 1);
-			return true;
-		}
-		return false;
+		return states.remove(state);
 	}
 
 	/**

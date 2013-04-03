@@ -60,10 +60,8 @@ class AnimControl extends AbstractControl
 
 	public function removeChannel(channel:AnimChannel):Void
 	{
-		var index:Int = mChannels.indexOf(channel);
-		if (index > -1)
+		if (mChannels.remove(channel))
 		{
-			mChannels.splice(index, 1);
 			mNumchannels--;
 		}
 	}

@@ -31,4 +31,15 @@ class ArrayUtil
 		return index != -1;
 	}
 	
+	//public static inline function remove<T>(list:Array<T>, item:T):Bool
+	//{
+		//var index:Int = indexOf(list, item);
+		//if (index != -1)
+		//{
+			//list.splice(index, 1);
+			//return true;
+		//}
+		//return false;
+	//}
+	
 }

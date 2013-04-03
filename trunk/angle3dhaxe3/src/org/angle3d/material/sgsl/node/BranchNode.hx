@@ -24,11 +24,7 @@ class BranchNode extends LeafNode
 
 	public function removeChild(node:LeafNode):Void
 	{
-		var index:Int = mChildren.indexOf(node);
-		if (index > -1)
-		{
-			mChildren.splice(index, 1);
-		}
+		mChildren.remove(node);
 	}
 
 	public function addChildren(list:Array<LeafNode>):Void

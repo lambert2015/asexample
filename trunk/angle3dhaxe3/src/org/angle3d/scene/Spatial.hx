@@ -611,10 +611,8 @@ class Spatial implements Cloneable implements Collidable
 	 */
 	public function removeControl(control:Control):Bool
 	{
-		var index:Int = ArrayUtil.indexOf(mControls,control);
-		if (index > -1)
+		if (mControls.remove(control))
 		{
-			mControls.splice(index, 1);
 			control.spatial = null;
 			return true;
 		}
