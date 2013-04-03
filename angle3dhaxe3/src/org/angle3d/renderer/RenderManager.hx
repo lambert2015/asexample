@@ -126,13 +126,7 @@ class RenderManager
 	 */
 	public function removePreView(view:ViewPort):Bool
 	{
-		var index:Int = preViewPorts.indexOf(view);
-		if (index > -1)
-		{
-			preViewPorts.splice(index, 1);
-			return true;
-		}
-		return false;
+		return preViewPorts.remove(view);
 	}
 
 	/**
@@ -188,13 +182,7 @@ class RenderManager
 	 */
 	public function removeMainView(view:ViewPort):Bool
 	{
-		var index:Int = viewPorts.indexOf(view);
-		if (index > -1)
-		{
-			viewPorts.splice(index, 1);
-			return true;
-		}
-		return false;
+		return viewPorts.remove(view);
 	}
 
 	/**
@@ -250,13 +238,7 @@ class RenderManager
 	 */
 	public function removePostView(view:ViewPort):Bool
 	{
-		var index:Int = postViewPorts.indexOf(view);
-		if (index > -1)
-		{
-			postViewPorts.splice(index, 1);
-			return true;
-		}
-		return false;
+		return postViewPorts.remove(view);
 	}
 
 	/**
