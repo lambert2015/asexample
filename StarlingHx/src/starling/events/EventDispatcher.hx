@@ -39,7 +39,7 @@ class EventDispatcher
 	private var mEventListeners:StringMap<Vector<Event->Void>>;
 	
 	/** Helper object. */
-	private static var sBubbleChains:Array = [];
+	private static var sBubbleChains:Array<Vector<EventDispatcher>> = [];
 	
 	/** Creates an EventDispatcher. */
 	public function new()
@@ -170,7 +170,8 @@ class EventDispatcher
 		
 		if (sBubbleChains.length > 0) 
 		{ 
-			chain = sBubbleChains.pop(); chain[0] = element; 
+			chain = sBubbleChains.pop(); 
+			chain[0] = element; 
 		}
 		else 
 		{

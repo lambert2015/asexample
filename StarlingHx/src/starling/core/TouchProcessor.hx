@@ -11,7 +11,7 @@
 package starling.core;
 
 import flash.geom.Point;
-import flash.utils.getDefinitionByName;
+import flash.Vector;
 
 import starling.display.Stage;
 import starling.events.KeyboardEvent;
@@ -19,12 +19,11 @@ import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 
-use namespace starling_internal;
 
 /** @private
  *  The TouchProcessor is used internally to convert mouse and touch events of the conventional
  *  Flash stage to Starling's TouchEvents. */
-internal class TouchProcessor
+class TouchProcessor
 {
 	private static inline var MULTITAP_TIME:Float = 0.3;
 	private static inline var MULTITAP_DISTANCE:Float = 25;
@@ -41,16 +40,16 @@ internal class TouchProcessor
 	private var mCtrlDown:Bool = false;
 	
 	/** Helper objects. */
-	private static var sProcessedTouchIDs:Vector<int> = new <int>[];
-	private static var sHoveringTouchData:Vector<Object> = new <Object>[];
+	private static var sProcessedTouchIDs:Vector<Int> = new Vector<Int>();
+	private static var sHoveringTouchData:Vector<Dynamic> =  new Vector<Dynamic>();
 	
 	public function new(stage:Stage)
 	{
 		mStage = stage;
 		mElapsedTime = 0.0;
-		mCurrentTouches = new <Touch>[];
-		mQueue = new <Array>[];
-		mLastTaps = new <Touch>[];
+		mCurrentTouches = new Vector<Touch>();
+		mQueue = [];
+		mLastTaps = new Vector<Touch>();
 		
 		mStage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
 		mStage.addEventListener(KeyboardEvent.KEY_UP,   onKey);
@@ -76,9 +75,13 @@ internal class TouchProcessor
 		// remove old taps
 		if (mLastTaps.length > 0)
 		{
-			for (i=mLastTaps.length-1; i>=0; --i)
+			i = mLastTaps.length - 1;
+			while ( i >= 0)
+			{
 				if (mElapsedTime - mLastTaps[i].timestamp > MULTITAP_TIME)
 					mLastTaps.splice(i, 1);
+				--i;
+			}
 		}
 		
 		while (mQueue.length > 0)
@@ -86,7 +89,7 @@ internal class TouchProcessor
 			sProcessedTouchIDs.length = sHoveringTouchData.length = 0;
 			
 			// set touches that were new or moving to phase 'stationary'
-			for each (touch in mCurrentTouches)
+			for (touch in mCurrentTouches)
 				if (touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED)
 					touch.setPhase(TouchPhase.STATIONARY);
 			
@@ -95,7 +98,7 @@ internal class TouchProcessor
 				sProcessedTouchIDs.indexOf(mQueue[mQueue.length-1][0]) == -1)
 			{
 				var touchArgs:Array = mQueue.pop();
-				touchID = touchArgs[0] as int;
+				touchID = cast(touchArgs[0],Int);
 				touch = getCurrentTouch(touchID);
 				
 				// hovering touches need special handling (see below)
@@ -117,18 +120,22 @@ internal class TouchProcessor
 			
 			// if the target of a hovering touch changed, we dispatch the event to the previous
 			// target to notify it that it's no longer being hovered over.
-			for each (var touchData:Dynamic in sHoveringTouchData)
+			for (touchData in sHoveringTouchData)
 				if (touchData.touch.target != touchData.target)
 					touchEvent.dispatch(touchData.bubbleChain);
 			
 			// dispatch events
-			for each (touchID in sProcessedTouchIDs)
+			for (touchID in sProcessedTouchIDs)
 				getCurrentTouch(touchID).dispatchEvent(touchEvent);
 			
 			// remove ended touches
-			for (i=mCurrentTouches.length-1; i>=0; --i)
+			i=mCurrentTouches.length-1;
+			while ( i >= 0 )
+			{
 				if (mCurrentTouches[i].phase == TouchPhase.ENDED)
 					mCurrentTouches.splice(i, 1);
+				--i;
+			}
 		}
 	}
 	
@@ -241,7 +248,7 @@ internal class TouchProcessor
 		var nearbyTap:Touch = null;
 		var minSqDist:Float = MULTITAP_DISTANCE * MULTITAP_DISTANCE;
 		
-		for each (var tap:Touch in mLastTaps)
+		for (tap in mLastTaps)
 		{
 			var sqDist:Float = Math.pow(tap.globalX - touch.globalX, 2) +
 								Math.pow(tap.globalY - touch.globalY, 2);
@@ -267,16 +274,20 @@ internal class TouchProcessor
 	
 	private function addCurrentTouch(touch:Touch):Void
 	{
-		for (var i:Int=mCurrentTouches.length-1; i>=0; --i)
+		var i:Int=mCurrentTouches.length-1;
+		while ( i >= 0 )
+		{
 			if (mCurrentTouches[i].id == touch.id)
 				mCurrentTouches.splice(i, 1);
+			--i;
+		}
 		
 		mCurrentTouches.push(touch);
 	}
 	
 	private function getCurrentTouch(touchID:Int):Touch
 	{
-		for each (var touch:Touch in mCurrentTouches)
+		for (touch in mCurrentTouches)
 			if (touch.id == touchID) return touch;
 		return null;
 	}
@@ -328,7 +339,7 @@ internal class TouchProcessor
 		var touch:Touch;
 		
 		// abort touches
-		for each (touch in mCurrentTouches)
+		for (touch in mCurrentTouches)
 		{
 			if (touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED ||
 				touch.phase == TouchPhase.STATIONARY)
@@ -341,7 +352,7 @@ internal class TouchProcessor
 		var touchEvent:TouchEvent = 
 			new TouchEvent(TouchEvent.TOUCH, mCurrentTouches, mShiftDown, mCtrlDown);
 		
-		for each (touch in mCurrentTouches)
+		for (touch in mCurrentTouches)
 			touch.dispatchEvent(touchEvent);
 		
 		// purge touches

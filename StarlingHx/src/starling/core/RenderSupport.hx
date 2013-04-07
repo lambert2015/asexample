@@ -11,9 +11,6 @@
 package starling.core;
 
 import com.adobe.utils.AGALMiniAssembler;
-import flash.net.URLRequestHeader;
-import starling.utils.ColorUtil;
-
 import flash.display3D.Context3D;
 import flash.display3D.Context3DProgramType;
 import flash.display3D.Program3D;
@@ -21,18 +18,19 @@ import flash.geom.Matrix;
 import flash.geom.Matrix3D;
 import flash.geom.Point;
 import flash.geom.Rectangle;
-
+import flash.Vector;
 import starling.display.BlendMode;
 import starling.display.DisplayObject;
 import starling.display.Quad;
 import starling.display.QuadBatch;
 import starling.errors.MissingContextError;
 import starling.textures.Texture;
-import starling.utils.Color;
+import starling.utils.ColorUtil;
 import starling.utils.MatrixUtil;
 import starling.utils.RectangleUtil;
 
-import flash.Vector;
+
+
 
 /** A class that contains helper methods simplifying Stage3D rendering.
  *
@@ -405,7 +403,7 @@ class RenderSupport
 	}
 	
 	/** Clears the render context with a certain color and alpha value. */
-	public static function clear(rgb:UInt = 0, alpha:Float = 0.0):Void
+	public static function clearContext(rgb:UInt = 0, alpha:Float = 0.0):Void
 	{
 		Starling.context.clear(
 			ColorUtil.getRed(rgb)   / 255.0, 

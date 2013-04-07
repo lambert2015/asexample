@@ -16,7 +16,7 @@ import flash.errors.Error;
 class AbstractMethodError extends Error
 {
 	/** Creates a new AbstractMethodError object. */
-	public function new(message:*="", id:*=0)
+	public function new(message:Dynamic = "", id:Dynamic = 0)
 	{
 		super(message, id);
 	}

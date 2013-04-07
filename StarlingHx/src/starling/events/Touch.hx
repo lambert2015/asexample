@@ -12,13 +12,11 @@ package starling.events;
 
 import flash.geom.Matrix;
 import flash.geom.Point;
+import flash.Vector;
+import starling.utils.StringUtil;
 
-import starling.core.starling_internal;
 import starling.display.DisplayObject;
 import starling.utils.MatrixUtil;
-import starling.utils.formatString;
-
-use namespace starling_internal;
 
 /** A Touch object contains information about the presence or movement of a finger 
  *  or the mouse on the screen.
@@ -67,16 +65,17 @@ class Touch
 		mPhase = phase;
 		mTarget = target;
 		mPressure = mWidth = mHeight = 1.0;
-		mBubbleChain = new <EventDispatcher>[];
+		mBubbleChain = new Vector<EventDispatcher>();
 		updateBubbleChain();
 	}
 	
 	/** Converts the current location of a touch to the local coordinate system of a display 
 	 *  object. If you pass a 'resultPoint', the result will be stored in this point instead 
 	 *  of creating a new object.*/
-	public function getLocation(space:DisplayObject, resultPoint:Point=null):Point
+	public function getLocation(space:DisplayObject, resultPoint:Point = null):Point
 	{
-		if (resultPoint == null) resultPoint = new Point();
+		if (resultPoint == null) 
+			resultPoint = new Point();
 		space.base.getTransformationMatrix(space, sHelperMatrix);
 		return MatrixUtil.transformCoords(sHelperMatrix, mGlobalX, mGlobalY, resultPoint); 
 	}
@@ -86,7 +85,8 @@ class Touch
 	 *  of creating a new object.*/
 	public function getPreviousLocation(space:DisplayObject, resultPoint:Point=null):Point
 	{
-		if (resultPoint == null) resultPoint = new Point();
+		if (resultPoint == null)
+			resultPoint = new Point();
 		space.base.getTransformationMatrix(space, sHelperMatrix);
 		return MatrixUtil.transformCoords(sHelperMatrix, mPreviousGlobalX, mPreviousGlobalY, resultPoint);
 	}
@@ -96,7 +96,8 @@ class Touch
 	 *  of creating a new object. */ 
 	public function getMovement(space:DisplayObject, resultPoint:Point=null):Point
 	{
-		if (resultPoint == null) resultPoint = new Point();
+		if (resultPoint == null) 
+			resultPoint = new Point();
 		getLocation(space, resultPoint);
 		var x:Float = resultPoint.x;
 		var y:Float = resultPoint.y;
@@ -114,7 +115,7 @@ class Touch
 	/** Returns a description of the object. */
 	public function toString():String
 	{
-		return formatString("Touch {0}: globalX={1}, globalY={2}, phase={3}",
+		return StringUtil.formatString("Touch {0}: globalX={1}, globalY={2}, phase={3}",
 							mID, mGlobalX, mGlobalY, mPhase);
 	}
 	
@@ -200,26 +201,27 @@ class Touch
 	/** @private 
 	 *  Dispatches a touch event along the current bubble chain (which is updated each time
 	 *  a target is set). */
-	starling_internal function dispatchEvent(event:TouchEvent):Void
+	public function dispatchEvent(event:TouchEvent):Void
 	{
 		if (mTarget) event.dispatch(mBubbleChain);
 	}
 	
 	/** @private */
-	starling_internal function get_bubbleChain():Vector<EventDispatcher>
+	public var bubbleChain(get, null):Vector<EventDispatcher>;
+	private function get_bubbleChain():Vector<EventDispatcher>
 	{
 		return mBubbleChain.concat();
 	}
 	
 	/** @private */
-	starling_internal function setTarget(value:DisplayObject):Void 
+	public function setTarget(value:DisplayObject):Void 
 	{ 
 		mTarget = value;
 		updateBubbleChain();
 	}
 	
 	/** @private */
-	starling_internal function setPosition(globalX:Float, globalY:Float):Void
+	public function setPosition(globalX:Float, globalY:Float):Void
 	{
 		mPreviousGlobalX = mGlobalX;
 		mPreviousGlobalY = mGlobalY;
@@ -228,21 +230,21 @@ class Touch
 	}
 	
 	/** @private */
-	starling_internal function setSize(width:Float, height:Float):Void 
+	public function setSize(width:Float, height:Float):Void 
 	{ 
 		mWidth = width;
 		mHeight = height;
 	}
 	
 	/** @private */
-	starling_internal function setPhase(value:String):Void { mPhase = value; }
+	public function setPhase(value:String):Void { mPhase = value; }
 	
 	/** @private */
-	starling_internal function setTapCount(value:Int):Void { mTapCount = value; }
+	public function setTapCount(value:Int):Void { mTapCount = value; }
 	
 	/** @private */
-	starling_internal function setTimestamp(value:Float):Void { mTimestamp = value; }
+	public function setTimestamp(value:Float):Void { mTimestamp = value; }
 	
 	/** @private */
-	starling_internal function setPressure(value:Float):Void { mPressure = value; }
+	public function setPressure(value:Float):Void { mPressure = value; }
 }

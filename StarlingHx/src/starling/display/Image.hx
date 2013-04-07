@@ -79,7 +79,7 @@ class Image extends Quad
 	}
 	
 	/** @inheritDoc */
-	protected override function onVertexDataChanged():Void
+	private override function onVertexDataChanged():Void
 	{
 		mVertexDataCacheInvalid = true;
 	}

@@ -28,11 +28,8 @@ import starling.errors.AbstractClassError;
  *  the equivalent of a <code>MouseOver</code> event in Flash when the mouse button is
  *  <em>not</em> pressed.</p> 
  */
-public final class TouchPhase
+class TouchPhase
 {
-	/** @private */
-	public function new() { throw new AbstractClassError(); }
-	
 	/** Only available for mouse input: the cursor hovers over an object <em>without</em> a 
 	 *  pressed button. */
 	public static inline var HOVER:String = "hover";

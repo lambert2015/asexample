@@ -13,12 +13,9 @@ package starling.display;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
-import flash.system.Capabilities;
-import flash.utils.getQualifiedClassName;
 import starling.utils.ClassUtil;
 
 import starling.core.RenderSupport;
-import starling.core.starling_internal;
 import starling.errors.AbstractClassError;
 import starling.events.Event;
 import starling.filters.FragmentFilter;
@@ -251,7 +248,7 @@ class DisplayObjectContainer extends DisplayObject
 	
 	/** Sorts the children according to a given function (that works just like the sort function
 	 *  of the Vector class). */
-	public function sortChildren(compareFunction:Function):Void
+	public function sortChildren(compareFunction:Dynamic):Void
 	{
 		mChildren = mChildren.sort(compareFunction);
 	}
@@ -314,7 +311,8 @@ class DisplayObjectContainer extends DisplayObject
 		var localY:Float = localPoint.y;
 		
 		var numChildren:Int = mChildren.length;
-		for (var i:Int=numChildren-1; i>=0; --i) // front to back!
+		var i:Int = numChildren - 1;
+		while ( i>=0) // front to back!
 		{
 			var child:DisplayObject = mChildren[i];
 			getTransformationMatrix(child, sHelperMatrix);
@@ -322,7 +320,10 @@ class DisplayObjectContainer extends DisplayObject
 			MatrixUtil.transformCoords(sHelperMatrix, localX, localY, sHelperPoint);
 			var target:DisplayObject = child.hitTest(sHelperPoint, forTouch);
 			
-			if (target) return target;
+			if (target) 
+				return target;
+			
+			--i;
 		}
 		
 		return null;
