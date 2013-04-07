@@ -13,6 +13,7 @@ package starling.display;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.Vector;
 
 import starling.core.RenderSupport;
 import starling.events.Event;
@@ -77,7 +78,7 @@ class Sprite extends DisplayObjectContainer
 	{
 		if (mFlattenedContents)
 		{
-			for (var i:Int=0, max:Int=mFlattenedContents.length; i<max; ++i)
+			for (i in 0...mFlattenedContents.length)
 				mFlattenedContents[i].dispose();
 			
 			mFlattenedContents = null;
@@ -202,7 +203,7 @@ class Sprite extends DisplayObjectContainer
 		if (mFlattenedContents || mFlattenRequested)
 		{
 			if (mFlattenedContents == null)
-				mFlattenedContents = new <QuadBatch>[];
+				mFlattenedContents = new Vector<QuadBatch>();
 			
 			if (mFlattenRequested)
 			{
@@ -218,7 +219,7 @@ class Sprite extends DisplayObjectContainer
 			support.finishQuadBatch();
 			support.raiseDrawCount(numBatches);
 			
-			for (var i:Int=0; i<numBatches; ++i)
+			for (i in 0...numBatches)
 			{
 				var quadBatch:QuadBatch = mFlattenedContents[i];
 				var blendMode:String = quadBatch.blendMode == BlendMode.AUTO ?

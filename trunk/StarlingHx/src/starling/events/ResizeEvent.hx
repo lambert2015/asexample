@@ -29,15 +29,24 @@ class ResizeEvent extends Event
 	/** Event type for a resized Flash player. */
 	public static inline var RESIZE:String = "resize";
 	
+	public var width(get, null):Int;
+	public var height(get, null):Int;
+	
 	/** Creates a new ResizeEvent. */
-	public function new(type:String, width:Int, height:Int, bubbles:Bool=false)
+	public function new(type:String, width:Int, height:Int, bubbles:Bool = false)
 	{
 		super(type, bubbles, new Point(width, height));
 	}
 	
 	/** The updated width of the player. */
-	private function get_width():Int { return (data as Point).x; }
+	private function get_width():Int 
+	{ 
+		return cast(data, Point).x; 
+	}
 	
 	/** The updated height of the player. */
-	private function get_height():Int { return (data as Point).y; }
+	private function get_height():Int 
+	{ 
+		return cast(data, Point).y; 
+	}
 }

@@ -20,7 +20,11 @@ class Main
 		stage.align = StageAlign.TOP_LEFT;
 		// entry point
 		
-		trace(Type.getClass(Lib.current));
+		var value:Bool;
+		for (value in [true, false])
+		{
+			trace(value);
+		}
 	}
 	
 }

@@ -12,6 +12,7 @@ package starling.text;
 
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
+import flash.Vector;
 
 import starling.display.Image;
 import starling.display.QuadBatch;
@@ -90,7 +91,7 @@ class BitmapFont
 		mTexture = texture;
 		mChars = new Dictionary();
 		mHelperImage = new Image(texture);
-		mCharLocationPool = new <CharLocation>[];
+		mCharLocationPool = new Vector<CharLocation>();
 		
 		if (fontXml) parseFontXml(fontXml);
 	}

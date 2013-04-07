@@ -73,8 +73,8 @@ class ConcreteTexture extends Texture
 	private function onContextCreated(event:Event):Void
 	{
 		var context:Context3D = Starling.context;
-		var bitmapData:BitmapData = mData as BitmapData;
-		var atfData:AtfData = mData as AtfData;
+		var bitmapData:BitmapData = cast(mData,BitmapData);
+		var atfData:AtfData = cast(mData,AtfData);
 		var nativeTexture:flash.display3D.textures.Texture;
 		
 		if (bitmapData)

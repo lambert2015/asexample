@@ -21,7 +21,6 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.system.Capabilities;
 import flash.utils.ByteArray;
-import flash.utils.getQualifiedClassName;
 import starling.utils.MathUtil;
 
 import starling.core.Starling;
@@ -172,10 +171,10 @@ class Texture
 	 *  immediately, while the texture will be created asynchronously. It can be used as soon
 	 *  as the callback has been executed. This is the expected function definition:
 	 *  <code>function(texture:Texture):void;</code></p> */ 
-	public static function fromAtfData(data:ByteArray, scale:Float=1, useMipMaps:Bool=true, 
-									   loadAsync:Function=null):Texture
+	public static function fromAtfData(data:ByteArray, scale:Float = 1, useMipMaps:Bool = true, 
+									   loadAsync:Dynamic = null):Texture
 	{
-		const eventType:String = "textureReady"; // defined here for backwards compatibility
+		var eventType:String = "textureReady"; // defined here for backwards compatibility
 		
 		var context:Context3D = Starling.context;
 		if (context == null) throw new MissingContextError();
@@ -296,7 +295,7 @@ class Texture
 	}
 	
 	/** @private Uploads the bitmap data to the native texture, optionally creating mipmaps. */
-	internal static function uploadBitmapData(nativeTexture:flash.display3D.textures.Texture,
+	public static function uploadBitmapData(nativeTexture:flash.display3D.textures.Texture,
 											  data:BitmapData, generateMipmaps:Bool):Void
 	{
 		nativeTexture.uploadFromBitmapData(data);
@@ -326,7 +325,7 @@ class Texture
 	}
 	
 	/** @private Uploads ATF data from a ByteArray to a native texture. */
-	internal static function uploadAtfData(nativeTexture:flash.display3D.textures.Texture, 
+	public static function uploadAtfData(nativeTexture:flash.display3D.textures.Texture, 
 										   data:ByteArray, offset:Int=0, 
 										   async:Bool=false):Void
 	{

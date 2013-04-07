@@ -14,6 +14,7 @@ import flash.geom.Matrix;
 import flash.geom.Matrix3D;
 import flash.geom.Point;
 import flash.Vector;
+import flash.Vector;
 
 import starling.errors.AbstractClassError;
 
@@ -22,7 +23,7 @@ class MatrixUtil
 {
 	/** Helper object. */
 	private static var sRawData:Vector<Float> = 
-		new <Float>[1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1];
+			Vector.ofArray<Float>([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1]);
 	
 	/** Converts a 2D matrix to a 3D matrix. If you pass a 'resultMatrix',  
 	 *  the result will be stored in this matrix instead of creating a new object. */

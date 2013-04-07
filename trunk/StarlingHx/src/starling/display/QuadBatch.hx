@@ -24,11 +24,9 @@ import flash.geom.Matrix3D;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 import flash.Vector;
-import flash.utils.getQualifiedClassName;
 
 import starling.core.RenderSupport;
 import starling.core.Starling;
-import starling.core.starling_internal;
 import starling.errors.MissingContextError;
 import starling.events.Event;
 import starling.filters.FragmentFilter;
@@ -559,7 +557,7 @@ class QuadBatch extends DisplayObject
 		// Image:
 		// Each combination of tinted/repeat/mipmap/smoothing has its own fragment shader.
 		
-		for each (var tinted:Bool in [true, false])
+		for (tinted in [true, false])
 		{
 			vertexProgramCode = tinted ?
 				"m44 op, va0, vc1 \n" + // 4x4 matrix transform to output clipspace
@@ -587,15 +585,15 @@ class QuadBatch extends DisplayObject
 				"compressedAlpha" // use explicit string for compatibility
 			];
 			
-			for each (var repeat:Bool in [true, false])
+			for (repeat in [true, false])
 			{
-				for each (var mipmap:Bool in [true, false])
+				for (mipmap in [true, false])
 				{
-					for each (var smoothing:String in smoothingTypes)
+					for (smoothing in smoothingTypes)
 					{
-						for each (var format:String in formats)
+						for (format in formats)
 						{
-							var options:Array = ["2d", repeat ? "repeat" : "clamp"];
+							var options:Array<String> = ["2d", repeat ? "repeat" : "clamp"];
 							
 							if (format == Context3DTextureFormat.COMPRESSED)
 								options.push("dxt1");

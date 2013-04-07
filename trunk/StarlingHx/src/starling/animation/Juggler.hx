@@ -11,7 +11,6 @@
 package starling.animation;
 
 import flash.Vector;
-import starling.core.starling_internal;
 import starling.events.Event;
 import starling.events.EventDispatcher;
 
@@ -66,7 +65,7 @@ class Juggler implements IAnimatable
 		{
 			mObjects.push(object);
 		
-			var dispatcher:EventDispatcher = object as EventDispatcher;
+			var dispatcher:EventDispatcher = cast(object,EventDispatcher);
 			if (dispatcher) 
 				dispatcher.addEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 		}
@@ -83,7 +82,7 @@ class Juggler implements IAnimatable
 	{
 		if (object == null) return;
 		
-		var dispatcher:EventDispatcher = object as EventDispatcher;
+		var dispatcher:EventDispatcher = cast(object,EventDispatcher);
 		if (dispatcher) 
 			dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 
@@ -98,7 +97,7 @@ class Juggler implements IAnimatable
 		if (target == null) 
 			return;
 			
-		var i:Int=mObjects.length-1
+		var i:Int = mObjects.length - 1;
 		while (i >= 0)
 		{
 			var tween:Tween = cast(mObjects[i], Tween);
@@ -140,7 +139,7 @@ class Juggler implements IAnimatable
 		var i:Int = mObjects.length - 1;
 		while (i >= 0)
 		{
-			var dispatcher:EventDispatcher = mObjects[i] as EventDispatcher;
+			var dispatcher:EventDispatcher = cast(mObjects[i],EventDispatcher);
 			if (dispatcher) 
 				dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 			mObjects[i] = null;
@@ -179,16 +178,16 @@ class Juggler implements IAnimatable
 	 */
 	public function tween(target:Dynamic, time:Float, properties:Dynamic):Void
 	{
-		var tween:Tween = Tween.starling_internal::fromPool(target, time);
+		var tween:Tween = Tween.fromPool(target, time);
 		
-		for (var property:String in properties)
+		for (property in properties)
 		{
 			var value:Dynamic = properties[property];
 			
 			if (untyped tween.hasOwnProperty(property))
 				tween[property] = value;
 			else if (untyped target.hasOwnProperty(property))
-				tween.animate(property, value as Float);
+				tween.animate(property, cast(value,Float));
 			else
 				throw new ArgumentError("Invalid property: " + property);
 		}
