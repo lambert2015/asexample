@@ -55,15 +55,15 @@ class BitmapFont
 {
 	/** Use this constant for the <code>fontSize</code> property of the TextField class to 
 	 *  render the bitmap font in exactly the size it was created. */ 
-	public static inline var NATIVE_SIZE:int = -1;
+	public static inline var NATIVE_SIZE:Int = -1;
 	
 	/** The font name of the embedded minimal bitmap font. Use this e.g. for debug output. */
 	public static inline var MINI:String = "mini";
 	
-	private static inline var CHAR_SPACE:int           = 32;
-	private static inline var CHAR_TAB:int             =  9;
-	private static inline var CHAR_NEWLINE:int         = 10;
-	private static inline var CHAR_CARRIAGE_RETURN:int = 13;
+	private static inline var CHAR_SPACE:Int           = 32;
+	private static inline var CHAR_TAB:Int             =  9;
+	private static inline var CHAR_NEWLINE:Int         = 10;
+	private static inline var CHAR_CARRIAGE_RETURN:Int = 13;
 	
 	private var mTexture:Texture;
 	private var mChars:Dictionary;
@@ -123,7 +123,7 @@ class BitmapFont
 		
 		for each (var charElement:XML in fontXml.chars.char)
 		{
-			var id:int = parseInt(charElement.attribute("id"));
+			var id:Int = parseInt(charElement.attribute("id"));
 			var xOffset:Float = parseFloat(charElement.attribute("xoffset")) / scale;
 			var yOffset:Float = parseFloat(charElement.attribute("yoffset")) / scale;
 			var xAdvance:Float = parseFloat(charElement.attribute("xadvance")) / scale;
@@ -141,38 +141,38 @@ class BitmapFont
 		
 		for each (var kerningElement:XML in fontXml.kernings.kerning)
 		{
-			var first:int = parseInt(kerningElement.attribute("first"));
-			var second:int = parseInt(kerningElement.attribute("second"));
+			var first:Int = parseInt(kerningElement.attribute("first"));
+			var second:Int = parseInt(kerningElement.attribute("second"));
 			var amount:Float = parseFloat(kerningElement.attribute("amount")) / scale;
 			if (second in mChars) getChar(second).addKerning(first, amount);
 		}
 	}
 	
 	/** Returns a single bitmap char with a certain character ID. */
-	public function getChar(charID:int):BitmapChar
+	public function getChar(charID:Int):BitmapChar
 	{
 		return mChars[charID];   
 	}
 	
 	/** Adds a bitmap char with a certain character ID. */
-	public function addChar(charID:int, bitmapChar:BitmapChar):Void
+	public function addChar(charID:Int, bitmapChar:BitmapChar):Void
 	{
 		mChars[charID] = bitmapChar;
 	}
 	
 	/** Creates a sprite that contains a certain text, made up by one image per char. */
 	public function createSprite(width:Float, height:Float, text:String,
-								 fontSize:Float=-1, color:uint=0xffffff, 
+								 fontSize:Float=-1, color:UInt=0xffffff, 
 								 hAlign:String="center", vAlign:String="center",      
 								 autoScale:Bool=true, 
 								 kerning:Bool=true):Sprite
 	{
 		var charLocations:Vector<CharLocation> = arrangeChars(width, height, text, fontSize, 
 															   hAlign, vAlign, autoScale, kerning);
-		var numChars:int = charLocations.length;
+		var numChars:Int = charLocations.length;
 		var sprite:Sprite = new Sprite();
 		
-		for (var i:int=0; i<numChars; ++i)
+		for (var i:Int=0; i<numChars; ++i)
 		{
 			var charLocation:CharLocation = charLocations[i];
 			var char:Image = charLocation.char.createImage();
@@ -188,20 +188,20 @@ class BitmapFont
 	
 	/** Draws text into a QuadBatch. */
 	public function fillQuadBatch(quadBatch:QuadBatch, width:Float, height:Float, text:String,
-								  fontSize:Float=-1, color:uint=0xffffff, 
+								  fontSize:Float=-1, color:UInt=0xffffff, 
 								  hAlign:String="center", vAlign:String="center",      
 								  autoScale:Bool=true, 
 								  kerning:Bool=true):Void
 	{
 		var charLocations:Vector<CharLocation> = arrangeChars(width, height, text, fontSize, 
 															   hAlign, vAlign, autoScale, kerning);
-		var numChars:int = charLocations.length;
+		var numChars:Int = charLocations.length;
 		mHelperImage.color = color;
 		
 		if (numChars > 8192)
 			throw new ArgumentError("Bitmap Font text is limited to 8192 characters.");
 
-		for (var i:int=0; i<numChars; ++i)
+		for (var i:Int=0; i<numChars; ++i)
 		{
 			var charLocation:CharLocation = charLocations[i];
 			mHelperImage.texture = charLocation.char.texture;
@@ -225,7 +225,7 @@ class BitmapFont
 		var lines:Vector<Vector<CharLocation>>;
 		var finished:Bool = false;
 		var charLocation:CharLocation;
-		var numChars:int;
+		var numChars:Int;
 		var containerWidth:Float;
 		var containerHeight:Float;
 		var scale:Float;
@@ -240,17 +240,17 @@ class BitmapFont
 			
 			if (mLineHeight <= containerHeight)
 			{
-				var lastWhiteSpace:int = -1;
-				var lastCharID:int = -1;
+				var lastWhiteSpace:Int = -1;
+				var lastCharID:Int = -1;
 				var currentX:Float = 0;
 				var currentY:Float = 0;
 				var currentLine:Vector<CharLocation> = new <CharLocation>[];
 				
 				numChars = text.length;
-				for (var i:int=0; i<numChars; ++i)
+				for (var i:Int=0; i<numChars; ++i)
 				{
 					var lineFull:Bool = false;
-					var charID:int = text.charCodeAt(i);
+					var charID:Int = text.charCodeAt(i);
 					var char:BitmapChar = getChar(charID);
 					
 					if (charID == CHAR_NEWLINE || charID == CHAR_CARRIAGE_RETURN)
@@ -283,8 +283,8 @@ class BitmapFont
 						if (charLocation.x + char.width > containerWidth)
 						{
 							// remove characters and add them again to next line
-							var numCharsToRemove:int = lastWhiteSpace == -1 ? 1 : i - lastWhiteSpace;
-							var removeIndex:int = currentLine.length - numCharsToRemove;
+							var numCharsToRemove:Int = lastWhiteSpace == -1 ? 1 : i - lastWhiteSpace;
+							var removeIndex:Int = currentLine.length - numCharsToRemove;
 							
 							currentLine.splice(removeIndex, numCharsToRemove);
 							
@@ -336,21 +336,21 @@ class BitmapFont
 		} // while (!finished)
 		
 		var finalLocations:Vector<CharLocation> = new <CharLocation>[];
-		var numLines:int = lines.length;
+		var numLines:Int = lines.length;
 		var bottom:Float = currentY + mLineHeight;
-		var yOffset:int = 0;
+		var yOffset:Int = 0;
 		
 		if (vAlign == VAlign.BOTTOM)      yOffset =  containerHeight - bottom;
 		else if (vAlign == VAlign.CENTER) yOffset = (containerHeight - bottom) / 2;
 		
-		for (var lineID:int=0; lineID<numLines; ++lineID)
+		for (var lineID:Int=0; lineID<numLines; ++lineID)
 		{
 			var line:Vector<CharLocation> = lines[lineID];
 			numChars = line.length;
 			
 			if (numChars == 0) continue;
 			
-			var xOffset:int = 0;
+			var xOffset:Int = 0;
 			var lastLocation:CharLocation = line[line.length-1];
 			var right:Float = lastLocation.x - lastLocation.char.xOffset 
 											  + lastLocation.char.xAdvance;
@@ -358,7 +358,7 @@ class BitmapFont
 			if (hAlign == HAlign.RIGHT)       xOffset =  containerWidth - right;
 			else if (hAlign == HAlign.CENTER) xOffset = (containerWidth - right) / 2;
 			
-			for (var c:int=0; c<numChars; ++c)
+			for (var c:Int=0; c<numChars; ++c)
 			{
 				charLocation = line[c];
 				charLocation.x = scale * (charLocation.x + xOffset);
@@ -384,11 +384,11 @@ class BitmapFont
 	
 	/** The height of one line in pixels. */
 	private function get_lineHeight():Float { return mLineHeight; }
-	private function set_lineHeight(value:Float):Void { mLineHeight = value; }
+	private function set_lineHeight(value:Float):Float { return mLineHeight = value; }
 	
 	/** The smoothing filter that is used for the texture. */ 
 	private function get_smoothing():String { return mHelperImage.smoothing; }
-	private function set_smoothing(value:String):Void { mHelperImage.smoothing = value; } 
+	private function set_smoothing(value:String):String { return mHelperImage.smoothing = value; } 
 	
 	/** The baseline of the font. */
 	private function get_baseline():Float { return mBaseline; }

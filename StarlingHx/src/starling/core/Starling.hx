@@ -18,6 +18,7 @@ import flash.display3D.Context3D;
 import flash.display3D.Context3DCompareMode;
 import flash.display3D.Context3DTriangleFace;
 import flash.display3D.Program3D;
+import flash.errors.Error;
 import flash.errors.IllegalOperationError;
 import flash.events.ErrorEvent;
 import flash.events.Event;
@@ -36,6 +37,7 @@ import flash.ui.MultitouchInputMode;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 import flash.utils.setTimeout;
+import flash.Lib;
 
 import starling.animation.Juggler;
 import starling.display.DisplayObject;
@@ -166,7 +168,7 @@ class Starling extends EventDispatcher
 	private var mStarted:Bool;        
 	private var mSupport:RenderSupport;
 	private var mTouchProcessor:TouchProcessor;
-	private var mAntiAliasing:int;
+	private var mAntiAliasing:Int;
 	private var mSimulateMultitouch:Bool;
 	private var mEnableErrorChecking:Bool;
 	private var mLastFrameTimestamp:Float;
@@ -256,7 +258,8 @@ class Starling extends EventDispatcher
 		mStage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated, false, 10, true);
 		mStage3D.addEventListener(ErrorEvent.ERROR, onStage3DError, false, 10, true);
 		
-		if (mStage3D.context3D && mStage3D.context3D.driverInfo != "Disposed")
+		if (mStage3D.context3D != null && 
+			mStage3D.context3D.driverInfo != "Disposed")
 		{
 			mShareContext = true;
 			setTimeout(initialize, 1); // we don't call it right away, because Starling should
@@ -301,18 +304,24 @@ class Starling extends EventDispatcher
 		for each (var touchEventType:String in touchEventTypes)
 			mNativeStage.removeEventListener(touchEventType, onTouch, false);
 		
-		if (mStage) mStage.dispose();
-		if (mSupport) mSupport.dispose();
-		if (mTouchProcessor) mTouchProcessor.dispose();
-		if (sCurrent == this) sCurrent = null;
+		if (mStage) 
+			mStage.dispose();
+		if (mSupport) 
+			mSupport.dispose();
+		if (mTouchProcessor) 
+			mTouchProcessor.dispose();
+		if (sCurrent == this) 
+			sCurrent = null;
 		if (mContext && !mShareContext) 
 		{
 			// Per default, the context is recreated as long as there are listeners on it.
 			// Beginning with AIR 3.6, we can avoid that with an additional parameter.
 			
 			var disposeContext3D:Function = mContext.dispose;
-			if (disposeContext3D.length == 1) disposeContext3D(false);
-			else disposeContext3D();
+			if (disposeContext3D.length == 1) 
+				disposeContext3D(false);
+			else 
+				disposeContext3D();
 		}
 	}
 	
@@ -581,7 +590,7 @@ class Starling extends EventDispatcher
 		
 		var globalX:Float;
 		var globalY:Float;
-		var touchID:int;
+		var touchID:Int;
 		var phase:String;
 		var pressure:Float = 1.0;
 		var width:Float = 1.0;
@@ -617,13 +626,13 @@ class Starling extends EventDispatcher
 		// figure out touch phase
 		switch (event.type)
 		{
-			case TouchEvent.TOUCH_BEGIN: phase = TouchPhase.BEGAN; break;
-			case TouchEvent.TOUCH_MOVE:  phase = TouchPhase.MOVED; break;
-			case TouchEvent.TOUCH_END:   phase = TouchPhase.ENDED; break;
-			case MouseEvent.MOUSE_DOWN:  phase = TouchPhase.BEGAN; break;
-			case MouseEvent.MOUSE_UP:    phase = TouchPhase.ENDED; break;
+			case TouchEvent.TOUCH_BEGIN: phase = TouchPhase.BEGAN; 
+			case TouchEvent.TOUCH_MOVE:  phase = TouchPhase.MOVED; 
+			case TouchEvent.TOUCH_END:   phase = TouchPhase.ENDED; 
+			case MouseEvent.MOUSE_DOWN:  phase = TouchPhase.BEGAN; 
+			case MouseEvent.MOUSE_UP:    phase = TouchPhase.ENDED; 
 			case MouseEvent.MOUSE_MOVE: 
-				phase = (mLeftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); break;
+				phase = (mLeftMouseDown ? TouchPhase.MOVED : TouchPhase.HOVER); 
 		}
 		
 		// move position into viewport bounds
@@ -728,8 +737,8 @@ class Starling extends EventDispatcher
 	}
 	
 	/** The antialiasing level. 0 - no antialasing, 16 - maximum antialiasing. @default 0 */
-	private function get_antiAliasing():int { return mAntiAliasing; }
-	private function set_antiAliasing(value:int):Void
+	private function get_antiAliasing():Int { return mAntiAliasing; }
+	private function set_antiAliasing(value:Int):Void
 	{
 		if (mAntiAliasing != value)
 		{
@@ -784,8 +793,8 @@ class Starling extends EventDispatcher
 				mStage.addChild(mStatsDisplay);
 			}
 			
-			var stageWidth:int  = mStage.stageWidth;
-			var stageHeight:int = mStage.stageHeight;
+			var stageWidth:Int  = mStage.stageWidth;
+			var stageHeight:Int = mStage.stageHeight;
 			
 			mStatsDisplay.scaleX = mStatsDisplay.scaleY = scale;
 			

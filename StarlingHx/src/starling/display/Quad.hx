@@ -148,7 +148,7 @@ class Quad extends DisplayObject
 	}
 	
 	/** @inheritDoc **/
-	public override function set_alpha(value:Float):Void
+	private override function set_alpha(value:Float):Void
 	{
 		super.alpha = value;
 		

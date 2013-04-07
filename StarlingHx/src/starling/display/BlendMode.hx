@@ -59,12 +59,6 @@ class BlendMode
 	
 	// predifined modes
 	
-	/** @private */
-	public function new() 
-	{ 
-		throw new AbstractClassError(); 
-	}
-	
 	/** Inherits the blend mode from this display object's parent. */
 	public static inline var AUTO:String = "auto";
 

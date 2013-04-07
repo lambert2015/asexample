@@ -40,12 +40,12 @@ use namespace starling_internal;
  */  
 class Touch
 {
-	private var mID:int;
+	private var mID:Int;
 	private var mGlobalX:Float;
 	private var mGlobalY:Float;
 	private var mPreviousGlobalX:Float;
 	private var mPreviousGlobalY:Float;
-	private var mTapCount:int;
+	private var mTapCount:Int;
 	private var mPhase:String;
 	private var mTarget:DisplayObject;
 	private var mTimestamp:Float;
@@ -58,7 +58,7 @@ class Touch
 	private static var sHelperMatrix:Matrix = new Matrix();
 	
 	/** Creates a new Touch object. */
-	public function new(id:int, globalX:Float, globalY:Float, phase:String, target:DisplayObject)
+	public function new(id:Int, globalX:Float, globalY:Float, phase:String, target:DisplayObject)
 	{
 		mID = id;
 		mGlobalX = mPreviousGlobalX = globalX;
@@ -138,7 +138,7 @@ class Touch
 	{
 		if (mTarget)
 		{
-			var length:int = 1;
+			var length:Int = 1;
 			var element:DisplayObject = mTarget;
 			
 			mBubbleChain.length = 1;
@@ -156,7 +156,7 @@ class Touch
 	// properties
 	
 	/** The identifier of a touch. '0' for mouse events, an increasing number for touches. */
-	private function get_id():int { return mID; }
+	private function get_id():Int { return mID; }
 	
 	/** The x-position of the touch in stage coordinates. */
 	private function get_globalX():Float { return mGlobalX; }
@@ -172,7 +172,7 @@ class Touch
 	
 	/** The number of taps the finger made in a short amount of time. Use this to detect 
 	 *  double-taps / double-clicks, etc. */ 
-	private function get_tapCount():int { return mTapCount; }
+	private function get_tapCount():Int { return mTapCount; }
 	
 	/** The current phase the touch is in. @see TouchPhase */
 	private function get_phase():String { return mPhase; }
@@ -238,7 +238,7 @@ class Touch
 	starling_internal function setPhase(value:String):Void { mPhase = value; }
 	
 	/** @private */
-	starling_internal function setTapCount(value:int):Void { mTapCount = value; }
+	starling_internal function setTapCount(value:Int):Void { mTapCount = value; }
 	
 	/** @private */
 	starling_internal function setTimestamp(value:Float):Void { mTimestamp = value; }

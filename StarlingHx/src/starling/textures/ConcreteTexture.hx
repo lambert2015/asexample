@@ -23,8 +23,8 @@ class ConcreteTexture extends Texture
 {
 	private var mBase:TextureBase;
 	private var mFormat:String;
-	private var mWidth:int;
-	private var mHeight:int;
+	private var mWidth:Int;
+	private var mHeight:Int;
 	private var mMipMapping:Bool;
 	private var mPremultipliedAlpha:Bool;
 	private var mOptimizedForRenderTexture:Bool;
@@ -33,7 +33,7 @@ class ConcreteTexture extends Texture
 	
 	/** Creates a ConcreteTexture object from a TextureBase, storing information about size,
 	 *  mip-mapping, and if the channels contain premultiplied alpha values. */
-	public function new(base:TextureBase, format:String, width:int, height:int, 
+	public function new(base:TextureBase, format:String, width:Int, height:Int, 
 									mipMapping:Bool, premultipliedAlpha:Bool,
 									optimizedForRenderTexture:Bool=false,
 									scale:Float=1)
@@ -99,32 +99,32 @@ class ConcreteTexture extends Texture
 	private function get_optimizedForRenderTexture():Bool { return mOptimizedForRenderTexture; }
 	
 	/** @inheritDoc */
-	public override function get_base():TextureBase { return mBase; }
+	private override function get_base():TextureBase { return mBase; }
 	
 	/** @inheritDoc */
-	public override function get_root():ConcreteTexture { return this; }
+	private override function get_root():ConcreteTexture { return this; }
 	
 	/** @inheritDoc */
-	public override function get_format():String { return mFormat; }
+	private override function get_format():String { return mFormat; }
 	
 	/** @inheritDoc */
-	public override function get_width():Float  { return mWidth / mScale;  }
+	private override function get_width():Float  { return mWidth / mScale;  }
 	
 	/** @inheritDoc */
-	public override function get_height():Float { return mHeight / mScale; }
+	private override function get_height():Float { return mHeight / mScale; }
 	
 	/** @inheritDoc */
-	public override function get_nativeWidth():Float { return mWidth; }
+	private override function get_nativeWidth():Float { return mWidth; }
 	
 	/** @inheritDoc */
-	public override function get_nativeHeight():Float { return mHeight; }
+	private override function get_nativeHeight():Float { return mHeight; }
 	
 	/** The scale factor, which influences width and height properties. */
-	public override function get_scale():Float { return mScale; }
+	private override function get_scale():Float { return mScale; }
 	
 	/** @inheritDoc */
-	public override function get_mipMapping():Bool { return mMipMapping; }
+	private override function get_mipMapping():Bool { return mMipMapping; }
 	
 	/** @inheritDoc */
-	public override function get_premultipliedAlpha():Bool { return mPremultipliedAlpha; }
+	private override function get_premultipliedAlpha():Bool { return mPremultipliedAlpha; }
 }

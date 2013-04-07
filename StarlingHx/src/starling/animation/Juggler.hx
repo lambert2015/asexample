@@ -10,6 +10,7 @@
 
 package starling.animation;
 
+import flash.Vector;
 import starling.core.starling_internal;
 import starling.events.Event;
 import starling.events.EventDispatcher;
@@ -46,6 +47,8 @@ import starling.events.EventDispatcher;
  */
 class Juggler implements IAnimatable
 {
+	public var elapsedTime(get, never):Float;
+	
 	private var mObjects:Vector<IAnimatable>;
 	private var mElapsedTime:Float;
 	
@@ -53,18 +56,19 @@ class Juggler implements IAnimatable
 	public function new()
 	{
 		mElapsedTime = 0;
-		mObjects = new <IAnimatable>[];
+		mObjects = new Vector<IAnimatable>();
 	}
 
 	/** Adds an object to the juggler. */
 	public function add(object:IAnimatable):Void
 	{
-		if (object && mObjects.indexOf(object) == -1) 
+		if (object != null && mObjects.indexOf(object) == -1) 
 		{
 			mObjects.push(object);
 		
 			var dispatcher:EventDispatcher = object as EventDispatcher;
-			if (dispatcher) dispatcher.addEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
+			if (dispatcher) 
+				dispatcher.addEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 		}
 	}
 	
@@ -80,37 +84,46 @@ class Juggler implements IAnimatable
 		if (object == null) return;
 		
 		var dispatcher:EventDispatcher = object as EventDispatcher;
-		if (dispatcher) dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
+		if (dispatcher) 
+			dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 
-		var index:int = mObjects.indexOf(object);
-		if (index != -1) mObjects[index] = null;
+		var index:Int = mObjects.indexOf(object);
+		if (index != -1) 
+			mObjects[index] = null;
 	}
 	
 	/** Removes all tweens with a certain target. */
 	public function removeTweens(target:Dynamic):Void
 	{
-		if (target == null) return;
-		
-		for (var i:int=mObjects.length-1; i>=0; --i)
+		if (target == null) 
+			return;
+			
+		var i:Int=mObjects.length-1
+		while (i >= 0)
 		{
-			var tween:Tween = mObjects[i] as Tween;
-			if (tween && tween.target == target)
+			var tween:Tween = cast(mObjects[i], Tween);
+			if (tween != null && tween.target == target)
 			{
 				tween.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 				mObjects[i] = null;
 			}
+			--i;
 		}
 	}
 	
 	/** Figures out if the juggler contains one or more tweens with a certain target. */
 	public function containsTweens(target:Dynamic):Bool
 	{
-		if (target == null) return false;
+		if (target == null) 
+		return false;
 		
-		for (var i:int=mObjects.length-1; i>=0; --i)
+		var i:Int = mObjects.length - 1;
+		while (i >= 0)
 		{
-			var tween:Tween = mObjects[i] as Tween;
-			if (tween && tween.target == target) return true;
+			var tween:Tween = cast(mObjects[i], Tween);
+			if (tween && tween.target == target) 
+				return true;
+			i--;
 		}
 		
 		return false;
@@ -124,20 +137,24 @@ class Juggler implements IAnimatable
 		// vector is filled with 'null' values. They will be cleaned up on the next call
 		// to 'advanceTime'.
 		
-		for (var i:int=mObjects.length-1; i>=0; --i)
+		var i:Int = mObjects.length - 1;
+		while (i >= 0)
 		{
 			var dispatcher:EventDispatcher = mObjects[i] as EventDispatcher;
-			if (dispatcher) dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
+			if (dispatcher) 
+				dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 			mObjects[i] = null;
+			i--;
 		}
 	}
 	
 	/** Delays the execution of a function until a certain time has passed. Creates an
 	 *  object of type 'DelayedCall' internally and returns it. Remove that object
 	 *  from the juggler to cancel the function call. */
-	public function delayCall(call:Function, delay:Float, ...args):DelayedCall
+	public function delayCall(call:Function, delay:Float, args:Array<Dynamic>):DelayedCall
 	{
-		if (call == null) return null;
+		if (call == null) 
+			return null;
 		
 		var delayedCall:DelayedCall = new DelayedCall(call, delay, args);
 		add(delayedCall);
@@ -168,9 +185,9 @@ class Juggler implements IAnimatable
 		{
 			var value:Dynamic = properties[property];
 			
-			if (tween.hasOwnProperty(property))
+			if (untyped tween.hasOwnProperty(property))
 				tween[property] = value;
-			else if (target.hasOwnProperty(property))
+			else if (untyped target.hasOwnProperty(property))
 				tween.animate(property, value as Float);
 			else
 				throw new ArgumentError("Invalid property: " + property);
@@ -182,15 +199,15 @@ class Juggler implements IAnimatable
 	
 	private function onPooledTweenComplete(event:Event):Void
 	{
-		Tween.starling_internal::toPool(event.target as Tween);
+		Tween.toPool(cast(event.target,Tween));
 	}
 	
 	/** Advances all objects by a certain time (in seconds). */
 	public function advanceTime(time:Float):Void
 	{   
-		var numObjects:int = mObjects.length;
-		var currentIndex:int = 0;
-		var i:int;
+		var numObjects:Int = mObjects.length;
+		var currentIndex:Int = 0;
+		var i:Int;
 		
 		mElapsedTime += time;
 		if (numObjects == 0) return;
@@ -199,10 +216,10 @@ class Juggler implements IAnimatable
 		// of animatables. we must not process new objects right now (they will be processed
 		// in the next frame), and we need to clean up any empty slots in the list.
 		
-		for (i=0; i<numObjects; ++i)
+		for (i in 0...numObjects)
 		{
 			var object:IAnimatable = mObjects[i];
-			if (object)
+			if (object != null)
 			{
 				// shift objects into empty slots along the way
 				if (currentIndex != i) 
@@ -221,7 +238,7 @@ class Juggler implements IAnimatable
 			numObjects = mObjects.length; // count might have changed!
 			
 			while (i < numObjects)
-				mObjects[int(currentIndex++)] = mObjects[int(i++)];
+				mObjects[currentIndex++] = mObjects[i++];
 			
 			mObjects.length = currentIndex;
 		}
@@ -229,13 +246,16 @@ class Juggler implements IAnimatable
 	
 	private function onRemove(event:Event):Void
 	{
-		remove(event.target as IAnimatable);
+		remove(cast(event.target,IAnimatable));
 		
-		var tween:Tween = event.target as Tween;
-		if (tween && tween.isComplete)
+		var tween:Tween = cast(event.target,Tween);
+		if (tween != null && tween.isComplete)
 			add(tween.nextTween);
 	}
 	
 	/** The total life time of the juggler. */
-	private function get_elapsedTime():Float { return mElapsedTime; }        
+	private function get_elapsedTime():Float 
+	{ 
+		return mElapsedTime; 
+	}        
 }

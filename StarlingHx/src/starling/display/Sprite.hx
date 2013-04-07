@@ -77,7 +77,7 @@ class Sprite extends DisplayObjectContainer
 	{
 		if (mFlattenedContents)
 		{
-			for (var i:int=0, max:int=mFlattenedContents.length; i<max; ++i)
+			for (var i:Int=0, max:Int=mFlattenedContents.length; i<max; ++i)
 				mFlattenedContents[i].dispose();
 			
 			mFlattenedContents = null;
@@ -113,19 +113,27 @@ class Sprite extends DisplayObjectContainer
 	 *  Only pixels within that rectangle will be drawn. 
 	 *  <strong>Note:</strong> clip rects are axis aligned with the screen, so they
 	 *  will not be rotated or skewed if the Sprite is. */
-	private function get_clipRect():Rectangle { return mClipRect; }
-	private function set_clipRect(value:Rectangle):Void 
+	private function get_clipRect():Rectangle 
+	{ 
+		return mClipRect; 
+	}
+	private function set_clipRect(value:Rectangle):Rectangle 
 	{
-		if (mClipRect && value) mClipRect.copyFrom(value);
-		else mClipRect = (value ? value.clone() : null);
+		if (mClipRect && value) 
+			mClipRect.copyFrom(value);
+		else 
+			mClipRect = (value ? value.clone() : null);
+		return mClipRect; 
 	}
 
 	/** Returns the bounds of the container's clipRect in the given coordinate space, or
 	 *  null if the sprite doens't have a clipRect. */ 
-	public function getClipRect(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+	public function getClipRect(targetSpace:DisplayObject, resultRect:Rectangle = null):Rectangle
 	{
-		if (mClipRect == null) return null;
-		if (resultRect == null) resultRect = new Rectangle();
+		if (mClipRect == null) 
+			return null;
+		if (resultRect == null) 
+			resultRect = new Rectangle();
 		
 		var minX:Float =  Float.MAX_VALUE;
 		var maxX:Float = -Float.MAX_VALUE;
@@ -135,14 +143,14 @@ class Sprite extends DisplayObjectContainer
 		var transMatrix:Matrix = getTransformationMatrix(targetSpace, sHelperMatrix);
 		var x:Float = 0;
 		var y:Float = 0;
-		for (var i:int=0; i<4; ++i)
+		for (i in 0...4)
 		{
 			switch(i)
 			{
-				case 0: x = mClipRect.left;  y = mClipRect.top;    break;
-				case 1: x = mClipRect.left;  y = mClipRect.bottom; break;
-				case 2: x = mClipRect.right; y = mClipRect.top;    break;
-				case 3: x = mClipRect.right; y = mClipRect.bottom; break;
+				case 0: x = mClipRect.left;  y = mClipRect.top;    
+				case 1: x = mClipRect.left;  y = mClipRect.bottom; 
+				case 2: x = mClipRect.right; y = mClipRect.top;    
+				case 3: x = mClipRect.right; y = mClipRect.bottom; 
 			}
 			var transformedPoint:Point = MatrixUtil.transformCoords(transMatrix, x, y, sHelperPoint);
 			minX = Math.min(minX, transformedPoint.x);
@@ -204,13 +212,13 @@ class Sprite extends DisplayObjectContainer
 			}
 			
 			var alpha:Float = parentAlpha * this.alpha;
-			var numBatches:int = mFlattenedContents.length;
+			var numBatches:Int = mFlattenedContents.length;
 			var mvpMatrix:Matrix = support.mvpMatrix;
 			
 			support.finishQuadBatch();
 			support.raiseDrawCount(numBatches);
 			
-			for (var i:int=0; i<numBatches; ++i)
+			for (var i:Int=0; i<numBatches; ++i)
 			{
 				var quadBatch:QuadBatch = mFlattenedContents[i];
 				var blendMode:String = quadBatch.blendMode == BlendMode.AUTO ?

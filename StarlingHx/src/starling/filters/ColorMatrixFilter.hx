@@ -94,7 +94,7 @@ class ColorMatrixFilter extends FragmentFilter
 	}
 	
 	/** @private */
-	protected override function activate(pass:int, context:Context3D, texture:Texture):Void
+	protected override function activate(pass:Int, context:Context3D, texture:Texture):Void
 	{
 		context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, mShaderMatrix);
 		context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 5, MIN_COLOR);
@@ -181,11 +181,11 @@ class ColorMatrixFilter extends FragmentFilter
 	/** Concatenates the current matrix with another one. */
 	public function concat(matrix:Vector<Float>):Void
 	{
-		var i:int = 0;
+		var i:Int = 0;
 
-		for (var y:int=0; y<4; ++y)
+		for (var y:Int=0; y<4; ++y)
 		{
-			for (var x:int=0; x<5; ++x)
+			for (var x:Int=0; x<5; ++x)
 			{
 				sTmpMatrix1[int(i+x)] = 
 					matrix[i]        * mUserMatrix[x]           +
@@ -218,7 +218,7 @@ class ColorMatrixFilter extends FragmentFilter
 
 	private function copyMatrix(from:Vector<Float>, to:Vector<Float>):Void
 	{
-		for (var i:int=0; i<20; ++i)
+		for (var i:Int=0; i<20; ++i)
 			to[i] = from[i];
 	}
 	

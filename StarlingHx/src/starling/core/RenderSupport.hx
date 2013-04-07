@@ -12,6 +12,7 @@ package starling.core;
 
 import com.adobe.utils.AGALMiniAssembler;
 import flash.net.URLRequestHeader;
+import starling.utils.ColorUtil;
 
 import flash.display3D.Context3D;
 import flash.display3D.Context3DProgramType;
@@ -407,9 +408,9 @@ class RenderSupport
 	public static function clear(rgb:UInt = 0, alpha:Float = 0.0):Void
 	{
 		Starling.context.clear(
-			Color.getRed(rgb)   / 255.0, 
-			Color.getGreen(rgb) / 255.0, 
-			Color.getBlue(rgb)  / 255.0,
+			ColorUtil.getRed(rgb)   / 255.0, 
+			ColorUtil.getGreen(rgb) / 255.0, 
+			ColorUtil.getBlue(rgb)  / 255.0,
 			alpha);
 	}
 	

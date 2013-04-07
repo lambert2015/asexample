@@ -13,6 +13,7 @@ package starling.filters;
 import flash.display3D.Context3D;
 import flash.display3D.Context3DProgramType;
 import flash.display3D.Program3D;
+import starling.utils.ColorUtil;
 
 import starling.textures.Texture;
 import starling.utils.Color;
@@ -64,7 +65,7 @@ class BlurFilter extends FragmentFilter
 	
 	/** Creates a blur filter that is set up for a drop shadow effect. */
 	public static function createDropShadow(distance:Float=4.0, angle:Float=0.785, 
-											color:uint=0x0, alpha:Float=0.5, blur:Float=1.0, 
+											color:UInt=0x0, alpha:Float=0.5, blur:Float=1.0, 
 											resolution:Float=0.5):BlurFilter
 	{
 		var dropShadow:BlurFilter = new BlurFilter(blur, blur, resolution);
@@ -76,7 +77,7 @@ class BlurFilter extends FragmentFilter
 	}
 	
 	/** Creates a blur filter that is set up for a glow effect. */
-	public static function createGlow(color:uint=0xffff00, alpha:Float=1.0, blur:Float=1.0,
+	public static function createGlow(color:UInt=0xffff00, alpha:Float=1.0, blur:Float=1.0,
 									  resolution:Float=0.5):BlurFilter
 	{
 		var glow:BlurFilter = new BlurFilter(blur, blur, resolution);
@@ -154,7 +155,7 @@ class BlurFilter extends FragmentFilter
 	}
 	
 	/** @private */
-	protected override function activate(pass:int, context:Context3D, texture:Texture):Void
+	protected override function activate(pass:Int, context:Context3D, texture:Texture):Void
 	{
 		// already set by super class:
 		// 
@@ -179,7 +180,7 @@ class BlurFilter extends FragmentFilter
 		}
 	}
 	
-	private function updateParameters(pass:int, textureWidth:int, textureHeight:int):Void
+	private function updateParameters(pass:Int, textureWidth:Int, textureHeight:Int):Void
 	{
 		// algorithm described here: 
 		// http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
@@ -208,7 +209,7 @@ class BlurFilter extends FragmentFilter
 		
 		// get weights on the exact pixels (sTmpWeights) and calculate sums (mWeights)
 		
-		for (var i:int=0; i<5; ++i)
+		for (var i:Int=0; i<5; ++i)
 			sTmpWeights[i] = multiplier * Math.exp(-i*i / twoSigmaSq);
 		
 		mWeights[0] = sTmpWeights[0];
@@ -259,30 +260,41 @@ class BlurFilter extends FragmentFilter
 	/** A uniform color will replace the RGB values of the input color, while the alpha
 	 *  value will be multiplied with the given factor. Pass <code>false</code> as the
 	 *  first parameter to deactivate the uniform color. */
-	public function setUniformColor(enable:Bool, color:uint=0x0, alpha:Float=1.0):Void
+	public function setUniformColor(enable:Bool, color:UInt=0x0, alpha:Float=1.0):Void
 	{
-		mColor[0] = Color.getRed(color)   / 255.0;
-		mColor[1] = Color.getGreen(color) / 255.0;
-		mColor[2] = Color.getBlue(color)  / 255.0;
+		mColor[0] = ColorUtil.getRed(color)   / 255.0;
+		mColor[1] = ColorUtil.getGreen(color) / 255.0;
+		mColor[2] = ColorUtil.getBlue(color)  / 255.0;
 		mColor[3] = alpha;
 		mUniformColor = enable;
 	}
 	
+	public var blurX(get, set):Float;
+	public var blurY(get, set):Float;
+	
 	/** The blur factor in x-direction (stage coordinates). 
 	 *  The number of required passes will be <code>Math.ceil(value)</code>. */
-	private function get_blurX():Float { return mBlurX; }
-	private function set_blurX(value:Float):Void 
+	private function get_blurX():Float 
+	{ 
+		return mBlurX; 
+	}
+	private function set_blurX(value:Float):Float 
 	{ 
 		mBlurX = value; 
 		updateMarginsAndPasses(); 
+		return mBlurX; 
 	}
 	
 	/** The blur factor in y-direction (stage coordinates). 
 	 *  The number of required passes will be <code>Math.ceil(value)</code>. */
-	private function get_blurY():Float { return mBlurY; }
-	private function set_blurY(value:Float):Void 
+	private function get_blurY():Float 
+	{
+		return mBlurY; 
+	}
+	private function set_blurY(value:Float):Float 
 	{ 
 		mBlurY = value; 
 		updateMarginsAndPasses(); 
+		return mBlurY; 
 	}
 }

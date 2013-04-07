@@ -22,14 +22,14 @@ import starling.textures.Texture;
 class BitmapChar
 {
 	private var mTexture:Texture;
-	private var mCharID:int;
+	private var mCharID:Int;
 	private var mXOffset:Float;
 	private var mYOffset:Float;
 	private var mXAdvance:Float;
 	private var mKernings:Dictionary;
 	
 	/** Creates a char with a texture and its properties. */
-	public function new(id:int, texture:Texture, 
+	public function new(id:Int, texture:Texture, 
 							   xOffset:Float, yOffset:Float, xAdvance:Float)
 	{
 		mCharID = id;
@@ -41,7 +41,7 @@ class BitmapChar
 	}
 	
 	/** Adds kerning information relative to a specific other character ID. */
-	public function addKerning(charID:int, amount:Float):Void
+	public function addKerning(charID:Int, amount:Float):Void
 	{
 		if (mKernings == null)
 			mKernings = new Dictionary();
@@ -50,7 +50,7 @@ class BitmapChar
 	}
 	
 	/** Retrieve kerning information relative to the given character ID. */
-	public function getKerning(charID:int):Float
+	public function getKerning(charID:Int):Float
 	{
 		if (mKernings == null || mKernings[charID] == undefined) return 0.0;
 		else return mKernings[charID];
@@ -63,7 +63,7 @@ class BitmapChar
 	}
 	
 	/** The unicode ID of the char. */
-	private function get_charID():int { return mCharID; }
+	private function get_charID():Int { return mCharID; }
 	
 	/** The number of points to move the char in x direction on character arrangement. */
 	private function get_xOffset():Float { return mXOffset; }
