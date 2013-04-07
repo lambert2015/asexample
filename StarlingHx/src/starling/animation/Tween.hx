@@ -12,7 +12,6 @@
 package starling.animation;
 
 import flash.Vector;
-import starling.core.starling_internal;
 import starling.events.Event;
 import starling.events.EventDispatcher;
 
@@ -95,16 +94,27 @@ class Tween extends EventDispatcher implements IAnimatable
 		mRepeatCount = 1;
 		mCurrentCycle = -1;
 		
-		if (transition is String)
-			this.transition = transition as String;
-		else if (transition is Function)
-			this.transitionFunc = transition as Function;
+		if (Std.is(transition,String))
+			this.transition = cast(transition,String);
+		else if (Std.is(transition,Function))
+			this.transitionFunc = transition;
 		else 
 			throw new ArgumentError("Transition must be either a string or a function");
 		
-		if (mProperties)  mProperties.length  = 0; else mProperties  = new <String>[];
-		if (mStartValues) mStartValues.length = 0; else mStartValues = new <Float>[];
-		if (mEndValues)   mEndValues.length   = 0; else mEndValues   = new <Float>[];
+		if (mProperties)  
+			mProperties.length  = 0; 
+		else 
+			mProperties  = new Array<String>();
+			
+		if (mStartValues) 
+			mStartValues.length = 0; 
+		else 
+			mStartValues = new Array<Float>();
+			
+		if (mEndValues)   
+			mEndValues.length   = 0; 
+		else 
+			mEndValues   = new Array<Float>();
 		
 		return this;
 	}
@@ -164,10 +174,10 @@ class Tween extends EventDispatcher implements IAnimatable
 		var reversed:Bool = mReverse && (mCurrentCycle % 2 == 1);
 		var numProperties:Int = mStartValues.length;
 
-		for (i=0; i<numProperties; ++i)
+		for (i in 0...numProperties)
 		{                
 			if (isNaN(mStartValues[i])) 
-				mStartValues[i] = mTarget[mProperties[i]] as Float;
+				mStartValues[i] = cast(mTarget[mProperties[i]],Float);
 			
 			var startValue:Float = mStartValues[i];
 			var endValue:Float = mEndValues[i];
@@ -215,8 +225,10 @@ class Tween extends EventDispatcher implements IAnimatable
 	public function getEndValue(property:String):Float
 	{
 		var index:Int = mProperties.indexOf(property);
-		if (index == -1) throw new ArgumentError("The property '" + property + "' is not animated");
-		else return mEndValues[index] as Float;
+		if (index == -1) 
+			throw new ArgumentError("The property '" + property + "' is not animated");
+		else 
+			return cast(mEndValues[index],Float);
 	}
 	
 	/** Indicates if the tween is finished. */

@@ -39,6 +39,8 @@ class DelayedCall extends EventDispatcher implements IAnimatable
 	/** Creates a delayed call. */
 	public function new(call:Dynamic, delay:Float, args:Array<Dynamic> = null)
 	{
+		super();
+		
 		reset(call, delay, args);
 	}
 	

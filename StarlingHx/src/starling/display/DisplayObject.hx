@@ -23,6 +23,7 @@ import starling.errors.AbstractMethodError;
 import starling.events.EventDispatcher;
 import starling.events.TouchEvent;
 import starling.filters.FragmentFilter;
+import starling.utils.ClassUtil;
 import starling.utils.MatrixUtil;
 
 
@@ -109,7 +110,6 @@ import starling.utils.MatrixUtil;
  */
 class DisplayObject extends EventDispatcher
 {
-	public var stage(get, null):Stage;
 	// members
 	
 	private var mX:Float;
@@ -140,6 +140,8 @@ class DisplayObject extends EventDispatcher
 	/** @private */ 
 	public function new()
 	{
+		super();
+		
 		#if debug
 		if(ClassUtil.getQualifiedClassName(this) == "starling.display::DisplayObject")
 		{
@@ -178,8 +180,10 @@ class DisplayObject extends EventDispatcher
 		var commonParent:DisplayObject;
 		var currentObject:DisplayObject;
 		
-		if (resultMatrix) resultMatrix.identity();
-		else resultMatrix = new Matrix();
+		if (resultMatrix != null) 
+			resultMatrix.identity();
+		else 
+			resultMatrix = new Matrix();
 		
 		if (targetSpace == this)
 		{
@@ -217,20 +221,22 @@ class DisplayObject extends EventDispatcher
 		commonParent = null;
 		currentObject = this;
 		
-		while (currentObject)
+		while (currentObject != null)
 		{
 			sAncestors.push(currentObject);
 			currentObject = currentObject.mParent;
 		}
 		
 		currentObject = targetSpace;
-		while (currentObject && sAncestors.indexOf(currentObject) == -1)
+		while (currentObject != null && sAncestors.indexOf(currentObject) == -1)
 			currentObject = currentObject.mParent;
 		
 		sAncestors.length = 0;
 		
-		if (currentObject) commonParent = currentObject;
-		else throw new ArgumentError("Object not connected to target");
+		if (currentObject != null) 
+			commonParent = currentObject;
+		else 
+			throw new ArgumentError("Object not connected to target");
 		
 		// 2. move up from this to common parent
 		
@@ -312,6 +318,7 @@ class DisplayObject extends EventDispatcher
 		throw new AbstractMethodError("Method needs to be implemented in subclass");
 	}
 	
+	public var hasVisibleArea(get, null):Bool;
 	/** Indicates if an object occupies any visible area. (Which is the case when its 'alpha', 
 	 *  'scaleX' and 'scaleY' values are not zero, and its 'visible' property is enabled.) */
 	private function get_hasVisibleArea():Bool
@@ -353,6 +360,7 @@ class DisplayObject extends EventDispatcher
 	
 	// properties
 
+	public var transformationMatrix(get, set):Matrix;
 	/** The transformation matrix of the object relative to its parent.
 	 * 
 	 *  <p>If you assign a custom transformation matrix, Starling will try to figure out  
@@ -453,6 +461,29 @@ class DisplayObject extends EventDispatcher
 	}
 	
 	public var useHandCursor(get, set):Bool;
+	public var bounds(get, null):Rectangle;
+	public var width(get, set):Float;
+	public var height(get, set):Float;
+	public var x(get, set):Float;
+	public var y(get, set):Float;
+	public var pivotX(get, set):Float;
+	public var pivotY(get, set):Float;
+	public var scaleX(get, set):Float;
+	public var scaleY(get, set):Float;
+	public var skewX(get, set):Float;
+	public var skewY(get, set):Float;
+	public var rotation(get, set):Float;
+	public var alpha(get, set):Float;
+	public var visible(get, set):Bool;
+	public var touchable(get, set):Bool;
+	public var blendMode(get, set):String;
+	public var filter(get, set):FragmentFilter;
+	public var parent(get, set):DisplayObjectContainer;
+	public var base(get, set):DisplayObject;
+	public var root(get, set):DisplayObject;
+	public var stage(get, set):Stage;
+	
+	
 	/** Indicates if the mouse cursor should transform into a hand while it's over the sprite. 
 	 *  @default false */
 	private function get_useHandCursor():Bool 

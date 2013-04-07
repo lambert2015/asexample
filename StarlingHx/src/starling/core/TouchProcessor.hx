@@ -33,7 +33,7 @@ class TouchProcessor
 	private var mTouchMarker:TouchMarker;
 	
 	private var mCurrentTouches:Vector<Touch>;
-	private var mQueue:Vector<Array>;
+	private var mQueue:Array<Array<Dynamic>>;
 	private var mLastTaps:Vector<Touch>;
 	
 	private var mShiftDown:Bool = false;
@@ -97,7 +97,7 @@ class TouchProcessor
 			while (mQueue.length > 0 && 
 				sProcessedTouchIDs.indexOf(mQueue[mQueue.length-1][0]) == -1)
 			{
-				var touchArgs:Array = mQueue.pop();
+				var touchArgs:Array<Dynamic> = mQueue.pop();
 				touchID = cast(touchArgs[0],Int);
 				touch = getCurrentTouch(touchID);
 				

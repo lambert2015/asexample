@@ -137,7 +137,7 @@ class Touch
 	
 	private function updateBubbleChain():Void
 	{
-		if (mTarget)
+		if (mTarget != null)
 		{
 			var length:Int = 1;
 			var element:DisplayObject = mTarget;
@@ -146,7 +146,7 @@ class Touch
 			mBubbleChain[0] = element;
 			
 			while ((element = element.parent) != null)
-				mBubbleChain[int(length++)] = element;
+				mBubbleChain[length++] = element;
 		}
 		else
 		{
@@ -155,6 +155,18 @@ class Touch
 	}
 	
 	// properties
+	public var id(get, null):Int;
+	public var globalX(get, null):Float;
+	public var globalY(get, null):Float;
+	public var previousGlobalX(get, null):Float;
+	public var previousGlobalY(get, null):Float;
+	public var tapCount(get, null):Int;
+	public var phase(get, null):String;
+	public var target(get, null):DisplayObject;
+	public var timestamp(get, null):Float;
+	public var pressure(get, null):Float;
+	public var width(get, null):Float;
+	public var height(get, null):Float;
 	
 	/** The identifier of a touch. '0' for mouse events, an increasing number for touches. */
 	private function get_id():Int { return mID; }
@@ -203,7 +215,8 @@ class Touch
 	 *  a target is set). */
 	public function dispatchEvent(event:TouchEvent):Void
 	{
-		if (mTarget) event.dispatch(mBubbleChain);
+		if (mTarget != null) 
+			event.dispatch(mBubbleChain);
 	}
 	
 	/** @private */

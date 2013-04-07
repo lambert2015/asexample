@@ -723,9 +723,9 @@ class Starling extends EventDispatcher
 	public var profile(get, null):String;
 	public var supportHighResolutions(get, set):Bool;
 	public static var current(get, null):Starling;
-	public static var juggler(get, null):Juggler;
-	public static var context(get, null):Context3D;
-	public static var contentScaleFactor(get, null):Float;
+	//public static var juggler(get, null):Juggler;
+	//public static var context(get, null):Context3D;
+	//public static var contentScaleFactor(get, null):Float;
 	public static var multitouchEnabled(get, set):Bool;
 	public static var handleLostContext(get, set):Bool;
 	
@@ -974,22 +974,22 @@ class Starling extends EventDispatcher
 	}
 	
 	/** The render context of the currently active Starling instance. */
-	private static function get_context():Context3D 
-	{
-		return sCurrent ? sCurrent.context : null; 
-	}
+	//private static function get_context():Context3D 
+	//{
+		//return sCurrent ? sCurrent.context : null; 
+	//}
 	
 	/** The default juggler of the currently active Starling instance. */
-	private static function get_juggler():Juggler 
-	{ 
-		return sCurrent ? sCurrent.juggler : null; 
-	}
+	//private static function get_juggler():Juggler 
+	//{ 
+		//return sCurrent ? sCurrent.juggler : null; 
+	//}
 	
 	/** The contentScaleFactor of the currently active Starling instance. */
-	private static function get_contentScaleFactor():Float 
-	{
-		return sCurrent ? sCurrent.contentScaleFactor : 1.0;
-	}
+	//private static function get_contentScaleFactor():Float 
+	//{
+		//return sCurrent ? sCurrent.contentScaleFactor : 1.0;
+	//}
 	
 	/** Indicates if multitouch input should be supported. */
 	private static function get_multitouchEnabled():Bool 

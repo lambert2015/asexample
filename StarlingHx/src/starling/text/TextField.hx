@@ -19,6 +19,7 @@ import flash.text.AntiAliasType;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 import starling.core.RenderSupport;
 import starling.core.Starling;
@@ -118,27 +119,33 @@ class TextField extends DisplayObjectContainer
 	public override function dispose():Void
 	{
 		removeEventListener(Event.FLATTEN, onFlatten);
-		if (mImage) mImage.texture.dispose();
-		if (mQuadBatch) mQuadBatch.dispose();
+		if (mImage) 
+			mImage.texture.dispose();
+		if (mQuadBatch)
+			mQuadBatch.dispose();
 		super.dispose();
 	}
 	
 	private function onFlatten():Void
 	{
-		if (mRequiresRedraw) redrawContents();
+		if (mRequiresRedraw) 
+			redrawContents();
 	}
 	
 	/** @inheritDoc */
 	public override function render(support:RenderSupport, parentAlpha:Float):Void
 	{
-		if (mRequiresRedraw) redrawContents();
+		if (mRequiresRedraw) 
+			redrawContents();
 		super.render(support, parentAlpha);
 	}
 	
 	private function redrawContents():Void
 	{
-		if (mIsRenderedText) createRenderedContents();
-		else                 createComposedContents();
+		if (mIsRenderedText) 
+			createRenderedContents();
+		else                 
+			createComposedContents();
 		
 		mRequiresRedraw = false;
 	}
@@ -183,25 +190,31 @@ class TextField extends DisplayObjectContainer
 		var textHeight:Float = sNativeTextField.textHeight;
 		
 		var xOffset:Float = 0.0;
-		if (mHAlign == HAlign.LEFT)        xOffset = 2; // flash adds a 2 pixel offset
-		else if (mHAlign == HAlign.CENTER) xOffset = (width - textWidth) / 2.0;
-		else if (mHAlign == HAlign.RIGHT)  xOffset =  width - textWidth - 2;
+		if (mHAlign == HAlign.LEFT)       
+			xOffset = 2; // flash adds a 2 pixel offset
+		else if (mHAlign == HAlign.CENTER) 
+			xOffset = (width - textWidth) / 2.0;
+		else if (mHAlign == HAlign.RIGHT) 
+			xOffset =  width - textWidth - 2;
 
 		var yOffset:Float = 0.0;
-		if (mVAlign == VAlign.TOP)         yOffset = 2; // flash adds a 2 pixel offset
-		else if (mVAlign == VAlign.CENTER) yOffset = (height - textHeight) / 2.0;
-		else if (mVAlign == VAlign.BOTTOM) yOffset =  height - textHeight - 2;
+		if (mVAlign == VAlign.TOP)         
+			yOffset = 2; // flash adds a 2 pixel offset
+		else if (mVAlign == VAlign.CENTER) 
+			yOffset = (height - textHeight) / 2.0;
+		else if (mVAlign == VAlign.BOTTOM) 
+			yOffset =  height - textHeight - 2;
 		
 		var bitmapData:BitmapData = new BitmapData(width, height, true, 0x0);
 		var drawMatrix:Matrix = new Matrix(1, 0, 0, 1, 0, int(yOffset)-2); 
-		var drawWithQualityFunc:Function = 
-			"drawWithQuality" in bitmapData ? bitmapData["drawWithQuality"] : null;
+		var drawWithQualityFunc:Dynamic = 
+				untyped bitmapData.hasOwnProperty("drawWithQuality") ? bitmapData["drawWithQuality"] : null;
 		
 		// Beginning with AIR 3.3, we can force a drawing quality. Since "LOW" produces
 		// wrong output oftentimes, we force "MEDIUM" if possible.
 		
-		if (drawWithQualityFunc is Function)
-			drawWithQualityFunc.call(bitmapData, sNativeTextField, drawMatrix, 
+		if (drawWithQualityFunc != null)
+			untyped drawWithQualityFunc(bitmapData, sNativeTextField, drawMatrix, 
 									 null, null, null, false, StageQuality.MEDIUM);
 		else
 			bitmapData.draw(sNativeTextField, drawMatrix);
@@ -234,7 +247,9 @@ class TextField extends DisplayObjectContainer
 	 *  <code>textField</code> is the flash.text.TextField object that you can specially format;
 	 *  <code>textFormat</code> is the default TextFormat for <code>textField</code>.
 	 */
-	protected function formatText(textField:flash.text.TextField, textFormat:TextFormat):Void {}
+	private function formatText(textField:flash.text.TextField, textFormat:TextFormat):Void 
+	{
+	}
 
 	private function autoScaleNativeTextField(textField:flash.text.TextField):Void
 	{
@@ -286,10 +301,10 @@ class TextField extends DisplayObjectContainer
 		var width:Float  = mHitArea.width;
 		var height:Float = mHitArea.height;
 		
-		var topLine:Quad    = mBorder.getChildAt(0) as Quad;
-		var rightLine:Quad  = mBorder.getChildAt(1) as Quad;
-		var bottomLine:Quad = mBorder.getChildAt(2) as Quad;
-		var leftLine:Quad   = mBorder.getChildAt(3) as Quad;
+		var topLine:Quad    = cast(mBorder.getChildAt(0), Quad);
+		var rightLine:Quad  = cast(mBorder.getChildAt(1), Quad);
+		var bottomLine:Quad = cast(mBorder.getChildAt(2), Quad);
+		var leftLine:Quad   = cast(mBorder.getChildAt(3), Quad);
 		
 		topLine.width    = width; topLine.height    = 1;
 		bottomLine.width = width; bottomLine.height = 1;
@@ -549,8 +564,10 @@ class TextField extends DisplayObjectContainer
 	/** The native Flash BitmapFilters to apply to this TextField. 
 	 *  Only available when using standard (TrueType) fonts! */
 	private function get_nativeFilters():Array<BitmapFilter> 
-	{ return mNativeFilters; }
-	private function set_nativeFilters(value:Array<BitmapFilter> ) : Array<BitmapFilter> 
+	{ 
+		return mNativeFilters; 
+	}
+	private function set_nativeFilters(value:Array<BitmapFilter>) : Array<BitmapFilter> 
 	{
 		if (!mIsRenderedText)
 			throw(new Error("The TextField.nativeFilters property cannot be used on Bitmap fonts."));
@@ -565,38 +582,40 @@ class TextField extends DisplayObjectContainer
 	 *  The font is identified by its <code>name</code>.
 	 *  Per default, the <code>name</code> property of the bitmap font will be used, but you 
 	 *  can pass a custom name, as well. @returns the name of the font. */
-	public static function registerBitmapFont(bitmapFont:BitmapFont, name:String=null):String
+	public static function registerBitmapFont(bitmapFont:BitmapFont, name:String = null):String
 	{
-		if (name == null) name = bitmapFont.name;
-		bitmapFonts[name] = bitmapFont;
+		if (name == null) 
+			name = bitmapFont.name;
+		bitmapFonts.set(name, bitmapFont);
 		return name;
 	}
 	
 	/** Unregisters the bitmap font and, optionally, disposes it. */
-	public static function unregisterBitmapFont(name:String, dispose:Bool=true):Void
+	public static function unregisterBitmapFont(name:String, dispose:Bool = true):Void
 	{
-		if (dispose && bitmapFonts[name] != undefined)
-			bitmapFonts[name].dispose();
+		if (dispose && bitmapFonts.exist(name))
+			bitmapFonts.get(name).dispose();
 		
-		delete bitmapFonts[name];
+		bitmapFonts.delete(name);
 	}
 	
 	/** Returns a registered bitmap font (or null, if the font has not been registered). */
 	public static function getBitmapFont(name:String):BitmapFont
 	{
-		return bitmapFonts[name];
+		return bitmapFonts.get(name);
 	}
 	
+	public static var bitmapFonts(get,null):StringMap<BitmapFont>;
 	/** Stores the currently available bitmap fonts. Since a bitmap font will only work
 	 *  in one Stage3D context, they are saved in Starling's 'contextData' property. */
-	private static function get_bitmapFonts():Dictionary
+	private static function get_bitmapFonts():StringMap<BitmapFont>
 	{
-		var fonts:Dictionary = Starling.current.contextData[BITMAP_FONT_DATA_NAME] as Dictionary;
+		var fonts:StringMap<BitmapFont> = Starling.current.contextData.get(BITMAP_FONT_DATA_NAME);
 		
 		if (fonts == null)
 		{
-			fonts = new Dictionary();
-			Starling.current.contextData[BITMAP_FONT_DATA_NAME] = fonts;
+			fonts = new StringMap<BitmapFont>();
+			Starling.current.contextData.set(BITMAP_FONT_DATA_NAME,fonts);
 		}
 		
 		return fonts;

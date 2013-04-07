@@ -76,7 +76,7 @@ class Sprite extends DisplayObjectContainer
 	
 	private function disposeFlattenedContents():Void
 	{
-		if (mFlattenedContents)
+		if (mFlattenedContents != null)
 		{
 			for (i in 0...mFlattenedContents.length)
 				mFlattenedContents[i].dispose();

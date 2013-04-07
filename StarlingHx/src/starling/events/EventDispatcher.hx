@@ -116,7 +116,8 @@ class EventDispatcher
 		else                                  
 			invokeEvent(event);
 		
-		if (previousTarget) event.setTarget(previousTarget);
+		if (previousTarget != null)
+			event.setTarget(previousTarget);
 	}
 	
 	/** @private
@@ -129,7 +130,7 @@ class EventDispatcher
 			mEventListeners.get(event.type) : null;
 		var numListeners:Int = listeners == null ? 0 : listeners.length;
 		
-		if (numListeners)
+		if (numListeners > 0)
 		{
 			event.setCurrentTarget(this);
 			

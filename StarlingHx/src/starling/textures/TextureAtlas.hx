@@ -88,14 +88,14 @@ class TextureAtlas
 		for each (var subTexture:XML in atlasXml.SubTexture)
 		{
 			var name:String        = subTexture.attribute("name");
-			var x:Float           = parseFloat(subTexture.attribute("x")) / scale;
-			var y:Float           = parseFloat(subTexture.attribute("y")) / scale;
-			var width:Float       = parseFloat(subTexture.attribute("width")) / scale;
-			var height:Float      = parseFloat(subTexture.attribute("height")) / scale;
-			var frameX:Float      = parseFloat(subTexture.attribute("frameX")) / scale;
-			var frameY:Float      = parseFloat(subTexture.attribute("frameY")) / scale;
-			var frameWidth:Float  = parseFloat(subTexture.attribute("frameWidth")) / scale;
-			var frameHeight:Float = parseFloat(subTexture.attribute("frameHeight")) / scale;
+			var x:Float           = Std.parseFloat(subTexture.attribute("x")) / scale;
+			var y:Float           = Std.parseFloat(subTexture.attribute("y")) / scale;
+			var width:Float       = Std.parseFloat(subTexture.attribute("width")) / scale;
+			var height:Float      = Std.parseFloat(subTexture.attribute("height")) / scale;
+			var frameX:Float      = Std.parseFloat(subTexture.attribute("frameX")) / scale;
+			var frameY:Float      = Std.parseFloat(subTexture.attribute("frameY")) / scale;
+			var frameWidth:Float  = Std.parseFloat(subTexture.attribute("frameWidth")) / scale;
+			var frameHeight:Float = Std.parseFloat(subTexture.attribute("frameHeight")) / scale;
 			
 			var region:Rectangle = new Rectangle(x, y, width, height);
 			var frame:Rectangle  = frameWidth > 0 && frameHeight > 0 ?

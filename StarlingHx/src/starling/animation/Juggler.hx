@@ -66,7 +66,7 @@ class Juggler implements IAnimatable
 			mObjects.push(object);
 		
 			var dispatcher:EventDispatcher = cast(object,EventDispatcher);
-			if (dispatcher) 
+			if (dispatcher != null) 
 				dispatcher.addEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 		}
 	}
@@ -83,7 +83,7 @@ class Juggler implements IAnimatable
 		if (object == null) return;
 		
 		var dispatcher:EventDispatcher = cast(object,EventDispatcher);
-		if (dispatcher) 
+		if (dispatcher != null) 
 			dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 
 		var index:Int = mObjects.indexOf(object);
@@ -150,7 +150,7 @@ class Juggler implements IAnimatable
 	/** Delays the execution of a function until a certain time has passed. Creates an
 	 *  object of type 'DelayedCall' internally and returns it. Remove that object
 	 *  from the juggler to cancel the function call. */
-	public function delayCall(call:Function, delay:Float, args:Array<Dynamic>):DelayedCall
+	public function delayCall(call:Dynamic, delay:Float, args:Array<Dynamic>):DelayedCall
 	{
 		if (call == null) 
 			return null;

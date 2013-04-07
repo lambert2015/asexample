@@ -23,11 +23,11 @@ import starling.textures.Texture;
  *  <p>The font is based on "uni05_53.ttf" from Craig Kroeger (http://www.miniml.com) and was
  *  converted to a Bitmap Font with "GlyphDesigner" from 71squared (http://www.71squared.com).
  *  </p> */
-internal class MiniBitmapFont
+class MiniBitmapFont
 {
 	private static inline var BITMAP_WIDTH:Int = 128;
 	private static inline var BITMAP_HEIGHT:Int = 64;
-	private static inline var BITMAP_DATA:Array = [ 
+	private static inline var BITMAP_DATA:Array<Int> = [ 
 		2027613533, 3413039936,  202148514, 2266925598, 4206886452, 4286853117,    2034947, 
 		3202703399,  352977282, 2957757964, 3113652880, 2158068882, 1468709156, 2268063717, 
 		2779310143, 2101025806, 3416509055, 4215794539, 3602168838, 1038056207, 1932393374, 
@@ -279,7 +279,7 @@ internal class MiniBitmapFont
 		var bmpBytes:ByteArray = new ByteArray();
 		var numBytes:Int = BITMAP_DATA.length;
 		
-		for (var i:Int=0; i<numBytes; ++i)
+		for (i in 0...numBytes)
 			bmpBytes.writeUnsignedInt(BITMAP_DATA[i]);
 		
 		bmpBytes.uncompress();

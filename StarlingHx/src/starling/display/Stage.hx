@@ -60,14 +60,18 @@ class Stage extends DisplayObjectContainer
 	private var mWidth:Int;
 	private var mHeight:Int;
 	private var mColor:UInt;
-	private var mEnterFrameEvent:EnterFrameEvent = new EnterFrameEvent(Event.ENTER_FRAME, 0.0);
+	private var mEnterFrameEvent:EnterFrameEvent;
 	
 	/** @private */
 	public function new(width:Int, height:Int, color:UInt=0)
 	{
+		super();
+		
 		mWidth = width;
 		mHeight = height;
 		mColor = color;
+		
+		mEnterFrameEvent = new EnterFrameEvent(Event.ENTER_FRAME, 0.0);
 	}
 	
 	/** @inheritDoc */

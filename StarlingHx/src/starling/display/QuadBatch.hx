@@ -105,8 +105,8 @@ class QuadBatch extends DisplayObject
 	{
 		Starling.current.stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 		
-		if (mVertexBuffer) mVertexBuffer.dispose();
-		if (mIndexBuffer)  mIndexBuffer.dispose();
+		if (mVertexBuffer != null) mVertexBuffer.dispose();
+		if (mIndexBuffer != null)  mIndexBuffer.dispose();
 		
 		super.dispose();
 	}
@@ -161,7 +161,7 @@ class QuadBatch extends DisplayObject
 	{
 		var numVertices:Int = mVertexData.numVertices;
 		var numIndices:Int = mIndexData.length;
-		var context:Context3D = Starling.context;
+		var context:Context3D = Starling.current.context;
 
 		if (mVertexBuffer != null)    
 			mVertexBuffer.dispose();
@@ -513,13 +513,38 @@ class QuadBatch extends DisplayObject
 	
 	// properties
 	
-	private function get_numQuads():Int { return mNumQuads; }
-	private function get_tinted():Bool { return mTinted; }
-	private function get_texture():Texture { return mTexture; }
-	private function get_smoothing():String { return mSmoothing; }
-	private function get_premultipliedAlpha():Bool { return mVertexData.premultipliedAlpha; }
+	public var numQuads(get, null):Int;
+	public var tinted(get, null):Bool;
+	public var texture(get, null):Texture;
+	public var smoothing(get, null):String;
+	public var premultipliedAlpha(get, null):Bool;
+	public var capacity(get, null):Int;
 	
-	private function get_capacity():Int { return mVertexData.numVertices / 4; }
+	private function get_numQuads():Int 
+	{ 
+		return mNumQuads; 
+	}
+	private function get_tinted():Bool 
+	{ 
+		return mTinted; 
+	}
+	private function get_texture():Texture 
+	{ 
+		return mTexture;
+	}
+	private function get_smoothing():String 
+	{ 
+		return mSmoothing; 
+	}
+	private function get_premultipliedAlpha():Bool 
+	{ 
+		return mVertexData.premultipliedAlpha; 
+	}
+	
+	private function get_capacity():Int 
+	{ 
+		return mVertexData.numVertices / 4; 
+	}
 	
 	// program management
 	
@@ -573,7 +598,7 @@ class QuadBatch extends DisplayObject
 			  :
 				"tex  oc,  v1, fs0 <???> \n";  // sample texture 0
 			
-			var smoothingTypes:Array = [
+			var smoothingTypes:Array<String> = [
 				TextureSmoothing.NONE,
 				TextureSmoothing.BILINEAR,
 				TextureSmoothing.TRILINEAR

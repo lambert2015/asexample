@@ -143,7 +143,7 @@ class TouchEvent extends Event
 	 *  each object is visited only once. */
 	public function dispatch(chain:Vector<EventDispatcher>):Void
 	{
-		if (chain && chain.length)
+		if (chain != null && chain.length > 0)
 		{
 			var chainLength:Int = bubbles ? chain.length : 1;
 			var previousTarget:EventDispatcher = target;

@@ -11,12 +11,20 @@
 package starling.textures;
 
 import flash.display3D.Context3DTextureFormat;
+import flash.errors.ArgumentError;
+import flash.errors.Error;
 import flash.utils.ByteArray;
 
 /** A parser for the ATF data format. */
-internal class AtfData
+class AtfData
 {
-	private var mFormat:String;
+	public var format(get, null):Context3DTextureFormat;
+	public var width(get, null):Int;
+	public var height(get, null):Int;
+	public var numTextures(get, null):Int;
+	public var data(get, null):ByteArray;
+	
+	private var mFormat:Context3DTextureFormat;
 	private var mWidth:Int;
 	private var mHeight:Int;
 	private var mNumTextures:Int;
@@ -25,8 +33,9 @@ internal class AtfData
 	/** Create a new instance by parsing the given byte array. */
 	public function new(data:ByteArray)
 	{
-		var signature:String = String.fromCharCode(data[0], data[1], data[2]);
-		if (signature != "ATF") throw new ArgumentError("Invalid ATF data");
+		var signature:String = untyped String.fromCharCode(data[0], data[1], data[2]);
+		if (signature != "ATF") 
+			throw new ArgumentError("Invalid ATF data");
 		
 		switch (data[6])
 		{
@@ -37,15 +46,30 @@ internal class AtfData
 			default: throw new Error("Invalid ATF format");
 		}
 		
-		mWidth = Math.pow(2, data[7]); 
-		mHeight = Math.pow(2, data[8]);
+		mWidth = Std.int(Math.pow(2, data[7])); 
+		mHeight = Std.int(Math.pow(2, data[8]));
 		mNumTextures = data[9];
 		mData = data;
 	}
 	
-	private function get_format():String { return mFormat; }
-	private function get_width():Int { return mWidth; }
-	private function get_height():Int { return mHeight; }
-	private function get_numTextures():Int { return mNumTextures; }
-	private function get_data():ByteArray { return mData; }
+	private function get_format():Context3DTextureFormat 
+	{ 
+		return mFormat; 
+	}
+	private function get_width():Int 
+	{ 
+		return mWidth; 
+	}
+	private function get_height():Int 
+	{ 
+		return mHeight; 
+	}
+	private function get_numTextures():Int 
+	{ 
+		return mNumTextures; 
+	}
+	private function get_data():ByteArray
+	{ 
+		return mData; 
+	}
 }
