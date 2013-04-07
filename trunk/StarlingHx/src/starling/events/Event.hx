@@ -118,46 +118,75 @@ class Event
 	
 	public var target(get, null):EventDispatcher;
 	/** The object that dispatched the event. */
-	private function get_target():EventDispatcher { return mTarget; }
+	private function get_target():EventDispatcher 
+	{ 
+		return mTarget; 
+	}
 	
 	public var currentTarget(get, null):EventDispatcher;
 	/** The object the event is currently bubbling at. */
-	private function get_currentTarget():EventDispatcher { return mCurrentTarget; }
+	private function get_currentTarget():EventDispatcher 
+	{
+		return mCurrentTarget; 
+	}
 	
 	public var type(get, null):String;
 	/** A string that identifies the event. */
-	private function get_type():String { return mType; }
+	private function get_type():String 
+	{ 
+		return mType; 
+	}
 	
 	public var data(get, null):Dynamic;
 	/** Arbitrary data that is attached to the event. */
-	private function get_data():Dynamic { return mData; }
+	private function get_data():Dynamic 
+	{ 
+		return mData; 
+	}
 	
 	// properties for internal use
 	
 	/** @private */
-	private function setTarget(value:EventDispatcher):Void { mTarget = value; }
+	public function setTarget(value:EventDispatcher):Void 
+	{ 
+		mTarget = value; 
+	}
 	
 	/** @private */
-	private function setCurrentTarget(value:EventDispatcher):Void { mCurrentTarget = value; } 
+	public function setCurrentTarget(value:EventDispatcher):Void 
+	{ 
+		mCurrentTarget = value; 
+	} 
 	
 	/** @private */
-	private function setData(value:Dynamic):Void { mData = value; }
+	public function setData(value:Dynamic):Void 
+	{
+		mData = value; 
+	}
 	
 	public var stopsPropagation(get, null):Bool;
 	/** @private */
-	private function get_stopsPropagation():Bool { return mStopsPropagation; }
+	private function get_stopsPropagation():Bool 
+	{ 
+		return mStopsPropagation; 
+	}
 	
 	public var stopsImmediatePropagation(get, null):Bool;
 	/** @private */
-	private function get_stopsImmediatePropagation():Bool { return mStopsImmediatePropagation; }
+	private function get_stopsImmediatePropagation():Bool 
+	{ 
+		return mStopsImmediatePropagation; 
+	}
 	
 	// event pooling
 	
 	/** @private */
 	public static function fromPool(type:String, bubbles:Bool=false, data:Dynamic=null):Event
 	{
-		if (sEventPool.length) return sEventPool.pop().reset(type, bubbles, data);
-		else return new Event(type, bubbles, data);
+		if (sEventPool.length > 0) 
+			return sEventPool.pop().reset(type, bubbles, data);
+		else 
+			return new Event(type, bubbles, data);
 	}
 	
 	/** @private */

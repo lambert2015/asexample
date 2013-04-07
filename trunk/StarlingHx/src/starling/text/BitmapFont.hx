@@ -13,6 +13,7 @@ package starling.text;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 import flash.Vector;
+import flash.xml.XML;
 
 import starling.display.Image;
 import starling.display.QuadBatch;
@@ -109,9 +110,9 @@ class BitmapFont
 		var frame:Rectangle = mTexture.frame;
 		
 		mName = fontXml.info.attribute("face");
-		mSize = parseFloat(fontXml.info.attribute("size")) / scale;
-		mLineHeight = parseFloat(fontXml.common.attribute("lineHeight")) / scale;
-		mBaseline = parseFloat(fontXml.common.attribute("base")) / scale;
+		mSize = Std.parseFloat(fontXml.info.attribute("size")) / scale;
+		mLineHeight = Std.parseFloat(fontXml.common.attribute("lineHeight")) / scale;
+		mBaseline = Std.parseFloat(fontXml.common.attribute("base")) / scale;
 		
 		if (fontXml.info.attribute("smooth").toString() == "0")
 			smoothing = TextureSmoothing.NONE;
@@ -122,29 +123,29 @@ class BitmapFont
 			mSize = (mSize == 0.0 ? 16.0 : mSize * -1.0);
 		}
 		
-		for each (var charElement:XML in fontXml.chars.char)
+		for (charElement in fontXml.chars.char)
 		{
-			var id:Int = parseInt(charElement.attribute("id"));
-			var xOffset:Float = parseFloat(charElement.attribute("xoffset")) / scale;
-			var yOffset:Float = parseFloat(charElement.attribute("yoffset")) / scale;
-			var xAdvance:Float = parseFloat(charElement.attribute("xadvance")) / scale;
+			var id:Int = Std.parseInt(charElement.attribute("id"));
+			var xOffset:Float = Std.parseFloat(charElement.attribute("xoffset")) / scale;
+			var yOffset:Float = Std.parseFloat(charElement.attribute("yoffset")) / scale;
+			var xAdvance:Float = Std.parseFloat(charElement.attribute("xadvance")) / scale;
 			
 			var region:Rectangle = new Rectangle();
-			region.x = parseFloat(charElement.attribute("x")) / scale + frame.x;
-			region.y = parseFloat(charElement.attribute("y")) / scale + frame.y;
-			region.width  = parseFloat(charElement.attribute("width")) / scale;
-			region.height = parseFloat(charElement.attribute("height")) / scale;
+			region.x = Std.parseFloat(charElement.attribute("x")) / scale + frame.x;
+			region.y = Std.parseFloat(charElement.attribute("y")) / scale + frame.y;
+			region.width  = Std.parseFloat(charElement.attribute("width")) / scale;
+			region.height = Std.parseFloat(charElement.attribute("height")) / scale;
 			
 			var texture:Texture = Texture.fromTexture(mTexture, region);
 			var bitmapChar:BitmapChar = new BitmapChar(id, texture, xOffset, yOffset, xAdvance); 
 			addChar(id, bitmapChar);
 		}
 		
-		for each (var kerningElement:XML in fontXml.kernings.kerning)
+		for (kerningElement in fontXml.kernings.kerning)
 		{
-			var first:Int = parseInt(kerningElement.attribute("first"));
-			var second:Int = parseInt(kerningElement.attribute("second"));
-			var amount:Float = parseFloat(kerningElement.attribute("amount")) / scale;
+			var first:Int = Std.parseInt(kerningElement.attribute("first"));
+			var second:Int = Std.parseInt(kerningElement.attribute("second"));
+			var amount:Float = Std.parseFloat(kerningElement.attribute("amount")) / scale;
 			if (second in mChars) getChar(second).addKerning(first, amount);
 		}
 	}
@@ -173,7 +174,7 @@ class BitmapFont
 		var numChars:Int = charLocations.length;
 		var sprite:Sprite = new Sprite();
 		
-		for (var i:Int=0; i<numChars; ++i)
+		for (i in 0...numChars)
 		{
 			var charLocation:CharLocation = charLocations[i];
 			var char:Image = charLocation.char.createImage();
@@ -202,7 +203,7 @@ class BitmapFont
 		if (numChars > 8192)
 			throw new ArgumentError("Bitmap Font text is limited to 8192 characters.");
 
-		for (var i:Int=0; i<numChars; ++i)
+		for (i in 0...numChars)
 		{
 			var charLocation:CharLocation = charLocations[i];
 			mHelperImage.texture = charLocation.char.texture;
@@ -216,12 +217,15 @@ class BitmapFont
 	
 	/** Arranges the characters of a text inside a rectangle, adhering to the given settings. 
 	 *  Returns a Vector of CharLocations. */
-	private function arrangeChars(width:Float, height:Float, text:String, fontSize:Float=-1,
-								  hAlign:String="center", vAlign:String="center",
-								  autoScale:Bool=true, kerning:Bool=true):Vector<CharLocation>
+	private function arrangeChars(width:Float, height:Float, text:String, fontSize:Float = -1,
+								  hAlign:String = "center", vAlign:String = "center",
+								  autoScale:Bool = true, kerning:Bool = true):Vector<CharLocation>
 	{
-		if (text == null || text.length == 0) return new <CharLocation>[];
-		if (fontSize < 0) fontSize *= -mSize;
+		if (text == null || text.length == 0) 
+			return new Vector<CharLocation>();
+			
+		if (fontSize < 0) 
+			fontSize *= -mSize;
 		
 		var lines:Vector<Vector<CharLocation>>;
 		var finished:Bool = false;
@@ -245,10 +249,10 @@ class BitmapFont
 				var lastCharID:Int = -1;
 				var currentX:Float = 0;
 				var currentY:Float = 0;
-				var currentLine:Vector<CharLocation> = new <CharLocation>[];
+				var currentLine:Vector<CharLocation> = new Vector<CharLocation>();
 				
 				numChars = text.length;
-				for (var i:Int=0; i<numChars; ++i)
+				for (i in 0...numChars)
 				{
 					var lineFull:Bool = false;
 					var charID:Int = text.charCodeAt(i);
@@ -311,7 +315,7 @@ class BitmapFont
 						
 						if (currentY + 2*mLineHeight <= containerHeight)
 						{
-							currentLine = new <CharLocation>[];
+							currentLine = new Vector<CharLocation>();
 							currentX = 0;
 							currentY += mLineHeight;
 							lastWhiteSpace = -1;
@@ -336,7 +340,7 @@ class BitmapFont
 			}
 		} // while (!finished)
 		
-		var finalLocations:Vector<CharLocation> = new <CharLocation>[];
+		var finalLocations:Vector<CharLocation> = new Vector<CharLocation>();
 		var numLines:Int = lines.length;
 		var bottom:Float = currentY + mLineHeight;
 		var yOffset:Int = 0;
@@ -344,7 +348,7 @@ class BitmapFont
 		if (vAlign == VAlign.BOTTOM)      yOffset =  containerHeight - bottom;
 		else if (vAlign == VAlign.CENTER) yOffset = (containerHeight - bottom) / 2;
 		
-		for (var lineID:Int=0; lineID<numLines; ++lineID)
+		for (lineID in 0...numLines)
 		{
 			var line:Vector<CharLocation> = lines[lineID];
 			numChars = line.length;
@@ -359,7 +363,7 @@ class BitmapFont
 			if (hAlign == HAlign.RIGHT)       xOffset =  containerWidth - right;
 			else if (hAlign == HAlign.CENTER) xOffset = (containerWidth - right) / 2;
 			
-			for (var c:Int=0; c<numChars; ++c)
+			for (c in 0...numChars)
 			{
 				charLocation = line[c];
 				charLocation.x = scale * (charLocation.x + xOffset);
@@ -395,8 +399,6 @@ class BitmapFont
 	private function get_baseline():Float { return mBaseline; }
 }
 
-import starling.text.BitmapChar;
-
 class CharLocation
 {
     public var char:BitmapChar;
@@ -404,7 +406,7 @@ class CharLocation
     public var x:Float;
     public var y:Float;
     
-    public function CharLocation(char:BitmapChar)
+    public function new(char:BitmapChar)
     {
         this.char = char;
     }

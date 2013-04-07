@@ -16,6 +16,7 @@ import flash.display3D.Context3DVertexBufferFormat;
 import flash.display3D.IndexBuffer3D;
 import flash.display3D.Program3D;
 import flash.display3D.VertexBuffer3D;
+import flash.errors.Error;
 import flash.errors.IllegalOperationError;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
@@ -159,8 +160,10 @@ class FragmentFilter
 	public function dispose():Void
 	{
 		Starling.current.stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
-		if (mVertexBuffer) mVertexBuffer.dispose();
-		if (mIndexBuffer)  mIndexBuffer.dispose();
+		if (mVertexBuffer != null)
+			mVertexBuffer.dispose();
+		if (mIndexBuffer != null) 
+			mIndexBuffer.dispose();
 		disposePassTextures();
 		disposeCache();
 	}
@@ -424,9 +427,10 @@ class FragmentFilter
 	
 	private function disposeCache():Void
 	{
-		if (mCache)
+		if (mCache != null)
 		{
-			if (mCache.texture) mCache.texture.dispose();
+			if (mCache.texture != null) 
+				mCache.texture.dispose();
 			mCache.dispose();
 			mCache = null;
 		}

@@ -10,6 +10,7 @@
 
 package starling.display;
 
+import flash.errors.ArgumentError;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -75,6 +76,8 @@ class DisplayObjectContainer extends DisplayObject
 	/** @private */
 	public function new()
 	{
+		super();
+		
 		#if debug
 		if(ClassUtil.getQualifiedClassName(this) == "starling.display::DisplayObjectContainer")
 		{
@@ -320,7 +323,7 @@ class DisplayObjectContainer extends DisplayObject
 			MatrixUtil.transformCoords(sHelperMatrix, localX, localY, sHelperPoint);
 			var target:DisplayObject = child.hitTest(sHelperPoint, forTouch);
 			
-			if (target) 
+			if (target != null) 
 				return target;
 			
 			--i;
@@ -397,7 +400,7 @@ class DisplayObjectContainer extends DisplayObject
 		if (object.hasEventListener(eventType))
 			listeners.push(object);
 		
-		if (container)
+		if (container != null)
 		{
 			var children:Vector<DisplayObject> = container.mChildren;
 			var numChildren:Int = children.length;
@@ -407,6 +410,10 @@ class DisplayObjectContainer extends DisplayObject
 		}
 	}
 	
+	public var numChildren(get, never):Int;
 	/** The number of children of this container. */
-	private function get_numChildren():Int { return mChildren.length; }        
+	private function get_numChildren():Int 
+	{ 
+		return mChildren.length;
+	}        
 }

@@ -50,6 +50,8 @@ class Quad extends DisplayObject
 	public function new(width:Float, height:Float, color:UInt = 0xffffff,
 						 premultipliedAlpha:Bool = true)
 	{
+		super();
+		
 		mTinted = color != 0xffffff;
 		
 		mVertexData = new VertexData(4, premultipliedAlpha);

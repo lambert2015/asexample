@@ -41,12 +41,12 @@ class ResizeEvent extends Event
 	/** The updated width of the player. */
 	private function get_width():Int 
 	{ 
-		return cast(data, Point).x; 
+		return Std.int(cast(data, Point).x); 
 	}
 	
 	/** The updated height of the player. */
 	private function get_height():Int 
 	{ 
-		return cast(data, Point).y; 
+		return Std.int(cast(data, Point).y); 
 	}
 }

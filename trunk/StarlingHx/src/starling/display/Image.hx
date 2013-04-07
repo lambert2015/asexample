@@ -11,6 +11,7 @@
 package starling.display;
 
 import flash.display.Bitmap;
+import flash.errors.ArgumentError;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
@@ -46,11 +47,11 @@ class Image extends Quad
 	/** Creates a quad with a texture mapped onto it. */
 	public function new(texture:Texture)
 	{
-		if (texture)
+		if (texture != null)
 		{
 			var frame:Rectangle = texture.frame;
-			var width:Float  = frame ? frame.width  : texture.width;
-			var height:Float = frame ? frame.height : texture.height;
+			var width:Float  = frame != null ? frame.width  : texture.width;
+			var height:Float = frame != null ? frame.height : texture.height;
 			var pma:Bool = texture.premultipliedAlpha;
 			
 			super(width, height, 0xffffff, pma);

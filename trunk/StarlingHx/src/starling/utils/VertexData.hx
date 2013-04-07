@@ -139,7 +139,7 @@ class VertexData
 	{
 		var offset:Int = getOffset(vertexID) + POSITION_OFFSET;
 		position.x = mRawData[offset];
-		position.y = mRawData[int(offset+1)];
+		position.y = mRawData[offset+1];
 	}
 	
 	/** Updates the RGB color values of a vertex. */ 
@@ -156,7 +156,7 @@ class VertexData
 	public function getColor(vertexID:Int):UInt
 	{
 		var offset:Int = getOffset(vertexID) + COLOR_OFFSET;
-		var divisor:Float = mPremultipliedAlpha ? mRawData[int(offset+3)] : 1.0;
+		var divisor:Float = mPremultipliedAlpha ? mRawData[offset + 3] : 1.0;
 		
 		if (divisor == 0) 
 			return 0;
@@ -296,8 +296,8 @@ class VertexData
 		if (numVertices < 0 || vertexID + numVertices > mNumVertices)
 			numVertices = mNumVertices - vertexID;
 		
-		var minX:Float = Float.MAX_VALUE, maxX:Float = -Float.MAX_VALUE;
-		var minY:Float = Float.MAX_VALUE, maxY:Float = -Float.MAX_VALUE;
+		var minX:Float = Math.POSITIVE_INFINITY, maxX:Float = -Math.POSITIVE_INFINITY;
+		var minY:Float = Math.POSITIVE_INFINITY, maxY:Float = -Math.POSITIVE_INFINITY;
 		var offset:Int = getOffset(vertexID) + POSITION_OFFSET;
 		var x:Float, y:Float, i:Int;
 		
@@ -403,7 +403,16 @@ class VertexData
 		var delta:Int = value - mNumVertices;
 		
 		for (i in 0...delta)
-			mRawData.push(0, 0,  0, 0, 0, 1,  0, 0); // alpha should be '1' per default
+		{
+			mRawData.push(0);
+			mRawData.push(0);
+			mRawData.push(0);
+			mRawData.push(0);
+			mRawData.push(0);
+			mRawData.push(1);
+			mRawData.push(0);
+			mRawData.push(0); // alpha should be '1' per default
+		}
 		
 		for (i in 0... -(delta * ELEMENTS_PER_VERTEX))
 			mRawData.pop();

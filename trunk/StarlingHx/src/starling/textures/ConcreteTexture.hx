@@ -22,7 +22,7 @@ import starling.events.Event;
 class ConcreteTexture extends Texture
 {
 	private var mBase:TextureBase;
-	private var mFormat:String;
+	private var mFormat:Context3DTextureFormat;
 	private var mWidth:Int;
 	private var mHeight:Int;
 	private var mMipMapping:Bool;
@@ -33,11 +33,13 @@ class ConcreteTexture extends Texture
 	
 	/** Creates a ConcreteTexture object from a TextureBase, storing information about size,
 	 *  mip-mapping, and if the channels contain premultiplied alpha values. */
-	public function new(base:TextureBase, format:String, width:Int, height:Int, 
+	public function new(base:TextureBase, format:Context3DTextureFormat, width:Int, height:Int, 
 									mipMapping:Bool, premultipliedAlpha:Bool,
 									optimizedForRenderTexture:Bool=false,
 									scale:Float=1)
 	{
+		super();
+		
 		mScale = scale <= 0 ? 1.0 : scale;
 		mBase = base;
 		mFormat = format;
@@ -72,18 +74,18 @@ class ConcreteTexture extends Texture
 	
 	private function onContextCreated(event:Event):Void
 	{
-		var context:Context3D = Starling.context;
+		var context:Context3D = Starling.current.context;
 		var bitmapData:BitmapData = cast(mData,BitmapData);
 		var atfData:AtfData = cast(mData,AtfData);
 		var nativeTexture:flash.display3D.textures.Texture;
 		
-		if (bitmapData)
+		if (bitmapData != null)
 		{
 			nativeTexture = context.createTexture(mWidth, mHeight, 
 				Context3DTextureFormat.BGRA, mOptimizedForRenderTexture);
 			Texture.uploadBitmapData(nativeTexture, bitmapData, mMipMapping);
 		}
-		else if (atfData)
+		else if (atfData != null)
 		{
 			nativeTexture = context.createTexture(atfData.width, atfData.height, atfData.format,
 												  mOptimizedForRenderTexture);

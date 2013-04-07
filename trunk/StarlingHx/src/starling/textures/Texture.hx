@@ -15,12 +15,14 @@ import flash.display.BitmapData;
 import flash.display3D.Context3D;
 import flash.display3D.Context3DTextureFormat;
 import flash.display3D.textures.TextureBase;
+import flash.errors.ArgumentError;
 import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.system.Capabilities;
 import flash.utils.ByteArray;
+import starling.utils.ClassUtil;
 import starling.utils.MathUtil;
 
 import starling.core.Starling;
@@ -92,11 +94,12 @@ class Texture
 	/** @private */
 	public function new()
 	{
-		if (Capabilities.isDebugger && 
-			getQualifiedClassName(this) == "starling.textures::Texture")
+		#if debug
+		if (ClassUtil.getQualifiedClassName(this) == "starling.textures::Texture")
 		{
 			throw new AbstractClassError();
 		}
+		#end
 		
 		mRepeat = false;
 	}
@@ -129,7 +132,7 @@ class Texture
 		var origHeight:Int  = data.height;
 		var legalWidth:Int  = MathUtil.getNextPowerOfTwo(origWidth);
 		var legalHeight:Int = MathUtil.getNextPowerOfTwo(origHeight);
-		var context:Context3D = Starling.context;
+		var context:Context3D = Starling.current.context;
 		var potData:BitmapData;
 		
 		if (context == null) throw new MissingContextError();
@@ -152,7 +155,7 @@ class Texture
 		
 		if (Starling.handleLostContext)
 			concreteTexture.restoreOnLostContext(data);
-		else if (potData)
+		else if (potData != null)
 			potData.dispose();
 		
 		if (origWidth == legalWidth && origHeight == legalHeight)
@@ -279,7 +282,7 @@ class Texture
 	 *  required for rendering. */
 	public function adjustVertexData(vertexData:VertexData, vertexID:Int, count:Int):Void
 	{
-		if (mFrame)
+		if (mFrame != null)
 		{
 			if (count != 4) 
 				throw new ArgumentError("Textures with a frame can only be used on quads");

@@ -37,6 +37,8 @@ class SubTexture extends Texture
 	public function new(parentTexture:Texture, region:Rectangle,
 							   ownsParent:Bool=false)
 	{
+		super();
+		
 		mParent = parentTexture;
 		mOwnsParent = ownsParent;
 		
@@ -59,15 +61,15 @@ class SubTexture extends Texture
 		mClipping = value;
 		mRootClipping = value.clone();
 		
-		var parentTexture:SubTexture = mParent as SubTexture;
-		while (parentTexture)
+		var parentTexture:SubTexture = cast(mParent,SubTexture);
+		while (parentTexture != null)
 		{
 			var parentClipping:Rectangle = parentTexture.mClipping;
 			mRootClipping.x = parentClipping.x + mRootClipping.x * parentClipping.width;
 			mRootClipping.y = parentClipping.y + mRootClipping.y * parentClipping.height;
 			mRootClipping.width  *= parentClipping.width;
 			mRootClipping.height *= parentClipping.height;
-			parentTexture = parentTexture.mParent as SubTexture;
+			parentTexture = cast(parentTexture.mParent,SubTexture);
 		}
 	}
 	
@@ -82,7 +84,7 @@ class SubTexture extends Texture
 		var clipHeight:Float = mRootClipping.height;
 		var endIndex:Int = vertexID + count;
 		
-		for (var i:Int=vertexID; i<endIndex; ++i)
+		for (i in vertexID...endIndex)
 		{
 			vertexData.getTexCoords(i, sTexCoords);
 			vertexData.setTexCoords(i, clipX + sTexCoords.x * clipWidth,

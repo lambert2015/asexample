@@ -7,7 +7,7 @@ package starling.utils;
 class ClassUtil
 {
 
-	public static inline function getQualifiedClassName(c:Class<Dynamic>):String 
+	public static inline function getQualifiedClassName(c:Dynamic):String 
 	{
 		return untyped __global__["flash.utils.getQualifiedClassName"](c);
 	}

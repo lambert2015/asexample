@@ -19,8 +19,15 @@ import starling.display.Sprite;
 import starling.textures.Texture;
 
 /** The TouchMarker is used internally to mark touches created through "simulateMultitouch". */
-internal class TouchMarker extends Sprite
+class TouchMarker extends Sprite
 {
+	public var realMarker(get, null):Image;
+	public var mockMarker(get, null):Image;
+	public var realX(get, null):Float;
+	public var realY(get, null):Float;
+	public var mockX(get, null):Float;
+	public var mockY(get, null):Float;
+	
 	private var mCenter:Point;
 	private var mTexture:Texture;
 	
@@ -29,7 +36,7 @@ internal class TouchMarker extends Sprite
 		mCenter = new Point();
 		mTexture = createTexture();
 		
-		for (var i:Int=0; i<2; ++i)
+		for (i in 0...2)
 		{
 			var marker:Image = new Image(mTexture);
 			marker.pivotX = mTexture.width / 2;
@@ -91,12 +98,30 @@ internal class TouchMarker extends Sprite
 		return Texture.fromBitmapData(bmpData, false, false, scale);
 	}
 	
-	private function get_realMarker():Image { return getChildAt(0) as Image; }
-	private function get_mockMarker():Image { return getChildAt(1) as Image; }
+	private function get_realMarker():Image 
+	{
+		return cast(getChildAt(0), Image); 
+	}
+	private function get_mockMarker():Image 
+	{ 
+		return cast(getChildAt(1), Image); 
+	}
 	
-	private function get_realX():Float { return realMarker.x; }
-	private function get_realY():Float { return realMarker.y; }
+	private function get_realX():Float 
+	{ 
+		return realMarker.x; 
+	}
+	private function get_realY():Float 
+	{ 
+		return realMarker.y; 
+	}
 	
-	private function get_mockX():Float { return mockMarker.x; }
-	private function get_mockY():Float { return mockMarker.y; }
+	private function get_mockX():Float 
+	{ 
+		return mockMarker.x; 
+	}
+	private function get_mockY():Float 
+	{ 
+		return mockMarker.y; 
+	}
 }        
