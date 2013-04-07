@@ -35,6 +35,6 @@ class Main
 		//Lib.current.addChild(new MaterialReflectiveTest());
 
 		//Lib.current.addChild(new MaterialRefractionTest());
-		Lib.current.addChild(new ShapeCollisionTest());
+		//Lib.current.addChild(new ShapeCollisionTest());
 	}
 }
