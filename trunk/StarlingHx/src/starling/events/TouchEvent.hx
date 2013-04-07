@@ -77,8 +77,8 @@ class TouchEvent extends Event
 		mTimestamp = -1.0;
 		mVisitedObjects = new <EventDispatcher>[];
 		
-		var numTouches:int=touches.length;
-		for (var i:int=0; i<numTouches; ++i)
+		var numTouches:Int=touches.length;
+		for (var i:Int=0; i<numTouches; ++i)
 			if (touches[i].timestamp > mTimestamp)
 				mTimestamp = touches[i].timestamp;
 	}
@@ -91,9 +91,9 @@ class TouchEvent extends Event
 	{
 		if (result == null) result = new <Touch>[];
 		var allTouches:Vector<Touch> = data as Vector<Touch>;
-		var numTouches:int = allTouches.length;
+		var numTouches:Int = allTouches.length;
 		
-		for (var i:int=0; i<numTouches; ++i)
+		for (var i:Int=0; i<numTouches; ++i)
 		{
 			var touch:Touch = allTouches[i];
 			var correctTarget:Bool = touch.isTouching(target);
@@ -127,7 +127,7 @@ class TouchEvent extends Event
 		{
 			var touches:Vector<Touch> = getTouches(target);
 			
-			for (var i:int=touches.length-1; i>=0; --i)
+			for (var i:Int=touches.length-1; i>=0; --i)
 				if (touches[i].phase != TouchPhase.ENDED)
 					return true;
 			
@@ -144,11 +144,11 @@ class TouchEvent extends Event
 	{
 		if (chain && chain.length)
 		{
-			var chainLength:int = bubbles ? chain.length : 1;
+			var chainLength:Int = bubbles ? chain.length : 1;
 			var previousTarget:EventDispatcher = target;
 			setTarget(chain[0] as EventDispatcher);
 			
-			for (var i:int=0; i<chainLength; ++i)
+			for (var i:Int=0; i<chainLength; ++i)
 			{
 				var chainElement:EventDispatcher = chain[i] as EventDispatcher;
 				if (mVisitedObjects.indexOf(chainElement) == -1)

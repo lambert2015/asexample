@@ -22,12 +22,12 @@ import flash.geom.Rectangle;
 import flash.system.Capabilities;
 import flash.utils.ByteArray;
 import flash.utils.getQualifiedClassName;
+import starling.utils.MathUtil;
 
 import starling.core.Starling;
 import starling.errors.AbstractClassError;
 import starling.errors.MissingContextError;
 import starling.utils.VertexData;
-import starling.utils.getNextPowerOfTwo;
 
 /** <p>A texture stores the information that represents an image. It cannot be added to the
  *  display list directly; instead it has to be mapped onto a display object. In Starling, 
@@ -126,10 +126,10 @@ class Texture
 										  optimizeForRenderToTexture:Bool=false,
 										  scale:Float=1):Texture
 	{
-		var origWidth:int   = data.width;
-		var origHeight:int  = data.height;
-		var legalWidth:int  = getNextPowerOfTwo(origWidth);
-		var legalHeight:int = getNextPowerOfTwo(origHeight);
+		var origWidth:Int   = data.width;
+		var origHeight:Int  = data.height;
+		var legalWidth:Int  = MathUtil.getNextPowerOfTwo(origWidth);
+		var legalHeight:Int = MathUtil.getNextPowerOfTwo(origHeight);
 		var context:Context3D = Starling.context;
 		var potData:BitmapData;
 		
@@ -215,7 +215,7 @@ class Texture
 	 *  @param optimizeForRenderToTexture: indicates if this texture will be used as render target
 	 *  @param scale:  if you omit this parameter, 'Starling.contentScaleFactor' will be used.
 	 */
-	public static function fromColor(width:int, height:int, color:uint=0xffffffff,
+	public static function fromColor(width:Int, height:Int, color:UInt=0xffffffff,
 									 optimizeForRenderToTexture:Bool=false, 
 									 scale:Float=-1):Texture
 	{
@@ -240,16 +240,16 @@ class Texture
 	 *  @param optimizeForRenderToTexture: indicates if this texture will be used as render target
 	 *  @param scale:  if you omit this parameter, 'Starling.contentScaleFactor' will be used.
 	 */
-	public static function empty(width:int=64, height:int=64, premultipliedAlpha:Bool=false,
+	public static function empty(width:Int=64, height:Int=64, premultipliedAlpha:Bool=false,
 								 optimizeForRenderToTexture:Bool=true,
 								 scale:Float=-1):Texture
 	{
 		if (scale <= 0) scale = Starling.contentScaleFactor;
 		
-		var origWidth:int  = width * scale;
-		var origHeight:int = height * scale;
-		var legalWidth:int  = getNextPowerOfTwo(origWidth);
-		var legalHeight:int = getNextPowerOfTwo(origHeight);
+		var origWidth:Int  = width * scale;
+		var origHeight:Int = height * scale;
+		var legalWidth:Int  = MathUtil.getNextPowerOfTwo(origWidth);
+		var legalHeight:Int = MathUtil.getNextPowerOfTwo(origHeight);
 		var format:String = Context3DTextureFormat.BGRA;
 		var context:Context3D = Starling.context;
 		
@@ -278,7 +278,7 @@ class Texture
 	
 	/** Converts texture coordinates and vertex positions of raw vertex data into the format 
 	 *  required for rendering. */
-	public function adjustVertexData(vertexData:VertexData, vertexID:int, count:int):Void
+	public function adjustVertexData(vertexData:VertexData, vertexID:Int, count:Int):Void
 	{
 		if (mFrame)
 		{
@@ -303,9 +303,9 @@ class Texture
 		
 		if (generateMipmaps && data.width > 1 && data.height > 1)
 		{
-			var currentWidth:int  = data.width  >> 1;
-			var currentHeight:int = data.height >> 1;
-			var level:int = 1;
+			var currentWidth:Int  = data.width  >> 1;
+			var currentHeight:Int = data.height >> 1;
+			var level:Int = 1;
 			var canvas:BitmapData = new BitmapData(currentWidth, currentHeight, true, 0);
 			var transform:Matrix = new Matrix(.5, 0, 0, .5);
 			var bounds:Rectangle = new Rectangle();
@@ -327,13 +327,25 @@ class Texture
 	
 	/** @private Uploads ATF data from a ByteArray to a native texture. */
 	internal static function uploadAtfData(nativeTexture:flash.display3D.textures.Texture, 
-										   data:ByteArray, offset:int=0, 
+										   data:ByteArray, offset:Int=0, 
 										   async:Bool=false):Void
 	{
 		nativeTexture.uploadCompressedTextureFromByteArray(data, offset, async);
 	}
 	
 	// properties
+	public var frame(get, null):Rectangle;
+	public var repeat(get, set):Bool;
+	public var width(get, null):Float;
+	public var height(get, null):Float;
+	public var nativeWidth(get, null):Float;
+	public var nativeHeight(get, null):Float;
+	public var scale(get, null):Float;
+	public var base(get, null):TextureBase;
+	public var root(get, null):ConcreteTexture;
+	public var format(get, null):String;
+	public var mipMapping(get, null):Bool;
+	public var premultipliedAlpha(get, null):Bool;
 	
 	/** The texture frame (see class description). */
 	private function get_frame():Rectangle 
@@ -349,36 +361,72 @@ class Texture
 	/** Indicates if the texture should repeat like a wallpaper or stretch the outermost pixels.
 	 *  Note: this only works in textures with sidelengths that are powers of two and 
 	 *  that are not loaded from a texture atlas (i.e. no subtextures). @default false */
-	private function get_repeat():Bool { return mRepeat; }
-	private function set_repeat(value:Bool):Void { mRepeat = value; }
+	private function get_repeat():Bool 
+	{ 
+		return mRepeat; 
+	}
+	private function set_repeat(value:Bool):Bool 
+	{ 
+		return mRepeat = value; 
+	}
 	
 	/** The width of the texture in points. */
-	private function get_width():Float { return 0; }
+	private function get_width():Float 
+	{ 
+		return 0; 
+	}
 	
 	/** The height of the texture in points. */
-	private function get_height():Float { return 0; }
+	private function get_height():Float 
+	{ 
+		return 0; 
+	}
 
 	/** The width of the texture in pixels (without scale adjustment). */
-	private function get_nativeWidth():Float { return 0; }
+	private function get_nativeWidth():Float 
+	{ 
+		return 0; 
+	}
 	
 	/** The height of the texture in pixels (without scale adjustment). */
-	private function get_nativeHeight():Float { return 0; }
+	private function get_nativeHeight():Float 
+	{ 
+		return 0; 
+	}
 	
 	/** The scale factor, which influences width and height properties. */
-	private function get_scale():Float { return 1.0; }
+	private function get_scale():Float 
+	{ 
+		return 1.0;
+	}
 	
 	/** The Stage3D texture object the texture is based on. */
-	private function get_base():TextureBase { return null; }
+	private function get_base():TextureBase 
+	{ 
+		return null; 
+	}
 	
 	/** The concrete (power-of-two) texture the texture is based on. */
-	private function get_root():ConcreteTexture { return null; }
+	private function get_root():ConcreteTexture 
+	{ 
+		return null; 
+	}
 	
 	/** The <code>Context3DTextureFormat</code> of the underlying texture data. */
-	private function get_format():String { return Context3DTextureFormat.BGRA; }
+	private function get_format():String 
+	{ 
+		return Context3DTextureFormat.BGRA; 
+	}
 	
 	/** Indicates if the texture contains mip maps. */ 
-	private function get_mipMapping():Bool { return false; }
+	private function get_mipMapping():Bool 
+	{ 
+		return false; 
+	}
 	
 	/** Indicates if the alpha values are premultiplied into the RGB values. */
-	private function get_premultipliedAlpha():Bool { return false; }
+	private function get_premultipliedAlpha():Bool 
+	{ 
+		return false; 
+	}
 }

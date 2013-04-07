@@ -413,7 +413,7 @@ class DisplayObject extends EventDispatcher
 		return mTransformationMatrix; 
 	}
 	
-	private function set_transformationMatrix(matrix:Matrix):Void
+	private function set_transformationMatrix(matrix:Matrix):Matrix
 	{
 		mOrientationChanged = false;
 		mTransformationMatrix.copyFrom(matrix);
@@ -448,6 +448,8 @@ class DisplayObject extends EventDispatcher
 		{
 			mRotation = 0;
 		}
+		
+		return mTransformationMatrix;
 	}
 	
 	public var useHandCursor(get, set):Bool;
@@ -458,7 +460,7 @@ class DisplayObject extends EventDispatcher
 		return mUseHandCursor; 
 	}
 	
-	private function set_useHandCursor(value:Bool):Void
+	private function set_useHandCursor(value:Bool):Bool
 	{
 		if (value == mUseHandCursor) 
 			return;
@@ -469,6 +471,8 @@ class DisplayObject extends EventDispatcher
 			addEventListener(TouchEvent.TOUCH, onTouch);
 		else
 			removeEventListener(TouchEvent.TOUCH, onTouch);
+		
+		return mUseHandCursor;
 	}
 	
 	private function onTouch(event:TouchEvent):Void
@@ -483,95 +487,134 @@ class DisplayObject extends EventDispatcher
 	}
 	
 	/** The width of the object in pixels. */
-	private function get_width():Float { return getBounds(mParent, sHelperRect).width; }
-	private function set_width(value:Float):Void
+	private function get_width():Float 
+	{ 
+		return getBounds(mParent, sHelperRect).width; 
+	}
+	private function set_width(value:Float):Float
 	{
 		// this method calls 'this.scaleX' instead of changing mScaleX directly.
 		// that way, subclasses reacting on size changes need to override only the scaleX method.
 		
 		scaleX = 1.0;
 		var actualWidth:Float = width;
-		if (actualWidth != 0.0) scaleX = value / actualWidth;
+		if (actualWidth != 0.0) 
+			scaleX = value / actualWidth;
+		
+		return width;
 	}
 	
 	/** The height of the object in pixels. */
-	private function get_height():Float { return getBounds(mParent, sHelperRect).height; }
-	private function set_height(value:Float):Void
+	private function get_height():Float 
+	{ 
+		return getBounds(mParent, sHelperRect).height; 
+	}
+	private function set_height(value:Float):Float
 	{
 		scaleY = 1.0;
 		var actualHeight:Float = height;
-		if (actualHeight != 0.0) scaleY = value / actualHeight;
+		if (actualHeight != 0.0) 
+			scaleY = value / actualHeight;
+		
+		return height;
 	}
 	
 	/** The x coordinate of the object relative to the local coordinates of the parent. */
-	private function get_x():Float { return mX; }
-	private function set_x(value:Float):Void 
+	private function get_x():Float 
+	{ 
+		return mX; 
+	}
+	private function set_x(value:Float):Float 
 	{ 
 		if (mX != value)
 		{
 			mX = value;
 			mOrientationChanged = true;
 		}
+		return mX;
 	}
 	
 	/** The y coordinate of the object relative to the local coordinates of the parent. */
-	private function get_y():Float { return mY; }
-	private function set_y(value:Float):Void 
+	private function get_y():Float 
+	{ 
+		return mY; 
+	}
+	private function set_y(value:Float):Float 
 	{
 		if (mY != value)
 		{
 			mY = value;
 			mOrientationChanged = true;
 		}
+		return mY;
 	}
 	
 	/** The x coordinate of the object's origin in its own coordinate space (default: 0). */
-	private function get_pivotX():Float { return mPivotX; }
-	private function set_pivotX(value:Float):Void 
+	private function get_pivotX():Float 
+	{ 
+		return mPivotX; 
+	}
+	private function set_pivotX(value:Float):Float 
 	{
 		if (mPivotX != value)
 		{
 			mPivotX = value;
 			mOrientationChanged = true;
 		}
+		return mPivotX;
 	}
 	
 	/** The y coordinate of the object's origin in its own coordinate space (default: 0). */
-	private function get_pivotY():Float { return mPivotY; }
-	private function set_pivotY(value:Float):Void 
+	private function get_pivotY():Float 
+	{ 
+		return mPivotY; 
+	}
+	private function set_pivotY(value:Float):Float 
 	{ 
 		if (mPivotY != value)
 		{
 			mPivotY = value;
 			mOrientationChanged = true;
 		}
+		return mPivotY;
 	}
 	
 	/** The horizontal scale factor. '1' means no scale, negative values flip the object. */
-	private function get_scaleX():Float { return mScaleX; }
-	private function set_scaleX(value:Float):Void 
+	private function get_scaleX():Float 
+	{ 
+		return mScaleX; 
+	}
+	private function set_scaleX(value:Float):Float 
 	{ 
 		if (mScaleX != value)
 		{
 			mScaleX = value;
 			mOrientationChanged = true;
 		}
+		return mScaleX; 
 	}
 	
 	/** The vertical scale factor. '1' means no scale, negative values flip the object. */
-	private function get_scaleY():Float { return mScaleY; }
-	private function set_scaleY(value:Float):Void 
+	private function get_scaleY():Float 
+	{ 
+		return mScaleY; 
+	}
+	private function set_scaleY(value:Float):Float 
 	{ 
 		if (mScaleY != value)
 		{
 			mScaleY = value;
 			mOrientationChanged = true;
 		}
+		return mScaleY; 
 	}
 	
 	/** The horizontal skew angle in radians. */
-	private function get_skewX():Float { return mSkewX; }
-	private function set_skewX(value:Float):Void 
+	private function get_skewX():Float 
+	{ 
+		return mSkewX; 
+	}
+	private function set_skewX(value:Float):Float 
 	{
 		value = normalizeAngle(value);
 		
@@ -580,11 +623,15 @@ class DisplayObject extends EventDispatcher
 			mSkewX = value;
 			mOrientationChanged = true;
 		}
+		return mSkewX; 
 	}
 	
 	/** The vertical skew angle in radians. */
-	private function get_skewY():Float { return mSkewY; }
-	private function set_skewY(value:Float):Void 
+	private function get_skewY():Float 
+	{ 
+		return mSkewY; 
+	}
+	private function set_skewY(value:Float):Float 
 	{
 		value = normalizeAngle(value);
 		
@@ -593,12 +640,16 @@ class DisplayObject extends EventDispatcher
 			mSkewY = value;
 			mOrientationChanged = true;
 		}
+		return mSkewY; 
 	}
 	
 	/** The rotation of the object in radians. (In Starling, all angles are measured 
 	 *  in radians.) */
-	private function get_rotation():Float { return mRotation; }
-	private function set_rotation(value:Float):Void 
+	private function get_rotation():Float 
+	{ 
+		return mRotation; 
+	}
+	private function set_rotation(value:Float):Float 
 	{
 		value = normalizeAngle(value);
 
@@ -607,49 +658,87 @@ class DisplayObject extends EventDispatcher
 			mRotation = value;
 			mOrientationChanged = true;
 		}
+		return mRotation; 
 	}
 	
 	/** The opacity of the object. 0 = transparent, 1 = opaque. */
-	private function get_alpha():Float { return mAlpha; }
-	private function set_alpha(value:Float):Void 
+	private function get_alpha():Float 
 	{ 
-		mAlpha = value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value); 
+		return mAlpha; 
+	}
+	private function set_alpha(value:Float):Float 
+	{ 
+		return mAlpha = value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value); 
 	}
 	
 	/** The visibility of the object. An invisible object will be untouchable. */
-	private function get_visible():Bool { return mVisible; }
-	private function set_visible(value:Bool):Void { mVisible = value; }
+	private function get_visible():Bool 
+	{ 
+		return mVisible; 
+	}
+	private function set_visible(value:Bool):Bool 
+	{ 
+		return mVisible = value; 
+	}
 	
 	/** Indicates if this object (and its children) will receive touch events. */
-	private function get_touchable():Bool { return mTouchable; }
-	private function set_touchable(value:Bool):Void { mTouchable = value; }
+	private function get_touchable():Bool 
+	{ 
+		return mTouchable; 
+	}
+	private function set_touchable(value:Bool):Bool
+	{ 
+		return mTouchable = value; 
+	}
 	
 	/** The blend mode determines how the object is blended with the objects underneath. 
 	 *   @default auto
 	 *   @see starling.display.BlendMode */ 
-	private function get_blendMode():String { return mBlendMode; }
-	private function set_blendMode(value:String):Void { mBlendMode = value; }
+	private function get_blendMode():String 
+	{ 
+		return mBlendMode; 
+	}
+	private function set_blendMode(value:String):String 
+	{ 
+		return mBlendMode = value; 
+	}
 	
 	/** The name of the display object (default: null). Used by 'getChildByName()' of 
 	 *  display object containers. */
-	private function get_name():String { return mName; }
-	private function set_name(value:String):Void { mName = value; }
+	private function get_name():String 
+	{ 
+		return mName; 
+	}
+	private function set_name(value:String):String 
+	{ 
+		return mName = value; 
+	}
 	
 	/** The filter that is attached to the display object. The starling.filters 
 	 *  package contains several classes that define specific filters you can use. 
 	 *  Beware that you should NOT use the same filter on more than one object (for 
 	 *  performance reasons). */ 
-	private function get_filter():FragmentFilter { return mFilter; }
-	private function set_filter(value:FragmentFilter):Void { mFilter = value; }
+	private function get_filter():FragmentFilter 
+	{ 
+		return mFilter; 
+	}
+	private function set_filter(value:FragmentFilter):FragmentFilter 
+	{ 
+		return mFilter = value; 
+	}
 	
 	/** The display object container that contains this display object. */
-	private function get_parent():DisplayObjectContainer { return mParent; }
+	private function get_parent():DisplayObjectContainer 
+	{ 
+		return mParent; 
+	}
 	
 	/** The topmost object in the display tree the object is part of. */
 	private function get_base():DisplayObject
 	{
 		var currentObject:DisplayObject = this;
-		while (currentObject.mParent) currentObject = currentObject.mParent;
+		while (currentObject.mParent != null) 
+			currentObject = currentObject.mParent;
 		return currentObject;
 	}
 	
@@ -659,11 +748,12 @@ class DisplayObject extends EventDispatcher
 	private function get_root():DisplayObject
 	{
 		var currentObject:DisplayObject = this;
-		while (currentObject.mParent)
+		while (currentObject.mParent != null)
 		{
 			if (Std.is(currentObject.mParent, Stage)) 
 				return currentObject;
-			else currentObject = currentObject.parent;
+			else 
+				currentObject = currentObject.parent;
 		}
 		
 		return null;

@@ -72,7 +72,7 @@ class SubTexture extends Texture
 	}
 	
 	/** @inheritDoc */
-	public override function adjustVertexData(vertexData:VertexData, vertexID:int, count:int):Void
+	public override function adjustVertexData(vertexData:VertexData, vertexID:Int, count:Int):Void
 	{
 		super.adjustVertexData(vertexData, vertexID, count);
 		
@@ -80,9 +80,9 @@ class SubTexture extends Texture
 		var clipY:Float = mRootClipping.y;
 		var clipWidth:Float  = mRootClipping.width;
 		var clipHeight:Float = mRootClipping.height;
-		var endIndex:int = vertexID + count;
+		var endIndex:Int = vertexID + count;
 		
-		for (var i:int=vertexID; i<endIndex; ++i)
+		for (var i:Int=vertexID; i<endIndex; ++i)
 		{
 			vertexData.getTexCoords(i, sTexCoords);
 			vertexData.setTexCoords(i, clipX + sTexCoords.x * clipWidth,
@@ -101,33 +101,33 @@ class SubTexture extends Texture
 	private function get_clipping():Rectangle { return mClipping.clone(); }
 	
 	/** @inheritDoc */
-	public override function get_base():TextureBase { return mParent.base; }
+	private override function get_base():TextureBase { return mParent.base; }
 	
 	/** @inheritDoc */
-	public override function get_root():ConcreteTexture { return mParent.root; }
+	private override function get_root():ConcreteTexture { return mParent.root; }
 	
 	/** @inheritDoc */
-	public override function get_format():String { return mParent.format; }
+	private override function get_format():String { return mParent.format; }
 	
 	/** @inheritDoc */
-	public override function get_width():Float { return mParent.width * mClipping.width; }
+	private override function get_width():Float { return mParent.width * mClipping.width; }
 	
 	/** @inheritDoc */
-	public override function get_height():Float { return mParent.height * mClipping.height; }
+	private override function get_height():Float { return mParent.height * mClipping.height; }
 	
 	/** @inheritDoc */
-	public override function get_nativeWidth():Float { return mParent.nativeWidth * mClipping.width; }
+	private override function get_nativeWidth():Float { return mParent.nativeWidth * mClipping.width; }
 	
 	/** @inheritDoc */
-	public override function get_nativeHeight():Float { return mParent.nativeHeight * mClipping.height; }
+	private override function get_nativeHeight():Float { return mParent.nativeHeight * mClipping.height; }
 	
 	/** @inheritDoc */
-	public override function get_mipMapping():Bool { return mParent.mipMapping; }
+	private override function get_mipMapping():Bool { return mParent.mipMapping; }
 	
 	/** @inheritDoc */
-	public override function get_premultipliedAlpha():Bool { return mParent.premultipliedAlpha; }
+	private override function get_premultipliedAlpha():Bool { return mParent.premultipliedAlpha; }
 	
 	/** @inheritDoc */
-	public override function get_scale():Float { return mParent.scale; } 
+	private override function get_scale():Float { return mParent.scale; } 
 	
 }

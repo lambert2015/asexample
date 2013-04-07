@@ -67,8 +67,8 @@ internal class TouchProcessor
 	
 	public function advanceTime(passedTime:Float):Void
 	{
-		var i:int;
-		var touchID:int;
+		var i:Int;
+		var touchID:Int;
 		var touch:Touch;
 		
 		mElapsedTime += passedTime;
@@ -132,7 +132,7 @@ internal class TouchProcessor
 		}
 	}
 	
-	public function enqueue(touchID:int, phase:String, globalX:Float, globalY:Float,
+	public function enqueue(touchID:Int, phase:String, globalX:Float, globalY:Float,
 							pressure:Float=1.0, width:Float=1.0, height:Float=1.0):Void
 	{
 		mQueue.unshift(arguments);
@@ -154,7 +154,7 @@ internal class TouchProcessor
 		// This method enqueues an artifial hover point that is just outside the stage.
 		// That way, objects listening for HOVERs over them will get notified everywhere.
 		
-		var offset:int = 1;
+		var offset:Int = 1;
 		var exitX:Float = mouse.globalX;
 		var exitY:Float = mouse.globalY;
 		var distLeft:Float = mouse.globalX;
@@ -174,7 +174,7 @@ internal class TouchProcessor
 		enqueue(0, TouchPhase.HOVER, exitX, exitY);
 	}
 	
-	private function processTouch(touchID:int, phase:String, globalX:Float, globalY:Float,
+	private function processTouch(touchID:Int, phase:String, globalX:Float, globalY:Float,
 								  pressure:Float=1.0, width:Float=1.0, height:Float=1.0):Void
 	{
 		var position:Point = new Point(globalX, globalY);
@@ -267,24 +267,28 @@ internal class TouchProcessor
 	
 	private function addCurrentTouch(touch:Touch):Void
 	{
-		for (var i:int=mCurrentTouches.length-1; i>=0; --i)
+		for (var i:Int=mCurrentTouches.length-1; i>=0; --i)
 			if (mCurrentTouches[i].id == touch.id)
 				mCurrentTouches.splice(i, 1);
 		
 		mCurrentTouches.push(touch);
 	}
 	
-	private function getCurrentTouch(touchID:int):Touch
+	private function getCurrentTouch(touchID:Int):Touch
 	{
 		for each (var touch:Touch in mCurrentTouches)
 			if (touch.id == touchID) return touch;
 		return null;
 	}
 	
-	private function get_simulateMultitouch():Bool { return mTouchMarker != null; }
-	private function set_simulateMultitouch(value:Bool):Void
+	private function get_simulateMultitouch():Bool 
 	{ 
-		if (simulateMultitouch == value) return; // no change
+		return mTouchMarker != null; 
+	}
+	private function set_simulateMultitouch(value:Bool):Bool
+	{ 
+		if (simulateMultitouch == value) 
+			return; // no change
 		if (value)
 		{
 			mTouchMarker = new TouchMarker();
@@ -296,6 +300,7 @@ internal class TouchProcessor
 			mTouchMarker.removeFromParent(true);
 			mTouchMarker = null;
 		}
+		return value;
 	}
 	
 	// interruption handling

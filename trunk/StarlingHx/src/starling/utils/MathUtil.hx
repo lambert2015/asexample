@@ -6,6 +6,11 @@ package starling.utils;
  */
 class MathUtil
 {
+	/** Converts an angle from radions into degrees. */
+    public static inline function rad2deg(rad:Float):Float
+    {
+        return rad / Math.PI * 180.0;            
+    }
 
 	/** Converts an angle from degrees into radians. */
     public static inline function deg2rad(deg:Float):Float
@@ -20,7 +25,7 @@ class MathUtil
             return number;
         else
         {
-            var result:int = 1;
+            var result:Int = 1;
             while (result < number) result <<= 1;
             return result;
         }

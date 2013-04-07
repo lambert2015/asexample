@@ -187,8 +187,8 @@ class Button extends DisplayObjectContainer
 	}
 	
 	/** The color of the font. */
-	private function get_fontColor():uint { return mTextField ? mTextField.color : 0x0; }
-	private function set_fontColor(value:uint):Void
+	private function get_fontColor():UInt { return mTextField ? mTextField.color : 0x0; }
+	private function set_fontColor(value:UInt):Void
 	{
 		createTextField();
 		mTextField.color = value;
@@ -250,6 +250,6 @@ class Button extends DisplayObjectContainer
 	
 	/** Indicates if the mouse cursor should transform into a hand while it's over the button. 
 	 *  @default true */
-	public override function get_useHandCursor():Bool { return mUseHandCursor; }
-	public override function set_useHandCursor(value:Bool):Void { mUseHandCursor = value; }
+	private override function get_useHandCursor():Bool { return mUseHandCursor; }
+	private override function set_useHandCursor(value:Bool):Void { mUseHandCursor = value; }
 }

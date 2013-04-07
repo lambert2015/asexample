@@ -24,17 +24,21 @@ import starling.utils.VAlign;
 
 /** A small, lightweight box that displays the current framerate, memory consumption and
  *  the number of draw calls per frame. The display is updated automatically once per frame. */
-internal class StatsDisplay extends Sprite
+class StatsDisplay extends Sprite
 {
+	public var drawCount(get, set):Int;
+	public var fps(get, set):Float;
+	public var memory(get, set):Float;
+	
 	private var mBackground:Quad;
 	private var mTextField:TextField;
 	
-	private var mFrameCount:int = 0;
+	private var mFrameCount:Int = 0;
 	private var mTotalTime:Float = 0;
 	
 	private var mFps:Float = 0;
 	private var mMemory:Float = 0;
-	private var mDrawCount:int = 0;
+	private var mDrawCount:Int = 0;
 	
 	/** Creates a new Statistics Box. */
 	public function new()
@@ -90,14 +94,32 @@ internal class StatsDisplay extends Sprite
 	}
 	
 	/** The number of Stage3D draw calls per second. */
-	private function get_drawCount():int { return mDrawCount; }
-	private function set_drawCount(value:int):Void { mDrawCount = value; }
+	private function get_drawCount():Int 
+	{ 
+		return mDrawCount; 
+	}
+	private function set_drawCount(value:Int):Int 
+	{ 
+		return mDrawCount = value; 
+	}
 	
 	/** The current frames per second (updated once per second). */
-	private function get_fps():Float { return mFps; }
-	private function set_fps(value:Float):Void { mFps = value; }
+	private function get_fps():Float 
+	{ 
+		return mFps; 
+	}
+	private function set_fps(value:Float):Float 
+	{ 
+		return mFps = value; 
+	}
 	
 	/** The currently required system memory in MB. */
-	private function get_memory():Float { return mMemory; }
-	private function set_memory(value:Float):Void { mMemory = value; }
+	private function get_memory():Float 
+	{ 
+		return mMemory; 
+	}
+	private function set_memory(value:Float):Float 
+	{ 
+		return mMemory = value; 
+	}
 }

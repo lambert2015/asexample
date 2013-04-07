@@ -12,6 +12,7 @@ package starling.text;
 
 import flash.display.BitmapData;
 import flash.display.StageQuality;
+import flash.filters.BitmapFilter;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
 import flash.text.AntiAliasType;
@@ -68,7 +69,7 @@ class TextField extends DisplayObjectContainer
 	private static inline var BITMAP_FONT_DATA_NAME:String = "starling.display.TextField.BitmapFonts";
 	
 	private var mFontSize:Float;
-	private var mColor:uint;
+	private var mColor:UInt;
 	private var mText:String;
 	private var mFontName:String;
 	private var mHAlign:String;
@@ -78,7 +79,7 @@ class TextField extends DisplayObjectContainer
 	private var mUnderline:Bool;
 	private var mAutoScale:Bool;
 	private var mKerning:Bool;
-	private var mNativeFilters:Array;
+	private var mNativeFilters:Array<BitmapFilter> ;
 	private var mRequiresRedraw:Bool;
 	private var mIsRenderedText:Bool;
 	private var mTextBounds:Rectangle;
@@ -93,8 +94,8 @@ class TextField extends DisplayObjectContainer
 	private static var sNativeTextField:flash.text.TextField = new flash.text.TextField();
 	
 	/** Create a new text field with the given properties. */
-	public function new(width:int, height:int, text:String, fontName:String="Verdana",
-							  fontSize:Float=12, color:uint=0x0, bold:Bool=false)
+	public function new(width:Int, height:Int, text:String, fontName:String="Verdana",
+							  fontSize:Float=12, color:UInt=0x0, bold:Bool=false)
 	{
 		mText = text ? text : "";
 		mFontSize = fontSize;
@@ -238,8 +239,8 @@ class TextField extends DisplayObjectContainer
 	private function autoScaleNativeTextField(textField:flash.text.TextField):Void
 	{
 		var size:Float   = Float(textField.defaultTextFormat.size);
-		var maxHeight:int = textField.height - 4;
-		var maxWidth:int  = textField.width - 4;
+		var maxHeight:Int = textField.height - 4;
+		var maxWidth:Int  = textField.width - 4;
 		
 		while (textField.textWidth > maxWidth || textField.textHeight > maxHeight)
 		{
@@ -314,7 +315,7 @@ class TextField extends DisplayObjectContainer
 	}
 	
 	/** @inheritDoc */
-	public override function set_width(value:Float):Void
+	private override function set_width(value:Float):Void
 	{
 		// different to ordinary display objects, changing the size of the text field should 
 		// not change the scaling, but make the texture bigger/smaller, while the size 
@@ -326,7 +327,7 @@ class TextField extends DisplayObjectContainer
 	}
 	
 	/** @inheritDoc */
-	public override function set_height(value:Float):Void
+	private override function set_height(value:Float):Float
 	{
 		mHitArea.height = value;
 		mRequiresRedraw = true;
@@ -334,20 +335,29 @@ class TextField extends DisplayObjectContainer
 	}
 	
 	/** The displayed text. */
-	private function get_text():String { return mText; }
-	private function set_text(value:String):Void
+	private function get_text():String 
+	{ 
+		return mText; 
+	}
+	private function set_text(value:String):String
 	{
-		if (value == null) value = "";
+		if (value == null) 
+			value = "";
+			
 		if (mText != value)
 		{
 			mText = value;
 			mRequiresRedraw = true;
 		}
+		return mText; 
 	}
 	
 	/** The name of the font (true type or bitmap font). */
-	private function get_fontName():String { return mFontName; }
-	private function set_fontName(value:String):Void
+	private function get_fontName():String 
+	{ 
+		return mFontName; 
+	}
+	private function set_fontName(value:String):String
 	{
 		if (mFontName != value)
 		{
@@ -358,24 +368,32 @@ class TextField extends DisplayObjectContainer
 			mRequiresRedraw = true;
 			mIsRenderedText = bitmapFonts[value] == undefined;
 		}
+		return mFontName; 
 	}
 	
 	/** The size of the font. For bitmap fonts, use <code>BitmapFont.NATIVE_SIZE</code> for 
 	 *  the original size. */
-	private function get_fontSize():Float { return mFontSize; }
-	private function set_fontSize(value:Float):Void
+	private function get_fontSize():Float 
+	{ 
+		return mFontSize; 
+	}
+	private function set_fontSize(value:Float):Float
 	{
 		if (mFontSize != value)
 		{
 			mFontSize = value;
 			mRequiresRedraw = true;
 		}
+		return mFontSize; 
 	}
 	
 	/** The color of the text. For bitmap fonts, use <code>Color.WHITE</code> to use the
 	 *  original, untinted color. @default black */
-	private function get_color():uint { return mColor; }
-	private function set_color(value:uint):Void
+	private function get_color():UInt 
+	{
+		return mColor; 
+	}
+	private function set_color(value:UInt):UInt
 	{
 		if (mColor != value)
 		{
@@ -383,47 +401,63 @@ class TextField extends DisplayObjectContainer
 			updateBorder();
 			mRequiresRedraw = true;
 		}
+		return mColor;
 	}
 	
 	/** The horizontal alignment of the text. @default center @see starling.utils.HAlign */
-	private function get_hAlign():String { return mHAlign; }
-	private function set_hAlign(value:String):Void
+	private function get_hAlign():String 
+	{ 
+		return mHAlign; 
+	}
+	private function set_hAlign(value:String):String
 	{
+		#if debug
 		if (!HAlign.isValid(value))
 			throw new ArgumentError("Invalid horizontal align: " + value);
+		#end
 		
 		if (mHAlign != value)
 		{
 			mHAlign = value;
 			mRequiresRedraw = true;
 		}
+		return mHAlign; 
 	}
 	
 	/** The vertical alignment of the text. @default center @see starling.utils.VAlign */
-	private function get_vAlign():String { return mVAlign; }
-	private function set_vAlign(value:String):Void
+	private function get_vAlign():String 
 	{
+		return mVAlign; 
+	}
+	private function set_vAlign(value:String):String
+	{
+		#if debug
 		if (!VAlign.isValid(value))
 			throw new ArgumentError("Invalid vertical align: " + value);
+		#end
 		
 		if (mVAlign != value)
 		{
 			mVAlign = value;
 			mRequiresRedraw = true;
 		}
+		return mVAlign;
 	}
 	
 	/** Draws a border around the edges of the text field. Useful for visual debugging. 
 	 *  @default false */
-	private function get_border():Bool { return mBorder != null; }
-	private function set_border(value:Bool):Void
+	private function get_border():Bool 
+	{ 
+		return mBorder != null; 
+	}
+	private function set_border(value:Bool):Bool
 	{
 		if (value && mBorder == null)
 		{                
 			mBorder = new Sprite();
 			addChild(mBorder);
 			
-			for (var i:int=0; i<4; ++i)
+			for (i in 0...4)
 				mBorder.addChild(new Quad(1.0, 1.0));
 			
 			updateBorder();
@@ -433,74 +467,98 @@ class TextField extends DisplayObjectContainer
 			mBorder.removeFromParent(true);
 			mBorder = null;
 		}
+		return border;
 	}
 	
 	/** Indicates whether the text is bold. @default false */
-	private function get_bold():Bool { return mBold; }
-	private function set_bold(value:Bool):Void 
+	private function get_bold():Bool 
+	{ 
+		return mBold; 
+	}
+	private function set_bold(value:Bool):Bool 
 	{
 		if (mBold != value)
 		{
 			mBold = value;
 			mRequiresRedraw = true;
 		}
+		return mBold; 
 	}
 	
 	/** Indicates whether the text is italicized. @default false */
-	private function get_italic():Bool { return mItalic; }
-	private function set_italic(value:Bool):Void
+	private function get_italic():Bool 
+	{ 
+		return mItalic; 
+	}
+	private function set_italic(value:Bool):Bool
 	{
 		if (mItalic != value)
 		{
 			mItalic = value;
 			mRequiresRedraw = true;
 		}
+		return mItalic;
 	}
 	
 	/** Indicates whether the text is underlined. @default false */
-	private function get_underline():Bool { return mUnderline; }
-	private function set_underline(value:Bool):Void
+	private function get_underline():Bool 
+	{ 
+		return mUnderline; 
+	}
+	private function set_underline(value:Bool):Bool
 	{
 		if (mUnderline != value)
 		{
 			mUnderline = value;
 			mRequiresRedraw = true;
 		}
+		return mUnderline;
 	}
 	
 	/** Indicates whether kerning is enabled. @default true */
-	private function get_kerning():Bool { return mKerning; }
-	private function set_kerning(value:Bool):Void
+	private function get_kerning():Bool 
+	{ 
+		return mKerning; 
+	}
+	private function set_kerning(value:Bool):Bool
 	{
 		if (mKerning != value)
 		{
 			mKerning = value;
 			mRequiresRedraw = true;
 		}
+		return mKerning;
 	}
 	
 	/** Indicates whether the font size is scaled down so that the complete text fits
 	 *  into the text field. @default false */
-	private function get_autoScale():Bool { return mAutoScale; }
-	private function set_autoScale(value:Bool):Void
+	private function get_autoScale():Bool 
+	{ 
+		return mAutoScale; 
+	}
+	private function set_autoScale(value:Bool):Bool
 	{
 		if (mAutoScale != value)
 		{
 			mAutoScale = value;
 			mRequiresRedraw = true;
 		}
+		return mAutoScale;
 	}
 
 	/** The native Flash BitmapFilters to apply to this TextField. 
 	 *  Only available when using standard (TrueType) fonts! */
-	private function get_nativeFilters():Array { return mNativeFilters; }
-	private function set_nativeFilters(value:Array) : void
+	private function get_nativeFilters():Array<BitmapFilter> 
+	{ return mNativeFilters; }
+	private function set_nativeFilters(value:Array<BitmapFilter> ) : Array<BitmapFilter> 
 	{
 		if (!mIsRenderedText)
 			throw(new Error("The TextField.nativeFilters property cannot be used on Bitmap fonts."));
 		
 		mNativeFilters = value.concat();
 		mRequiresRedraw = true;
+		
+		return mNativeFilters;
 	}
 	
 	/** Makes a bitmap font available at any TextField in the current stage3D context.

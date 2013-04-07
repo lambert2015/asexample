@@ -221,7 +221,7 @@ class DisplayObjectContainer extends DisplayObject
 	}
 	
 	/** Moves a child to a certain index. Children at and after the replaced position move up.*/
-	public function setChildIndex(child:DisplayObject, index:int):Void
+	public function setChildIndex(child:DisplayObject, index:Int):Void
 	{
 		var oldIndex:Int = getChildIndex(child);
 		if (oldIndex == -1) 
@@ -241,7 +241,7 @@ class DisplayObjectContainer extends DisplayObject
 	}
 	
 	/** Swaps the indexes of two children. */
-	public function swapChildrenAt(index1:int, index2:int):Void
+	public function swapChildrenAt(index1:Int, index2:Int):Void
 	{
 		var child1:DisplayObject = getChildAt(index1);
 		var child2:DisplayObject = getChildAt(index2);
@@ -272,7 +272,7 @@ class DisplayObjectContainer extends DisplayObject
 	{
 		if (resultRect == null) resultRect = new Rectangle();
 		
-		var numChildren:int = mChildren.length;
+		var numChildren:Int = mChildren.length;
 		
 		if (numChildren == 0)
 		{
@@ -313,8 +313,8 @@ class DisplayObjectContainer extends DisplayObject
 		var localX:Float = localPoint.x;
 		var localY:Float = localPoint.y;
 		
-		var numChildren:int = mChildren.length;
-		for (var i:int=numChildren-1; i>=0; --i) // front to back!
+		var numChildren:Int = mChildren.length;
+		for (var i:Int=numChildren-1; i>=0; --i) // front to back!
 		{
 			var child:DisplayObject = mChildren[i];
 			getTransformationMatrix(child, sHelperMatrix);

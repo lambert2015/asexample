@@ -17,9 +17,9 @@ import flash.utils.ByteArray;
 internal class AtfData
 {
 	private var mFormat:String;
-	private var mWidth:int;
-	private var mHeight:int;
-	private var mNumTextures:int;
+	private var mWidth:Int;
+	private var mHeight:Int;
+	private var mNumTextures:Int;
 	private var mData:ByteArray;
 	
 	/** Create a new instance by parsing the given byte array. */
@@ -30,12 +30,9 @@ internal class AtfData
 		
 		switch (data[6])
 		{
-			case 0:
-			case 1: mFormat = Context3DTextureFormat.BGRA; break;
-			case 2:
-			case 3: mFormat = Context3DTextureFormat.COMPRESSED; break;
-			case 4:
-			case 5: mFormat = "compressedAlpha"; break; // explicit string to stay compatible 
+			case 0,1: mFormat = Context3DTextureFormat.BGRA; 
+			case 2,3: mFormat = Context3DTextureFormat.COMPRESSED; 
+			case 4,5: mFormat = "compressedAlpha";  // explicit string to stay compatible 
 														// with older versions
 			default: throw new Error("Invalid ATF format");
 		}
@@ -47,8 +44,8 @@ internal class AtfData
 	}
 	
 	private function get_format():String { return mFormat; }
-	private function get_width():int { return mWidth; }
-	private function get_height():int { return mHeight; }
-	private function get_numTextures():int { return mNumTextures; }
+	private function get_width():Int { return mWidth; }
+	private function get_height():Int { return mHeight; }
+	private function get_numTextures():Int { return mNumTextures; }
 	private function get_data():ByteArray { return mData; }
 }

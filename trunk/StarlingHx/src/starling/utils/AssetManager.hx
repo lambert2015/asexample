@@ -484,25 +484,20 @@ class AssetManager
 			{
 				case "atf":
 					addTexture(name, Texture.fromAtfData(bytes, mScaleFactor, mUseMipMaps, onComplete));
-					break;
-				case "fnt":
-				case "xml":
+				case "fnt","xml":
 					xmls.push(new XML(bytes));
 					onComplete();
-					break;
 				case "mp3":
 					sound = new Sound();
 					sound.loadCompressedDataFromByteArray(bytes, bytes.length);
 					addSound(name, sound);
 					onComplete();
-					break;
 				default:
 					var loaderContext:LoaderContext = new LoaderContext(mCheckPolicyFile);
 					var loader:Loader = new Loader();
 					loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoaderComplete);
-					loader.loadBytes(urlLoader.data as ByteArray, loaderContext);
-					break;
+					loader.loadBytes(urlLoader.data as ByteArray, loaderContext);	
 			}
 		}
 		
@@ -562,25 +557,53 @@ class AssetManager
 	}
 	
 	// properties
+	public var verbose(get, set):Bool;
+	public var useMipMaps(get, set):Bool;
+	public var scaleFactor(get, set):Float;
+	public var checkPolicyFile(get, set):Bool;
 	
 	/** When activated, the class will trace information about added/enqueued assets. */
-	private function get_verbose():Bool { return mVerbose; }
-	private function set_verbose(value:Bool):Void { mVerbose = value; }
+	private function get_verbose():Bool 
+	{ 
+		return mVerbose; 
+	}
+	private function set_verbose(value:Bool):Bool 
+	{ 
+		return mVerbose = value; 
+	}
 	
 	/** For bitmap textures, this flag indicates if mip maps should be generated when they 
 	 *  are loaded; for ATF textures, it indicates if mip maps are valid and should be
 	 *  used. */
-	private function get_useMipMaps():Bool { return mUseMipMaps; }
-	private function set_useMipMaps(value:Bool):Void { mUseMipMaps = value; }
+	private function get_useMipMaps():Bool 
+	{ 
+		return mUseMipMaps; 
+	}
+	private function set_useMipMaps(value:Bool):Bool 
+	{ 
+		return mUseMipMaps = value; 
+	}
 	
 	/** Textures that are created from Bitmaps or ATF files will have the scale factor 
 	 *  assigned here. */
-	private function get_scaleFactor():Float { return mScaleFactor; }
-	private function set_scaleFactor(value:Float):Void { mScaleFactor = value; }
+	private function get_scaleFactor():Float 
+	{ 
+		return mScaleFactor; 
+	}
+	private function set_scaleFactor(value:Float):Float 
+	{ 
+		return mScaleFactor = value; 
+	}
 	
 	/** Specifies whether a check should be made for the existence of a URL policy file before
 	 *  loading an object from a remote server. More information about this topic can be found 
 	 *  in the 'flash.system.LoaderContext' documentation. */
-	private function get_checkPolicyFile():Bool { return mCheckPolicyFile; }
-	private function set_checkPolicyFile(value:Bool):Void { mCheckPolicyFile = value; }
+	private function get_checkPolicyFile():Bool 
+	{ 
+		return mCheckPolicyFile; 
+	}
+	private function set_checkPolicyFile(value:Bool):Bool 
+	{ 
+		return mCheckPolicyFile = value; 
+	}
 }

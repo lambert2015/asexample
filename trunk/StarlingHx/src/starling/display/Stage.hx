@@ -91,50 +91,58 @@ class Stage extends DisplayObjectContainer
 		
 		// if nothing else is hit, the stage returns itself as target
 		var target:DisplayObject = super.hitTest(localPoint, forTouch);
-		if (target == null) target = this;
+		if (target == null) 
+			target = this;
 		return target;
 	}
 	
 	/** @private */
-	private override function set_width(value:Float):Void 
+	private override function set_width(value:Float):Float 
 	{ 
 		throw new IllegalOperationError("Cannot set width of stage");
+		return value;
 	}
 	
 	/** @private */
-	private override function set_height(value:Float):Void
+	private override function set_height(value:Float):Float
 	{
 		throw new IllegalOperationError("Cannot set height of stage");
+		return value;
 	}
 	
 	/** @private */
-	private override function set_x(value:Float):Void
+	private override function set_x(value:Float):Float
 	{
 		throw new IllegalOperationError("Cannot set x-coordinate of stage");
+		return value;
 	}
 	
 	/** @private */
-	private override function set_y(value:Float):Void
+	private override function set_y(value:Float):Float
 	{
 		throw new IllegalOperationError("Cannot set y-coordinate of stage");
+		return value;
 	}
 	
 	/** @private */
-	private override function set_scaleX(value:Float):Void
+	private override function set_scaleX(value:Float):Float
 	{
 		throw new IllegalOperationError("Cannot scale stage");
+		return value;
 	}
 
 	/** @private */
-	private override function set_scaleY(value:Float):Void
+	private override function set_scaleY(value:Float):Float
 	{
 		throw new IllegalOperationError("Cannot scale stage");
+		return value;
 	}
 	
 	/** @private */
-	private override function set_rotation(value:Float):Void
+	private override function set_rotation(value:Float):Float
 	{
 		throw new IllegalOperationError("Cannot rotate stage");
+		return value;
 	}
 	
 	/** The background color of the stage. */

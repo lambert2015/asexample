@@ -30,14 +30,14 @@ class ResizeEvent extends Event
 	public static inline var RESIZE:String = "resize";
 	
 	/** Creates a new ResizeEvent. */
-	public function new(type:String, width:int, height:int, bubbles:Bool=false)
+	public function new(type:String, width:Int, height:Int, bubbles:Bool=false)
 	{
 		super(type, bubbles, new Point(width, height));
 	}
 	
 	/** The updated width of the player. */
-	private function get_width():int { return (data as Point).x; }
+	private function get_width():Int { return (data as Point).x; }
 	
 	/** The updated height of the player. */
-	private function get_height():int { return (data as Point).y; }
+	private function get_height():Int { return (data as Point).y; }
 }

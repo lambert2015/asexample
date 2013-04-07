@@ -14,13 +14,13 @@ import flash.display3D.Context3D;
 import flash.display3D.textures.TextureBase;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
+import starling.utils.MathUtil;
 
 import starling.core.RenderSupport;
 import starling.core.Starling;
 import starling.display.DisplayObject;
 import starling.display.Image;
 import starling.errors.MissingContextError;
-import starling.utils.getNextPowerOfTwo;
 
 /** A RenderTexture is a dynamic texture onto which you can draw any display object.
  * 
@@ -73,12 +73,12 @@ class RenderTexture extends SubTexture
 	 *  texture just like a canvas. If it is not, it will be cleared before each draw call.
 	 *  Persistancy doubles the required graphics memory! Thus, if you need the texture only 
 	 *  for one draw (or drawBundled) call, you should deactivate it. */
-	public function new(width:int, height:int, persistent:Bool=true, scale:Float=-1)
+	public function new(width:Int, height:Int, persistent:Bool=true, scale:Float=-1)
 	{
 		if (scale <= 0) scale = Starling.contentScaleFactor; 
 		
-		var nativeWidth:int  = getNextPowerOfTwo(width  * scale);
-		var nativeHeight:int = getNextPowerOfTwo(height * scale);
+		var nativeWidth:Int  = MathUtil.getNextPowerOfTwo(width  * scale);
+		var nativeHeight:Int = MathUtil.getNextPowerOfTwo(height * scale);
 		mActiveTexture = Texture.empty(width, height, PMA, true, scale);
 		
 		super(mActiveTexture, new Rectangle(0, 0, width, height), true);
@@ -120,7 +120,7 @@ class RenderTexture extends SubTexture
 	 *  @param antiAliasing This parameter is currently ignored by Stage3D.
 	 */
 	public function draw(object:DisplayObject, matrix:Matrix=null, alpha:Float=1.0, 
-						 antiAliasing:int=0):Void
+						 antiAliasing:Int=0):Void
 	{
 		if (object == null) return;
 		
@@ -143,7 +143,7 @@ class RenderTexture extends SubTexture
 	
 	/** Bundles several calls to <code>draw</code> together in a block. This avoids buffer 
 	 *  switches and allows you to draw multiple objects into a non-persistent texture. */
-	public function drawBundled(drawingBlock:Function, antiAliasing:int=0):Void
+	public function drawBundled(drawingBlock:Function, antiAliasing:Int=0):Void
 	{
 		var context:Context3D = Starling.context;
 		if (context == null) throw new MissingContextError();
@@ -206,8 +206,8 @@ class RenderTexture extends SubTexture
 	private function get_isPersistent():Bool { return mBufferTexture != null; }
 	
 	/** @inheritDoc */
-	public override function get_base():TextureBase { return mActiveTexture.base; }
+	private override function get_base():TextureBase { return mActiveTexture.base; }
 	
 	/** @inheritDoc */
-	public override function get_root():ConcreteTexture { return mActiveTexture.root; }
+	private override function get_root():ConcreteTexture { return mActiveTexture.root; }
 }

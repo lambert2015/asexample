@@ -101,7 +101,7 @@ class Image extends Quad
 	}
 	
 	/** Sets the texture coordinates of a vertex. Coordinates are in the range [0, 1]. */
-	public function setTexCoords(vertexID:int, coords:Point):Void
+	public function setTexCoords(vertexID:Int, coords:Point):Void
 	{
 		mVertexData.setTexCoords(vertexID, coords.x, coords.y);
 		onVertexDataChanged();
@@ -110,7 +110,7 @@ class Image extends Quad
 	/** Gets the texture coordinates of a vertex. Coordinates are in the range [0, 1]. 
 	 *  If you pass a 'resultPoint', the result will be stored in this point instead of 
 	 *  creating a new object.*/
-	public function getTexCoords(vertexID:int, resultPoint:Point=null):Point
+	public function getTexCoords(vertexID:Int, resultPoint:Point=null):Point
 	{
 		if (resultPoint == null) resultPoint = new Point();
 		mVertexData.getTexCoords(vertexID, resultPoint);
@@ -119,7 +119,7 @@ class Image extends Quad
 	
 	/** Copies the raw vertex data to a VertexData instance.
 	 *  The texture coordinates are already in the format required for rendering. */ 
-	public override function copyVertexDataTo(targetData:VertexData, targetVertexID:int=0):Void
+	public override function copyVertexDataTo(targetData:VertexData, targetVertexID:Int=0):Void
 	{
 		if (mVertexDataCacheInvalid)
 		{
@@ -132,32 +132,42 @@ class Image extends Quad
 	}
 	
 	/** The texture that is displayed on the quad. */
-	private function get_texture():Texture { return mTexture; }
-	private function set_texture(value:Texture):Void 
+	private function get_texture():Texture 
 	{ 
+		return mTexture; 
+	}
+	private function set_texture(value:Texture):Texture 
+	{ 
+		#if debug
 		if (value == null)
 		{
 			throw new ArgumentError("Texture cannot be null");
 		}
-		else if (value != mTexture)
+		#end
+		
+		if (value != mTexture)
 		{
 			mTexture = value;
 			mVertexData.setPremultipliedAlpha(mTexture.premultipliedAlpha);
 			mVertexDataCache.setPremultipliedAlpha(mTexture.premultipliedAlpha, false);
 			onVertexDataChanged();
 		}
+		
+		return mTexture;
 	}
 	
 	/** The smoothing filter that is used for the texture. 
 	*   @default bilinear
 	*   @see starling.textures.TextureSmoothing */ 
 	private function get_smoothing():String { return mSmoothing; }
-	private function set_smoothing(value:String):Void 
+	private function set_smoothing(value:String):String 
 	{
 		if (TextureSmoothing.isValid(value))
 			mSmoothing = value;
 		else
 			throw new ArgumentError("Invalid smoothing mode: " + value);
+		
+		return mSmoothing;
 	}
 	
 	/** @inheritDoc */

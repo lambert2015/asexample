@@ -34,16 +34,28 @@ class ColorUtil
 	public static inline var PURPLE:UInt  = 0x800080;
 	
 	/** Returns the alpha part of an ARGB color (0 - 255). */
-	public static inline function getAlpha(color:UInt):Int { return (color >> 24) & 0xff; }
+	public static inline function getAlpha(color:UInt):Int 
+	{ 
+		return (color >> 24) & 0xff; 
+	}
 	
 	/** Returns the red part of an (A)RGB color (0 - 255). */
-	public static inline function getRed(color:UInt):Int   { return (color >> 16) & 0xff; }
+	public static inline function getRed(color:UInt):Int   
+	{ 
+		return (color >> 16) & 0xff; 
+	}
 	
 	/** Returns the green part of an (A)RGB color (0 - 255). */
-	public static inline function getGreen(color:UInt):Int { return (color >>  8) & 0xff; }
+	public static inline function getGreen(color:UInt):Int 
+	{ 
+		return (color >>  8) & 0xff; 
+	}
 	
 	/** Returns the blue part of an (A)RGB color (0 - 255). */
-	public static inline function getBlue(color:UInt):Int  { return  color        & 0xff; }
+	public static inline function getBlue(color:UInt):Int  
+	{ 
+		return  color        & 0xff; 
+	}
 	
 	/** Creates an RGB color, stored in an unsigned integer. Channels are expected
 	 *  in the range 0 - 255. */
@@ -54,7 +66,7 @@ class ColorUtil
 	
 	public static inline function frgb(red:Float, green:Float, blue:Float):UInt
 	{
-		return Std.int(red * 255) << 16) | (Std.int(green * 255) << 8) | Std.int(blue * 255);
+		return (Std.int(red * 255) << 16) | (Std.int(green * 255) << 8) | Std.int(blue * 255);
 	}
 	
 	/** Creates an ARGB color, stored in an unsigned integer. Channels are expected

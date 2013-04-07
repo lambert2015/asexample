@@ -21,6 +21,7 @@ import flash.geom.Matrix;
 import flash.geom.Rectangle;
 import flash.system.Capabilities;
 import flash.utils.getQualifiedClassName;
+import starling.utils.MathUtil;
 
 import starling.core.RenderSupport;
 import starling.core.Starling;
@@ -37,7 +38,6 @@ import starling.textures.Texture;
 import starling.utils.MatrixUtil;
 import starling.utils.RectangleUtil;
 import starling.utils.VertexData;
-import starling.utils.getNextPowerOfTwo;
 
 /** The FragmentFilter class is the base class for all filter effects in Starling.
  *  All other filters of this package extend this class. You can attach them to any display
@@ -79,12 +79,12 @@ class FragmentFilter
 	protected const STD_FRAGMENT_SHADER:String =
 		"tex oc, v0, fs0 <2d, clamp, linear, mipnone>"; // just forward texture color
 	
-	private var mVertexPosAtID:int = 0;
-	private var mTexCoordsAtID:int = 1;
-	private var mBaseTextureID:int = 0;
-	private var mMvpConstantID:int = 0;
+	private var mVertexPosAtID:Int = 0;
+	private var mTexCoordsAtID:Int = 1;
+	private var mBaseTextureID:Int = 0;
+	private var mMvpConstantID:Int = 0;
 	
-	private var mNumPasses:int;
+	private var mNumPasses:Int;
 	private var mPassTextures:Vector<Texture>;
 
 	private var mMode:String;
@@ -110,7 +110,7 @@ class FragmentFilter
 	
 	/** Creates a new Fragment filter with the specified number of passes and resolution.
 	 *  This constructor may only be called by the constructor of a subclass. */
-	public function new(numPasses:int=1, resolution:Float=1.0)
+	public function new(numPasses:Int=1, resolution:Float=1.0)
 	{
 		if (Capabilities.isDebugger && 
 			getQualifiedClassName(this) == "starling.filters::FragmentFilter")
@@ -250,7 +250,7 @@ class FragmentFilter
 								  Context3DVertexBufferFormat.FLOAT_2);
 		
 		// draw all passes
-		for (var i:int=0; i<mNumPasses; ++i)
+		for (var i:Int=0; i<mNumPasses; ++i)
 		{
 			if (i < mNumPasses - 1) // intermediate pass  
 			{
@@ -337,9 +337,9 @@ class FragmentFilter
 		mVertexBuffer.uploadFromVector(mVertexData.rawData, 0, 4);
 	}
 	
-	private function updatePassTextures(width:int, height:int, scale:Float):Void
+	private function updatePassTextures(width:Int, height:Int, scale:Float):Void
 	{
-		var numPassTextures:int = mNumPasses > 1 ? 2 : 1;
+		var numPassTextures:Int = mNumPasses > 1 ? 2 : 1;
 		
 		var needsUpdate:Bool = mPassTextures == null || 
 			mPassTextures.length != numPassTextures ||
@@ -359,12 +359,12 @@ class FragmentFilter
 				mPassTextures = new Vector<Texture>(numPassTextures);
 			}
 			
-			for (var i:int=0; i<numPassTextures; ++i)
+			for (var i:Int=0; i<numPassTextures; ++i)
 				mPassTextures[i] = Texture.empty(width, height, PMA, true, scale);
 		}
 	}
 	
-	private function getPassTexture(pass:int):Texture
+	private function getPassTexture(pass:Int):Texture
 	{
 		return mPassTextures[pass % 2];
 	}
@@ -396,8 +396,8 @@ class FragmentFilter
 			resultRect.y -= mMarginY + deltaMargin;
 			resultRect.width  += 2 * (mMarginX + deltaMargin);
 			resultRect.height += 2 * (mMarginY + deltaMargin);
-			resultRect.width  = getNextPowerOfTwo(resultRect.width  * mResolution) / mResolution;
-			resultRect.height = getNextPowerOfTwo(resultRect.height * mResolution) / mResolution;
+			resultRect.width  = MathUtil.getNextPowerOfTwo(resultRect.width  * mResolution) / mResolution;
+			resultRect.height = MathUtil.getNextPowerOfTwo(resultRect.height * mResolution) / mResolution;
 		}
 	}
 	
@@ -445,14 +445,14 @@ class FragmentFilter
 	 *  @param context: the current context3D (the same as in Starling.context, passed
 	 *               just for convenience)
 	 *  @param texture: the input texture, which is already bound to sampler 0. */
-	protected function activate(pass:int, context:Context3D, texture:Texture):Void
+	protected function activate(pass:Int, context:Context3D, texture:Texture):Void
 	{
 		throw new Error("Method has to be implemented in subclass!");
 	}
 	
 	/** This method is called directly after 'context.drawTriangles'. 
 	 *  If you need to clean up any resources, you can do so in this method. */
-	protected function deactivate(pass:int, context:Context3D, texture:Texture):Void
+	protected function deactivate(pass:Int, context:Context3D, texture:Texture):Void
 	{
 		// clean up resources
 	}
@@ -548,22 +548,22 @@ class FragmentFilter
 	
 	/** The number of passes the filter is applied. The "activate" and "deactivate" methods
 	 *  will be called that often. */
-	protected function set_numPasses(value:int):Void { mNumPasses = value; }
-	protected function get_numPasses():int { return mNumPasses; }
+	protected function set_numPasses(value:Int):Void { mNumPasses = value; }
+	protected function get_numPasses():Int { return mNumPasses; }
 	
 	/** The ID of the vertex buffer attribute that stores the vertex position. */ 
-	protected final function get_vertexPosAtID():int { return mVertexPosAtID; }
-	protected final function set_vertexPosAtID(value:int):Void { mVertexPosAtID = value; }
+	protected final function get_vertexPosAtID():Int { return mVertexPosAtID; }
+	protected final function set_vertexPosAtID(value:Int):Void { mVertexPosAtID = value; }
 	
 	/** The ID of the vertex buffer attribute that stores the texture coordinates. */
-	protected final function get_texCoordsAtID():int { return mTexCoordsAtID; }
-	protected final function set_texCoordsAtID(value:int):Void { mTexCoordsAtID = value; }
+	protected final function get_texCoordsAtID():Int { return mTexCoordsAtID; }
+	protected final function set_texCoordsAtID(value:Int):Void { mTexCoordsAtID = value; }
 
 	/** The ID (sampler) of the input texture (containing the output of the previous pass). */
-	protected final function get_baseTextureID():int { return mBaseTextureID; }
-	protected final function set_baseTextureID(value:int):Void { mBaseTextureID = value; }
+	protected final function get_baseTextureID():Int { return mBaseTextureID; }
+	protected final function set_baseTextureID(value:Int):Void { mBaseTextureID = value; }
 	
 	/** The ID of the first register of the modelview-projection constant (a 4x4 matrix). */
-	protected final function get_mvpConstantID():int { return mMvpConstantID; }
-	protected final function set_mvpConstantID(value:int):Void { mMvpConstantID = value; }
+	protected final function get_mvpConstantID():Int { return mMvpConstantID; }
+	protected final function set_mvpConstantID(value:Int):Void { mMvpConstantID = value; }
 }

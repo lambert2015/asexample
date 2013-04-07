@@ -25,20 +25,25 @@ import starling.events.EventDispatcher;
  */ 
 class DelayedCall extends EventDispatcher implements IAnimatable
 {
+	public var isComplete(get, null):Bool;
+	public var totalTime(get, null):Float;
+	public var currentTime(get, null):Float;
+	public var repeatCount(get, set):Int;
+	
 	private var mCurrentTime:Float;
 	private var mTotalTime:Float;
-	private var mCall:Function;
-	private var mArgs:Array;
-	private var mRepeatCount:int;
+	private var mCall:Dynamic;
+	private var mArgs:Array<Dynamic>;
+	private var mRepeatCount:Int;
 	
 	/** Creates a delayed call. */
-	public function new(call:Function, delay:Float, args:Array=null)
+	public function new(call:Dynamic, delay:Float, args:Array<Dynamic> = null)
 	{
 		reset(call, delay, args);
 	}
 	
 	/** Resets the delayed call to its default values, which is useful for pooling. */
-	public function reset(call:Function, delay:Float, args:Array=null):DelayedCall
+	public function reset(call:Dynamic, delay:Float, args:Array<Dynamic> = null):DelayedCall
 	{
 		mCurrentTime = 0;
 		mTotalTime = Math.max(delay, 0.0001);
@@ -57,7 +62,7 @@ class DelayedCall extends EventDispatcher implements IAnimatable
 		
 		if (previousTime < mTotalTime && mCurrentTime >= mTotalTime)
 		{                
-			mCall.apply(null, mArgs);
+			untyped mCall.apply(null, mArgs);
 			
 			if (mRepeatCount == 0 || mRepeatCount > 1)
 			{
@@ -79,13 +84,25 @@ class DelayedCall extends EventDispatcher implements IAnimatable
 	}
 	
 	/** The time for which calls will be delayed (in seconds). */
-	private function get_totalTime():Float { return mTotalTime; }
+	private function get_totalTime():Float 
+	{ 
+		return mTotalTime; 
+	}
 	
 	/** The time that has already passed (in seconds). */
-	private function get_currentTime():Float { return mCurrentTime; }
+	private function get_currentTime():Float 
+	{ 
+		return mCurrentTime; 
+	}
 	
 	/** The number of times the call will be repeated. 
 	 *  Set to '0' to repeat indefinitely. @default 1 */
-	private function get_repeatCount():int { return mRepeatCount; }
-	private function set_repeatCount(value:int):Void { mRepeatCount = value; }
+	private function get_repeatCount():Int 
+	{
+		return mRepeatCount; 
+	}
+	private function set_repeatCount(value:Int):Int 
+	{ 
+		return mRepeatCount = value; 
+	}
 }

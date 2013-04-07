@@ -29,7 +29,7 @@ internal class TouchMarker extends Sprite
 		mCenter = new Point();
 		mTexture = createTexture();
 		
-		for (var i:int=0; i<2; ++i)
+		for (var i:Int=0; i<2; ++i)
 		{
 			var marker:Image = new Image(mTexture);
 			marker.pivotX = mTexture.width / 2;
@@ -70,8 +70,8 @@ internal class TouchMarker extends Sprite
 	{
 		var scale:Float = Starling.contentScaleFactor;
 		var radius:Float = 12 * scale;
-		var width:int = 32 * scale;
-		var height:int = 32 * scale;
+		var width:Int = 32 * scale;
+		var height:Int = 32 * scale;
 		var thickness:Float = 1.5 * scale;
 		var shape:Shape = new Shape();
 		
