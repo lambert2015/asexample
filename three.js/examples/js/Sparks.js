@@ -322,7 +322,7 @@ SPARKS.Action = function() {
 
 
 SPARKS.Age = function(easing) {
-    this._easing = (easing == null) ? TWEEN.Easing.Linear.EaseNone : easing;
+    this._easing = (easing == null) ? TWEEN.Easing.Linear.None : easing;
 };
 
 SPARKS.Age.prototype.update = function (emitter, particle, time) {
@@ -343,7 +343,7 @@ SPARKS.Age.prototype.update = function (emitter, particle, time) {
 // Mark particle as dead when particle's < 0
 
 SPARKS.Death = function(easing) {
-    this._easing = (easing == null) ? TWEEN.Linear.EaseNone : easing;
+    this._easing = (easing == null) ? TWEEN.Linear.None : easing;
 };
 
 SPARKS.Death.prototype.update = function (emitter, particle, time) {
@@ -539,14 +539,14 @@ SPARKS.PointZone.prototype.getLocation = function() {
 SPARKS.LineZone = function(start, end) {
     this.start = start;
 	this.end = end;
-	this._length = end.clone().subSelf( start );
+	this._length = end.clone().sub( start );
 };
 
 SPARKS.LineZone.prototype.getLocation = function() {
     var len = this._length.clone();
 
 	len.multiplyScalar( Math.random() );
-	return len.addSelf( this.start );
+	return len.add( this.start );
 
 };
 
@@ -561,8 +561,8 @@ SPARKS.ParallelogramZone.prototype.getLocation = function() {
 
 	var d1 = this.side1.clone().multiplyScalar( Math.random() );
 	var d2 = this.side2.clone().multiplyScalar( Math.random() );
-	d1.addSelf(d2);
-	return d1.addSelf( this.corner );
+	d1.add(d2);
+	return d1.add( this.corner );
 
 };
 
@@ -667,7 +667,7 @@ SPARKS.DiscZone.prototype.getLocation = function() {
 	p.multiplyScalar( radius * Math.cos( angle ) );
 	var p2 = _planeAxis2.clone();
 	p2.multiplyScalar( radius * Math.sin( angle ) );
-	p.addSelf( p2 );
+	p.add( p2 );
 	return _center.add( p );
 
 };

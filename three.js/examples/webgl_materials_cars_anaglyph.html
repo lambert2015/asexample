@@ -58,6 +58,7 @@
 		<script src="../build/three.min.js"></script>
 
 		<script src="js/effects/AnaglyphEffect.js"></script>
+		<script src="js/loaders/BinaryLoader.js"></script>
 
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
@@ -184,7 +185,7 @@
 
 				// Skybox
 
-				var shader = THREE.ShaderUtils.lib[ "cube" ];
+				var shader = THREE.ShaderLib[ "cube" ];
 				shader.uniforms[ "tCube" ].value = textureCube;
 
 				var material = new THREE.ShaderMaterial( {
@@ -202,7 +203,7 @@
 				//
 
 				renderer = new THREE.WebGLRenderer();
-				renderer.setFaceCulling( 0 );
+				renderer.setFaceCulling( THREE.CullFaceNone );
 
 				var width = window.innerWidth || 2;
 				var height = window.innerHeight || 2;
@@ -540,7 +541,7 @@
 
 			}
 
-			function attachButtonMaterials( materials, geometry, material_indices, car ) {
+			function attachButtonMaterials( materials, faceMaterial, material_indices, car ) {
 
 				for( var i = 0; i < materials.length; i ++ ) {
 
@@ -549,7 +550,7 @@
 
 						for ( var j = 0; j < material_indices.length; j ++ ) {
 
-							geometry.materials[ material_indices [ j ] ] = materials[ this.counter ][ 1 ];
+							faceMaterial.materials[ material_indices [ j ] ] = materials[ this.counter ][ 1 ];
 
 						}
 
@@ -572,7 +573,7 @@
 
 				for( var i in CARS[ car ].mmap ) {
 
-					geometry.materials[ i ] = CARS[ car ].mmap[ i ];
+					m.materials[ i ] = CARS[ car ].mmap[ i ];
 
 				}
 
@@ -589,7 +590,7 @@
 				CARS[ car ].object = mesh;
 
 				CARS[ car ].buttons = createButtons( materials.body, car );
-				attachButtonMaterials( materials.body, geometry, bm, car );
+				attachButtonMaterials( materials.body, m, bm, car );
 
 				switchCar( car );
 

@@ -26,6 +26,11 @@
 			#loading { width: 100%; margin: 2em auto; text-align: center; position: absolute; top: 25em  }
 
 			#oldie a { color:#da0 }
+
+			#stats { position: absolute; top:0; left: 0 }
+			#stats #fps { background: transparent !important }
+			#stats #fps #fpsText { color: #aaa !important }
+			#stats #fps #fpsGraph { display: none }
 		</style>
 	</head>
 
@@ -311,7 +316,6 @@
 
 				scene = new THREE.Scene();
 				scene.fog = new THREE.Fog( 0x050505, 2000, 4000 );
-				scene.fog.color.setHSV( 0.102, 0.9, 0.825 );
 
 				// LIGHTS
 
@@ -464,13 +468,7 @@
 				// STATS
 
 				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
-				stats.domElement.style.top = '0px';
 				container.appendChild( stats.domElement );
-
-				stats.domElement.children[ 0 ].children[ 0 ].style.color = "#aaa";
-				stats.domElement.children[ 0 ].style.background = "transparent";
-				stats.domElement.children[ 0 ].children[ 1 ].style.display = "none";
 
 				// EVENTS
 
@@ -697,14 +695,13 @@
 
 					var time = Date.now() * 0.001;
 
-					var fLow = 0.4, fHigh = 0.825;
+					var fLow = 0.1, fHigh = 0.8;
 
 					lightVal = THREE.Math.clamp( lightVal + 0.5 * delta * lightDir, fLow, fHigh );
 
 					var valNorm = ( lightVal - fLow ) / ( fHigh - fLow );
 
-					var sat = THREE.Math.mapLinear( valNorm, 0, 1, 0.95, 0.25 );
-					scene.fog.color.setHSV( 0.1, sat, lightVal );
+					scene.fog.color.setHSL( 0.1, 0.5, lightVal );
 
 					renderer.setClearColor( scene.fog.color, 1 );
 

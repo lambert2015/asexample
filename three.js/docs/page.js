@@ -24,10 +24,25 @@ var onDocumentLoad = function ( event ) {
 	text = text.replace(/\[page:(\w+)\]/gi, "[page:$1 $1]" ); // [page:name] to [page:name title]
 	text = text.replace(/\[page:(\w+) ([\w|\.]+)\]/gi, "<a href=\"javascript:window.parent.goTo('$1')\" title=\"$1\">$2</a>" ); // [page:name title]
 	text = text.replace(/\[link:([\w|\:|\/|\.|\-|\_]+)\]/gi, "[link:$1 $1]" ); // [link:url] to [link:url title]
-	text = text.replace(/\[link:([\w|\:|\/|\.|\-|\_]+) ([\w|\:|\/|\.|\-|\_]+)\]/gi, "<a href=\"$1\"  target=\"_blank\">$2</a>" ); // [link:url title]
+	text = text.replace(/\[link:([\w|\:|\/|\.|\-|\_|\(|\)]+) ([\w|\:|\/|\.|\-|\_ ]+)\]/gi, "<a href=\"$1\"  target=\"_blank\">$2</a>" ); // [link:url title]
 	text = text.replace(/\*([\w|\d|\"|\-|\(][\w|\d|\ |\-|\/|\+|\-|\(|\)|\=|\,|\.\"]*[\w|\d|\"|\)]|\w)\*/gi, "<strong>$1</strong>" ); // *
 
 	document.body.innerHTML = text;
+
+	// handle code snippets formatting
+
+	var elements = document.getElementsByTagName( 'code' );
+
+	for ( var i = 0; i < elements.length; i ++ ) {
+
+		var element = elements[ i ];
+
+		text = element.textContent.trim();
+		text = text.replace( /^\t\t/gm, '' );
+
+		element.textContent = text;
+
+	}
 
 	// Edit button
 

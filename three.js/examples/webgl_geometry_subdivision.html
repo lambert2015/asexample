@@ -17,14 +17,9 @@
 
 		<script src="../build/three.min.js"></script>
 
-		<script src="js/libs/stats.min.js"></script>
+		<script src="js/modifiers/SubdivisionModifier.js"></script>
 
-		<script src="../src/core/Geometry.js"></script>
-		<script src="../src/extras/geometries/CubeGeometry.js"></script>
-		<script src="../src/extras/geometries/CylinderGeometry.js"></script>
-		<script src="../src/extras/geometries/TorusGeometry.js"></script>
-		<script src="../src/extras/geometries/LatheGeometry.js"></script>
-		<script src="../src/extras/modifiers/SubdivisionModifier.js"></script>
+		<script src="js/libs/stats.min.js"></script>
 
 		<script src="fonts/helvetiker_regular.typeface.js"></script>
 
@@ -107,7 +102,7 @@
 				geometriesParams.push({type: 'WaltHead', args: [ ], meshScale: 6 });
 
 				THREE.WaltHead = function() {
-					return THREE.GeometryUtils.clone(geometry);
+					return geometry.clone();
 				};
 
 				updateInfo()
@@ -120,7 +115,7 @@
 				geometriesParams.push({type: 'Suzanne', args: [ ], scale: 100, meshScale:2 });
 
 				THREE.Suzanne = function() {
-					return THREE.GeometryUtils.clone(geometry);
+					return geometry.clone();
 				};
 
 				updateInfo()
@@ -218,7 +213,7 @@
 
 				// Cloning original geometry for debuging
 
-				smooth = THREE.GeometryUtils.clone( geometry );
+				smooth = geometry.clone();
 
 				// mergeVertices(); is run in case of duplicated vertices
 				smooth.mergeVertices();
@@ -248,7 +243,7 @@
 						p = smooth.vertices[ vertexIndex ];
 
 						color = new THREE.Color( 0xffffff );
-						color.setHSV( ( p.y ) / 200 + 0.5, 1.0, 1.0 );
+						color.setHSL( ( p.y ) / 200 + 0.5, 1.0, 0.5 );
 
 						f.vertexColors[ j ] = color;
 

@@ -14,13 +14,11 @@ THREE.SVGRenderer = function () {
 
 	_v1, _v2, _v3, _v4,
 
-	_clipRect = new THREE.Rectangle(),
-	_bboxRect = new THREE.Rectangle(),
+	_clipBox = new THREE.Box2(),
+	_elemBox = new THREE.Box2(),
 
-	_enableLighting = false,
 	_color = new THREE.Color(),
 	_diffuseColor = new THREE.Color(),
-	_emissiveColor = new THREE.Color(),
 	_ambientLight = new THREE.Color(),
 	_directionalLights = new THREE.Color(),
 	_pointLights = new THREE.Color(),
@@ -60,6 +58,11 @@ THREE.SVGRenderer = function () {
 
 	};
 
+	// WebGLRenderer compatibility
+
+	this.supportsVertexTextures = function () {};
+	this.setFaceCulling = function () {};
+
 	this.setSize = function( width, height ) {
 
 		_svgWidth = width; _svgHeight = height;
@@ -69,11 +72,16 @@ THREE.SVGRenderer = function () {
 		_svg.setAttribute( 'width', _svgWidth );
 		_svg.setAttribute( 'height', _svgHeight );
 
-		_clipRect.set( - _svgWidthHalf, - _svgHeightHalf, _svgWidthHalf, _svgHeightHalf );
+		_clipBox.min.set( - _svgWidthHalf, - _svgHeightHalf );
+		_clipBox.max.set( _svgWidthHalf, _svgHeightHalf );
 
 	};
 
 	this.clear = function () {
+
+		_pathCount = 0;
+		_circleCount = 0;
+		_lineCount = 0;
 
 		while ( _svg.childNodes.length > 0 ) {
 
@@ -92,9 +100,7 @@ THREE.SVGRenderer = function () {
 
 		}
 
-		var e, el, element, material;
-
-		this.autoClear && this.clear();
+		if ( this.autoClear === true ) this.clear();
 
 		_this.info.render.vertices = 0;
 		_this.info.render.faces = 0;
@@ -103,32 +109,23 @@ THREE.SVGRenderer = function () {
 		_elements = _renderData.elements;
 		_lights = _renderData.lights;
 
-		_pathCount = 0; _circleCount = 0; _lineCount = 0;
+		calculateLights( _lights );
 
-		_enableLighting = _lights.length > 0;
+		for ( var e = 0, el = _elements.length; e < el; e ++ ) {
 
-		if ( _enableLighting ) {
-
-			 calculateLights( _lights );
-
-		}
-
-		for ( e = 0, el = _elements.length; e < el; e ++ ) {
-
-			element = _elements[ e ];
-
-			material = element.material;
+			var element = _elements[ e ];
+			var material = element.material;
 
 			if ( material === undefined || material.visible === false ) continue;
 
-			_bboxRect.empty();
+			_elemBox.makeEmpty();
 
 			if ( element instanceof THREE.RenderableParticle ) {
 
 				_v1 = element;
 				_v1.x *= _svgWidthHalf; _v1.y *= -_svgHeightHalf;
 
-				renderParticle( _v1, element, material, scene );
+				renderParticle( _v1, element, material );
 
 			} else if ( element instanceof THREE.RenderableLine ) {
 
@@ -137,58 +134,47 @@ THREE.SVGRenderer = function () {
 				_v1.positionScreen.x *= _svgWidthHalf; _v1.positionScreen.y *= - _svgHeightHalf;
 				_v2.positionScreen.x *= _svgWidthHalf; _v2.positionScreen.y *= - _svgHeightHalf;
 
-				_bboxRect.addPoint( _v1.positionScreen.x, _v1.positionScreen.y );
-				_bboxRect.addPoint( _v2.positionScreen.x, _v2.positionScreen.y );
+				_elemBox.setFromPoints( [ _v1.positionScreen, _v2.positionScreen ] );
 
-				if ( !_clipRect.intersects( _bboxRect ) ) {
+				if ( _clipBox.isIntersectionBox( _elemBox ) === true ) {
 
-					continue;
+					renderLine( _v1, _v2, element, material );
 
 				}
-
-				renderLine( _v1, _v2, element, material, scene );
 
 			} else if ( element instanceof THREE.RenderableFace3 ) {
 
 				_v1 = element.v1; _v2 = element.v2; _v3 = element.v3;
 
+				if ( _v1.positionScreen.z < -1 || _v1.positionScreen.z > 1 ) continue;
+				if ( _v2.positionScreen.z < -1 || _v2.positionScreen.z > 1 ) continue;
+				if ( _v3.positionScreen.z < -1 || _v3.positionScreen.z > 1 ) continue;
+
 				_v1.positionScreen.x *= _svgWidthHalf; _v1.positionScreen.y *= - _svgHeightHalf;
 				_v2.positionScreen.x *= _svgWidthHalf; _v2.positionScreen.y *= - _svgHeightHalf;
 				_v3.positionScreen.x *= _svgWidthHalf; _v3.positionScreen.y *= - _svgHeightHalf;
 
-				_bboxRect.addPoint( _v1.positionScreen.x, _v1.positionScreen.y );
-				_bboxRect.addPoint( _v2.positionScreen.x, _v2.positionScreen.y );
-				_bboxRect.addPoint( _v3.positionScreen.x, _v3.positionScreen.y );
+				_elemBox.setFromPoints( [ _v1.positionScreen, _v2.positionScreen, _v3.positionScreen ] );
 
-				if ( !_clipRect.intersects( _bboxRect ) ) {
-
-					continue;
-
-				}
-
-				renderFace3( _v1, _v2, _v3, element, material, scene );
+				renderFace3( _v1, _v2, _v3, element, material );
 
 			} else if ( element instanceof THREE.RenderableFace4 ) {
 
 				_v1 = element.v1; _v2 = element.v2; _v3 = element.v3; _v4 = element.v4;
+
+				if ( _v1.positionScreen.z < -1 || _v1.positionScreen.z > 1 ) continue;
+				if ( _v2.positionScreen.z < -1 || _v2.positionScreen.z > 1 ) continue;
+				if ( _v3.positionScreen.z < -1 || _v3.positionScreen.z > 1 ) continue;
+				if ( _v4.positionScreen.z < -1 || _v4.positionScreen.z > 1 ) continue;
 
 				_v1.positionScreen.x *= _svgWidthHalf; _v1.positionScreen.y *= -_svgHeightHalf;
 				_v2.positionScreen.x *= _svgWidthHalf; _v2.positionScreen.y *= -_svgHeightHalf;
 				_v3.positionScreen.x *= _svgWidthHalf; _v3.positionScreen.y *= -_svgHeightHalf;
 				_v4.positionScreen.x *= _svgWidthHalf; _v4.positionScreen.y *= -_svgHeightHalf;
 
-				_bboxRect.addPoint( _v1.positionScreen.x, _v1.positionScreen.y );
-				_bboxRect.addPoint( _v2.positionScreen.x, _v2.positionScreen.y );
-				_bboxRect.addPoint( _v3.positionScreen.x, _v3.positionScreen.y );
-				_bboxRect.addPoint( _v4.positionScreen.x, _v4.positionScreen.y );
+				_elemBox.setFromPoints( [ _v1.positionScreen, _v2.positionScreen, _v3.positionScreen, _v4.positionScreen ] );
 
-				if ( !_clipRect.intersects( _bboxRect) ) {
-
-					continue;
-
-				}
-
-				renderFace4( _v1, _v2, _v3, _v4, element, material, scene );
+				renderFace4( _v1, _v2, _v3, _v4, element, material );
 
 			}
 
@@ -198,16 +184,14 @@ THREE.SVGRenderer = function () {
 
 	function calculateLights( lights ) {
 
-		var l, ll, light, lightColor;
-
 		_ambientLight.setRGB( 0, 0, 0 );
 		_directionalLights.setRGB( 0, 0, 0 );
 		_pointLights.setRGB( 0, 0, 0 );
 
-		for ( l = 0, ll = lights.length; l < ll; l++ ) {
+		for ( var l = 0, ll = lights.length; l < ll; l++ ) {
 
-			light = lights[ l ];
-			lightColor = light.color;
+			var light = lights[ l ];
+			var lightColor = light.color;
 
 			if ( light instanceof THREE.AmbientLight ) {
 
@@ -235,18 +219,16 @@ THREE.SVGRenderer = function () {
 
 	function calculateLight( lights, position, normal, color ) {
 
-		var l, ll, light, lightColor, lightPosition, amount;
+		for ( var l = 0, ll = lights.length; l < ll; l ++ ) {
 
-		for ( l = 0, ll = lights.length; l < ll; l ++ ) {
-
-			light = lights[ l ];
-			lightColor = light.color;
+			var light = lights[ l ];
+			var lightColor = light.color;
 
 			if ( light instanceof THREE.DirectionalLight ) {
 
-				lightPosition = light.matrixWorld.getPosition().normalize();
+				var lightPosition = _vector3.getPositionFromMatrix( light.matrixWorld ).normalize();
 
-				amount = normal.dot( lightPosition );
+				var amount = normal.dot( lightPosition );
 
 				if ( amount <= 0 ) continue;
 
@@ -258,9 +240,9 @@ THREE.SVGRenderer = function () {
 
 			} else if ( light instanceof THREE.PointLight ) {
 
-				lightPosition = light.matrixWorld.getPosition();
+				var lightPosition = _vector3.getPositionFromMatrix( light.matrixWorld );
 
-				amount = normal.dot( _vector3.sub( lightPosition, position ).normalize() );
+				var amount = normal.dot( _vector3.subVectors( lightPosition, position ).normalize() );
 
 				if ( amount <= 0 ) continue;
 
@@ -280,7 +262,7 @@ THREE.SVGRenderer = function () {
 
 	}
 
-	function renderParticle( v1, element, material, scene ) {
+	function renderParticle( v1, element, material ) {
 
 		/*
 		_svgNode = getCircleNode( _circleCount++ );
@@ -290,23 +272,15 @@ THREE.SVGRenderer = function () {
 
 		if ( material instanceof THREE.ParticleCircleMaterial ) {
 
-			if ( _enableLighting ) {
+			_color.r = _ambientLight.r + _directionalLights.r + _pointLights.r;
+			_color.g = _ambientLight.g + _directionalLights.g + _pointLights.g;
+			_color.b = _ambientLight.b + _directionalLights.b + _pointLights.b;
 
-				_color.r = _ambientLight.r + _directionalLights.r + _pointLights.r;
-				_color.g = _ambientLight.g + _directionalLights.g + _pointLights.g;
-				_color.b = _ambientLight.b + _directionalLights.b + _pointLights.b;
+			_color.r = material.color.r * _color.r;
+			_color.g = material.color.g * _color.g;
+			_color.b = material.color.b * _color.b;
 
-				_color.r = material.color.r * _color.r;
-				_color.g = material.color.g * _color.g;
-				_color.b = material.color.b * _color.b;
-
-				_color.updateStyleString();
-
-			} else {
-
-				_color = material.color;
-
-			}
+			_color.updateStyleString();
 
 			_svgNode.setAttribute( 'style', 'fill: ' + _color.__styleString );
 
@@ -317,7 +291,7 @@ THREE.SVGRenderer = function () {
 
 	}
 
-	function renderLine ( v1, v2, element, material, scene ) {
+	function renderLine ( v1, v2, element, material ) {
 
 		_svgNode = getLineNode( _lineCount ++ );
 
@@ -328,7 +302,7 @@ THREE.SVGRenderer = function () {
 
 		if ( material instanceof THREE.LineBasicMaterial ) {
 
-			_svgNode.setAttribute( 'style', 'fill: none; stroke: ' + material.color.getContextStyle() + '; stroke-width: ' + material.linewidth + '; stroke-opacity: ' + material.opacity + '; stroke-linecap: ' + material.linecap + '; stroke-linejoin: ' + material.linejoin );
+			_svgNode.setAttribute( 'style', 'fill: none; stroke: ' + material.color.getStyle() + '; stroke-width: ' + material.linewidth + '; stroke-opacity: ' + material.opacity + '; stroke-linecap: ' + material.linecap + '; stroke-linejoin: ' + material.linejoin );
 
 			_svg.appendChild( _svgNode );
 
@@ -336,7 +310,7 @@ THREE.SVGRenderer = function () {
 
 	}
 
-	function renderFace3( v1, v2, v3, element, material, scene ) {
+	function renderFace3( v1, v2, v3, element, material ) {
 
 		_this.info.render.vertices += 3;
 		_this.info.render.faces ++;
@@ -350,42 +324,25 @@ THREE.SVGRenderer = function () {
 
 			if ( material.vertexColors === THREE.FaceColors ) {
 
-				_color.r *= element.color.r;
-				_color.g *= element.color.g;
-				_color.b *= element.color.b;
+				_color.multiply( element.color );
 
 			}
 
-		} else if ( material instanceof THREE.MeshLambertMaterial ) {
+		} else if ( material instanceof THREE.MeshLambertMaterial || material instanceof THREE.MeshPhongMaterial ) {
 
 			_diffuseColor.copy( material.color );
-			_emissiveColor.copy( material.emissive );
 
 			if ( material.vertexColors === THREE.FaceColors ) {
 
-				_diffuseColor.r *= element.color.r;
-				_diffuseColor.g *= element.color.g;
-				_diffuseColor.b *= element.color.b;
+				_diffuseColor.multiply( element.color );
 
 			}
 
-			if ( _enableLighting ) {
+			_color.copy( _ambientLight );
 
-				_color.r = _ambientLight.r;
-				_color.g = _ambientLight.g;
-				_color.b = _ambientLight.b;
+			calculateLight( _lights, element.centroidModel, element.normalModel, _color );
 
-				calculateLight( _lights, element.centroidWorld, element.normalWorld, _color );
-
-				_color.r = _color.r * _diffuseColor.r + _emissiveColor.r;
-				_color.g = _color.g * _diffuseColor.g + _emissiveColor.g;
-				_color.b = _color.b * _diffuseColor.b + _emissiveColor.b;
-
-			} else {
-
-				_color.copy( _diffuseColor );
-
-			}
+			_color.multiply( _diffuseColor ).add( material.emissive );
 
 		} else if ( material instanceof THREE.MeshDepthMaterial ) {
 
@@ -394,17 +351,19 @@ THREE.SVGRenderer = function () {
 
 		} else if ( material instanceof THREE.MeshNormalMaterial ) {
 
-			_color.setRGB( normalToComponent( element.normalWorld.x ), normalToComponent( element.normalWorld.y ), normalToComponent( element.normalWorld.z ) );
+			var normal = element.normalModelView;
+
+			_color.setRGB( normal.x, normal.y, normal.z ).multiplyScalar( 0.5 ).addScalar( 0.5 );
 
 		}
 
 		if ( material.wireframe ) {
 
-			_svgNode.setAttribute( 'style', 'fill: none; stroke: ' + _color.getContextStyle() + '; stroke-width: ' + material.wireframeLinewidth + '; stroke-opacity: ' + material.opacity + '; stroke-linecap: ' + material.wireframeLinecap + '; stroke-linejoin: ' + material.wireframeLinejoin );
+			_svgNode.setAttribute( 'style', 'fill: none; stroke: ' + _color.getStyle() + '; stroke-width: ' + material.wireframeLinewidth + '; stroke-opacity: ' + material.opacity + '; stroke-linecap: ' + material.wireframeLinecap + '; stroke-linejoin: ' + material.wireframeLinejoin );
 
 		} else {
 
-			_svgNode.setAttribute( 'style', 'fill: ' + _color.getContextStyle() + '; fill-opacity: ' + material.opacity );
+			_svgNode.setAttribute( 'style', 'fill: ' + _color.getStyle() + '; fill-opacity: ' + material.opacity );
 
 		}
 
@@ -412,7 +371,7 @@ THREE.SVGRenderer = function () {
 
 	}
 
-	function renderFace4( v1, v2, v3, v4, element, material, scene ) {
+	function renderFace4( v1, v2, v3, v4, element, material ) {
 
 		_this.info.render.vertices += 4;
 		_this.info.render.faces ++;
@@ -426,42 +385,25 @@ THREE.SVGRenderer = function () {
 
 			if ( material.vertexColors === THREE.FaceColors ) {
 
-				_color.r *= element.color.r;
-				_color.g *= element.color.g;
-				_color.b *= element.color.b;
+				_color.multiply( element.color );
 
 			}
 
-		} else if ( material instanceof THREE.MeshLambertMaterial ) {
+		} else if ( material instanceof THREE.MeshLambertMaterial || material instanceof THREE.MeshPhongMaterial ) {
 
 			_diffuseColor.copy( material.color );
-			_emissiveColor.copy( material.emissive );
 
 			if ( material.vertexColors === THREE.FaceColors ) {
 
-				_diffuseColor.r *= element.color.r;
-				_diffuseColor.g *= element.color.g;
-				_diffuseColor.b *= element.color.b;
+				_diffuseColor.multiply( element.color );
 
 			}
 
-			if ( _enableLighting ) {
+			_color.copy( _ambientLight );
 
-				_color.r = _ambientLight.r;
-				_color.g = _ambientLight.g;
-				_color.b = _ambientLight.b;
+			calculateLight( _lights, element.centroidModel, element.normalModel, _color );
 
-				calculateLight( _lights, element.centroidWorld, element.normalWorld, _color );
-
-				_color.r = _color.r * _diffuseColor.r + _emissiveColor.r;
-				_color.g = _color.g * _diffuseColor.g + _emissiveColor.g;
-				_color.b = _color.b * _diffuseColor.b + _emissiveColor.b;
-
-			} else {
-
-				_color.copy( _diffuseColor );
-
-			}
+			_color.multiply( _diffuseColor ).add( material.emissive );
 
 		} else if ( material instanceof THREE.MeshDepthMaterial ) {
 
@@ -470,17 +412,19 @@ THREE.SVGRenderer = function () {
 
 		} else if ( material instanceof THREE.MeshNormalMaterial ) {
 
-			_color.setRGB( normalToComponent( element.normalWorld.x ), normalToComponent( element.normalWorld.y ), normalToComponent( element.normalWorld.z ) );
+			var normal = element.normalModelView;
+
+			_color.setRGB( normal.x, normal.y, normal.z ).multiplyScalar( 0.5 ).addScalar( 0.5 );
 
 		}
 
 		if ( material.wireframe ) {
 
-			_svgNode.setAttribute( 'style', 'fill: none; stroke: ' + _color.getContextStyle() + '; stroke-width: ' + material.wireframeLinewidth + '; stroke-opacity: ' + material.opacity + '; stroke-linecap: ' + material.wireframeLinecap + '; stroke-linejoin: ' + material.wireframeLinejoin );
+			_svgNode.setAttribute( 'style', 'fill: none; stroke: ' + _color.getStyle() + '; stroke-width: ' + material.wireframeLinewidth + '; stroke-opacity: ' + material.opacity + '; stroke-linecap: ' + material.wireframeLinecap + '; stroke-linejoin: ' + material.wireframeLinejoin );
 
 		} else {
 
-			_svgNode.setAttribute( 'style', 'fill: ' + _color.getContextStyle() + '; fill-opacity: ' + material.opacity );
+			_svgNode.setAttribute( 'style', 'fill: ' + _color.getStyle() + '; fill-opacity: ' + material.opacity );
 
 		}
 
@@ -545,13 +489,6 @@ THREE.SVGRenderer = function () {
 		}
 
 		return _svgCirclePool[ id ];
-
-	}
-
-	function normalToComponent( normal ) {
-
-		var component = ( normal + 1 ) * 0.5;
-		return component < 0 ? 0 : ( component > 1 ? 1 : component );
 
 	}
 

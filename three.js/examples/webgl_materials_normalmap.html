@@ -48,6 +48,8 @@
 
 		<script src="../build/three.min.js"></script>
 
+		<script src="js/loaders/BinaryLoader.js"></script>
+
 		<script src="js/Detector.js"></script>
 		<script src="js/libs/stats.min.js"></script>
 
@@ -153,7 +155,7 @@
 
 				// normal map shader
 
-				var shader = THREE.ShaderUtils.lib[ "normal" ];
+				var shader = THREE.ShaderLib[ "normalmap" ];
 				var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
 
 				uniforms[ "enableAO" ].value = true;
@@ -199,7 +201,7 @@
 
 				//
 
-				renderer = new THREE.WebGLRenderer( { maxLights: 8 } );
+				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
 
@@ -212,7 +214,7 @@
 				//
 
 				renderer.shadowMapEnabled = true;
-				renderer.shadowMapSoft = true;
+				renderer.shadowMapType = THREE.PCFShadowMap;
 
 
 				//

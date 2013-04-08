@@ -33,6 +33,10 @@
 
 			a { color:red }
 
+			#stats { position: absolute; top:0; left: 0 }
+			#stats #fps { background: transparent !important }
+			#stats #fps #fpsText { color: #777 !important }
+			#stats #fps #fpsGraph { display: none }
 		</style>
 	</head>
 
@@ -89,8 +93,7 @@
 				scene1 = new THREE.Scene();
 				scene2 = new THREE.Scene();
 
-				scene1.fog = new THREE.Fog( 0xffffff, 1, 25000 );
-				scene1.fog.color.setHSV( 0.6, 0.05, 1 );
+				scene1.fog = new THREE.Fog( 0xf2f7ff, 1, 25000 );
 				scene2.fog = scene1.fog;
 
 				scene1.add( new THREE.AmbientLight( 0xeef0ff ) );
@@ -161,14 +164,7 @@
 				// STATS1
 
 				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
-				stats.domElement.style.top = '0px';
-				stats.domElement.style.zIndex = 100;
 				container.appendChild( stats.domElement );
-
-				stats.domElement.children[ 0 ].children[ 0 ].style.color = "#777";
-				stats.domElement.children[ 0 ].style.background = "transparent";
-				stats.domElement.children[ 0 ].children[ 1 ].style.display = "none";
 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 

@@ -32,6 +32,10 @@
 				color:#fff;
 			}
 
+			#stats { position: absolute; top:0; left: 0 }
+			#stats #fps { background: transparent !important }
+			#stats #fps #fpsText { color: #aaa !important }
+			#stats #fps #fpsGraph { display: none }
 		</style>
 	</head>
 
@@ -138,7 +142,7 @@
 
 				directionalLight = new THREE.DirectionalLight( 0xffffff, 0.85 );
 				directionalLight.position.set( 1, -0.5, 1 );
-				directionalLight.color.setHSV( 0.6, 0.3, 1 );
+				directionalLight.color.setHSL( 0.6, 1, 0.85 );
 				scene.add( directionalLight );
 
 				directionalLight.position.multiplyScalar( 500 );
@@ -180,11 +184,11 @@
 				container.appendChild( renderer.domElement );
 
 				var color = new THREE.Color();
-				color.setHSV( 0.6, 0.15, 0.35 );
+				color.setHSL( 0.6, 0.1, 0.3 );
 				renderer.setClearColor( color, 1 );
 
 				renderer.shadowMapEnabled = true;
-				renderer.shadowMapCullFrontFaces = false;
+				renderer.shadowMapCullFace = THREE.CullFaceBack;
 
 				renderer.autoClear = false;
 
@@ -199,14 +203,6 @@
 				if ( statsEnabled ) {
 
 					stats = new Stats();
-					stats.domElement.style.position = 'absolute';
-					stats.domElement.style.top = '0px';
-					stats.domElement.style.zIndex = 100;
-
-					stats.domElement.children[ 0 ].children[ 0 ].style.color = "#aaa";
-					stats.domElement.children[ 0 ].style.background = "transparent";
-					stats.domElement.children[ 0 ].children[ 1 ].style.display = "none";
-
 					container.appendChild( stats.domElement );
 
 				}
