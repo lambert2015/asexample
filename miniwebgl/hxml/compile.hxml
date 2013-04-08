@@ -1,5 +1,4 @@
 -cp ../src 
 -main MinimalDraw.hx
---js-modern 
 -js ../bin/minimaldraw.js
 -debug
