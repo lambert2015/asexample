@@ -7,9 +7,9 @@ package three.math;
 
 class Vector3 
 {
-	public static inline var X_AXIS:Vector3 = new Vector3(1, 0, 0);
-	public static inline var Y_AXIS:Vector3 = new Vector3(0, 1, 0);
-	public static inline var Z_AXIS:Vector3 = new Vector3(0, 0, 1);
+	public static var X_AXIS:Vector3 = new Vector3(1, 0, 0);
+	public static var Y_AXIS:Vector3 = new Vector3(0, 1, 0);
+	public static var Z_AXIS:Vector3 = new Vector3(0, 0, 1);
 	
 	public var x:Float;
 	
@@ -122,8 +122,8 @@ class Vector3
 		return this.x * value.x + this.y * value.y + this.z * value.z;
 	}
 	
-	public var lengthSq(getLengthSq, never):Float;
-	public function getLengthSq():Float
+	public var lengthSq(get, never):Float;
+	public function get_lengthSq():Float
 	{
 		return this.x * this.x + this.y * this.y + this.z * this.z;
 	}

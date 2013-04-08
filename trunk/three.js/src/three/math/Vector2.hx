@@ -91,14 +91,14 @@ class Vector2
 		return this.x * value.x + this.y * value.y;
 	}
 	
-	public var lengthSq(getLengthSq, never):Float;
-	public function getLengthSq():Float
+	public var lengthSq(get, never):Float;
+	public function get_lengthSq():Float
 	{
 		return this.x * this.x + this.y * this.y;
 	}
 	
-	public var length(getLength, never):Float;
-	public function getLength():Float
+	public var length(get, never):Float;
+	public function get_length():Float
 	{
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}

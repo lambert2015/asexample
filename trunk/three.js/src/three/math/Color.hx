@@ -12,9 +12,9 @@ class Color
 	public var g:Float;
 	public var b:Float;
 
-	public function new(value:Int=0xFF000000) 
+	public function new(value:Int = 0xFF000000) 
 	{
-		setRGBA(value);
+		this.rgba = value;
 	}
 	
 	public function setHSV(h:Float, s:Float, v:Float):Color
@@ -108,13 +108,13 @@ class Color
 		return result;
 	}
 	
-	public var rgb(getRGB, setRGB):Int;
-	public function getRGB():Int
+	public var rgb(get, set):Int;
+	public function get_rgb():Int
 	{
 		return Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
 	}
 	
-	public function setRGB(value:Int):Int
+	public function set_rgb(value:Int):Int
 	{
 		var invert:Float = 1.0 / 255;
 		r = (value >> 16 & 0xFF) * invert;
@@ -123,14 +123,14 @@ class Color
 		return value;
 	}
 	
-	public var rgba(getRGBA, setRGBA):Int;
-	public function getRGBA():Int
+	public var rgba(get, set):Int;
+	public function get_rgba():Int
 	{
 		return Math.floor(this.a * 255) << 24 | Math.floor(this.r * 255) << 16 | 
 		Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
 	}
 	
-	public function setRGBA(value:Int):Int
+	public function set_rgba(value:Int):Int
 	{
 		var invert:Float = 1.0 / 255;
 		a = (value >> 24 & 0xFF) * invert;

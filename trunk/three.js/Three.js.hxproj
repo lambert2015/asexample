@@ -20,10 +20,10 @@
   <!-- Build options -->
   <build>
     <option directives="" />
-    <option flashStrict="False" />
+    <option flashStrict="True" />
     <option mainClass="Test" />
     <option enabledebug="True" />
-    <option additional="--js-modern" />
+    <option additional="" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
