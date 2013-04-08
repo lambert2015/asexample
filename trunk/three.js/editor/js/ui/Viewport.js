@@ -1,37 +1,22 @@
 var Viewport = function ( signals ) {
 
-	var container = new UI.Panel( 'absolute' );
+	var container = new UI.Panel();
+	container.setPosition( 'absolute' );
 	container.setBackgroundColor( '#aaa' );
-
-	//
 
 	var objects = [];
 
+	// helpers
+
+	var helpersToObjects = {};
+	var objectsToHelpers = {};
+
 	var sceneHelpers = new THREE.Scene();
 
-	var size = 500, step = 25;
-	var geometry = new THREE.Geometry();
-	var material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors } );
-	var color1 = new THREE.Color( 0x444444 ), color2 = new THREE.Color( 0x888888 );
-
-	for ( var i = - size; i <= size; i += step ) {
-
-		geometry.vertices.push( new THREE.Vector3( -size, 0, i ) );
-		geometry.vertices.push( new THREE.Vector3(  size, 0, i ) );
-
-		geometry.vertices.push( new THREE.Vector3( i, 0, -size ) );
-		geometry.vertices.push( new THREE.Vector3( i, 0,  size ) );
-
-		var color = i === 0 ? color1 : color2;
-
-		geometry.colors.push( color, color, color, color );
-
-	}
-
-	var grid = new THREE.Line( geometry, material, THREE.LinePieces );
+	var grid = new THREE.GridHelper( 500, 25 );
 	sceneHelpers.add( grid );
 
-	var selectionBox = new THREE.Mesh( new THREE.CubeGeometry( 1, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: true } ) );
+	var selectionBox = new THREE.Mesh( new THREE.CubeGeometry( 1, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: true, fog: false } ) );
 	selectionBox.matrixAutoUpdate = false;
 	selectionBox.visible = false;
 	sceneHelpers.add( selectionBox );
@@ -47,72 +32,89 @@ var Viewport = function ( signals ) {
 
 	var scene = new THREE.Scene();
 
-	var camera = new THREE.PerspectiveCamera( 50, 1, 1, 5000 );
+	var camera = new THREE.PerspectiveCamera( 50, container.dom.offsetWidth / container.dom.offsetHeight, 1, 5000 );
 	camera.position.set( 500, 250, 500 );
 	camera.lookAt( scene.position );
-	scene.add( camera );
 
-	var light = new THREE.DirectionalLight( 0xffffff );
-	light.position.set( 1, 0.5, 0 ).normalize();
-	scene.add( light );
+	// fog
 
-	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-	light.position.set( - 1, - 0.5, 0 ).normalize();
-	scene.add( light );
-
-	signals.sceneChanged.dispatch( scene );
+	var oldFogType = "None";
+	var oldFogColor = 0xaaaaaa;
+	var oldFogNear = 1;
+	var oldFogFar = 5000;
+	var oldFogDensity = 0.00025;
 
 	// object picking
 
-	var intersectionPlane = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000, 8, 8 ) );
+	var intersectionPlane = new THREE.Mesh( new THREE.PlaneGeometry( 10000, 10000, 8, 8 ) );
 	intersectionPlane.visible = false;
 	sceneHelpers.add( intersectionPlane );
 
-	var ray = new THREE.Ray();
+	var ray = new THREE.Raycaster();
 	var projector = new THREE.Projector();
 	var offset = new THREE.Vector3();
+
+	var cameraChanged = false;
+
+	//
+
 	var picked = null;
+	var selected = camera;
 
 	// events
 
 	var onMouseDown = function ( event ) {
 
+		container.dom.focus();
+
 		event.preventDefault();
 
-		var vector = new THREE.Vector3(
-			( ( event.clientX - container.dom.offsetLeft ) / container.dom.offsetWidth ) * 2 - 1,
-			- ( ( event.clientY - container.dom.offsetTop ) / container.dom.offsetHeight ) * 2 + 1,
-			0.5
-		);
+		if ( event.button === 0 ) {
 
-		projector.unprojectVector( vector, camera );
+			var vector = new THREE.Vector3(
+				( ( event.clientX - container.dom.offsetLeft ) / container.dom.offsetWidth ) * 2 - 1,
+				- ( ( event.clientY - container.dom.offsetTop ) / container.dom.offsetHeight ) * 2 + 1,
+				0.5
+			);
 
-		ray.set( camera.position, vector.subSelf( camera.position ).normalize() );
+			projector.unprojectVector( vector, camera );
 
-		var intersects = ray.intersectObjects( objects, true );
+			ray.set( camera.position, vector.sub( camera.position ).normalize() );
 
-		if ( intersects.length > 0 ) {
+			var intersects = ray.intersectObjects( objects, true );
 
-			controls.enabled = false;
+			if ( intersects.length > 0 ) {
 
-			intersectionPlane.position.copy( intersects[ 0 ].object.position );
-			intersectionPlane.lookAt( camera.position );
+				controls.enabled = false;
 
-			picked = intersects[ 0 ].object;
+				selected = intersects[ 0 ].object;
 
-			signals.objectSelected.dispatch( picked );
+				if ( helpersToObjects[ selected.id ] !== undefined ) {
 
-			var intersects = ray.intersectObject( intersectionPlane );
-			offset.copy( intersects[ 0 ].point ).subSelf( intersectionPlane.position );
+					selected = helpersToObjects[ selected.id ];
 
-			document.addEventListener( 'mousemove', onMouseMove, false );
-			document.addEventListener( 'mouseup', onMouseUp, false );
+				}
 
-		} else {
+				intersectionPlane.position.copy( selected.position );
+				intersectionPlane.lookAt( camera.position );
 
-			controls.enabled = true;
+				signals.objectSelected.dispatch( selected );
+
+				var intersects = ray.intersectObject( intersectionPlane );
+				offset.copy( intersects[ 0 ].point ).sub( intersectionPlane.position );
+
+				document.addEventListener( 'mousemove', onMouseMove, false );
+				document.addEventListener( 'mouseup', onMouseUp, false );
+
+			} else {
+
+				controls.enabled = true;
+
+			}
 
 		}
+
+		cameraChanged = false;
 
 	};
 
@@ -126,15 +128,16 @@ var Viewport = function ( signals ) {
 
 		projector.unprojectVector( vector, camera );
 
-		ray.set( camera.position, vector.subSelf( camera.position ).normalize() );
+		ray.set( camera.position, vector.sub( camera.position ).normalize() );
 
 		var intersects = ray.intersectObject( intersectionPlane );
 
 		if ( intersects.length > 0 ) {
 
-			picked.position.copy( intersects[ 0 ].point.subSelf( offset ) );
+			intersects[ 0 ].point.sub( offset );
 
-			signals.objectChanged.dispatch( picked );
+			selected.position.copy( intersects[ 0 ].point );
+			signals.objectChanged.dispatch( selected );
 
 			render();
 
@@ -151,24 +154,58 @@ var Viewport = function ( signals ) {
 
 	var onClick = function ( event ) {
 
-		var vector = new THREE.Vector3(
-			( ( event.clientX - container.dom.offsetLeft ) / container.dom.offsetWidth ) * 2 - 1,
-			- ( ( event.clientY - container.dom.offsetTop ) / container.dom.offsetHeight ) * 2 + 1,
-			0.5
-		);
+		if ( event.button == 0 && cameraChanged === false ) {
 
-		projector.unprojectVector( vector, camera );
+			var vector = new THREE.Vector3(
+				( ( event.clientX - container.dom.offsetLeft ) / container.dom.offsetWidth ) * 2 - 1,
+				- ( ( event.clientY - container.dom.offsetTop ) / container.dom.offsetHeight ) * 2 + 1,
+				0.5
+			);
 
-		ray.set( camera.position, vector.subSelf( camera.position ).normalize() );
-		var intersects = ray.intersectObjects( objects, true );
+			projector.unprojectVector( vector, camera );
 
-		if ( intersects.length > 0 ) {
+			ray.set( camera.position, vector.sub( camera.position ).normalize() );
+			var intersects = ray.intersectObjects( objects, true );
 
-			signals.objectSelected.dispatch( intersects[ 0 ].object );
+			if ( intersects.length > 0 && ! controls.enabled ) {
 
-		} else {
+				selected = intersects[ 0 ].object;
 
-			signals.objectSelected.dispatch( null );
+				if ( helpersToObjects[ selected.id ] !== undefined ) {
+
+					selected = helpersToObjects[ selected.id ];
+
+				}
+
+			} else {
+
+				selected = camera;
+
+			}
+
+			signals.objectSelected.dispatch( selected );
+
+		}
+
+		controls.enabled = true;
+
+	};
+
+	var onKeyDown = function ( event ) {
+
+		switch ( event.keyCode ) {
+
+			case 27: // esc
+
+				signals.toggleHelpers.dispatch();
+
+				break;
+
+			case 46: // delete
+
+				signals.removeSelectedObject.dispatch();
+
+				break;
 
 		}
 
@@ -188,22 +225,102 @@ var Viewport = function ( signals ) {
 	controls.noPan = false;
 	controls.staticMoving = true;
 	controls.dynamicDampingFactor = 0.3;
-	controls.addEventListener( 'change', render );
+	controls.addEventListener( 'change', function () {
+
+		cameraChanged = true;
+
+		signals.cameraChanged.dispatch( camera );
+		render();
+
+	} );
 
 	// signals
 
+	signals.rendererChanged.add( function ( object ) {
+
+		container.dom.removeChild( renderer.domElement );
+
+		renderer = object;
+		renderer.autoClear = false;
+		renderer.autoUpdateScene = false;
+		renderer.setSize( container.dom.offsetWidth, container.dom.offsetHeight );
+
+		container.dom.appendChild( renderer.domElement );
+
+		render();
+
+	} );
+
 	signals.objectAdded.add( function ( object ) {
 
-		object.traverse( function ( child ) {
+		// handle children
 
-			objects.push( child );
+		object.traverse( function ( object ) {
+
+			// create helpers for invisible object types (lights, cameras, targets)
+
+			if ( object instanceof THREE.PointLight ) {
+
+				var helper = new THREE.PointLightHelper( object, 10 );
+				sceneHelpers.add( helper );
+
+				objectsToHelpers[ object.id ] = helper;
+				helpersToObjects[ helper.lightSphere.id ] = object;
+
+				objects.push( helper.lightSphere );
+
+			} else if ( object instanceof THREE.DirectionalLight ) {
+
+				var helper = new THREE.DirectionalLightHelper( object, 10 );
+				sceneHelpers.add( helper );
+
+				objectsToHelpers[ object.id ] = helper;
+				helpersToObjects[ helper.lightSphere.id ] = object;
+
+				objects.push( helper.lightSphere );
+
+			} else if ( object instanceof THREE.SpotLight ) {
+
+				var helper = new THREE.SpotLightHelper( object, 10 );
+				sceneHelpers.add( helper );
+
+				objectsToHelpers[ object.id ] = helper;
+				helpersToObjects[ helper.lightSphere.id ] = object;
+
+				objects.push( helper.lightSphere );
+
+			} else if ( object instanceof THREE.HemisphereLight ) {
+
+				var helper = new THREE.HemisphereLightHelper( object, 10 );
+				sceneHelpers.add( helper );
+
+				objectsToHelpers[ object.id ] = helper;
+				helpersToObjects[ helper.lightSphere.id ] = object;
+
+				objects.push( helper.lightSphere );
+
+			} else {
+
+				// add to picking list
+
+				objects.push( object );
+
+			}
 
 		} );
 
 		scene.add( object );
-		render();
+
+		// TODO: Add support for hierarchies with lights
+
+		if ( object instanceof THREE.Light )  {
+
+			updateMaterials( scene );
+
+		}
 
 		signals.sceneChanged.dispatch( scene );
+		signals.objectSelected.dispatch( object );
 
 	} );
 
@@ -215,68 +332,142 @@ var Viewport = function ( signals ) {
 
 		}
 
+		if ( objectsToHelpers[ object.id ] !== undefined ) {
+
+			objectsToHelpers[ object.id ].update();
+
+		}
+
 		render();
 
 	} );
 
-	var selected = null;
+	signals.cloneSelectedObject.add( function () {
+
+		if ( selected === camera ) return;
+
+		var object = selected.clone();
+
+		signals.objectAdded.dispatch( object );
+		signals.objectSelected.dispatch( object );
+
+	} );
+
+	signals.removeSelectedObject.add( function () {
+
+		if ( selected === camera ) return;
+
+		var name = selected.name ?  '"' + selected.name + '"': "selected object";
+
+		if ( confirm( 'Delete ' + name + '?' ) === false ) return;
+
+		if ( selected instanceof THREE.Light ) {
+
+			var helper = objectsToHelpers[ selected.id ];
+
+			objects.splice( objects.indexOf( helper.lightSphere ), 1 );
+
+			helper.parent.remove( helper );
+			selected.parent.remove( selected );
+
+			delete objectsToHelpers[ selected.id ];
+			delete helpersToObjects[ helper.id ];
+
+			if ( selected instanceof THREE.DirectionalLight ||
+			     selected instanceof THREE.SpotLight ) {
+
+				selected.target.parent.remove( selected.target );
+
+			}
+
+			updateMaterials( scene );
+
+		} else {
+
+			selected.traverse( function ( object ) {
+
+				var index = objects.indexOf( object );
+
+				if ( index !== -1 ) {
+
+					objects.splice( index, 1 )
+
+				}
+
+			} );
+
+			selected.parent.remove( selected );
+
+		}
+
+		signals.sceneChanged.dispatch( scene );
+		signals.objectSelected.dispatch( null );
+
+	} );
 
 	signals.objectSelected.add( function ( object ) {
 
 		selectionBox.visible = false;
 		selectionAxis.visible = false;
 
-		if ( object !== null && object.geometry ) {
+		if ( object !== null ) {
 
-			var geometry = object.geometry;
+			if ( object.geometry !== undefined ) {
 
-			if ( geometry.boundingBox === null ) {
+				var geometry = object.geometry;
 
-				geometry.computeBoundingBox();
+				if ( geometry.boundingBox === null ) {
+
+					geometry.computeBoundingBox();
+
+				}
+
+				var vertices = selectionBox.geometry.vertices;
+
+				vertices[ 0 ].x = geometry.boundingBox.max.x;
+				vertices[ 0 ].y = geometry.boundingBox.max.y;
+				vertices[ 0 ].z = geometry.boundingBox.max.z;
+
+				vertices[ 1 ].x = geometry.boundingBox.max.x;
+				vertices[ 1 ].y = geometry.boundingBox.max.y;
+				vertices[ 1 ].z = geometry.boundingBox.min.z;
+
+				vertices[ 2 ].x = geometry.boundingBox.max.x;
+				vertices[ 2 ].y = geometry.boundingBox.min.y;
+				vertices[ 2 ].z = geometry.boundingBox.max.z;
+
+				vertices[ 3 ].x = geometry.boundingBox.max.x;
+				vertices[ 3 ].y = geometry.boundingBox.min.y;
+				vertices[ 3 ].z = geometry.boundingBox.min.z;
+
+				vertices[ 4 ].x = geometry.boundingBox.min.x;
+				vertices[ 4 ].y = geometry.boundingBox.max.y;
+				vertices[ 4 ].z = geometry.boundingBox.min.z;
+
+				vertices[ 5 ].x = geometry.boundingBox.min.x;
+				vertices[ 5 ].y = geometry.boundingBox.max.y;
+				vertices[ 5 ].z = geometry.boundingBox.max.z;
+
+				vertices[ 6 ].x = geometry.boundingBox.min.x;
+				vertices[ 6 ].y = geometry.boundingBox.min.y;
+				vertices[ 6 ].z = geometry.boundingBox.min.z;
+
+				vertices[ 7 ].x = geometry.boundingBox.min.x;
+				vertices[ 7 ].y = geometry.boundingBox.min.y;
+				vertices[ 7 ].z = geometry.boundingBox.max.z;
+
+				selectionBox.geometry.computeBoundingSphere();
+				selectionBox.geometry.verticesNeedUpdate = true;
+
+				selectionBox.matrixWorld = object.matrixWorld;
+				selectionBox.visible = true;
 
 			}
 
-			selectionBox.geometry.vertices[ 0 ].x = geometry.boundingBox.max.x;
-			selectionBox.geometry.vertices[ 0 ].y = geometry.boundingBox.max.y;
-			selectionBox.geometry.vertices[ 0 ].z = geometry.boundingBox.max.z;
-
-			selectionBox.geometry.vertices[ 1 ].x = geometry.boundingBox.max.x;
-			selectionBox.geometry.vertices[ 1 ].y = geometry.boundingBox.max.y;
-			selectionBox.geometry.vertices[ 1 ].z = geometry.boundingBox.min.z;
-
-			selectionBox.geometry.vertices[ 2 ].x = geometry.boundingBox.max.x;
-			selectionBox.geometry.vertices[ 2 ].y = geometry.boundingBox.min.y;
-			selectionBox.geometry.vertices[ 2 ].z = geometry.boundingBox.max.z;
-
-			selectionBox.geometry.vertices[ 3 ].x = geometry.boundingBox.max.x;
-			selectionBox.geometry.vertices[ 3 ].y = geometry.boundingBox.min.y;
-			selectionBox.geometry.vertices[ 3 ].z = geometry.boundingBox.min.z;
-
-			selectionBox.geometry.vertices[ 4 ].x = geometry.boundingBox.min.x;
-			selectionBox.geometry.vertices[ 4 ].y = geometry.boundingBox.max.y;
-			selectionBox.geometry.vertices[ 4 ].z = geometry.boundingBox.min.z;
-
-			selectionBox.geometry.vertices[ 5 ].x = geometry.boundingBox.min.x;
-			selectionBox.geometry.vertices[ 5 ].y = geometry.boundingBox.max.y;
-			selectionBox.geometry.vertices[ 5 ].z = geometry.boundingBox.max.z;
-
-			selectionBox.geometry.vertices[ 6 ].x = geometry.boundingBox.min.x;
-			selectionBox.geometry.vertices[ 6 ].y = geometry.boundingBox.min.y;
-			selectionBox.geometry.vertices[ 6 ].z = geometry.boundingBox.min.z;
-
-			selectionBox.geometry.vertices[ 7 ].x = geometry.boundingBox.min.x;
-			selectionBox.geometry.vertices[ 7 ].y = geometry.boundingBox.min.y;
-			selectionBox.geometry.vertices[ 7 ].z = geometry.boundingBox.max.z;
-
-			selectionBox.geometry.computeBoundingSphere();
-
-			selectionBox.geometry.verticesNeedUpdate = true;
-
-			selectionBox.matrixWorld = object.matrixWorld;
 			selectionAxis.matrixWorld = object.matrixWorld;
-
-			selectionBox.visible = true;
 			selectionAxis.visible = true;
+
+			selected = object;
 
 		}
 
@@ -285,6 +476,64 @@ var Viewport = function ( signals ) {
 	} );
 
 	signals.materialChanged.add( function ( material ) {
+
+		render();
+
+	} );
+
+	signals.clearColorChanged.add( function ( color ) {
+
+		renderer.setClearColorHex( color, 1 );
+
+		render();
+
+	} );
+
+	signals.fogTypeChanged.add( function ( fogType ) {
+
+		if ( fogType !== oldFogType ) {
+
+			if ( fogType === "None" ) {
+
+				scene.fog = null;
+
+			} else if ( fogType === "Fog" ) {
+
+				scene.fog = new THREE.Fog( oldFogColor, oldFogNear, oldFogFar );
+
+			} else if ( fogType === "FogExp2" ) {
+
+				scene.fog = new THREE.FogExp2( oldFogColor, oldFogDensity );
+
+			}
+
+			updateMaterials( scene );
+
+			oldFogType = fogType;
+
+		}
+
+		render();
+
+	} );
+
+	signals.fogColorChanged.add( function ( fogColor ) {
+
+		oldFogColor = fogColor;
+
+		updateFog( scene );
+
+		render();
+
+	} );
+
+	signals.fogParametersChanged.add( function ( near, far, density ) {
+
+		oldFogNear = near;
+		oldFogFar = far;
+		oldFogDensity = density;
+
+		updateFog( scene );
 
 		render();
 
@@ -301,6 +550,43 @@ var Viewport = function ( signals ) {
 
 	} );
 
+	signals.exportGeometry.add( function ( object ) {
+
+		if ( selected.geometry === undefined ) {
+
+			console.warn( "Selected object doesn't have any geometry" );
+			return;
+
+		}
+
+		var exporter = new object.exporter();
+
+		var output = JSON.stringify( exporter.parse( selected.geometry ), null, '\t' );
+		output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
+
+		var blob = new Blob( [ output ], { type: 'text/plain' } );
+		var objectURL = URL.createObjectURL( blob );
+
+		window.open( objectURL, '_blank' );
+		window.focus();
+
+	} );
+
+	signals.exportScene.add( function ( object ) {
+
+		var exporter = new object.exporter();
+
+		var output = JSON.stringify( exporter.parse( scene ), null, '\t' );
+		output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
+
+		var blob = new Blob( [ output ], { type: 'text/plain' } );
+		var objectURL = URL.createObjectURL( blob );
+
+		window.open( objectURL, '_blank' );
+		window.focus();
+
+	} );
+
 	//
 
 	var renderer = new THREE.WebGLRenderer( { antialias: true, alpha: false, clearColor: 0xaaaaaa, clearAlpha: 1 } );
@@ -310,7 +596,56 @@ var Viewport = function ( signals ) {
 
 	animate();
 
+	// set up for hotkeys
+	// must be done here, otherwise it doesn't work
+
+	container.dom.tabIndex = 1;
+	container.dom.style.outline = 'transparent';
+	container.dom.addEventListener( 'keydown', onKeyDown, false );
+
+	// must come after listeners are registered
+
+	signals.sceneChanged.dispatch( scene );
+
 	//
+
+	function updateMaterials( root ) {
+
+		root.traverse( function ( node ) {
+
+			if ( node.material ) {
+
+				node.material.needsUpdate = true;
+
+			}
+
+			if ( node.geometry && node.geometry.materials ) {
+
+				for ( var i = 0; i < node.geometry.materials.length; i ++ ) {
+
+					node.geometry.materials[ i ].needsUpdate = true;
+
+				}
+
+			}
+
+		} );
+
+	}
+
+	function updateFog( root ) {
+
+		if ( root.fog ) {
+
+			root.fog.color.setHex( oldFogColor );
+
+			if ( root.fog.near !== undefined ) root.fog.near = oldFogNear;
+			if ( root.fog.far !== undefined ) root.fog.far = oldFogFar;
+			if ( root.fog.density !== undefined ) root.fog.density = oldFogDensity;
+
+		}
+
+	}
 
 	function animate() {
 

@@ -29,8 +29,14 @@
 			a:hover {
 				color: #f00;
 			}
+
 			#footer { width: 100%; margin: 2em auto; text-align: center; position: absolute; bottom: 0 }
 			strong { color: red }
+
+			#stats { position: absolute; top:0; left: 0 }
+			#stats #fps { background: transparent !important }
+			#stats #fps #fpsText { color: #555 !important }
+			#stats #fps #fpsGraph { display: none }
 		</style>
 	</head>
 	<body>
@@ -53,14 +59,14 @@
 
 		<script type="x-shader/x-vertex" id="vertexShader">
 
-			varying vec3 worldPosition;
+			varying vec3 vWorldPosition;
 
 			void main() {
 
-				vec4 mPosition = modelMatrix * vec4( position, 1.0 );
+				vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+				vWorldPosition = worldPosition.xyz;
 
 				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-				worldPosition = mPosition.xyz;
 
 			}
 
@@ -73,16 +79,17 @@
 			uniform float offset;
 			uniform float exponent;
 
-			varying vec3 worldPosition;
+			varying vec3 vWorldPosition;
 
 			void main() {
 
-				float h = normalize( worldPosition + offset ).y;
+				float h = normalize( vWorldPosition + offset ).y;
 				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( h, exponent ), 0.0 ) ), 1.0 );
 
 			}
 
 		</script>
+
 		<script>
 
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
@@ -106,7 +113,7 @@
 				scene = new THREE.Scene();
 
 				scene.fog = new THREE.Fog( 0xffffff, 1, 5000 );
-				scene.fog.color.setHSV( 0.6, 0, 1 );
+				scene.fog.color.setHSL( 0.6, 0, 1 );
 
 				/*
 				controls = new THREE.TrackballControls( camera );
@@ -125,15 +132,15 @@
 				// LIGHTS
 
 				hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-				hemiLight.color.setHSV( 0.6, 0.75, 1 );
-				hemiLight.groundColor.setHSV( 0.095, 0.5, 1 );
+				hemiLight.color.setHSL( 0.6, 1, 0.6 );
+				hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 				hemiLight.position.set( 0, 500, 0 );
 				scene.add( hemiLight );
 
 				//
 
 				dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-				dirLight.color.setHSV( 0.1, 0.1, 1 );
+				dirLight.color.setHSL( 0.1, 1, 0.95 );
 				dirLight.position.set( -1, 1.75, 1 );
 				dirLight.position.multiplyScalar( 50 );
 				scene.add( dirLight );
@@ -158,8 +165,8 @@
 				// GROUND
 
 				var groundGeo = new THREE.PlaneGeometry( 10000, 10000 );
-				var groundMat = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505, perPixel: true } );
-				groundMat.color.setHSV( 0.095, 0.5, 1 );
+				var groundMat = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505 } );
+				groundMat.color.setHSL( 0.095, 1, 0.75 );
 
 				var ground = new THREE.Mesh( groundGeo, groundMat );
 				ground.rotation.x = -Math.PI/2;
@@ -197,7 +204,7 @@
 					morphColorsToFaceColors( geometry );
 					geometry.computeMorphNormals();
 
-					var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff, shininess: 20, morphTargets: true, morphNormals: true, vertexColors: THREE.FaceColors, shading: THREE.FlatShading, perPixel: false } );
+					var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff, shininess: 20, morphTargets: true, morphNormals: true, vertexColors: THREE.FaceColors, shading: THREE.FlatShading } );
 					var meshAnim = new THREE.MorphAnimMesh( geometry, material );
 
 					meshAnim.duration = 1000;
@@ -228,19 +235,12 @@
 				renderer.physicallyBasedShading = true;
 
 				renderer.shadowMapEnabled = true;
-				renderer.shadowMapCullFrontFaces = false;
+				renderer.shadowMapCullFace = THREE.CullFaceBack;
 
 				// STATS
 
 				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
-				stats.domElement.style.top = '0px';
-				stats.domElement.style.zIndex = 100;
 				container.appendChild( stats.domElement );
-
-				stats.domElement.children[ 0 ].children[ 0 ].style.color = "#777";
-				stats.domElement.children[ 0 ].style.background = "transparent";
-				stats.domElement.children[ 0 ].children[ 1 ].style.display = "none";
 
 				//
 
@@ -258,7 +258,6 @@
 					for ( var i = 0; i < colorMap.colors.length; i ++ ) {
 
 						geometry.faces[ i ].color = colorMap.colors[ i ];
-						THREE.ColorUtils.adjustHSV( geometry.faces[ i ].color, 0, -0.1, 0 );
 
 					}
 

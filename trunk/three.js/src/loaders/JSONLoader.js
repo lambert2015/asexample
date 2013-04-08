@@ -7,6 +7,8 @@ THREE.JSONLoader = function ( showStatus ) {
 
 	THREE.Loader.call( this, showStatus );
 
+	this.withCredentials = false;
+
 };
 
 THREE.JSONLoader.prototype = Object.create( THREE.Loader.prototype );
@@ -15,7 +17,9 @@ THREE.JSONLoader.prototype.load = function ( url, callback, texturePath ) {
 
 	var scope = this;
 
-	texturePath = texturePath ? texturePath : this.extractUrlBase( url );
+	// todo: unify load API to for easier SceneLoader use
+
+	texturePath = texturePath && ( typeof texturePath === "string" ) ? texturePath : this.extractUrlBase( url );
 
 	this.onLoadStart();
 	this.loadAjaxJSON( this, url, callback, texturePath );
@@ -37,7 +41,8 @@ THREE.JSONLoader.prototype.loadAjaxJSON = function ( context, url, callback, tex
 				if ( xhr.responseText ) {
 
 					var json = JSON.parse( xhr.responseText );
-					context.createModel( json, callback, texturePath );
+					var result = context.parse( json, texturePath );
+					callback( result.geometry, result.materials );
 
 				} else {
 
@@ -80,17 +85,16 @@ THREE.JSONLoader.prototype.loadAjaxJSON = function ( context, url, callback, tex
 	};
 
 	xhr.open( "GET", url, true );
+	xhr.withCredentials = this.withCredentials;
 	xhr.send( null );
 
 };
 
-THREE.JSONLoader.prototype.createModel = function ( json, callback, texturePath ) {
+THREE.JSONLoader.prototype.parse = function ( json, texturePath ) {
 
 	var scope = this,
 	geometry = new THREE.Geometry(),
 	scale = ( json.scale !== undefined ) ? 1.0 / json.scale : 1.0;
-
-	this.initMaterials( geometry, json.materials, texturePath );
 
 	parseModel( scale );
 
@@ -99,9 +103,6 @@ THREE.JSONLoader.prototype.createModel = function ( json, callback, texturePath 
 
 	geometry.computeCentroids();
 	geometry.computeFaceNormals();
-
-	if ( this.hasNormals( geometry ) ) geometry.computeTangents();
-
 
 	function parseModel( scale ) {
 
@@ -229,7 +230,7 @@ THREE.JSONLoader.prototype.createModel = function ( json, callback, texturePath 
 					u = uvLayer[ uvIndex * 2 ];
 					v = uvLayer[ uvIndex * 2 + 1 ];
 
-					geometry.faceUvs[ i ][ fi ] = new THREE.UV( u, v );
+					geometry.faceUvs[ i ][ fi ] = new THREE.Vector2( u, v );
 
 				}
 
@@ -250,7 +251,7 @@ THREE.JSONLoader.prototype.createModel = function ( json, callback, texturePath 
 						u = uvLayer[ uvIndex * 2 ];
 						v = uvLayer[ uvIndex * 2 + 1 ];
 
-						uvs[ j ] = new THREE.UV( u, v );
+						uvs[ j ] = new THREE.Vector2( u, v );
 
 					}
 
@@ -418,6 +419,17 @@ THREE.JSONLoader.prototype.createModel = function ( json, callback, texturePath 
 
 	};
 
-	callback( geometry );
+	var materials = this.initMaterials( json.materials, texturePath );
+
+	if ( this.needsTangents( materials ) ) {
+
+		geometry.computeTangents();
+
+	}
+
+	return {
+		geometry: geometry,
+		materials: materials
+	};
 
 };

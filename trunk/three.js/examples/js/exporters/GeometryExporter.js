@@ -161,19 +161,16 @@ THREE.GeometryExporter.prototype = {
 
 		//
 
-		var output = [
-			'{',
-			'	"metadata": {',
-			'		"formatVersion" : 3',
-			'	},',
-			'	"vertices": ' + JSON.stringify( vertices ) + ',',
-			'	"normals": ' + JSON.stringify( normals ) + ',',
-			'	"uvs": ' + JSON.stringify( uvs ) + ',',
-			'	"faces": ' + JSON.stringify( faces ),
-			'}'
-		].join( '\n' );
-
-		return output;
+		return {
+			metadata: {
+				version: 4,
+				generator: "GeometryExporter",
+			},
+			vertices: vertices,
+			normals: normals,
+			uvs: uvs,
+			faces: faces
+		};
 
 	}
 
