@@ -194,8 +194,8 @@ class Quaternion
 		return this;
 	}
 
-	public var length(getLength, never):Float;
-	public function getLength():Float
+	public var length(get, never):Float;
+	public function get_length():Float
 	{
 		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
 	}

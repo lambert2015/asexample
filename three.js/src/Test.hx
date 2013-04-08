@@ -11,6 +11,7 @@ import three.materials.Material;
 import three.renderers.ShaderDef;
 import three.renderers.ShaderLib;
 import three.utils.WebGLUtil;
+import three.core.EventDispatcher;
 /**
  * ...
  * @author 

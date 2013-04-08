@@ -16,10 +16,10 @@ class WebGLUtil
 		gl.shaderSource(shader, shaderSource);
 		gl.compileShader(shader);
 
-		//if (!gl.getShaderParameter(shader, GL.COMPILE_STATUS))
-		//{
-			//throw gl.getShaderInfoLog(shader);
-		//}
+		if (!gl.getShaderParameter(shader, GL.COMPILE_STATUS))
+		{
+			throw gl.getShaderInfoLog(shader);
+		}
 		return shader;
 	}
 	
@@ -31,10 +31,10 @@ class WebGLUtil
 		gl.attachShader(program, vshader);
 		gl.attachShader(program, fshader);
 		gl.linkProgram(program);
-		//if (!gl.getProgramParameter(program, GL.LINK_STATUS))
-		//{
-			//throw gl.getProgramInfoLog(program);
-		//}
+		if (!gl.getProgramParameter(program, GL.LINK_STATUS))
+		{
+			throw gl.getProgramInfoLog(program);
+		}
 		return program;
 	}
 	

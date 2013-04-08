@@ -7,9 +7,9 @@ package three.math;
 
 class MathUtil 
 {
-	public static inline var LN2:Float = untyped Math.LN2;
-	public static inline var RAD2DEG:Float = 180 / Math.PI;
-	public static inline var DEG2RAD:Float = Math.PI / 180;
+	public static var LN2:Float = untyped Math.LN2;
+	public static var RAD2DEG:Float = 180 / Math.PI;
+	public static var DEG2RAD:Float = Math.PI / 180;
 		
 	public static function clamp(value:Float, min:Float, max:Float):Float
 	{
