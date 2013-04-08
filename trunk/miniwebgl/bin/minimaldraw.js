@@ -33,6 +33,7 @@ WebGLUtil.createShader = function(gl,shaderSource,type) {
 	var shader = gl.createShader(type);
 	gl.shaderSource(shader,shaderSource);
 	gl.compileShader(shader);
+	if(!gl.getShaderParameter(shader,35713)) throw gl.getShaderInfoLog(shader);
 	return shader;
 }
 WebGLUtil.createProgram = function(gl,vertexSource,fragSource) {
@@ -42,6 +43,7 @@ WebGLUtil.createProgram = function(gl,vertexSource,fragSource) {
 	gl.attachShader(program,vshader);
 	gl.attachShader(program,fshader);
 	gl.linkProgram(program);
+	if(!gl.getProgramParameter(program,35714)) throw gl.getProgramInfoLog(program);
 	return program;
 }
 var js = {}
