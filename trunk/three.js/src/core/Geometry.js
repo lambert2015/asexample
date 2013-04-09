@@ -75,13 +75,10 @@ THREE.Geometry.prototype = {
 			face.normal.applyMatrix3( normalMatrix ).normalize();
 
 			for ( var j = 0, jl = face.vertexNormals.length; j < jl; j ++ ) {
-
 				face.vertexNormals[ j ].applyMatrix3( normalMatrix ).normalize();
-
 			}
 
 			face.centroid.applyMatrix4( matrix );
-
 		}
 
 	},

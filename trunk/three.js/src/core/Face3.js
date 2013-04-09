@@ -38,9 +38,12 @@ THREE.Face3.prototype = {
 		face.materialIndex = this.materialIndex;
 
 		var i, il;
-		for ( i = 0, il = this.vertexNormals.length; i < il; i ++ ) face.vertexNormals[ i ] = this.vertexNormals[ i ].clone();
-		for ( i = 0, il = this.vertexColors.length; i < il; i ++ ) face.vertexColors[ i ] = this.vertexColors[ i ].clone();
-		for ( i = 0, il = this.vertexTangents.length; i < il; i ++ ) face.vertexTangents[ i ] = this.vertexTangents[ i ].clone();
+		for ( i = 0, il = this.vertexNormals.length; i < il; i ++ ) 
+			face.vertexNormals[ i ] = this.vertexNormals[ i ].clone();
+		for ( i = 0, il = this.vertexColors.length; i < il; i ++ ) 
+			face.vertexColors[ i ] = this.vertexColors[ i ].clone();
+		for ( i = 0, il = this.vertexTangents.length; i < il; i ++ ) 
+			face.vertexTangents[ i ] = this.vertexTangents[ i ].clone();
 
 		return face;
 

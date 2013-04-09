@@ -9,8 +9,6 @@
 	"src/math/Matrix4.js",
 	"src/math/Frustum.js",
 	"src/math/Math.js",
-	"src/math/Vertex.js",
-	"src/math/UV.js",
 	"src/math/Spline.js",
 	"src/math/Box2.js",
 	"src/math/Box3.js",

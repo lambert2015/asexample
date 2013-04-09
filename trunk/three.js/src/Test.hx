@@ -2,6 +2,7 @@ package ;
 
 import js.Browser;
 import js.html.CanvasElement;
+import js.html.Element;
 import js.html.Event;
 import js.html.Float32Array;
 import js.html.webgl.Program;
@@ -43,7 +44,6 @@ class Test
 		
 		var vertices:Array<Float> = [ -0.5, -0.5, 0.5, -0.5, 0, 0.5];
 		var floatArray:Float32Array = new Float32Array(vertices);
-		//floatArray.set(vertices);
 		gl.bufferData(GL.ARRAY_BUFFER, floatArray, GL.STATIC_DRAW);
 		
 		var vs:String = "attribute vec2 pos;\n" +
