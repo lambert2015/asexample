@@ -379,7 +379,8 @@ THREE.Object3D.prototype = {
 		object.up.copy( this.up );
 
 		object.position.copy( this.position );
-		if ( object.rotation instanceof THREE.Vector3 ) object.rotation.copy( this.rotation ); // because of Sprite madness
+		if ( object.rotation instanceof THREE.Vector3 ) 
+			object.rotation.copy( this.rotation ); // because of Sprite madness
 		object.eulerOrder = this.eulerOrder;
 		object.scale.copy( this.scale );
 
