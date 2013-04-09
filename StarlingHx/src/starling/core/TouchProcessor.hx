@@ -102,7 +102,7 @@ class TouchProcessor
 				touch = getCurrentTouch(touchID);
 				
 				// hovering touches need special handling (see below)
-				if (touch && touch.phase == TouchPhase.HOVER && touch.target)
+				if (touch != null && touch.phase == TouchPhase.HOVER && touch.target)
 					sHoveringTouchData.push({ 
 						touch: touch, 
 						target: touch.target, 
@@ -292,6 +292,7 @@ class TouchProcessor
 		return null;
 	}
 	
+	public var simulateMultitouch(get, set):Bool;
 	private function get_simulateMultitouch():Bool 
 	{ 
 		return mTouchMarker != null; 
@@ -300,6 +301,7 @@ class TouchProcessor
 	{ 
 		if (simulateMultitouch == value) 
 			return; // no change
+			
 		if (value)
 		{
 			mTouchMarker = new TouchMarker();

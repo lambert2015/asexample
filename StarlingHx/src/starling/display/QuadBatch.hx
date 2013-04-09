@@ -576,8 +576,8 @@ class QuadBatch extends DisplayObject
 			"mov oc, v0       \n";  // output color
 		
 		target.registerProgram(QUAD_PROGRAM_NAME,
-			assembler.assemble(Context3DProgramType.VERTEX, vertexProgramCode),
-			assembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode));
+			assembler.assemble(Context3DProgramType.VERTEX.getName(), vertexProgramCode),
+			assembler.assemble(Context3DProgramType.FRAGMENT.getName(), fragmentProgramCode));
 		
 		// Image:
 		// Each combination of tinted/repeat/mipmap/smoothing has its own fragment shader.

@@ -161,14 +161,16 @@ class DisplayObject extends EventDispatcher
 	  * GPU buffers are released, event listeners are removed, filters are disposed. */
 	public function dispose():Void
 	{
-		if (mFilter) mFilter.dispose();
+		if (mFilter != null) 
+			mFilter.dispose();
 		removeEventListeners();
 	}
 	
 	/** Removes the object from its parent, if it has one. */
 	public function removeFromParent(dispose:Bool=false):Void
 	{
-		if (mParent) mParent.removeChild(this, dispose);
+		if (mParent != null) 
+			mParent.removeChild(this, dispose);
 	}
 	
 	/** Creates a matrix that represents the transformation from the local coordinate system 

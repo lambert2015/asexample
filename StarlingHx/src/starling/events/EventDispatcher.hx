@@ -36,7 +36,7 @@ import starling.display.DisplayObject;
  */
 class EventDispatcher
 {
-	private var mEventListeners:StringMap<Vector<Event->Void>>;
+	private var mEventListeners:StringMap<Vector<Dynamic>>;
 	
 	/** Helper object. */
 	private static var sBubbleChains:Array<Vector<EventDispatcher>> = [];
@@ -47,15 +47,15 @@ class EventDispatcher
 	}
 	
 	/** Registers an event listener at a certain object. */
-	public function addEventListener(type:String, listener:Event->Void):Void
+	public function addEventListener(type:String, listener:Dynamic):Void
 	{
 		if (mEventListeners == null)
-			mEventListeners = new StringMap<Vector<Event->Void>>(); 
+			mEventListeners = new StringMap<Vector<Dynamic>>(); 
 		
-		var listeners:Vector<Event->Void> = mEventListeners.get(type);
+		var listeners:Vector<Dynamic> = mEventListeners.get(type);
 		if (listeners == null)
 		{
-			var list:Vector<Event->Void> = new Vector<Event->Void>();
+			var list:Vector<Dynamic> = new Vector<Dynamic>();
 			list.push(listener);
 			mEventListeners.set(type, list);
 		}
@@ -64,15 +64,15 @@ class EventDispatcher
 	}
 	
 	/** Removes an event listener from the object. */
-	public function removeEventListener(type:String, listener:Event->Void):Void
+	public function removeEventListener(type:String, listener:Dynamic):Void
 	{
-		if (mEventListeners)
+		if (mEventListeners != null)
 		{
-			var listeners:Vector<Event->Void> = mEventListeners.get(type);
-			if (listeners)
+			var listeners:Vector<Dynamic> = mEventListeners.get(type);
+			if (listeners != null)
 			{
 				var numListeners:Int = listeners.length;
-				var remainingListeners:Vector<Event->Void> = new Vector<Event->Void>();
+				var remainingListeners:Vector<Dynamic> = new Vector<Dynamic>();
 				
 				for (i in 0...numListeners)
 					if (listeners[i] != listener) remainingListeners.push(listeners[i]);
@@ -87,7 +87,7 @@ class EventDispatcher
 	public function removeEventListeners(type:String = null):Void
 	{
 		if (type != null && mEventListeners != null)
-			mEventListeners.delete(type);
+			mEventListeners.remove(type);
 		else
 			mEventListeners = null;
 	}
@@ -102,7 +102,7 @@ class EventDispatcher
 		
 		if (!bubbles && 
 			(mEventListeners == null || 
-			!(event.type in mEventListeners)))
+			!mEventListeners.exists(event.type)))
 			return; // no need to do anything
 		
 		// we save the current target and restore it later;
@@ -126,7 +126,7 @@ class EventDispatcher
 	 *  method uses this method internally. */
 	public function invokeEvent(event:Event):Bool
 	{
-		var listeners:Vector<Event->Void> = mEventListeners != null ?
+		var listeners:Vector<Dynamic> = mEventListeners != null ?
 			mEventListeners.get(event.type) : null;
 		var numListeners:Int = listeners == null ? 0 : listeners.length;
 		
@@ -140,12 +140,15 @@ class EventDispatcher
 			
 			for (i in 0...numListeners)
 			{
-				var listener:Event->Void = listeners[i];
+				var listener:Dynamic = listeners[i];
 				var numArgs:Int = untyped listener.length;
 				
-				if (numArgs == 0) listener();
-				else if (numArgs == 1) listener(event);
-				else listener(event, event.data);
+				if (numArgs == 0) 
+					untyped listener();
+				else if (numArgs == 1) 
+					untyped listener(event);
+				else 
+					untyped listener(event, event.data);
 				
 				if (event.stopsImmediatePropagation)
 					return true;
@@ -209,7 +212,7 @@ class EventDispatcher
 	/** Returns if there are listeners registered for a certain event type. */
 	public function hasEventListener(type:String):Bool
 	{
-		var listeners:Vector<Event->Void> = mEventListeners != null ?
+		var listeners:Vector<Dynamic> = mEventListeners != null ?
 			mEventListeners.get(type) : null;
 		return listeners != null ? listeners.length != 0 : false;
 	}
