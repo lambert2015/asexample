@@ -5,7 +5,7 @@
  * @author zz85 / http://www.lab4games.net/zz85/blog
  */
 
-THREE.Vector2 = function ( x, y ) {
+THREE.Vector2 = function(x, y) {
 
 	this.x = x || 0;
 	this.y = y || 0;
@@ -14,9 +14,9 @@ THREE.Vector2 = function ( x, y ) {
 
 THREE.Vector2.prototype = {
 
-	constructor: THREE.Vector2,
+	constructor : THREE.Vector2,
 
-	set: function ( x, y ) {
+	set : function(x, y) {
 
 		this.x = x;
 		this.y = y;
@@ -25,7 +25,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	setX: function ( x ) {
+	setX : function(x) {
 
 		this.x = x;
 
@@ -33,7 +33,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	setY: function ( y ) {
+	setY : function(y) {
 
 		this.y = y;
 
@@ -41,32 +41,39 @@ THREE.Vector2.prototype = {
 
 	},
 
-
-	setComponent: function ( index, value ) {
+	setComponent : function(index, value) {
 
 		switch ( index ) {
 
-			case 0: this.x = value; break;
-			case 1: this.y = value; break;
-			default: throw new Error( "index is out of range: " + index );
+			case 0:
+				this.x = value;
+				break;
+			case 1:
+				this.y = value;
+				break;
+			default:
+				throw new Error("index is out of range: " + index);
 
 		}
 
 	},
 
-	getComponent: function ( index ) {
+	getComponent : function(index) {
 
 		switch ( index ) {
 
-			case 0: return this.x;
-			case 1: return this.y;
-			default: throw new Error( "index is out of range: " + index );
+			case 0:
+				return this.x;
+			case 1:
+				return this.y;
+			default:
+				throw new Error("index is out of range: " + index);
 
 		}
 
 	},
 
-	copy: function ( v ) {
+	copy : function(v) {
 
 		this.x = v.x;
 		this.y = v.y;
@@ -75,12 +82,12 @@ THREE.Vector2.prototype = {
 
 	},
 
-	add: function ( v, w ) {
+	add : function(v, w) {
 
-		if ( w !== undefined ) {
+		if (w !== undefined) {
 
-			console.warn( 'DEPRECATED: Vector2\'s .add() now only accepts one argument. Use .addVectors( a, b ) instead.' );
-			return this.addVectors( v, w );
+			console.warn('DEPRECATED: Vector2\'s .add() now only accepts one argument. Use .addVectors( a, b ) instead.');
+			return this.addVectors(v, w);
 
 		}
 
@@ -91,7 +98,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	addVectors: function ( a, b ) {
+	addVectors : function(a, b) {
 
 		this.x = a.x + b.x;
 		this.y = a.y + b.y;
@@ -100,7 +107,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	addScalar: function ( s ) {
+	addScalar : function(s) {
 
 		this.x += s;
 		this.y += s;
@@ -109,12 +116,12 @@ THREE.Vector2.prototype = {
 
 	},
 
-	sub: function ( v, w ) {
+	sub : function(v, w) {
 
-		if ( w !== undefined ) {
+		if (w !== undefined) {
 
-			console.warn( 'DEPRECATED: Vector2\'s .sub() now only accepts one argument. Use .subVectors( a, b ) instead.' );
-			return this.subVectors( v, w );
+			console.warn('DEPRECATED: Vector2\'s .sub() now only accepts one argument. Use .subVectors( a, b ) instead.');
+			return this.subVectors(v, w);
 
 		}
 
@@ -125,7 +132,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	subVectors: function ( a, b ) {
+	subVectors : function(a, b) {
 
 		this.x = a.x - b.x;
 		this.y = a.y - b.y;
@@ -134,7 +141,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	multiplyScalar: function ( s ) {
+	multiplyScalar : function(s) {
 
 		this.x *= s;
 		this.y *= s;
@@ -143,16 +150,16 @@ THREE.Vector2.prototype = {
 
 	},
 
-	divideScalar: function ( s ) {
+	divideScalar : function(s) {
 
-		if ( s !== 0 ) {
+		if (s !== 0) {
 
 			this.x /= s;
 			this.y /= s;
 
 		} else {
 
-			this.set( 0, 0 );
+			this.set(0, 0);
 
 		}
 
@@ -160,15 +167,15 @@ THREE.Vector2.prototype = {
 
 	},
 
-	min: function ( v ) {
+	min : function(v) {
 
-		if ( this.x > v.x ) {
+		if (this.x > v.x) {
 
 			this.x = v.x;
 
 		}
 
-		if ( this.y > v.y ) {
+		if (this.y > v.y) {
 
 			this.y = v.y;
 
@@ -178,15 +185,15 @@ THREE.Vector2.prototype = {
 
 	},
 
-	max: function ( v ) {
+	max : function(v) {
 
-		if ( this.x < v.x ) {
+		if (this.x < v.x) {
 
 			this.x = v.x;
 
 		}
 
-		if ( this.y < v.y ) {
+		if (this.y < v.y) {
 
 			this.y = v.y;
 
@@ -196,115 +203,89 @@ THREE.Vector2.prototype = {
 
 	},
 
-	clamp: function ( min, max ) {
+	clamp : function(min, max) {
 
-		// This function assumes min < max, if this assumption isn't true it will not operate correctly
+		// This function assumes min < max, if this assumption isn't true it will not
+		// operate correctly
 
-		if ( this.x < min.x ) {
+		if (this.x < min.x) {
 
 			this.x = min.x;
 
-		} else if ( this.x > max.x ) {
+		} else if (this.x > max.x) {
 
 			this.x = max.x;
 
 		}
 
-		if ( this.y < min.y ) {
+		if (this.y < min.y) {
 
 			this.y = min.y;
 
-		} else if ( this.y > max.y ) {
+		} else if (this.y > max.y) {
 
 			this.y = max.y;
 
 		}
 
 		return this;
-
 	},
 
-	negate: function() {
-
-		return this.multiplyScalar( - 1 );
-
+	negate : function() {
+		return this.multiplyScalar(-1);
 	},
 
-	dot: function ( v ) {
-
+	dot : function(v) {
 		return this.x * v.x + this.y * v.y;
-
 	},
 
-	lengthSq: function () {
-
+	lengthSq : function() {
 		return this.x * this.x + this.y * this.y;
-
 	},
 
-	length: function () {
-
-		return Math.sqrt( this.x * this.x + this.y * this.y );
-
+	length : function() {
+		return Math.sqrt(this.x * this.x + this.y * this.y);
 	},
 
-	normalize: function () {
-
-		return this.divideScalar( this.length() );
-
+	normalize : function() {
+		return this.divideScalar(this.length());
 	},
 
-	distanceTo: function ( v ) {
-
-		return Math.sqrt( this.distanceToSquared( v ) );
-
+	distanceTo : function(v) {
+		return Math.sqrt(this.distanceToSquared(v));
 	},
 
-	distanceToSquared: function ( v ) {
-
+	distanceToSquared : function(v) {
 		var dx = this.x - v.x, dy = this.y - v.y;
 		return dx * dx + dy * dy;
-
 	},
 
-	setLength: function ( l ) {
-
+	setLength : function(l) {
 		var oldLength = this.length();
+		if (oldLength !== 0 && l !== oldLength) {
 
-		if ( oldLength !== 0 && l !== oldLength ) {
-
-			this.multiplyScalar( l / oldLength );
+			this.multiplyScalar(l / oldLength);
 		}
 
 		return this;
-
 	},
 
-	lerp: function ( v, alpha ) {
-
-		this.x += ( v.x - this.x ) * alpha;
-		this.y += ( v.y - this.y ) * alpha;
+	lerp : function(v, alpha) {
+		this.x += (v.x - this.x ) * alpha;
+		this.y += (v.y - this.y ) * alpha;
 
 		return this;
-
 	},
 
-	equals: function( v ) {
-
-		return ( ( v.x === this.x ) && ( v.y === this.y ) );
-
+	equals : function(v) {
+		return ((v.x === this.x ) && (v.y === this.y ) );
 	},
 
-	toArray: function () {
-
-		return [ this.x, this.y ];
-
+	toArray : function() {
+		return [this.x, this.y];
 	},
 
-	clone: function () {
-
-		return new THREE.Vector2( this.x, this.y );
-
+	clone : function() {
+		return new THREE.Vector2(this.x, this.y);
 	}
-
 };

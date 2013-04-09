@@ -3010,10 +3010,8 @@ three.utils.TempVars.getTempVars = function() {
 }
 three.utils.TempVars.prototype = {
 	release: function() {
-		three.utils.Assert.assert(this.isUsed,"This instance of TempVars was already released!");
 		this.isUsed = false;
 		three.utils.TempVars.currentIndex--;
-		three.utils.Assert.assert(three.utils.TempVars.varStack[three.utils.TempVars.currentIndex] == this,"An instance of TempVars has not been released in a called method!");
 	}
 	,__class__: three.utils.TempVars
 }
@@ -3139,5 +3137,3 @@ three.utils.TempVars.currentIndex = 0;
 three.utils.TempVars.varStack = new Array();
 Test.main();
 })();
-
-//@ sourceMappingURL=Threejs.js.map

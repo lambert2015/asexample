@@ -11,28 +11,8 @@ THREE.WebGLRenderer = function ( parameters ) {
 	console.log( 'THREE.WebGLRenderer', THREE.REVISION );
 
 	parameters = parameters || {};
-
-	var info = {
-
-		memory: {
-
-			programs: 0,
-			geometries: 0,
-			textures: 0
-
-		},
-
-		render: {
-
-			calls: 0,
-			vertices: 0,
-			faces: 0,
-			points: 0
-
-		}
-
-	};
-
+	
+	var info = new THREE.RenderInfo();
 
 	var renderer = new THREE.WebGLRenderer.LowLevelRenderer(parameters);
 	var meshRenderer = new THREE.WebGLRenderer.MeshRenderer(renderer, info);
@@ -377,7 +357,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 		// assumed there is only single copy of any program in the _programs list
 		// (that's how it's constructed)
 
-		shaderBuilder.removeProgram(program)
+		shaderBuilder.removeProgram(program);
 
 	};
 

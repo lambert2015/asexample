@@ -79,26 +79,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 	// info
 
-	this.info = {
-
-		memory: {
-
-			programs: 0,
-			geometries: 0,
-			textures: 0
-
-		},
-
-		render: {
-
-			calls: 0,
-			vertices: 0,
-			faces: 0,
-			points: 0
-
-		}
-
-	};
+	this.info = new THREE.RenderInfo();
 
 	// internal properties
 
