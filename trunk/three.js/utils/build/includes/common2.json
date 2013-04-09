@@ -72,6 +72,7 @@
 	"src/scenes/FogExp2.js",
 	"src/renderers/CanvasRenderer.js",
 	"src/renderers/WebGLShaders.js",
+	"src/renderers/RenderInfo.js",
 	"src/renderers/WebGLRenderer2.js",
 	"src/renderers/webgl/LowLevelRenderer.js",
 	"src/renderers/webgl/ShaderBuilder.js",

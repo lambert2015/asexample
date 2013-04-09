@@ -67,6 +67,7 @@
 	"src/scenes/Fog.js",
 	"src/scenes/FogExp2.js",
 	"src/renderers/WebGLShaders.js",
+	"src/renderers/RenderInfo.js",
 	"src/renderers/WebGLRenderer.js",
 	"src/renderers/WebGLRenderTarget.js",
 	"src/renderers/WebGLRenderTargetCube.js",
