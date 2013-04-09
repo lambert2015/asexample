@@ -120,7 +120,7 @@ class Juggler implements IAnimatable
 		while (i >= 0)
 		{
 			var tween:Tween = cast(mObjects[i], Tween);
-			if (tween && tween.target == target) 
+			if (tween != null && tween.target == target) 
 				return true;
 			i--;
 		}
@@ -140,7 +140,7 @@ class Juggler implements IAnimatable
 		while (i >= 0)
 		{
 			var dispatcher:EventDispatcher = cast(mObjects[i],EventDispatcher);
-			if (dispatcher) 
+			if (dispatcher != null) 
 				dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 			mObjects[i] = null;
 			i--;
@@ -185,7 +185,7 @@ class Juggler implements IAnimatable
 			var value:Dynamic = properties[property];
 			
 			if (untyped tween.hasOwnProperty(property))
-				tween[property] = value;
+				untyped tween[property] = value;
 			else if (untyped target.hasOwnProperty(property))
 				tween.animate(property, cast(value,Float));
 			else

@@ -33,6 +33,8 @@ class TouchMarker extends Sprite
 	
 	public function new()
 	{
+		super();
+		
 		mCenter = new Point();
 		mTexture = createTexture();
 		
@@ -75,10 +77,10 @@ class TouchMarker extends Sprite
 	
 	private function createTexture():Texture
 	{
-		var scale:Float = Starling.contentScaleFactor;
+		var scale:Float = Starling.current.contentScaleFactor;
 		var radius:Float = 12 * scale;
-		var width:Int = 32 * scale;
-		var height:Int = 32 * scale;
+		var width:Int = Std.int(32 * scale);
+		var height:Int = Std.int(32 * scale);
 		var thickness:Float = 1.5 * scale;
 		var shape:Shape = new Shape();
 		

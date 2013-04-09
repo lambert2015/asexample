@@ -11,6 +11,7 @@
 package starling.display;
 
 import flash.errors.ArgumentError;
+import flash.errors.RangeError;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -119,8 +120,10 @@ class DisplayObjectContainer extends DisplayObject
 			child.removeFromParent();
 			
 			// 'splice' creates a temporary object, so we avoid it if it's not necessary
-			if (index == numChildren) mChildren.push(child);
-			else                      mChildren.splice(index, 0, child);
+			if (index == numChildren) 
+				mChildren.push(child);
+			else                      
+				mChildren.splice(index, 0, child);
 			
 			child.setParent(this);
 			child.dispatchEventWith(Event.ADDED, true);
@@ -161,10 +164,10 @@ class DisplayObjectContainer extends DisplayObject
 			var child:DisplayObject = mChildren[index];
 			child.dispatchEventWith(Event.REMOVED, true);
 			
-			if (stage)
+			if (stage != null)
 			{
 				var container:DisplayObjectContainer = cast(child,DisplayObjectContainer);
-				if (container) 
+				if (container != null) 
 					container.broadcastEventWith(Event.REMOVED_FROM_STAGE);
 				else           
 					child.dispatchEventWith(Event.REMOVED_FROM_STAGE);
@@ -180,6 +183,7 @@ class DisplayObjectContainer extends DisplayObject
 		else
 		{
 			throw new RangeError("Invalid child index");
+			return null;
 		}
 	}
 	

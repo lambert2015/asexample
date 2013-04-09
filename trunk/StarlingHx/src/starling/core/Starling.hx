@@ -686,7 +686,7 @@ class Starling extends EventDispatcher
 		if (program != null)
 		{                
 			program.dispose();
-			programs.delete(name);
+			programs.remove(name);
 		}
 	}
 	

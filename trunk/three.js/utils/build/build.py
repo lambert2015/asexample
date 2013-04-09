@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 import sys
 
 if sys.version_info < (2, 7):
@@ -41,15 +41,15 @@ def main(argv=None):
 		sourcemap = sourcemapping = sourcemapargs = ''
 
 	fd, path = tempfile.mkstemp()
-	tmp = open(path, 'w')
+	tmp = open(path, 'w',-1,'utf-8')
 	sources = []
 
 	for include in args.include:
-		with open('includes/' + include + '.json','r') as f: files = json.load(f)
+		with open('includes/' + include + '.json','r',-1,'utf-8') as f: files = json.load(f)
 		for filename in files:
 			filename = '../../' + filename;
 			sources.append(filename)
-			with open(filename, 'r') as f: tmp.write(f.read())
+			with open(filename, 'r',-1,'utf-8') as f: tmp.write(f.read())
 
 	tmp.close()
 
@@ -68,8 +68,8 @@ def main(argv=None):
 
 		# header
 
-		with open(output,'r') as f: text = f.read()
-		with open(output,'w') as f: f.write('// three.js - http://github.com/mrdoob/three.js\n' + text + sourcemapping)
+		with open(output,'r',-1,'utf-8') as f: text = f.read()
+		with open(output,'w',-1,'utf-8') as f: f.write('// three.js - http://github.com/mrdoob/three.js\n' + text + sourcemapping)
 
 	os.close(fd)
 	os.remove(path)
