@@ -247,20 +247,31 @@ THREE.WebGLRenderer = function ( parameters ) {
 		var m,ml;
 		geometry.__webglInit = undefined;
 
-		if ( geometry.__webglVertexBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglVertexBuffer );
-		if ( geometry.__webglNormalBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglNormalBuffer );
-		if ( geometry.__webglTangentBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglTangentBuffer );
-		if ( geometry.__webglColorBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglColorBuffer );
-		if ( geometry.__webglUVBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglUVBuffer );
-		if ( geometry.__webglUV2Buffer !== undefined ) renderer.deleteBuffer( geometry.__webglUV2Buffer );
+		if ( geometry.__webglVertexBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglVertexBuffer );
+		if ( geometry.__webglNormalBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglNormalBuffer );
+		if ( geometry.__webglTangentBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglTangentBuffer );
+		if ( geometry.__webglColorBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglColorBuffer );
+		if ( geometry.__webglUVBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglUVBuffer );
+		if ( geometry.__webglUV2Buffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglUV2Buffer );
 
-		if ( geometry.__webglSkinIndicesBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglSkinIndicesBuffer );
-		if ( geometry.__webglSkinWeightsBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglSkinWeightsBuffer );
+		if ( geometry.__webglSkinIndicesBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglSkinIndicesBuffer );
+		if ( geometry.__webglSkinWeightsBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglSkinWeightsBuffer );
 
-		if ( geometry.__webglFaceBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglFaceBuffer );
-		if ( geometry.__webglLineBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglLineBuffer );
+		if ( geometry.__webglFaceBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglFaceBuffer );
+		if ( geometry.__webglLineBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglLineBuffer );
 
-		if ( geometry.__webglLineDistanceBuffer !== undefined ) renderer.deleteBuffer( geometry.__webglLineDistanceBuffer );
+		if ( geometry.__webglLineDistanceBuffer !== undefined ) 
+			renderer.deleteBuffer( geometry.__webglLineDistanceBuffer );
 
 		// geometry groups
 
