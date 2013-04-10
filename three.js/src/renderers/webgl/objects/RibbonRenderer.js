@@ -1,163 +1,140 @@
+THREE.WebGLRenderer.RibbonRenderer = function(lowlevelrenderer, info) {
 
-THREE.WebGLRenderer.RibbonRenderer = function ( lowlevelrenderer, info ) {
-
-	THREE.WebGLRenderer.Object3DRenderer.call( this, lowlevelrenderer, info );
+	THREE.WebGLRenderer.Object3DRenderer.call(this, lowlevelrenderer, info);
 
 };
 
-THREE.WebGLRenderer.RibbonRenderer.prototype = Object.create( THREE.WebGLRenderer.Object3DRenderer.prototype );
+THREE.WebGLRenderer.RibbonRenderer.prototype = Object.create(THREE.WebGLRenderer.Object3DRenderer.prototype);
 
-THREE.extend( THREE.WebGLRenderer.RibbonRenderer.prototype, {
+THREE.extend(THREE.WebGLRenderer.RibbonRenderer.prototype, {
 
-	createBuffers: function ( geometry ) {
+	createBuffers : function(geometry) {
 
 		var renderer = this.renderer;
 		geometry.__webglVertexBuffer = renderer.createBuffer();
 		geometry.__webglColorBuffer = renderer.createBuffer();
 		geometry.__webglNormalBuffer = renderer.createBuffer();
 
-		this.info.memory.geometries ++;
+		this.info.memory.geometries++;
 	},
 
-	initBuffers: function ( geometry, object ) {
+	initBuffers : function(geometry, object) {
 
 		var nvertices = geometry.vertices.length;
 
-		geometry.__vertexArray = new Float32Array( nvertices * 3 );
-		geometry.__colorArray = new Float32Array( nvertices * 3 );
-		geometry.__normalArray = new Float32Array( nvertices * 3 );
+		geometry.__vertexArray = new Float32Array(nvertices * 3);
+		geometry.__colorArray = new Float32Array(nvertices * 3);
+		geometry.__normalArray = new Float32Array(nvertices * 3);
 
 		geometry.__webglVertexCount = nvertices;
 
-		this.initCustomAttributes ( geometry, object );
+		this.initCustomAttributes(geometry, object);
 
 	},
 
-	setBuffers: function ( geometry, object , projectionScreenMatrix ) {
+	setBuffers : function(geometry, object, projectionScreenMatrix) {
 
 		var renderer = this.renderer;
-		var v, c, n, vertex, offset, color, normal,
+		var v, c, n, vertex, offset, color, normal, i, il, ca, cal, customAttribute, value, vertices = geometry.vertices, colors = geometry.colors, normals = geometry.normals, vl = vertices.length, cl = colors.length, nl = normals.length, vertexArray = geometry.__vertexArray, colorArray = geometry.__colorArray, normalArray = geometry.__normalArray, dirtyVertices = geometry.verticesNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, dirtyNormals = geometry.normalsNeedUpdate, customAttributes = geometry.__webglCustomAttributesList;
 
-		i, il, ca, cal, customAttribute, value,
+		if (dirtyVertices) {
 
-		vertices = geometry.vertices,
-		colors = geometry.colors,
-		normals = geometry.normals,
+			for ( v = 0; v < vl; v++) {
 
-		vl = vertices.length,
-		cl = colors.length,
-		nl = normals.length,
-
-		vertexArray = geometry.__vertexArray,
-		colorArray = geometry.__colorArray,
-		normalArray = geometry.__normalArray,
-
-		dirtyVertices = geometry.verticesNeedUpdate,
-		dirtyColors = geometry.colorsNeedUpdate,
-		dirtyNormals = geometry.normalsNeedUpdate,
-
-		customAttributes = geometry.__webglCustomAttributesList;
-
-		if ( dirtyVertices ) {
-
-			for ( v = 0; v < vl; v ++ ) {
-
-				vertex = vertices[ v ];
+				vertex = vertices[v];
 
 				offset = v * 3;
 
-				vertexArray[ offset ]     = vertex.x;
-				vertexArray[ offset + 1 ] = vertex.y;
-				vertexArray[ offset + 2 ] = vertex.z;
+				vertexArray[offset] = vertex.x;
+				vertexArray[offset + 1] = vertex.y;
+				vertexArray[offset + 2] = vertex.z;
 
 			}
 
-			renderer.setDynamicArrayBuffer( geometry.__webglVertexBuffer,vertexArray);
+			renderer.setDynamicArrayBuffer(geometry.__webglVertexBuffer, vertexArray);
 
 		}
 
-		if ( dirtyColors ) {
+		if (dirtyColors) {
 
-			for ( c = 0; c < cl; c ++ ) {
+			for ( c = 0; c < cl; c++) {
 
-				color = colors[ c ];
+				color = colors[c];
 
 				offset = c * 3;
 
-				colorArray[ offset ]     = color.r;
-				colorArray[ offset + 1 ] = color.g;
-				colorArray[ offset + 2 ] = color.b;
+				colorArray[offset] = color.r;
+				colorArray[offset + 1] = color.g;
+				colorArray[offset + 2] = color.b;
 
 			}
 
-			renderer.setDynamicArrayBuffer( geometry.__webglColorBuffer, colorArray);
+			renderer.setDynamicArrayBuffer(geometry.__webglColorBuffer, colorArray);
 
 		}
 
-		if ( dirtyNormals ) {
+		if (dirtyNormals) {
 
-			for ( n = 0; n < nl; n ++ ) {
+			for ( n = 0; n < nl; n++) {
 
-				normal = normals[ n ];
+				normal = normals[n];
 
 				offset = n * 3;
 
-				normalArray[ offset ]     = normal.x;
-				normalArray[ offset + 1 ] = normal.y;
-				normalArray[ offset + 2 ] = normal.z;
+				normalArray[offset] = normal.x;
+				normalArray[offset + 1] = normal.y;
+				normalArray[offset + 2] = normal.z;
 
 			}
 
-			renderer.setDynamicArrayBuffer( geometry.__webglNormalBuffer, normalArray);
+			renderer.setDynamicArrayBuffer(geometry.__webglNormalBuffer, normalArray);
 
 		}
 
-		if ( customAttributes ) {
+		if (customAttributes) {
 
-			for ( i = 0, il = customAttributes.length; i < il; i ++ ) {
+			for ( i = 0, il = customAttributes.length; i < il; i++) {
 
-				customAttribute = customAttributes[ i ];
+				customAttribute = customAttributes[i];
 
-				if ( customAttribute.needsUpdate &&
-					 ( customAttribute.boundTo === undefined ||
-					   customAttribute.boundTo === "vertices" ) ) {
+				if (customAttribute.needsUpdate && (customAttribute.boundTo === undefined || customAttribute.boundTo === "vertices" )) {
 
 					offset = 0;
 
 					cal = customAttribute.value.length;
 
-					if ( customAttribute.size === 1 ) {
+					if (customAttribute.size === 1) {
 
-						for ( ca = 0; ca < cal; ca ++ ) {
+						for ( ca = 0; ca < cal; ca++) {
 
-							customAttribute.array[ ca ] = customAttribute.value[ ca ];
+							customAttribute.array[ca] = customAttribute.value[ca];
 
 						}
 
-					} else if ( customAttribute.size === 2 ) {
+					} else if (customAttribute.size === 2) {
 
-						for ( ca = 0; ca < cal; ca ++ ) {
+						for ( ca = 0; ca < cal; ca++) {
 
-							value = customAttribute.value[ ca ];
+							value = customAttribute.value[ca];
 
-							customAttribute.array[ offset ] 	= value.x;
-							customAttribute.array[ offset + 1 ] = value.y;
+							customAttribute.array[offset] = value.x;
+							customAttribute.array[offset + 1] = value.y;
 
 							offset += 2;
 
 						}
 
-					} else if ( customAttribute.size === 3 ) {
+					} else if (customAttribute.size === 3) {
 
-						if ( customAttribute.type === "c" ) {
+						if (customAttribute.type === "c") {
 
-							for ( ca = 0; ca < cal; ca ++ ) {
+							for ( ca = 0; ca < cal; ca++) {
 
-								value = customAttribute.value[ ca ];
+								value = customAttribute.value[ca];
 
-								customAttribute.array[ offset ] 	= value.r;
-								customAttribute.array[ offset + 1 ] = value.g;
-								customAttribute.array[ offset + 2 ] = value.b;
+								customAttribute.array[offset] = value.r;
+								customAttribute.array[offset + 1] = value.g;
+								customAttribute.array[offset + 2] = value.b;
 
 								offset += 3;
 
@@ -165,13 +142,13 @@ THREE.extend( THREE.WebGLRenderer.RibbonRenderer.prototype, {
 
 						} else {
 
-							for ( ca = 0; ca < cal; ca ++ ) {
+							for ( ca = 0; ca < cal; ca++) {
 
-								value = customAttribute.value[ ca ];
+								value = customAttribute.value[ca];
 
-								customAttribute.array[ offset ] 	= value.x;
-								customAttribute.array[ offset + 1 ] = value.y;
-								customAttribute.array[ offset + 2 ] = value.z;
+								customAttribute.array[offset] = value.x;
+								customAttribute.array[offset + 1] = value.y;
+								customAttribute.array[offset + 2] = value.z;
 
 								offset += 3;
 
@@ -179,16 +156,16 @@ THREE.extend( THREE.WebGLRenderer.RibbonRenderer.prototype, {
 
 						}
 
-					} else if ( customAttribute.size === 4 ) {
+					} else if (customAttribute.size === 4) {
 
-						for ( ca = 0; ca < cal; ca ++ ) {
+						for ( ca = 0; ca < cal; ca++) {
 
-							value = customAttribute.value[ ca ];
+							value = customAttribute.value[ca];
 
-							customAttribute.array[ offset ] 	 = value.x;
-							customAttribute.array[ offset + 1  ] = value.y;
-							customAttribute.array[ offset + 2  ] = value.z;
-							customAttribute.array[ offset + 3  ] = value.w;
+							customAttribute.array[offset] = value.x;
+							customAttribute.array[offset + 1] = value.y;
+							customAttribute.array[offset + 2] = value.z;
+							customAttribute.array[offset + 3] = value.w;
 
 							offset += 4;
 
@@ -196,7 +173,7 @@ THREE.extend( THREE.WebGLRenderer.RibbonRenderer.prototype, {
 
 					}
 
-					renderer.setDynamicArrayBuffer( customAttribute.buffer, customAttribute.array);
+					renderer.setDynamicArrayBuffer(customAttribute.buffer, customAttribute.array);
 
 				}
 
@@ -205,5 +182,4 @@ THREE.extend( THREE.WebGLRenderer.RibbonRenderer.prototype, {
 		}
 
 	}
-
-} );
+});

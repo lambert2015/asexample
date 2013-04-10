@@ -4,11 +4,11 @@
  * @author szimek / https://github.com/szimek/
  */
 
-THREE.Texture = function ( image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
+THREE.Texture = function(image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy) {
 
-	THREE.EventDispatcher.call( this );
+	THREE.EventDispatcher.call(this);
 
-	this.id = THREE.TextureIdCount ++;
+	this.id = THREE.TextureIdCount++;
 
 	this.name = '';
 
@@ -28,13 +28,15 @@ THREE.Texture = function ( image, mapping, wrapS, wrapT, magFilter, minFilter, f
 	this.format = format !== undefined ? format : THREE.RGBAFormat;
 	this.type = type !== undefined ? type : THREE.UnsignedByteType;
 
-	this.offset = new THREE.Vector2( 0, 0 );
-	this.repeat = new THREE.Vector2( 1, 1 );
+	this.offset = new THREE.Vector2(0, 0);
+	this.repeat = new THREE.Vector2(1, 1);
 
 	this.generateMipmaps = true;
 	this.premultiplyAlpha = false;
 	this.flipY = true;
-	this.unpackAlignment = 4; // valid values: 1, 2, 4, 8 (see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml)
+	this.unpackAlignment = 4;
+	// valid values: 1, 2, 4, 8 (see
+	// http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml)
 
 	this.needsUpdate = false;
 	this.onUpdate = null;
@@ -43,11 +45,12 @@ THREE.Texture = function ( image, mapping, wrapS, wrapT, magFilter, minFilter, f
 
 THREE.Texture.prototype = {
 
-	constructor: THREE.Texture,
+	constructor : THREE.Texture,
 
-	clone: function ( texture ) {
+	clone : function(texture) {
 
-		if ( texture === undefined ) texture = new THREE.Texture();
+		if (texture === undefined)
+			texture = new THREE.Texture();
 
 		texture.image = this.image;
 		texture.mipmaps = this.mipmaps.slice(0);
@@ -65,8 +68,8 @@ THREE.Texture.prototype = {
 		texture.format = this.format;
 		texture.type = this.type;
 
-		texture.offset.copy( this.offset );
-		texture.repeat.copy( this.repeat );
+		texture.offset.copy(this.offset);
+		texture.repeat.copy(this.repeat);
 
 		texture.generateMipmaps = this.generateMipmaps;
 		texture.premultiplyAlpha = this.premultiplyAlpha;
@@ -77,12 +80,13 @@ THREE.Texture.prototype = {
 
 	},
 
-	dispose: function () {
+	dispose : function() {
 
-		this.dispatchEvent( { type: 'dispose' } );
+		this.dispatchEvent({
+			type : 'dispose'
+		});
 
 	}
-
 };
 
 THREE.TextureIdCount = 0;

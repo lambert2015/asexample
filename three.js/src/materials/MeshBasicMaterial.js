@@ -33,11 +33,12 @@
  * }
  */
 
-THREE.MeshBasicMaterial = function ( parameters ) {
+THREE.MeshBasicMaterial = function(parameters) {
 
-	THREE.Material.call( this );
+	THREE.Material.call(this);
 
-	this.color = new THREE.Color( 0xffffff ); // emissive
+	this.color = new THREE.Color(0xffffff);
+	// emissive
 
 	this.map = null;
 
@@ -64,19 +65,19 @@ THREE.MeshBasicMaterial = function ( parameters ) {
 	this.skinning = false;
 	this.morphTargets = false;
 
-	this.setValues( parameters );
+	this.setValues(parameters);
 
 };
 
-THREE.MeshBasicMaterial.prototype = Object.create( THREE.Material.prototype );
+THREE.MeshBasicMaterial.prototype = Object.create(THREE.Material.prototype);
 
-THREE.MeshBasicMaterial.prototype.clone = function () {
+THREE.MeshBasicMaterial.prototype.clone = function() {
 
 	var material = new THREE.MeshBasicMaterial();
 
-	THREE.Material.prototype.clone.call( this, material );
+	THREE.Material.prototype.clone.call(this, material);
 
-	material.color.copy( this.color );
+	material.color.copy(this.color);
 
 	material.map = this.map;
 

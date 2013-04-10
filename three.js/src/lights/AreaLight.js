@@ -3,14 +3,14 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.AreaLight = function ( hex, intensity ) {
+THREE.AreaLight = function(hex, intensity) {
 
-	THREE.Light.call( this, hex );
+	THREE.Light.call(this, hex);
 
-	this.normal = new THREE.Vector3( 0, -1, 0 );
-	this.right = new THREE.Vector3( 1, 0, 0 );
+	this.normal = new THREE.Vector3(0, -1, 0);
+	this.right = new THREE.Vector3(1, 0, 0);
 
-	this.intensity = ( intensity !== undefined ) ? intensity : 1;
+	this.intensity = (intensity !== undefined ) ? intensity : 1;
 
 	this.width = 1.0;
 	this.height = 1.0;
@@ -21,5 +21,5 @@ THREE.AreaLight = function ( hex, intensity ) {
 
 };
 
-THREE.AreaLight.prototype = Object.create( THREE.Light.prototype );
+THREE.AreaLight.prototype = Object.create(THREE.Light.prototype);
 

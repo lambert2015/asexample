@@ -8,19 +8,20 @@
  *  curves, but retains the api of a curve
  **************************************************************/
 
-THREE.CurvePath = function () {
+THREE.CurvePath = function() {
 
 	this.curves = [];
 	this.bends = [];
-	
-	this.autoClose = false; // Automatically closes the path
+
+	this.autoClose = false;
+	// Automatically closes the path
 };
 
-THREE.CurvePath.prototype = Object.create( THREE.Curve.prototype );
+THREE.CurvePath.prototype = Object.create(THREE.Curve.prototype);
 
-THREE.CurvePath.prototype.add = function ( curve ) {
+THREE.CurvePath.prototype.add = function(curve) {
 
-	this.curves.push( curve );
+	this.curves.push(curve);
 
 };
 
@@ -35,12 +36,12 @@ THREE.CurvePath.prototype.closePath = function() {
 	// and verify for vector3 (needs to implement equals)
 	// Add a line curve if start and end of lines are not connected
 	var startPoint = this.curves[0].getPoint(0);
-	var endPoint = this.curves[this.curves.length-1].getPoint(1);
-	
+	var endPoint = this.curves[this.curves.length - 1].getPoint(1);
+
 	if (!startPoint.equals(endPoint)) {
-		this.curves.push( new THREE.LineCurve(endPoint, startPoint) );
+		this.curves.push(new THREE.LineCurve(endPoint, startPoint));
 	}
-	
+
 };
 
 // To get accurate point with reference to
@@ -52,7 +53,7 @@ THREE.CurvePath.prototype.closePath = function() {
 // 3. Get t for the curve
 // 4. Return curve.getPointAt(t')
 
-THREE.CurvePath.prototype.getPoint = function( t ) {
+THREE.CurvePath.prototype.getPoint = function(t) {
 
 	var d = t * this.getLength();
 	var curveLengths = this.getCurveLengths();
@@ -60,21 +61,21 @@ THREE.CurvePath.prototype.getPoint = function( t ) {
 
 	// To think about boundaries points.
 
-	while ( i < curveLengths.length ) {
+	while (i < curveLengths.length) {
 
-		if ( curveLengths[ i ] >= d ) {
+		if (curveLengths[i] >= d) {
 
-			diff = curveLengths[ i ] - d;
-			curve = this.curves[ i ];
+			diff = curveLengths[i] - d;
+			curve = this.curves[i];
 
 			var u = 1 - diff / curve.getLength();
 
-			return curve.getPointAt( u );
+			return curve.getPointAt(u);
 
 			break;
 		}
 
-		i ++;
+		i++;
 
 	}
 
@@ -88,7 +89,6 @@ THREE.CurvePath.prototype.getPoint = function( t ) {
 THREE.CurvePath.prototype.getTangent = function( t ) {
 };*/
 
-
 // We cannot use the default THREE.Curve getPoint() with getLength() because in
 // THREE.Curve, getLength() depends on getPoint() but in THREE.CurvePath
 // getPoint() depends on getLength
@@ -96,7 +96,7 @@ THREE.CurvePath.prototype.getTangent = function( t ) {
 THREE.CurvePath.prototype.getLength = function() {
 
 	var lens = this.getCurveLengths();
-	return lens[ lens.length - 1 ];
+	return lens[lens.length - 1];
 
 };
 
@@ -107,7 +107,7 @@ THREE.CurvePath.prototype.getCurveLengths = function() {
 
 	// We use cache values if curves and cache array are same length
 
-	if ( this.cacheLengths && this.cacheLengths.length == this.curves.length ) {
+	if (this.cacheLengths && this.cacheLengths.length == this.curves.length) {
 
 		return this.cacheLengths;
 
@@ -119,10 +119,10 @@ THREE.CurvePath.prototype.getCurveLengths = function() {
 	var lengths = [], sums = 0;
 	var i, il = this.curves.length;
 
-	for ( i = 0; i < il; i ++ ) {
+	for ( i = 0; i < il; i++) {
 
-		sums += this.curves[ i ].getLength();
-		lengths.push( sums );
+		sums += this.curves[i].getLength();
+		lengths.push(sums);
 
 	}
 
@@ -132,11 +132,9 @@ THREE.CurvePath.prototype.getCurveLengths = function() {
 
 };
 
-
-
 // Returns min and max coordinates, as well as centroid
 
-THREE.CurvePath.prototype.getBoundingBox = function () {
+THREE.CurvePath.prototype.getBoundingBox = function() {
 
 	var points = this.getPoints();
 
@@ -152,38 +150,44 @@ THREE.CurvePath.prototype.getBoundingBox = function () {
 
 	sum = v3 ? new THREE.Vector3() : new THREE.Vector2();
 
-	for ( i = 0, il = points.length; i < il; i ++ ) {
+	for ( i = 0, il = points.length; i < il; i++) {
 
-		p = points[ i ];
+		p = points[i];
 
-		if ( p.x > maxX ) maxX = p.x;
-		else if ( p.x < minX ) minX = p.x;
+		if (p.x > maxX)
+			maxX = p.x;
+		else if (p.x < minX)
+			minX = p.x;
 
-		if ( p.y > maxY ) maxY = p.y;
-		else if ( p.y < minY ) minY = p.y;
+		if (p.y > maxY)
+			maxY = p.y;
+		else if (p.y < minY)
+			minY = p.y;
 
-		if ( v3 ) {
+		if (v3) {
 
-			if ( p.z > maxZ ) maxZ = p.z;
-			else if ( p.z < minZ ) minZ = p.z;
+			if (p.z > maxZ)
+				maxZ = p.z;
+			else if (p.z < minZ)
+				minZ = p.z;
 
 		}
 
-		sum.add( p );
+		sum.add(p);
 
 	}
 
 	var ret = {
 
-		minX: minX,
-		minY: minY,
-		maxX: maxX,
-		maxY: maxY,
-		centroid: sum.divideScalar( il )
+		minX : minX,
+		minY : minY,
+		maxX : maxX,
+		maxY : maxY,
+		centroid : sum.divideScalar(il)
 
 	};
 
-	if ( v3 ) {
+	if (v3) {
 
 		ret.maxZ = maxZ;
 		ret.minZ = minZ;
@@ -200,29 +204,29 @@ THREE.CurvePath.prototype.getBoundingBox = function () {
 
 /// Generate geometry from path points (for Line or ParticleSystem objects)
 
-THREE.CurvePath.prototype.createPointsGeometry = function( divisions ) {
+THREE.CurvePath.prototype.createPointsGeometry = function(divisions) {
 
-	var pts = this.getPoints( divisions, true );
-	return this.createGeometry( pts );
+	var pts = this.getPoints(divisions, true);
+	return this.createGeometry(pts);
 
 };
 
 // Generate geometry from equidistance sampling along the path
 
-THREE.CurvePath.prototype.createSpacedPointsGeometry = function( divisions ) {
+THREE.CurvePath.prototype.createSpacedPointsGeometry = function(divisions) {
 
-	var pts = this.getSpacedPoints( divisions, true );
-	return this.createGeometry( pts );
+	var pts = this.getSpacedPoints(divisions, true);
+	return this.createGeometry(pts);
 
 };
 
-THREE.CurvePath.prototype.createGeometry = function( points ) {
+THREE.CurvePath.prototype.createGeometry = function(points) {
 
 	var geometry = new THREE.Geometry();
 
-	for ( var i = 0; i < points.length; i ++ ) {
+	for (var i = 0; i < points.length; i++) {
 
-		geometry.vertices.push( new THREE.Vector3( points[ i ].x, points[ i ].y, points[ i ].z || 0) );
+		geometry.vertices.push(new THREE.Vector3(points[i].x, points[i].y, points[i].z || 0));
 
 	}
 
@@ -230,33 +234,33 @@ THREE.CurvePath.prototype.createGeometry = function( points ) {
 
 };
 
-
 /**************************************************************
  *	Bend / Wrap Helper Methods
  **************************************************************/
 
 // Wrap path / Bend modifiers?
 
-THREE.CurvePath.prototype.addWrapPath = function ( bendpath ) {
+THREE.CurvePath.prototype.addWrapPath = function(bendpath) {
 
-	this.bends.push( bendpath );
+	this.bends.push(bendpath);
 
 };
 
-THREE.CurvePath.prototype.getTransformedPoints = function( segments, bends ) {
+THREE.CurvePath.prototype.getTransformedPoints = function(segments, bends) {
 
-	var oldPts = this.getPoints( segments ); // getPoints getSpacedPoints
+	var oldPts = this.getPoints(segments);
+	// getPoints getSpacedPoints
 	var i, il;
 
-	if ( !bends ) {
+	if (!bends) {
 
 		bends = this.bends;
 
 	}
 
-	for ( i = 0, il = bends.length; i < il; i ++ ) {
+	for ( i = 0, il = bends.length; i < il; i++) {
 
-		oldPts = this.getWrapPoints( oldPts, bends[ i ] );
+		oldPts = this.getWrapPoints(oldPts, bends[i]);
 
 	}
 
@@ -264,21 +268,21 @@ THREE.CurvePath.prototype.getTransformedPoints = function( segments, bends ) {
 
 };
 
-THREE.CurvePath.prototype.getTransformedSpacedPoints = function( segments, bends ) {
+THREE.CurvePath.prototype.getTransformedSpacedPoints = function(segments, bends) {
 
-	var oldPts = this.getSpacedPoints( segments );
+	var oldPts = this.getSpacedPoints(segments);
 
 	var i, il;
 
-	if ( !bends ) {
+	if (!bends) {
 
 		bends = this.bends;
 
 	}
 
-	for ( i = 0, il = bends.length; i < il; i ++ ) {
+	for ( i = 0, il = bends.length; i < il; i++) {
 
-		oldPts = this.getWrapPoints( oldPts, bends[ i ] );
+		oldPts = this.getWrapPoints(oldPts, bends[i]);
 
 	}
 
@@ -289,15 +293,15 @@ THREE.CurvePath.prototype.getTransformedSpacedPoints = function( segments, bends
 // This returns getPoints() bend/wrapped around the contour of a path.
 // Read http://www.planetclegg.com/projects/WarpingTextToSplines.html
 
-THREE.CurvePath.prototype.getWrapPoints = function ( oldPts, path ) {
+THREE.CurvePath.prototype.getWrapPoints = function(oldPts, path) {
 
 	var bounds = this.getBoundingBox();
 
 	var i, il, p, oldX, oldY, xNorm;
 
-	for ( i = 0, il = oldPts.length; i < il; i ++ ) {
+	for ( i = 0, il = oldPts.length; i < il; i++) {
 
-		p = oldPts[ i ];
+		p = oldPts[i];
 
 		oldX = p.x;
 		oldY = p.y;
@@ -305,14 +309,15 @@ THREE.CurvePath.prototype.getWrapPoints = function ( oldPts, path ) {
 		xNorm = oldX / bounds.maxX;
 
 		// If using actual distance, for length > path, requires line extrusions
-		//xNorm = path.getUtoTmapping(xNorm, oldX); // 3 styles. 1) wrap stretched. 2) wrap stretch by arc length 3) warp by actual distance
+		//xNorm = path.getUtoTmapping(xNorm, oldX); // 3 styles. 1) wrap stretched. 2)
+		// wrap stretch by arc length 3) warp by actual distance
 
-		xNorm = path.getUtoTmapping( xNorm, oldX );
+		xNorm = path.getUtoTmapping(xNorm, oldX);
 
 		// check for out of bounds?
 
-		var pathPt = path.getPoint( xNorm );
-		var normal = path.getNormalVector( xNorm ).multiplyScalar( oldY );
+		var pathPt = path.getPoint(xNorm);
+		var normal = path.getNormalVector(xNorm).multiplyScalar(oldY);
 
 		p.x = pathPt.x + normal.x;
 		p.y = pathPt.y + normal.y;

@@ -2,9 +2,9 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.Clock = function ( autoStart ) {
+THREE.Clock = function(autoStart) {
 
-	this.autoStart = ( autoStart !== undefined ) ? autoStart : true;
+	this.autoStart = (autoStart !== undefined ) ? autoStart : true;
 
 	this.startTime = 0;
 	this.oldTime = 0;
@@ -14,49 +14,45 @@ THREE.Clock = function ( autoStart ) {
 
 };
 
-THREE.extend( THREE.Clock.prototype, {
+THREE.extend(THREE.Clock.prototype, {
 
-	start: function () {
+	start : function() {
 
-		this.startTime = window.performance !== undefined && window.performance.now !== undefined
-					? window.performance.now()
-					: Date.now();
+		this.startTime = window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now();
 
 		this.oldTime = this.startTime;
 		this.running = true;
 	},
 
-	stop: function () {
+	stop : function() {
 
 		this.getElapsedTime();
 		this.running = false;
 
 	},
 
-	getElapsedTime: function () {
+	getElapsedTime : function() {
 
 		this.getDelta();
 		return this.elapsedTime;
 
 	},
 
-	getDelta: function () {
+	getDelta : function() {
 
 		var diff = 0;
 
-		if ( this.autoStart && ! this.running ) {
+		if (this.autoStart && !this.running) {
 
 			this.start();
 
 		}
 
-		if ( this.running ) {
+		if (this.running) {
 
-			var newTime = window.performance !== undefined && window.performance.now !== undefined
-					? window.performance.now()
-					: Date.now();
+			var newTime = window.performance !== undefined && window.performance.now !== undefined ? window.performance.now() : Date.now();
 
-			diff = 0.001 * ( newTime - this.oldTime );
+			diff = 0.001 * (newTime - this.oldTime );
 			this.oldTime = newTime;
 
 			this.elapsedTime += diff;
@@ -66,5 +62,4 @@ THREE.extend( THREE.Clock.prototype, {
 		return diff;
 
 	}
-
-} );
+});
