@@ -386,9 +386,9 @@ THREE.WebGLRenderer.LowLevelRenderer = function ( parameters ) {
 
 	}
 
-	function deleteProgram(RenderBuffer){
+	function deleteProgram(program){
 
-		_gl.deleteProgram(RenderBuffer);
+		_gl.deleteProgram(program);
 
 	}
 
@@ -520,9 +520,9 @@ THREE.WebGLRenderer.LowLevelRenderer = function ( parameters ) {
 
 	}
 
-	function getAttribLocation( program, id ){
+	function getAttribLocation( programInfo, id ){
 
-		return _gl.getAttribLocation( program, id );
+		return _gl.getAttribLocation( programInfo.program, id );
 
 	}
 
@@ -534,9 +534,9 @@ THREE.WebGLRenderer.LowLevelRenderer = function ( parameters ) {
 
 	}
 
-	function getUniformLocation( program, id ){
+	function getUniformLocation( programInfo, id ){
 
-		return _gl.getUniformLocation( program, id );
+		return _gl.getUniformLocation( programInfo.program, id );
 
 	}
 
@@ -624,9 +624,9 @@ THREE.WebGLRenderer.LowLevelRenderer = function ( parameters ) {
 
 	}
 
-	function useProgram(program){
+	function useProgram(programInfo){
 
-		_gl.useProgram( program );
+		_gl.useProgram( programInfo.program );
 
 	}
 

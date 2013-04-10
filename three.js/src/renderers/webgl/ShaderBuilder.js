@@ -3,7 +3,7 @@ THREE.WebGLRenderer.ShaderBuilder = function ( renderer, info ) {
 
 	this.renderer = renderer;
 	this.info = info;
-	this.programs = [],
+	this.programs = [],//<ProgramInfo>
 	this.programs_counter = 0;
 
 };
@@ -14,6 +14,7 @@ THREE.extend( THREE.WebGLRenderer.ShaderBuilder.prototype, {
 
 		var renderer = this.renderer;
 		var p, pl, d, program, code;
+		var programInfo;
 		var chunks = [];
 
 		// Generate code
@@ -48,19 +49,12 @@ THREE.extend( THREE.WebGLRenderer.ShaderBuilder.prototype, {
 		// Check if code has been already compiled
 
 		for ( p = 0, pl = this.programs.length; p < pl; p ++ ) {
-
-			var programInfo = this.programs[ p ];
-
+			programInfo = this.programs[ p ];
 			if ( programInfo.code === code ) {
-
 				//console.log( "Code already compiled." /*: \n\n" + code*/ );
-
 				programInfo.usedTimes ++;
-
-				return programInfo.program;
-
+				return programInfo;
 			}
-
 		}
 
 		var shadowMapTypeDefine = "SHADOWMAP_TYPE_BASIC";
@@ -234,23 +228,20 @@ THREE.extend( THREE.WebGLRenderer.ShaderBuilder.prototype, {
 
 		].join("\n");
 
-		program = renderer.compileShader(prefix_vertex + vertexShader, prefix_fragment + fragmentShader);
+		programInfo = new THREE.WebGLRenderer.ProgramInfo();
+		programInfo.program = renderer.compileShader(prefix_vertex + vertexShader, prefix_fragment + fragmentShader);
 
 		//console.log( prefix_fragment + fragmentShader );
 		//console.log( prefix_vertex + vertexShader );
-
-		program.uniforms = {};
-		program.attributes = {};
 
 		var identifiers, u, a, i;
 
 		// cache uniform locations
 
 		identifiers = [
-
-			'viewMatrix', 'modelViewMatrix', 'projectionMatrix', 'normalMatrix', 'modelMatrix', 'cameraPosition',
+			'viewMatrix', 'modelViewMatrix', 'projectionMatrix', 
+			'normalMatrix', 'modelMatrix', 'cameraPosition',
 			'morphTargetInfluences'
-
 		];
 
 		if ( parameters.useVertexTexture ) {
@@ -264,150 +255,104 @@ THREE.extend( THREE.WebGLRenderer.ShaderBuilder.prototype, {
 		}
 
 		for ( u in uniforms ) {
-
 			identifiers.push( u );
-
 		}
 
-		this.cacheUniformLocations( program, identifiers );
+		this.cacheUniformLocations( programInfo, identifiers );
 
 		// cache attributes locations
 
 		identifiers = [
-
 			"position", "normal", "uv", "uv2", "tangent", "color",
 			"skinIndex", "skinWeight", "lineDistance"
-
 		];
 
 		for ( i = 0; i < parameters.maxMorphTargets; i ++ ) {
-
 			identifiers.push( "morphTarget" + i );
-
 		}
 
 		for ( i = 0; i < parameters.maxMorphNormals; i ++ ) {
-
 			identifiers.push( "morphNormal" + i );
-
 		}
 
 		for ( a in attributes ) {
-
 			identifiers.push( a );
-
 		}
 
-		this.cacheAttributeLocations( program, identifiers );
+		this.cacheAttributeLocations( programInfo, identifiers );
 
-		program.id = this.programs_counter ++;
+		programInfo.id = this.programs_counter ++;
+		programInfo.code = code;
+		programInfo.usedTimes = 1;
 
-		this.programs.push( { program: program, code: code, usedTimes: 1 } );
+		this.programs.push(programInfo);
 
 		this.info.memory.programs = this.programs.length;
 
-		return program;
-
+		return programInfo;
 	},
 
 	generateDefines: function ( defines ) {
-
 		var value, chunk, chunks = [];
-
 		for ( var d in defines ) {
-
 			value = defines[ d ];
 			if ( value === false ) continue;
 
 			chunk = "#define " + d + " " + value;
 			chunks.push( chunk );
-
 		}
-
 		return chunks.join( "\n" );
-
 	},
 
 	// Shader parameters cache
 
-	cacheUniformLocations: function ( program, identifiers ) {
-
+	cacheUniformLocations: function ( programInfo, identifiers ) {
 		var i, l, id, renderer = this.renderer;
-
 		for ( i = 0, l = identifiers.length; i < l; i ++ ) {
-
 			id = identifiers[ i ];
-			program.uniforms[ id ] = renderer.getUniformLocation( program, id );
-
+			programInfo.uniforms[ id ] = renderer.getUniformLocation( programInfo, id );
 		}
-
 	},
 
-	cacheAttributeLocations: function ( program, identifiers ) {
-
+	cacheAttributeLocations: function ( programInfo, identifiers ) {
 		var i, l, id, renderer = this.renderer;
-
 		for( i = 0, l = identifiers.length; i < l; i ++ ) {
-
 			id = identifiers[ i ];
-			program.attributes[ id ] = renderer.getAttribLocation( program, id );
-
+			programInfo.attributes[ id ] = renderer.getAttribLocation( programInfo, id );
 		}
-
 	},
 
 	removeProgram: function ( program ) {
 
-		var i, il, programInfo;
+		var i, il, curProgram;
 		var deleteProgram = false;
 		var programs = this.programs;
 
 		for ( i = 0, il = programs.length; i < il; i ++ ) {
-
-			programInfo = programs[ i ];
-
-			if ( programInfo.program === program ) {
-
-				programInfo.usedTimes --;
-
-				if ( programInfo.usedTimes === 0 ) {
-
+			curProgram = programs[ i ];
+			if ( curProgram === program ) {
+				curProgram.usedTimes --;
+				if ( curProgram.usedTimes === 0 ) {
 					deleteProgram = true;
-
 				}
-
 				break;
-
 			}
-
 		}
 
 		if ( deleteProgram === true ) {
 
 			// avoid using array.splice, this is costlier than creating new array from scratch
-
 			var newPrograms = [];
-
 			for ( i = 0, il = programs.length; i < il; i ++ ) {
-
-				programInfo = programs[ i ];
-
-				if ( programInfo.program !== program ) {
-
-					newPrograms.push( programInfo );
-
+				curProgram = programs[ i ];
+				if ( curProgram !== program ) {
+					newPrograms.push( program );
 				}
-
 			}
-
 			this.programs = newPrograms;
-
 			this.renderer.deleteProgram( program );
-
 			this.info.memory.programs --;
-
 		}
-
 	}
 
 } );

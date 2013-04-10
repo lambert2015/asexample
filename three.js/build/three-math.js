@@ -982,7 +982,7 @@ THREE.Quaternion.slerp = function ( qa, qb, qm, t ) {
  * @author zz85 / http://www.lab4games.net/zz85/blog
  */
 
-THREE.Vector2 = function ( x, y ) {
+THREE.Vector2 = function(x, y) {
 
 	this.x = x || 0;
 	this.y = y || 0;
@@ -991,9 +991,9 @@ THREE.Vector2 = function ( x, y ) {
 
 THREE.Vector2.prototype = {
 
-	constructor: THREE.Vector2,
+	constructor : THREE.Vector2,
 
-	set: function ( x, y ) {
+	set : function(x, y) {
 
 		this.x = x;
 		this.y = y;
@@ -1002,7 +1002,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	setX: function ( x ) {
+	setX : function(x) {
 
 		this.x = x;
 
@@ -1010,7 +1010,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	setY: function ( y ) {
+	setY : function(y) {
 
 		this.y = y;
 
@@ -1018,32 +1018,39 @@ THREE.Vector2.prototype = {
 
 	},
 
-
-	setComponent: function ( index, value ) {
+	setComponent : function(index, value) {
 
 		switch ( index ) {
 
-			case 0: this.x = value; break;
-			case 1: this.y = value; break;
-			default: throw new Error( "index is out of range: " + index );
+			case 0:
+				this.x = value;
+				break;
+			case 1:
+				this.y = value;
+				break;
+			default:
+				throw new Error("index is out of range: " + index);
 
 		}
 
 	},
 
-	getComponent: function ( index ) {
+	getComponent : function(index) {
 
 		switch ( index ) {
 
-			case 0: return this.x;
-			case 1: return this.y;
-			default: throw new Error( "index is out of range: " + index );
+			case 0:
+				return this.x;
+			case 1:
+				return this.y;
+			default:
+				throw new Error("index is out of range: " + index);
 
 		}
 
 	},
 
-	copy: function ( v ) {
+	copy : function(v) {
 
 		this.x = v.x;
 		this.y = v.y;
@@ -1052,12 +1059,12 @@ THREE.Vector2.prototype = {
 
 	},
 
-	add: function ( v, w ) {
+	add : function(v, w) {
 
-		if ( w !== undefined ) {
+		if (w !== undefined) {
 
-			console.warn( 'DEPRECATED: Vector2\'s .add() now only accepts one argument. Use .addVectors( a, b ) instead.' );
-			return this.addVectors( v, w );
+			console.warn('DEPRECATED: Vector2\'s .add() now only accepts one argument. Use .addVectors( a, b ) instead.');
+			return this.addVectors(v, w);
 
 		}
 
@@ -1068,7 +1075,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	addVectors: function ( a, b ) {
+	addVectors : function(a, b) {
 
 		this.x = a.x + b.x;
 		this.y = a.y + b.y;
@@ -1077,7 +1084,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	addScalar: function ( s ) {
+	addScalar : function(s) {
 
 		this.x += s;
 		this.y += s;
@@ -1086,12 +1093,12 @@ THREE.Vector2.prototype = {
 
 	},
 
-	sub: function ( v, w ) {
+	sub : function(v, w) {
 
-		if ( w !== undefined ) {
+		if (w !== undefined) {
 
-			console.warn( 'DEPRECATED: Vector2\'s .sub() now only accepts one argument. Use .subVectors( a, b ) instead.' );
-			return this.subVectors( v, w );
+			console.warn('DEPRECATED: Vector2\'s .sub() now only accepts one argument. Use .subVectors( a, b ) instead.');
+			return this.subVectors(v, w);
 
 		}
 
@@ -1102,7 +1109,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	subVectors: function ( a, b ) {
+	subVectors : function(a, b) {
 
 		this.x = a.x - b.x;
 		this.y = a.y - b.y;
@@ -1111,7 +1118,7 @@ THREE.Vector2.prototype = {
 
 	},
 
-	multiplyScalar: function ( s ) {
+	multiplyScalar : function(s) {
 
 		this.x *= s;
 		this.y *= s;
@@ -1120,16 +1127,16 @@ THREE.Vector2.prototype = {
 
 	},
 
-	divideScalar: function ( s ) {
+	divideScalar : function(s) {
 
-		if ( s !== 0 ) {
+		if (s !== 0) {
 
 			this.x /= s;
 			this.y /= s;
 
 		} else {
 
-			this.set( 0, 0 );
+			this.set(0, 0);
 
 		}
 
@@ -1137,15 +1144,15 @@ THREE.Vector2.prototype = {
 
 	},
 
-	min: function ( v ) {
+	min : function(v) {
 
-		if ( this.x > v.x ) {
+		if (this.x > v.x) {
 
 			this.x = v.x;
 
 		}
 
-		if ( this.y > v.y ) {
+		if (this.y > v.y) {
 
 			this.y = v.y;
 
@@ -1155,15 +1162,15 @@ THREE.Vector2.prototype = {
 
 	},
 
-	max: function ( v ) {
+	max : function(v) {
 
-		if ( this.x < v.x ) {
+		if (this.x < v.x) {
 
 			this.x = v.x;
 
 		}
 
-		if ( this.y < v.y ) {
+		if (this.y < v.y) {
 
 			this.y = v.y;
 
@@ -1173,117 +1180,91 @@ THREE.Vector2.prototype = {
 
 	},
 
-	clamp: function ( min, max ) {
+	clamp : function(min, max) {
 
-		// This function assumes min < max, if this assumption isn't true it will not operate correctly
+		// This function assumes min < max, if this assumption isn't true it will not
+		// operate correctly
 
-		if ( this.x < min.x ) {
+		if (this.x < min.x) {
 
 			this.x = min.x;
 
-		} else if ( this.x > max.x ) {
+		} else if (this.x > max.x) {
 
 			this.x = max.x;
 
 		}
 
-		if ( this.y < min.y ) {
+		if (this.y < min.y) {
 
 			this.y = min.y;
 
-		} else if ( this.y > max.y ) {
+		} else if (this.y > max.y) {
 
 			this.y = max.y;
 
 		}
 
 		return this;
-
 	},
 
-	negate: function() {
-
-		return this.multiplyScalar( - 1 );
-
+	negate : function() {
+		return this.multiplyScalar(-1);
 	},
 
-	dot: function ( v ) {
-
+	dot : function(v) {
 		return this.x * v.x + this.y * v.y;
-
 	},
 
-	lengthSq: function () {
-
+	lengthSq : function() {
 		return this.x * this.x + this.y * this.y;
-
 	},
 
-	length: function () {
-
-		return Math.sqrt( this.x * this.x + this.y * this.y );
-
+	length : function() {
+		return Math.sqrt(this.x * this.x + this.y * this.y);
 	},
 
-	normalize: function () {
-
-		return this.divideScalar( this.length() );
-
+	normalize : function() {
+		return this.divideScalar(this.length());
 	},
 
-	distanceTo: function ( v ) {
-
-		return Math.sqrt( this.distanceToSquared( v ) );
-
+	distanceTo : function(v) {
+		return Math.sqrt(this.distanceToSquared(v));
 	},
 
-	distanceToSquared: function ( v ) {
-
+	distanceToSquared : function(v) {
 		var dx = this.x - v.x, dy = this.y - v.y;
 		return dx * dx + dy * dy;
-
 	},
 
-	setLength: function ( l ) {
-
+	setLength : function(l) {
 		var oldLength = this.length();
+		if (oldLength !== 0 && l !== oldLength) {
 
-		if ( oldLength !== 0 && l !== oldLength ) {
-
-			this.multiplyScalar( l / oldLength );
+			this.multiplyScalar(l / oldLength);
 		}
 
 		return this;
-
 	},
 
-	lerp: function ( v, alpha ) {
-
-		this.x += ( v.x - this.x ) * alpha;
-		this.y += ( v.y - this.y ) * alpha;
+	lerp : function(v, alpha) {
+		this.x += (v.x - this.x ) * alpha;
+		this.y += (v.y - this.y ) * alpha;
 
 		return this;
-
 	},
 
-	equals: function( v ) {
-
-		return ( ( v.x === this.x ) && ( v.y === this.y ) );
-
+	equals : function(v) {
+		return ((v.x === this.x ) && (v.y === this.y ) );
 	},
 
-	toArray: function () {
-
-		return [ this.x, this.y ];
-
+	toArray : function() {
+		return [this.x, this.y];
 	},
 
-	clone: function () {
-
-		return new THREE.Vector2( this.x, this.y );
-
+	clone : function() {
+		return new THREE.Vector2(this.x, this.y);
 	}
-
 };
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -5677,11 +5658,11 @@ THREE.Spline = function ( points ) {
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.Triangle = function ( a, b, c ) {
+THREE.Triangle = function(a, b, c) {
 
-	this.a = ( a !== undefined ) ? a : new THREE.Vector3();
-	this.b = ( b !== undefined ) ? b : new THREE.Vector3();
-	this.c = ( c !== undefined ) ? c : new THREE.Vector3();
+	this.a = (a !== undefined ) ? a : new THREE.Vector3();
+	this.b = (b !== undefined ) ? b : new THREE.Vector3();
+	this.c = (c !== undefined ) ? c : new THREE.Vector3();
 
 };
 
@@ -5689,22 +5670,22 @@ THREE.Triangle.normal = function() {
 
 	var v0 = new THREE.Vector3();
 
-	return function ( a, b, c, optionalTarget ) {
+	return function(a, b, c, optionalTarget) {
 
 		var result = optionalTarget || new THREE.Vector3();
 
-		result.subVectors( c, b );
-		v0.subVectors( a, b );
-		result.cross( v0 );
+		result.subVectors(c, b);
+		v0.subVectors(a, b);
+		result.cross(v0);
 
 		var resultLengthSq = result.lengthSq();
-		if( resultLengthSq > 0 ) {
+		if (resultLengthSq > 0) {
 
-			return result.multiplyScalar( 1 / Math.sqrt( resultLengthSq ) );
+			return result.multiplyScalar(1 / Math.sqrt(resultLengthSq));
 
 		}
 
-		return result.set( 0, 0, 0 );
+		return result.set(0, 0, 0);
 
 	};
 
@@ -5718,35 +5699,35 @@ THREE.Triangle.barycoordFromPoint = function() {
 	var v1 = new THREE.Vector3();
 	var v2 = new THREE.Vector3();
 
-	return function ( point, a, b, c, optionalTarget ) {
+	return function(point, a, b, c, optionalTarget) {
 
-		v0.subVectors( c, a );
-		v1.subVectors( b, a );
-		v2.subVectors( point, a );
+		v0.subVectors(c, a);
+		v1.subVectors(b, a);
+		v2.subVectors(point, a);
 
-		var dot00 = v0.dot( v0 );
-		var dot01 = v0.dot( v1 );
-		var dot02 = v0.dot( v2 );
-		var dot11 = v1.dot( v1 );
-		var dot12 = v1.dot( v2 );
+		var dot00 = v0.dot(v0);
+		var dot01 = v0.dot(v1);
+		var dot02 = v0.dot(v2);
+		var dot11 = v1.dot(v1);
+		var dot12 = v1.dot(v2);
 
-		var denom = ( dot00 * dot11 - dot01 * dot01 );
+		var denom = (dot00 * dot11 - dot01 * dot01 );
 
 		var result = optionalTarget || new THREE.Vector3();
 
 		// colinear or singular triangle
-		if( denom == 0 ) {
+		if (denom == 0) {
 			// arbitrary location outside of triangle?
 			// not sure if this is the best idea, maybe should be returning undefined
-			return result.set( -2, -1, -1 );
+			return result.set(-2, -1, -1);
 		}
 
 		var invDenom = 1 / denom;
-		var u = ( dot11 * dot02 - dot01 * dot12 ) * invDenom;
-		var v = ( dot00 * dot12 - dot01 * dot02 ) * invDenom;
+		var u = (dot11 * dot02 - dot01 * dot12 ) * invDenom;
+		var v = (dot00 * dot12 - dot01 * dot02 ) * invDenom;
 
 		// barycoordinates must always sum to 1
-		return result.set( 1 - u - v, v, u );
+		return result.set(1 - u - v, v, u);
 
 	};
 
@@ -5756,11 +5737,11 @@ THREE.Triangle.containsPoint = function() {
 
 	var v1 = new THREE.Vector3();
 
-	return function ( point, a, b, c ) {
+	return function(point, a, b, c) {
 
-		var result = THREE.Triangle.barycoordFromPoint( point, a, b, c, v1 );
+		var result = THREE.Triangle.barycoordFromPoint(point, a, b, c, v1);
 
-		return ( result.x >= 0 ) && ( result.y >= 0 ) && ( ( result.x + result.y ) <= 1 );
+		return (result.x >= 0 ) && (result.y >= 0 ) && ((result.x + result.y ) <= 1 );
 
 	};
 
@@ -5768,97 +5749,96 @@ THREE.Triangle.containsPoint = function() {
 
 THREE.Triangle.prototype = {
 
-	constructor: THREE.Triangle,
+	constructor : THREE.Triangle,
 
-	set: function ( a, b, c ) {
+	set : function(a, b, c) {
 
-		this.a.copy( a );
-		this.b.copy( b );
-		this.c.copy( c );
-
-		return this;
-
-	},
-
-	setFromPointsAndIndices: function ( points, i0, i1, i2 ) {
-
-		this.a.copy( points[i0] );
-		this.b.copy( points[i1] );
-		this.c.copy( points[i2] );
+		this.a.copy(a);
+		this.b.copy(b);
+		this.c.copy(c);
 
 		return this;
 
 	},
 
-	copy: function ( triangle ) {
+	setFromPointsAndIndices : function(points, i0, i1, i2) {
 
-		this.a.copy( triangle.a );
-		this.b.copy( triangle.b );
-		this.c.copy( triangle.c );
+		this.a.copy(points[i0]);
+		this.b.copy(points[i1]);
+		this.c.copy(points[i2]);
 
 		return this;
 
 	},
 
-	area: function() {
+	copy : function(triangle) {
+
+		this.a.copy(triangle.a);
+		this.b.copy(triangle.b);
+		this.c.copy(triangle.c);
+
+		return this;
+
+	},
+
+	area : function() {
 
 		var v0 = new THREE.Vector3();
 		var v1 = new THREE.Vector3();
 
-		return function () {
+		return function() {
 
-			v0.subVectors( this.c, this.b );
-			v1.subVectors( this.a, this.b );
+			v0.subVectors(this.c, this.b);
+			v1.subVectors(this.a, this.b);
 
-			return v0.cross( v1 ).length() * 0.5;
+			return v0.cross(v1).length() * 0.5;
 
 		};
 
 	}(),
 
-	midpoint: function ( optionalTarget ) {
+	midpoint : function(optionalTarget) {
 
 		var result = optionalTarget || new THREE.Vector3();
-		return result.addVectors( this.a, this.b ).add( this.c ).multiplyScalar( 1 / 3 );
+		return result.addVectors(this.a, this.b).add(this.c).multiplyScalar(1 / 3);
 
 	},
 
-	normal: function ( optionalTarget ) {
+	normal : function(optionalTarget) {
 
-		return THREE.Triangle.normal( this.a, this.b, this.c, optionalTarget );
+		return THREE.Triangle.normal(this.a, this.b, this.c, optionalTarget);
 
 	},
 
-	plane: function ( optionalTarget ) {
+	plane : function(optionalTarget) {
 
 		var result = optionalTarget || new THREE.Plane();
 
-		return result.setFromCoplanarPoints( this.a, this.b, this.c );
+		return result.setFromCoplanarPoints(this.a, this.b, this.c);
 
 	},
 
-	barycoordFromPoint: function ( point, optionalTarget ) {
+	barycoordFromPoint : function(point, optionalTarget) {
 
-		return THREE.Triangle.barycoordFromPoint( point, this.a, this.b, this.c, optionalTarget );
-
-	},
-
-	containsPoint: function ( point ) {
-
-		return THREE.Triangle.containsPoint( point, this.a, this.b, this.c );
+		return THREE.Triangle.barycoordFromPoint(point, this.a, this.b, this.c, optionalTarget);
 
 	},
 
-	equals: function ( triangle ) {
+	containsPoint : function(point) {
 
-		return triangle.a.equals( this.a ) && triangle.b.equals( this.b ) && triangle.c.equals( this.c );
+		return THREE.Triangle.containsPoint(point, this.a, this.b, this.c);
 
 	},
 
-	clone: function () {
+	equals : function(triangle) {
 
-		return new THREE.Triangle().copy( this );
+		return triangle.a.equals(this.a) && triangle.b.equals(this.b) && triangle.c.equals(this.c);
+
+	},
+
+	clone : function() {
+
+		return new THREE.Triangle().copy(this);
 
 	}
-
 };
