@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.RenderableParticle = function () {
+THREE.RenderableParticle = function() {
 
 	this.object = null;
 

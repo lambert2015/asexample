@@ -3,33 +3,33 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.Sprite = function ( material ) {
+THREE.Sprite = function(material) {
 
-	THREE.Object3D.call( this );
+	THREE.Object3D.call(this);
 
-	this.material = ( material !== undefined ) ? material : new THREE.SpriteMaterial();
+	this.material = (material !== undefined ) ? material : new THREE.SpriteMaterial();
 
 	this.rotation3d = this.rotation;
 	this.rotation = 0;
 
 };
 
-THREE.Sprite.prototype = Object.create( THREE.Object3D.prototype );
+THREE.Sprite.prototype = Object.create(THREE.Object3D.prototype);
 
 /*
  * Custom update matrix
  */
 
-THREE.Sprite.prototype.updateMatrix = function () {
+THREE.Sprite.prototype.updateMatrix = function() {
 
-	this.matrix.setPosition( this.position );
+	this.matrix.setPosition(this.position);
 
-	this.rotation3d.set( 0, 0, this.rotation );
-	this.matrix.setRotationFromEuler( this.rotation3d );
+	this.rotation3d.set(0, 0, this.rotation);
+	this.matrix.setRotationFromEuler(this.rotation3d);
 
-	if ( this.scale.x !== 1 || this.scale.y !== 1 ) {
+	if (this.scale.x !== 1 || this.scale.y !== 1) {
 
-		this.matrix.scale( this.scale );
+		this.matrix.scale(this.scale);
 
 	}
 
@@ -37,11 +37,12 @@ THREE.Sprite.prototype.updateMatrix = function () {
 
 };
 
-THREE.Sprite.prototype.clone = function ( object ) {
+THREE.Sprite.prototype.clone = function(object) {
 
-	if ( object === undefined ) object = new THREE.Sprite( this.material );
+	if (object === undefined)
+		object = new THREE.Sprite(this.material);
 
-	THREE.Object3D.prototype.clone.call( this, object );
+	THREE.Object3D.prototype.clone.call(this, object);
 
 	return object;
 

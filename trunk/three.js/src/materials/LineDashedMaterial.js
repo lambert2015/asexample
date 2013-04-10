@@ -21,11 +21,11 @@
  * }
  */
 
-THREE.LineDashedMaterial = function ( parameters ) {
+THREE.LineDashedMaterial = function(parameters) {
 
-	THREE.Material.call( this );
+	THREE.Material.call(this);
 
-	this.color = new THREE.Color( 0xffffff );
+	this.color = new THREE.Color(0xffffff);
 
 	this.linewidth = 1;
 
@@ -37,19 +37,19 @@ THREE.LineDashedMaterial = function ( parameters ) {
 
 	this.fog = true;
 
-	this.setValues( parameters );
+	this.setValues(parameters);
 
 };
 
-THREE.LineDashedMaterial.prototype = Object.create( THREE.Material.prototype );
+THREE.LineDashedMaterial.prototype = Object.create(THREE.Material.prototype);
 
-THREE.LineDashedMaterial.prototype.clone = function () {
+THREE.LineDashedMaterial.prototype.clone = function() {
 
 	var material = new THREE.LineDashedMaterial();
 
-	THREE.Material.prototype.clone.call( this, material );
+	THREE.Material.prototype.clone.call(this, material);
 
-	material.color.copy( this.color );
+	material.color.copy(this.color);
 
 	material.linewidth = this.linewidth;
 

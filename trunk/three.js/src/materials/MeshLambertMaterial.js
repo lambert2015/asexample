@@ -37,16 +37,17 @@
  * }
  */
 
-THREE.MeshLambertMaterial = function ( parameters ) {
+THREE.MeshLambertMaterial = function(parameters) {
 
-	THREE.Material.call( this );
+	THREE.Material.call(this);
 
-	this.color = new THREE.Color( 0xffffff ); // diffuse
-	this.ambient = new THREE.Color( 0xffffff );
-	this.emissive = new THREE.Color( 0x000000 );
+	this.color = new THREE.Color(0xffffff);
+	// diffuse
+	this.ambient = new THREE.Color(0xffffff);
+	this.emissive = new THREE.Color(0x000000);
 
 	this.wrapAround = false;
-	this.wrapRGB = new THREE.Vector3( 1, 1, 1 );
+	this.wrapRGB = new THREE.Vector3(1, 1, 1);
 
 	this.map = null;
 
@@ -74,24 +75,24 @@ THREE.MeshLambertMaterial = function ( parameters ) {
 	this.morphTargets = false;
 	this.morphNormals = false;
 
-	this.setValues( parameters );
+	this.setValues(parameters);
 
 };
 
-THREE.MeshLambertMaterial.prototype = Object.create( THREE.Material.prototype );
+THREE.MeshLambertMaterial.prototype = Object.create(THREE.Material.prototype);
 
-THREE.MeshLambertMaterial.prototype.clone = function () {
+THREE.MeshLambertMaterial.prototype.clone = function() {
 
 	var material = new THREE.MeshLambertMaterial();
 
-	THREE.Material.prototype.clone.call( this, material );
+	THREE.Material.prototype.clone.call(this, material);
 
-	material.color.copy( this.color );
-	material.ambient.copy( this.ambient );
-	material.emissive.copy( this.emissive );
+	material.color.copy(this.color);
+	material.ambient.copy(this.ambient);
+	material.emissive.copy(this.emissive);
 
 	material.wrapAround = this.wrapAround;
-	material.wrapRGB.copy( this.wrapRGB );
+	material.wrapRGB.copy(this.wrapRGB);
 
 	material.map = this.map;
 

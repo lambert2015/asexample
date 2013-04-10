@@ -5,7 +5,8 @@
  *  fragmentShader: <string>,
  *  vertexShader: <string>,
  *
- *  uniforms: { "parameter1": { type: "f", value: 1.0 }, "parameter2": { type: "i" value2: 2 } },
+ *  uniforms: { "parameter1": { type: "f", value: 1.0 }, "parameter2": { type:
+ * "i" value2: 2 } },
  *
  *  defines: { "label" : "value" },
  *
@@ -29,9 +30,9 @@
  * }
  */
 
-THREE.ShaderMaterial = function ( parameters ) {
+THREE.ShaderMaterial = function(parameters) {
 
-	THREE.Material.call( this );
+	THREE.Material.call(this);
 
 	this.fragmentShader = "void main() {}";
 	this.vertexShader = "void main() {}";
@@ -44,33 +45,39 @@ THREE.ShaderMaterial = function ( parameters ) {
 	this.wireframe = false;
 	this.wireframeLinewidth = 1;
 
-	this.fog = false; // set to use scene fog
+	this.fog = false;
+	// set to use scene fog
 
-	this.lights = false; // set to use scene lights
+	this.lights = false;
+	// set to use scene lights
 
-	this.vertexColors = THREE.NoColors; // set to use "color" attribute stream
+	this.vertexColors = THREE.NoColors;
+	// set to use "color" attribute stream
 
-	this.skinning = false; // set to use skinning attribute streams
+	this.skinning = false;
+	// set to use skinning attribute streams
 
-	this.morphTargets = false; // set to use morph targets
-	this.morphNormals = false; // set to use morph normals
+	this.morphTargets = false;
+	// set to use morph targets
+	this.morphNormals = false;
+	// set to use morph normals
 
-	this.setValues( parameters );
+	this.setValues(parameters);
 
 };
 
-THREE.ShaderMaterial.prototype = Object.create( THREE.Material.prototype );
+THREE.ShaderMaterial.prototype = Object.create(THREE.Material.prototype);
 
-THREE.ShaderMaterial.prototype.clone = function () {
+THREE.ShaderMaterial.prototype.clone = function() {
 
 	var material = new THREE.ShaderMaterial();
 
-	THREE.Material.prototype.clone.call( this, material );
+	THREE.Material.prototype.clone.call(this, material);
 
 	material.fragmentShader = this.fragmentShader;
 	material.vertexShader = this.vertexShader;
 
-	material.uniforms = THREE.UniformsUtils.clone( this.uniforms );
+	material.uniforms = THREE.UniformsUtils.clone(this.uniforms);
 
 	material.attributes = this.attributes;
 	material.defines = this.defines;
