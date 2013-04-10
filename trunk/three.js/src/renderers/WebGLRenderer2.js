@@ -2177,7 +2177,9 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 		};
 
-		material.program = shaderBuilder.buildProgram( shaderID, material.fragmentShader, material.vertexShader, material.uniforms, material.attributes, material.defines, parameters );
+		material.program = shaderBuilder.buildProgram( shaderID, material.fragmentShader, material.vertexShader, 
+														material.uniforms, material.attributes, material.defines, 
+														parameters );
 
 		var attributes = material.program.attributes;
 
@@ -2264,14 +2266,14 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 		var refreshMaterial = false;
 
-		var program = material.program,
-			p_uniforms = program.uniforms,
+		var programInfo = material.program,
+			p_uniforms = programInfo.uniforms,
 			m_uniforms = material.uniforms;
 
-		if ( program !== _currentProgram ) {
+		if ( programInfo !== _currentProgram ) {
 
-			renderer.useProgram( program );
-			_currentProgram = program;
+			renderer.useProgram( programInfo );
+			_currentProgram = programInfo;
 
 			refreshMaterial = true;
 
@@ -2337,7 +2339,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 				if ( _lightsNeedUpdate ) {
 
-					setupLights( program, lights );
+					setupLights( programInfo, lights );
 					_lightsNeedUpdate = false;
 
 				}
@@ -2397,7 +2399,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 			// load common uniforms
 
-			loadUniformsGeneric( program, material.uniformsList );
+			loadUniformsGeneric( programInfo, material.uniformsList );
 
 			// load material specific uniforms
 			// (shader material also gets them for the sake of genericity)
@@ -2438,7 +2440,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 		}
 
-		return program;
+		return programInfo;
 
 	};
 

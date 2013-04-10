@@ -69,6 +69,7 @@
 	"src/renderers/WebGLShaders.js",
 	"src/renderers/RenderInfo.js",
 	"src/renderers/WebGLRenderer.js",
+	"src/renderers/webgl/ProgramInfo.js",
 	"src/renderers/WebGLRenderTarget.js",
 	"src/renderers/WebGLRenderTargetCube.js",
 	"src/renderers/renderables/RenderableVertex.js",
