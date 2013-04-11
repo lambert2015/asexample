@@ -5,8 +5,19 @@ package three.renderers;
  * @author andy
  */
 
-typedef ProgramInfo = {
-	var program:Program3D;
-	var usedTimes:Int;
-	var code:String;
+class ProgramInfo 
+{
+	public var program:Program3D;
+	public var usedTimes:Int;
+	public var code:String;
+	public var id:Int;
+	public var uniforms:Dynamic;
+	public var attributes:Dynamic;
+	
+	public function new()
+	{
+		usedTimes = 0;
+		uniforms = { };
+		attributes = { };
+	}
 }

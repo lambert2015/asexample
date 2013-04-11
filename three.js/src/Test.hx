@@ -5,14 +5,18 @@ import js.html.CanvasElement;
 import js.html.Element;
 import js.html.Event;
 import js.html.Float32Array;
+import js.html.ImageElement;
 import js.html.webgl.Program;
 import js.html.webgl.RenderingContext;
 import js.Lib;
 import three.materials.Material;
 import three.renderers.ShaderDef;
 import three.renderers.ShaderLib;
+import three.utils.ImageUtil;
 import three.utils.WebGLUtil;
 import three.core.EventDispatcher;
+import three.loaders.ImageLoader;
+import three.loaders.TextureLoader;
 /**
  * ...
  * @author 
@@ -65,5 +69,14 @@ class Test
 		//ShaderLib.initShaderLib();
 		//
 		//var def:ShaderDef = ShaderLib.getShaderDef("phong");
+		
+		var image:ImageElement = ImageUtil.createImage();
+		//cast Browser.document.createElement("img");
+		var loader:ImageLoader = new ImageLoader();
+		loader.addEventListener('load', function ( event ):Void {
+				} );
+		loader.load("textures/crate256.jpg", image);
+		
+		Browser.document.getElementById("webgl").appendChild(image);
 	}
 }

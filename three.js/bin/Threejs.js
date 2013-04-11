@@ -74,6 +74,13 @@ Test.prototype = {
 		this.gl.enableVertexAttribArray(index);
 		this.gl.vertexAttribPointer(index,2,5126,false,0,0);
 		this.gl.drawArrays(4,0,3);
+		var image = new Image();
+		var loader = new three.loaders.ImageLoader();
+		loader.addEventListener("load",function(event) {
+			js.Lib.alert("success");
+		});
+		loader.load("textures/crate256.jpg",image);
+		js.Browser.document.getElementById("webgl").appendChild(image);
 	}
 	,__class__: Test
 }
@@ -222,6 +229,11 @@ js.Boot.__cast = function(o,t) {
 }
 js.Browser = function() { }
 js.Browser.__name__ = true;
+js.Lib = function() { }
+js.Lib.__name__ = true;
+js.Lib.alert = function(v) {
+	alert(js.Boot.__string_rec(v,""));
+}
 js.html = {}
 js.html._CanvasElement = {}
 js.html._CanvasElement.CanvasUtil = function() { }
@@ -1758,6 +1770,49 @@ three.lights.Light.__super__ = three.core.Object3D;
 three.lights.Light.prototype = $extend(three.core.Object3D.prototype,{
 	__class__: three.lights.Light
 });
+three.loaders = {}
+three.loaders.ImageLoader = function() {
+	three.core.EventDispatcher.call(this);
+};
+three.loaders.ImageLoader.__name__ = true;
+three.loaders.ImageLoader.__super__ = three.core.EventDispatcher;
+three.loaders.ImageLoader.prototype = $extend(three.core.EventDispatcher.prototype,{
+	load: function(url,image) {
+		var _g = this;
+		if(image == null) image = new Image();
+		image.addEventListener("load",function(e) {
+			_g.dispatchEvent({ type : "load", content : image});
+		},false);
+		image.addEventListener("error",function(e) {
+			_g.dispatchEvent({ type : "error", message : "Couldn't load URL [" + url + "]"});
+		},false);
+		if(this.crossOrigin != null) image.crossOrigin = this.crossOrigin;
+		image.src = url;
+	}
+	,__class__: three.loaders.ImageLoader
+});
+three.loaders.TextureLoader = function() {
+	three.core.EventDispatcher.call(this);
+};
+three.loaders.TextureLoader.__name__ = true;
+three.loaders.TextureLoader.__super__ = three.core.EventDispatcher;
+three.loaders.TextureLoader.prototype = $extend(three.core.EventDispatcher.prototype,{
+	load: function(url) {
+		var _g = this;
+		var image = new Image();
+		image.addEventListener("load",function(e) {
+			var texture = new three.textures.Texture(image);
+			texture.needsUpdate = true;
+			_g.dispatchEvent({ type : "load", content : texture});
+		},false);
+		image.addEventListener("error",function(e) {
+			_g.dispatchEvent({ type : "error", message : "Couldn't load URL [" + url + "]"});
+		},false);
+		if(this.crossOrigin != null) image.crossOrigin = this.crossOrigin;
+		image.src = url;
+	}
+	,__class__: three.loaders.TextureLoader
+});
 three.materials = {}
 three.materials.Material = function() {
 	this.alphaTest = 0;
@@ -2971,6 +3026,11 @@ three.utils.Assert.assert = function(condition,info) {
 three.utils.Assert.prototype = {
 	__class__: three.utils.Assert
 }
+three.utils.ImageUtil = function() { }
+three.utils.ImageUtil.__name__ = true;
+three.utils.ImageUtil.createImage = function() {
+	return new Image();
+}
 three.utils.Logger = function() { }
 three.utils.Logger.__name__ = true;
 three.utils.Logger.log = function(value) {
@@ -3010,8 +3070,10 @@ three.utils.TempVars.getTempVars = function() {
 }
 three.utils.TempVars.prototype = {
 	release: function() {
+		three.utils.Assert.assert(this.isUsed,"This instance of TempVars was already released!");
 		this.isUsed = false;
 		three.utils.TempVars.currentIndex--;
+		three.utils.Assert.assert(three.utils.TempVars.varStack[three.utils.TempVars.currentIndex] == this,"An instance of TempVars has not been released in a called method!");
 	}
 	,__class__: three.utils.TempVars
 }
@@ -3137,3 +3199,5 @@ three.utils.TempVars.currentIndex = 0;
 three.utils.TempVars.varStack = new Array();
 Test.main();
 })();
+
+//@ sourceMappingURL=Threejs.js.map

@@ -1,5 +1,5 @@
 package three.utils;
-import js.Dom;
+import js.html.ImageElement;
 /**
  * ...
  * @author 
@@ -7,7 +7,7 @@ import js.Dom;
 
 class ImageUtil 
 {
-	public static inline function createImage():Image
+	public static inline function createImage():ImageElement
 	{
 		return untyped __js__("new Image()");
 	}
