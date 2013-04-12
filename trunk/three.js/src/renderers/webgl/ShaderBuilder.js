@@ -13,7 +13,7 @@ THREE.extend( THREE.WebGLRenderer.ShaderBuilder.prototype, {
 	buildProgram: function ( shaderID, fragmentShader, vertexShader, uniforms, attributes, defines, parameters ) {
 
 		var renderer = this.renderer;
-		var p, pl, d, program, code;
+		var p, pl, d, code;
 		var programInfo;
 		var chunks = [];
 
