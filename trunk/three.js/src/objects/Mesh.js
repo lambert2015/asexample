@@ -27,14 +27,15 @@ THREE.Mesh.prototype = Object.create(THREE.Object3D.prototype);
 
 THREE.Mesh.prototype.updateMorphTargets = function() {
 
-	if (this.geometry.morphTargets.length > 0) {
+	var size = this.geometry.morphTargets.length;
+	if (size > 0) {
 
 		this.morphTargetBase = -1;
 		this.morphTargetForcedOrder = [];
 		this.morphTargetInfluences = [];
 		this.morphTargetDictionary = {};
 
-		for (var m = 0, ml = this.geometry.morphTargets.length; m < ml; m++) {
+		for (var m = 0; m < size; m++) {
 			this.morphTargetInfluences.push(0);
 			this.morphTargetDictionary[this.geometry.morphTargets[m].name] = m;
 		}
