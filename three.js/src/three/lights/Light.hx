@@ -33,11 +33,18 @@ class Light extends Object3D
 	public var shadowCamera:Camera;
 	public var shadowMatrix:Matrix4;
 
-	public function new(hex:Int) 
+	public function new(hex:UInt=0x0) 
 	{
 		super();
 		
 		this.color = new Color(hex);
 	}
 	
+	public function clone(?light:Light):Light
+	{
+		if (light == null)
+			light = new Light();
+		light.color.copy(this.color);
+		return light;
+	}
 }

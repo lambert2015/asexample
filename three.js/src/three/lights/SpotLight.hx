@@ -20,7 +20,7 @@ class SpotLight extends Light
 
 	public var shadowCameraVisible:Bool;
 
-	public function new(hex:Int, intensity:Float = 1, distance:Float = 0, angle:Float = 1.57, exponent:Int = 10)
+	public function new(hex:UInt, intensity:Float = 1, distance:Float = 0, angle:Float = 1.57, exponent:Int = 10)
 	{
 		super(hex);
 		
