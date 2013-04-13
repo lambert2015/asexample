@@ -8,7 +8,7 @@ package three.lights;
 class AmbientLight extends Light
 {
 
-	public function new(hex:UInt = 0x0) 
+	public function new(hex:Int = 0x0) 
 	{
 		super(hex);
 	}

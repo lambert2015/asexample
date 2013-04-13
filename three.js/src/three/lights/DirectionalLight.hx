@@ -32,7 +32,7 @@ class DirectionalLight extends Light
 	
 	public var shadowCascadeArray:Array<Dynamic>;
 
-	public function new(hex:UInt = 0x0, intensity:Float = 1, distance:Float = 0) 
+	public function new(hex:Int = 0x0, intensity:Float = 1, distance:Float = 0) 
 	{
 		super(hex);
 		
