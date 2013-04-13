@@ -33,7 +33,7 @@ class Light extends Object3D
 	public var shadowCamera:Camera;
 	public var shadowMatrix:Matrix4;
 
-	public function new(hex:UInt=0x0) 
+	public function new(hex:UInt = 0x0) 
 	{
 		super();
 		

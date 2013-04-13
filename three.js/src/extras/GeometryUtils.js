@@ -571,7 +571,7 @@ THREE.GeometryUtils = {
 
 };
 
-THREE.GeometryUtils.random = THREE.Math.random16;
+THREE.GeometryUtils.random = THREE.MathUtil.random16;
 
 THREE.GeometryUtils.__v1 = new THREE.Vector3();
 THREE.GeometryUtils.__v2 = new THREE.Vector3();

@@ -105,8 +105,8 @@
 
 						// random placement in a grid
 
-						var x = ( ( i % 27 )  - 13.5 ) * 2 + THREE.Math.randFloatSpread( 1 );
-						var z = ( Math.floor( i / 27 ) - 13.5 ) * 2 + THREE.Math.randFloatSpread( 1 );
+						var x = ( ( i % 27 )  - 13.5 ) * 2 + THREE.MathUtil.randFloatSpread( 1 );
+						var z = ( Math.floor( i / 27 ) - 13.5 ) * 2 + THREE.MathUtil.randFloatSpread( 1 );
 
 						// leave space for big monster
 
@@ -122,11 +122,11 @@
 
 						morph.time = 1000 * Math.random();
 
-						var s = THREE.Math.randFloat( 0.00075, 0.001 );
+						var s = THREE.MathUtil.randFloat( 0.00075, 0.001 );
 						morph.scale.set( s, s, s );
 
 						morph.position.set( x, 0, z );
-						morph.rotation.y = THREE.Math.randFloat( -0.25, 0.25 );
+						morph.rotation.y = THREE.MathUtil.randFloat( -0.25, 0.25 );
 
 						morph.matrixAutoUpdate = false;
 						morph.updateMatrix();

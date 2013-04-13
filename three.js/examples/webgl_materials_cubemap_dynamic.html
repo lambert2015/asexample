@@ -906,7 +906,7 @@
 
 				// day / night
 
-				v = THREE.Math.clamp( v + 0.5 * delta * vdir, 0.1, 0.9 );
+				v = THREE.MathUtil.clamp( v + 0.5 * delta * vdir, 0.1, 0.9 );
 				scene.fog.color.setHSL( 0.51, 0.5, v * 0.75 );
 
 				renderer.setClearColor( scene.fog.color, 1 );
@@ -938,10 +938,10 @@
 
 				}
 
-				effectBloom.copyUniforms[ "opacity" ].value = THREE.Math.mapLinear( vnorm, 0, 1, 1, 0.75 );
+				effectBloom.copyUniforms[ "opacity" ].value = THREE.MathUtil.mapLinear( vnorm, 0, 1, 1, 0.75 );
 
-				ambientLight.color.setHSL( 0, 0, THREE.Math.mapLinear( vnorm, 0, 1, 0.1, 0.3 ) );
-				groundBasic.color.setHSL( 0.1, 0.5, THREE.Math.mapLinear( vnorm, 0, 1, 0.4, 0.65 ) );
+				ambientLight.color.setHSL( 0, 0, THREE.MathUtil.mapLinear( vnorm, 0, 1, 0.1, 0.3 ) );
+				groundBasic.color.setHSL( 0.1, 0.5, THREE.MathUtil.mapLinear( vnorm, 0, 1, 0.4, 0.65 ) );
 
 				// blur
 

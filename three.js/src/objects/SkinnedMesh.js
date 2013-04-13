@@ -8,7 +8,6 @@ THREE.SkinnedMesh = function(geometry, material, useVertexTexture) {
 	THREE.Mesh.call(this, geometry, material);
 
 	//
-
 	this.useVertexTexture = useVertexTexture !== undefined ? useVertexTexture : true;
 
 	// init bones
@@ -116,17 +115,11 @@ THREE.SkinnedMesh = function(geometry, material, useVertexTexture) {
 THREE.SkinnedMesh.prototype = Object.create(THREE.Mesh.prototype);
 
 THREE.SkinnedMesh.prototype.addBone = function(bone) {
-
 	if (bone === undefined) {
-
 		bone = new THREE.Bone(this);
-
 	}
-
 	this.bones.push(bone);
-
 	return bone;
-
 };
 
 THREE.SkinnedMesh.prototype.updateMatrixWorld = function(force) {

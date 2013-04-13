@@ -80,8 +80,8 @@ THREE.PathControls = function ( object, domElement ) {
 		this.lon = Math.max( 0, Math.min( 360, this.lon ) );
 		this.lat = Math.max( - 85, Math.min( 85, this.lat ) );
 
-		this.phi = THREE.Math.degToRad( 90 - this.lat );
-		this.theta = THREE.Math.degToRad( this.lon );
+		this.phi = THREE.MathUtil.degToRad( 90 - this.lat );
+		this.theta = THREE.MathUtil.degToRad( this.lon );
 
 		this.phi = normalize_angle_rad( this.phi );
 
@@ -90,7 +90,7 @@ THREE.PathControls = function ( object, domElement ) {
 		srcRange = this.verticalAngleMap.srcRange;
 		dstRange = this.verticalAngleMap.dstRange;
 
-		var tmpPhi = THREE.Math.mapLinear( this.phi, srcRange[ 0 ], srcRange[ 1 ], dstRange[ 0 ], dstRange[ 1 ] );
+		var tmpPhi = THREE.MathUtil.mapLinear( this.phi, srcRange[ 0 ], srcRange[ 1 ], dstRange[ 0 ], dstRange[ 1 ] );
 		var tmpPhiFullRange = dstRange[ 1 ] - dstRange[ 0 ];
 		var tmpPhiNormalized = ( tmpPhi - dstRange[ 0 ] ) / tmpPhiFullRange;
 
@@ -101,7 +101,7 @@ THREE.PathControls = function ( object, domElement ) {
 		srcRange = this.horizontalAngleMap.srcRange;
 		dstRange = this.horizontalAngleMap.dstRange;
 
-		var tmpTheta = THREE.Math.mapLinear( this.theta, srcRange[ 0 ], srcRange[ 1 ], dstRange[ 0 ], dstRange[ 1 ] );
+		var tmpTheta = THREE.MathUtil.mapLinear( this.theta, srcRange[ 0 ], srcRange[ 1 ], dstRange[ 0 ], dstRange[ 1 ] );
 		var tmpThetaFullRange = dstRange[ 1 ] - dstRange[ 0 ];
 		var tmpThetaNormalized = ( tmpTheta - dstRange[ 0 ] ) / tmpThetaFullRange;
 

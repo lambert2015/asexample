@@ -162,7 +162,7 @@ THREE.MorphAnimMesh.prototype.updateAnimation = function(delta) {
 
 	}
 
-	var keyframe = this.startKeyframe + THREE.Math.clamp(Math.floor(this.time / frameTime), 0, this.length - 1);
+	var keyframe = this.startKeyframe + THREE.MathUtil.clamp(Math.floor(this.time / frameTime), 0, this.length - 1);
 
 	if (keyframe !== this.currentKeyframe) {
 

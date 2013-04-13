@@ -65,32 +65,27 @@ THREE.Line3.prototype = {
 
 	},
 
-	closestPointToPointParameter: function() {
+	closestPointToPointParameter: function(point, clampToLine) {
 
 		var startP = new THREE.Vector3();
 		var startEnd = new THREE.Vector3();
 
-		return function ( point, clampToLine ) {
+		startP.subVectors( point, this.start );
+		startEnd.subVectors( this.end, this.start );
 
-			startP.subVectors( point, this.start );
-			startEnd.subVectors( this.end, this.start );
+		var startEnd2 = startEnd.dot( startEnd );
+		var startEnd_startP = startEnd.dot( startP );
 
-			var startEnd2 = startEnd.dot( startEnd );
-			var startEnd_startP = startEnd.dot( startP );
+		var t = startEnd_startP / startEnd2;
 
-			var t = startEnd_startP / startEnd2;
+		if ( clampToLine ) {
 
-			if ( clampToLine ) {
+			t = THREE.MathUtil.clamp( t, 0, 1 );
 
-				t = THREE.Math.clamp( t, 0, 1 );
+		}
 
-			}
-
-			return t;
-
-		};
-
-	}(),
+		return t;
+	},
 
 	closestPointToPoint: function ( point, clampToLine, optionalTarget ) {
 

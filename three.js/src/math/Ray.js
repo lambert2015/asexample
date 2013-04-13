@@ -39,19 +39,14 @@ THREE.Ray.prototype = {
 
 	},
 
-	recast: function() {
+	recast: function(t) {
 
 		var v1 = new THREE.Vector3();
 
-		return function ( t ) {
+		this.origin.copy( this.at( t, v1 ) );
 
-			this.origin.copy( this.at( t, v1 ) );
-
-			return this;
-
-		};
-
-	}(),
+		return this;
+	},
 
 	closestPointToPoint: function ( point, optionalTarget ) {
 
@@ -63,20 +58,14 @@ THREE.Ray.prototype = {
 
 	},
 
-	distanceToPoint: function() {
-
+	distanceToPoint: function(point) {
 		var v1 = new THREE.Vector3();
 
-		return function ( point ) {
+		var directionDistance = v1.subVectors( point, this.origin ).dot( this.direction );
+		v1.copy( this.direction ).multiplyScalar( directionDistance ).add( this.origin );
 
-			var directionDistance = v1.subVectors( point, this.origin ).dot( this.direction );
-			v1.copy( this.direction ).multiplyScalar( directionDistance ).add( this.origin );
-
-			return v1.distanceTo( point );
-
-		};
-
-	}(),
+		return v1.distanceTo( point );
+	},
 
 	isIntersectionSphere: function( sphere ) {
 
