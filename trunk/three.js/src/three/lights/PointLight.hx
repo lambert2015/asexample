@@ -8,7 +8,7 @@ import three.math.Vector3;
 
 class PointLight extends Light
 {
-	public function new(hex:UInt = 0x0, intensity:Float = 1, distance:Float = 0) 
+	public function new(hex:Int = 0x0, intensity:Float = 1, distance:Float = 0) 
 	{
 		super(hex);
 		position = new Vector3();

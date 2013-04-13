@@ -14,11 +14,8 @@
 		</style>
 	</head>
 	<body>
-
 		<script src="../build/three.min.js"></script>
-
 		<script src="js/libs/stats.min.js"></script>
-
 		<script>
 			var container, stats;
 			var camera, scene, projector, renderer;
@@ -41,7 +38,6 @@
 				container.appendChild(info);
 
 				//
-
 				camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
 				camera.position.y = 300;
 				camera.target = new THREE.Vector3(0, 150, 0);
@@ -49,46 +45,58 @@
 				scene = new THREE.Scene();
 
 				//
-
 				var light = new THREE.DirectionalLight(0xefefff, 2);
-				light.position.set(1, 1, 1).normalize();
-				scene.add(light);
-
-				var light = new THREE.DirectionalLight(0xffefef, 2);
-				light.position.set(-1, -1, -1).normalize();
+				light.position.set(200, 250, 500);
+				light.castShadow = true;
+				light.shadowMapWidth = 1024;
+				light.shadowMapHeight = 1024;
+				light.shadowMapDarkness = 0.95;
 				scene.add(light);
 
 				var loader = new THREE.JSONLoader(true);
 				loader.load("models/animated/horse.js", function(geometry) {
-
 					mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
 						color : 0x606060,
 						morphTargets : true
 					}));
 					mesh.scale.set(1.5, 1.5, 1.5);
+					mesh.castShadow = true;
 					scene.add(mesh);
+				});
+				
+				//  GROUND
 
+				var gt = THREE.ImageUtils.loadTexture("textures/terrain/grasslight-big.jpg");
+				var gg = new THREE.PlaneGeometry(2000, 2000);
+				var gm = new THREE.MeshPhongMaterial({
+					color : 0xffffff,
+					map : gt
 				});
 
-				//
+				var ground = new THREE.Mesh(gg, gm);
+				ground.rotation.x = -Math.PI / 2;
+				ground.material.map.repeat.set(8, 8);
+				ground.material.map.wrapS = ground.material.map.wrapT = THREE.RepeatWrapping;
+				ground.receiveShadow = true;
 
+				scene.add(ground);
+
+				//
 				renderer = new THREE.WebGLRenderer();
 				renderer.sortObjects = true;
+				renderer.shadowMapEnabled = true;
 				renderer.setSize(window.innerWidth, window.innerHeight);
 
 				container.appendChild(renderer.domElement);
 
 				//
-
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
 				container.appendChild(stats.domElement);
 
 				//
-
 				window.addEventListener('resize', onWindowResize, false);
-
 			}
 
 			function onWindowResize() {
@@ -97,18 +105,15 @@
 				camera.updateProjectionMatrix();
 
 				renderer.setSize(window.innerWidth, window.innerHeight);
-
 			}
 
 			//
 
 			function animate() {
-
 				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
-
 			}
 
 			var radius = 600;
@@ -119,7 +124,6 @@
 			var lastKeyframe = 0, currentKeyframe = 0;
 
 			function render() {
-
 				theta += 0.1;
 				
 				var radia = THREE.MathUtil.degToRad(theta);
