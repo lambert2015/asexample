@@ -5,28 +5,26 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
-		    body {
-			color: #fff;
-			font-family:Monospace;
-			font-size:13px;
-			text-align:center;
-			font-weight: bold;
-
-			background-color: #000;
-			margin: 0px;
-			overflow: hidden;
-		    }
-
-		    #info {
-			color:#fff;
-			position: absolute;
-			top: 0px; width: 100%;
-			padding: 5px;
-
-		    }
-
-		    a { color: red; }
-
+			body {
+				color: #fff;
+				font-family: Monospace;
+				font-size: 13px;
+				text-align: center;
+				font-weight: bold;
+				background-color: #000;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 0px;
+				width: 100%;
+				padding: 5px;
+			}
+			a {
+				color: red;
+			}
 		</style>
 	</head>
 	<body>
@@ -54,32 +52,32 @@
 
 			vec3 decode_pnghdr( const in vec4 color ) {
 
-				// remove gamma correction
-				vec4 res = color * color;
+			// remove gamma correction
+			vec4 res = color * color;
 
-				// decoded RI
-				float ri = pow( 2.0, res.w * 32.0 - 16.0 );
+			// decoded RI
+			float ri = pow( 2.0, res.w * 32.0 - 16.0 );
 
-				// decoded HDR pixel
-				res.xyz = res.xyz * ri;
-				return res.xyz;
+			// decoded HDR pixel
+			res.xyz = res.xyz * ri;
+			return res.xyz;
 
 			}
 
 			void main()	{
 
-				vec4 color = texture2D( tDiffuse, vUv );
-				color.xyz  = decode_pnghdr( color );
+			vec4 color = texture2D( tDiffuse, vUv );
+			color.xyz  = decode_pnghdr( color );
 
-				// apply gamma correction and exposure
-				//gl_FragColor = vec4( pow( exposure * color.xyz, vec3( 0.474 ) ), 1.0 );
+			// apply gamma correction and exposure
+			//gl_FragColor = vec4( pow( exposure * color.xyz, vec3( 0.474 ) ), 1.0 );
 
-				// Perform tone-mapping
-				float Y = dot(vec4(0.30, 0.59, 0.11, 0.0), color);
-				float YD = exposure * (exposure/brightMax + 1.0) / (exposure + 1.0);
-				color *= YD;
+			// Perform tone-mapping
+			float Y = dot(vec4(0.30, 0.59, 0.11, 0.0), color);
+			float YD = exposure * (exposure/brightMax + 1.0) / (exposure + 1.0);
+			color *= YD;
 
-				gl_FragColor = vec4( color.xyz, 1.0 );
+			gl_FragColor = vec4( color.xyz, 1.0 );
 
 			}
 
@@ -93,17 +91,16 @@
 
 			void main()	{
 
-				vUv  = uv;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			vUv  = uv;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
 			}
 
 		</script>
 
-
 		<script>
-
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
 			var container, stats;
 
@@ -119,47 +116,56 @@
 
 			function init() {
 
-				container = document.getElementById( 'container' );
+				container = document.getElementById('container');
 
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
 				camera.position.z = 900;
 
 				scene = new THREE.Scene();
 
-				var texture = THREE.ImageUtils.loadTexture( "textures/memorial.png" );
+				var texture = THREE.ImageUtils.loadTexture("textures/memorial.png");
 				texture.minFilter = THREE.LinearFilter;
 				texture.magFilter = THREE.NearestFilter;
 
-				materialHDR = new THREE.ShaderMaterial( {
+				materialHDR = new THREE.ShaderMaterial({
 
-					uniforms: {
-						tDiffuse:  { type: "t", value: texture },
-						exposure:  { type: "f", value: 0.125 },
-						brightMax: { type: "f", value: 0.5 }
+					uniforms : {
+						tDiffuse : {
+							type : "t",
+							value : texture
 						},
-					vertexShader: getText( 'vs-hdr' ),
-					fragmentShader: getText( 'fs-hdr' )
+						exposure : {
+							type : "f",
+							value : 0.125
+						},
+						brightMax : {
+							type : "f",
+							value : 0.5
+						}
+					},
+					vertexShader : getText('vs-hdr'),
+					fragmentShader : getText('fs-hdr')
 
-				} );
+				});
 
-				var plane = new THREE.PlaneGeometry( 512, 768 );
+				var plane = new THREE.PlaneGeometry(512, 768);
 
-				quad = new THREE.Mesh( plane, materialHDR );
+				quad = new THREE.Mesh(plane, materialHDR);
 				quad.position.z = -100;
-				scene.add( quad );
+				scene.add(quad);
 
 				renderer = new THREE.WebGLRenderer();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				container.appendChild(renderer.domElement);
 
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -168,13 +174,13 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
-			function getText( id ) {
+			function getText(id) {
 
-				return document.getElementById( id ).textContent;
+				return document.getElementById(id).textContent;
 
 			}
 
@@ -182,7 +188,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -193,7 +199,7 @@
 
 				delta = clock.getDelta() * 5;
 
-				if ( materialHDR.uniforms.exposure.value > 0 || materialHDR.uniforms.exposure.value < 1 ) {
+				if (materialHDR.uniforms.exposure.value > 0 || materialHDR.uniforms.exposure.value < 1) {
 
 					rate = 0.25;
 
@@ -203,7 +209,7 @@
 
 				}
 
-				if ( materialHDR.uniforms.exposure.value > 5 || materialHDR.uniforms.exposure.value <= 0 ) {
+				if (materialHDR.uniforms.exposure.value > 5 || materialHDR.uniforms.exposure.value <= 0) {
 
 					sign *= -1;
 
@@ -211,7 +217,7 @@
 
 				materialHDR.uniforms.exposure.value += sign * rate * delta;
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

@@ -19,15 +19,20 @@
 				width: 100%;
 				text-align: center;
 				z-index: 100;
-				display:block;
+				display: block;
 			}
-			#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+			#info a, .button {
+				color: #f00;
+				font-weight: bold;
+				text-decoration: underline;
+				cursor: pointer
+			}
 		</style>
 	</head>
 
 	<body>
 		<div id="info">
-		<a href="http://threejs.org" target="_blank">three.js</a> - OBJMTLLoader test
+			<a href="http://threejs.org" target="_blank">three.js</a> - OBJMTLLoader test
 		</div>
 
 		<script src="../build/three.min.js"></script>
@@ -39,7 +44,6 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<script>
-
 			var container, stats;
 
 			var camera, scene, renderer;
@@ -49,54 +53,52 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
 
-
 			init();
 			animate();
 
-
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				container = document.createElement('div');
+				document.body.appendChild(container);
 
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
 				camera.position.z = 100;
 
 				// scene
 
 				scene = new THREE.Scene();
 
-				var ambient = new THREE.AmbientLight( 0x101030 );
-				scene.add( ambient );
+				var ambient = new THREE.AmbientLight(0x101030);
+				scene.add(ambient);
 
-				var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-				directionalLight.position.set( 0, 0, 1 ).normalize();
-				scene.add( directionalLight );
+				var directionalLight = new THREE.DirectionalLight(0xffeedd);
+				directionalLight.position.set(0, 0, 1).normalize();
+				scene.add(directionalLight);
 
 				// model
 
 				var loader = new THREE.OBJMTLLoader();
-				loader.addEventListener( 'load', function ( event ) {
+				loader.addEventListener('load', function(event) {
 
 					var object = event.content;
 
-					object.position.y = - 80;
-					scene.add( object );
+					object.position.y = -80;
+					scene.add(object);
 
 				});
-				loader.load( 'obj/male02/male02.obj', 'obj/male02/male02_dds.mtl' );
+				loader.load('obj/male02/male02.obj', 'obj/male02/male02_dds.mtl');
 
 				//
 
 				renderer = new THREE.WebGLRenderer();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				container.appendChild(renderer.domElement);
 
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener('mousemove', onDocumentMouseMove, false);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -108,14 +110,14 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
-			function onDocumentMouseMove( event ) {
+			function onDocumentMouseMove(event) {
 
-				mouseX = ( event.clientX - windowHalfX ) / 2;
-				mouseY = ( event.clientY - windowHalfY ) / 2;
+				mouseX = (event.clientX - windowHalfX ) / 2;
+				mouseY = (event.clientY - windowHalfY ) / 2;
 
 			}
 
@@ -123,19 +125,19 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 				render();
 
 			}
 
 			function render() {
 
-				camera.position.x += ( mouseX - camera.position.x ) * .05;
-				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+				camera.position.x += (mouseX - camera.position.x ) * .05;
+				camera.position.y += (-mouseY - camera.position.y ) * .05;
 
-				camera.lookAt( scene.position );
+				camera.lookAt(scene.position);
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

@@ -7,11 +7,10 @@
 		<style>
 			body {
 				color: #ffffff;
-				font-family:Monospace;
-				font-size:13px;
-				text-align:center;
+				font-family: Monospace;
+				font-size: 13px;
+				text-align: center;
 				font-weight: bold;
-
 				background-color: #000000;
 				margin: 0px;
 				overflow: hidden;
@@ -19,22 +18,35 @@
 			#info {
 				color: #fff;
 				position: absolute;
-				top: 0px; width: 100%;
+				top: 0px;
+				width: 100%;
 				padding: 5px;
-				z-index:100;
+				z-index: 100;
 			}
-
-			a { color: red }
-
-			#stats { position: absolute; top:0; left: 0 }
-			#stats #fps { background: transparent !important }
-			#stats #fps #fpsText { color: #777 !important }
-			#stats #fps #fpsGraph { display: none }
+			a {
+				color: red
+			}
+			#stats {
+				position: absolute;
+				top: 0;
+				left: 0
+			}
+			#stats #fps {
+				background: transparent !important
+			}
+			#stats #fps #fpsText {
+				color: #777 !important
+			}
+			#stats #fps #fpsGraph {
+				display: none
+			}
 		</style>
 	</head>
 
 	<body>
-		<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> - geometry tessellation example</div>
+		<div id="info">
+			<a href="http://threejs.org" target="_blank">three.js</a> - geometry tessellation example
+		</div>
 		<div id="container"></div>
 
 		<script src="../build/three.min.js"></script>
@@ -61,11 +73,11 @@
 
 			void main() {
 
-				vNormal = normal;
-				vColor = customColor;
+			vNormal = normal;
+			vColor = customColor;
 
-				vec3 newPosition = position + amplitude * displacement;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+			vec3 newPosition = position + amplitude * displacement;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 
 			}
 
@@ -78,203 +90,212 @@
 
 			void main() {
 
-				const float ambient = 0.005;
+			const float ambient = 0.005;
 
-				vec3 light = vec3( 1.0 );
-				light = normalize( light );
+			vec3 light = vec3( 1.0 );
+			light = normalize( light );
 
-				float directional = max( dot( vNormal, light ), 0.0 );
+			float directional = max( dot( vNormal, light ), 0.0 );
 
-				gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
-				gl_FragColor.xyz = sqrt( gl_FragColor.xyz );
+			gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+			gl_FragColor.xyz = sqrt( gl_FragColor.xyz );
 
 			}
 
 		</script>
 
-
 		<script>
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
-		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			var renderer, scene, camera, stats;
 
-		var renderer, scene, camera, stats;
+			var mesh, uniforms, attributes;
 
-		var mesh, uniforms, attributes;
+			var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
-		var WIDTH = window.innerWidth,
-			HEIGHT = window.innerHeight;
+			init();
+			animate();
 
-		init();
-		animate();
+			function init() {
 
-		function init() {
+				camera = new THREE.PerspectiveCamera(25, WIDTH / HEIGHT, 1, 10000);
+				camera.position.z = 350;
 
-			camera = new THREE.PerspectiveCamera( 25, WIDTH / HEIGHT, 1, 10000 );
-			camera.position.z = 350;
+				controls = new THREE.TrackballControls(camera);
 
-			controls = new THREE.TrackballControls( camera );
+				scene = new THREE.Scene();
 
-			scene = new THREE.Scene();
+				//
 
-			//
+				attributes = {
 
-			attributes = {
+					displacement : {
+						type : 'v3',
+						value : []
+					},
+					customColor : {
+						type : 'c',
+						value : []
+					}
 
-				displacement: {	type: 'v3', value: [] },
-				customColor:  {	type: 'c', value: [] }
+				};
 
-			};
+				uniforms = {
 
-			uniforms = {
+					amplitude : {
+						type : "f",
+						value : 0.0
+					}
 
-				amplitude: { type: "f", value: 0.0 }
+				};
 
-			};
+				var shaderMaterial = new THREE.ShaderMaterial({
 
-			var shaderMaterial = new THREE.ShaderMaterial( {
+					uniforms : uniforms,
+					attributes : attributes,
+					vertexShader : document.getElementById('vertexshader').textContent,
+					fragmentShader : document.getElementById('fragmentshader').textContent,
+					shading : THREE.FlatShading,
+					side : THREE.DoubleSide
 
-				uniforms: 		uniforms,
-				attributes:     attributes,
-				vertexShader:   document.getElementById( 'vertexshader' ).textContent,
-				fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-				shading: 		THREE.FlatShading,
-				side: 			THREE.DoubleSide
+				});
 
-			});
+				var geometry = new THREE.TextGeometry("THREE.JS", {
 
+					size : 40,
+					height : 5,
+					curveSegments : 3,
 
-			var geometry = new THREE.TextGeometry( "THREE.JS", {
+					font : "helvetiker",
+					weight : "bold",
+					style : "normal",
 
-				size: 40,
-				height: 5,
-				curveSegments: 3,
+					bevelThickness : 2,
+					bevelSize : 1,
+					bevelEnabled : true
 
-				font: "helvetiker",
-				weight: "bold",
-				style: "normal",
+				});
 
-				bevelThickness: 2,
-				bevelSize: 1,
-				bevelEnabled: true
+				geometry.dynamic = true;
 
-			});
+				THREE.GeometryUtils.center(geometry);
 
-			geometry.dynamic = true;
+				var tessellateModifier = new THREE.TessellateModifier(4);
 
-			THREE.GeometryUtils.center( geometry );
+				for (var i = 0; i < 6; i++) {
 
-			var tessellateModifier = new THREE.TessellateModifier( 4 );
-
-			for ( var i = 0; i < 6; i ++ ) {
-
-				tessellateModifier.modify( geometry );
-
-			}
-
-			var explodeModifier = new THREE.ExplodeModifier();
-			explodeModifier.modify( geometry );
-
-			var vertices = geometry.vertices;
-
-			var colors = attributes.customColor.value;
-			var displacement = attributes.displacement.value;
-
-			var nv, v = 0;
-
-			for ( var f = 0; f < geometry.faces.length; f ++ ) {
-
-				var face = geometry.faces[ f ];
-
-				if ( face instanceof THREE.Face3 ) {
-
-					nv = 3;
-
-				} else {
-
-					nv = 4;
+					tessellateModifier.modify(geometry);
 
 				}
 
-				var h = 0.15 * Math.random();
-				var s = 0.5 + 0.5 * Math.random();
-				var l = 0.5 + 0.5 * Math.random();
+				var explodeModifier = new THREE.ExplodeModifier();
+				explodeModifier.modify(geometry);
 
-				var d = 10 * ( 0.5 - Math.random() );
+				var vertices = geometry.vertices;
 
-				var x = 2 * ( 0.5 - Math.random() );
-				var y = 2 * ( 0.5 - Math.random() );
-				var z = 2 * ( 0.5 - Math.random() );
+				var colors = attributes.customColor.value;
+				var displacement = attributes.displacement.value;
 
-				for ( var i = 0; i < nv; i ++ ) {
+				var nv, v = 0;
 
-					colors[ v ] = new THREE.Color();
-					displacement[ v ] = new THREE.Vector3();
+				for (var f = 0; f < geometry.faces.length; f++) {
 
-					colors[ v ].setHSL( h, s, l );
-					colors[ v ].convertGammaToLinear();
+					var face = geometry.faces[f];
 
-					displacement[ v ].set( x, y, z );
+					if ( face instanceof THREE.Face3) {
 
-					v += 1;
+						nv = 3;
+
+					} else {
+
+						nv = 4;
+
+					}
+
+					var h = 0.15 * Math.random();
+					var s = 0.5 + 0.5 * Math.random();
+					var l = 0.5 + 0.5 * Math.random();
+
+					var d = 10 * (0.5 - Math.random() );
+
+					var x = 2 * (0.5 - Math.random() );
+					var y = 2 * (0.5 - Math.random() );
+					var z = 2 * (0.5 - Math.random() );
+
+					for (var i = 0; i < nv; i++) {
+
+						colors[v] = new THREE.Color();
+						displacement[v] = new THREE.Vector3();
+
+						colors[v].setHSL(h, s, l);
+						colors[v].convertGammaToLinear();
+
+						displacement[v].set(x, y, z);
+
+						v += 1;
+
+					}
 
 				}
 
+				console.log("faces", geometry.faces.length);
+
+				mesh = new THREE.Mesh(geometry, shaderMaterial);
+				mesh.rotation.set(0.5, 0.5, 0);
+
+				scene.add(mesh);
+
+				renderer = new THREE.WebGLRenderer({
+					clearColor : 0x050505,
+					clearAlpha : 1,
+					antialias : true
+				});
+				renderer.setSize(WIDTH, HEIGHT);
+
+				var container = document.getElementById('container');
+				container.appendChild(renderer.domElement);
+
+				stats = new Stats();
+				container.appendChild(stats.domElement);
+
+				//
+
+				window.addEventListener('resize', onWindowResize, false);
+
 			}
 
-			console.log( "faces", geometry.faces.length );
+			function onWindowResize() {
 
-			mesh = new THREE.Mesh( geometry, shaderMaterial );
-			mesh.rotation.set( 0.5, 0.5, 0 );
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-			scene.add( mesh );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
-			renderer = new THREE.WebGLRenderer( { clearColor: 0x050505, clearAlpha: 1, antialias: true } );
-			renderer.setSize( WIDTH, HEIGHT );
+			}
 
-			var container = document.getElementById( 'container' );
-			container.appendChild( renderer.domElement );
+			function animate() {
 
-			stats = new Stats();
-			container.appendChild( stats.domElement );
+				requestAnimationFrame(animate);
 
-			//
+				render();
+				stats.update();
 
-			window.addEventListener( 'resize', onWindowResize, false );
+			}
 
-		}
+			function render() {
 
-		function onWindowResize() {
+				var time = Date.now() * 0.001;
 
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
+				uniforms.amplitude.value = 0.125 * Math.sin(time * 0.5);
 
-			renderer.setSize( window.innerWidth, window.innerHeight );
+				controls.update();
+				renderer.render(scene, camera);
 
-		}
+			}
 
-		function animate() {
+		</script>
 
-			requestAnimationFrame( animate );
-
-			render();
-			stats.update();
-
-		}
-
-		function render() {
-
-			var time = Date.now() * 0.001;
-
-			uniforms.amplitude.value = 0.125 * Math.sin( time * 0.5 );
-
-			controls.update();
-			renderer.render( scene, camera );
-
-		}
-
-
-	</script>
-
-</body>
+	</body>
 
 </html>

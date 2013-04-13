@@ -26,7 +26,6 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<script>
-
 			var container, stats;
 
 			var camera, controls, scene, renderer;
@@ -41,48 +40,50 @@
 
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				container = document.createElement('div');
+				document.body.appendChild(container);
 
-				var info = document.createElement( 'div' );
+				var info = document.createElement('div');
 				info.style.position = 'absolute';
 				info.style.top = '10px';
 				info.style.width = '100%';
 				info.style.textAlign = 'center';
 				info.innerHTML = '<a href="https://github.com/mrdoob/three.js/" target="_blank">three.js<a/> - software renderer<br/>drag to change the point of view';
-				container.appendChild( info );
+				container.appendChild(info);
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
 				camera.position.y = 150;
 				camera.position.z = 600;
 
-				controls = new THREE.TrackballControls( camera );
+				controls = new THREE.TrackballControls(camera);
 
 				scene = new THREE.Scene();
 
-				sphere = new THREE.Mesh( new THREE.IcosahedronGeometry( 150, 3 ), new THREE.MeshBasicMaterial() );
-				scene.add( sphere );
+				sphere = new THREE.Mesh(new THREE.IcosahedronGeometry(150, 3), new THREE.MeshBasicMaterial());
+				scene.add(sphere);
 
 				// Plane
 
-				plane = new THREE.Mesh( new THREE.PlaneGeometry( 200, 200 ), new THREE.MeshBasicMaterial( { color: 0xe0e0e0 } ) );
-				plane.position.y = - 150;
-				plane.rotation.x = - Math.PI / 2;
-				scene.add( plane );
+				plane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshBasicMaterial({
+					color : 0xe0e0e0
+				}));
+				plane.position.y = -150;
+				plane.rotation.x = -Math.PI / 2;
+				scene.add(plane);
 
 				renderer = new THREE.SoftwareRenderer3();
-				renderer.setSize( window.innerWidth || 2, window.innerHeight || 2 );
+				renderer.setSize(window.innerWidth || 2, window.innerHeight || 2);
 
-				container.appendChild( renderer.domElement );
+				container.appendChild(renderer.domElement);
 
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -91,7 +92,7 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
@@ -99,7 +100,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -110,13 +111,13 @@
 
 				var timer = Date.now() - start;
 
-				sphere.position.y = Math.abs( Math.sin( timer * 0.002 ) ) * 150;
+				sphere.position.y = Math.abs(Math.sin(timer * 0.002)) * 150;
 				sphere.rotation.x = timer * 0.0003;
 				sphere.rotation.z = timer * 0.0002;
 
 				controls.update();
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

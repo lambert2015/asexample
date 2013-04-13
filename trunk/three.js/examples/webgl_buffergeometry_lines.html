@@ -7,32 +7,30 @@
 		<style>
 			body {
 				color: #cccccc;
-				font-family:Monospace;
-				font-size:13px;
-				text-align:center;
-
+				font-family: Monospace;
+				font-size: 13px;
+				text-align: center;
 				background-color: #000000;
 				margin: 0px;
 				overflow: hidden;
 			}
-
 			#info {
 				position: absolute;
-				top: 0px; width: 100%;
+				top: 0px;
+				width: 100%;
 				padding: 5px;
 			}
-
 			a {
-
 				color: #0080ff;
 			}
-
 		</style>
 	</head>
 	<body>
 
 		<div id="container"></div>
-		<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> webgl - buffergeometry</div>
+		<div id="info">
+			<a href="http://threejs.org" target="_blank">three.js</a> webgl - buffergeometry
+		</div>
 
 		<script src="../build/three.min.js"></script>
 
@@ -40,8 +38,8 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<script>
-
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
 			var container, stats;
 
@@ -54,31 +52,32 @@
 
 			function init() {
 
-				container = document.getElementById( 'container' );
+				container = document.getElementById('container');
 
 				//
 
-				camera = new THREE.PerspectiveCamera( 27, window.innerWidth / window.innerHeight, 1, 4000 );
+				camera = new THREE.PerspectiveCamera(27, window.innerWidth / window.innerHeight, 1, 4000);
 				camera.position.z = 2750;
 
 				scene = new THREE.Scene();
 
-
 				var segments = 10000;
 
 				var geometry = new THREE.BufferGeometry();
-				var material = new THREE.LineBasicMaterial({ vertexColors: true });
+				var material = new THREE.LineBasicMaterial({
+					vertexColors : true
+				});
 
 				geometry.attributes = {
-					position: {
-						itemSize: 3,
-						array: new Float32Array(segments * 3),
-						numItems: segments * 3
+					position : {
+						itemSize : 3,
+						array : new Float32Array(segments * 3),
+						numItems : segments * 3
 					},
-					color: {
-						itemSize: 3,
-						array: new Float32Array(segments * 3),
-						numItems: segments * 3
+					color : {
+						itemSize : 3,
+						array : new Float32Array(segments * 3),
+						numItems : segments * 3
 					}
 				};
 
@@ -87,7 +86,7 @@
 
 				var r = 800;
 
-				for ( var i = 0; i < segments; i ++ ) {
+				for (var i = 0; i < segments; i++) {
 
 					var x = Math.random() * r - r / 2;
 					var y = Math.random() * r - r / 2;
@@ -95,44 +94,49 @@
 
 					// positions
 
-					positions[ i * 3 ] = x;
-					positions[ i * 3 + 1 ] = y;
-					positions[ i * 3 + 2 ] = z;
+					positions[i * 3] = x;
+					positions[i * 3 + 1] = y;
+					positions[i * 3 + 2] = z;
 
 					// colors
 
-					colors[ i * 3 ] = ( x / r ) + 0.5;
-					colors[ i * 3 + 1 ] = ( y / r ) + 0.5;
-					colors[ i * 3 + 2 ] = ( z / r ) + 0.5;
+					colors[i * 3] = (x / r ) + 0.5;
+					colors[i * 3 + 1] = (y / r ) + 0.5;
+					colors[i * 3 + 2] = (z / r ) + 0.5;
 
 				}
 
 				geometry.computeBoundingSphere();
 
-				mesh = new THREE.Line( geometry, material );
-				scene.add( mesh );
+				mesh = new THREE.Line(geometry, material);
+				scene.add(mesh);
 
 				//
 
-				renderer = new THREE.WebGLRenderer( { antialias: false, clearColor: 0x000000, clearAlpha: 0, alpha: true } );
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer = new THREE.WebGLRenderer({
+					antialias : false,
+					clearColor : 0x000000,
+					clearAlpha : 0,
+					alpha : true
+				});
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 				renderer.gammaInput = true;
 				renderer.gammaOutput = true;
 				renderer.physicallyBasedShading = true;
 
-				container.appendChild( renderer.domElement );
+				container.appendChild(renderer.domElement);
 
 				//
 
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -141,7 +145,7 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
@@ -149,7 +153,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -163,7 +167,7 @@
 				mesh.rotation.x = time * 0.25;
 				mesh.rotation.y = time * 0.5;
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 
