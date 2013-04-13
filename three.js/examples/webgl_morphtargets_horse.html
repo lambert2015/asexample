@@ -20,7 +20,6 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<script>
-
 			var container, stats;
 			var camera, scene, projector, renderer;
 			var mesh;
@@ -30,49 +29,52 @@
 
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				container = document.createElement('div');
+				document.body.appendChild(container);
 
-				var info = document.createElement( 'div' );
+				var info = document.createElement('div');
 				info.style.position = 'absolute';
 				info.style.top = '10px';
 				info.style.width = '100%';
 				info.style.textAlign = 'center';
 				info.innerHTML = '<a href="http://threejs.org" target="_blank">three.js</a> webgl - morph targets - horse. model by <a href="http://mirada.com/">mirada</a> from <a href="http://ro.me">rome</a>';
-				container.appendChild( info );
+				container.appendChild(info);
 
 				//
 
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
 				camera.position.y = 300;
-				camera.target = new THREE.Vector3( 0, 150, 0 );
+				camera.target = new THREE.Vector3(0, 150, 0);
 
 				scene = new THREE.Scene();
 
 				//
 
-				var light = new THREE.DirectionalLight( 0xefefff, 2 );
-				light.position.set( 1, 1, 1 ).normalize();
-				scene.add( light );
+				var light = new THREE.DirectionalLight(0xefefff, 2);
+				light.position.set(1, 1, 1).normalize();
+				scene.add(light);
 
-				var light = new THREE.DirectionalLight( 0xffefef, 2 );
-				light.position.set( -1, -1, -1 ).normalize();
-				scene.add( light );
+				var light = new THREE.DirectionalLight(0xffefef, 2);
+				light.position.set(-1, -1, -1).normalize();
+				scene.add(light);
 
-				var loader = new THREE.JSONLoader( true );
-				loader.load( "models/animated/horse.js", function( geometry ) {
+				var loader = new THREE.JSONLoader(true);
+				loader.load("models/animated/horse.js", function(geometry) {
 
-					mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x606060, morphTargets: true } ) );
-					mesh.scale.set( 1.5, 1.5, 1.5 );
-					scene.add( mesh );
+					mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+						color : 0x606060,
+						morphTargets : true
+					}));
+					mesh.scale.set(1.5, 1.5, 1.5);
+					scene.add(mesh);
 
-				} );
+				});
 
 				//
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.sortObjects = true;
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 				container.appendChild(renderer.domElement);
 
@@ -81,11 +83,11 @@
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -94,7 +96,7 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
@@ -102,7 +104,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -119,40 +121,34 @@
 			function render() {
 
 				theta += 0.1;
+				
+				var radia = THREE.MathUtil.degToRad(theta);
+				camera.position.x = radius * Math.sin(radia);
+				camera.position.z = radius * Math.cos(radia);
+				camera.lookAt(camera.target);
 
-				camera.position.x = radius * Math.sin( THREE.MathUtil.degToRad( theta ) );
-				camera.position.z = radius * Math.cos( THREE.MathUtil.degToRad( theta ) );
-
-				camera.lookAt( camera.target );
-
-				if ( mesh ) {
+				if (mesh) {
 
 					// Alternate morph targets
-
 					var time = Date.now() % duration;
 
-					var keyframe = Math.floor( time / interpolation );
-
-					if ( keyframe != currentKeyframe ) {
-
-						mesh.morphTargetInfluences[ lastKeyframe ] = 0;
-						mesh.morphTargetInfluences[ currentKeyframe ] = 1;
-						mesh.morphTargetInfluences[ keyframe ] = 0;
+					var keyframe = Math.floor(time / interpolation);
+					if (keyframe != currentKeyframe) {
+						mesh.morphTargetInfluences[lastKeyframe] = 0;
+						mesh.morphTargetInfluences[currentKeyframe] = 1;
+						mesh.morphTargetInfluences[keyframe] = 0;
 
 						lastKeyframe = currentKeyframe;
 						currentKeyframe = keyframe;
 
 						// console.log( mesh.morphTargetInfluences );
-
 					}
 
-					mesh.morphTargetInfluences[ keyframe ] = ( time % interpolation ) / interpolation;
-					mesh.morphTargetInfluences[ lastKeyframe ] = 1 - mesh.morphTargetInfluences[ keyframe ];
-
+					mesh.morphTargetInfluences[keyframe] = (time % interpolation ) / interpolation;
+					mesh.morphTargetInfluences[lastKeyframe] = 1 - mesh.morphTargetInfluences[keyframe];
 				}
 
-				renderer.render( scene, camera );
-
+				renderer.render(scene, camera);
 			}
 
 		</script>

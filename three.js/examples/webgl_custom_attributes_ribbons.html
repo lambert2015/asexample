@@ -9,23 +9,22 @@
 				background-color: #000000;
 				margin: 0px;
 				overflow: hidden;
-				font-family:Monospace;
-				font-size:13px;
-				text-align:center;
+				font-family: Monospace;
+				font-size: 13px;
+				text-align: center;
 				font-weight: bold;
-				text-align:center;
+				text-align: center;
 			}
-
 			a {
-				color:#0078ff;
+				color: #0078ff;
 			}
-
 			#info {
-				color:#fff;
+				color: #fff;
 				position: absolute;
-				top: 0px; width: 100%;
+				top: 0px;
+				width: 100%;
 				padding: 5px;
-				z-index:100;
+				z-index: 100;
 			}
 		</style>
 	</head>
@@ -52,10 +51,10 @@
 
 			void main() {
 
-				vColor = customColor;
+			vColor = customColor;
 
-				vec3 newPosition = mix( position, position2, ratio );
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+			vec3 newPosition = mix( position, position2, ratio );
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 
 			}
 
@@ -68,15 +67,15 @@
 
 			void main() {
 
-				gl_FragColor = vec4( color * vColor, 1.0 );
+			gl_FragColor = vec4( color * vColor, 1.0 );
 
 			}
 
 		</script>
 
 		<script>
-
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
 			var container, stats;
 			var camera, scene, renderer;
@@ -93,29 +92,51 @@
 
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				container = document.createElement('div');
+				document.body.appendChild(container);
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 3000 );
+				camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 3000);
 				camera.position.z = 1200;
 
 				scene = new THREE.Scene();
-				scene.fog = new THREE.FogExp2( 0x000000, 0.0016 );
+				scene.fog = new THREE.FogExp2(0x000000, 0.0016);
 
 				//
 
-				var vertexShader = document.getElementById( 'vertexShader' ).textContent;
-				var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+				var vertexShader = document.getElementById('vertexShader').textContent;
+				var fragmentShader = document.getElementById('fragmentShader').textContent;
 
-				var attributes = { customColor:  { type: 'c',  boundTo: 'vertices', value: [] },
-								   position2:    { type: 'v3', boundTo: 'vertices', value: [] }
-								  };
+				var attributes = {
+					customColor : {
+						type : 'c',
+						boundTo : 'vertices',
+						value : []
+					},
+					position2 : {
+						type : 'v3',
+						boundTo : 'vertices',
+						value : []
+					}
+				};
 
-				uniforms =  { ratio: { type: "f", value: 1.0 },
-							  color:     { type: "c", value: new THREE.Color( 0xffffff ) }
-							};
+				uniforms = {
+					ratio : {
+						type : "f",
+						value : 1.0
+					},
+					color : {
+						type : "c",
+						value : new THREE.Color(0xffffff)
+					}
+				};
 
-				var material = new THREE.ShaderMaterial( { uniforms: uniforms, attributes: attributes, vertexShader: vertexShader, fragmentShader: fragmentShader, side: THREE.DoubleSide } );
+				var material = new THREE.ShaderMaterial({
+					uniforms : uniforms,
+					attributes : attributes,
+					vertexShader : vertexShader,
+					fragmentShader : fragmentShader,
+					side : THREE.DoubleSide
+				});
 
 				var position2 = attributes.position2.value;
 				var colors = attributes.customColor.value;
@@ -131,75 +152,78 @@
 
 				var n = 200;
 
-				for ( i = -n; i < n; i ++ ) {
+				for ( i = -n; i < n; i++) {
 
 					i2 = i + n;
 
 					x1 = 10 * i;
-					y1 = - 50 + ( i2 % 2 ) * 100 - Math.cos( 4 * Math.PI * i/n ) * 50;
+					y1 = -50 + (i2 % 2 ) * 100 - Math.cos(4 * Math.PI * i / n) * 50;
 					z1 = 0;
 
 					x2 = x1;
-					y2 = y1 + Math.cos( 4 * Math.PI * i/n ) * 100;
+					y2 = y1 + Math.cos(4 * Math.PI * i / n) * 100;
 					z2 = z1;
 
 					h = i2 % 2 ? 1 : 0.25;
-					if ( i2 % 4 <= 2 ) h -= 0.15;
+					if (i2 % 4 <= 2)
+						h -= 0.15;
 
-					color = new THREE.Color().setHSL( 0.1, 0.15, h );
+					color = new THREE.Color().setHSL(0.1, 0.15, h);
 
-					position2[ geometry.vertices.length ] = new THREE.Vector3( x2, y2, z2 );
-					colors[ geometry.vertices.length ] = color;
+					position2[geometry.vertices.length] = new THREE.Vector3(x2, y2, z2);
+					colors[geometry.vertices.length] = color;
 
-					geometry.vertices.push( new THREE.Vector3( x1, y1, z1 ) );
+					geometry.vertices.push(new THREE.Vector3(x1, y1, z1));
 
 				}
 
-				var ribbon = new THREE.Ribbon( geometry, material );
-				scene.add( ribbon );
+				var ribbon = new THREE.Ribbon(geometry, material);
+				scene.add(ribbon);
 
-				materials.push( ribbon.material );
+				materials.push(ribbon.material);
 
-				var ribbon = new THREE.Ribbon( geometry, material.clone() );
+				var ribbon = new THREE.Ribbon(geometry, material.clone());
 				ribbon.position.y = 250;
 				ribbon.position.x = 250;
-				scene.add( ribbon );
+				scene.add(ribbon);
 
-				ribbon.material.uniforms.color.value.setHSL( 0, 1, 0.5 );
-				materials.push( ribbon.material );
+				ribbon.material.uniforms.color.value.setHSL(0, 1, 0.5);
+				materials.push(ribbon.material);
 
-				var ribbon = new THREE.Ribbon( geometry, material.clone() );
+				var ribbon = new THREE.Ribbon(geometry, material.clone());
 				ribbon.position.y = -250;
 				ribbon.position.x = 250;
-				scene.add( ribbon );
+				scene.add(ribbon);
 
-				ribbon.material.uniforms.color.value.setHSL( 0.1, 1, 0.5 );
-				materials.push( ribbon.material );
+				ribbon.material.uniforms.color.value.setHSL(0.1, 1, 0.5);
+				materials.push(ribbon.material);
 
 				//
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.setClearColor( scene.fog.color, 1 );
+				renderer = new THREE.WebGLRenderer({
+					antialias : true
+				});
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.setClearColor(scene.fog.color, 1);
 
-				container.appendChild( renderer.domElement );
+				container.appendChild(renderer.domElement);
 
 				//
 
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				//
 
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+				document.addEventListener('mousemove', onDocumentMouseMove, false);
+				document.addEventListener('touchstart', onDocumentTouchStart, false);
+				document.addEventListener('touchmove', onDocumentTouchMove, false);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -211,38 +235,38 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
-			function onDocumentMouseMove( event ) {
+			function onDocumentMouseMove(event) {
 
 				mouseX = event.clientX - windowHalfX;
 				mouseY = event.clientY - windowHalfY;
 
 			}
 
-			function onDocumentTouchStart( event ) {
+			function onDocumentTouchStart(event) {
 
-				if ( event.touches.length === 1 ) {
+				if (event.touches.length === 1) {
 
 					event.preventDefault();
 
-					mouseX = event.touches[ 0 ].pageX - windowHalfX;
-					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+					mouseX = event.touches[0].pageX - windowHalfX;
+					mouseY = event.touches[0].pageY - windowHalfY;
 
 				}
 
 			}
 
-			function onDocumentTouchMove( event ) {
+			function onDocumentTouchMove(event) {
 
-				if ( event.touches.length === 1 ) {
+				if (event.touches.length === 1) {
 
 					event.preventDefault();
 
-					mouseX = event.touches[ 0 ].pageX - windowHalfX;
-					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+					mouseX = event.touches[0].pageX - windowHalfX;
+					mouseY = event.touches[0].pageY - windowHalfY;
 
 				}
 
@@ -252,7 +276,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -266,16 +290,16 @@
 				//camera.position.x += ( mouseX - camera.position.x ) * 0.036;
 				//camera.position.y += ( - mouseY - camera.position.y ) * 0.036;
 
-				camera.lookAt( scene.position );
+				camera.lookAt(scene.position);
 
-				for ( var i = 0; i < materials.length; i ++ ) {
+				for (var i = 0; i < materials.length; i++) {
 
-					var uniforms = materials[ i ].uniforms;
-					uniforms.ratio.value = 0.5 * ( Math.sin( time ) + 1 );
+					var uniforms = materials[i].uniforms;
+					uniforms.ratio.value = 0.5 * (Math.sin(time) + 1 );
 
 				}
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

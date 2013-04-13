@@ -7,11 +7,10 @@
 		<style>
 			body {
 				color: #ffffff;
-				font-family:Monospace;
-				font-size:13px;
-				text-align:center;
+				font-family: Monospace;
+				font-size: 13px;
+				text-align: center;
 				font-weight: bold;
-
 				background-color: #000000;
 				margin: 0px;
 				overflow: hidden;
@@ -19,16 +18,18 @@
 			#info {
 				color: #fff;
 				position: absolute;
-				top: 0px; width: 100%;
+				top: 0px;
+				width: 100%;
 				padding: 5px;
-				z-index:100;
+				z-index: 100;
 			}
-
 		</style>
 	</head>
 
 	<body>
-		<div id="info"><a href="http://threejs.org" target="_blank">three.js</a> - custom attributes example - particles - billboards</div>
+		<div id="info">
+			<a href="http://threejs.org" target="_blank">three.js</a> - custom attributes example - particles - billboards
+		</div>
 		<div id="container"></div>
 
 		<script src="../build/three.min.js"></script>
@@ -45,14 +46,14 @@
 
 			void main() {
 
-				vColor = ca;
+			vColor = ca;
 
-				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+			vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 
-				//gl_PointSize = size;
-				gl_PointSize = size * ( 300.0 / length( mvPosition.xyz ) );
+			//gl_PointSize = size;
+			gl_PointSize = size * ( 300.0 / length( mvPosition.xyz ) );
 
-				gl_Position = projectionMatrix * mvPosition;
+			gl_Position = projectionMatrix * mvPosition;
 
 			}
 
@@ -67,162 +68,176 @@
 
 			void main() {
 
-				gl_FragColor = vec4( color * vColor, 1.0 );
-				gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
+			gl_FragColor = vec4( color * vColor, 1.0 );
+			gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
 
 			}
 
 		</script>
 
-
 		<script>
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
-		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			var renderer, scene, camera, stats;
 
-		var renderer, scene, camera, stats;
+			var sphere, uniforms, attributes;
 
-		var sphere, uniforms, attributes;
+			var vc1;
 
-		var vc1;
+			var WIDTH = window.innerWidth;
+			var HEIGHT = window.innerHeight;
 
-		var WIDTH = window.innerWidth;
-		var HEIGHT = window.innerHeight;
+			init();
+			animate();
 
-		init();
-		animate();
+			function init() {
 
-		function init() {
+				camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 1, 10000);
+				camera.position.z = 300;
 
-			camera = new THREE.PerspectiveCamera( 45, WIDTH / HEIGHT, 1, 10000 );
-			camera.position.z = 300;
+				scene = new THREE.Scene();
 
-			scene = new THREE.Scene();
+				attributes = {
 
-			attributes = {
+					size : {
+						type : 'f',
+						value : []
+					},
+					ca : {
+						type : 'c',
+						value : []
+					}
 
-				size: {	type: 'f', value: [] },
-				ca:   {	type: 'c', value: [] }
+				};
 
-			};
+				uniforms = {
 
-			uniforms = {
+					amplitude : {
+						type : "f",
+						value : 1.0
+					},
+					color : {
+						type : "c",
+						value : new THREE.Color(0xffffff)
+					},
+					texture : {
+						type : "t",
+						value : THREE.ImageUtils.loadTexture("textures/sprites/disc.png")
+					},
 
-				amplitude: { type: "f", value: 1.0 },
-				color:     { type: "c", value: new THREE.Color( 0xffffff ) },
-				texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "textures/sprites/disc.png" ) },
+				};
 
-			};
+				uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.RepeatWrapping;
 
-			uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.RepeatWrapping;
+				var shaderMaterial = new THREE.ShaderMaterial({
 
-			var shaderMaterial = new THREE.ShaderMaterial( {
+					uniforms : uniforms,
+					attributes : attributes,
+					vertexShader : document.getElementById('vertexshader').textContent,
+					fragmentShader : document.getElementById('fragmentshader').textContent,
+					transparent : true
 
-				uniforms: 		uniforms,
-				attributes:     attributes,
-				vertexShader:   document.getElementById( 'vertexshader' ).textContent,
-				fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-				transparent:	true
+				});
 
-			});
+				var radius = 100, segments = 68, rings = 38;
+				var geometry = new THREE.SphereGeometry(radius, segments, rings);
 
+				vc1 = geometry.vertices.length;
 
-			var radius = 100, segments = 68, rings = 38;
-			var geometry = new THREE.SphereGeometry( radius, segments, rings );
+				var geometry2 = new THREE.CubeGeometry(0.8 * radius, 0.8 * radius, 0.8 * radius, 10, 10, 10);
 
-			vc1 = geometry.vertices.length;
+				THREE.GeometryUtils.merge(geometry, geometry2);
 
-			var geometry2 = new THREE.CubeGeometry( 0.8 * radius, 0.8 * radius, 0.8 * radius, 10, 10, 10 );
+				sphere = new THREE.ParticleSystem(geometry, shaderMaterial);
 
-			THREE.GeometryUtils.merge( geometry, geometry2 );
+				sphere.dynamic = true;
+				sphere.sortParticles = true;
 
-			sphere = new THREE.ParticleSystem( geometry, shaderMaterial );
+				var vertices = sphere.geometry.vertices;
+				var values_size = attributes.size.value;
+				var values_color = attributes.ca.value;
 
-			sphere.dynamic = true;
-			sphere.sortParticles = true;
+				for (var v = 0; v < vertices.length; v++) {
 
-			var vertices = sphere.geometry.vertices;
-			var values_size = attributes.size.value;
-			var values_color = attributes.ca.value;
+					values_size[v] = 10;
+					values_color[v] = new THREE.Color(0xffffff);
 
-			for( var v = 0; v < vertices.length; v++ ) {
+					if (v < vc1) {
 
-				values_size[ v ] = 10;
-				values_color[ v ] = new THREE.Color( 0xffffff );
+						values_color[v].setHSL(0.01 + 0.1 * (v / vc1 ), 0.99, (vertices[v].y + radius ) / (4 * radius ));
 
-				if ( v < vc1 ) {
+					} else {
 
-					values_color[ v ].setHSL( 0.01 + 0.1 * ( v / vc1 ), 0.99, ( vertices[ v ].y + radius ) / ( 4 * radius ) );
+						values_size[v] = 40;
+						values_color[v].setHSL(0.6, 0.75, 0.25 + vertices[v].y / (2 * radius ));
 
-				} else {
-
-					values_size[ v ] = 40;
-					values_color[ v ].setHSL( 0.6, 0.75, 0.25 + vertices[ v ].y / ( 2 * radius ) );
+					}
 
 				}
 
-			}
+				scene.add(sphere);
 
-			scene.add( sphere );
+				renderer = new THREE.WebGLRenderer({
+					clearColor : 0x000000,
+					clearAlpha : 1
+				});
+				renderer.setSize(WIDTH, HEIGHT);
 
-			renderer = new THREE.WebGLRenderer( { clearColor: 0x000000, clearAlpha: 1 } );
-			renderer.setSize( WIDTH, HEIGHT );
+				var container = document.getElementById('container');
+				container.appendChild(renderer.domElement);
 
-			var container = document.getElementById( 'container' );
-			container.appendChild( renderer.domElement );
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				container.appendChild(stats.domElement);
 
-			stats = new Stats();
-			stats.domElement.style.position = 'absolute';
-			stats.domElement.style.top = '0px';
-			container.appendChild( stats.domElement );
+				//
 
-			//
-
-			window.addEventListener( 'resize', onWindowResize, false );
-
-		}
-
-		function onWindowResize() {
-
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-
-			renderer.setSize( window.innerWidth, window.innerHeight );
-
-		}
-
-		function animate() {
-
-			requestAnimationFrame( animate );
-
-			render();
-			stats.update();
-
-		}
-
-		function render() {
-
-			var time = Date.now() * 0.005;
-
-			sphere.rotation.y = 0.02 * time;
-			sphere.rotation.z = 0.02 * time;
-
-			for( var i = 0; i < attributes.size.value.length; i ++ ) {
-
-				if ( i < vc1 )
-					attributes.size.value[ i ] = 16 + 12 * Math.sin( 0.1 * i + time );
-
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
-			attributes.size.needsUpdate = true;
+			function onWindowResize() {
 
-			renderer.render( scene, camera );
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-		}
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
+			}
 
-	</script>
+			function animate() {
 
-</body>
+				requestAnimationFrame(animate);
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				var time = Date.now() * 0.005;
+
+				sphere.rotation.y = 0.02 * time;
+				sphere.rotation.z = 0.02 * time;
+
+				for (var i = 0; i < attributes.size.value.length; i++) {
+
+					if (i < vc1)
+						attributes.size.value[i] = 16 + 12 * Math.sin(0.1 * i + time);
+
+				}
+
+				attributes.size.needsUpdate = true;
+
+				renderer.render(scene, camera);
+
+			}
+
+		</script>
+
+	</body>
 
 </html>

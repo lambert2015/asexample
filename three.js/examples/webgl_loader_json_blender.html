@@ -11,7 +11,6 @@
 				margin: 0px;
 				overflow: hidden;
 			}
-
 			#info {
 				color: #fff;
 				position: absolute;
@@ -19,16 +18,25 @@
 				width: 100%;
 				text-align: center;
 				z-index: 100;
-				display:block;
-
+				display: block;
 			}
-
-			a { color: red }
-
-			#stats { position: absolute; top:0; left: 0 }
-			#stats #fps { background: transparent !important }
-			#stats #fps #fpsText { color: #aaa !important }
-			#stats #fps #fpsGraph { display: none }
+			a {
+				color: red
+			}
+			#stats {
+				position: absolute;
+				top: 0;
+				left: 0
+			}
+			#stats #fps {
+				background: transparent !important
+			}
+			#stats #fps #fpsText {
+				color: #aaa !important
+			}
+			#stats #fps #fpsGraph {
+				display: none
+			}
 		</style>
 	</head>
 
@@ -46,8 +54,8 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<script>
-
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
 			var container, stats;
 
@@ -62,10 +70,10 @@
 
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
-			loader.load( 'models/collada/monster/monster.dae', function ( collada ) {
+			loader.load('models/collada/monster/monster.dae', function(collada) {
 
 				dae = collada.scene;
-				skin = collada.skins[ 0 ];
+				skin = collada.skins[0];
 
 				dae.scale.x = dae.scale.y = dae.scale.z = 0.002;
 				dae.position.x = -1;
@@ -74,45 +82,46 @@
 				init();
 				animate();
 
-			} );
+			});
 
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				container = document.createElement('div');
+				document.body.appendChild(container);
 
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.set( 2, 4, 5 );
+				camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
+				camera.position.set(2, 4, 5);
 
 				scene = new THREE.Scene();
-				scene.fog = new THREE.FogExp2( 0x000000, 0.035 );
+				scene.fog = new THREE.FogExp2(0x000000, 0.035);
 
 				// Add Blender exported Collada model
 
 				var loader = new THREE.JSONLoader();
-				loader.load( 'models/animated/monster/monster.js', function ( geometry, materials ) {
+				loader.load('models/animated/monster/monster.js', function(geometry, materials) {
 
 					// adjust color a bit
 
-					var material = materials[ 0 ];
+					var material = materials[0];
 					material.morphTargets = true;
-					material.color.setHex( 0xffaaaa );
-					material.ambient.setHex( 0x222222 );
+					material.color.setHex(0xffaaaa);
+					material.ambient.setHex(0x222222);
 
-					var faceMaterial = new THREE.MeshFaceMaterial( materials );
+					var faceMaterial = new THREE.MeshFaceMaterial(materials);
 
-					for ( var i = 0; i < 729; i ++ ) {
+					for (var i = 0; i < 729; i++) {
 
 						// random placement in a grid
 
-						var x = ( ( i % 27 )  - 13.5 ) * 2 + THREE.MathUtil.randFloatSpread( 1 );
-						var z = ( Math.floor( i / 27 ) - 13.5 ) * 2 + THREE.MathUtil.randFloatSpread( 1 );
+						var x = ((i % 27 ) - 13.5 ) * 2 + THREE.MathUtil.randFloatSpread(1);
+						var z = (Math.floor(i / 27) - 13.5 ) * 2 + THREE.MathUtil.randFloatSpread(1);
 
 						// leave space for big monster
 
-						if ( Math.abs( x ) < 2 && Math.abs( z ) < 2 ) continue;
+						if (Math.abs(x) < 2 && Math.abs(z) < 2)
+							continue;
 
-						morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
+						morph = new THREE.MorphAnimMesh(geometry, faceMaterial);
 
 						// one second duration
 
@@ -122,59 +131,58 @@
 
 						morph.time = 1000 * Math.random();
 
-						var s = THREE.MathUtil.randFloat( 0.00075, 0.001 );
-						morph.scale.set( s, s, s );
+						var s = THREE.MathUtil.randFloat(0.00075, 0.001);
+						morph.scale.set(s, s, s);
 
-						morph.position.set( x, 0, z );
-						morph.rotation.y = THREE.MathUtil.randFloat( -0.25, 0.25 );
+						morph.position.set(x, 0, z);
+						morph.rotation.y = THREE.MathUtil.randFloat(-0.25, 0.25);
 
 						morph.matrixAutoUpdate = false;
 						morph.updateMatrix();
 
-						scene.add( morph );
+						scene.add(morph);
 
-						morphs.push( morph );
+						morphs.push(morph);
 
 					}
 
-				} );
-
+				});
 
 				// Add the COLLADA
 
-				scene.add( dae );
+				scene.add(dae);
 
 				// Lights
 
-				scene.add( new THREE.AmbientLight( 0xcccccc ) );
+				scene.add(new THREE.AmbientLight(0xcccccc));
 
-				pointLight = new THREE.PointLight( 0xff4400, 5, 30 );
-				pointLight.position.set( 5, 0, 0 );
-				scene.add( pointLight );
+				pointLight = new THREE.PointLight(0xff4400, 5, 30);
+				pointLight.position.set(5, 0, 0);
+				scene.add(pointLight);
 
 				// Renderer
 
 				renderer = new THREE.WebGLRenderer();
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
-				container.appendChild( renderer.domElement );
+				container.appendChild(renderer.domElement);
 
 				// Stats
 
 				stats = new Stats();
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				// Events
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
 			//
 
-			function onWindowResize( event ) {
+			function onWindowResize(event) {
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
@@ -186,28 +194,32 @@
 			var t = 0;
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				// animate Collada model
 
-				if ( t > 30 ) t = 0;
+				if (t > 30)
+					t = 0;
 
-				if ( skin ) {
+				if (skin) {
 
 					// guess this can be done smarter...
 
-					// (Indeed, there are way more frames than needed and interpolation is not used at all
-					//  could be something like - one morph per each skinning pose keyframe, or even less,
-					//  animation could be resampled, morphing interpolation handles sparse keyframes quite well.
+					// (Indeed, there are way more frames than needed and interpolation is not used
+					// at all
+					//  could be something like - one morph per each skinning pose keyframe, or even
+					// less,
+					//  animation could be resampled, morphing interpolation handles sparse keyframes
+					// quite well.
 					//  Simple animation cycles like this look ok with 10-15 frames instead of 100 ;)
 
-					for ( var i = 0; i < skin.morphTargetInfluences.length; i++ ) {
+					for (var i = 0; i < skin.morphTargetInfluences.length; i++) {
 
-						skin.morphTargetInfluences[ i ] = 0;
+						skin.morphTargetInfluences[i] = 0;
 
 					}
 
-					skin.morphTargetInfluences[ Math.floor( t ) ] = 1;
+					skin.morphTargetInfluences[ Math.floor(t)] = 1;
 
 					t += 0.5;
 
@@ -217,11 +229,10 @@
 
 				var delta = clock.getDelta();
 
-				if ( morphs.length ) {
+				if (morphs.length) {
 
-					for ( var i = 0; i < morphs.length; i ++ )
-						morphs[ i ].updateAnimation( 1000 * delta );
-
+					for (var i = 0; i < morphs.length; i++)
+						morphs[i].updateAnimation(1000 * delta);
 
 				}
 
@@ -234,13 +245,13 @@
 
 				var timer = Date.now() * 0.0005;
 
-				camera.position.x = Math.cos( timer ) * 10;
+				camera.position.x = Math.cos(timer) * 10;
 				camera.position.y = 4;
-				camera.position.z = Math.sin( timer ) * 10;
+				camera.position.z = Math.sin(timer) * 10;
 
-				camera.lookAt( scene.position );
+				camera.lookAt(scene.position);
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

@@ -13,30 +13,44 @@
 				font-family: Monospace;
 				font-size: 13px;
 			}
-
 			#info {
 				position: absolute;
-				top: 0px; width: 100%;
+				top: 0px;
+				width: 100%;
 				padding: 5px;
 				text-align: center;
 			}
-
 			a {
 				color: #0080ff;
 				text-decoration: none;
 			}
-
 			a:hover {
 				color: #f00;
 			}
-
-			#footer { width: 100%; margin: 2em auto; text-align: center; position: absolute; bottom: 0 }
-			strong { color: red }
-
-			#stats { position: absolute; top:0; left: 0 }
-			#stats #fps { background: transparent !important }
-			#stats #fps #fpsText { color: #555 !important }
-			#stats #fps #fpsGraph { display: none }
+			#footer {
+				width: 100%;
+				margin: 2em auto;
+				text-align: center;
+				position: absolute;
+				bottom: 0
+			}
+			strong {
+				color: red
+			}
+			#stats {
+				position: absolute;
+				top: 0;
+				left: 0
+			}
+			#stats #fps {
+				background: transparent !important
+			}
+			#stats #fps #fpsText {
+				color: #555 !important
+			}
+			#stats #fps #fpsGraph {
+				display: none
+			}
 		</style>
 	</head>
 	<body>
@@ -44,7 +58,8 @@
 		<div id="container"></div>
 		<div id="info">
 			<a href="http://threejs.org" target="_blank">three.js</a> - webgl hemisphere light example -
-			flamingo by <a href="http://mirada.com/">mirada</a> from <a href="http://ro.me">rome</a><br/>
+			flamingo by <a href="http://mirada.com/">mirada</a> from <a href="http://ro.me">rome</a>
+			<br/>
 		</div>
 		<div id="footer">
 			press <strong>h</strong> to toggle hemisphere light, <strong>d</strong> to toggle directional light
@@ -63,10 +78,10 @@
 
 			void main() {
 
-				vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
-				vWorldPosition = worldPosition.xyz;
+			vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+			vWorldPosition = worldPosition.xyz;
 
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
 			}
 
@@ -83,16 +98,16 @@
 
 			void main() {
 
-				float h = normalize( vWorldPosition + offset ).y;
-				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( h, exponent ), 0.0 ) ), 1.0 );
+			float h = normalize( vWorldPosition + offset ).y;
+			gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( h, exponent ), 0.0 ) ), 1.0 );
 
 			}
 
 		</script>
 
 		<script>
-
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
 			var camera, scene, renderer, dirLight, hemiLight;
 			var morphs = [];
@@ -105,15 +120,15 @@
 
 			function init() {
 
-				var container = document.getElementById( 'container' );
+				var container = document.getElementById('container');
 
-				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 5000 );
-				camera.position.set( 0, 0, 250 );
+				camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 5000);
+				camera.position.set(0, 0, 250);
 
 				scene = new THREE.Scene();
 
-				scene.fog = new THREE.Fog( 0xffffff, 1, 5000 );
-				scene.fog.color.setHSL( 0.6, 0, 1 );
+				scene.fog = new THREE.Fog(0xffffff, 1, 5000);
+				scene.fog.color.setHSL(0.6, 0, 1);
 
 				/*
 				controls = new THREE.TrackballControls( camera );
@@ -131,19 +146,19 @@
 
 				// LIGHTS
 
-				hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-				hemiLight.color.setHSL( 0.6, 1, 0.6 );
-				hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-				hemiLight.position.set( 0, 500, 0 );
-				scene.add( hemiLight );
+				hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+				hemiLight.color.setHSL(0.6, 1, 0.6);
+				hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+				hemiLight.position.set(0, 500, 0);
+				scene.add(hemiLight);
 
 				//
 
-				dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-				dirLight.color.setHSL( 0.1, 1, 0.95 );
-				dirLight.position.set( -1, 1.75, 1 );
-				dirLight.position.multiplyScalar( 50 );
-				scene.add( dirLight );
+				dirLight = new THREE.DirectionalLight(0xffffff, 1);
+				dirLight.color.setHSL(0.1, 1, 0.95);
+				dirLight.position.set(-1, 1.75, 1);
+				dirLight.position.multiplyScalar(50);
+				scene.add(dirLight);
 
 				dirLight.castShadow = true;
 
@@ -164,71 +179,102 @@
 
 				// GROUND
 
-				var groundGeo = new THREE.PlaneGeometry( 10000, 10000 );
-				var groundMat = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505 } );
-				groundMat.color.setHSL( 0.095, 1, 0.75 );
+				var groundGeo = new THREE.PlaneGeometry(10000, 10000);
+				var groundMat = new THREE.MeshPhongMaterial({
+					ambient : 0xffffff,
+					color : 0xffffff,
+					specular : 0x050505
+				});
+				groundMat.color.setHSL(0.095, 1, 0.75);
 
-				var ground = new THREE.Mesh( groundGeo, groundMat );
-				ground.rotation.x = -Math.PI/2;
+				var ground = new THREE.Mesh(groundGeo, groundMat);
+				ground.rotation.x = -Math.PI / 2;
 				ground.position.y = -33;
-				scene.add( ground );
+				scene.add(ground);
 
 				ground.receiveShadow = true;
 
 				// SKYDOME
 
-				var vertexShader = document.getElementById( 'vertexShader' ).textContent;
-				var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+				var vertexShader = document.getElementById('vertexShader').textContent;
+				var fragmentShader = document.getElementById('fragmentShader').textContent;
 				var uniforms = {
-					topColor: 	 { type: "c", value: new THREE.Color( 0x0077ff ) },
-					bottomColor: { type: "c", value: new THREE.Color( 0xffffff ) },
-					offset:		 { type: "f", value: 33 },
-					exponent:	 { type: "f", value: 0.6 }
+					topColor : {
+						type : "c",
+						value : new THREE.Color(0x0077ff)
+					},
+					bottomColor : {
+						type : "c",
+						value : new THREE.Color(0xffffff)
+					},
+					offset : {
+						type : "f",
+						value : 33
+					},
+					exponent : {
+						type : "f",
+						value : 0.6
+					}
 				}
-				uniforms.topColor.value.copy( hemiLight.color );
+				uniforms.topColor.value.copy(hemiLight.color);
 
-				scene.fog.color.copy( uniforms.bottomColor.value );
+				scene.fog.color.copy(uniforms.bottomColor.value);
 
-				var skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
-				var skyMat = new THREE.ShaderMaterial( { vertexShader: vertexShader, fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide } );
+				var skyGeo = new THREE.SphereGeometry(4000, 32, 15);
+				var skyMat = new THREE.ShaderMaterial({
+					vertexShader : vertexShader,
+					fragmentShader : fragmentShader,
+					uniforms : uniforms,
+					side : THREE.BackSide
+				});
 
-				var sky = new THREE.Mesh( skyGeo, skyMat );
-				scene.add( sky );
+				var sky = new THREE.Mesh(skyGeo, skyMat);
+				scene.add(sky);
 
 				// MODEL
 
 				var loader = new THREE.JSONLoader();
 
-				loader.load( "models/animated/flamingo.js", function( geometry ) {
+				loader.load("models/animated/flamingo.js", function(geometry) {
 
-					morphColorsToFaceColors( geometry );
+					morphColorsToFaceColors(geometry);
 					geometry.computeMorphNormals();
 
-					var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff, shininess: 20, morphTargets: true, morphNormals: true, vertexColors: THREE.FaceColors, shading: THREE.FlatShading } );
-					var meshAnim = new THREE.MorphAnimMesh( geometry, material );
+					var material = new THREE.MeshPhongMaterial({
+						color : 0xffffff,
+						specular : 0xffffff,
+						shininess : 20,
+						morphTargets : true,
+						morphNormals : true,
+						vertexColors : THREE.FaceColors,
+						shading : THREE.FlatShading
+					});
+					var meshAnim = new THREE.MorphAnimMesh(geometry, material);
 
 					meshAnim.duration = 1000;
 
 					var s = 0.35;
-					meshAnim.scale.set( s, s, s );
+					meshAnim.scale.set(s, s, s);
 					meshAnim.position.y = 15;
 					meshAnim.rotation.y = -1;
 
 					meshAnim.castShadow = true;
 					meshAnim.receiveShadow = true;
 
-					scene.add( meshAnim );
-					morphs.push( meshAnim );
+					scene.add(meshAnim);
+					morphs.push(meshAnim);
 
-				} );
+				});
 
 				// RENDERER
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+				renderer = new THREE.WebGLRenderer({
+					antialias : true
+				});
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				container.appendChild(renderer.domElement);
 
-				renderer.setClearColor( scene.fog.color, 1 );
+				renderer.setClearColor(scene.fog.color, 1);
 
 				renderer.gammaInput = true;
 				renderer.gammaOutput = true;
@@ -240,24 +286,24 @@
 				// STATS
 
 				stats = new Stats();
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
-				document.addEventListener( 'keydown', onKeyDown, false );
+				window.addEventListener('resize', onWindowResize, false);
+				document.addEventListener('keydown', onKeyDown, false);
 
 			}
 
-			function morphColorsToFaceColors( geometry ) {
+			function morphColorsToFaceColors(geometry) {
 
-				if ( geometry.morphColors && geometry.morphColors.length ) {
+				if (geometry.morphColors && geometry.morphColors.length) {
 
-					var colorMap = geometry.morphColors[ 0 ];
+					var colorMap = geometry.morphColors[0];
 
-					for ( var i = 0; i < colorMap.colors.length; i ++ ) {
+					for (var i = 0; i < colorMap.colors.length; i++) {
 
-						geometry.faces[ i ].color = colorMap.colors[ i ];
+						geometry.faces[i].color = colorMap.colors[i];
 
 					}
 
@@ -270,23 +316,25 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
-			function onKeyDown ( event ) {
+			function onKeyDown(event) {
 
 				switch ( event.keyCode ) {
 
-					case 72: /*h*/
+					case 72:
+						/*h*/
 
-					hemiLight.visible = !hemiLight.visible;
-					break;
+						hemiLight.visible = !hemiLight.visible;
+						break;
 
-					case 68: /*d*/
+					case 68:
+						/*d*/
 
-					dirLight.visible = !dirLight.visible;
-					break;
+						dirLight.visible = !dirLight.visible;
+						break;
 
 				}
 
@@ -296,7 +344,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -309,14 +357,14 @@
 
 				//controls.update();
 
-				for ( var i = 0; i < morphs.length; i ++ ) {
+				for (var i = 0; i < morphs.length; i++) {
 
-					morph = morphs[ i ];
-					morph.updateAnimation( 1000 * delta );
+					morph = morphs[i];
+					morph.updateAnimation(1000 * delta);
 
 				}
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

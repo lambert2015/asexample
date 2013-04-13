@@ -10,30 +10,37 @@
 				margin: 0px;
 				overflow: hidden;
 			}
-
 			#info {
 				position: absolute;
-				top: 20px; width: 100%;
+				top: 20px;
+				width: 100%;
 				color: #ffffff;
 				padding: 5px;
 				font-family: Monospace;
 				font-size: 13px;
 				text-align: center;
 			}
-
 			a {
 				color: #ff0080;
 				text-decoration: none;
 			}
-
 			a:hover {
 				color: #0080ff;
 			}
-
-			#stats { position: absolute; top:10px; left: 5px }
-			#stats #fps { background: transparent !important }
-			#stats #fps #fpsText { color: #aaa !important }
-			#stats #fps #fpsGraph { display: none }
+			#stats {
+				position: absolute;
+				top: 10px;
+				left: 5px
+			}
+			#stats #fps {
+				background: transparent !important
+			}
+			#stats #fps #fpsText {
+				color: #aaa !important
+			}
+			#stats #fps #fpsGraph {
+				display: none
+			}
 		</style>
 	</head>
 
@@ -43,7 +50,6 @@
 			characters from <a href="http://www.sintel.org/">Sintel</a> and by <a href="http://opengameart.org/content/walk-cycles">Clint Bellanger</a>
 		</div>
 		<div id="container"></div>
-
 
 		<script src="js/libs/stats.min.js"></script>
 
@@ -63,8 +69,8 @@
 		<script src="js/postprocessing/MaskPass.js"></script>
 
 		<script>
-
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if (!Detector.webgl)
+				Detector.addGetWebGLMessage();
 
 			var SCALE = 0.75;
 			var MARGIN = 100;
@@ -82,7 +88,7 @@
 
 			var targetX = 0, targetY = 0;
 			var angle = 0;
-			var target = new THREE.Vector3( 0, 0, 0 );
+			var target = new THREE.Vector3(0, 0, 0);
 
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
@@ -115,24 +121,30 @@
 
 				// renderer
 
-				renderer = new THREE.WebGLDeferredRenderer( { width: WIDTH, height: HEIGHT, scale: SCALE, brightness: 2, antialias: true } );
+				renderer = new THREE.WebGLDeferredRenderer({
+					width : WIDTH,
+					height : HEIGHT,
+					scale : SCALE,
+					brightness : 2,
+					antialias : true
+				});
 
 				renderer.domElement.style.position = "absolute";
 				renderer.domElement.style.top = MARGIN + "px";
 				renderer.domElement.style.left = "0px";
 
-				var container = document.getElementById( 'container' );
-				container.appendChild( renderer.domElement );
+				var container = document.getElementById('container');
+				container.appendChild(renderer.domElement);
 
 				// camera
 
-				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, WIDTH / HEIGHT, NEAR, FAR );
+				camera = new THREE.PerspectiveCamera(VIEW_ANGLE, WIDTH / HEIGHT, NEAR, FAR);
 				camera.position.z = 150;
 
 				// scene
 
 				scene = new THREE.Scene();
-				scene.add( camera );
+				scene.add(camera);
 
 				// stats
 
@@ -140,7 +152,7 @@
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '8px';
 				stats.domElement.style.zIndex = 100;
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				// clock
 
@@ -156,11 +168,10 @@
 
 				// events
 
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-				window.addEventListener( 'resize', onWindowResize, false );
+				document.addEventListener('mousemove', onDocumentMouseMove, false);
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
-
 
 			// -----------------------------
 
@@ -170,52 +181,52 @@
 
 				// front light
 
-				var light = new THREE.PointLight( 0xffffff, 1.5, 1.5 * distance );
-				scene.add( light );
-				lights.push( light );
+				var light = new THREE.PointLight(0xffffff, 1.5, 1.5 * distance);
+				scene.add(light);
+				lights.push(light);
 
 				// random lights
 
 				var c = new THREE.Vector3();
 
-				for ( var i = 1; i < numLights; i ++ ) {
+				for (var i = 1; i < numLights; i++) {
 
-					var light = new THREE.PointLight( 0xffffff, 2.0, distance );
+					var light = new THREE.PointLight(0xffffff, 2.0, distance);
 
-					c.set( Math.random(), Math.random(), Math.random() ).normalize();
-					light.color.setRGB( c.x, c.y, c.z );
+					c.set(Math.random(), Math.random(), Math.random()).normalize();
+					light.color.setRGB(c.x, c.y, c.z);
 
-					scene.add( light );
-					lights.push( light );
+					scene.add(light);
+					lights.push(light);
 
 				}
 
-				var geometry = new THREE.SphereGeometry( 0.7, 7, 7 );
+				var geometry = new THREE.SphereGeometry(0.7, 7, 7);
 
-				for ( var i = 0; i < numLights; i ++ ) {
+				for (var i = 0; i < numLights; i++) {
 
-					var light = lights[ i ];
+					var light = lights[i];
 
 					var material = new THREE.MeshBasicMaterial();
 					material.color = light.color;
 
-					var emitter = new THREE.Mesh( geometry, material );
+					var emitter = new THREE.Mesh(geometry, material);
 					emitter.position = light.position;
 
-					scene.add( emitter );
+					scene.add(emitter);
 
 				}
 
 			}
 
-			function ensureLoop( animation ) {
+			function ensureLoop(animation) {
 
-				for ( var i = 0; i < animation.hierarchy.length; i ++ ) {
+				for (var i = 0; i < animation.hierarchy.length; i++) {
 
-					var bone = animation.hierarchy[ i ];
+					var bone = animation.hierarchy[i];
 
-					var first = bone.keys[ 0 ];
-					var last = bone.keys[ bone.keys.length - 1 ];
+					var first = bone.keys[0];
+					var last = bone.keys[bone.keys.length - 1];
 
 					last.pos = first.pos;
 					last.rot = first.rot;
@@ -230,57 +241,66 @@
 				// add animated model
 
 				var loader = new THREE.JSONLoader();
-				loader.load( "models/animated/elderlyWalk.js", function( geometry ) {
+				loader.load("models/animated/elderlyWalk.js", function(geometry) {
 
 					geometry.computeMorphNormals();
 
-					var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x333333, shininess: 20, wrapAround: true, morphTargets: true, morphNormals: true, vertexColors: THREE.NoColors, shading: THREE.FlatShading } );
-					var meshAnim = new THREE.MorphAnimMesh( geometry, material );
+					var material = new THREE.MeshPhongMaterial({
+						color : 0xffffff,
+						specular : 0x333333,
+						shininess : 20,
+						wrapAround : true,
+						morphTargets : true,
+						morphNormals : true,
+						vertexColors : THREE.NoColors,
+						shading : THREE.FlatShading
+					});
+					var meshAnim = new THREE.MorphAnimMesh(geometry, material);
 
 					meshAnim.duration = 3000;
 					meshAnim.userData.delta = -13;
 
-					meshAnim.scale.multiplyScalar( 50 );
-					meshAnim.position.set( 180, -48, -10 );
-					meshAnim.rotation.y = -Math.PI/2;
+					meshAnim.scale.multiplyScalar(50);
+					meshAnim.position.set(180, -48, -10);
+					meshAnim.rotation.y = -Math.PI / 2;
 
-					scene.add( meshAnim );
-					morphs.push( meshAnim );
+					scene.add(meshAnim);
+					morphs.push(meshAnim);
 
-				} );
+				});
 
-				loader.load( "models/skinned/human_walk_0_female.js", function ( geometry, materials ) {
+				loader.load("models/skinned/human_walk_0_female.js", function(geometry, materials) {
 
 					geometry.computeVertexNormals();
 					geometry.computeBoundingBox();
 
-					ensureLoop( geometry.animation );
-					THREE.AnimationHandler.add( geometry.animation );
+					ensureLoop(geometry.animation);
+					THREE.AnimationHandler.add(geometry.animation);
 
-					for ( var i = 0, il = materials.length; i < il; i ++ ) {
+					for (var i = 0, il = materials.length; i < il; i++) {
 
-						var originalMaterial = materials[ i ];
+						var originalMaterial = materials[i];
 						originalMaterial.skinning = true;
 
 						originalMaterial.map = undefined;
 						originalMaterial.shading = THREE.SmoothShading;
-						originalMaterial.color.setHSL( 0.01, 0.3, 0.3 );
-						originalMaterial.ambient.copy( originalMaterial.color );
-						originalMaterial.specular.setHSL( 0, 0, 0.1 );
+						originalMaterial.color.setHSL(0.01, 0.3, 0.3);
+						originalMaterial.ambient.copy(originalMaterial.color);
+						originalMaterial.specular.setHSL(0, 0, 0.1);
 						originalMaterial.shininess = 75;
 
 						originalMaterial.wrapAround = true;
-						originalMaterial.wrapRGB.set( 1, 0.5, 0.5 );
+						originalMaterial.wrapRGB.set(1, 0.5, 0.5);
 
 					}
 
 					var s = 18.5;
 
-					var material = new THREE.MeshFaceMaterial( materials );
-					var mesh = new THREE.SkinnedMesh( geometry, material, false );
-					mesh.scale.set( s, s, s );
+					var material = new THREE.MeshFaceMaterial(materials);
+					var mesh = new THREE.SkinnedMesh(geometry, material, false);
+					mesh.scale.set(s, s, s);
 
-					mesh.rotation.y = Math.PI/2;
+					mesh.rotation.y = Math.PI / 2;
 
 					mesh.position.x = -100;
 					mesh.position.y = -geometry.boundingBox.min.y * s - 48;
@@ -288,24 +308,23 @@
 
 					mesh.userData.delta = 25;
 
-					scene.add( mesh );
-					skins.push( mesh );
+					scene.add(mesh);
+					skins.push(mesh);
 
-
-					animation = new THREE.Animation( mesh, "ActionFemale" );
+					animation = new THREE.Animation(mesh, "ActionFemale");
 					animation.JITCompile = false;
 					animation.interpolationType = THREE.AnimationHandler.LINEAR;
 
-					animation.play( true );
-					animation.update( 0 );
+					animation.play(true);
+					animation.update(0);
 
-				} );
+				});
 
 				// add box
 
 				var box = generateBox();
-				box.scale.multiplyScalar( 8 );
-				scene.add( box );
+				box.scale.multiplyScalar(8);
+				scene.add(box);
 
 			}
 
@@ -315,63 +334,80 @@
 
 				var object = new THREE.Object3D();
 
-				var mapHeight2 = THREE.ImageUtils.loadTexture( "obj/lightmap/rocks.jpg" );
-				mapHeight2.repeat.set( 3, 1.5 );
+				var mapHeight2 = THREE.ImageUtils.loadTexture("obj/lightmap/rocks.jpg");
+				mapHeight2.repeat.set(3, 1.5);
 				mapHeight2.wrapS = mapHeight2.wrapT = THREE.RepeatWrapping;
 				mapHeight2.anisotropy = 4;
 				mapHeight2.format = THREE.RGBFormat;
 
-				var mapHeight3 = THREE.ImageUtils.loadTexture( "textures/water.jpg" );
-				mapHeight3.repeat.set( 16, 8 );
+				var mapHeight3 = THREE.ImageUtils.loadTexture("textures/water.jpg");
+				mapHeight3.repeat.set(16, 8);
 				mapHeight3.wrapS = mapHeight3.wrapT = THREE.RepeatWrapping;
 				mapHeight3.anisotropy = 4;
 				mapHeight3.format = THREE.RGBFormat;
 
-				var geoPlane = new THREE.PlaneGeometry( 40, 20 );
-				var matPlaneSide   = new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x222222, shininess: 75, bumpMap: mapHeight2, bumpScale: 0.5 } );
-				var matPlaneBottom = new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x222222, shininess: 75, bumpMap: mapHeight3, bumpScale: 0.5 } );
-				var matPlaneTop    = new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x222222, shininess: 75, bumpMap: mapHeight3, bumpScale: 1 } );
-
+				var geoPlane = new THREE.PlaneGeometry(40, 20);
+				var matPlaneSide = new THREE.MeshPhongMaterial({
+					color : 0x000000,
+					specular : 0x222222,
+					shininess : 75,
+					bumpMap : mapHeight2,
+					bumpScale : 0.5
+				});
+				var matPlaneBottom = new THREE.MeshPhongMaterial({
+					color : 0x000000,
+					specular : 0x222222,
+					shininess : 75,
+					bumpMap : mapHeight3,
+					bumpScale : 0.5
+				});
+				var matPlaneTop = new THREE.MeshPhongMaterial({
+					color : 0x000000,
+					specular : 0x222222,
+					shininess : 75,
+					bumpMap : mapHeight3,
+					bumpScale : 1
+				});
 
 				// bottom
 
-				var mesh = new THREE.Mesh( geoPlane, matPlaneBottom );
+				var mesh = new THREE.Mesh(geoPlane, matPlaneBottom);
 				mesh.position.z = -2;
 				mesh.position.y = -6;
-				mesh.rotation.x = -Math.PI/2;
-				object.add( mesh );
+				mesh.rotation.x = -Math.PI / 2;
+				object.add(mesh);
 
 				// top
 
-				var mesh = new THREE.Mesh( geoPlane, matPlaneTop );
+				var mesh = new THREE.Mesh(geoPlane, matPlaneTop);
 				mesh.position.z = -2;
 				mesh.position.y = 7;
-				mesh.rotation.x = Math.PI/2;
-				object.add( mesh );
+				mesh.rotation.x = Math.PI / 2;
+				object.add(mesh);
 
 				// back
 
-				var mesh = new THREE.Mesh( geoPlane, matPlaneSide );
+				var mesh = new THREE.Mesh(geoPlane, matPlaneSide);
 				mesh.position.z = -4;
 				mesh.position.y = 0;
-				object.add( mesh );
+				object.add(mesh);
 
 				// right
 
-				var mesh = new THREE.Mesh( geoPlane, matPlaneSide );
+				var mesh = new THREE.Mesh(geoPlane, matPlaneSide);
 				mesh.position.z = 0;
 				mesh.position.y = 0;
 				mesh.position.x = 13;
-				mesh.rotation.y = -Math.PI/2;
+				mesh.rotation.y = -Math.PI / 2;
 				//object.add( mesh );
 
 				// left
 
-				var mesh = new THREE.Mesh( geoPlane, matPlaneSide );
+				var mesh = new THREE.Mesh(geoPlane, matPlaneSide);
 				mesh.position.z = 0;
 				mesh.position.y = 0;
 				mesh.position.x = -13;
-				mesh.rotation.y = Math.PI/2;
+				mesh.rotation.y = Math.PI / 2;
 				//object.add( mesh );
 
 				return object;
@@ -380,7 +416,7 @@
 
 			// -----------------------------
 
-			function onWindowResize( event ) {
+			function onWindowResize(event) {
 
 				windowHalfX = window.innerWidth / 2;
 				windowHalfY = window.innerHeight / 2;
@@ -388,17 +424,17 @@
 				WIDTH = window.innerWidth;
 				HEIGHT = window.innerHeight - 2 * MARGIN;
 
-				renderer.setSize( WIDTH, HEIGHT );
+				renderer.setSize(WIDTH, HEIGHT);
 
 				camera.aspect = WIDTH / HEIGHT;
 				camera.updateProjectionMatrix();
 
 			}
 
-			function onDocumentMouseMove( event ) {
+			function onDocumentMouseMove(event) {
 
-				mouseX = ( event.clientX - windowHalfX ) * 1;
-				mouseY = ( event.clientY - windowHalfY ) * 1;
+				mouseX = (event.clientX - windowHalfX ) * 1;
+				mouseY = (event.clientY - windowHalfY ) * 1;
 
 			}
 
@@ -406,7 +442,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -422,50 +458,52 @@
 
 				var x, y, z;
 
-				for ( var i = 0, il = lights.length; i < il; i ++ ) {
+				for (var i = 0, il = lights.length; i < il; i++) {
 
-					var light = lights[ i ];
+					var light = lights[i];
 
-					if ( i > 0 ) {
+					if (i > 0) {
 
-						x = Math.sin( time + i * 1.7 ) * 80;
-						y = Math.cos( time + i * 1.5 ) * 40;
-						z = Math.cos( time + i * 1.3 ) * 30;
+						x = Math.sin(time + i * 1.7) * 80;
+						y = Math.cos(time + i * 1.5) * 40;
+						z = Math.cos(time + i * 1.3) * 30;
 
 					} else {
 
-						x = Math.sin( time * 3 ) * 20;
+						x = Math.sin(time * 3) * 20;
 						y = 15;
-						z = Math.cos( time * 3 ) * 25 + 10;
+						z = Math.cos(time * 3) * 25 + 10;
 
 					}
 
-					light.position.set( x, y, z );
+					light.position.set(x, y, z);
 
 				}
 
 				// update morphs
 
-				for ( var i = 0; i < morphs.length; i ++ ) {
+				for (var i = 0; i < morphs.length; i++) {
 
-					var morph = morphs[ i ];
-					morph.updateAnimation( 1000 * delta );
+					var morph = morphs[i];
+					morph.updateAnimation(1000 * delta);
 
 					morph.position.x += morph.userData.delta * delta;
-					if ( morph.position.x < -50 ) morph.position.x = 200;
+					if (morph.position.x < -50)
+						morph.position.x = 200;
 
 				}
 
 				// update skins
 
-				THREE.AnimationHandler.update( 0.4 * delta );
+				THREE.AnimationHandler.update(0.4 * delta);
 
-				for ( var i = 0; i < skins.length; i ++ ) {
+				for (var i = 0; i < skins.length; i++) {
 
-					var skin = skins[ i ];
+					var skin = skins[i];
 
 					skin.position.x += skin.userData.delta * delta;
-					if ( skin.position.x > 200 ) skin.position.x = -200;
+					if (skin.position.x > 200)
+						skin.position.x = -200;
 
 				}
 
@@ -474,16 +512,16 @@
 				targetX = mouseX * .001;
 				targetY = mouseY * .001;
 
-				angle += 0.05 * ( targetX - angle );
+				angle += 0.05 * (targetX - angle );
 
-				camera.position.x = -Math.sin( angle ) * 150;
-				camera.position.z = Math.cos( angle ) * 150;
+				camera.position.x = -Math.sin(angle) * 150;
+				camera.position.z = Math.cos(angle) * 150;
 
-				camera.lookAt( target );
+				camera.lookAt(target);
 
 				// render
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

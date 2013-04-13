@@ -6,11 +6,11 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
 			body {
-				background:#fff;
-				padding:0;
-				margin:0;
+				background: #fff;
+				padding: 0;
+				margin: 0;
 				font-weight: bold;
-				overflow:hidden;
+				overflow: hidden;
 			}
 		</style>
 	</head>
@@ -21,7 +21,6 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<script>
-
 			var container, stats;
 
 			var camera, scene, renderer;
@@ -33,35 +32,36 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
 
-			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			document.addEventListener('mousemove', onDocumentMouseMove, false);
 
 			init();
 			// render();
 			animate();
 
-
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				container = document.createElement('div');
+				document.body.appendChild(container);
 
-				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
 				camera.position.z = 3200;
 
 				scene = new THREE.Scene();
 
 				objects = [];
 
-				var material = new THREE.MeshNormalMaterial( { shading: THREE.SmoothShading } );
+				var material = new THREE.MeshNormalMaterial({
+					shading : THREE.SmoothShading
+				});
 
 				var loader = new THREE.JSONLoader();
-				loader.load( 'obj/Suzanne.js', function ( geometry ) {
+				loader.load('obj/Suzanne.js', function(geometry) {
 
 					geometry.computeVertexNormals();
 
-					for ( var i = 0; i < 5000; i ++ ) {
+					for (var i = 0; i < 5000; i++) {
 
-						var mesh = new THREE.Mesh( geometry, material );
+						var mesh = new THREE.Mesh(geometry, material);
 
 						mesh.position.x = Math.random() * 8000 - 4000;
 						mesh.position.y = Math.random() * 8000 - 4000;
@@ -70,27 +70,29 @@
 						mesh.rotation.y = Math.random() * 2 * Math.PI;
 						mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 50 + 100;
 
-						objects.push( mesh );
+						objects.push(mesh);
 
-						scene.add( mesh );
+						scene.add(mesh);
 
 					}
 
-				} );
+				});
 
-				renderer = new THREE.WebGLRenderer( { clearColor: 0xffffff } );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+				renderer = new THREE.WebGLRenderer({
+					clearColor : 0xffffff
+				});
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				container.appendChild(renderer.domElement);
 
 				stats = new Stats();
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
 				stats.domElement.style.zIndex = 100;
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -102,14 +104,14 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
 			function onDocumentMouseMove(event) {
 
-				mouseX = ( event.clientX - windowHalfX ) * 10;
-				mouseY = ( event.clientY - windowHalfY ) * 10;
+				mouseX = (event.clientX - windowHalfX ) * 10;
+				mouseY = (event.clientY - windowHalfY ) * 10;
 
 			}
 
@@ -117,7 +119,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -126,19 +128,18 @@
 
 			function render() {
 
-				camera.position.x += ( mouseX - camera.position.x ) * .05;
-				camera.position.y += ( - mouseY - camera.position.y ) * .05;
-				camera.lookAt( scene.position );
+				camera.position.x += (mouseX - camera.position.x ) * .05;
+				camera.position.y += (-mouseY - camera.position.y ) * .05;
+				camera.lookAt(scene.position);
 
-				for ( var i = 0, il = objects.length; i < il; i ++ ) {
+				for (var i = 0, il = objects.length; i < il; i++) {
 
-					objects[ i ].rotation.x += 0.01;
-					objects[ i ].rotation.y += 0.02;
+					objects[i].rotation.x += 0.01;
+					objects[i].rotation.y += 0.02;
 
 				}
 
-
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 

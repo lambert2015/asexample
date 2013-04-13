@@ -19,17 +19,21 @@
 				width: 100%;
 				text-align: center;
 				z-index: 100;
-				display:block;
+				display: block;
 			}
-			#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+			#info a, .button {
+				color: #f00;
+				font-weight: bold;
+				text-decoration: underline;
+				cursor: pointer
+			}
 		</style>
 	</head>
 
 	<body>
 		<div id="info">
-		<a href="http://threejs.org" target="_blank">three.js</a> -
-		<a href="http://code.google.com/p/webgl-loader/" target="_blank">UTF8 format</a> loader test -
-		models from <a href="http://www.sci.utah.edu/~wald/animrep/" target="_blank">The Utah 3D Animation Repository</a>
+			<a href="http://threejs.org" target="_blank">three.js</a> - <a href="http://code.google.com/p/webgl-loader/" target="_blank">UTF8 format</a> loader test -
+			models from <a href="http://www.sci.utah.edu/~wald/animrep/" target="_blank">The Utah 3D Animation Repository</a>
 		</div>
 
 		<script src="../build/three.min.js"></script>
@@ -41,7 +45,6 @@
 		<script src="js/libs/stats.min.js"></script>
 
 		<script>
-
 			var SCREEN_WIDTH = window.innerWidth;
 			var SCREEN_HEIGHT = window.innerHeight;
 
@@ -63,36 +66,31 @@
 			init();
 			animate();
 
-
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				container = document.createElement('div');
+				document.body.appendChild(container);
 
-				camera = new THREE.PerspectiveCamera( 20, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 2000 );
+				camera = new THREE.PerspectiveCamera(20, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 2000);
 				camera.position.z = 800;
 
 				scene = new THREE.Scene();
-				scene.fog = new THREE.Fog( 0x000000, 800, 2000 );
+				scene.fog = new THREE.Fog(0x000000, 800, 2000);
 
 				var path = "textures/cube/SwedishRoyalCastle/";
 				var format = '.jpg';
-				var urls = [
-					path + 'px' + format, path + 'nx' + format,
-					path + 'py' + format, path + 'ny' + format,
-					path + 'pz' + format, path + 'nz' + format
-				];
+				var urls = [path + 'px' + format, path + 'nx' + format, path + 'py' + format, path + 'ny' + format, path + 'pz' + format, path + 'nz' + format];
 
-				reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
+				reflectionCube = THREE.ImageUtils.loadTextureCube(urls);
 
 				// LIGHTS
 
-				var ambient = new THREE.AmbientLight( 0x222222 );
-				scene.add( ambient );
+				var ambient = new THREE.AmbientLight(0x222222);
+				scene.add(ambient);
 
-				var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.1 );
-				directionalLight.position.set( 0, 20, 300 );
-				scene.add( directionalLight );
+				var directionalLight = new THREE.DirectionalLight(0xffffff, 1.1);
+				directionalLight.position.set(0, 20, 300);
+				scene.add(directionalLight);
 
 				directionalLight.castShadow = true;
 				//directionalLight.shadowCameraVisible = true;
@@ -110,16 +108,17 @@
 				directionalLight.shadowCameraNear = 200;
 				directionalLight.shadowCameraFar = 500;
 
-
 				// RENDERER
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				renderer = new THREE.WebGLRenderer({
+					antialias : true
+				});
+				renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-				renderer.setClearColor( scene.fog.color, 1 );
+				renderer.setClearColor(scene.fog.color, 1);
 
 				renderer.domElement.style.position = "relative";
-				container.appendChild( renderer.domElement );
+				container.appendChild(renderer.domElement);
 
 				//
 
@@ -136,69 +135,73 @@
 				stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
 				stats.domElement.style.zIndex = 100;
-				container.appendChild( stats.domElement );
+				container.appendChild(stats.domElement);
 
 				var start = Date.now();
 
 				var loader = new THREE.UTF8Loader();
 
-				loader.load( "models/utf8/hand.js", function ( object ) {
+				loader.load("models/utf8/hand.js", function(object) {
 
 					var end = Date.now();
-					console.log( "hand", end - start, "ms" );
+					console.log("hand", end - start, "ms");
 
 					var s = 350;
-					object.scale.set( s, s, s );
+					object.scale.set(s, s, s);
 					object.position.x = 125;
 					object.position.y = -125;
-					scene.add( object );
+					scene.add(object);
 
-					object.traverse( function( node ) {
+					object.traverse(function(node) {
 
 						node.castShadow = true;
 						node.receiveShadow = true;
 
-						if ( node.material && node.material.name === "skin" ) {
+						if (node.material && node.material.name === "skin") {
 
 							node.material.wrapAround = true;
-							node.material.wrapRGB.set( 0.6, 0.2, 0.1 );
+							node.material.wrapRGB.set(0.6, 0.2, 0.1);
 
 						}
 
-					} );
+					});
 
-				}, { normalizeRGB: true } );
+				}, {
+					normalizeRGB : true
+				});
 
-				loader.load( "models/utf8/ben_dds.js", function ( object ) {
+				loader.load("models/utf8/ben_dds.js", function(object) {
 
 					var end = Date.now();
-					console.log( "ben", end - start, "ms" );
+					console.log("ben", end - start, "ms");
 
 					var s = 350;
-					object.scale.set( s, s, s );
+					object.scale.set(s, s, s);
 					object.position.x = -125;
 					object.position.y = -125;
-					scene.add( object );
+					scene.add(object);
 
-					object.traverse( function( node ) {
+					object.traverse(function(node) {
 
 						node.castShadow = true;
 						node.receiveShadow = true;
 
-						if ( node.material && ( node.material.name === "head" || node.material.name === "skinbody" ) ) {
+						if (node.material && (node.material.name === "head" || node.material.name === "skinbody" )) {
 
 							node.material.wrapAround = true;
-							node.material.wrapRGB.set( 0.6, 0.2, 0.1 );
+							node.material.wrapRGB.set(0.6, 0.2, 0.1);
 
 						}
 
-					} );
+					});
 
-				}, { normalizeRGB: true } );
+				}, {
+					normalizeRGB : true
+				});
 
 				//
 
-				window.addEventListener( 'resize', onWindowResize, false );
+				window.addEventListener('resize', onWindowResize, false);
 
 			}
 
@@ -210,14 +213,14 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(window.innerWidth, window.innerHeight);
 
 			}
 
-			function onDocumentMouseMove( event ) {
+			function onDocumentMouseMove(event) {
 
-				mouseX = ( event.clientX - windowHalfX );
-				mouseY = ( event.clientY - windowHalfY );
+				mouseX = (event.clientX - windowHalfX );
+				mouseY = (event.clientY - windowHalfY );
 
 			}
 
@@ -225,7 +228,7 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
+				requestAnimationFrame(animate);
 
 				render();
 				stats.update();
@@ -234,12 +237,12 @@
 
 			function render() {
 
-				camera.position.x += ( mouseX - camera.position.x ) * .05;
-				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+				camera.position.x += (mouseX - camera.position.x ) * .05;
+				camera.position.y += (-mouseY - camera.position.y ) * .05;
 
-				camera.lookAt( scene.position );
+				camera.lookAt(scene.position);
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 
