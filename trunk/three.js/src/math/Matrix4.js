@@ -212,45 +212,36 @@ THREE.Matrix4.prototype = {
 
 	},
 
-	lookAt: function() {
+	lookAt: function(eye, target, up) {
 
 		var x = new THREE.Vector3();
 		var y = new THREE.Vector3();
 		var z = new THREE.Vector3();
 
-		return function ( eye, target, up ) {
+		var te = this.elements;
 
-			var te = this.elements;
+		z.subVectors( eye, target ).normalize();
 
-			z.subVectors( eye, target ).normalize();
+		if ( z.length() === 0 ) {
+			z.z = 1;
+		}
 
-			if ( z.length() === 0 ) {
+		x.crossVectors( up, z ).normalize();
 
-				z.z = 1;
-
-			}
-
+		if ( x.length() === 0 ) {
+			z.x += 0.0001;
 			x.crossVectors( up, z ).normalize();
+		}
 
-			if ( x.length() === 0 ) {
-
-				z.x += 0.0001;
-				x.crossVectors( up, z ).normalize();
-
-			}
-
-			y.crossVectors( z, x );
+		y.crossVectors( z, x );
 
 
-			te[0] = x.x; te[4] = y.x; te[8] = z.x;
-			te[1] = x.y; te[5] = y.y; te[9] = z.y;
-			te[2] = x.z; te[6] = y.z; te[10] = z.z;
+		te[0] = x.x; te[4] = y.x; te[8] = z.x;
+		te[1] = x.y; te[5] = y.y; te[9] = z.y;
+		te[2] = x.z; te[6] = y.z; te[10] = z.z;
 
-			return this;
-
-		};
-
-	}(),
+		return this;
+	},
 
 	multiply: function ( m, n ) {
 
@@ -347,31 +338,26 @@ THREE.Matrix4.prototype = {
 
 	},
 
-	multiplyVector3Array: function() {
+	multiplyVector3Array: function(a) {
 
 		var v1 = new THREE.Vector3();
 
-		return function ( a ) {
+		for ( var i = 0, il = a.length; i < il; i += 3 ) {
 
-			for ( var i = 0, il = a.length; i < il; i += 3 ) {
+			v1.x = a[ i ];
+			v1.y = a[ i + 1 ];
+			v1.z = a[ i + 2 ];
 
-				v1.x = a[ i ];
-				v1.y = a[ i + 1 ];
-				v1.z = a[ i + 2 ];
+			v1.applyProjection( this );
 
-				v1.applyProjection( this );
+			a[ i ]     = v1.x;
+			a[ i + 1 ] = v1.y;
+			a[ i + 2 ] = v1.z;
 
-				a[ i ]     = v1.x;
-				a[ i + 1 ] = v1.y;
-				a[ i + 2 ] = v1.z;
+		}
 
-			}
-
-			return a;
-
-		};
-
-	}(),
+		return a;
+	},
 
 	rotateAxis: function ( v ) {
 
@@ -506,16 +492,11 @@ THREE.Matrix4.prototype = {
 
 		var v1 = new THREE.Vector3();
 
-		return function () {
+		console.warn( 'DEPRECATED: Matrix4\'s .getPosition() has been removed. Use Vector3.getPositionFromMatrix( matrix ) instead.' );
 
-			console.warn( 'DEPRECATED: Matrix4\'s .getPosition() has been removed. Use Vector3.getPositionFromMatrix( matrix ) instead.' );
-
-			var te = this.elements;
-			return v1.set( te[12], te[13], te[14] );
-
-		};
-
-	}(),
+		var te = this.elements;
+		return v1.set( te[12], te[13], te[14] );
+	},
 
 	setPosition: function ( v ) {
 
@@ -597,36 +578,31 @@ THREE.Matrix4.prototype = {
 
 	},
 
-	extractRotation: function() {
+	extractRotation: function(m) {
 
 		var v1 = new THREE.Vector3();
 
-		return function ( m ) {
+		var te = this.elements;
+		var me = m.elements;
 
-			var te = this.elements;
-			var me = m.elements;
+		var scaleX = 1 / v1.set( me[0], me[1], me[2] ).length();
+		var scaleY = 1 / v1.set( me[4], me[5], me[6] ).length();
+		var scaleZ = 1 / v1.set( me[8], me[9], me[10] ).length();
 
-			var scaleX = 1 / v1.set( me[0], me[1], me[2] ).length();
-			var scaleY = 1 / v1.set( me[4], me[5], me[6] ).length();
-			var scaleZ = 1 / v1.set( me[8], me[9], me[10] ).length();
+		te[0] = me[0] * scaleX;
+		te[1] = me[1] * scaleX;
+		te[2] = me[2] * scaleX;
 
-			te[0] = me[0] * scaleX;
-			te[1] = me[1] * scaleX;
-			te[2] = me[2] * scaleX;
+		te[4] = me[4] * scaleY;
+		te[5] = me[5] * scaleY;
+		te[6] = me[6] * scaleY;
 
-			te[4] = me[4] * scaleY;
-			te[5] = me[5] * scaleY;
-			te[6] = me[6] * scaleY;
+		te[8] = me[8] * scaleZ;
+		te[9] = me[9] * scaleZ;
+		te[10] = me[10] * scaleZ;
 
-			te[8] = me[8] * scaleZ;
-			te[9] = me[9] * scaleZ;
-			te[10] = me[10] * scaleZ;
-
-			return this;
-
-		};
-
-	}(),
+		return this;
+	},
 
 	translate: function ( v ) {
 
@@ -949,7 +925,7 @@ THREE.Matrix4.prototype = {
 
 	makePerspective: function ( fov, aspect, near, far ) {
 
-		var ymax = near * Math.tan( THREE.Math.degToRad( fov * 0.5 ) );
+		var ymax = near * Math.tan( THREE.MathUtil.degToRad( fov * 0.5 ) );
 		var ymin = - ymax;
 		var xmin = ymin * aspect;
 		var xmax = ymax * aspect;

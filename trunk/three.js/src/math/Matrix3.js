@@ -70,31 +70,26 @@ THREE.Matrix3.prototype = {
 
 	},
 
-	multiplyVector3Array: function() {
+	multiplyVector3Array: function(a) {
 
 		var v1 = new THREE.Vector3();
 
-		return function ( a ) {
+		for ( var i = 0, il = a.length; i < il; i += 3 ) {
 
-			for ( var i = 0, il = a.length; i < il; i += 3 ) {
+			v1.x = a[ i ];
+			v1.y = a[ i + 1 ];
+			v1.z = a[ i + 2 ];
 
-				v1.x = a[ i ];
-				v1.y = a[ i + 1 ];
-				v1.z = a[ i + 2 ];
+			v1.applyMatrix3(this);
 
-				v1.applyMatrix3(this);
+			a[ i ]     = v1.x;
+			a[ i + 1 ] = v1.y;
+			a[ i + 2 ] = v1.z;
 
-				a[ i ]     = v1.x;
-				a[ i + 1 ] = v1.y;
-				a[ i + 2 ] = v1.z;
+		}
 
-			}
-
-			return a;
-
-		};
-
-	}(),
+		return a;
+	},
 
 	multiplyScalar: function ( s ) {
 

@@ -131,16 +131,11 @@ THREE.Triangle.prototype = {
 		var v0 = new THREE.Vector3();
 		var v1 = new THREE.Vector3();
 
-		return function() {
+		v0.subVectors(this.c, this.b);
+		v1.subVectors(this.a, this.b);
 
-			v0.subVectors(this.c, this.b);
-			v1.subVectors(this.a, this.b);
-
-			return v0.cross(v1).length() * 0.5;
-
-		};
-
-	}(),
+		return v0.cross(v1).length() * 0.5;
+	},
 
 	midpoint : function(optionalTarget) {
 

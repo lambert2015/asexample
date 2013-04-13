@@ -257,8 +257,8 @@
 
 				}
 
-				camera.position.x = 1400 * Math.sin( THREE.Math.degToRad( theta ) );
-				camera.position.z = 1400 * Math.cos( THREE.Math.degToRad( theta ) );
+				camera.position.x = 1400 * Math.sin( THREE.MathUtil.degToRad( theta ) );
+				camera.position.z = 1400 * Math.cos( THREE.MathUtil.degToRad( theta ) );
 
 				camera.lookAt( scene.position );
 

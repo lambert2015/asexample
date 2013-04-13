@@ -289,7 +289,7 @@ THREE.MorphBlendMesh.prototype.update = function(delta) {
 
 		}
 
-		var keyframe = animation.startFrame + THREE.Math.clamp(Math.floor(animation.time / frameTime), 0, animation.length - 1);
+		var keyframe = animation.startFrame + THREE.MathUtil.clamp(Math.floor(animation.time / frameTime), 0, animation.length - 1);
 		var weight = animation.weight;
 
 		if (keyframe !== animation.currentFrame) {

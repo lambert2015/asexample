@@ -17,26 +17,13 @@ THREE.Camera = function() {
 
 THREE.Camera.prototype = Object.create(THREE.Object3D.prototype);
 
-THREE.Camera.prototype.lookAt = function() {
-
+THREE.Camera.prototype.lookAt = function(vector) {
 	// This routine does not support cameras with rotated and/or translated parent(s)
-
 	var m1 = new THREE.Matrix4();
-
-	return function(vector) {
-
-		m1.lookAt(this.position, vector, this.up);
-
-		if (this.useQuaternion === true) {
-
-			this.quaternion.setFromRotationMatrix(m1);
-
-		} else {
-
-			this.rotation.setEulerFromRotationMatrix(m1, this.eulerOrder);
-
-		}
-
-	};
-
-}();
+	m1.lookAt(this.position, vector, this.up);
+	if (this.useQuaternion === true) {
+		this.quaternion.setFromRotationMatrix(m1);
+	} else {
+		this.rotation.setEulerFromRotationMatrix(m1, this.eulerOrder);
+	}
+};

@@ -72,37 +72,32 @@ THREE.Frustum.prototype = {
 
 	},
 
-	intersectsObject: function () {
+	intersectsObject: function (object) {
 
 		var center = new THREE.Vector3();
 
-		return function ( object ) {
+		// this method is expanded inlined for performance reasons.
 
-			// this method is expanded inlined for performance reasons.
+		var matrix = object.matrixWorld;
+		var planes = this.planes;
+		var negRadius = - object.geometry.boundingSphere.radius * matrix.getMaxScaleOnAxis();
 
-			var matrix = object.matrixWorld;
-			var planes = this.planes;
-			var negRadius = - object.geometry.boundingSphere.radius * matrix.getMaxScaleOnAxis();
+		center.getPositionFromMatrix( matrix );
 
-			center.getPositionFromMatrix( matrix );
+		for ( var i = 0; i < 6; i ++ ) {
 
-			for ( var i = 0; i < 6; i ++ ) {
+			var distance = planes[ i ].distanceToPoint( center );
 
-				var distance = planes[ i ].distanceToPoint( center );
+			if ( distance < negRadius ) {
 
-				if ( distance < negRadius ) {
-
-					return false;
-
-				}
+				return false;
 
 			}
 
-			return true;
+		}
 
-		};
-
-	}(),
+		return true;
+	},
 
 	intersectsSphere: function ( sphere ) {
 

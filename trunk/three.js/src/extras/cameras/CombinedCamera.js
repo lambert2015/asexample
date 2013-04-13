@@ -155,7 +155,7 @@ THREE.CombinedCamera.prototype.setLens = function(focalLength, frameHeight) {
 	if (frameHeight === undefined)
 		frameHeight = 24;
 
-	var fov = 2 * THREE.Math.radToDeg(Math.atan(frameHeight / (focalLength * 2 )));
+	var fov = 2 * THREE.MathUtil.radToDeg(Math.atan(frameHeight / (focalLength * 2 )));
 
 	this.setFov(fov);
 

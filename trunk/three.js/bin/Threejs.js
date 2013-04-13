@@ -297,14 +297,14 @@ three.ThreeGlobal.filterFallback = function(f) {
 	if(f == 1003 || f == 1004 || f == 1005) return 9728;
 	return 9729;
 }
-three.math = {}
-three.math.Matrix4 = function() {
+THREE.MathUtil = {}
+THREE.MathUtil.Matrix4 = function() {
 	this.elements = new Float32Array(16);
 };
-three.math.Matrix4.__name__ = true;
-three.math.Matrix4.prototype = {
+THREE.MathUtil.Matrix4.__name__ = true;
+THREE.MathUtil.Matrix4.prototype = {
 	clone: function() {
-		var result = new three.math.Matrix4();
+		var result = new THREE.MathUtil.Matrix4();
 		var te = this.elements;
 		result.setTo(te[0],te[4],te[8],te[12],te[1],te[5],te[9],te[13],te[2],te[6],te[10],te[14],te[3],te[7],te[11],te[15]);
 		return result;
@@ -581,9 +581,9 @@ three.math.Matrix4.prototype = {
 		x.setTo(te[0],te[1],te[2]);
 		y.setTo(te[4],te[5],te[6]);
 		z.setTo(te[8],te[9],te[10]);
-		translation = translation != null?translation:new three.math.Vector3();
-		rotation = rotation != null?rotation:new three.math.Quaternion();
-		scale = scale != null?scale:new three.math.Vector3();
+		translation = translation != null?translation:new THREE.MathUtil.Vector3();
+		rotation = rotation != null?rotation:new THREE.MathUtil.Quaternion();
+		scale = scale != null?scale:new THREE.MathUtil.Vector3();
 		scale.x = x.get_length();
 		scale.y = y.get_length();
 		scale.z = z.get_length();
@@ -644,7 +644,7 @@ three.math.Matrix4.prototype = {
 		var a = Math.cos(x), b = Math.sin(x);
 		var c = Math.cos(y), d = Math.sin(y);
 		var e = Math.cos(z), f = Math.sin(z);
-		if(order == three.math.EulerOrder.XYZ) {
+		if(order == THREE.MathUtil.EulerOrder.XYZ) {
 			var ae = a * e, af = a * f, be = b * e, bf = b * f;
 			te[0] = c * e;
 			te[4] = -c * f;
@@ -655,7 +655,7 @@ three.math.Matrix4.prototype = {
 			te[2] = bf - ae * d;
 			te[6] = be + af * d;
 			te[10] = a * c;
-		} else if(order == three.math.EulerOrder.YXZ) {
+		} else if(order == THREE.MathUtil.EulerOrder.YXZ) {
 			var ce = c * e, cf = c * f, de = d * e, df = d * f;
 			te[0] = ce + df * b;
 			te[4] = de * b - cf;
@@ -666,7 +666,7 @@ three.math.Matrix4.prototype = {
 			te[2] = cf * b - de;
 			te[6] = df + ce * b;
 			te[10] = a * c;
-		} else if(order == three.math.EulerOrder.ZXY) {
+		} else if(order == THREE.MathUtil.EulerOrder.ZXY) {
 			var ce = c * e, cf = c * f, de = d * e, df = d * f;
 			te[0] = ce - df * b;
 			te[4] = -a * f;
@@ -677,7 +677,7 @@ three.math.Matrix4.prototype = {
 			te[2] = -a * d;
 			te[6] = b;
 			te[10] = a * c;
-		} else if(order == three.math.EulerOrder.ZYX) {
+		} else if(order == THREE.MathUtil.EulerOrder.ZYX) {
 			var ae = a * e, af = a * f, be = b * e, bf = b * f;
 			te[0] = c * e;
 			te[4] = be * d - af;
@@ -688,7 +688,7 @@ three.math.Matrix4.prototype = {
 			te[2] = -d;
 			te[6] = b * c;
 			te[10] = a * c;
-		} else if(order == three.math.EulerOrder.YZX) {
+		} else if(order == THREE.MathUtil.EulerOrder.YZX) {
 			var ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 			te[0] = c * e;
 			te[4] = bd - ac * f;
@@ -699,7 +699,7 @@ three.math.Matrix4.prototype = {
 			te[2] = -d * e;
 			te[6] = ad * f + bc;
 			te[10] = ac - bd * f;
-		} else if(order == three.math.EulerOrder.XZY) {
+		} else if(order == THREE.MathUtil.EulerOrder.XZY) {
 			var ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 			te[0] = c * e;
 			te[4] = -f;
@@ -741,15 +741,15 @@ three.math.Matrix4.prototype = {
 	}
 	,getColumnZ: function() {
 		var te = this.elements;
-		return new three.math.Vector3(te[8],te[9],te[10]);
+		return new THREE.MathUtil.Vector3(te[8],te[9],te[10]);
 	}
 	,getColumnY: function() {
 		var te = this.elements;
-		return new three.math.Vector3(te[4],te[5],te[6]);
+		return new THREE.MathUtil.Vector3(te[4],te[5],te[6]);
 	}
 	,getColumnX: function() {
 		var te = this.elements;
-		return new three.math.Vector3(te[0],te[1],te[2]);
+		return new THREE.MathUtil.Vector3(te[0],te[1],te[2]);
 	}
 	,setPosition: function(v) {
 		var te = this.elements;
@@ -760,7 +760,7 @@ three.math.Matrix4.prototype = {
 	}
 	,getPosition: function() {
 		var te = this.elements;
-		return new three.math.Vector3(te[12],te[13],te[14]);
+		return new THREE.MathUtil.Vector3(te[12],te[13],te[14]);
 	}
 	,flattenToArrayOffset: function(flat,offset) {
 		var te = this.elements;
@@ -835,7 +835,7 @@ three.math.Matrix4.prototype = {
 	}
 	,crossVector: function(a) {
 		var te = this.elements;
-		var v = new three.math.Vector4();
+		var v = new THREE.MathUtil.Vector4();
 		v.x = te[0] * a.x + te[4] * a.y + te[8] * a.z + te[12] * a.w;
 		v.y = te[1] * a.x + te[5] * a.y + te[9] * a.z + te[13] * a.w;
 		v.z = te[2] * a.x + te[6] * a.y + te[10] * a.z + te[14] * a.w;
@@ -1016,7 +1016,7 @@ three.math.Matrix4.prototype = {
 		te[15] = n44;
 		return this;
 	}
-	,__class__: three.math.Matrix4
+	,__class__: THREE.MathUtil.Matrix4
 }
 three.core = {}
 three.core.Object3D = function() {
@@ -1025,19 +1025,19 @@ three.core.Object3D = function() {
 	this.properties = { };
 	this.parent = null;
 	this.children = new Array();
-	this.up = new three.math.Vector3(0,1,0);
-	this.position = new three.math.Vector3();
-	this.rotation = new three.math.Vector3();
-	this.eulerOrder = three.math.EulerOrder.XYZ;
-	this.scale = new three.math.Vector3(1,1,1);
+	this.up = new THREE.MathUtil.Vector3(0,1,0);
+	this.position = new THREE.MathUtil.Vector3();
+	this.rotation = new THREE.MathUtil.Vector3();
+	this.eulerOrder = THREE.MathUtil.EulerOrder.XYZ;
+	this.scale = new THREE.MathUtil.Vector3(1,1,1);
 	this.renderDepth = null;
 	this.rotationAutoUpdate = true;
-	this.matrix = new three.math.Matrix4();
-	this.matrixWorld = new three.math.Matrix4();
-	this.matrixRotationWorld = new three.math.Matrix4();
+	this.matrix = new THREE.MathUtil.Matrix4();
+	this.matrixWorld = new THREE.MathUtil.Matrix4();
+	this.matrixRotationWorld = new THREE.MathUtil.Matrix4();
 	this.matrixAutoUpdate = true;
 	this.matrixWorldNeedsUpdate = true;
-	this.quaternion = new three.math.Quaternion();
+	this.quaternion = new THREE.MathUtil.Quaternion();
 	this.useQuaternion = false;
 	this.boundRadius = 0.0;
 	this.boundRadiusScale = 1.0;
@@ -1045,7 +1045,7 @@ three.core.Object3D = function() {
 	this.castShadow = false;
 	this.receiveShadow = false;
 	this.frustumCulled = true;
-	this._vector = new three.math.Vector3();
+	this._vector = new THREE.MathUtil.Vector3();
 };
 three.core.Object3D.__name__ = true;
 three.core.Object3D.prototype = {
@@ -1124,13 +1124,13 @@ three.core.Object3D.prototype = {
 		if(this.rotationAutoUpdate) this.rotation.setEulerFromRotationMatrix(this.matrix,this.eulerOrder);
 	}
 	,translateZ: function(distance) {
-		this.translate(distance,three.math.Vector3.Z_AXIS);
+		this.translate(distance,THREE.MathUtil.Vector3.Z_AXIS);
 	}
 	,translateY: function(distance) {
-		this.translate(distance,three.math.Vector3.Y_AXIS);
+		this.translate(distance,THREE.MathUtil.Vector3.Y_AXIS);
 	}
 	,translateX: function(distance) {
-		this.translate(distance,three.math.Vector3.X_AXIS);
+		this.translate(distance,THREE.MathUtil.Vector3.X_AXIS);
 	}
 	,translate: function(distance,axis) {
 		this.matrix.rotateAxis(axis);
@@ -1139,7 +1139,7 @@ three.core.Object3D.prototype = {
 	,applyMatrix: function(matrix) {
 		this.matrix.multiply(matrix,this.matrix);
 		this.scale.getScaleFromMatrix(this.matrix);
-		var mat = new three.math.Matrix4().extractRotation(this.matrix);
+		var mat = new THREE.MathUtil.Matrix4().extractRotation(this.matrix);
 		this.rotation.setEulerFromRotationMatrix(mat,this.eulerOrder);
 		this.position.getPositionFromMatrix(this.matrix);
 	}
@@ -1148,9 +1148,9 @@ three.core.Object3D.prototype = {
 three.cameras = {}
 three.cameras.Camera = function() {
 	three.core.Object3D.call(this);
-	this.matrixWorldInverse = new three.math.Matrix4();
-	this.projectionMatrix = new three.math.Matrix4();
-	this.projectionMatrixInverse = new three.math.Matrix4();
+	this.matrixWorldInverse = new THREE.MathUtil.Matrix4();
+	this.projectionMatrix = new THREE.MathUtil.Matrix4();
+	this.projectionMatrixInverse = new THREE.MathUtil.Matrix4();
 };
 three.cameras.Camera.__name__ = true;
 three.cameras.Camera.__super__ = three.core.Object3D;
@@ -1162,8 +1162,8 @@ three.cameras.Camera.prototype = $extend(three.core.Object3D.prototype,{
 	,__class__: three.cameras.Camera
 });
 three.core.BoundingBox = function() {
-	this.min = new three.math.Vector3(Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY);
-	this.max = new three.math.Vector3(Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY);
+	this.min = new THREE.MathUtil.Vector3(Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY,Math.POSITIVE_INFINITY);
+	this.max = new THREE.MathUtil.Vector3(Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY,Math.NEGATIVE_INFINITY);
 };
 three.core.BoundingBox.__name__ = true;
 three.core.BoundingBox.prototype = {
@@ -1286,13 +1286,13 @@ three.core.Face3 = function(a,b,c,normal,color,materialIndex) {
 	this.a = a;
 	this.b = b;
 	this.c = c;
-	this.normal = js.Boot.__instanceof(normal,three.math.Vector3)?normal:new three.math.Vector3();
+	this.normal = js.Boot.__instanceof(normal,THREE.MathUtil.Vector3)?normal:new THREE.MathUtil.Vector3();
 	this.vertexNormals = js.Boot.__instanceof(normal,Array)?normal:[];
-	this.color = js.Boot.__instanceof(color,three.math.Color)?color:new three.math.Color();
+	this.color = js.Boot.__instanceof(color,THREE.MathUtil.Color)?color:new THREE.MathUtil.Color();
 	this.vertexColors = js.Boot.__instanceof(color,Array)?color:[];
 	this.vertexTangents = [];
 	this.materialIndex = materialIndex;
-	this.centroid = new three.math.Vector3();
+	this.centroid = new THREE.MathUtil.Vector3();
 };
 three.core.Face3.__name__ = true;
 three.core.Face3.__super__ = three.core.Face;
@@ -1329,13 +1329,13 @@ three.core.Face4 = function(a,b,c,d,normal,color,materialIndex) {
 	this.b = b;
 	this.c = c;
 	this.d = d;
-	this.normal = js.Boot.__instanceof(normal,three.math.Vector3)?normal:new three.math.Vector3();
+	this.normal = js.Boot.__instanceof(normal,THREE.MathUtil.Vector3)?normal:new THREE.MathUtil.Vector3();
 	this.vertexNormals = js.Boot.__instanceof(normal,Array)?normal:[];
-	this.color = js.Boot.__instanceof(color,three.math.Color)?color:new three.math.Color();
+	this.color = js.Boot.__instanceof(color,THREE.MathUtil.Color)?color:new THREE.MathUtil.Color();
 	this.vertexColors = js.Boot.__instanceof(color,Array)?color:[];
 	this.vertexTangents = [];
 	this.materialIndex = materialIndex;
-	this.centroid = new three.math.Vector3();
+	this.centroid = new THREE.MathUtil.Vector3();
 };
 three.core.Face4.__name__ = true;
 three.core.Face4.__super__ = three.core.Face;
@@ -1466,8 +1466,8 @@ three.core.Geometry.prototype = {
 		var _g1 = 0, _g = this.vertices.length;
 		while(_g1 < _g) {
 			var v = _g1++;
-			tan1[v] = new three.math.Vector3();
-			tan2[v] = new three.math.Vector3();
+			tan1[v] = new THREE.MathUtil.Vector3();
+			tan2[v] = new THREE.MathUtil.Vector3();
 		}
 		var _g1 = 0, _g = this.faces.length;
 		while(_g1 < _g) {
@@ -1481,11 +1481,11 @@ three.core.Geometry.prototype = {
 			}
 		}
 		var faceIndex = ["a","b","c","d"];
-		var n = new three.math.Vector3();
+		var n = new THREE.MathUtil.Vector3();
 		var vertexIndex;
 		var t;
-		var tmp = new three.math.Vector3();
-		var tmp2 = new three.math.Vector3();
+		var tmp = new THREE.MathUtil.Vector3();
+		var tmp2 = new THREE.MathUtil.Vector3();
 		var _g1 = 0, _g = this.faces.length;
 		while(_g1 < _g) {
 			var f = _g1++;
@@ -1501,7 +1501,7 @@ three.core.Geometry.prototype = {
 				tmp2.cross(face.vertexNormals[i],t);
 				var test = tmp2.dot(tan2[vertexIndex]);
 				var w = test < 0.0?-1.0:1.0;
-				face.vertexTangents[i] = new three.math.Vector4(tmp.x,tmp.y,tmp.z,w);
+				face.vertexTangents[i] = new THREE.MathUtil.Vector4(tmp.x,tmp.y,tmp.z,w);
 			}
 		}
 		this.hasTangents = true;
@@ -1524,8 +1524,8 @@ three.core.Geometry.prototype = {
 		var t1 = uvB.v - uvA.v;
 		var t2 = uvC.v - uvA.v;
 		var r = 1.0 / (s1 * t2 - s2 * t1);
-		var sdir = new three.math.Vector3();
-		var tdir = new three.math.Vector3();
+		var sdir = new THREE.MathUtil.Vector3();
+		var tdir = new THREE.MathUtil.Vector3();
 		sdir.setTo((t2 * x1 - t1 * x2) * r,(t2 * y1 - t1 * y2) * r,(t2 * z1 - t1 * z2) * r);
 		tdir.setTo((s1 * x2 - s2 * x1) * r,(s1 * y2 - s2 * y1) * r,(s1 * z2 - s2 * z1) * r);
 		tan1[a].addSelf(sdir);
@@ -1566,8 +1566,8 @@ three.core.Geometry.prototype = {
 				while(_g3 < _g2) {
 					var f = _g3++;
 					face = this.faces[f];
-					faceNormal = new three.math.Vector3();
-					if(js.Boot.__instanceof(face,three.core.Face3)) vertexNormals = { a : new three.math.Vector3(), b : new three.math.Vector3(), c : new three.math.Vector3()}; else vertexNormals = { a : new three.math.Vector3(), b : new three.math.Vector3(), c : new three.math.Vector3(), d : new three.math.Vector3()};
+					faceNormal = new THREE.MathUtil.Vector3();
+					if(js.Boot.__instanceof(face,three.core.Face3)) vertexNormals = { a : new THREE.MathUtil.Vector3(), b : new THREE.MathUtil.Vector3(), c : new THREE.MathUtil.Vector3()}; else vertexNormals = { a : new THREE.MathUtil.Vector3(), b : new THREE.MathUtil.Vector3(), c : new THREE.MathUtil.Vector3(), d : new THREE.MathUtil.Vector3()};
 					dstNormalsFace.push(faceNormal);
 					dstNormalsVertex.push(vertexNormals);
 				}
@@ -1614,13 +1614,13 @@ three.core.Geometry.prototype = {
 			var _g1 = 0, _g = this.vertices.length;
 			while(_g1 < _g) {
 				var v = _g1++;
-				vertices[v] = new three.math.Vector3();
+				vertices[v] = new THREE.MathUtil.Vector3();
 			}
 			var _g1 = 0, _g = this.faces.length;
 			while(_g1 < _g) {
 				var f = _g1++;
 				var face1 = this.faces[f];
-				if(js.Boot.__instanceof(face1,three.core.Face3)) face1.vertexNormals = [new three.math.Vector3(),new three.math.Vector3(),new three.math.Vector3()]; else if(js.Boot.__instanceof(face1,three.core.Face4)) face1.vertexNormals = [new three.math.Vector3(),new three.math.Vector3(),new three.math.Vector3(),new three.math.Vector3()];
+				if(js.Boot.__instanceof(face1,three.core.Face3)) face1.vertexNormals = [new THREE.MathUtil.Vector3(),new THREE.MathUtil.Vector3(),new THREE.MathUtil.Vector3()]; else if(js.Boot.__instanceof(face1,three.core.Face4)) face1.vertexNormals = [new THREE.MathUtil.Vector3(),new THREE.MathUtil.Vector3(),new THREE.MathUtil.Vector3(),new THREE.MathUtil.Vector3()];
 			}
 		} else {
 			vertices = this.__tmpVertices;
@@ -1670,8 +1670,8 @@ three.core.Geometry.prototype = {
 	}
 	,computeFaceNormals: function() {
 		var face;
-		var cb = new three.math.Vector3();
-		var ab = new three.math.Vector3();
+		var cb = new THREE.MathUtil.Vector3();
+		var ab = new THREE.MathUtil.Vector3();
 		var _g1 = 0, _g = this.faces.length;
 		while(_g1 < _g) {
 			var f = _g1++;
@@ -1709,7 +1709,7 @@ three.core.Geometry.prototype = {
 		}
 	}
 	,applyMatrix: function(matrix) {
-		var matrixRotation = new three.math.Matrix4();
+		var matrixRotation = new THREE.MathUtil.Matrix4();
 		matrixRotation.extractRotation(matrix);
 		var _g1 = 0, _g = this.vertices.length;
 		while(_g1 < _g) {
@@ -1763,7 +1763,7 @@ three.core.UV.prototype = {
 three.lights = {}
 three.lights.Light = function(hex) {
 	three.core.Object3D.call(this);
-	this.color = new three.math.Color(hex);
+	this.color = new THREE.MathUtil.Color(hex);
 };
 three.lights.Light.__name__ = true;
 three.lights.Light.__super__ = three.core.Object3D;
@@ -1871,7 +1871,7 @@ three.materials.Material.prototype = {
 			}
 			if(Reflect.hasField(this,key)) {
 				var currentValue = Reflect.field(values,key);
-				if(js.Boot.__instanceof(currentValue,three.math.Color) && js.Boot.__instanceof(newValue,three.math.Color)) currentValue.copy(newValue); else if(js.Boot.__instanceof(currentValue,three.math.Color) && js.Boot.__instanceof(newValue,Float)) currentValue.setHex(newValue); else if(js.Boot.__instanceof(currentValue,three.math.Vector3) && js.Boot.__instanceof(newValue,three.math.Vector3)) currentValue.copy(newValue); else this[key] = newValue;
+				if(js.Boot.__instanceof(currentValue,THREE.MathUtil.Color) && js.Boot.__instanceof(newValue,THREE.MathUtil.Color)) currentValue.copy(newValue); else if(js.Boot.__instanceof(currentValue,THREE.MathUtil.Color) && js.Boot.__instanceof(newValue,Float)) currentValue.setHex(newValue); else if(js.Boot.__instanceof(currentValue,THREE.MathUtil.Vector3) && js.Boot.__instanceof(newValue,THREE.MathUtil.Vector3)) currentValue.copy(newValue); else this[key] = newValue;
 			}
 		}
 	}
@@ -1883,12 +1883,12 @@ three.materials.UVMapping.__name__ = true;
 three.materials.UVMapping.prototype = {
 	__class__: three.materials.UVMapping
 }
-three.math.Color = function(value) {
+THREE.MathUtil.Color = function(value) {
 	if(value == null) value = -16777216;
 	this.set_rgba(value);
 };
-three.math.Color.__name__ = true;
-three.math.Color.prototype = {
+THREE.MathUtil.Color.__name__ = true;
+THREE.MathUtil.Color.prototype = {
 	set_rgba: function(value) {
 		var invert = 1.0 / 255;
 		this.a = (value >> 24 & 255) * invert;
@@ -1911,7 +1911,7 @@ three.math.Color.prototype = {
 		return Math.floor(this.r * 255) << 16 | Math.floor(this.g * 255) << 8 | Math.floor(this.b * 255);
 	}
 	,clone: function() {
-		var result = new three.math.Color();
+		var result = new THREE.MathUtil.Color();
 		result.copy(this);
 		return result;
 	}
@@ -1973,63 +1973,63 @@ three.math.Color.prototype = {
 		}
 		return this;
 	}
-	,__class__: three.math.Color
+	,__class__: THREE.MathUtil.Color
 }
-three.math.EulerOrder = { __ename__ : true, __constructs__ : ["XYZ","YXZ","ZXY","ZYX","YZX","XZY"] }
-three.math.EulerOrder.XYZ = ["XYZ",0];
-three.math.EulerOrder.XYZ.toString = $estr;
-three.math.EulerOrder.XYZ.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.YXZ = ["YXZ",1];
-three.math.EulerOrder.YXZ.toString = $estr;
-three.math.EulerOrder.YXZ.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.ZXY = ["ZXY",2];
-three.math.EulerOrder.ZXY.toString = $estr;
-three.math.EulerOrder.ZXY.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.ZYX = ["ZYX",3];
-three.math.EulerOrder.ZYX.toString = $estr;
-three.math.EulerOrder.ZYX.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.YZX = ["YZX",4];
-three.math.EulerOrder.YZX.toString = $estr;
-three.math.EulerOrder.YZX.__enum__ = three.math.EulerOrder;
-three.math.EulerOrder.XZY = ["XZY",5];
-three.math.EulerOrder.XZY.toString = $estr;
-three.math.EulerOrder.XZY.__enum__ = three.math.EulerOrder;
-three.math.MathUtil = function() { }
-three.math.MathUtil.__name__ = true;
-three.math.MathUtil.clamp = function(value,min,max) {
+THREE.MathUtil.EulerOrder = { __ename__ : true, __constructs__ : ["XYZ","YXZ","ZXY","ZYX","YZX","XZY"] }
+THREE.MathUtil.EulerOrder.XYZ = ["XYZ",0];
+THREE.MathUtil.EulerOrder.XYZ.toString = $estr;
+THREE.MathUtil.EulerOrder.XYZ.__enum__ = THREE.MathUtil.EulerOrder;
+THREE.MathUtil.EulerOrder.YXZ = ["YXZ",1];
+THREE.MathUtil.EulerOrder.YXZ.toString = $estr;
+THREE.MathUtil.EulerOrder.YXZ.__enum__ = THREE.MathUtil.EulerOrder;
+THREE.MathUtil.EulerOrder.ZXY = ["ZXY",2];
+THREE.MathUtil.EulerOrder.ZXY.toString = $estr;
+THREE.MathUtil.EulerOrder.ZXY.__enum__ = THREE.MathUtil.EulerOrder;
+THREE.MathUtil.EulerOrder.ZYX = ["ZYX",3];
+THREE.MathUtil.EulerOrder.ZYX.toString = $estr;
+THREE.MathUtil.EulerOrder.ZYX.__enum__ = THREE.MathUtil.EulerOrder;
+THREE.MathUtil.EulerOrder.YZX = ["YZX",4];
+THREE.MathUtil.EulerOrder.YZX.toString = $estr;
+THREE.MathUtil.EulerOrder.YZX.__enum__ = THREE.MathUtil.EulerOrder;
+THREE.MathUtil.EulerOrder.XZY = ["XZY",5];
+THREE.MathUtil.EulerOrder.XZY.toString = $estr;
+THREE.MathUtil.EulerOrder.XZY.__enum__ = THREE.MathUtil.EulerOrder;
+THREE.MathUtil.MathUtil = function() { }
+THREE.MathUtil.MathUtil.__name__ = true;
+THREE.MathUtil.MathUtil.clamp = function(value,min,max) {
 	return value < min?min:value > max?max:value;
 }
-three.math.MathUtil.mapLinear = function(x,a1,a2,b1,b2) {
+THREE.MathUtil.MathUtil.mapLinear = function(x,a1,a2,b1,b2) {
 	return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
 }
-three.math.MathUtil.randInt = function(low,high) {
+THREE.MathUtil.MathUtil.randInt = function(low,high) {
 	return low + Math.floor(Math.random() * (high - low + 1));
 }
-three.math.MathUtil.randFloat = function(low,high) {
+THREE.MathUtil.MathUtil.randFloat = function(low,high) {
 	return low + Math.random() * (high - low);
 }
-three.math.MathUtil.sign = function(x) {
+THREE.MathUtil.MathUtil.sign = function(x) {
 	return x < 0?-1:x > 0?1:0;
 }
-three.math.MathUtil.isPow2 = function(n) {
-	var l = Math.log(n) / three.math.MathUtil.LN2;
+THREE.MathUtil.MathUtil.isPow2 = function(n) {
+	var l = Math.log(n) / THREE.MathUtil.MathUtil.LN2;
 	return Math.floor(l) == l;
 }
-three.math.MathUtil.nearestPow2 = function(n) {
-	var l = Math.log(n) / three.math.MathUtil.LN2;
+THREE.MathUtil.MathUtil.nearestPow2 = function(n) {
+	var l = Math.log(n) / THREE.MathUtil.MathUtil.LN2;
 	return Math.pow(2,Math.round(l)) | 0;
 }
-three.math.MathUtil.isPowerOfTwo = function(value) {
+THREE.MathUtil.MathUtil.isPowerOfTwo = function(value) {
 	return (value & value - 1) == 0;
 }
-three.math.MathUtil.rgb2hex = function(rgb) {
+THREE.MathUtil.MathUtil.rgb2hex = function(rgb) {
 	return ((rgb[0] * 255 | 0) << 16) + ((rgb[1] * 255 | 0) << 8) + (rgb[2] | 0) * 255;
 }
-three.math.Matrix3 = function() {
+THREE.MathUtil.Matrix3 = function() {
 	this.elements = new Float32Array(9);
 };
-three.math.Matrix3.__name__ = true;
-three.math.Matrix3.prototype = {
+THREE.MathUtil.Matrix3.__name__ = true;
+THREE.MathUtil.Matrix3.prototype = {
 	transposeIntoArray: function(r) {
 		var m = this.elements;
 		r[0] = m[0];
@@ -2083,9 +2083,9 @@ three.math.Matrix3.prototype = {
 		m[8] = idet * a33;
 		return this;
 	}
-	,__class__: three.math.Matrix3
+	,__class__: THREE.MathUtil.Matrix3
 }
-three.math.Quaternion = function(x,y,z,w) {
+THREE.MathUtil.Quaternion = function(x,y,z,w) {
 	if(w == null) w = 1;
 	if(z == null) z = 0;
 	if(y == null) y = 0;
@@ -2095,10 +2095,10 @@ three.math.Quaternion = function(x,y,z,w) {
 	this.z = z;
 	this.w = w;
 };
-three.math.Quaternion.__name__ = true;
-three.math.Quaternion.prototype = {
+THREE.MathUtil.Quaternion.__name__ = true;
+THREE.MathUtil.Quaternion.prototype = {
 	clone: function() {
-		return new three.math.Quaternion(this.x,this.y,this.z,this.w);
+		return new THREE.MathUtil.Quaternion(this.x,this.y,this.z,this.w);
 	}
 	,slerpSelf: function(qb,t) {
 		var x = this.x, y = this.y, z = this.z, w = this.w;
@@ -2235,32 +2235,32 @@ three.math.Quaternion.prototype = {
 		var s1 = Math.sin(v.x / 2);
 		var s2 = Math.sin(v.y / 2);
 		var s3 = Math.sin(v.z / 2);
-		if(order == null || order == three.math.EulerOrder.XYZ) {
+		if(order == null || order == THREE.MathUtil.EulerOrder.XYZ) {
 			this.x = s1 * c2 * c3 + c1 * s2 * s3;
 			this.y = c1 * s2 * c3 - s1 * c2 * s3;
 			this.z = c1 * c2 * s3 + s1 * s2 * c3;
 			this.w = c1 * c2 * c3 - s1 * s2 * s3;
-		} else if(order == three.math.EulerOrder.YXZ) {
+		} else if(order == THREE.MathUtil.EulerOrder.YXZ) {
 			this.x = s1 * c2 * c3 + c1 * s2 * s3;
 			this.y = c1 * s2 * c3 - s1 * c2 * s3;
 			this.z = c1 * c2 * s3 - s1 * s2 * c3;
 			this.w = c1 * c2 * c3 + s1 * s2 * s3;
-		} else if(order == three.math.EulerOrder.ZXY) {
+		} else if(order == THREE.MathUtil.EulerOrder.ZXY) {
 			this.x = s1 * c2 * c3 - c1 * s2 * s3;
 			this.y = c1 * s2 * c3 + s1 * c2 * s3;
 			this.z = c1 * c2 * s3 + s1 * s2 * c3;
 			this.w = c1 * c2 * c3 - s1 * s2 * s3;
-		} else if(order == three.math.EulerOrder.ZYX) {
+		} else if(order == THREE.MathUtil.EulerOrder.ZYX) {
 			this.x = s1 * c2 * c3 - c1 * s2 * s3;
 			this.y = c1 * s2 * c3 + s1 * c2 * s3;
 			this.z = c1 * c2 * s3 - s1 * s2 * c3;
 			this.w = c1 * c2 * c3 + s1 * s2 * s3;
-		} else if(order == three.math.EulerOrder.YZX) {
+		} else if(order == THREE.MathUtil.EulerOrder.YZX) {
 			this.x = s1 * c2 * c3 + c1 * s2 * s3;
 			this.y = c1 * s2 * c3 + s1 * c2 * s3;
 			this.z = c1 * c2 * s3 - s1 * s2 * c3;
 			this.w = c1 * c2 * c3 - s1 * s2 * s3;
-		} else if(order == three.math.EulerOrder.XZY) {
+		} else if(order == THREE.MathUtil.EulerOrder.XZY) {
 			this.x = s1 * c2 * c3 - c1 * s2 * s3;
 			this.y = c1 * s2 * c3 - s1 * c2 * s3;
 			this.z = c1 * c2 * s3 + s1 * s2 * c3;
@@ -2282,18 +2282,18 @@ three.math.Quaternion.prototype = {
 		this.w = w;
 		return this;
 	}
-	,__class__: three.math.Quaternion
+	,__class__: THREE.MathUtil.Quaternion
 }
-three.math.Vector2 = function(x,y) {
+THREE.MathUtil.Vector2 = function(x,y) {
 	if(y == null) y = 0;
 	if(x == null) x = 0;
 	this.x = x;
 	this.y = y;
 };
-three.math.Vector2.__name__ = true;
-three.math.Vector2.prototype = {
+THREE.MathUtil.Vector2.__name__ = true;
+THREE.MathUtil.Vector2.prototype = {
 	clone: function() {
-		return new three.math.Vector2(this.x,this.y);
+		return new THREE.MathUtil.Vector2(this.x,this.y);
 	}
 	,isZero: function() {
 		return this.get_lengthSq() < 0.0001;
@@ -2383,9 +2383,9 @@ three.math.Vector2.prototype = {
 		this.y = y;
 		return this;
 	}
-	,__class__: three.math.Vector2
+	,__class__: THREE.MathUtil.Vector2
 }
-three.math.Vector3 = function(x,y,z) {
+THREE.MathUtil.Vector3 = function(x,y,z) {
 	if(z == null) z = 0;
 	if(y == null) y = 0;
 	if(x == null) x = 0;
@@ -2393,10 +2393,10 @@ three.math.Vector3 = function(x,y,z) {
 	this.y = y;
 	this.z = z;
 };
-three.math.Vector3.__name__ = true;
-three.math.Vector3.prototype = {
+THREE.MathUtil.Vector3.__name__ = true;
+THREE.MathUtil.Vector3.prototype = {
 	clone: function() {
-		return new three.math.Vector3(this.x,this.y,this.z);
+		return new THREE.MathUtil.Vector3(this.x,this.y,this.z);
 	}
 	,isZero: function() {
 		return this.get_lengthSq() < 0.0001;
@@ -2418,30 +2418,30 @@ three.math.Vector3.prototype = {
 		var sqy = q.y * q.y;
 		var sqz = q.z * q.z;
 		var sqw = q.w * q.w;
-		if(order == null || order == three.math.EulerOrder.XYZ) {
+		if(order == null || order == THREE.MathUtil.EulerOrder.XYZ) {
 			this.x = Math.atan2(2 * (q.x * q.w - q.y * q.z),sqw - sqx - sqy + sqz);
-			this.y = Math.asin(three.math.MathUtil.clamp(2 * (q.x * q.z + q.y * q.w),-1,1));
+			this.y = Math.asin(THREE.MathUtil.MathUtil.clamp(2 * (q.x * q.z + q.y * q.w),-1,1));
 			this.z = Math.atan2(2 * (q.z * q.w - q.x * q.y),sqw + sqx - sqy - sqz);
-		} else if(order == three.math.EulerOrder.YXZ) {
-			this.x = Math.asin(three.math.MathUtil.clamp(2 * (q.x * q.w - q.y * q.z),-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.YXZ) {
+			this.x = Math.asin(THREE.MathUtil.MathUtil.clamp(2 * (q.x * q.w - q.y * q.z),-1,1));
 			this.y = Math.atan2(2 * (q.x * q.z + q.y * q.w),sqw - sqx - sqy + sqz);
 			this.z = Math.atan2(2 * (q.x * q.y + q.z * q.w),sqw - sqx + sqy - sqz);
-		} else if(order == three.math.EulerOrder.ZXY) {
-			this.x = Math.asin(three.math.MathUtil.clamp(2 * (q.x * q.w + q.y * q.z),-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.ZXY) {
+			this.x = Math.asin(THREE.MathUtil.MathUtil.clamp(2 * (q.x * q.w + q.y * q.z),-1,1));
 			this.y = Math.atan2(2 * (q.y * q.w - q.z * q.x),sqw - sqx - sqy + sqz);
 			this.z = Math.atan2(2 * (q.z * q.w - q.x * q.y),sqw - sqx + sqy - sqz);
-		} else if(order == three.math.EulerOrder.ZYX) {
+		} else if(order == THREE.MathUtil.EulerOrder.ZYX) {
 			this.x = Math.atan2(2 * (q.x * q.w + q.z * q.y),sqw - sqx - sqy + sqz);
-			this.y = Math.asin(three.math.MathUtil.clamp(2 * (q.y * q.w - q.x * q.z),-1,1));
+			this.y = Math.asin(THREE.MathUtil.MathUtil.clamp(2 * (q.y * q.w - q.x * q.z),-1,1));
 			this.z = Math.atan2(2 * (q.x * q.y + q.z * q.w),sqw + sqx - sqy - sqz);
-		} else if(order == three.math.EulerOrder.YZX) {
+		} else if(order == THREE.MathUtil.EulerOrder.YZX) {
 			this.x = Math.atan2(2 * (q.x * q.w - q.z * q.y),sqw - sqx + sqy - sqz);
 			this.y = Math.atan2(2 * (q.y * q.w - q.x * q.z),sqw + sqx - sqy - sqz);
-			this.z = Math.asin(three.math.MathUtil.clamp(2 * (q.x * q.y + q.z * q.w),-1,1));
-		} else if(order == three.math.EulerOrder.XZY) {
+			this.z = Math.asin(THREE.MathUtil.MathUtil.clamp(2 * (q.x * q.y + q.z * q.w),-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.XZY) {
 			this.x = Math.atan2(2 * (q.x * q.w + q.y * q.z),sqw - sqx + sqy - sqz);
 			this.y = Math.atan2(2 * (q.x * q.z + q.y * q.w),sqw + sqx - sqy - sqz);
-			this.z = Math.asin(three.math.MathUtil.clamp(2 * (q.z * q.w - q.x * q.y),-1,1));
+			this.z = Math.asin(THREE.MathUtil.MathUtil.clamp(2 * (q.z * q.w - q.x * q.y),-1,1));
 		}
 		return this;
 	}
@@ -2450,8 +2450,8 @@ three.math.Vector3.prototype = {
 		var m11 = te[0], m12 = te[4], m13 = te[8];
 		var m21 = te[1], m22 = te[5], m23 = te[9];
 		var m31 = te[2], m32 = te[6], m33 = te[10];
-		if(order == null || order == three.math.EulerOrder.XYZ) {
-			this.y = Math.asin(three.math.MathUtil.clamp(m13,-1,1));
+		if(order == null || order == THREE.MathUtil.EulerOrder.XYZ) {
+			this.y = Math.asin(THREE.MathUtil.MathUtil.clamp(m13,-1,1));
 			if(Math.abs(m13) < 0.99999) {
 				this.x = Math.atan2(-m23,m33);
 				this.z = Math.atan2(-m12,m11);
@@ -2459,8 +2459,8 @@ three.math.Vector3.prototype = {
 				this.x = Math.atan2(m21,m22);
 				this.z = 0;
 			}
-		} else if(order == three.math.EulerOrder.YXZ) {
-			this.x = Math.asin(-three.math.MathUtil.clamp(m23,-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.YXZ) {
+			this.x = Math.asin(-THREE.MathUtil.MathUtil.clamp(m23,-1,1));
 			if(Math.abs(m23) < 0.99999) {
 				this.y = Math.atan2(m13,m33);
 				this.z = Math.atan2(m21,m22);
@@ -2468,8 +2468,8 @@ three.math.Vector3.prototype = {
 				this.y = Math.atan2(-m31,m11);
 				this.z = 0;
 			}
-		} else if(order == three.math.EulerOrder.ZXY) {
-			this.x = Math.asin(three.math.MathUtil.clamp(m32,-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.ZXY) {
+			this.x = Math.asin(THREE.MathUtil.MathUtil.clamp(m32,-1,1));
 			if(Math.abs(m32) < 0.99999) {
 				this.y = Math.atan2(-m31,m33);
 				this.z = Math.atan2(-m12,m22);
@@ -2477,8 +2477,8 @@ three.math.Vector3.prototype = {
 				this.y = 0;
 				this.z = Math.atan2(m13,m11);
 			}
-		} else if(order == three.math.EulerOrder.ZYX) {
-			this.y = Math.asin(-three.math.MathUtil.clamp(m31,-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.ZYX) {
+			this.y = Math.asin(-THREE.MathUtil.MathUtil.clamp(m31,-1,1));
 			if(Math.abs(m31) < 0.99999) {
 				this.x = Math.atan2(m32,m33);
 				this.z = Math.atan2(m21,m11);
@@ -2486,8 +2486,8 @@ three.math.Vector3.prototype = {
 				this.x = 0;
 				this.z = Math.atan2(-m12,m22);
 			}
-		} else if(order == three.math.EulerOrder.YZX) {
-			this.z = Math.asin(three.math.MathUtil.clamp(m21,-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.YZX) {
+			this.z = Math.asin(THREE.MathUtil.MathUtil.clamp(m21,-1,1));
 			if(Math.abs(m21) < 0.99999) {
 				this.x = Math.atan2(-m23,m22);
 				this.y = Math.atan2(-m31,m11);
@@ -2495,8 +2495,8 @@ three.math.Vector3.prototype = {
 				this.x = 0;
 				this.y = Math.atan2(m31,m33);
 			}
-		} else if(order == three.math.EulerOrder.XZY) {
-			this.z = Math.asin(-three.math.MathUtil.clamp(m12,-1,1));
+		} else if(order == THREE.MathUtil.EulerOrder.XZY) {
+			this.z = Math.asin(-THREE.MathUtil.MathUtil.clamp(m12,-1,1));
 			if(Math.abs(m12) < 0.99999) {
 				this.x = Math.atan2(m32,m22);
 				this.y = Math.atan2(m13,m11);
@@ -2634,9 +2634,9 @@ three.math.Vector3.prototype = {
 		this.z = z;
 		return this;
 	}
-	,__class__: three.math.Vector3
+	,__class__: THREE.MathUtil.Vector3
 }
-three.math.Vector4 = function(x,y,z,w) {
+THREE.MathUtil.Vector4 = function(x,y,z,w) {
 	if(w == null) w = 1;
 	if(z == null) z = 0;
 	if(y == null) y = 0;
@@ -2646,8 +2646,8 @@ three.math.Vector4 = function(x,y,z,w) {
 	this.z = z;
 	this.w = w;
 };
-three.math.Vector4.__name__ = true;
-three.math.Vector4.prototype = {
+THREE.MathUtil.Vector4.__name__ = true;
+THREE.MathUtil.Vector4.prototype = {
 	setAxisAngleFromRotationMatrix: function(m) {
 		var angle, x, y, z;
 		var epsilon = 0.01;
@@ -2723,7 +2723,7 @@ three.math.Vector4.prototype = {
 		return this;
 	}
 	,clone: function() {
-		return new three.math.Vector4(this.x,this.y,this.z,this.w);
+		return new THREE.MathUtil.Vector4(this.x,this.y,this.z,this.w);
 	}
 	,equals: function(value) {
 		return value.x == this.x && value.y == this.y && this.z == value.z && this.w == value.w;
@@ -2824,7 +2824,7 @@ three.math.Vector4.prototype = {
 		this.w = w;
 		return this;
 	}
-	,__class__: three.math.Vector4
+	,__class__: THREE.MathUtil.Vector4
 }
 three.objects = {}
 three.objects.Bone = function() {
@@ -2849,13 +2849,13 @@ three.renderers.ShaderLib._uniformsLib = null;
 three.renderers.ShaderLib._shaderMap = null;
 three.renderers.ShaderLib.initShaderLib = function() {
 	three.renderers.ShaderLib._shaderChunk = { fog_pars_fragment : ["#ifdef USE_FOG","uniform vec3 fogColor;","#ifdef FOG_EXP2","uniform float fogDensity;","#else","uniform float fogNear;","uniform float fogFar;","#endif","#endif"].join("\n"), fog_fragment : ["#ifdef USE_FOG","float depth = gl_FragCoord.z / gl_FragCoord.w;","#ifdef FOG_EXP2","const float LOG2 = 1.442695;","float fogFactor = exp2( - fogDensity * fogDensity * depth * depth * LOG2 );","fogFactor = 1.0 - clamp( fogFactor, 0.0, 1.0 );","#else","float fogFactor = smoothstep( fogNear, fogFar, depth );","#endif","gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );","#endif"].join("\n"), envmap_pars_fragment : ["#ifdef USE_ENVMAP","uniform float reflectivity;","uniform samplerCube envMap;","uniform float flipEnvMap;","uniform int combine;","#ifdef USE_BUMPMAP","uniform bool useRefract;","uniform float refractionRatio;","#else","varying vec3 vReflect;","#endif","#endif"].join("\n"), envmap_fragment : ["#ifdef USE_ENVMAP","vec3 reflectVec;","#ifdef USE_BUMPMAP","vec3 cameraToVertex = normalize( vWorldPosition - cameraPosition );","if ( useRefract ) {","reflectVec = refract( cameraToVertex, normal, refractionRatio );","} else { ","reflectVec = reflect( cameraToVertex, normal );","}","#else","reflectVec = vReflect;","#endif","#ifdef DOUBLE_SIDED","float flipNormal = ( -1.0 + 2.0 * float( gl_FrontFacing ) );","vec4 cubeColor = textureCube( envMap, flipNormal * vec3( flipEnvMap * reflectVec.x, reflectVec.yz ) );","#else","vec4 cubeColor = textureCube( envMap, vec3( flipEnvMap * reflectVec.x, reflectVec.yz ) );","#endif","#ifdef GAMMA_INPUT","cubeColor.xyz *= cubeColor.xyz;","#endif","if ( combine == 1 ) {","gl_FragColor.xyz = mix( gl_FragColor.xyz, cubeColor.xyz, specularStrength * reflectivity );","} else {","gl_FragColor.xyz = mix( gl_FragColor.xyz, gl_FragColor.xyz * cubeColor.xyz, specularStrength * reflectivity );","}","#endif"].join("\n"), envmap_pars_vertex : ["#if defined( USE_ENVMAP ) && ! defined( USE_BUMPMAP )","varying vec3 vReflect;","uniform float refractionRatio;","uniform bool useRefract;","#endif"].join("\n"), envmap_vertex : ["#ifdef USE_ENVMAP","vec4 mPosition = modelMatrix * vec4( position, 1.0 );","#endif","#if defined( USE_ENVMAP ) && ! defined( USE_BUMPMAP )","vec3 nWorld = mat3( modelMatrix[ 0 ].xyz, modelMatrix[ 1 ].xyz, modelMatrix[ 2 ].xyz ) * normal;","if ( useRefract ) {","vReflect = refract( normalize( mPosition.xyz - cameraPosition ), normalize( nWorld.xyz ), refractionRatio );","} else {","vReflect = reflect( normalize( mPosition.xyz - cameraPosition ), normalize( nWorld.xyz ) );","}","#endif"].join("\n"), map_particle_pars_fragment : ["#ifdef USE_MAP","uniform sampler2D map;","#endif"].join("\n"), map_particle_fragment : ["#ifdef USE_MAP","gl_FragColor = gl_FragColor * texture2D( map, vec2( gl_PointCoord.x, 1.0 - gl_PointCoord.y ) );","#endif"].join("\n"), map_pars_vertex : ["#if defined( USE_MAP ) || defined( USE_BUMPMAP ) || defined( USE_SPECULARMAP )","varying vec2 vUv;","uniform vec4 offsetRepeat;","#endif"].join("\n"), map_pars_fragment : ["#if defined( USE_MAP ) || defined( USE_BUMPMAP ) || defined( USE_SPECULARMAP )","varying vec2 vUv;","#endif","#ifdef USE_MAP","uniform sampler2D map;","#endif"].join("\n"), map_vertex : ["#if defined( USE_MAP ) || defined( USE_BUMPMAP ) || defined( USE_SPECULARMAP )","vUv = uv * offsetRepeat.zw + offsetRepeat.xy;","#endif"].join("\n"), map_fragment : ["#ifdef USE_MAP","#ifdef GAMMA_INPUT","vec4 texelColor = texture2D( map, vUv );","texelColor.xyz *= texelColor.xyz;","gl_FragColor = gl_FragColor * texelColor;","#else","gl_FragColor = gl_FragColor * texture2D( map, vUv );","#endif","#endif"].join("\n"), lightmap_pars_fragment : ["#ifdef USE_LIGHTMAP","varying vec2 vUv2;","uniform sampler2D lightMap;","#endif"].join("\n"), lightmap_pars_vertex : ["#ifdef USE_LIGHTMAP","varying vec2 vUv2;","#endif"].join("\n"), lightmap_fragment : ["#ifdef USE_LIGHTMAP","gl_FragColor = gl_FragColor * texture2D( lightMap, vUv2 );","#endif"].join("\n"), lightmap_vertex : ["#ifdef USE_LIGHTMAP","vUv2 = uv2;","#endif"].join("\n"), bumpmap_pars_fragment : ["#ifdef USE_BUMPMAP","uniform sampler2D bumpMap;","uniform float bumpScale;","vec2 dHdxy_fwd() {","vec2 dSTdx = dFdx( vUv );","vec2 dSTdy = dFdy( vUv );","float Hll = bumpScale * texture2D( bumpMap, vUv ).x;","float dBx = bumpScale * texture2D( bumpMap, vUv + dSTdx ).x - Hll;","float dBy = bumpScale * texture2D( bumpMap, vUv + dSTdy ).x - Hll;","return vec2( dBx, dBy );","}","vec3 perturbNormalArb( vec3 surf_pos, vec3 surf_norm, vec2 dHdxy ) {","vec3 vSigmaX = dFdx( surf_pos );","vec3 vSigmaY = dFdy( surf_pos );","vec3 vN = surf_norm;","vec3 R1 = cross( vSigmaY, vN );","vec3 R2 = cross( vN, vSigmaX );","float fDet = dot( vSigmaX, R1 );","vec3 vGrad = sign( fDet ) * ( dHdxy.x * R1 + dHdxy.y * R2 );","return normalize( abs( fDet ) * surf_norm - vGrad );","}","#endif"].join("\n"), specularmap_pars_fragment : ["#ifdef USE_SPECULARMAP","uniform sampler2D specularMap;","#endif"].join("\n"), specularmap_fragment : ["float specularStrength;","#ifdef USE_SPECULARMAP","vec4 texelSpecular = texture2D( specularMap, vUv );","specularStrength = texelSpecular.r;","#else","specularStrength = 1.0;","#endif"].join("\n"), lights_lambert_pars_vertex : ["uniform vec3 ambient;","uniform vec3 diffuse;","uniform vec3 emissive;","uniform vec3 ambientLightColor;","#if MAX_DIR_LIGHTS > 0","uniform vec3 directionalLightColor[ MAX_DIR_LIGHTS ];","uniform vec3 directionalLightDirection[ MAX_DIR_LIGHTS ];","#endif","#if MAX_POINT_LIGHTS > 0","uniform vec3 pointLightColor[ MAX_POINT_LIGHTS ];","uniform vec3 pointLightPosition[ MAX_POINT_LIGHTS ];","uniform float pointLightDistance[ MAX_POINT_LIGHTS ];","#endif","#if MAX_SPOT_LIGHTS > 0","uniform vec3 spotLightColor[ MAX_SPOT_LIGHTS ];","uniform vec3 spotLightPosition[ MAX_SPOT_LIGHTS ];","uniform vec3 spotLightDirection[ MAX_SPOT_LIGHTS ];","uniform float spotLightDistance[ MAX_SPOT_LIGHTS ];","uniform float spotLightAngle[ MAX_SPOT_LIGHTS ];","uniform float spotLightExponent[ MAX_SPOT_LIGHTS ];","#endif","#ifdef WRAP_AROUND","uniform vec3 wrapRGB;","#endif"].join("\n"), lights_lambert_vertex : ["vLightFront = vec3( 0.0 );","#ifdef DOUBLE_SIDED","vLightBack = vec3( 0.0 );","#endif","transformedNormal = normalize( transformedNormal );","#if MAX_DIR_LIGHTS > 0","for( int i = 0; i < MAX_DIR_LIGHTS; i ++ ) {","vec4 lDirection = viewMatrix * vec4( directionalLightDirection[ i ], 0.0 );","vec3 dirVector = normalize( lDirection.xyz );","float dotProduct = dot( transformedNormal, dirVector );","vec3 directionalLightWeighting = vec3( max( dotProduct, 0.0 ) );","#ifdef DOUBLE_SIDED","vec3 directionalLightWeightingBack = vec3( max( -dotProduct, 0.0 ) );","#ifdef WRAP_AROUND","vec3 directionalLightWeightingHalfBack = vec3( max( -0.5 * dotProduct + 0.5, 0.0 ) );","#endif","#endif","#ifdef WRAP_AROUND","vec3 directionalLightWeightingHalf = vec3( max( 0.5 * dotProduct + 0.5, 0.0 ) );","directionalLightWeighting = mix( directionalLightWeighting, directionalLightWeightingHalf, wrapRGB );","#ifdef DOUBLE_SIDED","directionalLightWeightingBack = mix( directionalLightWeightingBack, directionalLightWeightingHalfBack, wrapRGB );","#endif","#endif","vLightFront += directionalLightColor[ i ] * directionalLightWeighting;","#ifdef DOUBLE_SIDED","vLightBack += directionalLightColor[ i ] * directionalLightWeightingBack;","#endif","}","#endif","#if MAX_POINT_LIGHTS > 0","for( int i = 0; i < MAX_POINT_LIGHTS; i ++ ) {","vec4 lPosition = viewMatrix * vec4( pointLightPosition[ i ], 1.0 );","vec3 lVector = lPosition.xyz - mvPosition.xyz;","float lDistance = 1.0;","if ( pointLightDistance[ i ] > 0.0 )","lDistance = 1.0 - min( ( length( lVector ) / pointLightDistance[ i ] ), 1.0 );","lVector = normalize( lVector );","float dotProduct = dot( transformedNormal, lVector );","vec3 pointLightWeighting = vec3( max( dotProduct, 0.0 ) );","#ifdef DOUBLE_SIDED","vec3 pointLightWeightingBack = vec3( max( -dotProduct, 0.0 ) );","#ifdef WRAP_AROUND","vec3 pointLightWeightingHalfBack = vec3( max( -0.5 * dotProduct + 0.5, 0.0 ) );","#endif","#endif","#ifdef WRAP_AROUND","vec3 pointLightWeightingHalf = vec3( max( 0.5 * dotProduct + 0.5, 0.0 ) );","pointLightWeighting = mix( pointLightWeighting, pointLightWeightingHalf, wrapRGB );","#ifdef DOUBLE_SIDED","pointLightWeightingBack = mix( pointLightWeightingBack, pointLightWeightingHalfBack, wrapRGB );","#endif","#endif","vLightFront += pointLightColor[ i ] * pointLightWeighting * lDistance;","#ifdef DOUBLE_SIDED","vLightBack += pointLightColor[ i ] * pointLightWeightingBack * lDistance;","#endif","}","#endif","#if MAX_SPOT_LIGHTS > 0","for( int i = 0; i < MAX_SPOT_LIGHTS; i ++ ) {","vec4 lPosition = viewMatrix * vec4( spotLightPosition[ i ], 1.0 );","vec3 lVector = lPosition.xyz - mvPosition.xyz;","lVector = normalize( lVector );","float spotEffect = dot( spotLightDirection[ i ], normalize( spotLightPosition[ i ] - mPosition.xyz ) );","if ( spotEffect > spotLightAngle[ i ] ) {","spotEffect = pow( spotEffect, spotLightExponent[ i ] );","float lDistance = 1.0;","if ( spotLightDistance[ i ] > 0.0 )","lDistance = 1.0 - min( ( length( lVector ) / spotLightDistance[ i ] ), 1.0 );","float dotProduct = dot( transformedNormal, lVector );","vec3 spotLightWeighting = vec3( max( dotProduct, 0.0 ) );","#ifdef DOUBLE_SIDED","vec3 spotLightWeightingBack = vec3( max( -dotProduct, 0.0 ) );","#ifdef WRAP_AROUND","vec3 spotLightWeightingHalfBack = vec3( max( -0.5 * dotProduct + 0.5, 0.0 ) );","#endif","#endif","#ifdef WRAP_AROUND","vec3 spotLightWeightingHalf = vec3( max( 0.5 * dotProduct + 0.5, 0.0 ) );","spotLightWeighting = mix( spotLightWeighting, spotLightWeightingHalf, wrapRGB );","#ifdef DOUBLE_SIDED","spotLightWeightingBack = mix( spotLightWeightingBack, spotLightWeightingHalfBack, wrapRGB );","#endif","#endif","vLightFront += spotLightColor[ i ] * spotLightWeighting * lDistance * spotEffect;","#ifdef DOUBLE_SIDED","vLightBack += spotLightColor[ i ] * spotLightWeightingBack * lDistance * spotEffect;","#endif","}","}","#endif","vLightFront = vLightFront * diffuse + ambient * ambientLightColor + emissive;","#ifdef DOUBLE_SIDED","vLightBack = vLightBack * diffuse + ambient * ambientLightColor + emissive;","#endif"].join("\n"), lights_phong_pars_vertex : ["#ifndef PHONG_PER_PIXEL","#if MAX_POINT_LIGHTS > 0","uniform vec3 pointLightPosition[ MAX_POINT_LIGHTS ];","uniform float pointLightDistance[ MAX_POINT_LIGHTS ];","varying vec4 vPointLight[ MAX_POINT_LIGHTS ];","#endif","#if MAX_SPOT_LIGHTS > 0","uniform vec3 spotLightPosition[ MAX_SPOT_LIGHTS ];","uniform float spotLightDistance[ MAX_SPOT_LIGHTS ];","varying vec4 vSpotLight[ MAX_SPOT_LIGHTS ];","#endif","#endif","#if MAX_SPOT_LIGHTS > 0 || defined( USE_BUMPMAP )","varying vec3 vWorldPosition;","#endif"].join("\n"), lights_phong_vertex : ["#ifndef PHONG_PER_PIXEL","#if MAX_POINT_LIGHTS > 0","for( int i = 0; i < MAX_POINT_LIGHTS; i ++ ) {","vec4 lPosition = viewMatrix * vec4( pointLightPosition[ i ], 1.0 );","vec3 lVector = lPosition.xyz - mvPosition.xyz;","float lDistance = 1.0;","if ( pointLightDistance[ i ] > 0.0 )","lDistance = 1.0 - min( ( length( lVector ) / pointLightDistance[ i ] ), 1.0 );","vPointLight[ i ] = vec4( lVector, lDistance );","}","#endif","#if MAX_SPOT_LIGHTS > 0","for( int i = 0; i < MAX_SPOT_LIGHTS; i ++ ) {","vec4 lPosition = viewMatrix * vec4( spotLightPosition[ i ], 1.0 );","vec3 lVector = lPosition.xyz - mvPosition.xyz;","float lDistance = 1.0;","if ( spotLightDistance[ i ] > 0.0 )","lDistance = 1.0 - min( ( length( lVector ) / spotLightDistance[ i ] ), 1.0 );","vSpotLight[ i ] = vec4( lVector, lDistance );","}","#endif","#endif","#if MAX_SPOT_LIGHTS > 0 || defined( USE_BUMPMAP )","vWorldPosition = mPosition.xyz;","#endif"].join("\n"), lights_phong_pars_fragment : ["uniform vec3 ambientLightColor;","#if MAX_DIR_LIGHTS > 0","uniform vec3 directionalLightColor[ MAX_DIR_LIGHTS ];","uniform vec3 directionalLightDirection[ MAX_DIR_LIGHTS ];","#endif","#if MAX_POINT_LIGHTS > 0","uniform vec3 pointLightColor[ MAX_POINT_LIGHTS ];","#ifdef PHONG_PER_PIXEL","uniform vec3 pointLightPosition[ MAX_POINT_LIGHTS ];","uniform float pointLightDistance[ MAX_POINT_LIGHTS ];","#else","varying vec4 vPointLight[ MAX_POINT_LIGHTS ];","#endif","#endif","#if MAX_SPOT_LIGHTS > 0","uniform vec3 spotLightColor[ MAX_SPOT_LIGHTS ];","uniform vec3 spotLightPosition[ MAX_SPOT_LIGHTS ];","uniform vec3 spotLightDirection[ MAX_SPOT_LIGHTS ];","uniform float spotLightAngle[ MAX_SPOT_LIGHTS ];","uniform float spotLightExponent[ MAX_SPOT_LIGHTS ];","#ifdef PHONG_PER_PIXEL","uniform float spotLightDistance[ MAX_SPOT_LIGHTS ];","#else","varying vec4 vSpotLight[ MAX_SPOT_LIGHTS ];","#endif","#endif","#if MAX_SPOT_LIGHTS > 0 || defined( USE_BUMPMAP )","varying vec3 vWorldPosition;","#endif","#ifdef WRAP_AROUND","uniform vec3 wrapRGB;","#endif","varying vec3 vViewPosition;","varying vec3 vNormal;"].join("\n"), lights_phong_fragment : ["vec3 normal = normalize( vNormal );","vec3 viewPosition = normalize( vViewPosition );","#ifdef DOUBLE_SIDED","normal = normal * ( -1.0 + 2.0 * float( gl_FrontFacing ) );","#endif","#ifdef USE_BUMPMAP","normal = perturbNormalArb( -vViewPosition, normal, dHdxy_fwd() );","#endif","#if MAX_POINT_LIGHTS > 0","vec3 pointDiffuse  = vec3( 0.0 );","vec3 pointSpecular = vec3( 0.0 );","for ( int i = 0; i < MAX_POINT_LIGHTS; i ++ ) {","#ifdef PHONG_PER_PIXEL","vec4 lPosition = viewMatrix * vec4( pointLightPosition[ i ], 1.0 );","vec3 lVector = lPosition.xyz + vViewPosition.xyz;","float lDistance = 1.0;","if ( pointLightDistance[ i ] > 0.0 )","lDistance = 1.0 - min( ( length( lVector ) / pointLightDistance[ i ] ), 1.0 );","lVector = normalize( lVector );","#else","vec3 lVector = normalize( vPointLight[ i ].xyz );","float lDistance = vPointLight[ i ].w;","#endif","float dotProduct = dot( normal, lVector );","#ifdef WRAP_AROUND","float pointDiffuseWeightFull = max( dotProduct, 0.0 );","float pointDiffuseWeightHalf = max( 0.5 * dotProduct + 0.5, 0.0 );","vec3 pointDiffuseWeight = mix( vec3 ( pointDiffuseWeightFull ), vec3( pointDiffuseWeightHalf ), wrapRGB );","#else","float pointDiffuseWeight = max( dotProduct, 0.0 );","#endif","pointDiffuse  += diffuse * pointLightColor[ i ] * pointDiffuseWeight * lDistance;","vec3 pointHalfVector = normalize( lVector + viewPosition );","float pointDotNormalHalf = max( dot( normal, pointHalfVector ), 0.0 );","float pointSpecularWeight = specularStrength * max( pow( pointDotNormalHalf, shininess ), 0.0 );","#ifdef PHYSICALLY_BASED_SHADING","float specularNormalization = ( shininess + 2.0001 ) / 8.0;","vec3 schlick = specular + vec3( 1.0 - specular ) * pow( 1.0 - dot( lVector, pointHalfVector ), 5.0 );","pointSpecular += schlick * pointLightColor[ i ] * pointSpecularWeight * pointDiffuseWeight * lDistance * specularNormalization;","#else","pointSpecular += specular * pointLightColor[ i ] * pointSpecularWeight * pointDiffuseWeight * lDistance;","#endif","}","#endif","#if MAX_SPOT_LIGHTS > 0","vec3 spotDiffuse  = vec3( 0.0 );","vec3 spotSpecular = vec3( 0.0 );","for ( int i = 0; i < MAX_SPOT_LIGHTS; i ++ ) {","#ifdef PHONG_PER_PIXEL","vec4 lPosition = viewMatrix * vec4( spotLightPosition[ i ], 1.0 );","vec3 lVector = lPosition.xyz + vViewPosition.xyz;","float lDistance = 1.0;","if ( spotLightDistance[ i ] > 0.0 )","lDistance = 1.0 - min( ( length( lVector ) / spotLightDistance[ i ] ), 1.0 );","lVector = normalize( lVector );","#else","vec3 lVector = normalize( vSpotLight[ i ].xyz );","float lDistance = vSpotLight[ i ].w;","#endif","float spotEffect = dot( spotLightDirection[ i ], normalize( spotLightPosition[ i ] - vWorldPosition ) );","if ( spotEffect > spotLightAngle[ i ] ) {","spotEffect = pow( spotEffect, spotLightExponent[ i ] );","float dotProduct = dot( normal, lVector );","#ifdef WRAP_AROUND","float spotDiffuseWeightFull = max( dotProduct, 0.0 );","float spotDiffuseWeightHalf = max( 0.5 * dotProduct + 0.5, 0.0 );","vec3 spotDiffuseWeight = mix( vec3 ( spotDiffuseWeightFull ), vec3( spotDiffuseWeightHalf ), wrapRGB );","#else","float spotDiffuseWeight = max( dotProduct, 0.0 );","#endif","spotDiffuse += diffuse * spotLightColor[ i ] * spotDiffuseWeight * lDistance * spotEffect;","vec3 spotHalfVector = normalize( lVector + viewPosition );","float spotDotNormalHalf = max( dot( normal, spotHalfVector ), 0.0 );","float spotSpecularWeight = specularStrength * max( pow( spotDotNormalHalf, shininess ), 0.0 );","#ifdef PHYSICALLY_BASED_SHADING","float specularNormalization = ( shininess + 2.0001 ) / 8.0;","vec3 schlick = specular + vec3( 1.0 - specular ) * pow( 1.0 - dot( lVector, spotHalfVector ), 5.0 );","spotSpecular += schlick * spotLightColor[ i ] * spotSpecularWeight * spotDiffuseWeight * lDistance * specularNormalization * spotEffect;","#else","spotSpecular += specular * spotLightColor[ i ] * spotSpecularWeight * spotDiffuseWeight * lDistance * spotEffect;","#endif","}","}","#endif","#if MAX_DIR_LIGHTS > 0","vec3 dirDiffuse  = vec3( 0.0 );","vec3 dirSpecular = vec3( 0.0 );","for( int i = 0; i < MAX_DIR_LIGHTS; i ++ ) {","vec4 lDirection = viewMatrix * vec4( directionalLightDirection[ i ], 0.0 );","vec3 dirVector = normalize( lDirection.xyz );","float dotProduct = dot( normal, dirVector );","#ifdef WRAP_AROUND","float dirDiffuseWeightFull = max( dotProduct, 0.0 );","float dirDiffuseWeightHalf = max( 0.5 * dotProduct + 0.5, 0.0 );","vec3 dirDiffuseWeight = mix( vec3( dirDiffuseWeightFull ), vec3( dirDiffuseWeightHalf ), wrapRGB );","#else","float dirDiffuseWeight = max( dotProduct, 0.0 );","#endif","dirDiffuse  += diffuse * directionalLightColor[ i ] * dirDiffuseWeight;","vec3 dirHalfVector = normalize( dirVector + viewPosition );","float dirDotNormalHalf = max( dot( normal, dirHalfVector ), 0.0 );","float dirSpecularWeight = specularStrength * max( pow( dirDotNormalHalf, shininess ), 0.0 );","#ifdef PHYSICALLY_BASED_SHADING","float specularNormalization = ( shininess + 2.0001 ) / 8.0;","vec3 schlick = specular + vec3( 1.0 - specular ) * pow( 1.0 - dot( dirVector, dirHalfVector ), 5.0 );","dirSpecular += schlick * directionalLightColor[ i ] * dirSpecularWeight * dirDiffuseWeight * specularNormalization;","#else","dirSpecular += specular * directionalLightColor[ i ] * dirSpecularWeight * dirDiffuseWeight;","#endif","}","#endif","vec3 totalDiffuse = vec3( 0.0 );","vec3 totalSpecular = vec3( 0.0 );","#if MAX_DIR_LIGHTS > 0","totalDiffuse += dirDiffuse;","totalSpecular += dirSpecular;","#endif","#if MAX_POINT_LIGHTS > 0","totalDiffuse += pointDiffuse;","totalSpecular += pointSpecular;","#endif","#if MAX_SPOT_LIGHTS > 0","totalDiffuse += spotDiffuse;","totalSpecular += spotSpecular;","#endif","#ifdef METAL","gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor * ambient + totalSpecular );","#else","gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor * ambient ) + totalSpecular;","#endif"].join("\n"), color_pars_fragment : ["#ifdef USE_COLOR","varying vec3 vColor;","#endif"].join("\n"), color_fragment : ["#ifdef USE_COLOR","gl_FragColor = gl_FragColor * vec4( vColor, opacity );","#endif"].join("\n"), color_pars_vertex : ["#ifdef USE_COLOR","varying vec3 vColor;","#endif"].join("\n"), color_vertex : ["#ifdef USE_COLOR","#ifdef GAMMA_INPUT","vColor = color * color;","#else","vColor = color;","#endif","#endif"].join("\n"), skinning_pars_vertex : ["#ifdef USE_SKINNING","#ifdef BONE_TEXTURE","uniform sampler2D boneTexture;","mat4 getBoneMatrix( const in float i ) {","float j = i * 4.0;","float x = mod( j, N_BONE_PIXEL_X );","float y = floor( j / N_BONE_PIXEL_X );","const float dx = 1.0 / N_BONE_PIXEL_X;","const float dy = 1.0 / N_BONE_PIXEL_Y;","y = dy * ( y + 0.5 );","vec4 v1 = texture2D( boneTexture, vec2( dx * ( x + 0.5 ), y ) );","vec4 v2 = texture2D( boneTexture, vec2( dx * ( x + 1.5 ), y ) );","vec4 v3 = texture2D( boneTexture, vec2( dx * ( x + 2.5 ), y ) );","vec4 v4 = texture2D( boneTexture, vec2( dx * ( x + 3.5 ), y ) );","mat4 bone = mat4( v1, v2, v3, v4 );","return bone;","}","#else","uniform mat4 boneGlobalMatrices[ MAX_BONES ];","mat4 getBoneMatrix( const in float i ) {","mat4 bone = boneGlobalMatrices[ int(i) ];","return bone;","}","#endif","#endif"].join("\n"), skinbase_vertex : ["#ifdef USE_SKINNING","mat4 boneMatX = getBoneMatrix( skinIndex.x );","mat4 boneMatY = getBoneMatrix( skinIndex.y );","#endif"].join("\n"), skinning_vertex : ["#ifdef USE_SKINNING","vec4 skinned  = boneMatX * skinVertexA * skinWeight.x;","skinned \t  += boneMatY * skinVertexB * skinWeight.y;","gl_Position  = projectionMatrix * modelViewMatrix * skinned;","#endif"].join("\n"), morphtarget_pars_vertex : ["#ifdef USE_MORPHTARGETS","#ifndef USE_MORPHNORMALS","uniform float morphTargetInfluences[ 8 ];","#else","uniform float morphTargetInfluences[ 4 ];","#endif","#endif"].join("\n"), morphtarget_vertex : ["#ifdef USE_MORPHTARGETS","vec3 morphed = vec3( 0.0 );","morphed += ( morphTarget0 - position ) * morphTargetInfluences[ 0 ];","morphed += ( morphTarget1 - position ) * morphTargetInfluences[ 1 ];","morphed += ( morphTarget2 - position ) * morphTargetInfluences[ 2 ];","morphed += ( morphTarget3 - position ) * morphTargetInfluences[ 3 ];","#ifndef USE_MORPHNORMALS","morphed += ( morphTarget4 - position ) * morphTargetInfluences[ 4 ];","morphed += ( morphTarget5 - position ) * morphTargetInfluences[ 5 ];","morphed += ( morphTarget6 - position ) * morphTargetInfluences[ 6 ];","morphed += ( morphTarget7 - position ) * morphTargetInfluences[ 7 ];","#endif","morphed += position;","gl_Position = projectionMatrix * modelViewMatrix * vec4( morphed, 1.0 );","#endif"].join("\n"), default_vertex : ["#ifndef USE_MORPHTARGETS","#ifndef USE_SKINNING","gl_Position = projectionMatrix * mvPosition;","#endif","#endif"].join("\n"), morphnormal_vertex : ["#ifdef USE_MORPHNORMALS","vec3 morphedNormal = vec3( 0.0 );","morphedNormal +=  ( morphNormal0 - normal ) * morphTargetInfluences[ 0 ];","morphedNormal +=  ( morphNormal1 - normal ) * morphTargetInfluences[ 1 ];","morphedNormal +=  ( morphNormal2 - normal ) * morphTargetInfluences[ 2 ];","morphedNormal +=  ( morphNormal3 - normal ) * morphTargetInfluences[ 3 ];","morphedNormal += normal;","#endif"].join("\n"), skinnormal_vertex : ["#ifdef USE_SKINNING","mat4 skinMatrix = skinWeight.x * boneMatX;","skinMatrix \t+= skinWeight.y * boneMatY;","vec4 skinnedNormal = skinMatrix * vec4( normal, 0.0 );","#endif"].join("\n"), defaultnormal_vertex : ["vec3 transformedNormal;","#ifdef USE_SKINNING","transformedNormal = skinnedNormal.xyz;","#endif","#ifdef USE_MORPHNORMALS","transformedNormal = morphedNormal;","#endif","#ifndef USE_MORPHNORMALS","#ifndef USE_SKINNING","transformedNormal = normal;","#endif","#endif","transformedNormal = normalMatrix * transformedNormal;"].join("\n"), shadowmap_pars_fragment : ["#ifdef USE_SHADOWMAP","uniform sampler2D shadowMap[ MAX_SHADOWS ];","uniform vec2 shadowMapSize[ MAX_SHADOWS ];","uniform float shadowDarkness[ MAX_SHADOWS ];","uniform float shadowBias[ MAX_SHADOWS ];","varying vec4 vShadowCoord[ MAX_SHADOWS ];","float unpackDepth( const in vec4 rgba_depth ) {","const vec4 bit_shift = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );","float depth = dot( rgba_depth, bit_shift );","return depth;","}","#endif"].join("\n"), shadowmap_fragment : ["#ifdef USE_SHADOWMAP","#ifdef SHADOWMAP_DEBUG","vec3 frustumColors[3];","frustumColors[0] = vec3( 1.0, 0.5, 0.0 );","frustumColors[1] = vec3( 0.0, 1.0, 0.8 );","frustumColors[2] = vec3( 0.0, 0.5, 1.0 );","#endif","#ifdef SHADOWMAP_CASCADE","int inFrustumCount = 0;","#endif","float fDepth;","vec3 shadowColor = vec3( 1.0 );","for( int i = 0; i < MAX_SHADOWS; i ++ ) {","vec3 shadowCoord = vShadowCoord[ i ].xyz / vShadowCoord[ i ].w;","bvec4 inFrustumVec = bvec4 ( shadowCoord.x >= 0.0, shadowCoord.x <= 1.0, shadowCoord.y >= 0.0, shadowCoord.y <= 1.0 );","bool inFrustum = all( inFrustumVec );","#ifdef SHADOWMAP_CASCADE","inFrustumCount += int( inFrustum );","bvec3 frustumTestVec = bvec3( inFrustum, inFrustumCount == 1, shadowCoord.z <= 1.0 );","#else","bvec2 frustumTestVec = bvec2( inFrustum, shadowCoord.z <= 1.0 );","#endif","bool frustumTest = all( frustumTestVec );","if ( frustumTest ) {","shadowCoord.z += shadowBias[ i ];","#ifdef SHADOWMAP_SOFT","float shadow = 0.0;","const float shadowDelta = 1.0 / 9.0;","float xPixelOffset = 1.0 / shadowMapSize[ i ].x;","float yPixelOffset = 1.0 / shadowMapSize[ i ].y;","float dx0 = -1.25 * xPixelOffset;","float dy0 = -1.25 * yPixelOffset;","float dx1 = 1.25 * xPixelOffset;","float dy1 = 1.25 * yPixelOffset;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( dx0, dy0 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( 0.0, dy0 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( dx1, dy0 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( dx0, 0.0 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( dx1, 0.0 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( dx0, dy1 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( 0.0, dy1 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","fDepth = unpackDepth( texture2D( shadowMap[ i ], shadowCoord.xy + vec2( dx1, dy1 ) ) );","if ( fDepth < shadowCoord.z ) shadow += shadowDelta;","shadowColor = shadowColor * vec3( ( 1.0 - shadowDarkness[ i ] * shadow ) );","#else","vec4 rgbaDepth = texture2D( shadowMap[ i ], shadowCoord.xy );","float fDepth = unpackDepth( rgbaDepth );","if ( fDepth < shadowCoord.z )","shadowColor = shadowColor * vec3( 1.0 - shadowDarkness[ i ] );","#endif","}","#ifdef SHADOWMAP_DEBUG","#ifdef SHADOWMAP_CASCADE","if ( inFrustum && inFrustumCount == 1 ) gl_FragColor.xyz *= frustumColors[ i ];","#else","if ( inFrustum ) gl_FragColor.xyz *= frustumColors[ i ];","#endif","#endif","}","#ifdef GAMMA_OUTPUT","shadowColor *= shadowColor;","#endif","gl_FragColor.xyz = gl_FragColor.xyz * shadowColor;","#endif"].join("\n"), shadowmap_pars_vertex : ["#ifdef USE_SHADOWMAP","varying vec4 vShadowCoord[ MAX_SHADOWS ];","uniform mat4 shadowMatrix[ MAX_SHADOWS ];","#endif"].join("\n"), shadowmap_vertex : ["#ifdef USE_SHADOWMAP","vec4 transformedPosition;","#ifdef USE_MORPHTARGETS","transformedPosition = modelMatrix * vec4( morphed, 1.0 );","#else","#ifdef USE_SKINNING","transformedPosition = modelMatrix * skinned;","#else","transformedPosition = modelMatrix * vec4( position, 1.0 );","#endif","#endif","for( int i = 0; i < MAX_SHADOWS; i ++ ) {","vShadowCoord[ i ] = shadowMatrix[ i ] * transformedPosition;","}","#endif"].join("\n"), alphatest_fragment : ["#ifdef ALPHATEST","if ( gl_FragColor.a < ALPHATEST ) discard;","#endif"].join("\n"), linear_to_gamma_fragment : ["#ifdef GAMMA_OUTPUT","gl_FragColor.xyz = sqrt( gl_FragColor.xyz );","#endif"].join("\n")};
-	three.renderers.ShaderLib._uniformsLib = { common : { diffuse : { type : "c", value : new three.math.Color(15658734)}, opacity : { type : "f", value : 1.0}, map : { type : "t", value : 0, texture : null}, offsetRepeat : { type : "v4", value : new three.math.Vector4(0,0,1,1)}, lightMap : { type : "t", value : 2, texture : null}, specularMap : { type : "t", value : 3, texture : null}, envMap : { type : "t", value : 1, texture : null}, flipEnvMap : { type : "f", value : -1}, useRefract : { type : "i", value : 0}, reflectivity : { type : "f", value : 1.0}, refractionRatio : { type : "f", value : 0.98}, combine : { type : "i", value : 0}, morphTargetInfluences : { type : "f", value : 0}}, bump : { bumpMap : { type : "t", value : 4, texture : null}, bumpScale : { type : "f", value : 1}}, fog : { fogDensity : { type : "f", value : 0.00025}, fogNear : { type : "f", value : 1}, fogFar : { type : "f", value : 2000}, fogColor : { type : "c", value : new three.math.Color(16777215)}}, lights : { ambientLightColor : { type : "fv", value : []}, directionalLightDirection : { type : "fv", value : []}, directionalLightColor : { type : "fv", value : []}, pointLightColor : { type : "fv", value : []}, pointLightPosition : { type : "fv", value : []}, pointLightDistance : { type : "fv1", value : []}, spotLightColor : { type : "fv", value : []}, spotLightPosition : { type : "fv", value : []}, spotLightDirection : { type : "fv", value : []}, spotLightDistance : { type : "fv1", value : []}, spotLightAngle : { type : "fv1", value : []}, spotLightExponent : { type : "fv1", value : []}}, particle : { psColor : { type : "c", value : new three.math.Color(15658734)}, opacity : { type : "f", value : 1.0}, size : { type : "f", value : 1.0}, scale : { type : "f", value : 1.0}, map : { type : "t", value : 0, texture : null}, fogDensity : { type : "f", value : 0.00025}, fogNear : { type : "f", value : 1}, fogFar : { type : "f", value : 2000}, fogColor : { type : "c", value : new three.math.Color(16777215)}}, shadowmap : { shadowMap : { type : "tv", value : 6, texture : []}, shadowMapSize : { type : "v2v", value : []}, shadowBias : { type : "fv1", value : []}, shadowDarkness : { type : "fv1", value : []}, shadowMatrix : { type : "m4v", value : []}}};
+	three.renderers.ShaderLib._uniformsLib = { common : { diffuse : { type : "c", value : new THREE.MathUtil.Color(15658734)}, opacity : { type : "f", value : 1.0}, map : { type : "t", value : 0, texture : null}, offsetRepeat : { type : "v4", value : new THREE.MathUtil.Vector4(0,0,1,1)}, lightMap : { type : "t", value : 2, texture : null}, specularMap : { type : "t", value : 3, texture : null}, envMap : { type : "t", value : 1, texture : null}, flipEnvMap : { type : "f", value : -1}, useRefract : { type : "i", value : 0}, reflectivity : { type : "f", value : 1.0}, refractionRatio : { type : "f", value : 0.98}, combine : { type : "i", value : 0}, morphTargetInfluences : { type : "f", value : 0}}, bump : { bumpMap : { type : "t", value : 4, texture : null}, bumpScale : { type : "f", value : 1}}, fog : { fogDensity : { type : "f", value : 0.00025}, fogNear : { type : "f", value : 1}, fogFar : { type : "f", value : 2000}, fogColor : { type : "c", value : new THREE.MathUtil.Color(16777215)}}, lights : { ambientLightColor : { type : "fv", value : []}, directionalLightDirection : { type : "fv", value : []}, directionalLightColor : { type : "fv", value : []}, pointLightColor : { type : "fv", value : []}, pointLightPosition : { type : "fv", value : []}, pointLightDistance : { type : "fv1", value : []}, spotLightColor : { type : "fv", value : []}, spotLightPosition : { type : "fv", value : []}, spotLightDirection : { type : "fv", value : []}, spotLightDistance : { type : "fv1", value : []}, spotLightAngle : { type : "fv1", value : []}, spotLightExponent : { type : "fv1", value : []}}, particle : { psColor : { type : "c", value : new THREE.MathUtil.Color(15658734)}, opacity : { type : "f", value : 1.0}, size : { type : "f", value : 1.0}, scale : { type : "f", value : 1.0}, map : { type : "t", value : 0, texture : null}, fogDensity : { type : "f", value : 0.00025}, fogNear : { type : "f", value : 1}, fogFar : { type : "f", value : 2000}, fogColor : { type : "c", value : new THREE.MathUtil.Color(16777215)}}, shadowmap : { shadowMap : { type : "tv", value : 6, texture : []}, shadowMapSize : { type : "v2v", value : []}, shadowBias : { type : "fv1", value : []}, shadowDarkness : { type : "fv1", value : []}, shadowMatrix : { type : "m4v", value : []}}};
 	three.renderers.ShaderLib._shaderMap = { };
 	var depthShader = { uniforms : { mNear : { type : "f", value : 1.0}, mFar : { type : "f", value : 2000.0}, opacity : { type : "f", value : 1.0}}, vertexShader : ["void main() {","gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );","}"].join("\n"), fragmentShader : ["uniform float mNear;","uniform float mFar;","uniform float opacity;","void main() {","float depth = gl_FragCoord.z / gl_FragCoord.w;","float color = 1.0 - smoothstep( mNear, mFar, depth );","gl_FragColor = vec4( vec3( color ), opacity );","}"].join("\n")};
 	var normalShader = { uniforms : { opacity : { type : "f", value : 1.0}}, vertexShader : ["varying vec3 vNormal;","void main() {","vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );","vNormal = normalMatrix * normal;","gl_Position = projectionMatrix * mvPosition;","}"].join("\n"), fragmentShader : ["uniform float opacity;","varying vec3 vNormal;","void main() {","gl_FragColor = vec4( 0.5 * normalize( vNormal ) + 0.5, opacity );","}"].join("\n")};
 	var basicShader = { uniforms : three.renderers.UniformsUtils.merge([three.renderers.ShaderLib._uniformsLib.common,three.renderers.ShaderLib._uniformsLib.fog,three.renderers.ShaderLib._uniformsLib.shadowmap]), vertexShader : [three.renderers.ShaderLib._shaderChunk.map_pars_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.envmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.color_pars_vertex,three.renderers.ShaderLib._shaderChunk.skinning_pars_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_pars_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_vertex,"void main() {","vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",three.renderers.ShaderLib._shaderChunk.map_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_vertex,three.renderers.ShaderLib._shaderChunk.envmap_vertex,three.renderers.ShaderLib._shaderChunk.color_vertex,three.renderers.ShaderLib._shaderChunk.skinbase_vertex,three.renderers.ShaderLib._shaderChunk.skinning_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_vertex,three.renderers.ShaderLib._shaderChunk.default_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_vertex,"}"].join("\n"), fragmentShader : ["uniform vec3 diffuse;","uniform float opacity;",three.renderers.ShaderLib._shaderChunk.color_pars_fragment,three.renderers.ShaderLib._shaderChunk.map_pars_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.envmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.fog_pars_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_pars_fragment,"void main() {","gl_FragColor = vec4( diffuse, opacity );",three.renderers.ShaderLib._shaderChunk.map_fragment,three.renderers.ShaderLib._shaderChunk.alphatest_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_fragment,three.renderers.ShaderLib._shaderChunk.color_fragment,three.renderers.ShaderLib._shaderChunk.envmap_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_fragment,three.renderers.ShaderLib._shaderChunk.linear_to_gamma_fragment,three.renderers.ShaderLib._shaderChunk.fog_fragment,"}"].join("\n")};
-	var lambertShader = { uniforms : three.renderers.UniformsUtils.merge([three.renderers.ShaderLib._uniformsLib.common,three.renderers.ShaderLib._uniformsLib.fog,three.renderers.ShaderLib._uniformsLib.lights,three.renderers.ShaderLib._uniformsLib.shadowmap,{ ambient : { type : "c", value : new three.math.Color(16777215)}, emissive : { type : "c", value : new three.math.Color(0)}, wrapRGB : { type : "v3", value : new three.math.Vector3(1,1,1)}}]), vertexShader : ["varying vec3 vLightFront;","#ifdef DOUBLE_SIDED","varying vec3 vLightBack;","#endif",three.renderers.ShaderLib._shaderChunk.map_pars_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.envmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.lights_lambert_pars_vertex,three.renderers.ShaderLib._shaderChunk.color_pars_vertex,three.renderers.ShaderLib._shaderChunk.skinning_pars_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_pars_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_vertex,"void main() {","vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",three.renderers.ShaderLib._shaderChunk.map_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_vertex,three.renderers.ShaderLib._shaderChunk.envmap_vertex,three.renderers.ShaderLib._shaderChunk.color_vertex,three.renderers.ShaderLib._shaderChunk.morphnormal_vertex,three.renderers.ShaderLib._shaderChunk.skinbase_vertex,three.renderers.ShaderLib._shaderChunk.skinnormal_vertex,three.renderers.ShaderLib._shaderChunk.defaultnormal_vertex,"#ifndef USE_ENVMAP","vec4 mPosition = modelMatrix * vec4( position, 1.0 );","#endif",three.renderers.ShaderLib._shaderChunk.lights_lambert_vertex,three.renderers.ShaderLib._shaderChunk.skinning_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_vertex,three.renderers.ShaderLib._shaderChunk.default_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_vertex,"}"].join("\n"), fragmentShader : ["uniform float opacity;","varying vec3 vLightFront;","#ifdef DOUBLE_SIDED","varying vec3 vLightBack;","#endif",three.renderers.ShaderLib._shaderChunk.color_pars_fragment,three.renderers.ShaderLib._shaderChunk.map_pars_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.envmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.fog_pars_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_pars_fragment,"void main() {","gl_FragColor = vec4( vec3 ( 1.0 ), opacity );",three.renderers.ShaderLib._shaderChunk.map_fragment,three.renderers.ShaderLib._shaderChunk.alphatest_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_fragment,"#ifdef DOUBLE_SIDED","if ( gl_FrontFacing )","gl_FragColor.xyz *= vLightFront;","else","gl_FragColor.xyz *= vLightBack;","#else","gl_FragColor.xyz *= vLightFront;","#endif",three.renderers.ShaderLib._shaderChunk.lightmap_fragment,three.renderers.ShaderLib._shaderChunk.color_fragment,three.renderers.ShaderLib._shaderChunk.envmap_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_fragment,three.renderers.ShaderLib._shaderChunk.linear_to_gamma_fragment,three.renderers.ShaderLib._shaderChunk.fog_fragment,"}"].join("\n")};
-	var phongShader = { uniforms : three.renderers.UniformsUtils.merge([three.renderers.ShaderLib._uniformsLib.common,three.renderers.ShaderLib._uniformsLib.bump,three.renderers.ShaderLib._uniformsLib.fog,three.renderers.ShaderLib._uniformsLib.lights,three.renderers.ShaderLib._uniformsLib.shadowmap,{ ambient : { type : "c", value : new three.math.Color(16777215)}, emissive : { type : "c", value : new three.math.Color(0)}, specular : { type : "c", value : new three.math.Color(1118481)}, shininess : { type : "f", value : 30}, wrapRGB : { type : "v3", value : new three.math.Vector3(1,1,1)}}]), vertexShader : ["varying vec3 vViewPosition;","varying vec3 vNormal;",three.renderers.ShaderLib._shaderChunk.map_pars_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.envmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.lights_phong_pars_vertex,three.renderers.ShaderLib._shaderChunk.color_pars_vertex,three.renderers.ShaderLib._shaderChunk.skinning_pars_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_pars_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_vertex,"void main() {","vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",three.renderers.ShaderLib._shaderChunk.map_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_vertex,three.renderers.ShaderLib._shaderChunk.envmap_vertex,three.renderers.ShaderLib._shaderChunk.color_vertex,"#ifndef USE_ENVMAP","vec4 mPosition = modelMatrix * vec4( position, 1.0 );","#endif","vViewPosition = -mvPosition.xyz;",three.renderers.ShaderLib._shaderChunk.morphnormal_vertex,three.renderers.ShaderLib._shaderChunk.skinbase_vertex,three.renderers.ShaderLib._shaderChunk.skinnormal_vertex,three.renderers.ShaderLib._shaderChunk.defaultnormal_vertex,"vNormal = transformedNormal;",three.renderers.ShaderLib._shaderChunk.lights_phong_vertex,three.renderers.ShaderLib._shaderChunk.skinning_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_vertex,three.renderers.ShaderLib._shaderChunk.default_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_vertex,"}"].join("\n"), fragmentShader : ["uniform vec3 diffuse;","uniform float opacity;","uniform vec3 ambient;","uniform vec3 emissive;","uniform vec3 specular;","uniform float shininess;",three.renderers.ShaderLib._shaderChunk.color_pars_fragment,three.renderers.ShaderLib._shaderChunk.map_pars_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.envmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.fog_pars_fragment,three.renderers.ShaderLib._shaderChunk.lights_phong_pars_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.bumpmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_pars_fragment,"void main() {","gl_FragColor = vec4( vec3 ( 1.0 ), opacity );",three.renderers.ShaderLib._shaderChunk.map_fragment,three.renderers.ShaderLib._shaderChunk.alphatest_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_fragment,three.renderers.ShaderLib._shaderChunk.lights_phong_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_fragment,three.renderers.ShaderLib._shaderChunk.color_fragment,three.renderers.ShaderLib._shaderChunk.envmap_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_fragment,three.renderers.ShaderLib._shaderChunk.linear_to_gamma_fragment,three.renderers.ShaderLib._shaderChunk.fog_fragment,"}"].join("\n")};
+	var lambertShader = { uniforms : three.renderers.UniformsUtils.merge([three.renderers.ShaderLib._uniformsLib.common,three.renderers.ShaderLib._uniformsLib.fog,three.renderers.ShaderLib._uniformsLib.lights,three.renderers.ShaderLib._uniformsLib.shadowmap,{ ambient : { type : "c", value : new THREE.MathUtil.Color(16777215)}, emissive : { type : "c", value : new THREE.MathUtil.Color(0)}, wrapRGB : { type : "v3", value : new THREE.MathUtil.Vector3(1,1,1)}}]), vertexShader : ["varying vec3 vLightFront;","#ifdef DOUBLE_SIDED","varying vec3 vLightBack;","#endif",three.renderers.ShaderLib._shaderChunk.map_pars_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.envmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.lights_lambert_pars_vertex,three.renderers.ShaderLib._shaderChunk.color_pars_vertex,three.renderers.ShaderLib._shaderChunk.skinning_pars_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_pars_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_vertex,"void main() {","vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",three.renderers.ShaderLib._shaderChunk.map_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_vertex,three.renderers.ShaderLib._shaderChunk.envmap_vertex,three.renderers.ShaderLib._shaderChunk.color_vertex,three.renderers.ShaderLib._shaderChunk.morphnormal_vertex,three.renderers.ShaderLib._shaderChunk.skinbase_vertex,three.renderers.ShaderLib._shaderChunk.skinnormal_vertex,three.renderers.ShaderLib._shaderChunk.defaultnormal_vertex,"#ifndef USE_ENVMAP","vec4 mPosition = modelMatrix * vec4( position, 1.0 );","#endif",three.renderers.ShaderLib._shaderChunk.lights_lambert_vertex,three.renderers.ShaderLib._shaderChunk.skinning_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_vertex,three.renderers.ShaderLib._shaderChunk.default_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_vertex,"}"].join("\n"), fragmentShader : ["uniform float opacity;","varying vec3 vLightFront;","#ifdef DOUBLE_SIDED","varying vec3 vLightBack;","#endif",three.renderers.ShaderLib._shaderChunk.color_pars_fragment,three.renderers.ShaderLib._shaderChunk.map_pars_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.envmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.fog_pars_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_pars_fragment,"void main() {","gl_FragColor = vec4( vec3 ( 1.0 ), opacity );",three.renderers.ShaderLib._shaderChunk.map_fragment,three.renderers.ShaderLib._shaderChunk.alphatest_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_fragment,"#ifdef DOUBLE_SIDED","if ( gl_FrontFacing )","gl_FragColor.xyz *= vLightFront;","else","gl_FragColor.xyz *= vLightBack;","#else","gl_FragColor.xyz *= vLightFront;","#endif",three.renderers.ShaderLib._shaderChunk.lightmap_fragment,three.renderers.ShaderLib._shaderChunk.color_fragment,three.renderers.ShaderLib._shaderChunk.envmap_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_fragment,three.renderers.ShaderLib._shaderChunk.linear_to_gamma_fragment,three.renderers.ShaderLib._shaderChunk.fog_fragment,"}"].join("\n")};
+	var phongShader = { uniforms : three.renderers.UniformsUtils.merge([three.renderers.ShaderLib._uniformsLib.common,three.renderers.ShaderLib._uniformsLib.bump,three.renderers.ShaderLib._uniformsLib.fog,three.renderers.ShaderLib._uniformsLib.lights,three.renderers.ShaderLib._uniformsLib.shadowmap,{ ambient : { type : "c", value : new THREE.MathUtil.Color(16777215)}, emissive : { type : "c", value : new THREE.MathUtil.Color(0)}, specular : { type : "c", value : new THREE.MathUtil.Color(1118481)}, shininess : { type : "f", value : 30}, wrapRGB : { type : "v3", value : new THREE.MathUtil.Vector3(1,1,1)}}]), vertexShader : ["varying vec3 vViewPosition;","varying vec3 vNormal;",three.renderers.ShaderLib._shaderChunk.map_pars_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.envmap_pars_vertex,three.renderers.ShaderLib._shaderChunk.lights_phong_pars_vertex,three.renderers.ShaderLib._shaderChunk.color_pars_vertex,three.renderers.ShaderLib._shaderChunk.skinning_pars_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_pars_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_vertex,"void main() {","vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",three.renderers.ShaderLib._shaderChunk.map_vertex,three.renderers.ShaderLib._shaderChunk.lightmap_vertex,three.renderers.ShaderLib._shaderChunk.envmap_vertex,three.renderers.ShaderLib._shaderChunk.color_vertex,"#ifndef USE_ENVMAP","vec4 mPosition = modelMatrix * vec4( position, 1.0 );","#endif","vViewPosition = -mvPosition.xyz;",three.renderers.ShaderLib._shaderChunk.morphnormal_vertex,three.renderers.ShaderLib._shaderChunk.skinbase_vertex,three.renderers.ShaderLib._shaderChunk.skinnormal_vertex,three.renderers.ShaderLib._shaderChunk.defaultnormal_vertex,"vNormal = transformedNormal;",three.renderers.ShaderLib._shaderChunk.lights_phong_vertex,three.renderers.ShaderLib._shaderChunk.skinning_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_vertex,three.renderers.ShaderLib._shaderChunk.default_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_vertex,"}"].join("\n"), fragmentShader : ["uniform vec3 diffuse;","uniform float opacity;","uniform vec3 ambient;","uniform vec3 emissive;","uniform vec3 specular;","uniform float shininess;",three.renderers.ShaderLib._shaderChunk.color_pars_fragment,three.renderers.ShaderLib._shaderChunk.map_pars_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.envmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.fog_pars_fragment,three.renderers.ShaderLib._shaderChunk.lights_phong_pars_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.bumpmap_pars_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_pars_fragment,"void main() {","gl_FragColor = vec4( vec3 ( 1.0 ), opacity );",three.renderers.ShaderLib._shaderChunk.map_fragment,three.renderers.ShaderLib._shaderChunk.alphatest_fragment,three.renderers.ShaderLib._shaderChunk.specularmap_fragment,three.renderers.ShaderLib._shaderChunk.lights_phong_fragment,three.renderers.ShaderLib._shaderChunk.lightmap_fragment,three.renderers.ShaderLib._shaderChunk.color_fragment,three.renderers.ShaderLib._shaderChunk.envmap_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_fragment,three.renderers.ShaderLib._shaderChunk.linear_to_gamma_fragment,three.renderers.ShaderLib._shaderChunk.fog_fragment,"}"].join("\n")};
 	var particleBasicShader = { uniforms : three.renderers.UniformsUtils.merge([three.renderers.ShaderLib._uniformsLib.particle,three.renderers.ShaderLib._uniformsLib.shadowmap]), vertexShader : ["uniform float size;","uniform float scale;",three.renderers.ShaderLib._shaderChunk.color_pars_vertex,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_vertex,"void main() {",three.renderers.ShaderLib._shaderChunk.color_vertex,"vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );","#ifdef USE_SIZEATTENUATION","gl_PointSize = size * ( scale / length( mvPosition.xyz ) );","#else","gl_PointSize = size;","#endif","gl_Position = projectionMatrix * mvPosition;",three.renderers.ShaderLib._shaderChunk.shadowmap_vertex,"}"].join("\n"), fragmentShader : ["uniform vec3 psColor;","uniform float opacity;",three.renderers.ShaderLib._shaderChunk.color_pars_fragment,three.renderers.ShaderLib._shaderChunk.map_particle_pars_fragment,three.renderers.ShaderLib._shaderChunk.fog_pars_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_pars_fragment,"void main() {","gl_FragColor = vec4( psColor, opacity );",three.renderers.ShaderLib._shaderChunk.map_particle_fragment,three.renderers.ShaderLib._shaderChunk.alphatest_fragment,three.renderers.ShaderLib._shaderChunk.color_fragment,three.renderers.ShaderLib._shaderChunk.shadowmap_fragment,three.renderers.ShaderLib._shaderChunk.fog_fragment,"}"].join("\n")};
 	var depthRGBAShader = { uniforms : { }, vertexShader : [three.renderers.ShaderLib._shaderChunk.skinning_pars_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_pars_vertex,"void main() {","vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",three.renderers.ShaderLib._shaderChunk.skinbase_vertex,three.renderers.ShaderLib._shaderChunk.skinning_vertex,three.renderers.ShaderLib._shaderChunk.morphtarget_vertex,three.renderers.ShaderLib._shaderChunk.default_vertex,"}"].join("\n"), fragmentShader : ["vec4 pack_depth( const in float depth ) {","const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );","const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );","vec4 res = fract( depth * bit_shift );","res -= res.xxyz * bit_mask;","return res;","}","void main() {","gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );","}"].join("\n")};
 	three.renderers.ShaderLib._shaderMap.depth = depthShader;
@@ -2903,7 +2903,7 @@ three.renderers.UniformsUtils.clone = function(uniforms_src) {
 			var p = itemFields[_g1];
 			++_g1;
 			parameter_src = itemFields[p];
-			if(js.Boot.__instanceof(parameter_src,three.math.Color) || js.Boot.__instanceof(parameter_src,three.math.Vector2) || js.Boot.__instanceof(parameter_src,three.math.Vector3) || js.Boot.__instanceof(parameter_src,three.math.Vector4) || js.Boot.__instanceof(parameter_src,three.math.Matrix4) || js.Boot.__instanceof(parameter_src,three.textures.Texture)) srcItem[p] = parameter_src.clone(); else if(js.Boot.__instanceof(parameter_src,Array)) srcItem[p] = (js.Boot.__cast(parameter_src , Array)).slice(0); else srcItem[p] = parameter_src;
+			if(js.Boot.__instanceof(parameter_src,THREE.MathUtil.Color) || js.Boot.__instanceof(parameter_src,THREE.MathUtil.Vector2) || js.Boot.__instanceof(parameter_src,THREE.MathUtil.Vector3) || js.Boot.__instanceof(parameter_src,THREE.MathUtil.Vector4) || js.Boot.__instanceof(parameter_src,THREE.MathUtil.Matrix4) || js.Boot.__instanceof(parameter_src,three.textures.Texture)) srcItem[p] = parameter_src.clone(); else if(js.Boot.__instanceof(parameter_src,Array)) srcItem[p] = (js.Boot.__cast(parameter_src , Array)).slice(0); else srcItem[p] = parameter_src;
 		}
 		uniforms_dst[u] = srcItem;
 	}
@@ -2982,8 +2982,8 @@ three.textures.Texture = function(image,mapping) {
 	this.anisotropy = 1;
 	this.format = 1021;
 	this.type = 1021;
-	this.offset = new three.math.Vector2(0,0);
-	this.repeat = new three.math.Vector2(1,1);
+	this.offset = new THREE.MathUtil.Vector2(0,0);
+	this.repeat = new THREE.MathUtil.Vector2(1,1);
 	this.generateMipmaps = true;
 	this.premultiplyAlpha = false;
 	this.flipY = true;
@@ -3042,20 +3042,20 @@ three.utils.Logger.error = function(value) {
 }
 three.utils.TempVars = function() {
 	this.isUsed = false;
-	this.color = new three.math.Color();
-	this.vect1 = new three.math.Vector3();
-	this.vect2 = new three.math.Vector3();
-	this.vect3 = new three.math.Vector3();
-	this.vect4 = new three.math.Vector3();
-	this.vect5 = new three.math.Vector3();
-	this.vect6 = new three.math.Vector3();
-	this.vect7 = new three.math.Vector3();
-	this.vect4f = new three.math.Vector4();
-	this.vect2d = new three.math.Vector2();
-	this.vect2d2 = new three.math.Vector2();
-	this.tempMat3 = new three.math.Matrix3();
-	this.tempMat4 = new three.math.Matrix4();
-	this.tempMat42 = new three.math.Matrix4();
+	this.color = new THREE.MathUtil.Color();
+	this.vect1 = new THREE.MathUtil.Vector3();
+	this.vect2 = new THREE.MathUtil.Vector3();
+	this.vect3 = new THREE.MathUtil.Vector3();
+	this.vect4 = new THREE.MathUtil.Vector3();
+	this.vect5 = new THREE.MathUtil.Vector3();
+	this.vect6 = new THREE.MathUtil.Vector3();
+	this.vect7 = new THREE.MathUtil.Vector3();
+	this.vect4f = new THREE.MathUtil.Vector4();
+	this.vect2d = new THREE.MathUtil.Vector2();
+	this.vect2d2 = new THREE.MathUtil.Vector2();
+	this.tempMat3 = new THREE.MathUtil.Matrix3();
+	this.tempMat4 = new THREE.MathUtil.Matrix4();
+	this.tempMat42 = new THREE.MathUtil.Matrix4();
 };
 three.utils.TempVars.__name__ = true;
 three.utils.TempVars.getTempVars = function() {
@@ -3184,15 +3184,15 @@ three.ThreeGlobal.RGBAFormat = 1021;
 three.ThreeGlobal.LuminanceFormat = 1022;
 three.ThreeGlobal.LuminanceAlphaFormat = 1023;
 three.core.Object3D.Object3DCount = 0;
-three.core.Object3D._m1 = new three.math.Matrix4();
+three.core.Object3D._m1 = new THREE.MathUtil.Matrix4();
 three.core.Geometry.GeometryCount = 0;
 three.materials.Material.MaterialCount = 0;
-three.math.MathUtil.LN2 = Math.LN2;
-three.math.MathUtil.RAD2DEG = 180 / Math.PI;
-three.math.MathUtil.DEG2RAD = Math.PI / 180;
-three.math.Vector3.X_AXIS = new three.math.Vector3(1,0,0);
-three.math.Vector3.Y_AXIS = new three.math.Vector3(0,1,0);
-three.math.Vector3.Z_AXIS = new three.math.Vector3(0,0,1);
+THREE.MathUtil.MathUtil.LN2 = Math.LN2;
+THREE.MathUtil.MathUtil.RAD2DEG = 180 / Math.PI;
+THREE.MathUtil.MathUtil.DEG2RAD = Math.PI / 180;
+THREE.MathUtil.Vector3.X_AXIS = new THREE.MathUtil.Vector3(1,0,0);
+THREE.MathUtil.Vector3.Y_AXIS = new THREE.MathUtil.Vector3(0,1,0);
+THREE.MathUtil.Vector3.Z_AXIS = new THREE.MathUtil.Vector3(0,0,1);
 three.textures.Texture.TextureCount = 0;
 three.utils.TempVars.STACK_SIZE = 5;
 three.utils.TempVars.currentIndex = 0;

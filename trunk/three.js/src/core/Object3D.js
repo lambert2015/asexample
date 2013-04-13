@@ -50,140 +50,80 @@ THREE.Object3D.prototype = {
 
 	constructor : THREE.Object3D,
 
-	applyMatrix : function() {
+	applyMatrix : function(matrix) {
 
 		var m1 = new THREE.Matrix4();
 
-		return function(matrix) {
+		this.matrix.multiplyMatrices(matrix, this.matrix);
+		this.position.getPositionFromMatrix(this.matrix);
+		this.scale.getScaleFromMatrix(this.matrix);
 
-			this.matrix.multiplyMatrices(matrix, this.matrix);
-
-			this.position.getPositionFromMatrix(this.matrix);
-
-			this.scale.getScaleFromMatrix(this.matrix);
-
-			m1.extractRotation(this.matrix);
-
-			if (this.useQuaternion === true) {
-
-				this.quaternion.setFromRotationMatrix(m1);
-
-			} else {
-
-				this.rotation.setEulerFromRotationMatrix(m1, this.eulerOrder);
-
-			}
-
+		m1.extractRotation(this.matrix);
+		if (this.useQuaternion === true) {
+			this.quaternion.setFromRotationMatrix(m1);
+		} else {
+			this.rotation.setEulerFromRotationMatrix(m1, this.eulerOrder);
 		}
-	}(),
-
-	translate : function() {
-
-		var v1 = new THREE.Vector3();
-
-		return function(distance, axis) {
-
-			// axis is assumed to be normalized
-
-			v1.copy(axis);
-
-			if (this.useQuaternion === true) {
-
-				v1.applyQuaternion(this.quaternion);
-
-			} else {
-
-				v1.applyEuler(this.rotation, this.eulerOrder);
-
-			}
-
-			v1.multiplyScalar(distance);
-
-			this.position.add(v1);
-
-			return this;
-
-		};
-
-	}(),
-
-	translateX : function() {
-
-		var v1 = new THREE.Vector3(1, 0, 0);
-
-		return function(distance) {
-
-			return this.translate(distance, v1);
-
-		};
-
-	}(),
-
-	translateY : function() {
-
-		var v1 = new THREE.Vector3(0, 1, 0);
-
-		return function(distance) {
-
-			return this.translate(distance, v1);
-
-		};
-
-	}(),
-
-	translateZ : function() {
-
-		var v1 = new THREE.Vector3(0, 0, 1);
-
-		return function(distance) {
-
-			return this.translate(distance, v1);
-
-		};
-
-	}(),
-
-	localToWorld : function(vector) {
-
-		return vector.applyMatrix4(this.matrixWorld);
-
 	},
 
-	worldToLocal : function() {
+	translate : function(distance, axis) {
 
+		var v1 = new THREE.Vector3();
+		// axis is assumed to be normalized
+
+		v1.copy(axis);
+
+		if (this.useQuaternion === true) {
+
+			v1.applyQuaternion(this.quaternion);
+
+		} else {
+
+			v1.applyEuler(this.rotation, this.eulerOrder);
+
+		}
+
+		v1.multiplyScalar(distance);
+
+		this.position.add(v1);
+
+		return this;
+	},
+
+	translateX : function(distance) {
+		var v1 = new THREE.Vector3(1, 0, 0);
+		return this.translate(distance, v1);
+	},
+
+	translateY : function(distance) {
+		var v1 = new THREE.Vector3(0, 1, 0);
+		return this.translate(distance, v1);
+	},
+
+	translateZ : function(distance) {
+		var v1 = new THREE.Vector3(0, 0, 1);
+		return this.translate(distance, v1);
+	},
+
+	localToWorld : function(vector) {
+		return vector.applyMatrix4(this.matrixWorld);
+	},
+
+	worldToLocal : function(vector) {
 		var m1 = new THREE.Matrix4();
+		return vector.applyMatrix4(m1.getInverse(this.matrixWorld));
+	},
 
-		return function(vector) {
-
-			return vector.applyMatrix4(m1.getInverse(this.matrixWorld));
-
-		};
-
-	}(),
-
-	lookAt : function() {
-
+	lookAt : function(vector) {
 		// This routine does not support objects with rotated and/or translated parent(s)
-
 		var m1 = new THREE.Matrix4();
-
-		return function(vector) {
-
-			m1.lookAt(vector, this.position, this.up);
-
-			if (this.useQuaternion === true) {
-
-				this.quaternion.setFromRotationMatrix(m1);
-
-			} else {
-
-				this.rotation.setEulerFromRotationMatrix(m1, this.eulerOrder);
-
-			}
-
-		};
-
-	}(),
+		m1.lookAt(vector, this.position, this.up);
+		if (this.useQuaternion === true) {
+			this.quaternion.setFromRotationMatrix(m1);
+		} else {
+			this.rotation.setEulerFromRotationMatrix(m1, this.eulerOrder);
+		}
+	},
 
 	add : function(object) {
 
@@ -204,27 +144,19 @@ THREE.Object3D.prototype = {
 			// add to scene
 
 			var scene = this;
-
 			while (scene.parent !== undefined) {
-
 				scene = scene.parent;
-
 			}
 
 			if (scene !== undefined && scene instanceof THREE.Scene) {
-
 				scene.__addObject(object);
-
 			}
-
 		}
-
 	},
 
 	remove : function(object) {
 
 		var index = this.children.indexOf(object);
-
 		if (index !== -1) {
 
 			object.parent = undefined;
@@ -233,31 +165,20 @@ THREE.Object3D.prototype = {
 			// remove from scene
 
 			var scene = this;
-
 			while (scene.parent !== undefined) {
-
 				scene = scene.parent;
-
 			}
 
 			if (scene !== undefined && scene instanceof THREE.Scene) {
-
 				scene.__removeObject(object);
-
 			}
-
 		}
-
 	},
 
 	traverse : function(callback) {
-
 		callback(this);
-
 		for (var i = 0, l = this.children.length; i < l; i++) {
-
 			this.children[i].traverse(callback);
-
 		}
 
 	},
@@ -287,9 +208,7 @@ THREE.Object3D.prototype = {
 		Array.prototype.push.apply(array, this.children);
 
 		for (var i = 0, l = this.children.length; i < l; i++) {
-
 			this.children[i].getDescendants(array);
-
 		}
 
 		return array;
@@ -299,25 +218,17 @@ THREE.Object3D.prototype = {
 	updateMatrix : function() {
 
 		this.matrix.setPosition(this.position);
-
 		if (this.useQuaternion === false) {
-
 			this.matrix.setRotationFromEuler(this.rotation, this.eulerOrder);
-
 		} else {
-
 			this.matrix.setRotationFromQuaternion(this.quaternion);
-
 		}
 
 		if (this.scale.x !== 1 || this.scale.y !== 1 || this.scale.z !== 1) {
-
 			this.matrix.scale(this.scale);
-
 		}
 
 		this.matrixWorldNeedsUpdate = true;
-
 	},
 
 	updateMatrixWorld : function(force) {
@@ -328,29 +239,19 @@ THREE.Object3D.prototype = {
 		if (this.matrixWorldNeedsUpdate === true || force === true) {
 
 			if (this.parent === undefined) {
-
 				this.matrixWorld.copy(this.matrix);
-
 			} else {
-
 				this.matrixWorld.multiplyMatrices(this.parent.matrixWorld, this.matrix);
-
 			}
 
 			this.matrixWorldNeedsUpdate = false;
-
 			force = true;
-
 		}
 
 		// update children
-
 		for (var i = 0, l = this.children.length; i < l; i++) {
-
 			this.children[i].updateMatrixWorld(force);
-
 		}
-
 	},
 
 	clone : function(object) {
@@ -402,4 +303,5 @@ THREE.Object3D.prototype = {
 	}
 };
 
-THREE.Object3D.defaultEulerOrder = 'XYZ', THREE.Object3DIdCount = 0;
+THREE.Object3D.defaultEulerOrder = 'XYZ';
+THREE.Object3DIdCount = 0;

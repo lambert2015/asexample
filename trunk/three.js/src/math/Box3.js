@@ -77,22 +77,17 @@ THREE.Box3.prototype = {
 
 	},
 
-	setFromCenterAndSize: function() {
+	setFromCenterAndSize: function(center, size) {
 
 		var v1 = new THREE.Vector3();
 
-		return function ( center, size ) {
+		var halfSize = v1.copy( size ).multiplyScalar( 0.5 );
 
-			var halfSize = v1.copy( size ).multiplyScalar( 0.5 );
+		this.min.copy( center ).sub( halfSize );
+		this.max.copy( center ).add( halfSize );
 
-			this.min.copy( center ).sub( halfSize );
-			this.max.copy( center ).add( halfSize );
-
-			return this;
-
-		};
-
-	}(),
+		return this;
+	},
 
 	copy: function ( box ) {
 
@@ -225,35 +220,23 @@ THREE.Box3.prototype = {
 
 	},
 
-	distanceToPoint: function() {
+	distanceToPoint: function(point) {
 
 		var v1 = new THREE.Vector3();
+		var clampedPoint = v1.copy( point ).clamp( this.min, this.max );
+		return clampedPoint.sub( point ).length();
+	},
 
-		return function ( point ) {
-
-			var clampedPoint = v1.copy( point ).clamp( this.min, this.max );
-			return clampedPoint.sub( point ).length();
-
-		};
-
-	}(),
-
-	getBoundingSphere: function() {
+	getBoundingSphere: function(optionalTarget) {
 
 		var v1 = new THREE.Vector3();
+		var result = optionalTarget || new THREE.Sphere();
 
-		return function ( optionalTarget ) {
+		result.center = this.center();
+		result.radius = this.size( v1 ).length() * 0.5;
 
-			var result = optionalTarget || new THREE.Sphere();
-
-			result.center = this.center();
-			result.radius = this.size( v1 ).length() * 0.5;
-
-			return result;
-
-		};
-
-	}(),
+		return result;
+	},
 
 	intersect: function ( box ) {
 
@@ -273,7 +256,7 @@ THREE.Box3.prototype = {
 
 	},
 
-	applyMatrix4: function() {
+	applyMatrix4: function(matrix) {
 
 		var points = [
 			new THREE.Vector3(),
@@ -286,26 +269,21 @@ THREE.Box3.prototype = {
 			new THREE.Vector3()
 		];
 
-		return function ( matrix ) {
+		// NOTE: I am using a binary pattern to specify all 2^3 combinations below
+		points[0].set( this.min.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 000
+		points[1].set( this.min.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 001
+		points[2].set( this.min.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 010
+		points[3].set( this.min.x, this.max.y, this.max.z ).applyMatrix4( matrix ); // 011
+		points[4].set( this.max.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 100
+		points[5].set( this.max.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 101
+		points[6].set( this.max.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 110
+		points[7].set( this.max.x, this.max.y, this.max.z ).applyMatrix4( matrix );  // 111
 
-			// NOTE: I am using a binary pattern to specify all 2^3 combinations below
-			points[0].set( this.min.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 000
-			points[1].set( this.min.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 001
-			points[2].set( this.min.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 010
-			points[3].set( this.min.x, this.max.y, this.max.z ).applyMatrix4( matrix ); // 011
-			points[4].set( this.max.x, this.min.y, this.min.z ).applyMatrix4( matrix ); // 100
-			points[5].set( this.max.x, this.min.y, this.max.z ).applyMatrix4( matrix ); // 101
-			points[6].set( this.max.x, this.max.y, this.min.z ).applyMatrix4( matrix ); // 110
-			points[7].set( this.max.x, this.max.y, this.max.z ).applyMatrix4( matrix );  // 111
+		this.makeEmpty();
+		this.setFromPoints( points );
 
-			this.makeEmpty();
-			this.setFromPoints( points );
-
-			return this;
-
-		};
-
-	}(),
+		return this;
+	},
 
 	translate: function ( offset ) {
 
