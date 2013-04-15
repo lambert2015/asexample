@@ -16,10 +16,13 @@ THREE.Geometry = function() {
 	this.name = '';
 
 	this.vertices = [];
-	this.colors = [];
+	
 	// one-to-one vertex colors, used in ParticleSystem, Line and Ribbon
-	this.normals = [];
+	this.colors = [];
+	
 	// one-to-one vertex normals, used in Ribbon
+	this.normals = [];
+	
 
 	this.faces = [];
 
@@ -40,11 +43,11 @@ THREE.Geometry = function() {
 
 	this.hasTangents = false;
 
-	this.dynamic = true;
 	// the intermediate typed arrays will be deleted when set to false
+	this.dynamic = true;
+	
 
 	// update flags
-
 	this.verticesNeedUpdate = false;
 	this.elementsNeedUpdate = false;
 	this.uvsNeedUpdate = false;
@@ -551,46 +554,28 @@ THREE.Geometry.prototype = {
 	},
 
 	computeLineDistances : function() {
-
 		var d = 0;
 		var vertices = this.vertices;
-
 		for (var i = 0, il = vertices.length; i < il; i++) {
-
 			if (i > 0) {
-
 				d += vertices[i].distanceTo(vertices[i - 1]);
-
 			}
-
 			this.lineDistances[i] = d;
-
 		}
-
 	},
 
 	computeBoundingBox : function() {
-
 		if (this.boundingBox === null) {
-
 			this.boundingBox = new THREE.Box3();
-
 		}
-
 		this.boundingBox.setFromPoints(this.vertices);
-
 	},
 
 	computeBoundingSphere : function() {
-
 		if (this.boundingSphere === null) {
-
 			this.boundingSphere = new THREE.Sphere();
-
 		}
-
 		this.boundingSphere.setFromCenterAndPoints(this.boundingSphere.center, this.vertices);
-
 	},
 
 	/*
@@ -759,7 +744,6 @@ THREE.Geometry.prototype = {
 		var geometry = new THREE.Geometry();
 
 		var vertices = this.vertices;
-
 		for (var i = 0, il = vertices.length; i < il; i++) {
 
 			geometry.vertices.push(vertices[i].clone());
@@ -767,31 +751,20 @@ THREE.Geometry.prototype = {
 		}
 
 		var faces = this.faces;
-
 		for (var i = 0, il = faces.length; i < il; i++) {
-
 			geometry.faces.push(faces[i].clone());
-
 		}
 
 		var uvs = this.faceVertexUvs[0];
-
 		for (var i = 0, il = uvs.length; i < il; i++) {
-
 			var uv = uvs[i], uvCopy = [];
-
 			for (var j = 0, jl = uv.length; j < jl; j++) {
-
 				uvCopy.push(new THREE.Vector2(uv[j].x, uv[j].y));
-
 			}
-
 			geometry.faceVertexUvs[0].push(uvCopy);
-
 		}
 
 		return geometry;
-
 	},
 
 	dispose : function() {

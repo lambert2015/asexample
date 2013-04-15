@@ -9,26 +9,21 @@ THREE.BufferGeometry = function() {
 	this.id = THREE.GeometryIdCount++;
 
 	// attributes
-
 	this.attributes = {};
 
 	// attributes typed arrays are kept only if dynamic flag is set
-
 	this.dynamic = false;
 
 	// offsets for chunks when using indexed elements
-
 	this.offsets = [];
 
 	// boundings
-
 	this.boundingBox = null;
 	this.boundingSphere = null;
 
 	this.hasTangents = false;
 
 	// for compatibility
-
 	this.morphTargets = [];
 
 };
@@ -48,14 +43,11 @@ THREE.BufferGeometry.prototype = {
 			normalArray = this.attributes["normal"].array;
 
 		if (positionArray !== undefined) {
-
 			matrix.multiplyVector3Array(positionArray);
 			this.verticesNeedUpdate = true;
-
 		}
 
 		if (normalArray !== undefined) {
-
 			var normalMatrix = new THREE.Matrix3();
 			normalMatrix.getInverse(matrix).transpose();
 
@@ -64,21 +56,15 @@ THREE.BufferGeometry.prototype = {
 			this.normalizeNormals();
 
 			this.normalsNeedUpdate = true;
-
 		}
-
 	},
 
 	computeBoundingBox : function() {
-
 		if (this.boundingBox === null) {
-
 			this.boundingBox = new THREE.Box3();
-
 		}
 
 		var positions = this.attributes["position"].array;
-
 		if (positions) {
 
 			var bb = this.boundingBox;
@@ -133,10 +119,8 @@ THREE.BufferGeometry.prototype = {
 		}
 
 		if (positions === undefined || positions.length === 0) {
-
 			this.boundingBox.min.set(0, 0, 0);
 			this.boundingBox.max.set(0, 0, 0);
-
 		}
 
 	},
