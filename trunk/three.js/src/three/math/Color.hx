@@ -12,7 +12,7 @@ class Color
 	public var g:Float;
 	public var b:Float;
 
-	public function new(value:UInt = 0xFF000000) 
+	public function new(value:Int = 0xFF000000) 
 	{
 		this.rgba = value;
 	}

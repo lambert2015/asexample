@@ -10,6 +10,7 @@ import js.html.webgl.Program;
 import js.html.webgl.RenderingContext;
 import js.Lib;
 import three.materials.Material;
+import three.math.MathUtil;
 import three.renderers.ShaderDef;
 import three.renderers.ShaderLib;
 import three.utils.ImageUtil;
@@ -78,5 +79,7 @@ class Test
 		loader.load("textures/crate256.jpg", image);
 		
 		Browser.document.getElementById("webgl").appendChild(image);
+		
+		var t:Float = MathUtil.clamp(5, 0, 10);
 	}
 }

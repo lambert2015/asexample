@@ -14,7 +14,6 @@ THREE.MorphAnimMesh = function(geometry, material) {
 	this.time = 0;
 
 	// internals
-
 	this.lastKeyframe = 0;
 	this.currentKeyframe = 0;
 
@@ -22,7 +21,6 @@ THREE.MorphAnimMesh = function(geometry, material) {
 	this.directionBackwards = false;
 
 	this.setFrameRange(0, this.geometry.morphTargets.length - 1);
-
 };
 
 THREE.MorphAnimMesh.prototype = Object.create(THREE.Mesh.prototype);

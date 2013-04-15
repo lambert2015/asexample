@@ -26,37 +26,34 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 
 		var m, ml;
 
-		if (geometryGroup.numMorphTargets) {
-
+		if (geometryGroup.numMorphTargets > 0) {
 			geometryGroup.__webglMorphTargetsBuffers = [];
-
 			for ( m = 0, ml = geometryGroup.numMorphTargets; m < ml; m++) {
-
 				geometryGroup.__webglMorphTargetsBuffers.push(renderer.createBuffer());
-
 			}
-
 		}
 
-		if (geometryGroup.numMorphNormals) {
-
+		if (geometryGroup.numMorphNormals > 0) {
 			geometryGroup.__webglMorphNormalsBuffers = [];
-
 			for ( m = 0, ml = geometryGroup.numMorphNormals; m < ml; m++) {
-
 				geometryGroup.__webglMorphNormalsBuffers.push(renderer.createBuffer());
-
 			}
-
 		}
-
 		this.info.memory.geometries++;
-
 	},
 
 	initBuffers : function(geometryGroup, object) {
 
-		var geometry = object.geometry, faces3 = geometryGroup.faces3, faces4 = geometryGroup.faces4, nvertices = faces3.length * 3 + faces4.length * 4, ntris = faces3.length * 1 + faces4.length * 2, nlines = faces3.length * 3 + faces4.length * 4, material = this.getBufferMaterial(object, geometryGroup), uvType = this.bufferGuessUVType(material), normalType = this.bufferGuessNormalType(material), vertexColorType = this.bufferGuessVertexColorType(material);
+		var geometry = object.geometry, 
+			faces3 = geometryGroup.faces3, 
+			faces4 = geometryGroup.faces4, 
+			nvertices = faces3.length * 3 + faces4.length * 4, 
+			ntris = faces3.length * 1 + faces4.length * 2, 
+			nlines = faces3.length * 3 + faces4.length * 4, 
+			material = this.getBufferMaterial(object, geometryGroup), 
+			uvType = this.bufferGuessUVType(material), 
+			normalType = this.bufferGuessNormalType(material), 
+			vertexColorType = this.bufferGuessVertexColorType(material);
 
 		//console.log( "uvType", uvType, "normalType", normalType, "vertexColorType",
 		// vertexColorType, object, geometryGroup, material );
@@ -64,44 +61,30 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 		geometryGroup.__vertexArray = new Float32Array(nvertices * 3);
 
 		if (normalType) {
-
 			geometryGroup.__normalArray = new Float32Array(nvertices * 3);
-
 		}
 
 		if (geometry.hasTangents) {
-
 			geometryGroup.__tangentArray = new Float32Array(nvertices * 4);
-
 		}
 
 		if (vertexColorType) {
-
 			geometryGroup.__colorArray = new Float32Array(nvertices * 3);
-
 		}
 
 		if (uvType) {
-
 			if (geometry.faceUvs.length > 0 || geometry.faceVertexUvs.length > 0) {
-
 				geometryGroup.__uvArray = new Float32Array(nvertices * 2);
-
 			}
 
 			if (geometry.faceUvs.length > 1 || geometry.faceVertexUvs.length > 1) {
-
 				geometryGroup.__uv2Array = new Float32Array(nvertices * 2);
-
 			}
-
 		}
 
 		if (object.geometry.skinWeights.length && object.geometry.skinIndices.length) {
-
 			geometryGroup.__skinIndexArray = new Float32Array(nvertices * 4);
 			geometryGroup.__skinWeightArray = new Float32Array(nvertices * 4);
-
 		}
 
 		geometryGroup.__faceArray = new Uint16Array(ntris * 3);
@@ -110,65 +93,44 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 		var m, ml;
 
 		if (geometryGroup.numMorphTargets) {
-
 			geometryGroup.__morphTargetsArrays = [];
-
 			for ( m = 0, ml = geometryGroup.numMorphTargets; m < ml; m++) {
-
 				geometryGroup.__morphTargetsArrays.push(new Float32Array(nvertices * 3));
-
 			}
-
 		}
 
 		if (geometryGroup.numMorphNormals) {
-
 			geometryGroup.__morphNormalsArrays = [];
-
 			for ( m = 0, ml = geometryGroup.numMorphNormals; m < ml; m++) {
-
 				geometryGroup.__morphNormalsArrays.push(new Float32Array(nvertices * 3));
-
 			}
-
 		}
 
 		geometryGroup.__webglFaceCount = ntris * 3;
 		geometryGroup.__webglLineCount = nlines * 2;
 
 		// custom attributes
-
 		if (material.attributes) {
-
 			if (geometryGroup.__webglCustomAttributesList === undefined) {
-
 				geometryGroup.__webglCustomAttributesList = [];
-
 			}
 
 			for (var a in material.attributes ) {
-
 				// Do a shallow copy of the attribute object so different geometryGroup chunks
 				// use different
 				// attribute buffers which are correctly indexed in the setMeshBuffers function
-
 				var originalAttribute = material.attributes[a];
 
 				var attribute = {};
-
 				for (var property in originalAttribute ) {
-
 					attribute[property] = originalAttribute[property];
-
 				}
 
 				if (!attribute.__webglInitialized || attribute.createUniqueBuffers) {
-
 					attribute.__webglInitialized = true;
 
 					var size = 1;
 					// "f" and "i"
-
 					if (attribute.type === "v2")
 						size = 2;
 					else if (attribute.type === "v3")
@@ -189,32 +151,44 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 					attribute.__original = originalAttribute;
 
 				}
-
 				geometryGroup.__webglCustomAttributesList.push(attribute);
-
 			}
-
 		}
-
 		geometryGroup.__inittedArrays = true;
-
 	},
 
 	setBuffers : function(geometryGroup, object, dispose, material) {
-
 		if (!geometryGroup.__inittedArrays) {
-
 			return;
-
 		}
 
 		var renderer = this.renderer;
-		var normalType = this.bufferGuessNormalType(material), vertexColorType = this.bufferGuessVertexColorType(material), uvType = this.bufferGuessUVType(material), needsSmoothNormals = (normalType === THREE.SmoothShading );
+		var normalType = this.bufferGuessNormalType(material), 
+		vertexColorType = this.bufferGuessVertexColorType(material), 
+		uvType = this.bufferGuessUVType(material), 
+		needsSmoothNormals = (normalType === THREE.SmoothShading );
 
 		var f, fl, fi, face, vertexNormals, faceNormal, normal, vertexColors, faceColor, vertexTangents, uv, uv2, v1, v2, v3, v4, t1, t2, t3, t4, n1, n2, n3, n4, c1, c2, c3, c4, sw1, sw2, sw3, sw4, si1, si2, si3, si4, sa1, sa2, sa3, sa4, sb1, sb2, sb3, sb4, m, ml, i, il, vn, uvi, uv2i, vk, vkl, vka, nka, chf, faceVertexNormals, a, vertexIndex = 0, offset = 0, offset_uv = 0, offset_uv2 = 0, offset_face = 0, offset_normal = 0, offset_tangent = 0, offset_line = 0, offset_color = 0, offset_skin = 0, offset_morphTarget = 0, offset_custom = 0, offset_customSrc = 0, value, vertexArray = geometryGroup.__vertexArray, uvArray = geometryGroup.__uvArray, uv2Array = geometryGroup.__uv2Array, normalArray = geometryGroup.__normalArray, tangentArray = geometryGroup.__tangentArray, colorArray = geometryGroup.__colorArray, skinIndexArray = geometryGroup.__skinIndexArray, skinWeightArray = geometryGroup.__skinWeightArray, morphTargetsArrays = geometryGroup.__morphTargetsArrays, morphNormalsArrays = geometryGroup.__morphNormalsArrays, customAttributes = geometryGroup.__webglCustomAttributesList, customAttribute, faceArray = geometryGroup.__faceArray, lineArray = geometryGroup.__lineArray, geometry = object.geometry,
 		// // this is shared for all chunks
 
-		dirtyVertices = geometry.verticesNeedUpdate, dirtyElements = geometry.elementsNeedUpdate, dirtyUvs = geometry.uvsNeedUpdate, dirtyNormals = geometry.normalsNeedUpdate, dirtyTangents = geometry.tangentsNeedUpdate, dirtyColors = geometry.colorsNeedUpdate, dirtyMorphTargets = geometry.morphTargetsNeedUpdate, vertices = geometry.vertices, chunk_faces3 = geometryGroup.faces3, chunk_faces4 = geometryGroup.faces4, obj_faces = geometry.faces, obj_uvs = geometry.faceVertexUvs[0], obj_uvs2 = geometry.faceVertexUvs[1], obj_colors = geometry.colors, obj_skinIndices = geometry.skinIndices, obj_skinWeights = geometry.skinWeights, morphTargets = geometry.morphTargets, morphNormals = geometry.morphNormals;
+		dirtyVertices = geometry.verticesNeedUpdate, 
+		dirtyElements = geometry.elementsNeedUpdate, 
+		dirtyUvs = geometry.uvsNeedUpdate, 
+		dirtyNormals = geometry.normalsNeedUpdate, 
+		dirtyTangents = geometry.tangentsNeedUpdate, 
+		dirtyColors = geometry.colorsNeedUpdate, 
+		dirtyMorphTargets = geometry.morphTargetsNeedUpdate, 
+		vertices = geometry.vertices, 
+		chunk_faces3 = geometryGroup.faces3, 
+		chunk_faces4 = geometryGroup.faces4, 
+		obj_faces = geometry.faces, 
+		obj_uvs = geometry.faceVertexUvs[0], 
+		obj_uvs2 = geometry.faceVertexUvs[1], 
+		obj_colors = geometry.colors, 
+		obj_skinIndices = geometry.skinIndices, 
+		obj_skinWeights = geometry.skinWeights, 
+		morphTargets = geometry.morphTargets, 
+		morphNormals = geometry.morphNormals;
 
 		if (dirtyVertices) {
 

@@ -58,6 +58,7 @@ THREE.Geometry = function() {
 
 	this.buffersNeedUpdate = false;
 
+	this.__webglInit = false;
 };
 
 THREE.Geometry.prototype = {
