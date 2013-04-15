@@ -13,7 +13,7 @@ class AmbientLight extends Light
 		super(hex);
 	}
 	
-	public function clone(?light:Light):Light
+	override public function clone(?light:Light):Light
 	{
 		if (light == null)
 			light = new AmbientLight();

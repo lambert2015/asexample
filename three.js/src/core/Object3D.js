@@ -44,6 +44,10 @@ THREE.Object3D = function() {
 
 	this.userData = {};
 
+	//for render 
+	this.__webglInit = false;
+	this._modelViewMatrix = null;
+	this._normalMatrix  = null;
 };
 
 THREE.Object3D.prototype = {

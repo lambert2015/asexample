@@ -40,11 +40,11 @@ class Light extends Object3D
 		this.color = new Color(hex);
 	}
 	
-	public function clone(?light:Light):Light
-	{
-		if (light == null)
-			light = new Light();
-		light.color.copy(this.color);
-		return light;
-	}
+	//public function clone():Light
+	//{
+		//if (light == null)
+			//light = new Light();
+		//light.color.copy(this.color);
+		//return light;
+	//}
 }

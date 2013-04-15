@@ -13,3 +13,10 @@ THREE.RenderInfo = function() {
 		points : 0
 	};
 }
+
+THREE.RenderInfo.prototype.resetRender = function() {
+	this.render.calls = 0;
+	this.render.vertices = 0;
+	this.render.faces = 0;
+	this.render.points = 0;
+};
