@@ -55,37 +55,39 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 	var mediumpAvailable = _vertexShaderPrecisionMediumpFloat.precision > 0 && _fragmentShaderPrecisionMediumpFloat.precision > 0;
 
 	if (_precision === "highp" && !highpAvailable) {
-
 		if (mediumpAvailable) {
-
 			_precision = "mediump";
 			console.warn("WebGLRenderer: highp not supported, using mediump");
-
 		} else {
-
 			_precision = "lowp";
 			console.warn("WebGLRenderer: highp and mediump not supported, using lowp");
-
 		}
-
 	}
 
 	if (_precision === "mediump" && !mediumpAvailable) {
-
 		_precision = "lowp";
 		console.warn("WebGLRenderer: mediump not supported, using lowp");
-
 	}
 
-	var _enabledAttributes = {}, _oldBlending, _oldBlendEquation, _oldBlendSrc, _oldBlendDst, _oldDoubleSided = -1, _oldFlipSided = -1, _oldDepthTest = -1, _oldDepthWrite = -1, _oldLineWidth = -1, _viewportX = 0, _viewportY = 0, _viewportWidth = 0, _viewportHeight = 0,
+	var _enabledAttributes = {}, 
+	_oldBlending, _oldBlendEquation, _oldBlendSrc, _oldBlendDst, 
+	_oldDoubleSided = -1, 
+	_oldFlipSided = -1, 
+	_oldDepthTest = -1, 
+	_oldDepthWrite = -1, 
+	_oldLineWidth = -1, 
+	_viewportX = 0, 
+	_viewportY = 0, 
+	_viewportWidth = 0, 
+	_viewportHeight = 0,
 	// GL state cache
-
-	_oldPolygonOffset = null, _oldPolygonOffsetFactor = null, _oldPolygonOffsetUnits = null, _currentFramebuffer = null;
+	_oldPolygonOffset = null, 
+	_oldPolygonOffsetFactor = null, 
+	_oldPolygonOffsetUnits = null, 
+	_currentFramebuffer = null;
 
 	function initGL() {
-
 		try {
-
 			if (!( _gl = _canvas.getContext('experimental-webgl', {
 				alpha : _alpha,
 				premultipliedAlpha : _premultipliedAlpha,
@@ -93,65 +95,50 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 				stencil : _stencil,
 				preserveDrawingBuffer : _preserveDrawingBuffer
 			}) )) {
-
 				throw 'Error creating WebGL context.';
-
 			}
-
 		} catch ( error ) {
-
 			console.error(error);
-
 		}
 
 		_glExtensionTextureFloat = _gl.getExtension('OES_texture_float');
 		_glExtensionStandardDerivatives = _gl.getExtension('OES_standard_derivatives');
 
-		_glExtensionTextureFilterAnisotropic = _gl.getExtension('EXT_texture_filter_anisotropic') || _gl.getExtension('MOZ_EXT_texture_filter_anisotropic') || _gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
-
-		_glExtensionCompressedTextureS3TC = _gl.getExtension('WEBGL_compressed_texture_s3tc') || _gl.getExtension('MOZ_WEBGL_compressed_texture_s3tc') || _gl.getExtension('WEBKIT_WEBGL_compressed_texture_s3tc');
+		_glExtensionTextureFilterAnisotropic = _gl.getExtension('EXT_texture_filter_anisotropic') || 
+											_gl.getExtension('MOZ_EXT_texture_filter_anisotropic') || 
+											_gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
+		_glExtensionCompressedTextureS3TC = _gl.getExtension('WEBGL_compressed_texture_s3tc') || 
+											_gl.getExtension('MOZ_WEBGL_compressed_texture_s3tc') || 
+											_gl.getExtension('WEBKIT_WEBGL_compressed_texture_s3tc');
 
 		if (!_glExtensionTextureFloat) {
-
 			console.log('THREE.WebGLRenderer: Float textures not supported.');
-
 		}
 
 		if (!_glExtensionStandardDerivatives) {
-
 			console.log('THREE.WebGLRenderer: Standard derivatives not supported.');
-
 		}
 
 		if (!_glExtensionTextureFilterAnisotropic) {
-
 			console.log('THREE.WebGLRenderer: Anisotropic texture filtering not supported.');
-
 		}
 
 		if (!_glExtensionCompressedTextureS3TC) {
-
 			console.log('THREE.WebGLRenderer: S3TC compressed textures not supported.');
-
 		}
 
 		if (_gl.getShaderPrecisionFormat === undefined) {
-
 			_gl.getShaderPrecisionFormat = function() {
-
 				return {
 					"rangeMin" : 1,
 					"rangeMax" : 1,
 					"precision" : 1
 				};
-
 			}
 		}
-
 	}
 
 	function setDefaultGLState() {
-
 		_gl.clearColor(0, 0, 0, 1);
 		_gl.clearDepth(1);
 		_gl.clearStencil(0);
@@ -168,94 +155,66 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 		_gl.blendFunc(_gl.SRC_ALPHA, _gl.ONE_MINUS_SRC_ALPHA);
 
 		_gl.clearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearAlpha);
-
 	}
 
 	// Fallback filters for non-power-of-2 textures
-
 	function filterFallback(f) {
-
-		if (f === THREE.NearestFilter || f === THREE.NearestMipMapNearestFilter || f === THREE.NearestMipMapLinearFilter) {
-
+		if (f === THREE.NearestFilter || 
+			f === THREE.NearestMipMapNearestFilter || 
+			f === THREE.NearestMipMapLinearFilter) {
 			return _gl.NEAREST;
-
 		}
-
 		return _gl.LINEAR;
-
 	}
 
 	function getContext() {
-
 		return _gl;
-
 	}
 
 	function getDomElement() {
-
 		return _canvas;
-
 	}
 
 	function getPrecision() {
-
 		return _precision;
-
 	}
 
 	function getCurrentWidth() {
-
 		return _currentWidth;
-
 	}
 
 	function getCurrentHeight() {
-
 		return _currentHeight;
-
 	}
 
 	function supportsVertexTextures() {
-
 		return _supportsVertexTextures;
-
 	}
 
 	function supportsFloatTextures() {
-
 		return _glExtensionTextureFloat;
-
 	}
 
 	function supportsStandardDerivatives() {
-
 		return _glExtensionStandardDerivatives;
-
 	}
 
 	function supportsCompressedTextureS3TC() {
-
 		return _glExtensionCompressedTextureS3TC;
-
 	}
 
 	function getMaxAnisotropy() {
-
 		return _maxAnisotropy;
-
 	}
 
 	function setSize(width, height) {
-
 		_canvas.width = width;
 		_canvas.height = height;
 
 		setViewport(0, 0, _canvas.width, _canvas.height);
-
 	}
 
 	function setViewport(x, y, width, height) {
-
 		_viewportX = x !== undefined ? x : 0;
 		_viewportY = y !== undefined ? y : 0;
 
@@ -263,55 +222,41 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 		_viewportHeight = height !== undefined ? height : _canvas.height;
 
 		_gl.viewport(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
-
 	}
 
 	function setScissor(x, y, width, height) {
-
 		_gl.scissor(x, y, width, height);
-
 	}
 
 	function enableScissorTest(enable) {
-
 		enable ? _gl.enable(_gl.SCISSOR_TEST) : _gl.disable(_gl.SCISSOR_TEST);
-
 	}
 
 	// Clearing
-
 	function setClearColorHex(hex, alpha) {
 
 		_clearColor.setHex(hex);
 		_clearAlpha = alpha;
 
 		_gl.clearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearAlpha);
-
 	}
 
 	function setClearColor(color, alpha) {
-
 		_clearColor.copy(color);
 		_clearAlpha = alpha;
 
 		_gl.clearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearAlpha);
-
 	}
 
 	function getClearColor() {
-
 		return _clearColor;
-
 	}
 
 	function getClearAlpha() {
-
 		return _clearAlpha;
-
 	}
 
 	function clear(color, depth, stencil) {
-
 		var bits = 0;
 
 		if (color === undefined || color)
@@ -322,510 +267,330 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 			bits |= _gl.STENCIL_BUFFER_BIT;
 
 		_gl.clear(bits);
-
 	}
 
 	function clearTarget(renderTarget, color, depth, stencil) {
-
 		setRenderTarget(renderTarget);
 		clear(color, depth, stencil);
-
 	}
 
 	function deleteBuffer(buffer) {
-
 		_gl.deleteBuffer(buffer);
-
 	}
 
 	function deleteTexture(texture) {
-
 		_gl.deleteTexture(texture);
-
 	}
 
 	function deleteFramebuffer(Framebuffer) {
-
 		_gl.deleteFramebuffer(Framebuffer);
-
 	}
 
 	function deleteRenderbuffer(RenderBuffer) {
-
 		_gl.deleteRenderbuffer(RenderBuffer);
-
 	}
 
 	function deleteProgram(program) {
-
 		_gl.deleteProgram(program);
-
 	}
 
 	function createBuffer() {
-
 		return _gl.createBuffer();
-
 	}
 
 	function setStaticArrayBuffer(buffer, data) {
-
 		bindArrayBuffer(buffer);
 		_gl.bufferData(_gl.ARRAY_BUFFER, data, _gl.STATIC_DRAW);
-
 	}
 
 	function setStaticIndexBuffer(buffer, data) {
-
 		bindElementArrayBuffer(buffer);
 		_gl.bufferData(_gl.ELEMENT_ARRAY_BUFFER, data, _gl.STATIC_DRAW);
-
 	}
 
 	function setDynamicArrayBuffer(buffer, data) {
-
 		bindArrayBuffer(buffer);
 		_gl.bufferData(_gl.ARRAY_BUFFER, data, _gl.DYNAMIC_DRAW);
-
 	}
 
 	function setDynamicIndexBuffer(buffer, data) {
-
 		bindElementArrayBuffer(buffer);
 		_gl.bufferData(_gl.ELEMENT_ARRAY_BUFFER, data, _gl.DYNAMIC_DRAW);
-
 	}
 
 	function drawTriangles(count) {
-
 		_gl.drawArrays(_gl.TRIANGLES, 0, count);
-
 	}
 
 	function drawTriangleStrip(count) {
-
 		_gl.drawArrays(_gl.TRIANGLE_STRIP, 0, count);
-
 	}
 
 	function drawLines(count) {
-
 		_gl.drawArrays(_gl.LINES, 0, count);
-
 	}
 
 	function drawLineStrip(count) {
-
 		_gl.drawArrays(_gl.LINE_STRIP, 0, count);
-
 	}
 
 	function drawPoints(count) {
-
 		_gl.drawArrays(_gl.POINTS, 0, count);
-
 	}
 
 	function drawTriangleElements(buffer, count, offset) {
-
 		bindElementArrayBuffer(buffer);
 		_gl.drawElements(_gl.TRIANGLES, count, _gl.UNSIGNED_SHORT, offset);
 		// 2 bytes per Uint16
-
 	}
 
 	function drawLineElements(buffer, count, offset) {
-
 		bindElementArrayBuffer(buffer);
 		_gl.drawElements(_gl.LINES, count, _gl.UNSIGNED_SHORT, offset);
 		// 2 bytes per Uint16
-
 	}
 
 	var _boundBuffer;
 
 	function bindArrayBuffer(buffer) {
-
 		if (_boundBuffer != buffer) {
-
 			_gl.bindBuffer(_gl.ARRAY_BUFFER, buffer);
 			_boundBuffer = buffer;
-
 		}
-
 	}
 
 	function bindElementArrayBuffer(buffer) {
-
 		if (_boundBuffer != buffer) {
-
 			_gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, buffer);
 			_boundBuffer = buffer;
-
 		}
-
 	}
 
 	function enableAttribute(attribute) {
-
 		if (!_enabledAttributes[attribute]) {
-
 			_gl.enableVertexAttribArray(attribute);
 			_enabledAttributes[attribute] = true;
-
 		}
-
 	}
 
 	function disableAttributes() {
-
 		for (var attribute in _enabledAttributes ) {
-
 			if (_enabledAttributes[attribute]) {
-
 				_gl.disableVertexAttribArray(attribute);
 				_enabledAttributes[attribute] = false;
-
 			}
-
 		}
-
 	}
 
 	function getAttribLocation(programInfo, id) {
-
 		return _gl.getAttribLocation(programInfo.program, id);
-
 	}
 
 	function setFloatAttribute(index, buffer, size, offset) {
-
 		bindArrayBuffer(buffer);
 		enableAttribute(index);
 		_gl.vertexAttribPointer(index, size, _gl.FLOAT, false, 0, offset);
-
 	}
 
 	function getUniformLocation(programInfo, id) {
-
 		return _gl.getUniformLocation(programInfo.program, id);
-
 	}
 
 	function uniform1i(uniform, value) {
-
 		_gl.uniform1i(uniform, value);
-
 	}
 
 	function uniform1f(uniform, value) {
-
 		_gl.uniform1f(uniform, value);
-
 	}
 
 	function uniform2f(uniform, value1, value2) {
-
 		_gl.uniform2f(uniform, value1, value2);
-
 	}
 
 	function uniform3f(uniform, value1, value2, value3) {
-
 		_gl.uniform3f(uniform, value1, value2, value3);
-
 	}
 
 	function uniform4f(uniform, value1, value2, value3, value4) {
-
 		_gl.uniform4f(uniform, value1, value2, value3, value4);
-
 	}
 
 	function uniform1iv(uniform, value) {
-
 		_gl.uniform1iv(uniform, value);
-
 	}
 
 	function uniform2iv(uniform, value) {
-
 		_gl.uniform2iv(uniform, value);
-
 	}
 
 	function uniform3iv(uniform, value) {
-
 		_gl.uniform3iv(uniform, value);
-
 	}
 
 	function uniform1fv(uniform, value) {
-
 		_gl.uniform1fv(uniform, value);
-
 	}
 
 	function uniform2fv(uniform, value) {
-
 		_gl.uniform2fv(uniform, value);
-
 	}
 
 	function uniform3fv(uniform, value) {
-
 		_gl.uniform3fv(uniform, value);
-
 	}
 
 	function uniform4fv(uniform, value) {
-
 		_gl.uniform3fv(uniform, value);
-
 	}
 
 	function uniformMatrix3fv(location, value) {
-
 		_gl.uniformMatrix3fv(location, false, value);
-
 	}
 
 	function uniformMatrix4fv(location, value) {
-
 		_gl.uniformMatrix4fv(location, false, value);
-
 	}
 
 	function useProgram(programInfo) {
-
 		_gl.useProgram(programInfo.program);
-
 	}
 
 	function setFaceCulling(cullFace, frontFaceDirection) {
-
 		if (cullFace === THREE.CullFaceNone) {
-
 			_gl.disable(_gl.CULL_FACE);
-
 		} else {
-
 			if (frontFaceDirection === THREE.FrontFaceDirectionCW) {
-
 				_gl.frontFace(_gl.CW);
-
 			} else {
-
 				_gl.frontFace(_gl.CCW);
-
 			}
 
 			if (cullFace === THREE.CullFaceBack) {
-
 				_gl.cullFace(_gl.BACK);
-
 			} else if (cullFace === THREE.CullFaceFront) {
-
 				_gl.cullFace(_gl.FRONT);
-
 			} else {
-
 				_gl.cullFace(_gl.FRONT_AND_BACK);
-
 			}
 
 			_gl.enable(_gl.CULL_FACE);
-
 		}
-
 	}
 
 	function setMaterialFaces(material) {
-
 		var doubleSided = material.side === THREE.DoubleSide;
 		var flipSided = material.side === THREE.BackSide;
-
 		if (_oldDoubleSided !== doubleSided) {
-
 			if (doubleSided) {
-
 				_gl.disable(_gl.CULL_FACE);
-
 			} else {
-
 				_gl.enable(_gl.CULL_FACE);
-
 			}
 
 			_oldDoubleSided = doubleSided;
-
 		}
 
 		if (_oldFlipSided !== flipSided) {
-
 			if (flipSided) {
-
 				_gl.frontFace(_gl.CW);
-
 			} else {
-
 				_gl.frontFace(_gl.CCW);
-
 			}
-
 			_oldFlipSided = flipSided;
-
 		}
-
 	}
 
 	function setPolygonOffset(polygonoffset, factor, units) {
-
 		if (_oldPolygonOffset !== polygonoffset) {
-
 			if (polygonoffset) {
-
 				_gl.enable(_gl.POLYGON_OFFSET_FILL);
-
 			} else {
-
 				_gl.disable(_gl.POLYGON_OFFSET_FILL);
-
 			}
 
 			_oldPolygonOffset = polygonoffset;
-
 		}
 
 		if (polygonoffset && (_oldPolygonOffsetFactor !== factor || _oldPolygonOffsetUnits !== units )) {
-
 			_gl.polygonOffset(factor, units);
 
 			_oldPolygonOffsetFactor = factor;
 			_oldPolygonOffsetUnits = units;
-
 		}
-
 	}
 
 	function setBlending(blending, blendEquation, blendSrc, blendDst) {
-
 		if (blending !== _oldBlending) {
-
 			if (blending === THREE.NoBlending) {
-
 				_gl.disable(_gl.BLEND);
-
 			} else if (blending === THREE.AdditiveBlending) {
-
 				_gl.enable(_gl.BLEND);
 				_gl.blendEquation(_gl.FUNC_ADD);
 				_gl.blendFunc(_gl.SRC_ALPHA, _gl.ONE);
-
 			} else if (blending === THREE.SubtractiveBlending) {
-
 				// TODO: Find blendFuncSeparate() combination
 				_gl.enable(_gl.BLEND);
 				_gl.blendEquation(_gl.FUNC_ADD);
 				_gl.blendFunc(_gl.ZERO, _gl.ONE_MINUS_SRC_COLOR);
-
 			} else if (blending === THREE.MultiplyBlending) {
-
 				// TODO: Find blendFuncSeparate() combination
 				_gl.enable(_gl.BLEND);
 				_gl.blendEquation(_gl.FUNC_ADD);
 				_gl.blendFunc(_gl.ZERO, _gl.SRC_COLOR);
-
 			} else if (blending === THREE.CustomBlending) {
-
 				_gl.enable(_gl.BLEND);
-
 			} else {
-
 				_gl.enable(_gl.BLEND);
 				_gl.blendEquationSeparate(_gl.FUNC_ADD, _gl.FUNC_ADD);
 				_gl.blendFuncSeparate(_gl.SRC_ALPHA, _gl.ONE_MINUS_SRC_ALPHA, _gl.ONE, _gl.ONE_MINUS_SRC_ALPHA);
-
 			}
-
 			_oldBlending = blending;
-
 		}
 
 		if (blending === THREE.CustomBlending) {
-
 			if (blendEquation !== _oldBlendEquation) {
-
 				_gl.blendEquation(paramThreeToGL(blendEquation));
-
 				_oldBlendEquation = blendEquation;
-
 			}
 
 			if (blendSrc !== _oldBlendSrc || blendDst !== _oldBlendDst) {
-
 				_gl.blendFunc(paramThreeToGL(blendSrc), paramThreeToGL(blendDst));
-
 				_oldBlendSrc = blendSrc;
 				_oldBlendDst = blendDst;
-
 			}
-
 		} else {
-
 			_oldBlendEquation = null;
 			_oldBlendSrc = null;
 			_oldBlendDst = null;
-
 		}
-
 	}
 
 	function setDepthTest(depthTest) {
-
 		if (_oldDepthTest !== depthTest) {
-
 			if (depthTest) {
-
 				_gl.enable(_gl.DEPTH_TEST);
-
 			} else {
-
 				_gl.disable(_gl.DEPTH_TEST);
-
 			}
-
 			_oldDepthTest = depthTest;
-
 		}
-
 	}
 
 	function setDepthWrite(depthWrite) {
-
 		if (_oldDepthWrite !== depthWrite) {
-
 			_gl.depthMask(depthWrite);
 			_oldDepthWrite = depthWrite;
-
 		}
-
 	}
 
 	function setTexture(texture, slot) {
-
 		if (texture.needsUpdate) {
-
 			if (!texture.__webglInit) {
-
 				texture.__webglInit = true;
-
 				//texture.addEventListener( 'dispose', onTextureDispose );
-
 				texture.__webglTexture = _gl.createTexture();
-
 				//_this.info.memory.textures ++;
-
 			}
 
 			_gl.activeTexture(_gl.TEXTURE0 + slot);
@@ -840,7 +605,6 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 			setTextureParameters(_gl.TEXTURE_2D, texture, isImagePowerOfTwo);
 
 			var mipmap, mipmaps = texture.mipmaps;
-
 			if ( texture instanceof THREE.DataTexture) {
 
 				// use manually created mipmaps if available
@@ -848,57 +612,38 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 				// set 0 level mipmap and then use GL to generate other mipmap levels
 
 				if (mipmaps.length > 0 && isImagePowerOfTwo) {
-
 					for (var i = 0, il = mipmaps.length; i < il; i++) {
-
 						mipmap = mipmaps[i];
 						_gl.texImage2D(_gl.TEXTURE_2D, i, glFormat, mipmap.width, mipmap.height, 0, glFormat, glType, mipmap.data);
-
 					}
 
 					texture.generateMipmaps = false;
 
 				} else {
-
 					_gl.texImage2D(_gl.TEXTURE_2D, 0, glFormat, image.width, image.height, 0, glFormat, glType, image.data);
-
 				}
-
 			} else if ( texture instanceof THREE.CompressedTexture) {
-
 				// compressed textures can only use manually created mipmaps
 				// WebGL can't generate mipmaps for DDS textures
-
 				for (var i = 0, il = mipmaps.length; i < il; i++) {
 
 					mipmap = mipmaps[i];
 					_gl.compressedTexImage2D(_gl.TEXTURE_2D, i, glFormat, mipmap.width, mipmap.height, 0, mipmap.data);
-
 				}
-
 			} else {// regular Texture (image, video, canvas)
 
 				// use manually created mipmaps if available
 				// if there are no manual mipmaps
 				// set 0 level mipmap and then use GL to generate other mipmap levels
-
 				if (mipmaps.length > 0 && isImagePowerOfTwo) {
-
 					for (var i = 0, il = mipmaps.length; i < il; i++) {
-
 						mipmap = mipmaps[i];
 						_gl.texImage2D(_gl.TEXTURE_2D, i, glFormat, glFormat, glType, mipmap);
-
 					}
-
 					texture.generateMipmaps = false;
-
 				} else {
-
 					_gl.texImage2D(_gl.TEXTURE_2D, 0, glFormat, glFormat, glType, texture.image);
-
 				}
-
 			}
 
 			if (texture.generateMipmaps && isImagePowerOfTwo)
@@ -910,24 +655,16 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 				texture.onUpdate();
 
 		} else {
-
 			_gl.activeTexture(_gl.TEXTURE0 + slot);
 			_gl.bindTexture(_gl.TEXTURE_2D, texture.__webglTexture);
-
 		}
-
 	}
 
 	function setCubeTexture(texture, slot) {
-
 		if (texture.image.length === 6) {
-
 			if (texture.needsUpdate) {
-
 				if (!texture.image.__webglTextureCube) {
-
 					texture.image.__webglTextureCube = _gl.createTexture();
-
 				}
 
 				_gl.activeTexture(_gl.TEXTURE0 + slot);
@@ -938,50 +675,35 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 				var isCompressed = texture instanceof THREE.CompressedTexture;
 
 				var cubeImage = [];
-
 				for (var i = 0; i < 6; i++) {
-
 					if (_autoScaleCubemaps && !isCompressed) {
-
 						cubeImage[i] = clampToMaxSize(texture.image[i], _maxCubemapSize);
-
 					} else {
-
 						cubeImage[i] = texture.image[i];
-
 					}
-
 				}
 
-				var image = cubeImage[0], isImagePowerOfTwo = isPowerOfTwo(image.width) && isPowerOfTwo(image.height), glFormat = paramThreeToGL(texture.format), glType = paramThreeToGL(texture.type);
-
+				var image = cubeImage[0], 
+				isImagePowerOfTwo = isPowerOfTwo(image.width) && isPowerOfTwo(image.height), 
+				glFormat = paramThreeToGL(texture.format), 
+				glType = paramThreeToGL(texture.type);
 				setTextureParameters(_gl.TEXTURE_CUBE_MAP, texture, isImagePowerOfTwo);
 
 				for (var i = 0; i < 6; i++) {
 
 					if (isCompressed) {
-
 						var mipmap, mipmaps = cubeImage[i].mipmaps;
-
 						for (var j = 0, jl = mipmaps.length; j < jl; j++) {
-
 							mipmap = mipmaps[j];
 							_gl.compressedTexImage2D(_gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, j, glFormat, mipmap.width, mipmap.height, 0, mipmap.data);
-
 						}
-
 					} else {
-
 						_gl.texImage2D(_gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, glFormat, glFormat, glType, cubeImage[i]);
-
 					}
-
 				}
 
 				if (texture.generateMipmaps && isImagePowerOfTwo) {
-
 					_gl.generateMipmap(_gl.TEXTURE_CUBE_MAP);
-
 				}
 
 				texture.needsUpdate = false;
@@ -990,34 +712,24 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 					texture.onUpdate();
 
 			} else {
-
 				_gl.activeTexture(_gl.TEXTURE0 + slot);
 				_gl.bindTexture(_gl.TEXTURE_CUBE_MAP, texture.image.__webglTextureCube);
-
 			}
-
 		}
-
 	}
 
 	// Textures
-
 	function isPowerOfTwo(value) {
-
 		return (value & (value - 1 ) ) === 0;
-
 	}
 
 	function setTextureParameters(textureType, texture, isImagePowerOfTwo) {
-
 		if (isImagePowerOfTwo) {
-
 			_gl.texParameteri(textureType, _gl.TEXTURE_WRAP_S, paramThreeToGL(texture.wrapS));
 			_gl.texParameteri(textureType, _gl.TEXTURE_WRAP_T, paramThreeToGL(texture.wrapT));
 
 			_gl.texParameteri(textureType, _gl.TEXTURE_MAG_FILTER, paramThreeToGL(texture.magFilter));
 			_gl.texParameteri(textureType, _gl.TEXTURE_MIN_FILTER, paramThreeToGL(texture.minFilter));
-
 		} else {
 
 			_gl.texParameteri(textureType, _gl.TEXTURE_WRAP_S, _gl.CLAMP_TO_EDGE);
@@ -1029,12 +741,9 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 		}
 
 		if (_glExtensionTextureFilterAnisotropic && texture.type !== THREE.FloatType) {
-
 			if (texture.anisotropy > 1 || texture.__oldAnisotropy) {
-
 				_gl.texParameterf(textureType, _glExtensionTextureFilterAnisotropic.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(texture.anisotropy, _maxAnisotropy));
 				texture.__oldAnisotropy = texture.anisotropy;
-
 			}
 
 		}
@@ -1042,18 +751,13 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 	}
 
 	function setupFrameBuffer(framebuffer, renderTarget, textureTarget) {
-
 		_gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
 		_gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, textureTarget, renderTarget.__webglTexture, 0);
-
 	}
 
 	function setupRenderBuffer(renderbuffer, renderTarget) {
-
 		_gl.bindRenderbuffer(_gl.RENDERBUFFER, renderbuffer);
-
 		if (renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
-
 			_gl.renderbufferStorage(_gl.RENDERBUFFER, _gl.DEPTH_COMPONENT16, renderTarget.width, renderTarget.height);
 			_gl.framebufferRenderbuffer(_gl.FRAMEBUFFER, _gl.DEPTH_ATTACHMENT, _gl.RENDERBUFFER, renderbuffer);
 
@@ -1066,22 +770,15 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 			_gl.RENDERBUFFER, renderbuffer );
 			 */
 		} else if (renderTarget.depthBuffer && renderTarget.stencilBuffer) {
-
 			_gl.renderbufferStorage(_gl.RENDERBUFFER, _gl.DEPTH_STENCIL, renderTarget.width, renderTarget.height);
 			_gl.framebufferRenderbuffer(_gl.FRAMEBUFFER, _gl.DEPTH_STENCIL_ATTACHMENT, _gl.RENDERBUFFER, renderbuffer);
-
 		} else {
-
 			_gl.renderbufferStorage(_gl.RENDERBUFFER, _gl.RGBA4, renderTarget.width, renderTarget.height);
-
 		}
-
 	}
 
 	function setRenderTarget(renderTarget) {
-
 		var isCube = ( renderTarget instanceof THREE.WebGLRenderTargetCube );
-
 		if (renderTarget && !renderTarget.__webglFramebuffer) {
 
 			if (renderTarget.depthBuffer === undefined)
@@ -1108,7 +805,6 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 				setTextureParameters(_gl.TEXTURE_CUBE_MAP, renderTarget, isTargetPowerOfTwo);
 
 				for (var i = 0; i < 6; i++) {
-
 					renderTarget.__webglFramebuffer[i] = _gl.createFramebuffer();
 					renderTarget.__webglRenderbuffer[i] = _gl.createRenderbuffer();
 
@@ -1116,24 +812,17 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 
 					setupFrameBuffer(renderTarget.__webglFramebuffer[i], renderTarget, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + i);
 					setupRenderBuffer(renderTarget.__webglRenderbuffer[i], renderTarget);
-
 				}
 
 				if (isTargetPowerOfTwo)
 					_gl.generateMipmap(_gl.TEXTURE_CUBE_MAP);
 
 			} else {
-
 				renderTarget.__webglFramebuffer = _gl.createFramebuffer();
-
 				if (renderTarget.shareDepthFrom) {
-
 					renderTarget.__webglRenderbuffer = renderTarget.shareDepthFrom.__webglRenderbuffer;
-
 				} else {
-
 					renderTarget.__webglRenderbuffer = _gl.createRenderbuffer();
-
 				}
 
 				_gl.bindTexture(_gl.TEXTURE_2D, renderTarget.__webglTexture);
@@ -1152,7 +841,6 @@ THREE.WebGLRenderer.LowLevelRenderer = function(parameters) {
 					} else if (renderTarget.depthBuffer && renderTarget.stencilBuffer) {
 
 						_gl.framebufferRenderbuffer(_gl.FRAMEBUFFER, _gl.DEPTH_STENCIL_ATTACHMENT, _gl.RENDERBUFFER, renderTarget.__webglRenderbuffer);
-
 					}
 
 				} else {
