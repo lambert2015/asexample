@@ -1,7 +1,5 @@
 THREE.WebGLRenderer.MeshRenderer = function(lowlevelrenderer, info) {
-
 	THREE.WebGLRenderer.Object3DRenderer.call(this, lowlevelrenderer, info);
-
 };
 
 THREE.WebGLRenderer.MeshRenderer.prototype = Object.create(THREE.WebGLRenderer.Object3DRenderer.prototype);
@@ -246,7 +244,6 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 			}
 
 			renderer.setDynamicArrayBuffer(geometryGroup.__webglVertexBuffer, vertexArray);
-
 		}
 
 		if (dirtyMorphTargets) {
@@ -317,9 +314,7 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 					}
 
 					//
-
 					offset_morphTarget += 9;
-
 				}
 
 				for ( f = 0, fl = chunk_faces4.length; f < fl; f++) {
@@ -328,7 +323,6 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 					face = obj_faces[chf];
 
 					// morph positions
-
 					v1 = morphTargets[ vk ].vertices[face.a];
 					v2 = morphTargets[ vk ].vertices[face.b];
 					v3 = morphTargets[ vk ].vertices[face.c];
@@ -353,7 +347,6 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 					vka[offset_morphTarget + 11] = v4.z;
 
 					// morph normals
-
 					if (material.morphNormals) {
 
 						if (needsSmoothNormals) {
@@ -395,21 +388,15 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 					}
 
 					//
-
 					offset_morphTarget += 12;
-
 				}
 
 				this.renderer.setDynamicArrayBuffer(geometryGroup.__webglMorphTargetsBuffers[vk], morphTargetsArrays[vk]);
 
 				if (material.morphNormals) {
-
 					this.renderer.setDynamicArrayBuffer(geometryGroup.__webglMorphNormalsBuffers[vk], morphNormalsArrays[vk]);
-
 				}
-
 			}
-
 		}
 
 		if (obj_skinWeights.length) {
@@ -419,7 +406,6 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 				face = obj_faces[chunk_faces3[f]];
 
 				// weights
-
 				sw1 = obj_skinWeights[face.a];
 				sw2 = obj_skinWeights[face.b];
 				sw3 = obj_skinWeights[face.c];
@@ -469,7 +455,6 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 				face = obj_faces[chunk_faces4[f]];
 
 				// weights
-
 				sw1 = obj_skinWeights[face.a];
 				sw2 = obj_skinWeights[face.b];
 				sw3 = obj_skinWeights[face.c];
@@ -496,7 +481,6 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 				skinWeightArray[offset_skin + 15] = sw4.w;
 
 				// indices
-
 				si1 = obj_skinIndices[face.a];
 				si2 = obj_skinIndices[face.b];
 				si3 = obj_skinIndices[face.c];
@@ -527,12 +511,9 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 			}
 
 			if (offset_skin > 0) {
-
 				renderer.setDynamicArrayBuffer(geometryGroup.__webglSkinIndicesBuffer, skinIndexArray);
 				renderer.setDynamicArrayBuffer(geometryGroup.__webglSkinWeightsBuffer, skinWeightArray);
-
 			}
-
 		}
 
 		if (dirtyColors && vertexColorType) {
@@ -618,11 +599,8 @@ THREE.extend(THREE.WebGLRenderer.MeshRenderer.prototype, {
 			}
 
 			if (offset_color > 0) {
-
 				renderer.setDynamicArrayBuffer(geometryGroup.__webglColorBuffer, colorArray);
-
 			}
-
 		}
 
 		if (dirtyTangents && geometry.hasTangents) {
