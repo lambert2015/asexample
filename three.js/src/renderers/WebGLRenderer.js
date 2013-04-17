@@ -164,7 +164,6 @@ THREE.WebGLRenderer = function(parameters) {
 		_lightsNeedUpdate = true;
 
 		renderer.resetState();
-
 		this.shadowMapPlugin.update(scene, camera);
 	};
 
@@ -228,7 +227,6 @@ THREE.WebGLRenderer = function(parameters) {
 			renderer.deleteBuffer(geometry.__webglLineDistanceBuffer);
 
 		// geometry groups
-
 		if (geometry.geometryGroups !== undefined) {
 			for (var g in geometry.geometryGroups ) {
 				var geometryGroup = geometry.geometryGroups[g];
@@ -1008,6 +1006,7 @@ THREE.WebGLRenderer = function(parameters) {
 		}
 	};
 
+	//渲染模型列表
 	function renderObjects(renderList, reverse, materialType, camera, lights, fog, useBlending, overrideMaterial) {
 
 		var webglObject, object, buffer, material, start, end, delta;
@@ -2440,7 +2439,8 @@ THREE.WebGLRenderer = function(parameters) {
 
 			if ( light.type === THREE.LightType.Spot)
 				maxShadows++;
-			if ( light.type === THREE.LightType.Directional && !light.shadowCascade)
+			if ( light.type === THREE.LightType.Directional && 
+				!light.shadowCascade)
 				maxShadows++;
 		}
 		return maxShadows;
