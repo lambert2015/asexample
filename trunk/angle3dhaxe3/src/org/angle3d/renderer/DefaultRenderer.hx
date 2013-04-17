@@ -258,7 +258,7 @@ class DefaultRenderer implements IRenderer
 		}
 		_context3D.setTextureAt(index, map.getTexture(_context3D));
 		//TODO 减少变化
-		_context3D.setSamplerStateAt(index, map.getWrapMode(), map.getTextureFilter(), map.getMipFilter());
+		//_context3D.setSamplerStateAt(index, map.getWrapMode(), map.getTextureFilter(), map.getMipFilter());
 	}
 
 	//耗时有点久
