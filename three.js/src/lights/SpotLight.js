@@ -4,7 +4,7 @@
 
 THREE.SpotLight = function(hex, intensity, distance, angle, exponent) {
 
-	THREE.Light.call(this, hex);
+	THREE.Light.call(this, hex, THREE.LightType.Spot);
 
 	this.position.set(0, 1, 0);
 	this.target = new THREE.Object3D();

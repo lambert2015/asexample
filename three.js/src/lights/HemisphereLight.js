@@ -4,7 +4,7 @@
 
 THREE.HemisphereLight = function(skyColorHex, groundColorHex, intensity) {
 
-	THREE.Light.call(this, skyColorHex);
+	THREE.Light.call(this, skyColorHex, THREE.LightType.Hemisphere);
 
 	this.position.set(0, 100, 0);
 

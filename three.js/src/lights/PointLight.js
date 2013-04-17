@@ -4,7 +4,7 @@
 
 THREE.PointLight = function(hex, intensity, distance) {
 
-	THREE.Light.call(this, hex);
+	THREE.Light.call(this, hex, THREE.LightType.Point);
 
 	this.intensity = (intensity !== undefined ) ? intensity : 1;
 	this.distance = (distance !== undefined ) ? distance : 0;
