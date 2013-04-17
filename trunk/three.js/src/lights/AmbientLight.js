@@ -4,7 +4,7 @@
 
 THREE.AmbientLight = function(hex) {
 
-	THREE.Light.call(this, hex);
+	THREE.Light.call(this, hex, THREE.LightType.Ambient);
 
 };
 

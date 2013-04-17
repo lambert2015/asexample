@@ -367,38 +367,23 @@ THREE.WebGLRenderer = function(parameters) {
 
 	// Buffer setting
 	function setDirectBuffers(geometry, dispose) {
-
 		var attributes = geometry.attributes;
-
 		var attributeName, attributeItem;
-
 		for (attributeName in attributes ) {
-
 			attributeItem = attributes[attributeName];
-
 			if (attributeItem.needsUpdate) {
-
 				if (attributeName === 'index') {
-
 					renderer.setDynamicIndexBuffer(attributeItem.buffer, attributeItem.array);
-
 				} else {
-
 					renderer.setDynamicArrayBuffer(attributeItem.buffer, attributeItem.array);
-
 				}
-
 				attributeItem.needsUpdate = false;
-
 			}
 
 			if (dispose && !attributeItem.dynamic) {
 				delete attributeItem.array;
-
 			}
-
 		}
-
 	};
 
 	// Buffer rendering
@@ -922,7 +907,6 @@ THREE.WebGLRenderer = function(parameters) {
 					webglObject.render = true;
 
 					if (this.sortObjects === true) {
-
 						if (object.renderDepth !== null) {
 							webglObject.z = object.renderDepth;
 						} else {
@@ -1028,11 +1012,14 @@ THREE.WebGLRenderer = function(parameters) {
 
 		var webglObject, object, buffer, material, start, end, delta;
 
+		//渲染顺序
 		if (reverse) {
+			//从后向前渲染
 			start = renderList.length - 1;
 			end = -1;
 			delta = -1;
 		} else {
+			//从前向后渲染
 			start = 0;
 			end = renderList.length;
 			delta = 1;
@@ -2220,7 +2207,7 @@ THREE.WebGLRenderer = function(parameters) {
 			intensity = light.intensity;
 			distance = light.distance;
 
-			if ( light instanceof THREE.AmbientLight) {
+			if ( light.type === THREE.LightType.Ambient) {
 				if (!light.visible)
 					continue;
 
@@ -2233,7 +2220,7 @@ THREE.WebGLRenderer = function(parameters) {
 					g += color.g;
 					b += color.b;
 				}
-			} else if ( light instanceof THREE.DirectionalLight) {
+			} else if ( light.type === THREE.LightType.Directional) {
 				dirCount += 1;
 				if (!light.visible)
 					continue;
@@ -2261,7 +2248,7 @@ THREE.WebGLRenderer = function(parameters) {
 				}
 
 				dirLength += 1;
-			} else if ( light instanceof THREE.PointLight) {
+			} else if ( light.type === THREE.LightType.Point) {
 				pointCount += 1;
 
 				if (!light.visible)
@@ -2285,7 +2272,7 @@ THREE.WebGLRenderer = function(parameters) {
 
 				pointLength += 1;
 
-			} else if ( light instanceof THREE.SpotLight) {
+			} else if ( light.type === THREE.LightType.Spot) {
 
 				spotCount += 1;
 
@@ -2326,7 +2313,7 @@ THREE.WebGLRenderer = function(parameters) {
 
 				spotLength += 1;
 
-			} else if ( light instanceof THREE.HemisphereLight) {
+			} else if ( light.type === THREE.LightType.Hemisphere) {
 
 				hemiCount += 1;
 
@@ -2357,18 +2344,12 @@ THREE.WebGLRenderer = function(parameters) {
 
 					setColorGamma(hemiSkyColors, hemiOffset, skyColor, intensitySq);
 					setColorGamma(hemiGroundColors, hemiOffset, groundColor, intensitySq);
-
 				} else {
-
 					setColorLinear(hemiSkyColors, hemiOffset, skyColor, intensity);
 					setColorLinear(hemiGroundColors, hemiOffset, groundColor, intensity);
-
 				}
-
 				hemiLength += 1;
-
 			}
-
 		}
 
 		// null eventual remains from removed lights
@@ -2424,21 +2405,21 @@ THREE.WebGLRenderer = function(parameters) {
 	};
 
 	function allocateLights(lights) {
-		var l, ll, light, dirLights, pointLights, spotLights, hemiLights;
+		var l, ll;
+		var light, dirLights, pointLights, spotLights, hemiLights;
 		dirLights = pointLights = spotLights = hemiLights = 0;
 		for ( l = 0, ll = lights.length; l < ll; l++) {
 			light = lights[l];
-
 			if (light.onlyShadow)
 				continue;
 
-			if ( light instanceof THREE.DirectionalLight)
+			if ( light.type === THREE.LightType.Directional)
 				dirLights++;
-			if ( light instanceof THREE.PointLight)
+			if ( light.type === THREE.LightType.Point)
 				pointLights++;
-			if ( light instanceof THREE.SpotLight)
+			if ( light.type === THREE.LightType.Spot)
 				spotLights++;
-			if ( light instanceof THREE.HemisphereLight)
+			if ( light.type === THREE.LightType.Hemisphere)
 				hemiLights++;
 		}
 
@@ -2457,9 +2438,9 @@ THREE.WebGLRenderer = function(parameters) {
 			if (!light.castShadow)
 				continue;
 
-			if ( light instanceof THREE.SpotLight)
+			if ( light.type === THREE.LightType.Spot)
 				maxShadows++;
-			if ( light instanceof THREE.DirectionalLight && !light.shadowCascade)
+			if ( light.type === THREE.LightType.Directional && !light.shadowCascade)
 				maxShadows++;
 		}
 		return maxShadows;

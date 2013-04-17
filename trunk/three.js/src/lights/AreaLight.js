@@ -5,7 +5,7 @@
 
 THREE.AreaLight = function(hex, intensity) {
 
-	THREE.Light.call(this, hex);
+	THREE.Light.call(this, hex, THREE.LightType.Area);
 
 	this.normal = new THREE.Vector3(0, -1, 0);
 	this.right = new THREE.Vector3(1, 0, 0);

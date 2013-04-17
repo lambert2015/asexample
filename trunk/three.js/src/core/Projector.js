@@ -118,52 +118,36 @@ THREE.Projector = function () {
 
 					}
 
-				} else if ( object instanceof THREE.Sprite || object instanceof THREE.Particle ) {
+				} else if ( object instanceof THREE.Sprite || 
+							object instanceof THREE.Particle ) {
 
 					_object = getNextObjectInPool();
 					_object.object = object;
 
 					// TODO: Find an elegant and performant solution and remove this dupe code.
-
 					if ( object.renderDepth !== null ) {
-
 						_object.z = object.renderDepth;
-
 					} else {
-
 						_vector3.getPositionFromMatrix( object.matrixWorld );
 						_vector3.applyProjection( _viewProjectionMatrix );
 						_object.z = _vector3.z;
-
 					}
-
 					_renderData.sprites.push( _object );
-
 				} else {
-
 					_object = getNextObjectInPool();
 					_object.object = object;
 
 					if ( object.renderDepth !== null ) {
-
 						_object.z = object.renderDepth;
-
 					} else {
-
 						_vector3.getPositionFromMatrix( object.matrixWorld );
 						_vector3.applyProjection( _viewProjectionMatrix );
 						_object.z = _vector3.z;
-
 					}
-
 					_renderData.objects.push( _object );
-
 				}
-
 				projectObject( object );
-
 			}
-
 		};
 
 		projectObject( root );
@@ -171,7 +155,6 @@ THREE.Projector = function () {
 		if ( sortObjects === true ) _renderData.objects.sort( painterSort );
 
 		return _renderData;
-
 	};
 
 	this.projectScene = function ( scene, camera, sortObjects, sortElements ) {
@@ -278,15 +261,11 @@ THREE.Projector = function () {
 								_face.v3.copy( v3 );
 
 							} else {
-
 								continue;
-
 							}
 
 						} else {
-
 							continue;
-
 						}
 
 					} else if ( face instanceof THREE.Face4 ) {
@@ -310,41 +289,31 @@ THREE.Projector = function () {
 								( v2.positionScreen.y - v3.positionScreen.y ) * ( v4.positionScreen.x - v3.positionScreen.x ) < 0;
 
 
-							if ( side === THREE.DoubleSide || visible === ( side === THREE.FrontSide ) ) {
-
+							if ( side === THREE.DoubleSide || 
+								visible === ( side === THREE.FrontSide ) ) {
 								_face = getNextFace4InPool();
 
 								_face.v1.copy( v1 );
 								_face.v2.copy( v2 );
 								_face.v3.copy( v3 );
 								_face.v4.copy( v4 );
-
 							} else {
-
 								continue;
-
 							}
-
 						} else {
-
 							continue;
-
 						}
-
 					}
 
 					_face.normalModel.copy( face.normal );
 
-					if ( visible === false && ( side === THREE.BackSide || side === THREE.DoubleSide ) ) {
-
+					if ( visible === false && 
+						( side === THREE.BackSide || side === THREE.DoubleSide ) ) {
 						_face.normalModel.negate();
-
 					}
 
 					_face.normalModel.applyMatrix3( _normalMatrix ).normalize();
-
 					_face.normalModelView.copy( _face.normalModel ).applyMatrix3( _normalViewMatrix );
-
 					_face.centroidModel.copy( face.centroid ).applyMatrix4( _modelMatrix );
 
 					faceVertexNormals = face.vertexNormals;
@@ -354,10 +323,9 @@ THREE.Projector = function () {
 						var normalModel = _face.vertexNormalsModel[ n ];
 						normalModel.copy( faceVertexNormals[ n ] );
 
-						if ( visible === false && ( side === THREE.BackSide || side === THREE.DoubleSide ) ) {
-
+						if ( visible === false && 
+							( side === THREE.BackSide || side === THREE.DoubleSide ) ) {
 							normalModel.negate();
-
 						}
 
 						normalModel.applyMatrix3( _normalMatrix ).normalize();
@@ -370,17 +338,11 @@ THREE.Projector = function () {
 					_face.vertexNormalsLength = faceVertexNormals.length;
 
 					for ( c = 0, cl = faceVertexUvs.length; c < cl; c ++ ) {
-
 						uvs = faceVertexUvs[ c ][ f ];
-
 						if ( uvs === undefined ) continue;
-
 						for ( u = 0, ul = uvs.length; u < ul; u ++ ) {
-
 							_face.uvs[ c ][ u ] = uvs[ u ];
-
 						}
-
 					}
 
 					_face.color = face.color;
@@ -391,9 +353,7 @@ THREE.Projector = function () {
 					_face.z = _centroid.z;
 
 					_renderData.elements.push( _face );
-
 				}
-
 			} else if ( object instanceof THREE.Line ) {
 
 				_modelViewProjectionMatrix.multiplyMatrices( _viewProjectionMatrix, _modelMatrix );
@@ -411,7 +371,8 @@ THREE.Projector = function () {
 					v1 = getNextVertexInPool();
 					v1.positionScreen.copy( vertices[ v ] ).applyMatrix4( _modelViewProjectionMatrix );
 
-					if ( ( v + 1 ) % step > 0 ) continue;
+					if ( ( v + 1 ) % step > 0 ) 
+						continue;
 
 					v2 = _vertexPool[ _vertexCount - 2 ];
 
@@ -435,11 +396,8 @@ THREE.Projector = function () {
 						_renderData.elements.push( _line );
 
 					}
-
 				}
-
 			}
-
 		}
 
 		for ( o = 0, ol = _renderData.sprites.length; o < ol; o++ ) {
@@ -473,15 +431,12 @@ THREE.Projector = function () {
 					_renderData.elements.push( _particle );
 
 				}
-
 			}
-
 		}
 
 		if ( sortElements === true ) _renderData.elements.sort( painterSort );
 
 		return _renderData;
-
 	};
 
 	// Pools
