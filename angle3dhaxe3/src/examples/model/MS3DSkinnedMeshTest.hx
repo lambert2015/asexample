@@ -45,7 +45,7 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 	private var material:MaterialTexture;
 	private var skinnedMesh:SkinnedMesh;
 	private var animation:Animation;
-	private var bones:Vector.<Bone>;
+	private var bones:Vector<Bone>;
 
 	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):Void
 	{
@@ -60,9 +60,9 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		bones = array[0];
 		animation = array[1];
 
-		for (var i:int = 0; i < 5; i++)
+		for (i in 0...5)
 		{
-			for (var j:int = 0; j < 5; j++)
+			for (j in 0...5)
 			{
 				var node:Node = createNinja(i);
 				node.setTranslationXYZ((i - 3) * 15, 0, (j - 3) * 15);
@@ -82,8 +82,8 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		ninjaNode.attachChild(geometry);
 		ninjaNode.setMaterial(material);
 
-		var newBones:Vector.<Bone> = new Vector.<Bone>();
-		for (var i:uint = 0, il:uint = bones.length; i < il; i++)
+		var newBones:Vector<Bone> = new Vector<Bone>();
+		for (i in 0...bones.length)
 		{
 			newBones[i] = bones[i].clone();
 		}
@@ -121,9 +121,9 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		trace(signal.numListeners);
 	}
 
-	private var angle:Number = 0;
+	private var angle:Float = 0;
 
-	override public function simpleUpdate(tpf:Number):Void
+	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.01;
 		angle %= FastMath.TWO_PI;
