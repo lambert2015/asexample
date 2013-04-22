@@ -67,7 +67,11 @@ class SgslCompiler
 	{
 		this.profile = profile;
 
+		#if flash11_8
 		MAX_OPCODES = (profile == ShaderProfile.BASELINE_EXTENDED) ? 1024 : 200;
+		#else
+		MAX_OPCODES = 200;
+		#end
 
 		_parser = sgslParser;
 		_opCodeManager = opCodeManager;
@@ -232,7 +236,11 @@ class SgslCompiler
 	 */
 	private function writeHeader(isFrag:Bool):Void
 	{
+		#if flash11_8
 		var version:Int = (profile == ShaderProfile.BASELINE_EXTENDED) ? 0x2 : 0x1;
+		#else
+		var version:Int = 0x1;
+		#end
 		_byteArray.writeByte(0xa0); // tag version
 		_byteArray.writeUnsignedInt(version); // AGAL version, big endian, bit pattern will be 0x01000000
 		_byteArray.writeByte(0xa1); // tag program id

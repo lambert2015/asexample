@@ -101,6 +101,7 @@ class ShaderManager
 		var source:String = ba.readUTFBytes(ba.length);
 
 		var defines:Array<String> = new Array<String>();
+		#if flash11_8
 		if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 		{
 			defines.push(cast(ShaderProfile.BASELINE, String) );
@@ -114,6 +115,16 @@ class ShaderManager
 		{
 			defines.push(cast(ShaderProfile.BASELINE_CONSTRAINED, String) );
 		}
+		#else
+		if (mProfile == ShaderProfile.BASELINE)
+		{
+			defines.push(cast(ShaderProfile.BASELINE, String) );
+		}
+		else if (mProfile == ShaderProfile.BASELINE_CONSTRAINED)
+		{
+			defines.push(cast(ShaderProfile.BASELINE_CONSTRAINED, String) );
+		}
+		#end
 
 		var functionList:Array<FunctionNode> = mSgslParser.execFunctions(source, defines);
 

@@ -69,7 +69,7 @@ class MaterialRefractionTest extends SimpleApplication
 		super.simpleUpdate(tpf);
 		
 		angle += 0.01;
-		angle %= FastMath.TWO_PI();
+		angle %= FastMath.TWO_PI;
 
 
 		cam.location.setTo(Math.cos(angle) * 200, 50, Math.sin(angle) * 200);

@@ -145,6 +145,7 @@ class OpCodeManager
 		addCode(["m34"], 3, 0x19, OP_SPECIAL_MATRIX);
 
 		//available in agal version 2
+		#if flash11_8
 		if (profile == ShaderProfile.BASELINE_EXTENDED)
 		{
 			addCode(["ddx"], 2, 0x1a, OP_VERSION2 | OP_FRAG_ONLY);
@@ -158,6 +159,7 @@ class OpCodeManager
 			// space
 			addCode(["ted"], 3, 0x26, OP_FRAG_ONLY | OP_SPECIAL_TEX | OP_VERSION2);
 		}
+		#end
 
 		killCode = addCode(["kil", "kill", "discard"], 1, 0x27, OP_NO_DEST | OP_FRAG_ONLY);
 		textureCode = addCode(["texture2D", "textureCube"], 3, 0x28, OP_FRAG_ONLY | OP_SPECIAL_TEX);

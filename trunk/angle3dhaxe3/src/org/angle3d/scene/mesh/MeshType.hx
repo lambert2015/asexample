@@ -1,6 +1,6 @@
 package org.angle3d.scene.mesh;
 
-@:fakeEnum(String) enum MeshType
+enum MeshType
 {
 	STATIC;
 	KEYFRAME;
