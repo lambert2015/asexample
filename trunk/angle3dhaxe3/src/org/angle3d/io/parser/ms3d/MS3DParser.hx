@@ -16,6 +16,10 @@ import org.angle3d.scene.mesh.SubMesh;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Logger;
 
+typedef BoneAnimation = {
+	var bones:Vector<Bone>;
+	var animation:Animation;
+}
 
 class MS3DParser
 {
@@ -194,7 +198,7 @@ class MS3DParser
 		return mesh;
 	}
 
-	public function buildSkeleton():Dynamic
+	public function buildSkeleton():BoneAnimation
 	{
 		var length:Int = mMs3dJoints.length;
 		
