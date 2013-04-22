@@ -130,6 +130,12 @@ class TechniqueRefraction extends Technique
 		var ba:ByteArray = new RefractionFS();
 		return ba.readUTFBytes(ba.length);
 	}
+	
+	override private function getKey(lightType:LightType, meshType:MeshType):String
+	{
+		var result:Array<String> = [name, meshType.getName()];
+		return result.join("_");
+	}
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{

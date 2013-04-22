@@ -86,6 +86,7 @@ class SgslData
 		}
 		else
 		{
+			#if flash11_8
 			if (profile == ShaderProfile.BASELINE_EXTENDED)
 			{
 				for(i in 0...4)
@@ -97,7 +98,8 @@ class SgslData
 				var depth:DepthReg = new DepthReg();
 				_regsMap.set(depth.name, depth);
 			}
-			else
+			#end
+			//else
 			{
 				reg = new OutputReg(0);
 				_regsMap.set(reg.name, reg);

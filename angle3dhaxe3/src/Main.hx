@@ -1,8 +1,8 @@
 package ;
 
-//import examples.material.MaterialRefractionTest;
+import examples.material.MaterialRefractionTest;
 import examples.material.MaterialWireframeTest;
-import examples.material.MaterialReflectiveTest;
+//import examples.material.MaterialReflectiveTest;
 import examples.model.ShapeCollisionTest;
 import flash.Lib;
 import org.angle3d.io.parser.md2.MD2Parser;
@@ -17,7 +17,6 @@ import org.angle3d.io.parser.ms3d.MS3DWeight;
 import org.angle3d.effect.cpu.ParticleEmitterControl;
 import org.angle3d.effect.gpu.ParticleSystemControl;
 import org.angle3d.effect.gpu.ParticleShapeGenerator;
-//import msignal.Signal;
 /**
  * andy
  * @author 
@@ -27,14 +26,10 @@ class Main
 {
 	static function main() 
 	{
-		//var signal = new Signal0();
-		//signal.add(function() { trace("signal dispatched!"); } );
-		//signal.dispatch();
-		
 		//Lib.current.addChild(new MaterialWireframeTest());
 		//Lib.current.addChild(new MaterialReflectiveTest());
 
-		//Lib.current.addChild(new MaterialRefractionTest());
-		Lib.current.addChild(new ShapeCollisionTest());
+		Lib.current.addChild(new MaterialRefractionTest());
+		//Lib.current.addChild(new ShapeCollisionTest());
 	}
 }

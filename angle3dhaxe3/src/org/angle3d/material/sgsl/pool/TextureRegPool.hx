@@ -22,11 +22,13 @@ class TextureRegPool extends RegPool
 
 	override private function getRegLimit():Int
 	{
+		#if flash11_8
 		if (mProfile == ShaderProfile.BASELINE_EXTENDED)
 		{
 			return 16;
 		}
-		else if (mProfile == ShaderProfile.BASELINE)
+		#end
+		if (mProfile == ShaderProfile.BASELINE)
 		{
 			return 8;
 		}
