@@ -12,7 +12,7 @@ import org.angle3d.math.Ray;
 import org.angle3d.math.Transform;
 import org.angle3d.math.Triangle;
 import org.angle3d.math.Vector3f;
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * <code>BoundingSphere</code> defines a sphere that defines a container for a

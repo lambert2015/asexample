@@ -20,7 +20,7 @@ class Cylinder extends Mesh
 
 	private function createCylinder(radius:Float, height:Float, parallels:Int, meridians:Int):Void
 	{
-		//		var _verticesLength : int										= _meridians * (_parallels + 1) + 2;
+		//var _verticesLength : int	= _meridians * (_parallels + 1) + 2;
 
 		var _vertices:Vector<Float> = new Vector<Float>();
 		var _indices:Vector<UInt> = new Vector<UInt>();
@@ -30,9 +30,9 @@ class Cylinder extends Mesh
 		_vertices[1] = 0;
 		_vertices[2] = 0;
 
-		for (var j:Int = 0; j <= parallels; j++)
+		for (j in 0...parallels + 1)
 		{
-			for (var i:Int = 0; i < meridians; i++)
+			for (i in 0...meridians)
 			{
 				_vertices.push(radius * Math.cos(Math.PI * 2 / meridians * i));
 				_vertices.push(j * (height / parallels));

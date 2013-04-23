@@ -2,7 +2,7 @@ package org.angle3d.material.sgsl;
 
 import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-import haxe.ds.Vector;
+import flash.Vector;
 
 import org.angle3d.material.sgsl.node.agal.AgalNode;
 import org.angle3d.material.sgsl.node.ArrayAccessNode;

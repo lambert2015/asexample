@@ -9,7 +9,7 @@ import org.angle3d.math.Ray;
 import org.angle3d.math.Triangle;
 import org.angle3d.math.Vector3f;
 import org.angle3d.utils.TempVars;
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * Bounding Interval Hierarchy.
@@ -43,11 +43,11 @@ class BIHNode
 		var vars:TempVars = TempVars.getTempVars();
 		var stack:Array<BIHStackData> = new Array<BIHStackData>();
 		
-		var minExts:Vector<Float> = Vector.fromArrayCopy([box.center.x - box.xExtent,
+		var minExts:Vector<Float> = Vector.ofArray([box.center.x - box.xExtent,
 			box.center.y - box.yExtent,
 			box.center.z - box.zExtent]);
 
-		var maxExts:Vector<Float> = Vector.fromArrayCopy([box.center.x + box.xExtent,
+		var maxExts:Vector<Float> = Vector.ofArray([box.center.x + box.xExtent,
 			box.center.y + box.yExtent,
 			box.center.z + box.zExtent]);
 
@@ -164,9 +164,9 @@ class BIHNode
 		inv.multNormal(r.direction, r.direction);
 		//        inv.multNormalAcross(r.direction, r.direction);
 
-		var origins:Vector<Float> = Vector.fromArrayCopy([r.origin.x, r.origin.y, r.origin.z]);
+		var origins:Vector<Float> = Vector.ofArray([r.origin.x, r.origin.y, r.origin.z]);
 
-		var invDirections:Vector<Float> = Vector.fromArrayCopy([1 / r.direction.x, 1 / r.direction.y, 1 / r.direction.z]);
+		var invDirections:Vector<Float> = Vector.ofArray([1 / r.direction.x, 1 / r.direction.y, 1 / r.direction.z]);
 
 		r.direction.normalizeLocal();
 

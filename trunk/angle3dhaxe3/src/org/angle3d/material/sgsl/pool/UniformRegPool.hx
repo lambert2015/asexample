@@ -1,6 +1,6 @@
 package org.angle3d.material.sgsl.pool;
 
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.sgsl.node.reg.UniformReg;
 import org.angle3d.material.shader.ShaderProfile;

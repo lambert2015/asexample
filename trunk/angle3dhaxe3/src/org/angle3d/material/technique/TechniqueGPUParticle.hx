@@ -16,7 +16,7 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.MeshType;
 import org.angle3d.texture.TextureMapBase;
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * andy

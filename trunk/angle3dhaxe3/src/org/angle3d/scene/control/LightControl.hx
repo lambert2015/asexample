@@ -91,8 +91,7 @@ class LightControl extends AbstractControl
 			var pl:PointLight = light as PointLight;
 			pl.position = spatial.getWorldTranslation();
 		}
-
-		if (Std.is(light,DirectionalLight))
+		else if (Std.is(light,DirectionalLight))
 		{
 			var dl:DirectionalLight = light as DirectionalLight;
 			//TODO 这里是不是传错了
@@ -102,7 +101,7 @@ class LightControl extends AbstractControl
 		}
 
 		//TODO add code for Spot light here when it's done
-		//if (Std.is(light, SpotLight))
+		//else if (Std.is(light, SpotLight))
 		//{
 		//var sp:SpotLight = Lib.as(light, SpotLight);
 		//sp.setPosition(spatial.getWorldTranslation());

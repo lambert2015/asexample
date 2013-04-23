@@ -1,6 +1,6 @@
 package org.angle3d.math;
 
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * <code>Vector2f</code> defines a Vector for a two float value vector.
  * @author andy

@@ -3,7 +3,7 @@ package org.angle3d.animation;
 import haxe.ds.StringMap;
 import org.angle3d.math.Matrix4f;
 import org.angle3d.utils.TempVars;
-import haxe.ds.Vector;
+import flash.Vector;
 using org.angle3d.utils.ArrayUtil;
 /**
  * Skeleton is a convenience class for managing a bone hierarchy.

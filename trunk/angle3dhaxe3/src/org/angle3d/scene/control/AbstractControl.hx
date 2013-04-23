@@ -24,10 +24,12 @@ class AbstractControl implements Control
 	public var spatial(get,set):Spatial;
 	private function set_spatial(value:Spatial):Spatial
 	{
+		#if debug
 		if (_spatial != null && value != null)
 		{
 			Assert.assert(false,"This control has already been added to a Spatial");
 		}
+		#end
 
 		return _spatial = value;
 	}

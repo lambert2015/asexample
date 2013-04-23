@@ -1,7 +1,7 @@
 package org.angle3d.light;
 
 import org.angle3d.scene.Spatial;
-import haxe.ds.Vector;
+import flash.Vector;
 
 
 using org.angle3d.utils.ArrayUtil;

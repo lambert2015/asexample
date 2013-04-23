@@ -2,7 +2,7 @@ package org.angle3d.io.parser.ms3d;
 
 import flash.utils.ByteArray;
 import flash.utils.Endian;
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.animation.Animation;
 import org.angle3d.animation.Bone;
 import org.angle3d.animation.BoneTrack;

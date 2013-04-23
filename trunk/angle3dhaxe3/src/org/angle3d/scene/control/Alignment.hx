@@ -1,31 +1,31 @@
 package org.angle3d.scene.control;
 
 
+/**
+ * Determines how the billboard is aligned to the screen/camera.
+ */
+enum Alignment
+{
+
 	/**
-	 * Determines how the billboard is aligned to the screen/camera.
+	 * Aligns this Billboard to the screen.
 	 */
-	enum Alignment
-	{
+	Screen;
 
-		/**
-		 * Aligns this Billboard to the screen.
-		 */
-		Screen;
+	/**
+	 * Aligns this Billboard to the camera position.
+	 */
+	Camera;
 
-		/**
-		 * Aligns this Billboard to the camera position.
-		 */
-		Camera;
+	/**
+	 * Aligns this Billboard to the screen, but keeps the Y axis fixed.
+	 */
+	AxialY;
 
-		/**
-		 * Aligns this Billboard to the screen, but keeps the Y axis fixed.
-		 */
-		AxialY;
+	/**
+	 * Aligns this Billboard to the screen, but keeps the Z axis fixed.
+	 */
+	AxialZ;
 
-		/**
-		 * Aligns this Billboard to the screen, but keeps the Z axis fixed.
-		 */
-		AxialZ;
-
-	}
+}
 

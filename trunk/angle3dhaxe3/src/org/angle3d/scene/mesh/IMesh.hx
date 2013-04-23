@@ -1,5 +1,5 @@
 package org.angle3d.scene.mesh;
-import haxe.ds.Vector;
+import flash.Vector;
 interface IMesh
 {
 	var subMeshList(get,set):Array<SubMesh>;

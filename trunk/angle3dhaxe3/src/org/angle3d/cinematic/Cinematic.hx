@@ -1,6 +1,7 @@
 package org.angle3d.cinematic;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 import org.angle3d.app.Application;
 import org.angle3d.app.state.AppState;
@@ -12,7 +13,7 @@ import org.angle3d.renderer.RenderManager;
 import org.angle3d.scene.CameraNode;
 import org.angle3d.scene.Node;
 import org.angle3d.scene.control.CameraControl;
-
+import flash.Vector;
 /**
  * andy
  * @author andy
@@ -24,7 +25,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 	private var timeLine:TimeLine;
 	private var lastFetchedKeyFrame:Int;
 	private var cinematicEvents:Vector<CinematicEvent>;
-	private var cameraMap:Dictionary; //<String,CameraNode>;
+	private var cameraMap:StringMap<CameraNode>;
 	private var currentCam:CameraNode;
 	private var initialized:Bool;
 	private var scheduledPause:Int;
@@ -36,7 +37,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		timeLine = new TimeLine();
 		lastFetchedKeyFrame = -1;
 		cinematicEvents = new Vector<CinematicEvent>();
-		cameraMap = new Dictionary();
+		cameraMap = new StringMap<CameraNode>();
 		initialized = false;
 		scheduledPause = -1;
 
@@ -52,7 +53,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 			if (playState == PlayState.Paused)
 			{
 				var length:Int = cinematicEvents.length;
-				for (var i:Int = 0; i < length; i++)
+				for (i in 0...length)
 				{
 					var ct:CinematicEvent = cinematicEvents[i];
 					if (ct.getPlayState() == PlayState.Paused)
@@ -69,7 +70,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		time = 0;
 		lastFetchedKeyFrame = -1;
 		var length:Int = cinematicEvents.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...length)
 		{
 			var ct:CinematicEvent = cinematicEvents[i];
 			ct.setTime(0);
@@ -81,7 +82,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 	override public function onPause():Void
 	{
 		var length:Int = cinematicEvents.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...length)
 		{
 			var ct:CinematicEvent = cinematicEvents[i];
 			if (ct.getPlayState() == PlayState.Playing)
@@ -96,7 +97,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 	{
 		super.setSpeed(speed);
 		var length:Int = cinematicEvents.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...length)
 		{
 			var ct:CinematicEvent = cinematicEvents[i];
 			ct.setSpeed(speed);
@@ -107,7 +108,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 	{
 		init(app, this);
 		var length:Int = cinematicEvents.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...length)
 		{
 			var ct:CinematicEvent = cinematicEvents[i];
 			ct.init(app, this);
@@ -169,7 +170,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		}
 
 		var length:Int = cinematicEvents.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...length)
 		{
 			var ct:CinematicEvent = cinematicEvents[i];
 			ct.internalUpdate(tpf);
@@ -204,14 +205,14 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 
 		//triggering all the event from start to "time" 
 		//then computing timeoffsetfor each event
-		for (var i:Int = 0; i < (keyFrameIndex + 1); i++)
+		for (i in 0...(keyFrameIndex + 1))
 		{
 			var keyFrame:KeyFrame = timeLine.getKeyFrameAtIndex(i);
 			if (keyFrame != null)
 			{
 				var tracks:Vector<CinematicEvent> = keyFrame.getTracks();
 				var length:Int = tracks.length;
-				for (var j:Int = 0; j < length; j++)
+				for (j in 0...length)
 				{
 					var track:CinematicEvent = tracks[j];
 					var t:Float = time - timeLine.getKeyFrameTime(keyFrame);
@@ -324,7 +325,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		var d:Float = 0;
 		var tracks:Vector<CinematicEvent> = kf.getTracks();
 		var length:Int = tracks.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...length)
 		{
 			var ck:CinematicEvent = tracks[i];
 			if (d < (ck.getDuration() * ck.getSpeed()))

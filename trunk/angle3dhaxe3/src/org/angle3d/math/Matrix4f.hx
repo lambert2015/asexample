@@ -2,7 +2,7 @@ package org.angle3d.math;
 
 import org.angle3d.math.Vector3f;
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * <code>Matrix4f</code> defines and maintains a 4x4 matrix in row major order.
  * This matrix is intended for use in a translation and rotational capacity.

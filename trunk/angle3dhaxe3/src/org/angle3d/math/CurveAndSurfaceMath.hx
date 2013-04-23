@@ -1,7 +1,7 @@
 package org.angle3d.math;
 
 import org.angle3d.math.Vector3f;
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.utils.Assert;
 
 /**

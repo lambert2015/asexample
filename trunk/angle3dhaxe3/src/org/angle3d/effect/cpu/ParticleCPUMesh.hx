@@ -8,7 +8,7 @@ import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
 import org.angle3d.scene.mesh.VertexBuffer;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * The <code>ParticleMesh</code> is the underlying visual implementation of a particle emitter.
  *

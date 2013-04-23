@@ -14,7 +14,7 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.SubMesh;
 import org.angle3d.utils.TempVars;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * andy
  * @author andy

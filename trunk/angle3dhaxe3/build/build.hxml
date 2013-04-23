@@ -1,5 +1,26 @@
 -cp ../src
--swf ../bin/main.swf
--swf-version 11.5
--swf-header 800:600:30:0xffffff
--main Main
+-swf ../bin/MaterialReflectiveTest.swf
+-swf-version 11.7
+-swf-header 800:600:60:0xffffff
+-main examples.material.MaterialReflectiveTest
+
+--next
+-cp ../src
+-swf ../bin/MaterialRefractionTest.swf
+-swf-version 11.7
+-swf-header 800:600:60:0xffffff
+-main examples.material.MaterialRefractionTest
+
+--next
+-cp ../src
+-swf ../bin/MaterialWireframeTest.swf
+-swf-version 11.7
+-swf-header 800:600:60:0xffffff
+-main examples.material.MaterialWireframeTest
+
+--next
+-cp ../src
+-swf ../bin/ShapeCollisionTest.swf
+-swf-version 11.7
+-swf-header 800:600:60:0xffffff
+-main examples.model.ShapeCollisionTest

@@ -25,6 +25,11 @@ import org.angle3d.utils.Stats;
  */
 class ShapeCollisionTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new ShapeCollisionTest());
+	}
+	
 	private var angle:Float;
 
 	public function new()

@@ -7,19 +7,19 @@ import org.angle3d.scene.mesh.SubMesh;
 
 class Cone extends Mesh
 {
-	public function new(_radius:Float = 5.0, _height:Float = 10.0, _meridians:Int = 16)
+	public function new(radius:Float = 5.0, height:Float = 10.0, meridians:Int = 16)
 	{
 		super();
 
-		createCone(_radius, _height, _meridians);
+		createCone(radius, height, meridians);
 	}
 
-	private function createCone(_radius:Float, _height:Float, _meridians:Int):Void
+	private function createCone(radius:Float, height:Float, meridians:Int):Void
 	{
-		var _vertex_no:Int = 0;
+		var vertex_no:Int = 0;
 
-		var _verticesLength:Int = _meridians + 2;
-		var _indicesLength:Int = _meridians * 2;
+		var verticesLength:Int = meridians + 2;
+		var indicesLength:Int = meridians * 2;
 
 		var _vertices:Vector<Float> = new Vector<Float>();
 		var _indices:Vector<UInt> = new Vector<UInt>();
@@ -29,60 +29,60 @@ class Cone extends Mesh
 		_vertices[1] = 0;
 		_vertices[2] = 0;
 
-		for (var i:Int = 0; i < _meridians; i++)
+		for (var i:Int = 0; i < meridians; i++)
 		{
-			_vertices.push(_radius * Math.cos(Math.PI * 2 / _meridians * _vertex_no));
+			_vertices.push(radius * Math.cos(Math.PI * 2 / meridians * vertex_no));
 			_vertices.push(0);
-			_vertices.push(_radius * Math.sin(Math.PI * 2 / _meridians * _vertex_no));
-			_vertex_no++;
+			_vertices.push(radius * Math.sin(Math.PI * 2 / meridians * vertex_no));
+			vertex_no++;
 		}
 
 		_vertices.push(0);
-		_vertices.push(_height);
+		_vertices.push(height);
 		_vertices.push(0);
 
-		_vertex_no = 0;
+		vertex_no = 0;
 
-		for (i = 0; i < _meridians - 1; i++)
+		for (i = 0; i < meridians - 1; i++)
 		{
 			_indices.push(0);
-			_indices.push(_vertex_no + 1);
-			_indices.push(_vertex_no + 2);
-			_vertex_no++;
+			_indices.push(vertex_no + 1);
+			_indices.push(vertex_no + 2);
+			vertex_no++;
 		}
 
 		_indices.push(0);
-		_indices.push(_vertex_no + 1);
+		_indices.push(vertex_no + 1);
 		_indices.push(1);
 
-		_vertex_no = 1;
+		vertex_no = 1;
 
-		for (i = 0; i < _meridians - 1; i++)
+		for (i = 0; i < meridians - 1; i++)
 		{
-			_indices.push(_vertex_no);
-			_indices.push(_meridians + 1);
-			_indices.push(_vertex_no + 1);
-			_vertex_no++;
+			_indices.push(vertex_no);
+			_indices.push(meridians + 1);
+			_indices.push(vertex_no + 1);
+			vertex_no++;
 		}
 
-		_indices.push(_vertex_no);
-		_indices.push(_meridians + 1);
+		_indices.push(vertex_no);
+		_indices.push(meridians + 1);
 		_indices.push(1);
 
 		_uvt.push(0.5);
 		_uvt.push(0.5);
 		//_uvt.push(0);
 
-		for (i = 0; i < _verticesLength / 2; i++)
+		for (i = 0; i < verticesLength / 2; i++)
 		{
 			_uvt.push(1);
 			_uvt.push(0);
 				//_uvt.push(0);
 		}
 
-		for (i = 0; i < _verticesLength / 2; i++)
+		for (i = 0; i < verticesLength / 2; i++)
 		{
-			_uvt.push(i / _meridians);
+			_uvt.push(i / meridians);
 			_uvt.push(0);
 				//_uvt.push(0);
 		}

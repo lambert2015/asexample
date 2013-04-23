@@ -1,6 +1,6 @@
 package org.angle3d.material.shader;
 
-import haxe.ds.Vector;
+import flash.Vector;
 
 class UniformList extends ShaderVariableList
 {

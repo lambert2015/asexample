@@ -1,5 +1,5 @@
 package org.angle3d.collision;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * <code>CollisionResults</code> is a collection returned as a result of a
  * collision detection operation done by {@link Collidable}.

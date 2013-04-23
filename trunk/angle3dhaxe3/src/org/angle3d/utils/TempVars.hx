@@ -10,7 +10,7 @@ import org.angle3d.math.Triangle;
 import org.angle3d.math.Vector2f;
 import org.angle3d.math.Vector3f;
 import org.angle3d.math.Vector4f;
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * Temporary variables . Engine classes may access

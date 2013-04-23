@@ -21,7 +21,7 @@ import org.angle3d.material.sgsl.node.agal.ConditionIfNode;
 import org.angle3d.material.sgsl.node.reg.RegFactory;
 import org.angle3d.material.sgsl.node.reg.RegNode;
 
-import haxe.ds.Vector;
+import flash.Vector;
 
 //TODO 添加更多的语法错误提示
 //TODO 预定义部分是否应该提前排除

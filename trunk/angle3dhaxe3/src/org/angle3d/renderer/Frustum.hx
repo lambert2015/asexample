@@ -4,7 +4,7 @@ import org.angle3d.math.Matrix4f;
 import org.angle3d.math.Plane;
 import org.angle3d.math.Rect;
 import org.angle3d.math.FastMath;
-import haxe.ds.Vector;
+import flash.Vector;
 
 class Frustum
 {

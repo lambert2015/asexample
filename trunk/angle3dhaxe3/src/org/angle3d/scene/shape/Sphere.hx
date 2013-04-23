@@ -3,7 +3,7 @@
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * A UV Sphere primitive mesh.
  */

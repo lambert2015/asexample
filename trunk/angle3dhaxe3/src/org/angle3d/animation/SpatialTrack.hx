@@ -5,7 +5,7 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.scene.Spatial;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.TempVars;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * This class represents the track for spatial animation.
  *
