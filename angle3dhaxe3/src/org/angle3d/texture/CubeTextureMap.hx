@@ -7,7 +7,7 @@ import flash.display3D.textures.CubeTexture;
 import flash.display3D.textures.TextureBase;
 
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * andy
  * @author andy

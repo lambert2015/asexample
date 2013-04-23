@@ -4,7 +4,7 @@ import org.angle3d.math.Quaternion;
 import org.angle3d.math.Vector3f;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.TempVars;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * Contains a list of transforms and times for each keyframe.
  *

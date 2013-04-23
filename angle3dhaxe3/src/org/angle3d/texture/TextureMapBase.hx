@@ -5,7 +5,7 @@ import flash.display3D.Context3DMipFilter;
 import flash.display3D.Context3DTextureFilter;
 import flash.display3D.Context3DWrapMode;
 import flash.display3D.textures.TextureBase;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * <code>Texture</code> defines a texture object to be used to display an
  * image on a piece of geometry. The image to be displayed is defined by the
@@ -59,7 +59,7 @@ class TextureMapBase
 	public var shaderKeys(get, null):Vector<String>;
 	private function get_shaderKeys():Vector<String>
 	{
-		return Vector.fromArrayCopy([mFormat, mMipFilter.getName(), 
+		return Vector.ofArray([mFormat, mMipFilter.getName(), 
 		mTextureFilter.getName(), mWrapMode.getName()]);
 	}
 

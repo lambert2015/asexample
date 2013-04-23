@@ -1,6 +1,6 @@
 package org.angle3d.scene.shape;
 
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.math.Vector3f;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
@@ -42,9 +42,14 @@ class AbstractBox extends Mesh
 		var cx:Float = center.x;
 		var cy:Float = center.y;
 		var cz:Float = center.z;
-		return Vector.fromArrayCopy([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent),
-			new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent), new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent), new Vector3f(cx +
-			xExtent, cy + yExtent, cz + zExtent), new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
+		return Vector.ofArray([new Vector3f(cx - xExtent, cy - yExtent, cz - zExtent), 
+								new Vector3f(cx + xExtent, cy - yExtent, cz - zExtent), 
+								new Vector3f(cx + xExtent, cy + yExtent, cz - zExtent),
+								new Vector3f(cx - xExtent, cy + yExtent, cz - zExtent), 
+								new Vector3f(cx + xExtent, cy - yExtent, cz + zExtent), 
+								new Vector3f(cx - xExtent, cy - yExtent, cz + zExtent), 
+								new Vector3f(cx + xExtent, cy + yExtent, cz + zExtent), 
+								new Vector3f(cx - xExtent, cy + yExtent, cz + zExtent)]);
 	}
 
 	/**

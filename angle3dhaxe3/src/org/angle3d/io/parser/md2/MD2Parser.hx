@@ -11,7 +11,7 @@ import org.angle3d.scene.mesh.MorphMesh;
 import org.angle3d.scene.mesh.MorphData;
 import org.angle3d.scene.mesh.MorphSubMesh;
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+import flash.Vector;
 
 class MD2Parser
 {

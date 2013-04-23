@@ -2,7 +2,7 @@ package org.angle3d.material;
 
 
 import flash.display3D.Context3DTriangleFace;
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.material.technique.Technique;
 import org.angle3d.math.Color;
 import org.angle3d.math.FastMath;

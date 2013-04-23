@@ -12,6 +12,7 @@ import org.angle3d.scene.shape.WireframeCube;
 import org.angle3d.scene.shape.WireframeCurve;
 import org.angle3d.signals.MotionPathSignal;
 import org.angle3d.utils.TempVars;
+import flash.Vector;
 
 /**
  * Motion path is used to create a path between way points.

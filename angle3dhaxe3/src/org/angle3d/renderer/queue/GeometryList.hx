@@ -2,7 +2,7 @@ package org.angle3d.renderer.queue;
 
 import org.angle3d.renderer.Camera3D;
 import org.angle3d.scene.Geometry;
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * This class is a special function list of Spatial objects for render

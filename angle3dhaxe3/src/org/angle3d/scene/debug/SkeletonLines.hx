@@ -25,7 +25,7 @@ class SkeletonLines extends WireframeShape
 		clearSegment();
 
 		var rootBones:Vector<Bone> = _skeleton.rootBones;
-		for (var i:UInt = 0, il:UInt = rootBones.length; i < il; i++)
+		for (i in 0...rootBones.length)
 		{
 			buildBoneLines(_skeleton.rootBones[i]);
 		}
@@ -38,8 +38,7 @@ class SkeletonLines extends WireframeShape
 		var parentPos:Vector3f = bone.getModelSpacePosition();
 
 		var children:Vector<Bone> = bone.children;
-		var size:UInt = children.length;
-		for (var i:UInt = 0; i < size; i++)
+		for (i in 0...children.length)
 		{
 			var child:Bone = children[i];
 			var childPos:Vector3f = child.getModelSpacePosition();

@@ -2,7 +2,7 @@ package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
 import haxe.ds.StringMap;
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.light.LightType;
 import org.angle3d.material.BlendMode;
 import org.angle3d.material.shader.Shader;

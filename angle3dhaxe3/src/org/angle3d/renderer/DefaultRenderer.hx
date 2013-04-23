@@ -8,7 +8,7 @@ import flash.display3D.Context3DProgramType;
 import flash.display3D.Program3D;
 import flash.geom.Rectangle;
 import haxe.ds.StringMap;
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.light.Light;
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.material.BlendMode;
@@ -264,7 +264,7 @@ class DefaultRenderer implements IRenderer
 	//耗时有点久
 	public function setShaderConstants(shaderType:Context3DProgramType, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void
 	{
-		_context3D.setProgramConstantsFromVector(shaderType, firstRegister, data.toData(), numRegisters);
+		_context3D.setProgramConstantsFromVector(shaderType, firstRegister, data, numRegisters);
 	}
 
 	public function setDepthTest(depthMask:Bool, passCompareMode:TestFunction):Void

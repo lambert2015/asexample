@@ -1,6 +1,6 @@
 package org.angle3d.scene.mesh;
 
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * 变形动画

@@ -1,6 +1,6 @@
 package org.angle3d.material;
 
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.material.technique.TechniqueTexture;
 import org.angle3d.texture.TextureMapBase;
 /**

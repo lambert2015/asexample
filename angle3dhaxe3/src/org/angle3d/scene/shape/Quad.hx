@@ -1,5 +1,6 @@
 package org.angle3d.scene.shape;
 
+import flash.Vector;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
@@ -39,33 +40,33 @@ class Quad extends Mesh
 
 		var subMesh:SubMesh = new SubMesh();
 
-		var data:Vector<Float> = Vector<Float>([0.0, 0.0, 0.0, width, 0.0, 0.0, width, height, 0.0, 0.0, height, 0.0]);
+		var data:Vector<Float> = Vector.ofArray([0.0, 0.0, 0.0, width, 0.0, 0.0, width, height, 0.0, 0.0, height, 0.0]);
 		subMesh.setVertexBuffer(BufferType.POSITION, 3, data);
 
 		if (flipCoords)
 		{
-			data = Vector<Float>([0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0]);
+			data = Vector.ofArray([0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0]);
 		}
 		else
 		{
-			data = Vector<Float>([0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]);
+			data = Vector.ofArray([0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]);
 		}
 		subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, data);
 
-		data = Vector<Float>([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]);
+		data = Vector.ofArray([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0]);
 		subMesh.setVertexBuffer(BufferType.NORMAL, 3, data);
 
-		data = Vector<Float>([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]);
+		data = Vector.ofArray([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0]);
 		subMesh.setVertexBuffer(BufferType.COLOR, 3, data);
 
 		var indices:Vector<UInt>;
 		if (height < 0)
 		{
-			indices = Vector<UInt>([0, 2, 1, 0, 3, 2]);
+			indices = Vector.ofArray<UInt>([0, 2, 1, 0, 3, 2]);
 		}
 		else
 		{
-			indices = Vector<UInt>([0, 1, 2, 0, 2, 3]);
+			indices = Vector.ofArray<UInt>([0, 1, 2, 0, 2, 3]);
 		}
 
 		subMesh.setIndices(indices);

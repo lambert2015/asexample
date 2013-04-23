@@ -17,6 +17,11 @@ import org.angle3d.utils.Stats;
 
 class MaterialWireframeTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new MaterialWireframeTest());
+	}
+	
 	private var geometry : Geometry;
 
 	private var angle : Float;

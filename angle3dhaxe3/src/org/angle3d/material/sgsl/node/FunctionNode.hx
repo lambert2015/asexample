@@ -5,7 +5,7 @@ import haxe.ds.StringMap;
 
 import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.sgsl.node.agal.AgalNode;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * FunctionNode的Child只有两种
  * 一个是临时变量定义

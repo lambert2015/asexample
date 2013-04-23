@@ -3,19 +3,18 @@ package org.angle3d.scene.mesh;
 import flash.display3D.Context3D;
 import flash.display3D.IndexBuffer3D;
 import flash.display3D.VertexBuffer3D;
-import flash.utils.Dictionary;
+import flash.Vector;
 import haxe.ds.StringMap;
-
 import org.angle3d.bounding.BoundingBox;
 import org.angle3d.bounding.BoundingVolume;
-import org.angle3d.collision.Collidable;
-import org.angle3d.collision.CollisionResults;
 import org.angle3d.collision.bih.BIHTree;
+import org.angle3d.collision.Collidable;
+import org.angle3d.collision.CollisionData;
+import org.angle3d.collision.CollisionResults;
 import org.angle3d.math.Matrix4f;
 import org.angle3d.math.Triangle;
-import org.angle3d.collision.CollisionData;
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+
 
 /**
  * SubMesh is used to store rendering data.
@@ -116,7 +115,7 @@ class SubMesh implements ISubMesh
 		if (_indexBuffer3D == null)
 		{
 			_indexBuffer3D = context.createIndexBuffer(mIndices.length);
-			_indexBuffer3D.uploadFromVector(mIndices.toData(), 0, mIndices.length);
+			_indexBuffer3D.uploadFromVector(mIndices, 0, mIndices.length);
 		}
 		return _indexBuffer3D;
 	}
@@ -137,7 +136,7 @@ class SubMesh implements ISubMesh
 				vertCount = getVertexCount();
 				_vertexData = getCombineData();
 				_vertexBuffer3D = context.createVertexBuffer(vertCount, _getData32PerVertex());
-				_vertexBuffer3D.uploadFromVector(_vertexData.toData(), 0, vertCount);
+				_vertexBuffer3D.uploadFromVector(_vertexData, 0, vertCount);
 			}
 			return _vertexBuffer3D;
 		}
@@ -161,7 +160,7 @@ class SubMesh implements ISubMesh
 				_vertexBuffer3DMap.set(type,buffer3D);
 			}
 
-			buffer3D.uploadFromVector(buffer.getData().toData(), 0, vertCount);
+			buffer3D.uploadFromVector(buffer.getData(), 0, vertCount);
 
 			buffer.dirty = false;
 		}
@@ -174,7 +173,7 @@ class SubMesh implements ISubMesh
 				buffer3D = context.createVertexBuffer(vertCount, buffer.components);
 				_vertexBuffer3DMap.set(type,buffer3D);
 
-				buffer3D.uploadFromVector(buffer.getData().toData(), 0, vertCount);
+				buffer3D.uploadFromVector(buffer.getData(), 0, vertCount);
 			}
 		}
 
@@ -218,7 +217,7 @@ class SubMesh implements ISubMesh
 			}
 		}
 
-		return Vector.fromArrayCopy(result);
+		return Vector.ofArray(result);
 	}
 
 	private function _getData32PerVertex():Int

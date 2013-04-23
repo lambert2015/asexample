@@ -5,6 +5,7 @@ import org.angle3d.math.SplineType;
 import org.angle3d.math.Vector3f;
 import org.angle3d.scene.shape.WireframeLineSet;
 import org.angle3d.scene.shape.WireframeShape;
+import flash.Vector;
 
 /**
  * A <code>Curve</code> is a visual, line-based representation of a {@link Spline}.
@@ -29,16 +30,12 @@ class WireframeCurve extends WireframeShape
 		{
 			case SplineType.CatmullRom:
 				createCatmullRomMesh(nbSubSegments);
-				break;
 			case SplineType.Bezier:
 				createBezierMesh(nbSubSegments);
-				break;
 			case SplineType.Nurb:
 				createNurbMesh(nbSubSegments);
-				break;
 			default:
 				createLinearMesh();
-				break;
 		}
 	}
 
@@ -50,10 +47,10 @@ class WireframeCurve extends WireframeShape
 		var end:Vector3f = new Vector3f();
 		var cptCP:Int = 0;
 		var pLength:Int = (points.length - 1);
-		for (var i:Int = 0; i < pLength; i++)
+		for (i in 0...pLength)
 		{
 			start.copyFrom(points[i]);
-			for (var j:Int = 1; j < nbSubSegments; j++)
+			for (j in 1...nbSubSegments)
 			{
 				spline.interpolate(j / nbSubSegments, cptCP, end);
 
@@ -87,7 +84,7 @@ class WireframeCurve extends WireframeShape
 		var points:Vector<Vector3f> = spline.getControlPoints();
 
 		var pLength:Int = (points.length - 1);
-		for (var i:Int = 0; i < pLength; i++)
+		for (i in  0...pLength)
 		{
 			var p0:Vector3f = points[i];
 			var p1:Vector3f = points[i + 1];

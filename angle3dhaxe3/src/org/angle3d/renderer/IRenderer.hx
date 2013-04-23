@@ -2,7 +2,7 @@ package org.angle3d.renderer;
 
 import flash.display.Stage3D;
 import flash.display3D.Context3D;
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.material.CullMode;
 import org.angle3d.material.RenderState;
 import org.angle3d.material.shader.Shader;

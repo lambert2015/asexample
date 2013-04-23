@@ -4,7 +4,7 @@ package org.angle3d.material.sgsl.pool;
 import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.utils.Assert;
-import haxe.ds.Vector;
+import flash.Vector;
 /**
  * Attribute寄存器池
  * @author andy

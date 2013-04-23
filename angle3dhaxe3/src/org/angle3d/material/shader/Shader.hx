@@ -2,7 +2,7 @@ package org.angle3d.material.shader;
 
 import flash.utils.ByteArray;
 import haxe.ds.StringMap;
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.renderer.IRenderer;
 
@@ -140,7 +140,7 @@ class Shader
 		var length:Int = digits.length;
 		for (i in 0...length)
 		{
-			var vDigits:Vector<Float> = Vector.fromArrayCopy(digits[i]);
+			var vDigits:Vector<Float> = Vector.ofArray(digits[i]);
 			render.setShaderConstants(shaderType, i, vDigits, 1);
 		}
 	}

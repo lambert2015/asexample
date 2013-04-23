@@ -1,6 +1,6 @@
 ﻿package org.angle3d.math;
 
-import haxe.ds.Vector;
+import flash.Vector;
 import org.angle3d.utils.Assert;
 
 class Color

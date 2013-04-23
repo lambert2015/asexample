@@ -8,7 +8,7 @@ import org.angle3d.math.Vector2f;
 import org.angle3d.math.Vector3f;
 import org.angle3d.math.Vector4f;
 import org.angle3d.renderer.Camera3D;
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * <code>UniformBindingManager</code> helps {@link RenderManager} to manage

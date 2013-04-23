@@ -9,7 +9,7 @@ import org.angle3d.material.shader.Shader;
 import org.angle3d.material.shader.UniformBindingHelp;
 import org.angle3d.material.TechniqueDef;
 import org.angle3d.scene.mesh.MeshType;
-import haxe.ds.Vector;
+import flash.Vector;
 
 /**
  * Technique可能对应多个Shader

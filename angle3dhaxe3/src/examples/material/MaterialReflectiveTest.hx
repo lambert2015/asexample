@@ -18,6 +18,11 @@ import org.angle3d.utils.Stats;
 
 class MaterialReflectiveTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new MaterialReflectiveTest());
+	}
+	
 	private var reflectiveSphere : Geometry;
 
 	public function new()
