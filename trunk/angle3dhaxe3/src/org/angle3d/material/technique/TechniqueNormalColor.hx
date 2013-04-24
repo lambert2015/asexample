@@ -2,6 +2,8 @@ package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+import flash.Vector;
+import haxe.ds.StringMap;
 import org.angle3d.light.LightType;
 import org.angle3d.material.CullMode;
 import org.angle3d.material.shader.Shader;
@@ -112,21 +114,21 @@ class TechniqueNormalColor extends Technique
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.NORMAL] = "a_normal";
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION, "a_position");
+		map.set(BufferType.NORMAL, "a_normal");
 
 		if (meshType == MeshType.KEYFRAME)
 		{
-			map[BufferType.POSITION1] = "a_position1";
-			map[BufferType.NORMAL1] = "a_normal1";
+			map.set(BufferType.POSITION1, "a_position1");
+			map.set(BufferType.NORMAL1, "a_normal1");
 		}
 		return map;
 	}
 
 	override private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
-		var list:Vector<UniformBindingHelp> = new Vector<UniformBindingHelp>();
+		var list:Array<UniformBindingHelp> = new Array<UniformBindingHelp>();
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 		
 		return list;

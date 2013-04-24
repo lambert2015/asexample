@@ -1,11 +1,9 @@
 package org.angle3d.material.sgsl.node;
 
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-
-import org.angle3d.material.sgsl.node.reg.RegNode;
 import org.angle3d.material.sgsl.node.agal.AgalNode;
-import flash.Vector;
+import org.angle3d.material.sgsl.node.reg.RegNode;
+
 /**
  * FunctionNode的Child只有两种
  * 一个是临时变量定义

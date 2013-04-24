@@ -1,6 +1,5 @@
 ﻿package org.angle3d.material.sgsl.node;
 
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
 
 class LeafNode

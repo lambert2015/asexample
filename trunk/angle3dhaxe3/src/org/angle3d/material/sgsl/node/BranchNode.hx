@@ -1,8 +1,6 @@
 package org.angle3d.material.sgsl.node;
 
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-import flash.Vector;
 
 using org.angle3d.utils.ArrayUtil;
 

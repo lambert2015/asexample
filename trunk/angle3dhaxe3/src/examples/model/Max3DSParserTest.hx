@@ -1,9 +1,9 @@
 package examples.model;
 
+import examples.skybox.DefaultSkyBox;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 import org.angle3d.app.SimpleApplication;
-import examples.skybox.DefaultSkyBox;
 import org.angle3d.io.AssetManager;
 import org.angle3d.io.parser.max3ds.Max3DSParser;
 import org.angle3d.io.parser.ParserOptions;

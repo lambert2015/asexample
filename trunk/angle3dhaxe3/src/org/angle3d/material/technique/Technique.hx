@@ -1,6 +1,5 @@
 package org.angle3d.material.technique;
 
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
 import org.angle3d.light.LightType;
 import org.angle3d.manager.ShaderManager;
@@ -9,7 +8,6 @@ import org.angle3d.material.shader.Shader;
 import org.angle3d.material.shader.UniformBindingHelp;
 import org.angle3d.material.TechniqueDef;
 import org.angle3d.scene.mesh.MeshType;
-import flash.Vector;
 
 /**
  * Technique可能对应多个Shader

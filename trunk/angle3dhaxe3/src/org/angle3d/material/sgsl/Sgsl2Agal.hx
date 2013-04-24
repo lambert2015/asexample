@@ -1,11 +1,10 @@
 package org.angle3d.material.sgsl;
 
 import flash.utils.ByteArray;
-import flash.utils.Dictionary;
 import haxe.ds.IntMap;
-
 import org.angle3d.material.shader.ShaderType;
 import org.angle3d.math.FastMath;
+
 
 class Sgsl2Agal
 {

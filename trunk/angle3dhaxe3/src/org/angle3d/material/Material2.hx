@@ -1,6 +1,7 @@
 package org.angle3d.material
 {
 	import flash.utils.Dictionary;
+	import haxe.ds.StringMap;
 
 	import org.angle3d.material.technique.Technique;
 	import org.angle3d.math.Color;
@@ -28,9 +29,9 @@ package org.angle3d.material
 
 		private var sortingId:Int = -1;
 
-		private var paramValues:Dictionary;
+		private var paramValues:StringMap<MatParam>;
 		private var technique:Technique;
-		private var techniques:Dictionary;
+		private var techniques:StringMap<Technique>;
 
 		private var nextTexUnit:Int = 0;
 
@@ -38,8 +39,8 @@ package org.angle3d.material
 		{
 			this.def = def;
 
-			paramValues = new Dictionary();
-			techniques = new Dictionary();
+			paramValues = new StringMap<MatParam>();
+			techniques = new StringMap<Technique>();
 		}
 
 		/**

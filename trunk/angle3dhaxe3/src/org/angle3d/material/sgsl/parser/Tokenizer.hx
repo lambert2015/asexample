@@ -1,12 +1,11 @@
 ﻿package org.angle3d.material.sgsl.parser;
 
-import flash.utils.Dictionary;
 import flash.utils.RegExp;
 import haxe.ds.StringMap;
-
 import org.angle3d.material.sgsl.DataType;
-import org.angle3d.material.sgsl.RegType;
 import org.angle3d.material.sgsl.error.UnexpectedTokenError;
+import org.angle3d.material.sgsl.RegType;
+
 
 //TODO 优化解析速度
 class Tokenizer
