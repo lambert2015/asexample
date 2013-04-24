@@ -7,20 +7,20 @@ import org.angle3d.utils.Assert;
 
 class Spline
 {
-	private var controlPoints:Array<Vector3f>;
+	private var controlPoints:Vector<Vector3f>;
 	private var knots:Vector<Float>; //knots of NURBS spline
 	private var weights:Vector<Float>; //weights of NURBS spline
 	private var basisFunctionDegree:Int; //degree of NURBS spline basis function (computed automatically)
 	private var cycle:Bool;
 	private var segmentsLength:Array<Float>;
 	private var totalLength:Float;
-	private var CRcontrolPoints:Array<Vector3f>;
+	private var CRcontrolPoints:Vector<Vector3f>;
 	private var curveTension:Float;
 	private var _type:SplineType;
 
 	public function new()
 	{
-		controlPoints = new Array<Vector3f>();
+		controlPoints = new Vector<Vector3f>();
 		curveTension = 0.5;
 		_type = SplineType.CatmullRom;
 	}
@@ -40,7 +40,7 @@ class Spline
 	 * @param curveTension the tension of the spline
 	 * @param cycle true if the spline cycle.
 	 */
-	public function createNormal(splineType:SplineType, controlPoints:Array<Vector3f>, curveTension:Float = 0.5, cycle:Bool = false):Void
+	public function createNormal(splineType:SplineType, controlPoints:Vector<Vector3f>, curveTension:Float = 0.5, cycle:Bool = false):Void
 	{
 		Assert.assert(splineType != SplineType.Nurb, "To create NURBS spline use createNURBS");
 
@@ -88,9 +88,9 @@ class Spline
 		this.computeTotalLength();
 	}
 
-	private function initCatmullRomWayPoints(list:Array<Vector3f>):Void
+	private function initCatmullRomWayPoints(list:Vector<Vector3f>):Void
 	{
-		CRcontrolPoints = new Array<Vector3f>();
+		CRcontrolPoints = new Vector<Vector3f>();
 
 		var nb:Int = list.length - 1;
 		if (cycle)
@@ -147,7 +147,7 @@ class Spline
 	 */
 	public function removeControlPoint(controlPoint:Vector3f):Void
 	{
-		var index:Int = Lambda.indexOf(controlPoints, controlPoint);
+		var index:Int = controlPoints.indexOf(controlPoint);
 		if (index > -1)
 		{
 			controlPoints.splice(index, 1);
@@ -160,7 +160,7 @@ class Spline
 
 	public function clearControlPoints():Void
 	{
-		controlPoints = new Array<Vector3f>();
+		controlPoints = new Vector<Vector3f>();
 		totalLength = 0;
 	}
 
@@ -363,7 +363,7 @@ class Spline
 	/**
 	 * returns this spline control points
 	 */
-	public function getControlPoints():Array<Vector3f>
+	public function getControlPoints():Vector<Vector3f>
 	{
 		return controlPoints;
 	}

@@ -25,7 +25,7 @@ class CurveAndSurfaceMath
 	{
 		Assert.assert(nurbSpline.type == SplineType.Nurb, "Given spline is not of a NURB type!");
 
-		var controlPoints:Array<Vector3f> = nurbSpline.getControlPoints();
+		var controlPoints:Vector<Vector3f> = nurbSpline.getControlPoints();
 
 		var weights:Vector<Float> = nurbSpline.getWeights();
 

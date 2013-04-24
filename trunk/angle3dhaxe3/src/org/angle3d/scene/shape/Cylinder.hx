@@ -4,6 +4,7 @@ import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.MeshHelper;
 import org.angle3d.scene.mesh.SubMesh;
+import flash.Vector;
 
 /**
  * A simple cylinder, defined by it's height and radius.
@@ -45,13 +46,13 @@ class Cylinder extends Mesh
 		_vertices.push(0);
 
 
-		for (i = 0; i < _vertices.length; i++)
+		for (i in 0..._vertices.length)
 		{
-			_vertices[i] = int(_vertices[i] * 100) / 100;
+			_vertices[i] = Std.int(_vertices[i] * 100) / 100;
 		}
 
 		////////
-		for (i = 0; i < meridians - 1; i++)
+		for (i in 0...meridians - 1)
 		{
 			_indices.push(0);
 			_indices.push(i + 1);
@@ -64,9 +65,9 @@ class Cylinder extends Mesh
 
 		////////
 
-		for (j = 0; j < parallels; j++)
+		for (j in 0...parallels)
 		{
-			for (i = 0; i < meridians - 1; i++)
+			for (i in 0...meridians - 1)
 			{
 				_indices.push(i + 1 + (j * meridians));
 				_indices.push(i + meridians + 1 + (j * meridians));
@@ -78,7 +79,7 @@ class Cylinder extends Mesh
 			_indices.push(1 + (j * meridians));
 
 
-			for (i = 0; i < meridians - 1; i++)
+			for (i in 0...meridians - 1)
 			{
 				_indices.push(i + meridians + 2 + (j * meridians));
 				_indices.push(i + 2 + (j * meridians));
@@ -91,7 +92,7 @@ class Cylinder extends Mesh
 		}
 
 		//////////
-		for (i = 0; i < meridians - 1; i++)
+		for (i in 0...meridians - 1)
 		{
 			_indices.push((meridians * (parallels + 1)) + 1);
 			_indices.push((meridians * parallels) + i + 2);
@@ -111,9 +112,9 @@ class Cylinder extends Mesh
 		_uvt.push(0.5);
 		//_uvt.push(0);
 
-		for (j = 0; j <= parallels; j++)
+		for (j in 0...parallels+1)
 		{
-			for (i = 0; i < meridians; i++)
+			for (i in 0...meridians)
 			{
 				_uvt.push(i / meridians);
 				_uvt.push(j / parallels);
