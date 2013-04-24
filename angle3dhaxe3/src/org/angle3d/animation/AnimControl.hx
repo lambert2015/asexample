@@ -1,11 +1,10 @@
 package org.angle3d.animation;
 
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-
 import org.angle3d.scene.control.AbstractControl;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.TempVars;
+
 using org.angle3d.utils.ArrayUtil;
 /**
  * AnimControl is a Spatial control that allows manipulation

@@ -2,17 +2,14 @@ package org.angle3d.material.sgsl;
 
 
 import flash.utils.ByteArray;
-import flash.utils.Dictionary;
 import flash.utils.Endian;
 import haxe.ds.IntMap;
-import haxe.ds.ObjectMap;
 import haxe.ds.StringMap;
-
 import org.angle3d.material.sgsl.node.agal.AgalNode;
+import org.angle3d.material.sgsl.node.agal.ConditionIfNode;
 import org.angle3d.material.sgsl.node.ArrayAccessNode;
 import org.angle3d.material.sgsl.node.AtomNode;
 import org.angle3d.material.sgsl.node.BranchNode;
-import org.angle3d.material.sgsl.node.agal.ConditionIfNode;
 import org.angle3d.material.sgsl.node.ConstantNode;
 import org.angle3d.material.sgsl.node.FunctionCallNode;
 import org.angle3d.material.sgsl.node.LeafNode;
@@ -26,6 +23,7 @@ import org.angle3d.material.shader.ShaderType;
 import org.angle3d.material.shader.ShaderVarType;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Logger;
+
 
 using StringTools;
 

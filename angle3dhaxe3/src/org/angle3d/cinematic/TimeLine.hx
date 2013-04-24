@@ -1,8 +1,7 @@
 package org.angle3d.cinematic;
 
-import flash.utils.Dictionary;
-import haxe.ds.IntMap;
 import flash.Vector;
+import haxe.ds.IntMap;
 /**
  * andy
  * @author andy

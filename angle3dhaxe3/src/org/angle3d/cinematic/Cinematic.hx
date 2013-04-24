@@ -1,8 +1,7 @@
 package org.angle3d.cinematic;
 
-import flash.utils.Dictionary;
+import flash.Vector;
 import haxe.ds.StringMap;
-
 import org.angle3d.app.Application;
 import org.angle3d.app.state.AppState;
 import org.angle3d.app.state.AppStateManager;
@@ -11,9 +10,9 @@ import org.angle3d.cinematic.event.CinematicEvent;
 import org.angle3d.renderer.Camera3D;
 import org.angle3d.renderer.RenderManager;
 import org.angle3d.scene.CameraNode;
-import org.angle3d.scene.Node;
 import org.angle3d.scene.control.CameraControl;
-import flash.Vector;
+import org.angle3d.scene.Node;
+
 /**
  * andy
  * @author andy

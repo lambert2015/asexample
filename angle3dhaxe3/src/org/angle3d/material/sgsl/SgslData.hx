@@ -1,9 +1,6 @@
 package org.angle3d.material.sgsl;
 
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-import flash.Vector;
-
 import org.angle3d.material.sgsl.node.agal.AgalNode;
 import org.angle3d.material.sgsl.node.ArrayAccessNode;
 import org.angle3d.material.sgsl.node.AtomNode;
@@ -23,6 +20,7 @@ import org.angle3d.material.sgsl.pool.VaryingRegPool;
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.material.shader.ShaderType;
 import org.angle3d.utils.Assert;
+
 
 using org.angle3d.utils.ArrayUtil;
 /**

@@ -1,17 +1,14 @@
 ﻿package org.angle3d.material.sgsl;
 
-import flash.errors.Error;
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-import org.angle3d.utils.Assert;
-
 import org.angle3d.manager.ShaderManager;
 import org.angle3d.material.sgsl.node.agal.AgalNode;
 import org.angle3d.material.sgsl.node.BranchNode;
 import org.angle3d.material.sgsl.node.FunctionNode;
 import org.angle3d.material.sgsl.node.LeafNode;
 import org.angle3d.material.sgsl.node.reg.RegNode;
-import flash.Vector;
+import org.angle3d.utils.Assert;
+
 
 /**
  * 对生成的BranchNode进行处理

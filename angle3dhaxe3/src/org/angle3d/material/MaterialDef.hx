@@ -1,6 +1,6 @@
 package org.angle3d.material;
 
-import flash.utils.Dictionary;
+import flash.Vector;
 import haxe.ds.StringMap;
 
 /**
@@ -47,7 +47,7 @@ class MaterialDef
 	 */
 	public function addMaterialParam(type:String, name:String, value:Object):Void
 	{
-		matParams[name] = new MatParam(type, name, value);
+		matParams.set(name,new MatParam(type, name, value));
 	}
 
 	/**
@@ -59,7 +59,7 @@ class MaterialDef
 	 */
 	public function getMaterialParam(name:String):MatParam
 	{
-		return matParams[name];
+		return matParams.get(name);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class MaterialDef
 	 *
 	 * @return All material parameters declared in this definition.
 	 */
-	public function getMaterialParams():Dictionary
+	public function getMaterialParams():StringMap<MatParam>
 	{
 		return matParams;
 	}
@@ -92,7 +92,7 @@ class MaterialDef
 		}
 		else
 		{
-			techniques[technique.name] = technique;
+			techniques.set(technique.name,technique);
 		}
 	}
 
@@ -117,6 +117,6 @@ class MaterialDef
 	 */
 	public function getTechniqueDef(name:String):TechniqueDef
 	{
-		return techniques[name];
+		return techniques.get(name);
 	}
 }
