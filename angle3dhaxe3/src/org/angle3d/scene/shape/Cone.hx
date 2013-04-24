@@ -1,5 +1,6 @@
 package org.angle3d.scene.shape;
 
+import flash.Vector;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.MeshHelper;
@@ -29,7 +30,7 @@ class Cone extends Mesh
 		_vertices[1] = 0;
 		_vertices[2] = 0;
 
-		for (var i:Int = 0; i < meridians; i++)
+		for (i in 0...meridians)
 		{
 			_vertices.push(radius * Math.cos(Math.PI * 2 / meridians * vertex_no));
 			_vertices.push(0);
@@ -43,7 +44,7 @@ class Cone extends Mesh
 
 		vertex_no = 0;
 
-		for (i = 0; i < meridians - 1; i++)
+		for (i in 0...meridians - 1)
 		{
 			_indices.push(0);
 			_indices.push(vertex_no + 1);
@@ -57,7 +58,7 @@ class Cone extends Mesh
 
 		vertex_no = 1;
 
-		for (i = 0; i < meridians - 1; i++)
+		for (i in 0...meridians - 1)
 		{
 			_indices.push(vertex_no);
 			_indices.push(meridians + 1);
@@ -73,14 +74,14 @@ class Cone extends Mesh
 		_uvt.push(0.5);
 		//_uvt.push(0);
 
-		for (i = 0; i < verticesLength / 2; i++)
+		for (i in 0...Std.int(verticesLength / 2))
 		{
 			_uvt.push(1);
 			_uvt.push(0);
 				//_uvt.push(0);
 		}
 
-		for (i = 0; i < verticesLength / 2; i++)
+		for (i in 0...Std.int(verticesLength / 2))
 		{
 			_uvt.push(i / meridians);
 			_uvt.push(0);

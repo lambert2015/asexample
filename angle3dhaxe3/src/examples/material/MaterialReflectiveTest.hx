@@ -14,7 +14,17 @@ import org.angle3d.scene.shape.WireframeUtil;
 import org.angle3d.scene.WireframeGeometry;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
-
+import org.angle3d.scene.shape.Box;
+import org.angle3d.scene.shape.Cone;
+import org.angle3d.scene.shape.Cylinder;
+import org.angle3d.scene.shape.Quad;
+import org.angle3d.scene.shape.Sphere;
+import org.angle3d.scene.shape.Torus;
+import org.angle3d.scene.shape.TorusKnot;
+import org.angle3d.scene.shape.WireframeCube;
+import org.angle3d.scene.shape.WireframeCurve;
+import org.angle3d.scene.shape.WireframeGrid;
+import org.angle3d.light.LightList;
 
 class MaterialReflectiveTest extends SimpleApplication
 {

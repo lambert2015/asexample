@@ -62,11 +62,11 @@ class Quad extends Mesh
 		var indices:Vector<UInt>;
 		if (height < 0)
 		{
-			indices = Vector.ofArray<UInt>([0, 2, 1, 0, 3, 2]);
+			indices = Vector.convert(Vector.ofArray([0, 2, 1, 0, 3, 2]));
 		}
 		else
 		{
-			indices = Vector.ofArray<UInt>([0, 1, 2, 0, 2, 3]);
+			indices = Vector.convert(Vector.ofArray([0, 1, 2, 0, 2, 3]));
 		}
 
 		subMesh.setIndices(indices);
