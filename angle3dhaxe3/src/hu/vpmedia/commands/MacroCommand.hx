@@ -71,7 +71,7 @@ class MacroCommand extends BaseCommand
     public function addCommand(command:IBaseCommand):Void
     {
         /*#if debug
-        trace("addCommand::" + command);
+        Lib.trace("addCommand::" + command);
         #end*/
         commands.push(command);
     }
@@ -79,7 +79,7 @@ class MacroCommand extends BaseCommand
     public function addCommandAt(command:IBaseCommand, index:Int):Void
     {
         /*#if debug
-        trace("addCommandAt::" + command + "::" + index);
+        Lib.trace("addCommandAt::" + command + "::" + index);
         #end*/
         commands.insert(index, command);
     }

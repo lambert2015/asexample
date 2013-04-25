@@ -1,5 +1,6 @@
 package org.angle3d.io.parser.ms3d;
 
+import flash.Lib;
 import flash.utils.ByteArray;
 import flash.utils.Endian;
 import flash.Vector;
@@ -56,10 +57,10 @@ class MS3DParser
 		{
 			var subMesh:SubMesh = new SubMesh();
 			
-			var indices:Array<UInt> = new Array<UInt>();
-			var vertices:Array<Float> = new Array<Float>();
-			var normals:Array<Float> = new Array<Float>();
-			var uvData:Array<Float> = new Array<Float>();
+			var indices:Vector<UInt> = new Vector<UInt>();
+			var vertices:Vector<Float> = new Vector<Float>();
+			var normals:Vector<Float> = new Vector<Float>();
+			var uvData:Vector<Float> = new Vector<Float>();
 
 			var triangle:MS3DTriangle;
 			for (t in 0...numTriangle)
@@ -91,11 +92,16 @@ class MS3DParser
 					indices.push(index + 2);
 				}
 			}
+			
+			vertices.fixed = true;
+			uvData.fixed = true;
+			normals.fixed = true;
+			indices.fixed = true;
 
-			subMesh.setVertexBuffer(BufferType.POSITION, 3, Vector.fromArrayCopy(vertices));
-			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, Vector.fromArrayCopy(uvData));
-			subMesh.setVertexBuffer(BufferType.NORMAL, 3, Vector.fromArrayCopy(normals));
-			subMesh.setIndices(Vector.fromArrayCopy(indices));
+			subMesh.setVertexBuffer(BufferType.POSITION, 3, vertices);
+			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, uvData);
+			subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
+			subMesh.setIndices(indices);
 			subMesh.validate();
 
 			mesh.addSubMesh(subMesh);
@@ -133,12 +139,12 @@ class MS3DParser
 		{
 			var subMesh:SkinnedSubMesh = new SkinnedSubMesh();
 			
-			var indices:Array<UInt> = new Array<UInt>();
-			var vertices:Array<Float> = new Array<Float>();
-			var normals:Array<Float> = new Array<Float>();
-			var uvData:Array<Float> = new Array<Float>();
-			var boneIndices:Array<Float> = new Array<Float>();
-			var weights:Array<Float> = new Array<Float>();
+			var indices:Vector<UInt> = new Vector<UInt>();
+			var vertices:Vector<Float> = new Vector<Float>();
+			var normals:Vector<Float> = new Vector<Float>();
+			var uvData:Vector<Float> = new Vector<Float>();
+			var boneIndices:Vector<Float> = new Vector<Float>();
+			var weights:Vector<Float> = new Vector<Float>();
 
 			var triangle:MS3DTriangle;
 			for (t in 0...numTriangle)
@@ -180,14 +186,20 @@ class MS3DParser
 					indices.push(index + 2);
 				}
 			}
+			
+			vertices.fixed = true;
+			uvData.fixed = true;
+			normals.fixed = true;
+			boneIndices.fixed = true;
+			weights.fixed = true;
 
-			subMesh.setVertexBuffer(BufferType.POSITION, 3, Vector.fromArrayCopy(vertices));
-			subMesh.setVertexBuffer(BufferType.BIND_POSE_POSITION, 3, Vector.fromArrayCopy(vertices.slice(0)));
-			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, Vector.fromArrayCopy(uvData));
-			subMesh.setVertexBuffer(BufferType.NORMAL, 3, Vector.fromArrayCopy(normals));
-			subMesh.setVertexBuffer(BufferType.BONE_INDICES, 4, Vector.fromArrayCopy(boneIndices));
-			subMesh.setVertexBuffer(BufferType.BONE_WEIGHTS, 4, Vector.fromArrayCopy(weights));
-			subMesh.setIndices(Vector.fromArrayCopy(indices));
+			subMesh.setVertexBuffer(BufferType.POSITION, 3, vertices);
+			subMesh.setVertexBuffer(BufferType.BIND_POSE_POSITION, 3, vertices.slice(0));
+			subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, uvData);
+			subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
+			subMesh.setVertexBuffer(BufferType.BONE_INDICES, 4, boneIndices);
+			subMesh.setVertexBuffer(BufferType.BONE_WEIGHTS, 4, weights);
+			subMesh.setIndices(indices);
 			subMesh.validate();
 
 			mesh.addSubMesh(subMesh);
@@ -202,8 +214,8 @@ class MS3DParser
 	{
 		var length:Int = mMs3dJoints.length;
 		
-		var bones:Vector<Bone> = new Vector<Bone>(length);
-		var tracks:Vector<BoneTrack> = new Vector<BoneTrack>(length);
+		var bones:Vector<Bone> = new Vector<Bone>(length,true);
+		var tracks:Vector<BoneTrack> = new Vector<BoneTrack>(length,true);
 
 		var animation:Animation = new Animation("default", mNumFrames);
 
@@ -548,7 +560,7 @@ class MS3DParser
 
 		var startTime:Float = data.readFloat();
 		#if debug
-			trace("startTime :", startTime);
+			Lib.trace("startTime :" + startTime);
 		#end
 
 		//动画帧数
@@ -615,7 +627,7 @@ class MS3DParser
 			{
 				var comment:String = data.readUTFBytes(size);
 				#if debug
-					trace(comment);
+					Lib.trace(comment);
 				#end
 			}
 		}
@@ -630,7 +642,7 @@ class MS3DParser
 			if (size > 0)
 			{
 				var comment:String = data.readUTFBytes(size);
-				trace(comment);
+				Lib.trace(comment);
 			}
 		}
 	}

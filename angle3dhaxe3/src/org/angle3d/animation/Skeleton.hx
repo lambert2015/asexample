@@ -1,10 +1,10 @@
 package org.angle3d.animation;
 
+import flash.Vector;
 import haxe.ds.StringMap;
 import org.angle3d.math.Matrix4f;
 import org.angle3d.utils.TempVars;
-import flash.Vector;
-using org.angle3d.utils.ArrayUtil;
+
 /**
  * Skeleton is a convenience class for managing a bone hierarchy.
  * Skeleton updates the world transforms to reflect the current local
@@ -23,9 +23,9 @@ class Skeleton
 	public static inline var MAX_BONE_COUNT:Int = 32;
 
 	//
-	public var rootBones:Array<Bone>;
+	public var rootBones:Vector<Bone>;
 
-	private var mBoneList:Array<Bone>;
+	private var mBoneList:Vector<Bone>;
 	private var mBoneMap:StringMap<Bone>;
 
 	/**
@@ -43,7 +43,7 @@ class Skeleton
 	 *
 	 * @param boneList The list of bones to manage by this Skeleton
 	 */
-	public function new(boneList:Array<Bone>)
+	public function new(boneList:Vector<Bone>)
 	{
 		this.mBoneList = boneList;
 		createSkinningMatrices();
@@ -56,8 +56,8 @@ class Skeleton
 		return mBoneList.length;
 	}
 
-	public var boneList(get,null):Array<Bone>;
-	private inline function get_boneList():Array<Bone>
+	public var boneList(get,null):Vector<Bone>;
+	private inline function get_boneList():Vector<Bone>
 	{
 		return mBoneList;
 	}
@@ -74,7 +74,7 @@ class Skeleton
 			mBoneMap.set(mBoneList[i].name,mBoneList[i]);
 		}
 
-		rootBones = new Array<Bone>();
+		rootBones = new Vector<Bone>();
 		for (bone in mBoneMap)
 		{
 			//var bone:Bone = mBoneMap[name];

@@ -38,16 +38,11 @@ class MaterialReflectiveTest extends SimpleApplication
 	public function new()
 	{
 		super();
-
-		this.addChild(new Stats());
 	}
 
 	override private function initialize(width : Int, height : Int) : Void
 	{
 		super.initialize(width, height);
-
-		stage.align = StageAlign.TOP_LEFT;
-		stage.scaleMode = StageScaleMode.NO_SCALE;
 
 		flyCam.setDragToRotate(false);
 
@@ -68,6 +63,8 @@ class MaterialReflectiveTest extends SimpleApplication
 
 		cam.location.setTo(0, 0, -200);
 		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
+		
+		Stats.show(stage);
 	}
 
 	private var angle : Float = 0;

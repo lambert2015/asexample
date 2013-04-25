@@ -98,7 +98,7 @@ class MotionPathTest extends SimpleApplication
 
 	//private function _onWayPointReach(signal : MotionPathSignal) : Void
 	//{
-		//trace("currentPointIndex is " + signal.curWayPoint);
+		//Lib.trace("currentPointIndex is " + signal.curWayPoint);
 	//}
 }
 

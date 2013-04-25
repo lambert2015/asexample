@@ -1,6 +1,7 @@
 package org.angle3d.scene.debug;
 
 import flash.display3D.Context3DCompareMode;
+import flash.Vector;
 
 import org.angle3d.animation.Bone;
 import org.angle3d.animation.Skeleton;
@@ -33,7 +34,7 @@ class SkeletonPoints extends Node
 		points = new Vector<Geometry>();
 
 		var boneCount:Int = _skeleton.numBones;
-		for (var i:Int = 0; i < boneCount; i++)
+		for (i in 0...boneCount)
 		{
 			var node:Geometry = new Geometry(_skeleton.boneList[i].name, new Cube(_size, _size, _size));
 			node.setMaterial(material);
@@ -45,7 +46,7 @@ class SkeletonPoints extends Node
 	public function updateGeometry():Void
 	{
 		var boneCount:Int = _skeleton.numBones;
-		for (var i:Int = 0; i < boneCount; i++)
+		for (i in 0...boneCount)
 		{
 			var bone:Bone = _skeleton.getBoneAt(i);
 			var node:Geometry = points[i];

@@ -147,7 +147,7 @@ class SkeletonControl extends AbstractControl
 			var buffer:VertexBuffer = subMesh.getVertexBuffer(BufferType.BIND_POSE_POSITION);
 			var posBuffer:VertexBuffer = subMesh.getVertexBuffer(BufferType.POSITION);
 
-			posBuffer.updateData(Vector.fromData(buffer.getData().toData()));
+			posBuffer.updateData(buffer.getData());
 		}
 	}
 

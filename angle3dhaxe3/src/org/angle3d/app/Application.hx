@@ -7,6 +7,7 @@ import flash.display.StageScaleMode;
 import flash.display3D.Context3DProfile;
 import flash.display3D.Context3DRenderMode;
 import flash.events.Event;
+import flash.Lib;
 import org.angle3d.app.state.AppStateManager;
 import org.angle3d.input.InputManager;
 import org.angle3d.manager.ShaderManager;
@@ -133,6 +134,9 @@ class Application extends Sprite
 
 	private function initialize(width:Int, height:Int):Void
 	{
+		stage.align = StageAlign.TOP_LEFT;
+		stage.scaleMode = StageScaleMode.NO_SCALE;
+		
 		initShaderManager();
 		initCamera(width, height);
 		initStateManager();
@@ -205,8 +209,8 @@ class Application extends Sprite
 	private function _context3DCreateHandler(e:Event):Void
 	{
 		#if debug
-		trace(stage3D.context3D.driverInfo);
-		stage3D.context3D.enableErrorChecking = true;
+			Lib.trace(stage3D.context3D.driverInfo);
+			stage3D.context3D.enableErrorChecking = true;
 		#end
 
 		if (isSoftware(stage3D.context3D.driverInfo))

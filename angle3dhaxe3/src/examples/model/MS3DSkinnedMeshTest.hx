@@ -1,9 +1,11 @@
 package examples.model;
 
-import flash.utils.Dictionary;
-
-import org.angle3d.animation.AnimChannel;
+import flash.display.Bitmap;
+import flash.utils.ByteArray;
+import flash.Vector;
+import hu.vpmedia.assets.AssetLoaderVO;
 import org.angle3d.animation.Animation;
+import org.angle3d.animation.AnimChannel;
 import org.angle3d.animation.Bone;
 import org.angle3d.animation.Skeleton;
 import org.angle3d.animation.SkeletonAnimControl;
@@ -15,31 +17,40 @@ import org.angle3d.io.parser.ms3d.MS3DParser;
 import org.angle3d.material.MaterialTexture;
 import org.angle3d.math.FastMath;
 import org.angle3d.math.Vector3f;
-import org.angle3d.scene.Geometry;
-import org.angle3d.scene.Node;
 import org.angle3d.scene.debug.SkeletonDebugger;
+import org.angle3d.scene.Geometry;
 import org.angle3d.scene.mesh.SkinnedMesh;
+import org.angle3d.scene.Node;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
-import org.assetloader.AssetLoader;
-import org.assetloader.base.AssetType;
-import org.assetloader.signals.LoaderSignal;
-import org.angle3d.animation.Bone;
+import hu.vpmedia.assets.AssetLoader;
 
 class MS3DSkinnedMeshTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new MS3DSkinnedMeshTest());
+	}
+	
+	private var baseURL:String;
 	public function new()
 	{
 		super();
+	}
+	
+	override private function initialize(width:Int, height:Int):Void
+	{
+		super.initialize(width, height);
 
-		var assetLoader:AssetLoader = AssetManager.getInstance().createLoader("ms3dLoader");
-		assetLoader.addFile("ninja", "../asexample/angle3d/assets/ms3d/ninja.ms3d", AssetType.BINARY);
-		assetLoader.addFile("ninjaSkin", "../asexample/angle3d/assets/ms3d/nskinbr.jpg", AssetType.IMAGE);
-		assetLoader.onComplete.addOnce(_loadComplete);
-		assetLoader.onError.add(_loadError);
-		assetLoader.start();
+		baseURL = "ms3d/";
+		var assetLoader:AssetLoader = new AssetLoader();
+		assetLoader.signalSet.completed.add(_loadComplete);
+		assetLoader.add(baseURL + "ninja.ms3d");
+		assetLoader.add(baseURL + "nskinbr.jpg");
 
-		this.addChild(new Stats());
+		assetLoader.execute();
+		
+		Stats.show(stage);
 	}
 
 	private var material:MaterialTexture;
@@ -47,18 +58,23 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 	private var animation:Animation;
 	private var bones:Vector<Bone>;
 
-	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):Void
+	private function _loadComplete(loader:AssetLoader):Void
 	{
 		flyCam.setDragToRotate(true);
+		
+		var assetLoaderVO1:AssetLoaderVO = loader.get(baseURL + "ninja.ms3d");
+		var assetLoaderVO2:AssetLoaderVO = loader.get(baseURL + "nskinbr.jpg");
 
-		material = new MaterialTexture(new Texture2D(assets["ninjaSkin"].bitmapData));
+		var bitmap:Bitmap = assetLoaderVO2.data;
+		material = new MaterialTexture(new Texture2D(bitmap.bitmapData));
 
 		var parser:MS3DParser = new MS3DParser();
 
-		skinnedMesh = parser.parseSkinnedMesh("ninja", assets["ninja"]);
-		var array:Array = parser.buildSkeleton();
-		bones = array[0];
-		animation = array[1];
+		var byteArray:ByteArray = assetLoaderVO1.data;
+		skinnedMesh = parser.parseSkinnedMesh("ninja", byteArray);
+		var boneAnimation:BoneAnimation = parser.buildSkeleton();
+		bones = boneAnimation.bones;
+		animation = boneAnimation.animation;
 
 		for (i in 0...5)
 		{
@@ -74,7 +90,7 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 
-	private function createNinja(index:int):Node
+	private function createNinja(index:Int):Node
 	{
 		var geometry:Geometry = new Geometry("ninja" + index, skinnedMesh);
 
@@ -106,7 +122,7 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 //			var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");
 //			attachNode.attachChild(boxNode);
 
-		var animControl:SkeletonAnimControl = ninjaNode.getControlByClass(SkeletonAnimControl) as SkeletonAnimControl;
+		var animControl:SkeletonAnimControl = cast ninjaNode.getControlByClass(SkeletonAnimControl);
 		var channel:AnimChannel = animControl.createChannel();
 		channel.playAnimation("default", LoopMode.Cycle, 10);
 
@@ -114,11 +130,6 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		ninjaNode.attachChild(skeletonDebugger);
 
 		return ninjaNode;
-	}
-
-	private function _loadError(signal:LoaderSignal):Void
-	{
-		trace(signal.numListeners);
 	}
 
 	private var angle:Float = 0;

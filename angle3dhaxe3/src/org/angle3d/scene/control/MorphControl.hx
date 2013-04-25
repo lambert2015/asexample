@@ -41,6 +41,7 @@ class MorphControl extends AbstractControl
 		_fps = value / 60;
 	}
 
+	public var material(get, null):Material;
 	private function get_material():Material
 	{
 		if (_material == null)
@@ -50,6 +51,7 @@ class MorphControl extends AbstractControl
 		return _material;
 	}
 
+	public var mesh(get, null):MorphMesh;
 	private function get_mesh():MorphMesh
 	{
 		if (_mesh == null)
@@ -79,7 +81,7 @@ class MorphControl extends AbstractControl
 		if (_morphData != null)
 		{
 			_curFrame = _morphData.start;
-			_nextFrame = _curFrame + 1;
+			_nextFrame = Std.int(_curFrame + 1);
 		}
 	}
 
@@ -100,7 +102,7 @@ class MorphControl extends AbstractControl
 	override private function set_spatial(spatial:Spatial):Spatial
 	{
 		super.spatial = spatial;
-		_node = spatial as MorphGeometry;
+		_node = cast(spatial, MorphGeometry);
 		
 		return spatial;
 	}
@@ -114,7 +116,8 @@ class MorphControl extends AbstractControl
 
 		if (!_loop && _curFrame >= _morphData.end)
 		{
-			_nextFrame = _curFrame = _morphData.end;
+			_curFrame = _morphData.end;
+			_nextFrame = Std.int(_curFrame);
 			_pause = !_loop;
 		}
 		else
@@ -134,6 +137,6 @@ class MorphControl extends AbstractControl
 		mesh.setFrame(Std.int(_curFrame), _nextFrame);
 
 		//influence是两帧之间的插值，传递给Shader用于计算最终位置
-		material.influence = _curFrame - int(_curFrame);
+		material.influence = _curFrame - Std.int(_curFrame);
 	}
 }
