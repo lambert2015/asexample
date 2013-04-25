@@ -23,11 +23,6 @@ import org.angle3d.scene.mesh.MeshType;
 
 class TechniqueNormalColor extends Technique
 {
-	[Embed(source = "data/normalcolor.vs", mimeType = "application/octet-stream")]
-	private static var NormalColorVS:Class;
-	[Embed(source = "data/normalcolor.fs", mimeType = "application/octet-stream")]
-	private static var NormalColorFS:Class;
-
 	private var _influences:Vector<Float>;
 
 	private var _normalScales:Vector<Float>;
@@ -66,11 +61,13 @@ class TechniqueNormalColor extends Technique
 		return _influences[1];
 	}
 
-	private function set_normalScale(value:Vector3f):Void
+	public var normalScale(null, set):Vector3f;
+	private function set_normalScale(value:Vector3f):Vector3f
 	{
 		_normalScales[0] = value.x;
 		_normalScales[1] = value.y;
 		_normalScales[2] = value.z;
+		return value;
 	}
 
 	/**
@@ -107,7 +104,7 @@ class TechniqueNormalColor extends Technique
 
 	override private function getKey(lightType:LightType, meshType:MeshType):String
 	{
-		var result:Array = [name, meshType];
+		var result:Array<String> = [name, meshType.getName()];
 		return result.join("_");
 	}
 
@@ -134,3 +131,7 @@ class TechniqueNormalColor extends Technique
 	}
 }
 
+@:file("org/angle3d/material/technique/data/normalcolor.vs") 
+class NormalColorVS extends flash.utils.ByteArray{}
+@:file("org/angle3d/material/technique/data/normalcolor.fs") 
+class NormalColorFS extends flash.utils.ByteArray{}

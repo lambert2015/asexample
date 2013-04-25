@@ -1,5 +1,6 @@
 package org.angle3d.material.sgsl;
 
+import flash.Lib;
 import haxe.ds.StringMap;
 import org.angle3d.material.sgsl.node.agal.AgalNode;
 import org.angle3d.material.sgsl.node.ArrayAccessNode;
@@ -242,7 +243,7 @@ class SgslData
 				varyingPool.addReg(reg);
 			case RegType.OUTPUT, RegType.DEPTH:
 				//do nothing
-				trace(reg.name);
+				Lib.trace(reg.name);
 		}
 
 		_regsMap.set(reg.name,reg);

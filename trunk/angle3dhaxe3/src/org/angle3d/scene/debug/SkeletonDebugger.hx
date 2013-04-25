@@ -26,7 +26,7 @@ class SkeletonDebugger extends Node
 		_points = new SkeletonPoints(name + "_points", skeleton, radius);
 
 		var lineGM:WireframeGeometry = new WireframeGeometry(name + "_lines", _lines);
-		var mat:MaterialWireframe = lineGM.getMaterial() as MaterialWireframe;
+		var mat:MaterialWireframe = cast lineGM.getMaterial();
 		mat.technique.thickness = 1;
 		mat.technique.renderState.applyDepthTest = true;
 		mat.technique.renderState.depthTest = true;

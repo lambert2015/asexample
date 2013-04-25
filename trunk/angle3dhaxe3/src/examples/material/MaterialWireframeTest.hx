@@ -33,8 +33,6 @@ class MaterialWireframeTest extends SimpleApplication
 		super();
 
 		angle = 0;
-
-		this.addChild(new Stats());
 	}
 
 	override private function initialize(width : Int, height : Int) : Void
@@ -75,6 +73,8 @@ class MaterialWireframeTest extends SimpleApplication
 		scene.attachChild(movingNode);
 
 		cam.location.setTo(0, 0, 300);
+		
+		Stats.show(stage);
 	}
 
 	override public function simpleUpdate(tpf : Float) : Void

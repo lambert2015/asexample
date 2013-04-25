@@ -1,48 +1,47 @@
-package org.angle3d.scene
+package org.angle3d.scene;
+
+import org.angle3d.scene.control.MorphControl;
+import org.angle3d.scene.mesh.Mesh;
+import org.angle3d.scene.mesh.MorphMesh;
+
+class MorphGeometry extends Geometry
 {
-	import org.angle3d.scene.control.MorphControl;
-	import org.angle3d.scene.mesh.Mesh;
-	import org.angle3d.scene.mesh.MorphMesh;
+	private var mMorphMesh:MorphMesh;
 
-	class MorphGeometry extends Geometry
+	private var mControl:MorphControl;
+
+	public function new(name:String, mesh:MorphMesh = null)
 	{
-		private var mMorphMesh:MorphMesh;
+		super(name, mesh);
 
-		private var mControl:MorphControl;
+		mControl = new MorphControl();
+		addControl(mControl);
+	}
 
-		public function MorphGeometry(name:String, mesh:MorphMesh = null)
-		{
-			super(name, mesh);
+	public function setAnimationSpeed(speed:Float):Void
+	{
+		mControl.setAnimationSpeed(speed);
+	}
 
-			mControl = new MorphControl();
-			addControl(mControl);
-		}
+	public function playAnimation(animationName:String, loop:Bool = true):Void
+	{
+		mControl.playAnimation(animationName, loop);
+	}
 
-		public function setAnimationSpeed(speed:Float):Void
-		{
-			mControl.setAnimationSpeed(speed);
-		}
+	public function stop():Void
+	{
+		mControl.stop();
+	}
 
-		public function playAnimation(animationName:String, loop:Bool = true):Void
-		{
-			mControl.playAnimation(animationName, loop);
-		}
+	override public function setMesh(mesh:Mesh):Void
+	{
+		mMorphMesh = cast(mesh,MorphMesh);
+		super.setMesh(mesh);
+	}
 
-		public function stop():Void
-		{
-			mControl.stop();
-		}
-
-		override public function setMesh(mesh:Mesh):Void
-		{
-			mMorphMesh = mesh as MorphMesh;
-			super.setMesh(mesh);
-		}
-
-		public var morphMesh(get, null):MorphMesh;
-		private function get_morphMesh():MorphMesh
-		{
-			return mMorphMesh;
-		}
+	public var morphMesh(get, null):MorphMesh;
+	private function get_morphMesh():MorphMesh
+	{
+		return mMorphMesh;
 	}
 }

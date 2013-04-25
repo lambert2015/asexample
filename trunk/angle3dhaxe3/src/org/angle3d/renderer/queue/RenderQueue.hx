@@ -1,5 +1,6 @@
 package org.angle3d.renderer.queue;
 
+import flash.Lib;
 import org.angle3d.renderer.Camera3D;
 import org.angle3d.renderer.RenderManager;
 import org.angle3d.scene.Geometry;
@@ -128,7 +129,7 @@ class RenderQueue
 				shadowCast.add(g);
 				shadowRecv.add(g);
 			case ShadowMode.Inherit,ShadowMode.Off:
-				trace("Inherit or Off");
+				Lib.trace("Inherit or Off");
 			//default:
 				//Assert.assert(false, "Unrecognized shadow bucket type: " + shadeMode);
 		}

@@ -21,7 +21,7 @@
   <build>
     <option directives="" />
     <option flashStrict="True" />
-    <option mainClass="AssetLoaderMain" />
+    <option mainClass="examples.model.MD2ParserTest" />
     <option enabledebug="True" />
     <option additional="-swf-version 11.7" />
   </build>
@@ -35,7 +35,7 @@
     <compile path="src\examples\material\MaterialWireframeTest.hx" />
     <compile path="src\examples\model\ShapeCollisionTest.hx" />
     <compile path="src\examples\animation\MotionPathTest.hx" />
-    <compile path="src\AssetLoaderMain.hx" />
+    <compile path="src\examples\model\MD2ParserTest.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>

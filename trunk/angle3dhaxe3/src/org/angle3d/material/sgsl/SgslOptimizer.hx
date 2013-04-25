@@ -102,7 +102,7 @@ class SgslOptimizer
 //				cloneTree.removeChild(func);
 //			}
 //
-//			trace(cloneTree.toString());
+//			Lib.trace(cloneTree.toString());
 //
 //			customFunctionMap = null;
 //

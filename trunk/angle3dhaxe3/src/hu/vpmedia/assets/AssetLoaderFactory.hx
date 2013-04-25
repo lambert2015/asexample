@@ -28,6 +28,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package hu.vpmedia.assets;
 
+import flash.Lib;
 import hu.vpmedia.assets.loaders.AssetLoaderType;
 import hu.vpmedia.assets.loaders.BaseAssetLoader;
 import hu.vpmedia.assets.loaders.BinaryLoader;
@@ -80,7 +81,7 @@ class AssetLoaderFactory
             }
             default:
             {
-                trace("Unknown loader type:" + type);
+                Lib.trace("Unknown loader type:" + type);
             }
         }
         return result;

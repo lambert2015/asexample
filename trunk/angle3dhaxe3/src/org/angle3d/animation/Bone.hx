@@ -1,5 +1,6 @@
 package org.angle3d.animation;
 
+import flash.Vector;
 import org.angle3d.math.Matrix3f;
 import org.angle3d.math.Matrix4f;
 import org.angle3d.math.Quaternion;
@@ -18,7 +19,7 @@ class Bone
 	public var parentName:String;
 	public var parent:Bone;
 
-	public var children:Array<Bone>;
+	public var children:Vector<Bone>;
 
 	/**
 	 * The attachment node follow this bone's motions
@@ -69,7 +70,7 @@ class Bone
 
 		parentName = "";
 
-		children = new Array<Bone>();
+		children = new Vector<Bone>();
 
 		mBindPos = new Vector3f();
 		mBindRot = new Quaternion();

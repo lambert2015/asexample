@@ -15,7 +15,13 @@ import flash.xml.XMLList;
 
 
 class Stats extends Sprite 
-{	
+{
+	public static inline function show(stage:Stage):Void
+	{
+		var stats:Stats = new Stats();
+		stats.x = stage.stageWidth - GRAPH_WIDTH;
+		stage.addChild(stats);
+	}
 
 	static inline var GRAPH_WIDTH : Int = 70;
 	static inline var XPOS : Int = 69;//width - 1

@@ -1,6 +1,7 @@
 package org.angle3d.bounding;
 
 import flash.errors.Error;
+import flash.Lib;
 import org.angle3d.collision.Collidable;
 import org.angle3d.collision.CollisionResult;
 import org.angle3d.collision.CollisionResults;
@@ -309,7 +310,7 @@ class BoundingSphere extends BoundingVolume
 	 */
 	public function averagePoints(points:Vector<Vector3f>):Void
 	{
-		trace("Bounding Sphere calculated using average points.");
+		Lib.trace("Bounding Sphere calculated using average points.");
 
 		center.copyFrom(points[0]);
 

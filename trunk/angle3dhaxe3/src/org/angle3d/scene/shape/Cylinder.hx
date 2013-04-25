@@ -105,8 +105,8 @@ class Cylinder extends Mesh
 
 
 
-		//	trace(_indices);
-		//	trace(i);
+		//	Lib.trace(_indices);
+		//	Lib.trace(i);
 
 		_uvt.push(0.5);
 		_uvt.push(0.5);

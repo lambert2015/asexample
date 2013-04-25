@@ -10,6 +10,10 @@ import org.angle3d.material.technique.TechniqueWireframe;
 class MaterialWireframe extends Material
 {
 	private var _technique:TechniqueWireframe;
+	
+	public var thickness(get, set):Float;
+	public var technique(get, null):TechniqueWireframe;
+	public var color(get, set):UInt;
 
 	public function new(color:UInt = 0xFF0000, thickness:Float = 1.0)
 	{
@@ -22,16 +26,19 @@ class MaterialWireframe extends Material
 		sortingId = 3;
 	}
 
+	
 	private function set_thickness(thickness:Float):Float
 	{
 		return _technique.thickness = thickness;
 	}
 
+	
 	private function get_thickness():Float
 	{
 		return _technique.thickness;
 	}
 
+	
 	private function get_technique():TechniqueWireframe
 	{
 		return _technique;
@@ -42,7 +49,7 @@ class MaterialWireframe extends Material
 		return _technique.alpha = alpha;
 	}
 
-	public var color(get, set):UInt;
+	
 	private function set_color(color:UInt):UInt
 	{
 		return _technique.color = color;

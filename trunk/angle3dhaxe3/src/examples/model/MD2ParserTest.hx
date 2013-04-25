@@ -1,7 +1,11 @@
 package examples.model;
 
 import flash.events.Event;
+import flash.events.KeyboardEvent;
+import flash.text.TextField;
+import flash.ui.Keyboard;
 import flash.utils.Dictionary;
+import hu.vpmedia.assets.AssetLoader;
 import org.angle3d.app.SimpleApplication;
 import examples.skybox.DefaultSkyBox;
 import org.angle3d.io.AssetManager;
@@ -17,28 +21,30 @@ import org.angle3d.scene.MorphGeometry;
 import org.angle3d.scene.Node;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
-import org.assetloader.AssetLoader;
-import org.assetloader.base.AssetType;
-import org.assetloader.signals.LoaderSignal;
 
 class MD2ParserTest extends SimpleApplication
 {
-
-	private var angle:Number;
+	static function main() 
+	{
+		flash.Lib.current.addChild(new MD2ParserTest());
+	}
+	
+	private var angle:Float;
 
 	private var monster:MorphGeometry;
 	private var weapon:MorphGeometry;
-	private var animations:Array = ["stand", "run", "attack", "pain", "jump", "flip", "salute", "taunt", "wave", "point", "crwalk", "crpain", "crdeath", "death"];
+	private var animations:Array<String>;
 
-	private var animationIndex:int = 0;
-	private var speed:Number = 2;
+	private var animationIndex:Int;
+	private var speed:Float;
 
+	private var baseURL:String;
 	public function new()
 	{
 		super();
 	}
 
-	private function _changeAnimation(e:Event):Void
+	private function playNextAnimation():Void
 	{
 		if (animationIndex > animations.length - 1)
 		{
@@ -52,30 +58,39 @@ class MD2ParserTest extends SimpleApplication
 		super.initialize(width, height);
 
 		angle = 0;
-
-		this.addChild(new Stats());
-
+		animationIndex = 0;
+		speed = 2;
+		animations = ["stand", "run", "attack", 
+						"pain", "jump", "flip", "salute", 
+						"taunt", "wave", "point", "crwalk", 
+						"crpain", "crdeath", "death"];
+		
 		flyCam.setDragToRotate(true);
 
-		var assetLoader:AssetLoader = AssetManager.getInstance().createLoader("md2Loader");
-		assetLoader.addFile("ratamahatta", "../asexample/angle3d/assets/md2/ratamahatta.md2", AssetType.BINARY);
-		assetLoader.addFile("w_rlauncher", "../asexample/angle3d/assets/md2/w_rlauncher.md2", AssetType.BINARY);
-		assetLoader.addFile("ratamahatta_texture", "../asexample/angle3d/assets/md2/ctf_r.png", AssetType.IMAGE);
-		assetLoader.addFile("w_rlauncher_texture", "../asexample/angle3d/assets/md2/w_rlauncher.png", AssetType.IMAGE);
-		assetLoader.onComplete.addOnce(_loadComplete);
-		assetLoader.onError.addOnce(_loadError);
-		assetLoader.start();
+		baseURL = "md2/";
+		var assetLoader:AssetLoader = new AssetLoader();
+		assetLoader.add(baseURL + "ratamahatta.md2");
+		assetLoader.add(baseURL + "w_rlauncher.md2");
+		assetLoader.add(baseURL + "ctf_r.png");
+		assetLoader.add(baseURL + "w_rlauncher.png");
+		assetLoader.signalSet.completed.add(_loadComplete);
+		assetLoader.execute();
+		
+		var textField:TextField = new TextField();
+		textField.width = 150;
+		textField.text = "Press Tab to change animation";
+		this.addChild(textField);
+		
+		Stats.show(stage);
 	}
 
-	private function _loadError(signal:LoaderSignal):Void
-	{
-		trace(signal.loader);
-	}
 
-	private function _loadComplete(signal:LoaderSignal, assets:Dictionary):Void
+	private function _loadComplete(assetLoader:AssetLoader):Void
 	{
-		var monsterMaterial:MaterialTexture = new MaterialTexture(new Texture2D(assets["ratamahatta_texture"].bitmapData));
-		var weaponMaterial:MaterialTexture = new MaterialTexture(new Texture2D(assets["w_rlauncher_texture"].bitmapData));
+		var texture1:Texture2D = new Texture2D(assetLoader.get(baseURL + "ctf_r.png").data.bitmapData);
+		var texture2:Texture2D = new Texture2D(assetLoader.get(baseURL + "w_rlauncher.png").data.bitmapData);
+		var monsterMaterial:MaterialTexture = new MaterialTexture(texture1);
+		var weaponMaterial:MaterialTexture = new MaterialTexture(texture2);
 
 		var fillMaterial:MaterialColorFill = new MaterialColorFill(0x008822);
 		var normalMaterial:MaterialNormalColor = new MaterialNormalColor();
@@ -83,13 +98,13 @@ class MD2ParserTest extends SimpleApplication
 		var skybox:DefaultSkyBox = new DefaultSkyBox(500);
 		scene.attachChild(skybox);
 
-		var reflectiveMat:MaterialReflective = new MaterialReflective(new Texture2D(assets["ratamahatta_texture"].bitmapData), skybox.cubeMap, 0.9);
+		var reflectiveMat:MaterialReflective = new MaterialReflective(texture1, skybox.cubeMap, 0.9);
 
 		var parser:MD2Parser = new MD2Parser();
-		var monsterMesh:MorphMesh = parser.parse(assets["ratamahatta"]);
+		var monsterMesh:MorphMesh = parser.parse(assetLoader.get(baseURL + "ratamahatta.md2").data);
 		monsterMesh.useNormal = false;
 
-		var weaponMesh:MorphMesh = parser.parse(assets["w_rlauncher"]);
+		var weaponMesh:MorphMesh = parser.parse(assetLoader.get(baseURL + "w_rlauncher.md2").data);
 		weaponMesh.useNormal = false;
 
 		var team:Node = new Node("team");
@@ -106,25 +121,35 @@ class MD2ParserTest extends SimpleApplication
 		scene.attachChild(team);
 
 		setAnimationSpeed(5);
-		_changeAnimation(null);
+		playNextAnimation();
 
 		cam.location = new Vector3f(0, 0, 80);
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		
+		this.stage.addEventListener(KeyboardEvent.KEY_DOWN, _onKeyDownHandler);
+	}
+	
+	private function _onKeyDownHandler(e:KeyboardEvent):Void
+	{
+		if (e.keyCode == Keyboard.TAB)
+		{
+			playNextAnimation();
+		}
 	}
 
-	private function playAnimation(name:String, loop:Boolean):Void
+	private function playAnimation(name:String, loop:Bool):Void
 	{
 		monster.playAnimation(name, loop);
 		weapon.playAnimation(name, loop);
 	}
 
-	private function setAnimationSpeed(speed:Number):Void
+	private function setAnimationSpeed(speed:Float):Void
 	{
 		monster.setAnimationSpeed(speed);
 		weapon.setAnimationSpeed(speed);
 	}
 
-	override public function simpleUpdate(tpf:Number):Void
+	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.02;
 		angle %= FastMath.TWO_PI;
