@@ -1,12 +1,10 @@
 package org.angle3d.material.sgsl;
 
 
-import flash.display3D.Context3DProfile;
-import flash.utils.Dictionary;
 import haxe.ds.StringMap;
-
 import org.angle3d.material.shader.ShaderProfile;
 import org.angle3d.utils.Logger;
+
 
 /**
  * mov	0x00	move	move data from source1 to destination, componentwise
@@ -96,7 +94,7 @@ class OpCodeManager
 		return _opCodeMap.get(name) == textureCode;
 	}
 
-	public function getCode(name:String):OpCode
+	public inline function getCode(name:String):OpCode
 	{
 		if (!_opCodeMap.exists(name))
 		{

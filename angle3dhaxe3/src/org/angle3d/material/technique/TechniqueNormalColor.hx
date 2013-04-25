@@ -1,7 +1,6 @@
 package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
-import flash.utils.Dictionary;
 import flash.Vector;
 import haxe.ds.StringMap;
 import org.angle3d.light.LightType;

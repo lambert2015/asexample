@@ -1,6 +1,7 @@
 package org.angle3d.material.technique;
 
 import flash.utils.Dictionary;
+import haxe.ds.StringMap;
 
 import org.angle3d.light.LightType;
 import org.angle3d.material.shader.ShaderType;
@@ -52,15 +53,15 @@ class TechniquePreShadow extends Technique
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.TEXCOORD] = "a_texCoord";
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION, "a_position");
+		map.set(BufferType.TEXCOORD, "a_texCoord");
 		return map;
 	}
 
 	override private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
-		var list:Vector<UniformBindingHelp> = new Vector<UniformBindingHelp>();
+		var list:Array<UniformBindingHelp> = new Array<UniformBindingHelp>();
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 		
 		return list;
