@@ -41,6 +41,6 @@ enum ControlType
 	/**
 	 * Handles particle updates
 	 */
-	Particle
+	Particle;
 }
 

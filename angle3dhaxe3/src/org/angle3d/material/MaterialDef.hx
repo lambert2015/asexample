@@ -45,7 +45,7 @@ class MaterialDef
 	 * @param value Default value of the parameter
 	 * @param ffBinding Fixed function binding for the parameter
 	 */
-	public function addMaterialParam(type:String, name:String, value:Object):Void
+	public function addMaterialParam(type:String, name:String, value:Dynamic):Void
 	{
 		matParams.set(name,new MatParam(type, name, value));
 	}

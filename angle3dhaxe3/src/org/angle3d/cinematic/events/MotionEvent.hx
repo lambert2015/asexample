@@ -1,4 +1,4 @@
-package org.angle3d.cinematic.event;
+package org.angle3d.cinematic.events;
 
 import org.angle3d.app.Application;
 import org.angle3d.cinematic.Cinematic;
@@ -23,6 +23,12 @@ import org.angle3d.utils.TempVars;
  */
 class MotionEvent extends AbstractCinematicEvent implements Control
 {
+	public var currentWayPoint(get, set):Int;
+	public var direction(get, set):Vector3f;
+	public var directionType(get, set):Int;
+	public var enabled(get, set):Bool;
+	public var spatial(get, set):Spatial;
+	
 	private var _spatial:Spatial;
 
 	private var _currentWayPoint:Int;
@@ -118,7 +124,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		var v:Vector2f = path.getWayPointIndexForDistance(traveledDistance);
 
 		//setting values
-		_currentWayPoint = int(v.x);
+		_currentWayPoint = Std.int(v.x);
 		setCurrentValue(v.y);
 
 		//interpolating new position
@@ -172,13 +178,11 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 				var q:Quaternion = new Quaternion();
 				q.lookAt(_direction, Vector3f.Y_AXIS);
 				_spatial.setRotation(q);
-				break;
 			case DirectionType.LookAt:
 				if (lookAt != null)
 				{
 					_spatial.lookAt(lookAt, upVector);
 				}
-				break;
 			case DirectionType.PathAndRotation:
 				if (rotation != null)
 				{
@@ -187,16 +191,13 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 					q2.multiplyLocal(rotation);
 					_spatial.setRotation(q2);
 				}
-				break;
 			case DirectionType.Rotation:
 				if (rotation != null)
 				{
 					_spatial.setRotation(rotation);
 				}
-				break;
 			case DirectionType.None:
 				//do nothing
-				break;
 		}
 	}
 
@@ -248,7 +249,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		this.currentValue = currentValue;
 	}
 
-	public var currentWayPoint(get, set):Int;
+	
 	/**
 	 * this method is meant to be called by the motion path only
 	 * @return
@@ -267,7 +268,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		return _currentWayPoint = currentWayPoint;
 	}
 
-	public var direction(get, set):Vector3f;
+	
 	/**
 	 * returns the direction the spatial is moving
 	 * @return
@@ -302,9 +303,9 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	 * See the Direction Enum for explanations
 	 * @param directionType the direction type
 	 */
-	private function set_directionType(value:Int):Void
+	private function set_directionType(value:Int):Int
 	{
-		_directionType = value;
+		return _directionType = value;
 	}
 
 	/**
@@ -358,7 +359,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 		this.path = path;
 	}
 
-	public var enabled(get, set):Bool;
+	
 	private function set_enabled(enabled:Bool):Bool
 	{
 		if (enabled)
@@ -381,7 +382,7 @@ class MotionEvent extends AbstractCinematicEvent implements Control
 	{
 	}
 
-	public var spatial(get, set):Spatial;
+	
 	private function set_spatial(spatial:Spatial):Spatial
 	{
 		return this._spatial = spatial;

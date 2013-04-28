@@ -1,4 +1,4 @@
-package org.angle3d.cinematic.event;
+package org.angle3d.cinematic.events;
 
 
 /**

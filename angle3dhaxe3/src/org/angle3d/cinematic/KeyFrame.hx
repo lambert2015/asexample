@@ -1,6 +1,7 @@
 package org.angle3d.cinematic;
 
-import org.angle3d.cinematic.event.CinematicEvent;
+import flash.Vector;
+import org.angle3d.cinematic.events.CinematicEvent;
 
 //TODO 重命名
 class KeyFrame
@@ -20,8 +21,7 @@ class KeyFrame
 
 	public function trigger():Vector<CinematicEvent>
 	{
-		var length:Int = tracks.length;
-		for (var i:Int = 0; i < length; i++)
+		for (i in 0...tracks.length)
 		{
 			tracks[i].play();
 		}

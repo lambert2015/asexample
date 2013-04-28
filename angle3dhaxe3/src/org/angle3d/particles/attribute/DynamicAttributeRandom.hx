@@ -51,7 +51,7 @@ class DynamicAttributeRandom extends DynamicAttribute
 		if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_RANDOM)
 			return;
 
-		var dynAttr:DynamicAttributeRandom = dynamicAttribute as DynamicAttributeRandom;
+		var dynAttr:DynamicAttributeRandom = cast(dynamicAttribute,DynamicAttributeRandom);
 		dynAttr.mMin = mMin;
 		dynAttr.mMax = mMax;
 	}

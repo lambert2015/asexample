@@ -37,14 +37,8 @@ interface AppState
 	 *
 	 * @param value active the AppState or not.
 	 */
-	function setEnabled(value:Bool):Void;
-
-	/**
-	 * @return True if the <code>AppState</code> is enabled, false otherwise.
-	 *
-	 * @see AppState#setEnabled(Bool)
-	 */
-	function getEnabled():Bool;
+	var enabled(get, set):Bool;
+	
 	/**
 	 * Called when the state was attached.
 	 *

@@ -1,5 +1,6 @@
 package org.angle3d.material.post;
 
+import flash.Vector;
 import org.angle3d.material.Material;
 import org.angle3d.renderer.IRenderer;
 import org.angle3d.renderer.RenderManager;
@@ -26,13 +27,14 @@ class Filter
 	private var defaultPass:Pass;
 	private var postRenderPasses:Vector<Pass>;
 	private var material:Material;
-	private var enabled:Bool = true;
+	private var enabled:Bool;
 	private var processor:FilterPostProcessor;
 
 
 	public function new(name:String)
 	{
 		this.name = name;
+		enabled = true;
 	}
 
 	/**
@@ -81,7 +83,7 @@ class Filter
 		}
 		if (postRenderPasses != null)
 		{
-			for (var i:Int = 0, il:Int = postRenderPasses.length; i < il; i++)
+			for (i in 0...postRenderPasses.length)
 			{
 				var pass:Pass = postRenderPasses[i];
 				pass.cleanup(r);
@@ -162,6 +164,7 @@ class Filter
 		this.processor = proc;
 	}
 
+	public var isRequiresDepthTexture(get, set):Bool;
 	/**
 	 * Override this method and return true if your Filter needs the depth texture
 	 *

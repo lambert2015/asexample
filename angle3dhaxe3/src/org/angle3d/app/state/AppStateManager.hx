@@ -134,7 +134,7 @@ class AppStateManager
 				state.initialize(this, app);
 			}
 
-			if (state.getEnabled())
+			if (state.enabled)
 			{
 				state.update(tpf);
 			}
@@ -157,7 +157,7 @@ class AppStateManager
 				state.initialize(this, app);
 			}
 
-			if (state.getEnabled())
+			if (state.enabled)
 			{
 				state.render(rm);
 			}
@@ -179,7 +179,7 @@ class AppStateManager
 				state.initialize(this, app);
 			}
 
-			if (state.getEnabled())
+			if (state.enabled)
 			{
 				state.postRender();
 			}

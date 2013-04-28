@@ -8,7 +8,7 @@ class TechniqueParser
 	{
 	}
 
-	public function parse(technique:Object):TechniqueDef
+	public function parse(technique:Dynamic):TechniqueDef
 	{
 		var def:TechniqueDef = new TechniqueDef(technique.name);
 		def.vertLanguage = technique.vs;
@@ -24,10 +24,10 @@ class TechniqueParser
 
 		if (technique.defines != null)
 		{
-			var defines:Array = technique.defines;
+			var defines:Array<Dynamic> = technique.defines;
 			for (i in 0...defines.length)
 			{
-				var define:Object = defines[i];
+				var define:Dynamic = defines[i];
 				def.addShaderParamDefine(define.param, define.define);
 			}
 		}

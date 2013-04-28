@@ -1,72 +1,71 @@
-package org.angle3d.io.parser.max3ds
+package org.angle3d.io.parser.max3ds;
+
+import flash.events.EventDispatcher;
+
+class AbstractMax3DSParser
 {
-	import flash.events.EventDispatcher;
+	private var _functions:Array;
 
-	internal class AbstractMax3DSParser
+	public function AbstractMax3DSParser(chunk:Max3DSChunk = null)
 	{
-		private var _functions:Array;
+		initialize();
 
-		public function AbstractMax3DSParser(chunk:Max3DSChunk = null)
+		if (chunk)
+			parseChunk(chunk);
+	}
+
+	protected function initialize():void
+	{
+		_functions = new Array();
+		// override & fill _functions here
+	}
+
+	protected function get parseFunctions():Array
+	{
+		return _functions;
+	}
+
+	protected function finalize():void
+	{
+		// NOTHING
+	}
+
+	final protected function parseChunk(chunk:Max3DSChunk):void
+	{
+		var parseFunction:Function = null;
+
+		parseFunction = _functions[chunk.identifier];
+
+		if (parseFunction == null)
 		{
-			initialize();
+			chunk.skip();
 
-			if (chunk)
-				parseChunk(chunk);
+			return;
 		}
 
-		protected function initialize():void
+		parseFunction(chunk);
+
+		enterChunk(chunk);
+
+		finalize();
+	}
+
+	final protected function enterChunk(chunk:Max3DSChunk):void
+	{
+		while (chunk.bytesAvailable > 0)
 		{
-			_functions = new Array();
-			// override & fill _functions here
-		}
+			var innerChunk:Max3DSChunk = new Max3DSChunk(chunk.data);
 
-		protected function get parseFunctions():Array
-		{
-			return _functions;
-		}
-
-		protected function finalize():void
-		{
-			// NOTHING
-		}
-
-		final protected function parseChunk(chunk:Max3DSChunk):void
-		{
-			var parseFunction:Function = null;
-
-			parseFunction = _functions[chunk.identifier];
-
+			var parseFunction:Function = _functions[innerChunk.identifier];
 			if (parseFunction == null)
 			{
-				chunk.skip();
-
-				return;
+				innerChunk.skip();
 			}
-
-			parseFunction(chunk);
-
-			enterChunk(chunk);
-
-			finalize();
-		}
-
-		final protected function enterChunk(chunk:Max3DSChunk):void
-		{
-			while (chunk.bytesAvailable > 0)
+			else if (parseFunction != enterChunk)
 			{
-				var innerChunk:Max3DSChunk = new Max3DSChunk(chunk.data);
-
-				var parseFunction:Function = _functions[innerChunk.identifier];
-				if (parseFunction == null)
-				{
-					innerChunk.skip();
-				}
-				else if (parseFunction != enterChunk)
-				{
-					parseFunction(innerChunk);
-				}
+				parseFunction(innerChunk);
 			}
 		}
-
 	}
+
 }
