@@ -1,99 +1,99 @@
-package org.angle3d.io.parser.max3ds
+package org.angle3d.io.parser.max3ds;
+
+import flash.events.Event;
+import flash.net.URLRequest;
+import flash.utils.ByteArray;
+import flash.utils.Dictionary;
+import flash.utils.Endian;
+
+import org.angle3d.io.parser.ParserOptions;
+import org.angle3d.material.MaterialColorFill;
+import org.angle3d.scene.Geometry;
+import org.angle3d.scene.Node;
+import org.angle3d.scene.mesh.BufferType;
+import org.angle3d.scene.mesh.Mesh;
+import org.angle3d.scene.mesh.MeshHelper;
+import org.angle3d.scene.mesh.SubMesh;
+
+class Max3DSParser extends AbstractMax3DSParser //implements IParser
 {
-	import flash.events.Event;
-	import flash.net.URLRequest;
-	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
-	import flash.utils.Endian;
+	protected var _materials:Object;
+	protected var _options:ParserOptions;
 
-	import org.angle3d.io.parser.ParserOptions;
-	import org.angle3d.material.MaterialColorFill;
-	import org.angle3d.scene.Geometry;
-	import org.angle3d.scene.Node;
-	import org.angle3d.scene.mesh.BufferType;
-	import org.angle3d.scene.mesh.Mesh;
-	import org.angle3d.scene.mesh.MeshHelper;
-	import org.angle3d.scene.mesh.SubMesh;
+	private var _mesh:Mesh;
 
-	public class Max3DSParser extends AbstractMax3DSParser //implements IParser
+	public function Max3DSParser()
 	{
-		protected var _materials:Object;
-		protected var _options:ParserOptions;
+		super();
+	}
 
-		private var _mesh:Mesh;
+	public function get mesh():Mesh
+	{
+		return _mesh;
+	}
 
-		public function Max3DSParser()
+	override protected function initialize():void
+	{
+		super.initialize();
+
+		parseFunctions[Max3DSChunk.PRIMARY] = parsePrimary;
+		parseFunctions[Max3DSChunk.SCENE] = enterChunk;
+		parseFunctions[Max3DSChunk.MATERIAL] = parseMaterial;
+		parseFunctions[Max3DSChunk.OBJECT] = parseObject;
+	}
+
+	public function parse(data:ByteArray, options:ParserOptions):Mesh
+	{
+		data.endian = Endian.LITTLE_ENDIAN;
+		data.position = 0;
+
+		if (data.readUnsignedShort() != Max3DSChunk.PRIMARY)
+			return null;
+
+		_materials = new Object();
+		_options = options;
+
+		_mesh = new Mesh();
+
+		data.position = 0;
+		parseChunk(new Max3DSChunk(data));
+
+		return _mesh;
+	}
+
+	protected function parsePrimary(chunk:Max3DSChunk):void
+	{
+		// throw an error if the first chunk is not a primary chunk
+	/*if (chunk.identifier != Max3DSChunk.PRIMARY)
+		throw new Error("Wrong file format!");*/
+	}
+
+	protected function parseObject(chunk:Max3DSChunk):void
+	{
+		var name:String = chunk.readString();
+
+		Lib.trace("object name:" + name);
+
+		chunk = new Max3DSChunk(chunk.data);
+
+		if (chunk.identifier == Max3DSChunk.MESH)
 		{
-			super();
-		}
+			var parser:Max3DSMeshParser = new Max3DSMeshParser(chunk, name);
 
-		public function get mesh():Mesh
-		{
-			return _mesh;
-		}
+			var objectMaterials:Object = parser.materials;
 
-		override protected function initialize():void
-		{
-			super.initialize();
-
-			parseFunctions[Max3DSChunk.PRIMARY] = parsePrimary;
-			parseFunctions[Max3DSChunk.SCENE] = enterChunk;
-			parseFunctions[Max3DSChunk.MATERIAL] = parseMaterial;
-			parseFunctions[Max3DSChunk.OBJECT] = parseObject;
-		}
-
-		public function parse(data:ByteArray, options:ParserOptions):Mesh
-		{
-			data.endian = Endian.LITTLE_ENDIAN;
-			data.position = 0;
-
-			if (data.readUnsignedShort() != Max3DSChunk.PRIMARY)
-				return null;
-
-			_materials = new Object();
-			_options = options;
-
-			_mesh = new Mesh();
-
-			data.position = 0;
-			parseChunk(new Max3DSChunk(data));
-
-			return _mesh;
-		}
-
-		protected function parsePrimary(chunk:Max3DSChunk):void
-		{
-			// throw an error if the first chunk is not a primary chunk
-		/*if (chunk.identifier != Max3DSChunk.PRIMARY)
-			throw new Error("Wrong file format!");*/
-		}
-
-		protected function parseObject(chunk:Max3DSChunk):void
-		{
-			var name:String = chunk.readString();
-
-			Lib.trace("object name:" + name);
-
-			chunk = new Max3DSChunk(chunk.data);
-
-			if (chunk.identifier == Max3DSChunk.MESH)
+			for (var materialName:String in objectMaterials)
 			{
-				var parser:Max3DSMeshParser = new Max3DSMeshParser(chunk, name);
+				var subMesh:SubMesh = new SubMesh();
 
-				var objectMaterials:Object = parser.materials;
-
-				for (var materialName:String in objectMaterials)
-				{
-					var subMesh:SubMesh = new SubMesh();
-
-					subMesh.setVertexBuffer(BufferType.POSITION, 3, parser.vertices);
-					subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, parser.uvData);
-					var indices:Vector.<uint> = objectMaterials[materialName];
-					var normals:Vector.<Number> = MeshHelper.buildVertexNormals(indices, parser.vertices);
-					subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
-					subMesh.setIndices(indices);
-					subMesh.validate();
-					_mesh.addSubMesh(subMesh);
+				subMesh.setVertexBuffer(BufferType.POSITION, 3, parser.vertices);
+				subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, parser.uvData);
+				var indices:Vector.<uint> = objectMaterials[materialName];
+				var normals:Vector.<Number> = MeshHelper.buildVertexNormals(indices, parser.vertices);
+				subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
+				subMesh.setIndices(indices);
+				subMesh.validate();
+				_mesh.addSubMesh(subMesh);
 
 //					var group : IGroup = getMaterialGroup(materialName);
 //
@@ -113,13 +113,13 @@ package org.angle3d.io.parser.max3ds
 //
 //					scene = _options.replaceNodeFunction(scene);
 //					group.addChild(scene);
-				}
-			}
-			else
-			{
-				chunk.skip();
 			}
 		}
+		else
+		{
+			chunk.skip();
+		}
+	}
 
 //		protected function getMaterialGroup(materialName : String) : Group
 //		{
@@ -129,17 +129,17 @@ package org.angle3d.io.parser.max3ds
 //			return i < _data.length ? Group(_data[i]) : null;
 //		}
 
-		protected function parseMaterial(chunk:Max3DSChunk):void
-		{
+	protected function parseMaterial(chunk:Max3DSChunk):void
+	{
 
-			var material:Max3DSMaterialParser = new Max3DSMaterialParser(chunk);
-			Lib.trace("material:" + material.name);
-			Lib.trace("material.textureFilename:" + material.textureFilename);
+		var material:Max3DSMaterialParser = new Max3DSMaterialParser(chunk);
+		Lib.trace("material:" + material.name);
+		Lib.trace("material.textureFilename:" + material.textureFilename);
 
-			if (_materials[material.name] == undefined)
-				_materials[material.name] = material;
+		if (_materials[material.name] == undefined)
+			_materials[material.name] = material;
 
-			var loadTextures:Boolean = _options ? _options.loadTextures : false;
+		var loadTextures:Boolean = _options ? _options.loadTextures : false;
 //			var group : Group = getMaterialGroup(material.name);
 //			var texture : IScene = null;
 //
@@ -180,10 +180,10 @@ package org.angle3d.io.parser.max3ds
 //
 //				_materials[material.name] = material;
 //			}
-		}
+	}
 
-		override protected function finalize():void
-		{
+	override protected function finalize():void
+	{
 //			if (_options && _options.mergeMeshes)
 //			{
 //				var numMaterials : int = _data.length;
@@ -212,6 +212,5 @@ package org.angle3d.io.parser.max3ds
 //					}
 //				}
 //			}
-		}
 	}
 }

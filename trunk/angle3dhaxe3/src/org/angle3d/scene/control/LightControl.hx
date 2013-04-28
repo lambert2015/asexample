@@ -88,12 +88,12 @@ class LightControl extends AbstractControl
 	{
 		if (Std.is(light,PointLight))
 		{
-			var pl:PointLight = light as PointLight;
+			var pl:PointLight = cast(light,PointLight);
 			pl.position = spatial.getWorldTranslation();
 		}
 		else if (Std.is(light,DirectionalLight))
 		{
-			var dl:DirectionalLight = light as DirectionalLight;
+			var dl:DirectionalLight = cast(light,DirectionalLight);
 			//TODO 这里是不是传错了
 			var p:Vector3f = dl.direction;
 			p.copyFrom(spatial.getWorldTranslation());
@@ -114,7 +114,7 @@ class LightControl extends AbstractControl
 		var vecDiff:Vector3f;
 		if (Std.is(light,PointLight))
 		{
-			var pLight:PointLight = light as PointLight;
+			var pLight:PointLight = cast(light, PointLight);
 
 			vecDiff = pLight.position.subtract(spatial.getWorldTranslation());
 			vecDiff.addLocal(spatial.translation);
@@ -122,7 +122,7 @@ class LightControl extends AbstractControl
 		}
 		else if (Std.is(light,DirectionalLight))
 		{
-			var dLight:DirectionalLight = light as DirectionalLight;
+			var dLight:DirectionalLight = cast(light,DirectionalLight);
 			vecDiff = dLight.direction.clone();
 			vecDiff.scaleLocal(-1);
 			vecDiff.subtractLocal(spatial.getWorldTranslation());

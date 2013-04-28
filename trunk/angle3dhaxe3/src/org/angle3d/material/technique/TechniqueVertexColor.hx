@@ -2,6 +2,8 @@ package org.angle3d.material.technique;
 
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+import flash.Vector;
+import haxe.ds.StringMap;
 import org.angle3d.light.LightType;
 import org.angle3d.material.BlendMode;
 import org.angle3d.material.shader.Shader;
@@ -21,11 +23,6 @@ import org.angle3d.scene.mesh.MeshType;
 
 class TechniqueVertexColor extends Technique
 {
-	[Embed(source = "data/vertexcolor.vs", mimeType = "application/octet-stream")]
-	private static var VertexColorVS:Class;
-	[Embed(source = "data/vertexcolor.fs", mimeType = "application/octet-stream")]
-	private static var VertexColorFS:Class;
-
 	private var _alpha:Vector<Float>;
 
 	public function new()
@@ -43,7 +40,7 @@ class TechniqueVertexColor extends Technique
 
 	public function setAlpha(alpha:Float):Void
 	{
-		_alpha[0] = FastMath.fclamp(alpha, 0.0, 1.0);
+		_alpha[0] = FastMath.clamp(alpha, 0.0, 1.0);
 
 		if (_alpha[0] < 1)
 		{
@@ -86,19 +83,23 @@ class TechniqueVertexColor extends Technique
 
 	override private function getBindAttributes(lightType:LightType, meshType:MeshType):StringMap<String>
 	{
-		var map:Dictionary = new Dictionary();
-		map[BufferType.POSITION] = "a_position";
-		map[BufferType.COLOR] = "a_color";
+		var map:StringMap<String> = new StringMap<String>();
+		map.set(BufferType.POSITION, "a_position");
+		map.set(BufferType.COLOR, "a_color");
 
 		return map;
 	}
 
 	override private function getBindUniforms(lightType:LightType, meshType:MeshType):Array<UniformBindingHelp>
 	{
-		var list:Vector<UniformBindingHelp> = new Vector<UniformBindingHelp>();
+		var list:Array<UniformBindingHelp> = new Array<UniformBindingHelp>();
 		list.push(new UniformBindingHelp(ShaderType.VERTEX, "u_WorldViewProjectionMatrix", UniformBinding.WorldViewProjectionMatrix));
 		
 		return list;
 	}
 }
 
+@:file("org/angle3d/material/technique/data/vertexcolor.vs") 
+class VertexColorVS extends flash.utils.ByteArray{}
+@:file("org/angle3d/material/technique/data/vertexcolor.fs") 
+class VertexColorFS extends flash.utils.ByteArray{}

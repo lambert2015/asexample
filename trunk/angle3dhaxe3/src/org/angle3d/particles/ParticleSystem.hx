@@ -1,4 +1,5 @@
 package org.angle3d.particles;
+import flash.Vector;
 
 /**
  * A ParticleSystem is the most top level of a particle structure, that consists of Particles, ParticleEmitters,
@@ -8,6 +9,7 @@ package org.angle3d.particles;
  */
 class ParticleSystem
 {
+	public var numTechniques(get, null):Int;
 	private var _techniques:Vector<ParticleTechnique>;
 	private var _numTechniques:Int;
 
@@ -40,7 +42,7 @@ class ParticleSystem
 
 	public function getTechnique(name:String):ParticleTechnique
 	{
-		for (var i:Int = 0; i < _numTechniques; i++)
+		for (i in 0..._numTechniques)
 		{
 			if (_techniques[i].name == name)
 			{

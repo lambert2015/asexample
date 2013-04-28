@@ -1,6 +1,7 @@
 package org.angle3d.material.post;
 
 import flash.display3D.textures.Texture;
+import flash.Vector;
 
 import org.angle3d.material.Material;
 import org.angle3d.renderer.Camera3D;
@@ -27,11 +28,12 @@ class FilterPostProcessor implements SceneProcessor
 
 	private var filterTexture:Texture2D;
 	private var depthTexture:Texture2D;
-	private var filters:Vector<Filter> = new Vector<Filter>();
+	private var filters:Vector<Filter>;
 
 	public function new()
 	{
 		_initialized = false;
+		filters = new Vector<Filter>();
 	}
 
 	/**
@@ -206,7 +208,7 @@ class FilterPostProcessor implements SceneProcessor
 			renderFrameBuffer.setColorTexture(filterTexture);
 		}
 
-		for (var i:Int = 0; i < filters.length; i++)
+		for (i in 0...filters.length)
 		{
 			var filter:Filter = filters[i];
 			initFilter(filter, vp);
@@ -268,7 +270,7 @@ class FilterPostProcessor implements SceneProcessor
 			}
 		}
 
-		for (var i:Int = 0; i < filters.length; i++)
+		for (i in 0...filters.length)
 		{
 			var filter:Filter = filters[i];
 			if (filter.isEnabled())
@@ -285,7 +287,7 @@ class FilterPostProcessor implements SceneProcessor
 	 */
 	public function postQueue(rq:RenderQueue):Void
 	{
-		for (var i:Int = 0; i < filters.length; i++)
+		for (i in 0...filters.length)
 		{
 			var filter:Filter = filters[i];
 			if (filter.isEnabled())
@@ -334,7 +336,7 @@ class FilterPostProcessor implements SceneProcessor
 			viewPort.setOutputFrameBuffer(outputBuffer);
 			viewPort = null;
 
-			for (var i:Int = 0; i < filters.length; i++)
+			for (i in 0...filters.length)
 			{
 				var filter:Filter = filters[i];
 				filter.cleanup(renderer);
@@ -372,13 +374,15 @@ class FilterPostProcessor implements SceneProcessor
 	private function updateLastFilterIndex():Void
 	{
 		lastFilterIndex = -1;
-		for (var i:Int = filters.length - 1; i >= 0 && lastFilterIndex == -1; i--)
+		var i:Int = filters.length - 1;
+		while(i >= 0 && lastFilterIndex == -1)
 		{
 			if (filters[i].isEnabled())
 			{
 				lastFilterIndex = i;
 				return;
 			}
+			i--;
 		}
 		if (lastFilterIndex == -1)
 		{

@@ -1,6 +1,7 @@
 package org.angle3d.cinematic;
 
-import org.angle3d.cinematic.event.MotionEvent;
+import hu.vpmedia.signals.SignalLite;
+import org.angle3d.cinematic.events.MotionEvent;
 import org.angle3d.math.Spline;
 import org.angle3d.math.SplineType;
 import org.angle3d.math.Vector2f;
@@ -10,7 +11,6 @@ import org.angle3d.scene.Node;
 import org.angle3d.scene.WireframeGeometry;
 import org.angle3d.scene.shape.WireframeCube;
 import org.angle3d.scene.shape.WireframeCurve;
-import org.angle3d.signals.MotionPathSignal;
 import org.angle3d.utils.TempVars;
 import flash.Vector;
 
@@ -21,6 +21,10 @@ import flash.Vector;
 //TODO 需要调整debug部分
 class MotionPath
 {
+	public var splineType(get, set):SplineType;
+	public var numWayPoints(get, null):Int;
+	public var onWayPointReach(get, null):SignalLite;
+	
 	private var _spline:Spline;
 
 	private var _debugNode:Node;
@@ -30,21 +34,19 @@ class MotionPath
 	/**
 	 *
 	 */
-	private var _wayPointReach:MotionPathSignal;
+	private var _wayPointReach:SignalLite;
 
 	/**
 	 * Create a motion Path
 	 */
 	public function new()
 	{
-		super();
-
 		_spline = new Spline();
 
-		_wayPointReach = new MotionPathSignal();
+		_wayPointReach = new SignalLite();
 	}
 
-	private function get_onWayPointReach():MotionPathSignal
+	private function get_onWayPointReach():SignalLite
 	{
 		return _wayPointReach;
 	}
@@ -70,7 +72,7 @@ class MotionPath
 		var v:Vector2f = getWayPointIndexForDistance(traveledDistance);
 
 		//setting values
-		control.currentWayPoint = int(v.x);
+		control.currentWayPoint = Std.int(v.x);
 		control.setCurrentValue(v.y);
 
 		//interpolating new position
@@ -224,7 +226,7 @@ class MotionPath
 		_spline.clearControlPoints();
 	}
 
-	public var splineType(get, set):SplineType;
+	
 	/**
 	 * return the type of spline used for the path interpolation for this path
 	 * @return the path interpolation spline type
@@ -285,7 +287,7 @@ class MotionPath
 
 	public function triggerWayPointReach(wayPointIndex:Int, control:MotionEvent):Void
 	{
-		_wayPointReach.dispatch(control, wayPointIndex);
+		_wayPointReach.dispatch([control, wayPointIndex]);
 	}
 
 	/**

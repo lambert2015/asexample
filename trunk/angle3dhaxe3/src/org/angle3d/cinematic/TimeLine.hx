@@ -77,10 +77,10 @@ class TimeLine
 		return keyFrame.getIndex() / keyFramesPerSeconds;
 	}
 
-	public function getAllKeyFrames():Vector<KeyFrame>
-	{
-		return map.toVector();
-	}
+	//public function getAllKeyFrames():Vector<KeyFrame>
+	//{
+		//return map.toVector();
+	//}
 
 	public function getLastKeyFrameIndex():Int
 	{

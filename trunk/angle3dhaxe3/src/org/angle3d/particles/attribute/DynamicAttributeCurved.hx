@@ -1,5 +1,6 @@
 package org.angle3d.particles.attribute;
 
+import flash.Vector;
 import org.angle3d.math.Spline;
 import org.angle3d.math.Vector2f;
 
@@ -72,7 +73,6 @@ class DynamicAttributeCurved extends DynamicAttribute
 					return cp1.y;
 				}
 			}
-				break;
 //				case InterpolationType.IT_SPLINE:
 //				{
 //					// Fit using spline
@@ -82,7 +82,6 @@ class DynamicAttributeCurved extends DynamicAttribute
 //					var fraction:Float = x / mRange;
 //					return (mSpline.interpolate(fraction < 1.0 ? fraction : 1.0)).y;
 //				}
-//				break;
 		}
 
 		return 0;
@@ -136,7 +135,7 @@ class DynamicAttributeCurved extends DynamicAttribute
 	{
 		// Assume that the ControlPointList is not empty
 		var count:Int = mControlPoints.length;
-		for (var i:Int = 0; i < count; i++)
+		for (i in 0...count)
 		{
 			var cp:Vector2f = mControlPoints[i];
 			if (x < cp.x)
@@ -157,7 +156,7 @@ class DynamicAttributeCurved extends DynamicAttribute
 		if (!dynamicAttribute || dynamicAttribute.type != DynamicAttributeType.DAT_CURVED)
 			return;
 
-		var dynAttr:DynamicAttributeCurved = dynamicAttribute as DynamicAttributeCurved;
+		var dynAttr:DynamicAttributeCurved = cast(dynamicAttribute,DynamicAttributeCurved);
 
 		dynAttr.mInterpolationType = mInterpolationType;
 		dynAttr.mSpline = mSpline;

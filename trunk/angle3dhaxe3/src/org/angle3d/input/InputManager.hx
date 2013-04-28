@@ -1,6 +1,7 @@
 package org.angle3d.input;
 
 import flash.display.Stage;
+import flash.Vector;
 import haxe.ds.IntMap;
 import haxe.ds.StringMap;
 import org.angle3d.input.controls.ActionListener;

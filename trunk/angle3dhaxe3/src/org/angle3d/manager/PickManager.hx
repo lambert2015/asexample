@@ -1,10 +1,8 @@
-package org.angle3d.manager
-{
+package org.angle3d.manager;
 
-	class PickManager
+class PickManager
+{
+	public function new()
 	{
-		public function PickManager()
-		{
-		}
 	}
 }

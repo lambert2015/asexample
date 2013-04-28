@@ -12,7 +12,7 @@ class Spline
 	private var weights:Vector<Float>; //weights of NURBS spline
 	private var basisFunctionDegree:Int; //degree of NURBS spline basis function (computed automatically)
 	private var cycle:Bool;
-	private var segmentsLength:Array<Float>;
+	private var segmentsLength:Vector<Float>;
 	private var totalLength:Float;
 	private var CRcontrolPoints:Vector<Vector3f>;
 	private var curveTension:Float;
@@ -173,7 +173,7 @@ class Spline
 
 		var l:Float = 0;
 		
-		segmentsLength = new Array<Float>();
+		segmentsLength = new Vector<Float>();
 
 		if (_type == SplineType.Linear)
 		{
@@ -376,7 +376,7 @@ class Spline
 	/**
 	 * returns a list of float representing the segments lenght
 	 */
-	public function getSegmentsLength():Array<Float>
+	public function getSegmentsLength():Vector<Float>
 	{
 		return segmentsLength;
 	}

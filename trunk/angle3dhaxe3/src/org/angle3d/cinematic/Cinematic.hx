@@ -5,8 +5,8 @@ import haxe.ds.StringMap;
 import org.angle3d.app.Application;
 import org.angle3d.app.state.AppState;
 import org.angle3d.app.state.AppStateManager;
-import org.angle3d.cinematic.event.AbstractCinematicEvent;
-import org.angle3d.cinematic.event.CinematicEvent;
+import org.angle3d.cinematic.events.AbstractCinematicEvent;
+import org.angle3d.cinematic.events.CinematicEvent;
 import org.angle3d.renderer.Camera3D;
 import org.angle3d.renderer.RenderManager;
 import org.angle3d.scene.CameraNode;
@@ -178,7 +178,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		var keyFrameIndex:Int = timeLine.getKeyFrameIndexFromTime(time);
 
 		//iterate to make sure every key frame is triggered
-		i = lastFetchedKeyFrame + 1;
+		var i:Int = lastFetchedKeyFrame + 1;
 		while (i <= keyFrameIndex)
 		{
 			var keyFrame:KeyFrame = timeLine.getKeyFrameAtIndex(i);
@@ -341,14 +341,14 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 		var node:CameraNode = new CameraNode(cameraName, cam);
 		node.controlDir = CameraControl.SpatialToCamera;
 		node.getCameraControl().enabled = false;
-		cameraMap[cameraName] = node;
+		cameraMap.set(cameraName, node);
 		scene.attachChild(node);
 		return node;
 	}
 
 	public function getCamera(cameraName:String):CameraNode
 	{
-		return cameraMap[cameraName];
+		return cameraMap.get(cameraName);
 	}
 
 	private function enableCurrentCam(enabled:Bool):Void
@@ -362,7 +362,7 @@ class Cinematic extends AbstractCinematicEvent implements AppState
 	public function setActiveCamera(cameraName:String):Void
 	{
 		enableCurrentCam(false);
-		currentCam = cameraMap[cameraName];
+		currentCam = cameraMap.get(cameraName);
 		enableCurrentCam(true);
 	}
 
