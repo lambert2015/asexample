@@ -13,6 +13,14 @@ class OpCode
 	public var names:Array<String>;
 
 	/**
+	 * 只能在Fragment中使用
+	 * @return
+	 */
+	public var isFragOnly(get, null):Bool;
+	
+	public var isVersion2(get, null):Bool;
+
+	/**
 	 *
 	 * @param	names 名称
 	 * @param	numRegister 参数数量
@@ -27,17 +35,11 @@ class OpCode
 		this.flags = flags;
 	}
 
-	/**
-	 * 只能在Fragment中使用
-	 * @return
-	 */
-	public var isFragOnly(get, null):Bool;
 	private function get_isFragOnly():Bool
 	{
 		return (flags & OpCodeManager.OP_FRAG_ONLY) != 0;
 	}
 
-	public var isVersion2(get, null):Bool;
 	private function get_isVersion2():Bool
 	{
 		return (flags & OpCodeManager.OP_VERSION2) != 0;

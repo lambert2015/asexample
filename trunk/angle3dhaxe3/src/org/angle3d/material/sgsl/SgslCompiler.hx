@@ -156,7 +156,7 @@ class SgslCompiler
 	}
 
 	
-	private function getRegCode(reg:RegNode):Int
+	private inline function getRegCode(reg:RegNode):Int
 	{
 		return _regCodeMap.get(reg.regType);
 	}
@@ -176,8 +176,7 @@ class SgslCompiler
 
 		var reg:RegNode;
 		var varType:ShaderVarType = ShaderVarType.UNIFORM;
-		var count:Int = regList.length;
-		for (i in 0...count)
+		for (i in 0...regList.length)
 		{
 			reg = regList[i];
 			shader.addVariable(shaderType, varType, reg.name, reg.size);
@@ -194,8 +193,7 @@ class SgslCompiler
 			varType = ShaderVarType.TEXTURE;
 		}
 
-		count = regList.length;
-		for (i  in 0...count)
+		for (i  in 0...regList.length)
 		{
 			reg = regList[i];
 			shader.addVariable(shaderType, varType, reg.name, reg.size);
@@ -339,8 +337,6 @@ class SgslCompiler
 
 		var opCode:OpCode;
 		var numChildren:Int = node.numChildren;
-		var children:Array<LeafNode> = node.children;
-
 		//if end
 		if (numChildren == 0)
 		{
@@ -354,6 +350,7 @@ class SgslCompiler
 			return;
 		}
 
+		var children:Array<LeafNode> = node.children;
 		var dest:AtomNode;
 		//kill(vt0.w)
 		if (numChildren == 1)
@@ -374,6 +371,7 @@ class SgslCompiler
 			}
 		}
 
+		//emitCode
 		_byteArray.writeUnsignedInt(opCode.emitCode);
 
 		writeDest(dest);
@@ -586,7 +584,7 @@ class SgslCompiler
 	}
 	#end
 
-	private function getCharIndex(char:String):Int
+	private inline function getCharIndex(char:String):Int
 	{
 		return _swizzleMap.get(char.toLowerCase());
 	}

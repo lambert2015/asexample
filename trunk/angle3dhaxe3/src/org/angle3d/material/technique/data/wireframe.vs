@@ -7,6 +7,9 @@ varying vec4 v_color;
 uniform mat4 u_worldViewMatrix;
 uniform mat4 u_projectionMatrix;
 uniform vec4 u_color;
+/*
+* 线条的粗细
+*/
 uniform vec4 u_thickness;
 
 void function main(){
