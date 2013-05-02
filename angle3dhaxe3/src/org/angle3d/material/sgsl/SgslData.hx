@@ -37,6 +37,8 @@ class SgslData
 
 	public var profile:ShaderProfile;
 
+	public var nodes(get, null):Array<AgalNode>;
+
 	private var _nodes:Array<AgalNode>;
 
 	public var attributePool:AttributeRegPool;
@@ -126,7 +128,6 @@ class SgslData
 		regOutput();
 	}
 
-	public var nodes(get, null):Array<AgalNode>;
 	private function get_nodes():Array<AgalNode>
 	{
 		return _nodes;

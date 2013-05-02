@@ -18,6 +18,8 @@ class Tokenizer
 
 	private var _finalRegex:RegExp;
 
+	private var _finalEReg:EReg;
+
 	private var _source:String;
 	private var _sourceSize:Int;
 	private var _position:Int;
@@ -86,9 +88,11 @@ class Tokenizer
 	 */
 	public function accept(type:String):Token
 	{
+		#if debug
 		//检查是否同一类型
 		if (token.type != type)
 			throw new UnexpectedTokenError(token, type);
+		#end
 
 		var t:Token = token;
 		next();
@@ -108,26 +112,24 @@ class Tokenizer
 		_sourceSize = _source.length;
 		_position = 0;
 
+		_buildRegex();
+
 		token = new Token(TokenType.NONE, "<NONE>");
 		nextToken = new Token(TokenType.NONE, "<NONE>");
-		_buildRegex();
 		next();
 	}
 
+	//优化代码
 	private function cleanSource(value:String):String
 	{
-		//删除/**/类型注释
-		//			var result:String = value.replace(/\/\*(.|[\r\n])*?\*\//g, "");
-		//			result = value.replace(/\/\/(.)*\\n/g, "");
-		var result:String = untyped value.replace(new RegExp("\\/\\*(.|[^.])*?\\*\\/", "g"), "");
-		result = untyped result.replace(new RegExp("\\/\\/.*[^.]", "g"), "");
-
+		//删除/**/和//类型注释
+		var result:String = ~/\/\*(.|[^.])*?\*\/|\/\/.*[^.]/g.replace(value,"");
 		/**
 		 * 除去多余的空格换行符等等
 		 */
-		result = untyped result.replace(new RegExp("\\t+|\\x20+", "g"), " ");
-		result = untyped result.replace(new RegExp("\\r\n|\\n", "g"), "");
-		
+		result = ~/\t+|\\x20+/g.replace(result," ");
+		result = ~/\r\n|\n/g.replace(result,"");
+
 		return result;
 	}
 
@@ -178,6 +180,7 @@ class Tokenizer
 		}
 		
 		_finalRegex = new RegExp(_regSource);
+		_finalEReg = new EReg(_regSource,"");
 	}
 
 	private function _createNextToken(source:String):Token
