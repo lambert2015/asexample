@@ -18,8 +18,6 @@ class Tokenizer
 
 	private var _finalRegex:RegExp;
 
-	private var _finalEReg:EReg;
-
 	private var _source:String;
 	private var _sourceSize:Int;
 	private var _position:Int;
@@ -180,7 +178,6 @@ class Tokenizer
 		}
 		
 		_finalRegex = new RegExp(_regSource);
-		_finalEReg = new EReg(_regSource,"");
 	}
 
 	private function _createNextToken(source:String):Token
