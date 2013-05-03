@@ -51,4 +51,4 @@
 -swf ../bin/MotionPathTest.swf
 -swf-version 11.7
 -swf-header 1024:768:60:0xffffff
--main examples.model.MotionPathTest
+-main examples.animation.MotionPathTest
