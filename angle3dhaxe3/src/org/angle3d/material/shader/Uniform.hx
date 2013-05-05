@@ -15,12 +15,14 @@ import flash.Vector;
 //uniform mat4 u_boneMatrix[32]
 class Uniform extends ShaderVariable
 {
-	private var _data:Vector<Float>;
-
 	/**
 	 * Binding to a renderer value, or null if user-defined uniform
 	 */
 	public var binding:UniformBinding;
+
+	public var data(get, null):Vector<Float>;
+
+	private var _data:Vector<Float>;
 
 	public function new(name:String, size:Int)
 	{
@@ -28,7 +30,7 @@ class Uniform extends ShaderVariable
 
 		_size = Std.int(_size / 4);
 
-		_data = new Vector<Float>(_size * 4);
+		_data = new Vector<Float>(_size * 4,true);
 	}
 
 	override private function get_size():Int
@@ -93,7 +95,6 @@ class Uniform extends ShaderVariable
 		q.toUniform(_data);
 	}
 
-	public var data(get, null):Vector<Float>;
 	private function get_data():Vector<Float>
 	{
 		return _data;

@@ -7,6 +7,10 @@ package org.angle3d.material.shader;
  */
 class ShaderVariable
 {
+	public var name(get, set):String;
+	public var size(get, set):Int;
+	public var location(get, set):Int;
+
 	private var _name:String;
 
 	private var _location:Int;
@@ -20,7 +24,7 @@ class ShaderVariable
 		_location = -1;
 	}
 
-	public var name(get, set):String;
+	
 	private function set_name(value:String):String
 	{
 		return _name = value;
@@ -31,7 +35,7 @@ class ShaderVariable
 		return _name;
 	}
 
-	public var size(get, set):Int;
+	
 	private function set_size(value:Int):Int
 	{
 		return _size = value;
@@ -42,7 +46,7 @@ class ShaderVariable
 		return _size;
 	}
 
-	public var location(get, set):Int;
+	
 	private function set_location(location:Int):Int
 	{
 		return _location = location;

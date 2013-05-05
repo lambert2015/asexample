@@ -41,7 +41,7 @@ class ShaderVariableList
 		}
 	}
 
-	public function getVariableAt(index:Int):ShaderVariable
+	public inline function getVariableAt(index:Int):ShaderVariable
 	{
 		return _variables[index];
 	}

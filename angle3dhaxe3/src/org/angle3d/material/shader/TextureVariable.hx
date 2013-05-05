@@ -1,6 +1,5 @@
 package org.angle3d.material.shader;
 
-import flash.display3D.textures.TextureBase;
 import org.angle3d.texture.TextureMapBase;
 
 /**

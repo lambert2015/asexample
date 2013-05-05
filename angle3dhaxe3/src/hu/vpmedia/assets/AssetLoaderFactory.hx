@@ -56,28 +56,28 @@ class AssetLoaderFactory
      */
     public static function createByType(type:String):BaseAssetLoader
     {
-        var result:BaseAssetLoader=null;
+        var result:BaseAssetLoader = null;
         switch(type)
         {
             case AssetLoaderType.BINARY_LOADER:
             {
-                result=new BinaryLoader();
+                result = new BinaryLoader();
             }
             case AssetLoaderType.DISPLAY_LOADER:
             {
-                result=new DisplayLoader();
+                result = new DisplayLoader();
             }
             case AssetLoaderType.SOUND_LOADER:
             {
-                result=new SoundLoader();
+                result = new SoundLoader();
             }
             case AssetLoaderType.TEXT_LOADER:
             {
-                result=new TextLoader();
+                result = new TextLoader();
             }
             case AssetLoaderType.VIDEO_LOADER:
             {
-                result=new VideoLoader();
+                result = new VideoLoader();
             }
             default:
             {
