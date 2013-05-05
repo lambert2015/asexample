@@ -4,49 +4,29 @@ import flash.utils.ByteArray;
 
 class Max3DSChunk
 {
-	static public const PRIMARY:int = 0x4D4D;
+	public static inline var PRIMARY:Int = 0x4D4D;
 
-	static public const SCENE:int = 0x3D3D;
-	static public const OBJECT:int = 0x4000;
+	public static inline var SCENE:Int = 0x3D3D;
+	public static inline var OBJECT:Int = 0x4000;
 
-	static public const MESH:int = 0x4100;
-	static public const MESH_VERTICES:int = 0x4110;
-	static public const MESH_INDICES:int = 0x4120;
-	static public const MESH_MATERIAL:int = 0x4130;
-	static public const MESH_MAPPING:int = 0x4140;
-	static public const MESH_MATRIX:int = 0x4160;
+	public static inline var MESH:Int = 0x4100;
+	public static inline var MESH_VERTICES:Int = 0x4110;
+	public static inline var MESH_INDICES:Int = 0x4120;
+	public static inline var MESH_MATERIAL:Int = 0x4130;
+	public static inline var MESH_MAPPING:Int = 0x4140;
+	public static inline var MESH_MATRIX:Int = 0x4160;
 
-	static public const MATERIAL:int = 0xAFFF;
-	static public const MATERIAL_NAME:int = 0xA000;
-	static public const MATERIAL_TEXMAP:int = 0xA200;
-	static public const MATERIAL_MAPNAME:int = 0xA300;
+	public static inline var MATERIAL:Int = 0xAFFF;
+	public static inline var MATERIAL_NAME:Int = 0xA000;
+	public static inline var MATERIAL_TEXMAP:Int = 0xA200;
+	public static inline var MATERIAL_MAPNAME:Int = 0xA300;
 
-	private var _identifier:int = 0;
-	private var _length:int = 0;
-	private var _endOffset:int = 0;
+	private var _identifier:Int = 0;
+	private var _length:Int = 0;
+	private var _endOffset:Int = 0;
 	private var _data:ByteArray = null;
 
-	public function get identifier():int
-	{
-		return _identifier;
-	}
-
-	public function get length():int
-	{
-		return _length;
-	}
-
-	public function get data():ByteArray
-	{
-		return _data;
-	}
-
-	public function get bytesAvailable():int
-	{
-		return _endOffset > _data.position ? _endOffset - _data.position : 0;
-	}
-
-	public function Max3DSChunk(data:ByteArray)
+	public function new(data:ByteArray)
 	{
 		_data = data;
 
@@ -57,11 +37,35 @@ class Max3DSChunk
 
 		_endOffset += _length;
 	}
+	
+	public var identifier(get, null):Int;
+	private function get_identifier():Int
+	{
+		return _identifier;
+	}
+
+	public var length(get, null):Int;
+	private function get_length():Int
+	{
+		return _length;
+	}
+
+	public var data(get, null):ByteArray;
+	public function get_data():ByteArray
+	{
+		return _data;
+	}
+
+	public var bytesAvailable(get, null):Int;
+	public function get_bytesAvailable():Int
+	{
+		return _endOffset > Std.int(_data.position) ? _endOffset - _data.position : 0;
+	}
 
 	/**
 	 * 跳过此Chunk
 	 */
-	public function skip():void
+	public function skip():Void
 	{
 		_data.position += _length - 6;
 	}
@@ -69,7 +73,7 @@ class Max3DSChunk
 	public function readString():String
 	{
 		var result:String = "";
-		var c:int = 0;
+		var c:Int = 0;
 
 		while ((c = _data.readByte()) != 0)
 			result += String.fromCharCode(c);

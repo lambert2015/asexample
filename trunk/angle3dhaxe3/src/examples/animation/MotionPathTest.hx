@@ -22,6 +22,8 @@ import org.angle3d.scene.Geometry;
 import org.angle3d.scene.shape.Box;
 import org.angle3d.material.Material2;
 
+import org.angle3d.io.parser.max3ds.Max3DSParser;
+
 class MotionPathTest extends SimpleApplication
 {
 	static function main() 

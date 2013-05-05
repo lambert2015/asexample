@@ -2,63 +2,41 @@ package org.angle3d.io.parser.max3ds;
 
 import flash.geom.Matrix3D;
 import flash.utils.ByteArray;
+import flash.Vector;
+import haxe.ds.StringMap;
 
 class Max3DSMeshParser extends AbstractMax3DSParser
 {
-	private static const TRANSFORM:Matrix3D = new Matrix3D(Vector.<Number>([1., 0., 0., 0., 0., 0., -1., 0., 0., 1., 0., 0., 0., 0., 0., 1.]));
+	private static var TRANSFORM:Matrix3D = new Matrix3D(Vector.ofArray([1., 0., 0., 0., 
+																		0., 0., -1., 0., 
+																		0., 1., 0., 0., 
+																		0., 0., 0., 1.]));
 
-	private var _vertices:Vector.<Number> = null;
-	private var _indices:Vector.<uint> = null;
-	private var _uvData:Vector.<Number> = null;
-	private var _matrix:Matrix3D = new Matrix3D();
+	private var _vertices:Vector<Float>;
+	private var _indices:Vector<UInt>;
+	private var _uvData:Vector<Float>;
+	private var _matrix:Matrix3D;
 
-	private var _materials:Object = new Object();
+	private var _materials:StringMap<Dynamic>;
 
-	private var _mappedFaces:Vector.<int> = new Vector.<int>();
+	private var _mappedFaces:Vector<Int>;
 
 	private var _name:String;
 
-	public function Max3DSMeshParser(chunk:Max3DSChunk, name:String)
+	public function new(chunk:Max3DSChunk, name:String)
 	{
 		super(chunk);
 		this.name = name;
 	}
-
-
-	public function get name():String
-	{
-		return _name;
-	}
-
-	public function set name(value:String):void
-	{
-		_name = value;
-	}
-
-	public function get vertices():Vector.<Number>
-	{
-		return _vertices;
-	}
-
-	public function get uvData():Vector.<Number>
-	{
-		return _uvData;
-	}
-
-	public function get indices():Vector.<uint>
-	{
-		return _indices;
-	}
-
-	public function get materials():Object
-	{
-		return _materials;
-	}
-
-	override protected function initialize():void
+	
+	override private function initialize():Void
 	{
 		super.initialize();
-
+		
+		_matrix = new Matrix3D();
+		_materials = new StringMap<Dynamic>();
+		_mappedFaces = new Vector<Int>();
+		
 		parseFunctions[Max3DSChunk.MESH] = enterChunk;
 		parseFunctions[Max3DSChunk.MESH_VERTICES] = parseVertices;
 		parseFunctions[Max3DSChunk.MESH_INDICES] = parseIndices;
@@ -67,11 +45,46 @@ class Max3DSMeshParser extends AbstractMax3DSParser
 		parseFunctions[Max3DSChunk.MESH_MATRIX] = parseMatrix;
 	}
 
-	override protected function finalize():void
+	public var name(get, set):String;
+	private function get_name():String
+	{
+		return _name;
+	}
+
+	private function set_name(value:String):String
+	{
+		return _name = value;
+	}
+
+	public var vertices(get, null):Vector<Float>;
+	private function get_vertices():Vector<Float>
+	{
+		return _vertices;
+	}
+
+	public var uvData(get, null):Vector<Float>;
+	private function get_uvData():Vector<Float>
+	{
+		return _uvData;
+	}
+
+	public var indices(get, null):Vector<UInt>;
+	private function get_indices():Vector<UInt>
+	{
+		return _indices;
+	}
+
+	public var materials(get, null):StringMap<Dynamic>;
+	private function get_materials():StringMap<Dynamic>
+	{
+		return _materials;
+	}
+
+	override private function finalize():Void
 	{
 		super.finalize();
 
-		var tmpVertices:Vector.<Number> = new Vector.<Number>();
+		var tmpVertices:Vector<Float> = new Vector<Float>();
 
 		TRANSFORM.transformVectors(_vertices, tmpVertices);
 		/*_vertices.length = 0;
@@ -79,76 +92,83 @@ class Max3DSMeshParser extends AbstractMax3DSParser
 		_vertices = tmpVertices;
 	}
 
-	private function parseVertices(chunk:Max3DSChunk):void
+	private function parseVertices(chunk:Max3DSChunk):Void
 	{
 		var data:ByteArray = chunk.data;
 
-		var nbVertices:int = data.readUnsignedShort() * 3;
+		var nbVertices:Int = data.readUnsignedShort() * 3;
 
-		_vertices = new Vector.<Number>(nbVertices);
-		for (var i:int = 0; i < nbVertices; i += 3)
+		_vertices = new Vector<Float>(nbVertices,true);
+		var i:Int = 0;
+		while(i < nbVertices)
 		{
 			_vertices[i] = data.readFloat();
-			_vertices[int(i + 1)] = data.readFloat();
-			_vertices[int(i + 2)] = data.readFloat();
+			_vertices[i + 1] = data.readFloat();
+			_vertices[i + 2] = data.readFloat();
+			i += 3;
 		}
 	}
 
-	private function parseIndices(chunk:Max3DSChunk):void
+	private function parseIndices(chunk:Max3DSChunk):Void
 	{
 		var data:ByteArray = chunk.data;
-		var nbFaces:int = data.readUnsignedShort() * 3;
+		var nbFaces:Int = data.readUnsignedShort() * 3;
 
-		_indices = new Vector.<uint>(nbFaces, true)
-		for (var i:int = 0; i < nbFaces; i += 3)
+		_indices = new Vector<UInt>(nbFaces, true);
+		var i:Int = 0;
+		while(i < nbFaces)
 		{
 			_indices[i] = data.readUnsignedShort();
-			_indices[int(i + 1)] = data.readUnsignedShort();
-			_indices[int(i + 2)] = data.readUnsignedShort();
+			_indices[i + 1] = data.readUnsignedShort();
+			_indices[i + 2] = data.readUnsignedShort();
 
 			data.position += 2;
+			i += 3;
 		}
 	}
 
-	private function parseUVData(chunk:Max3DSChunk):void
+	private function parseUVData(chunk:Max3DSChunk):Void
 	{
 		var data:ByteArray = chunk.data;
 
-		var nbCoordinates:int = data.readUnsignedShort() * 2;
+		var nbCoordinates:Int = data.readUnsignedShort() * 2;
 
-		_uvData = new Vector.<Number>(nbCoordinates, true);
-		for (var i:int = 0; i < nbCoordinates; i += 2)
+		_uvData = new Vector<Float>(nbCoordinates, true);
+		var i:Int = 0;
+		while(i < nbCoordinates)
 		{
 			_uvData[i] = data.readFloat();
-			_uvData[int(i + 1)] = 1. - data.readFloat();
+			_uvData[i + 1] = 1. - data.readFloat();
+			i += 2;
 		}
 	}
 
-	private function parseMaterial(chunk:Max3DSChunk):void
+	private function parseMaterial(chunk:Max3DSChunk):Void
 	{
 		var data:ByteArray = chunk.data;
 
 		var name:String = chunk.readString();
 
-		var nbFaces:int = data.readUnsignedShort();
-		var indices:Vector.<uint> = new Vector.<uint>();
-		for (var i:int = 0; i < nbFaces; i++)
+		var nbFaces:Int = data.readUnsignedShort();
+		var indices:Vector<UInt> = new Vector<UInt>();
+		for (i in 0...nbFaces)
 		{
-			var faceId:int = data.readUnsignedShort() * 3;
-
-			indices.push(_indices[faceId], _indices[int(faceId + 1)], _indices[int(faceId + 2)]);
+			var faceId:Int = data.readUnsignedShort() * 3;
+			indices.push(_indices[faceId]);
+			indices.push(_indices[faceId + 1]);
+			indices.push(_indices[faceId + 2]);
 		}
 
-		if (nbFaces)
-			_materials[name] = indices;
+		if (nbFaces > 0)
+			_materials.set(name,indices);
 	}
 
-	private function parseMatrix(chunk:Max3DSChunk):void
+	private function parseMatrix(chunk:Max3DSChunk):Void
 	{
 		var data:ByteArray = chunk.data;
-		var tmp:Vector.<Number> = new Vector.<Number>(16, true);
+		var tmp:Vector<Float> = new Vector<Float>(16, true);
 
-		for (var j:int = 0; j < 12; j++)
+		for (j in 0...12)
 			tmp[j] = data.readFloat();
 
 		tmp[15] = 1.;

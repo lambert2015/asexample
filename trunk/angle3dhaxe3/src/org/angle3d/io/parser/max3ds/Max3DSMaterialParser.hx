@@ -5,23 +5,26 @@ class Max3DSMaterialParser extends AbstractMax3DSParser
 {
 	private var _name:String = null;
 	private var _textureFilename:String = null;
+	
+	public var name(get, null):String;
+	public var textureFilename(get, null):String;
 
-	public function Max3DSMaterialParser(chunk:Max3DSChunk)
+	public function new(chunk:Max3DSChunk)
 	{
 		super(chunk);
 	}
 
-	public function get_name():String
+	private function get_name():String
 	{
 		return _name;
 	}
 
-	public function get_textureFilename():String
+	private function get_textureFilename():String
 	{
 		return _textureFilename;
 	}
 
-	override protected function initialize():void
+	override private function initialize():Void
 	{
 		super.initialize();
 
@@ -31,12 +34,12 @@ class Max3DSMaterialParser extends AbstractMax3DSParser
 		parseFunctions[Max3DSChunk.MATERIAL_MAPNAME] = parseTextureFilename;
 	}
 
-	protected function parseName(chunk:Max3DSChunk):void
+	private function parseName(chunk:Max3DSChunk):Void
 	{
 		_name = chunk.readString();
 	}
 
-	protected function parseTextureFilename(chunk:Max3DSChunk):void
+	private function parseTextureFilename(chunk:Max3DSChunk):Void
 	{
 		_textureFilename = chunk.readString();
 	}
