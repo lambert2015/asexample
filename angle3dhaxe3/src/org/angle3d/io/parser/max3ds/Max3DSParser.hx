@@ -1,10 +1,14 @@
 package org.angle3d.io.parser.max3ds;
 
 import flash.events.Event;
+import flash.Lib;
 import flash.net.URLRequest;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 import flash.utils.Endian;
+import flash.Vector;
+import haxe.ds.StringMap;
+import org.angle3d.utils.Logger;
 
 import org.angle3d.io.parser.ParserOptions;
 import org.angle3d.material.MaterialColorFill;
@@ -17,22 +21,23 @@ import org.angle3d.scene.mesh.SubMesh;
 
 class Max3DSParser extends AbstractMax3DSParser //implements IParser
 {
-	protected var _materials:Object;
-	protected var _options:ParserOptions;
+	private var _materials:StringMap<Dynamic>;
+	private var _options:ParserOptions;
 
 	private var _mesh:Mesh;
 
-	public function Max3DSParser()
+	public function new()
 	{
 		super();
 	}
 
-	public function get mesh():Mesh
+	public var mesh(get, null):Mesh;
+	private function get_mesh():Mesh
 	{
 		return _mesh;
 	}
 
-	override protected function initialize():void
+	override private function initialize():Void
 	{
 		super.initialize();
 
@@ -50,7 +55,7 @@ class Max3DSParser extends AbstractMax3DSParser //implements IParser
 		if (data.readUnsignedShort() != Max3DSChunk.PRIMARY)
 			return null;
 
-		_materials = new Object();
+		_materials = new StringMap<Dynamic>();
 		_options = options;
 
 		_mesh = new Mesh();
@@ -61,18 +66,18 @@ class Max3DSParser extends AbstractMax3DSParser //implements IParser
 		return _mesh;
 	}
 
-	protected function parsePrimary(chunk:Max3DSChunk):void
+	private function parsePrimary(chunk:Max3DSChunk):Void
 	{
 		// throw an error if the first chunk is not a primary chunk
 	/*if (chunk.identifier != Max3DSChunk.PRIMARY)
 		throw new Error("Wrong file format!");*/
 	}
 
-	protected function parseObject(chunk:Max3DSChunk):void
+	private function parseObject(chunk:Max3DSChunk):Void
 	{
 		var name:String = chunk.readString();
-
-		Lib.trace("object name:" + name);
+		
+		Logger.log("object name:" + name);
 
 		chunk = new Max3DSChunk(chunk.data);
 
@@ -80,17 +85,20 @@ class Max3DSParser extends AbstractMax3DSParser //implements IParser
 		{
 			var parser:Max3DSMeshParser = new Max3DSMeshParser(chunk, name);
 
-			var objectMaterials:Object = parser.materials;
-
-			for (var materialName:String in objectMaterials)
+			var objectMaterials:StringMap<Dynamic> = parser.materials;
+			var keys = objectMaterials.keys();
+			for (materialName in keys)
 			{
 				var subMesh:SubMesh = new SubMesh();
 
 				subMesh.setVertexBuffer(BufferType.POSITION, 3, parser.vertices);
 				subMesh.setVertexBuffer(BufferType.TEXCOORD, 2, parser.uvData);
-				var indices:Vector.<uint> = objectMaterials[materialName];
-				var normals:Vector.<Number> = MeshHelper.buildVertexNormals(indices, parser.vertices);
+				
+				var indices:Vector<UInt> = objectMaterials.get(materialName);
+				
+				var normals:Vector<Float> = MeshHelper.buildVertexNormals(indices, parser.vertices);
 				subMesh.setVertexBuffer(BufferType.NORMAL, 3, normals);
+				
 				subMesh.setIndices(indices);
 				subMesh.validate();
 				_mesh.addSubMesh(subMesh);
@@ -129,17 +137,19 @@ class Max3DSParser extends AbstractMax3DSParser //implements IParser
 //			return i < _data.length ? Group(_data[i]) : null;
 //		}
 
-	protected function parseMaterial(chunk:Max3DSChunk):void
+	private function parseMaterial(chunk:Max3DSChunk):Void
 	{
 
 		var material:Max3DSMaterialParser = new Max3DSMaterialParser(chunk);
+		#if debug
 		Lib.trace("material:" + material.name);
 		Lib.trace("material.textureFilename:" + material.textureFilename);
+		#end
 
-		if (_materials[material.name] == undefined)
-			_materials[material.name] = material;
+		if (!_materials.exists(material.name))
+			_materials.set(material.name, material);
 
-		var loadTextures:Boolean = _options ? _options.loadTextures : false;
+		//var loadTextures:Bool = _options != null ? _options.loadTextures : false;
 //			var group : Group = getMaterialGroup(material.name);
 //			var texture : IScene = null;
 //
@@ -182,12 +192,12 @@ class Max3DSParser extends AbstractMax3DSParser //implements IParser
 //			}
 	}
 
-	override protected function finalize():void
+	override private function finalize():Void
 	{
 //			if (_options && _options.mergeMeshes)
 //			{
 //				var numMaterials : int = _data.length;
-//				var meshes : Vector.<IMesh> = new Vector.<IMesh>();
+//				var meshes : Vector<IMesh> = new Vector<IMesh>();
 //
 //				for (var i : int = 0; i < numMaterials; ++i)
 //				{

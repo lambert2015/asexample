@@ -4,35 +4,35 @@ import flash.events.EventDispatcher;
 
 class AbstractMax3DSParser
 {
-	private var _functions:Array;
+	private var _functions:Array<Max3DSChunk->Void>;
 
-	public function AbstractMax3DSParser(chunk:Max3DSChunk = null)
+	public function new(chunk:Max3DSChunk = null)
 	{
 		initialize();
 
-		if (chunk)
+		if (chunk != null)
 			parseChunk(chunk);
 	}
 
-	protected function initialize():void
+	private function initialize():Void
 	{
-		_functions = new Array();
-		// override & fill _functions here
+		_functions = [];
 	}
 
-	protected function get parseFunctions():Array
+	public var parseFunctions(get, null):Array<Max3DSChunk->Void>;
+	private function get_parseFunctions():Array<Max3DSChunk->Void>
 	{
 		return _functions;
 	}
 
-	protected function finalize():void
+	private function finalize():Void
 	{
 		// NOTHING
 	}
 
-	final protected function parseChunk(chunk:Max3DSChunk):void
+	private function parseChunk(chunk:Max3DSChunk):Void
 	{
-		var parseFunction:Function = null;
+		var parseFunction:Max3DSChunk->Void = null;
 
 		parseFunction = _functions[chunk.identifier];
 
@@ -50,13 +50,13 @@ class AbstractMax3DSParser
 		finalize();
 	}
 
-	final protected function enterChunk(chunk:Max3DSChunk):void
+	private function enterChunk(chunk:Max3DSChunk):Void
 	{
 		while (chunk.bytesAvailable > 0)
 		{
 			var innerChunk:Max3DSChunk = new Max3DSChunk(chunk.data);
 
-			var parseFunction:Function = _functions[innerChunk.identifier];
+			var parseFunction:Max3DSChunk->Void = _functions[innerChunk.identifier];
 			if (parseFunction == null)
 			{
 				innerChunk.skip();
