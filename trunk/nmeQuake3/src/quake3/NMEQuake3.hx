@@ -1,5 +1,6 @@
 package quake3;
 
+import nme.display.OpenGLView;
 import nme.display.Sprite;
 import nme.display.Stage;
 import nme.display.Stage3D;
@@ -55,9 +56,15 @@ class NMEQuake3 extends Sprite
 	private var _bpsParser:BSPParser;
 	private var _bspLoader:BinaryDataLoader;
 	
+	private var view:OpenGLView;
+	
 	public function new()
 	{
 		super();
+		
+		view = new OpenGLView();
+		view.render = renderView;
+		addChild(view);
 		
 		lastIndex = 0;
 		
@@ -72,6 +79,11 @@ class NMEQuake3 extends Sprite
 		_stage3D.y = 0;
 		_stage3D.addEventListener(Event.CONTEXT3D_CREATE, _onContextReady);
 		_stage3D.requestContext3D();
+	}
+	
+	private function renderView (rect:Rectangle):Void {
+		
+		GL.viewport (Std.int (rect.x), Std.int (rect.y), Std.int (rect.width), Std.int (rect.height));
 	}
 	
 	private function _initHUD():Void
