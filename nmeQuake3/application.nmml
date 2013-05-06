@@ -3,7 +3,7 @@
 	
 	<meta title="NMEQuake3" package="NMEQuake3" version="1.0.0" company="NME" />
 	
-	<app file="NMEQuake3" main="Main" path="Export" />
+	<app file="NMEQuake3" main="quake3.NMEQuake3" path="Export" />
 	<window width="800" height="600" fps="60" />
 	
 	<classpath name="src" />
