@@ -51,7 +51,7 @@
 -swf ../bin/Max3DSParserTest.swf
 -swf-version 11.7
 -swf-header 1024:768:60:0xffffff
--main examples.animation.Max3DSParserTest
+-main examples.model.Max3DSParserTest
 
 --next
 -cp ../src
