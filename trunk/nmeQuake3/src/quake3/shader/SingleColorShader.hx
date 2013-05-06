@@ -1,5 +1,4 @@
 package quake3.shader;
-import org.angle3d.shader.Shader;
 
 //假设传入的VertexBuffer值顺序为[position,color]
 class SingleColorShader extends Shader

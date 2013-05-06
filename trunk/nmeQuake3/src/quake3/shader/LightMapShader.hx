@@ -1,5 +1,4 @@
 package quake3.shader;
-import org.angle3d.shader.Shader;
 
 class LightMapShader extends Shader
 {

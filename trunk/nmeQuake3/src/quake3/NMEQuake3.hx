@@ -12,6 +12,7 @@ import nme.events.KeyboardEvent;
 import nme.events.MouseEvent;
 import nme.geom.Matrix3D;
 import nme.geom.Vector3D;
+import nme.geom.Rectangle;
 import nme.Lib;
 import nme.net.URLRequest;
 import nme.text.TextField;
@@ -72,13 +73,6 @@ class NMEQuake3 extends Sprite
 		_stage = Lib.current.stage;
 		_stage.scaleMode = StageScaleMode.NO_SCALE;
 		_stage.align = StageAlign.TOP_LEFT;
-		
-		
-		_stage3D = _stage.stage3Ds[0];
-		_stage3D.x = 0;
-		_stage3D.y = 0;
-		_stage3D.addEventListener(Event.CONTEXT3D_CREATE, _onContextReady);
-		_stage3D.requestContext3D();
 	}
 	
 	private function renderView (rect:Rectangle):Void {
