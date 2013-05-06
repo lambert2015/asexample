@@ -4,6 +4,7 @@ import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.Lib;
 import org.angle3d.utils.Logger;
+import org.angle3d.utils.MacroHelper;
 
 import org.angle3d.utils.Stats;
 
@@ -28,6 +29,7 @@ class MotionPathTest extends SimpleApplication
 {
 	static function main() 
 	{
+		//trace(MacroHelper.getFileContent("test.txt"));
 		flash.Lib.current.addChild(new MotionPathTest());
 	}
 	

@@ -1,0 +1,18 @@
+-main ApplicationMain 
+-lib nme
+-lib actuate
+-lib swf
+-cp src
+-cp C:\HaxeFoundation\nme/
+-D nme4=1
+-D no_console=1
+-D nme
+-D nme_ver=4.0.0
+-D nme_install_tool=1
+-D windows
+-D desktop
+-cpp Export/windows/cpp/obj
+-cp Export/windows/cpp/haxe
+--remap flash:nme
+--remap browser:native
+-debug

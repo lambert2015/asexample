@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="NMEQuake3" package="NMEQuake3" version="1.0.0" company="NME" />
+	
+	<app file="NMEQuake3" main="Main" path="Export" />
+	<window width="800" height="600" fps="60" />
+	
+	<classpath name="src" />
+	
+	<haxelib name="nme" />
+	<haxelib name="actuate" />
+	
+	<assets path="Assets" rename="assets" include="*" exclude="nme.svg" />
+	<library path="src/library.swf" />
+	
+	<icon name="Assets/nme.svg" />
+	
+</project>
