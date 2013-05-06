@@ -32,17 +32,13 @@ import quake3.render.Renderer;
 class NMEQuake3 extends Sprite
 {
 	private var _stage:Stage;
-	private var _stage3D:Stage3D;
-	
+
 	private var _context:Context3D;
 	private var _render:Renderer;
 	private var _camera:Camera3D;
 	private var _bps:BSP;
-	
-	
-	private var _driverInfoText:TextField;
+
 	private var _loadingText:TextField;
-	
 	
 	private var zAngle:Float;
 	private var xAngle:Float;
@@ -82,12 +78,6 @@ class NMEQuake3 extends Sprite
 	
 	private function _initHUD():Void
 	{
-		_driverInfoText = new TextField();
-		_driverInfoText.textColor = 0xFFFFFF;
-		_driverInfoText.text = _context.driverInfo;
-		_driverInfoText.autoSize = TextFieldAutoSize.LEFT;
-		_driverInfoText.x = _stage.stageWidth - _driverInfoText.width;
-		
 		_loadingText = new TextField();
 		_loadingText.textColor = 0x0;
 		_loadingText.autoSize = TextFieldAutoSize.CENTER;
@@ -96,15 +86,13 @@ class NMEQuake3 extends Sprite
 		
 		_loadingText.text = "Loading MAP...";
 		
-		Lib.current.addChild(_driverInfoText);
 		Lib.current.addChild(_loadingText);
-		Lib.current.addChild(new Stats());
 	}
 	
 	private function _onContextReady(e:Event):Void
 	{
-		_context = _stage3D.context3D;
-		_context.configureBackBuffer(_stage.stageWidth, _stage.stageHeight, 4, true);
+		//_context = _stage3D.context3D;
+		//_context.configureBackBuffer(_stage.stageWidth, _stage.stageHeight, 4, true);
 		
 		_initHUD();
 

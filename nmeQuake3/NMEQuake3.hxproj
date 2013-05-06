@@ -5,18 +5,18 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="application.nmml" />
-    <movie fps="0" />
-    <movie width="0" />
-    <movie height="0" />
+    <movie fps="60" />
+    <movie width="800" />
+    <movie height="600" />
     <movie version="3" />
     <movie minorVersion="0" />
     <movie platform="NME" />
-    <movie background="#FFFFFF" />
+    <movie background="FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="C:\HaxeFoundation\nme/" />
+    <class path="C:\HaxeFoundation\NME/" />
     <class path="Export/windows/cpp/haxe" />
   </classpaths>
   <!-- Build options -->
@@ -35,7 +35,7 @@
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\quake3\NMEQuake3.hx" />
+    <!-- example: <compile path="..." /> -->
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
