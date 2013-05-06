@@ -29,7 +29,7 @@ class ApplicationMain
 			var stage = wx.NMEStage.create(frame, null, null, { width: 800, height: 600 });
 			#end
 			
-			Main.main();
+			quake3.NMEQuake3.main();
 			
 			if (autoShowFrame)
 			{
@@ -50,7 +50,7 @@ class ApplicationMain
 				
 				var hasMain = false;
 				
-				for (methodName in Type.getClassFields(Main))
+				for (methodName in Type.getClassFields(quake3.NMEQuake3))
 				{
 					if (methodName == "main")
 					{
@@ -61,7 +61,7 @@ class ApplicationMain
 				
 				if (hasMain)
 				{
-					Reflect.callMethod (Main, Reflect.field (Main, "main"), []);
+					Reflect.callMethod (quake3.NMEQuake3, Reflect.field (quake3.NMEQuake3, "main"), []);
 				}
 				else
 				{
@@ -124,7 +124,7 @@ class ApplicationMain
 
 
 #if haxe3 @:build(DocumentClass.build()) #end
-class DocumentClass extends Main {}
+class DocumentClass extends quake3.NMEQuake3 {}
 
 
 #if haxe_211
