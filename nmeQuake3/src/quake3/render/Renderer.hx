@@ -22,7 +22,7 @@ class Renderer
 	
 	private var _bsp:BSP;
 	
-	private var _testShader:Shader;
+	//private var _testShader:Shader;
 
 	private var _invertCameraMatrix:Matrix3D;
 
@@ -84,11 +84,11 @@ class Renderer
 		
 		//set attribute
 		var buffer:VertexBuffer3D = group.getVertexBuffer();
-		_testShader.setAttribute(_context3D,"a_position", buffer);
-		_testShader.setAttribute(_context3D,"a_texCoord", buffer);
-		_testShader.setAttribute(_context3D,"a_lightCoord", buffer);
-		_testShader.setAttribute(_context3D,"a_normal", buffer);
-		_testShader.setAttribute(_context3D, "a_color", buffer);
+		//_testShader.setAttribute(_context3D,"a_position", buffer);
+		//_testShader.setAttribute(_context3D,"a_texCoord", buffer);
+		//_testShader.setAttribute(_context3D,"a_lightCoord", buffer);
+		//_testShader.setAttribute(_context3D,"a_normal", buffer);
+		//_testShader.setAttribute(_context3D, "a_color", buffer);
 		
 		var vpClone:Matrix3D = _camera.getViewProjectionMatrix().clone();
 		vpClone.transpose();

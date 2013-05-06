@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="HAXE_MODULE" version="4">
+  <component name="HaxeModuleSettingsStorage">
+    <option name="buildConfig" value="2" />
+    <option name="flexSdkName" value="flex_sdk_4.6" />
+    <option name="nmeTarget" value="Windows" />
+    <option name="nmmlPath" value="$MODULE_DIR$/application.nmml" />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/out/production/nmeQuake3" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="haXe 3" jdkType="haXe SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="1,61" level="application" />
+    <orderEntry type="library" name="hxcpp" level="application" />
+    <orderEntry type="library" name="NME" level="application" />
+  </component>
+</module>
+
