@@ -26,7 +26,7 @@ class OpenGLViewTest extends Sprite
 	{
 		super();
 		
-		view = new OpenGLView();
+		var view = new OpenGLView();
 		view.render = renderView;
 		addChild(view);
 		
@@ -106,7 +106,8 @@ class OpenGLViewTest extends Sprite
 	}
 	
 	
-	private function renderView (rect:Rectangle):Void {
+	private function renderView (rect:Rectangle):Void 
+	{
 		
 		GL.viewport (Std.int (rect.x), Std.int (rect.y), Std.int (rect.width), Std.int (rect.height));
 		
