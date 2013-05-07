@@ -30,7 +30,7 @@ package examples.gui
 		private var material:MaterialTexture;
 		private var material2:MaterialTexture;
 
-		override protected function initialize(width:int, height:int):void
+		override protected function initialize(width:Int, height:Int):Void
 		{
 			super.initialize(width, height);
 
@@ -62,7 +62,7 @@ package examples.gui
 			material2.technique.renderState.blendMode = BlendMode.AlphaAdditive;
 		}
 
-		override public function simpleUpdate(tpf:Number):void
+		override public function simpleUpdate(tpf:Float):Void
 		{
 		}
 	}

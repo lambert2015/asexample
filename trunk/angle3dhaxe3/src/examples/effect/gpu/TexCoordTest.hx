@@ -9,20 +9,20 @@ import org.angle3d.math.Vector2f;
  */
 class TexCoordTest extends Sprite
 {
-	public function TexCoordTest()
+	public function new()
 	{
 		super();
 
 		//测试到达第几帧
-		var duration:Number = 0.5;
-		var startFrame:int=5;
-		var currentTime:int = 15;
-		var totalFrame:int = 16;
+		var duration:Float = 0.5;
+		var startFrame:Int=5;
+		var currentTime:Int = 15;
+		var totalFrame:Int = 16;
 
-		var frame:int = currentTime / duration + startFrame;
-		var index:int = int(frame / totalFrame);
+		var frame:Int = currentTime / duration + startFrame;
+		var index:Int = int(frame / totalFrame);
 
-		var real:int = frame - index * totalFrame;
+		var real:Int = frame - index * totalFrame;
 		trace(frame);
 		trace(real);
 
@@ -45,15 +45,15 @@ class TexCoordTest extends Sprite
 	 * @return
 	 *
 	 */
-	private function getTexCoord(frame:int, vertex:Vector2f, numCol:int, numRow:int):Vector2f
+	private function getTexCoord(frame:Int, vertex:Vector2f, numCol:Int, numRow:Int):Vector2f
 	{
-		var totalFrame:int = numCol * numRow;
+		var totalFrame:Int = numCol * numRow;
 
-		var invertX:Number = 1 / numRow;
-		var invertY:Number = 1 / numCol;
+		var invertX:Float = 1 / numRow;
+		var invertY:Float = 1 / numCol;
 
-		var currentRowIndex:int = int(frame / numCol);
-		var currentColIndex:int = frame - currentRowIndex * numCol;
+		var currentRowIndex:Int = int(frame / numCol);
+		var currentColIndex:Int = frame - currentRowIndex * numCol;
 
 		var result:Vector2f = new Vector2f();
 
