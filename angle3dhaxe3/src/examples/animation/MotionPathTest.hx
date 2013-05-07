@@ -3,16 +3,11 @@ package examples.animation;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.Lib;
-import org.angle3d.utils.Logger;
-import org.angle3d.utils.MacroHelper;
-
-import org.angle3d.utils.Stats;
-
 import org.angle3d.app.SimpleApplication;
-import org.angle3d.cinematic.LoopMode;
-import org.angle3d.cinematic.MotionPath;
 import org.angle3d.cinematic.events.DirectionType;
 import org.angle3d.cinematic.events.MotionEvent;
+import org.angle3d.cinematic.LoopMode;
+import org.angle3d.cinematic.MotionPath;
 import org.angle3d.input.ChaseCamera;
 import org.angle3d.material.MaterialVertexColor;
 import org.angle3d.math.FastMath;
@@ -21,9 +16,11 @@ import org.angle3d.math.SplineType;
 import org.angle3d.math.Vector3f;
 import org.angle3d.scene.Geometry;
 import org.angle3d.scene.shape.Box;
-import org.angle3d.material.Material2;
+import org.angle3d.utils.Logger;
+import org.angle3d.utils.Stats;
 
-import org.angle3d.io.parser.max3ds.Max3DSParser;
+
+
 
 class MotionPathTest extends SimpleApplication
 {

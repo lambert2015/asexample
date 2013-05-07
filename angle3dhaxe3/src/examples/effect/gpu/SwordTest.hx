@@ -23,19 +23,19 @@ class SwordTest extends SimpleApplication
 {
 	private var particleSystem:ParticleSystem;
 	private var swordShape:ParticleShape;
-	private var angle:Number = 0;
+	private var angle:Float = 0;
 
 	[Embed(source = "../../../../assets/embed/sword.jpg")]
 	private static var EMBED_SWORD:Class;
 
-	public function SwordTest()
+	public function new()
 	{
 		super();
 
 		this.addChild(new Stats());
 	}
 
-	override protected function initialize(width:int, height:int):void
+	override protected function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
@@ -73,13 +73,13 @@ class SwordTest extends SimpleApplication
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
 	}
 
-	private function _doubleClickHandler(e:MouseEvent):void
+	private function _doubleClickHandler(e:MouseEvent):Void
 	{
 		particleSystem.playOrPause();
 	}
 
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.03;
 		angle %= FastMath.TWO_PI;

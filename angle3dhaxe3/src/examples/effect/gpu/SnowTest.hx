@@ -25,19 +25,19 @@ class SnowTest extends SimpleApplication
 {
 	private var particleSystem:ParticleSystem;
 	private var snowShape:ParticleShape;
-	private var angle:Number = 0;
+	private var angle:Float = 0;
 
 	[Embed(source = "../../../../assets/embed/snow.png")]
 	private static var EMBED_SNOW:Class;
 
-	public function SnowTest()
+	public function new()
 	{
 		super();
 
 		this.addChild(new Stats());
 	}
 
-	override protected function initialize(width:int, height:int):void
+	override protected function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
@@ -89,7 +89,7 @@ class SnowTest extends SimpleApplication
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
 	}
 
-	private function _doubleClickHandler(e:MouseEvent):void
+	private function _doubleClickHandler(e:MouseEvent):Void
 	{
 		particleSystem.playOrPause();
 
@@ -97,7 +97,7 @@ class SnowTest extends SimpleApplication
 	}
 
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.03;
 		angle %= FastMath.TWO_PI;

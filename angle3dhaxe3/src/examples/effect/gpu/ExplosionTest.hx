@@ -35,14 +35,14 @@ class ExplosionTest extends SimpleApplication
 	[Embed(source = "../../../../assets/embed/Explosion/Debris.png")]
 	private static var EMBED_SMOKE:Class;
 
-	public function ExplosionTest()
+	public function new()
 	{
 		super();
 
 		this.addChild(new Stats());
 	}
 
-	override protected function initialize(width:int, height:int):void
+	override protected function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
@@ -83,14 +83,14 @@ class ExplosionTest extends SimpleApplication
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
 	}
 
-	private function _doubleClickHandler(e:MouseEvent):void
+	private function _doubleClickHandler(e:MouseEvent):Void
 	{
 		particleSystem.playOrPause();
 	}
 
-	private var angle:Number = 0;
+	private var angle:Float = 0;
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.03;
 

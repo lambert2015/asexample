@@ -19,11 +19,11 @@ import org.angle3d.texture.Texture2D;
 
 class ExplosionEffectTest extends SimpleApplication
 {
-	private static const COUNT_FACTOR:int = 1;
-	private static const COUNT_FACTOR_F:Number = 1.0;
+	private static inline var COUNT_FACTOR:Int = 1;
+	private static inline var COUNT_FACTOR_F:Float = 1.0;
 
 	private var emit:ParticleEmitter;
-	private var angle:Number;
+	private var angle:Float;
 
 	[Embed(source = "../../../../assets/embed/Explosion/Debris.png")]
 	private static var EMBED_DEBRIS:Class;
@@ -72,7 +72,7 @@ class ExplosionEffectTest extends SimpleApplication
 		return new MaterialCPUParticle(texture);
 	}
 
-	private function createFlame():void
+	private function createFlame():Void
 	{
 		flame = new ParticleEmitter("Flame", 32 * COUNT_FACTOR);
 		flame.randomImage = true;
@@ -97,7 +97,7 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(flame);
 	}
 
-	private function createFlash():void
+	private function createFlash():Void
 	{
 		flashPE = new ParticleEmitter("Flash", 24 * COUNT_FACTOR);
 		flashPE.randomImage = true;
@@ -123,7 +123,7 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(flashPE);
 	}
 
-	private function createRoundSpark():void
+	private function createRoundSpark():Void
 	{
 		roundspark = new ParticleEmitter("RoundSpark", 20 * COUNT_FACTOR);
 		roundspark.setStartColor(new Color(1, 0.29, 0.34));
@@ -147,7 +147,7 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(roundspark);
 	}
 
-	private function createSpark():void
+	private function createSpark():Void
 	{
 		spark = new ParticleEmitter("Spark", 30 * COUNT_FACTOR);
 		spark.setStartColor(new Color(1, 0.8, 0.36, (1.0 / COUNT_FACTOR_F)));
@@ -169,7 +169,7 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(spark);
 	}
 
-	private function createSmokeTrail():void
+	private function createSmokeTrail():Void
 	{
 		smoketrail = new ParticleEmitter("SmokeTrail", 22 * COUNT_FACTOR);
 		smoketrail.setStartColor(new Color(1, 0.8, 0.36, (1.0 / COUNT_FACTOR_F)));
@@ -193,7 +193,7 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(smoketrail);
 	}
 
-	private function createDebris():void
+	private function createDebris():Void
 	{
 		debris = new ParticleEmitter("Debris", 15 * COUNT_FACTOR);
 		debris.randomImage = true;
@@ -219,7 +219,7 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(debris);
 	}
 
-	private function createShockwave():void
+	private function createShockwave():Void
 	{
 		shockwave = new ParticleEmitter("Shockwave", 1 * COUNT_FACTOR);
 		//        shockwave.setRandomAngle(true);
@@ -244,7 +244,7 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(shockwave);
 	}
 
-	override protected function initialize(width:int, height:int):void
+	override protected function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
@@ -270,10 +270,10 @@ class ExplosionEffectTest extends SimpleApplication
 		scene.attachChild(gm);
 	}
 
-	private var time:Number = 0;
-	private var state:int = 0;
+	private var time:Float = 0;
+	private var state:Int = 0;
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Float):Void
 	{
 		time += tpf;
 		if (time > 1 && state == 0)

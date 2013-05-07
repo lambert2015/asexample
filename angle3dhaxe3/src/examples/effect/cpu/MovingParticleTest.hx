@@ -14,7 +14,7 @@ import org.angle3d.texture.Texture2D;
 class MovingParticleTest extends SimpleApplication
 {
 	private var emit:ParticleEmitter;
-	private var angle:Number;
+	private var angle:Float;
 
 	[Embed(source = "../../../../assets/embed/smoke.png")]
 	private static var EMBED_SMOKE:Class;
@@ -27,7 +27,7 @@ class MovingParticleTest extends SimpleApplication
 		angle = 0;
 	}
 
-	override protected function initialize(width:int, height:int):void
+	override protected function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 		
@@ -58,12 +58,12 @@ class MovingParticleTest extends SimpleApplication
 		scene.attachChild(emit);
 	}
 
-	override public function simpleUpdate(tpf:Number):void
+	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += tpf;
 		angle %= FastMath.TWO_PI;
-		var fx:Number = Math.cos(angle) * 2;
-		var fy:Number = Math.sin(angle) * 2;
+		var fx:Float = Math.cos(angle) * 2;
+		var fy:Float = Math.sin(angle) * 2;
 		emit.setTranslationXYZ(fx, 0, fy);
 	}
 }
