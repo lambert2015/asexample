@@ -2,5 +2,5 @@
 -swf bin/Main.swf
 -swf-header 1024:768:60:368DA7
 --flash-strict
--swf-version 11.5
+-swf-version 11.7
 -main examples.material.MaterialWireframeTest
