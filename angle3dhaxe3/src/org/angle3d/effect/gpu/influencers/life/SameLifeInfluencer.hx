@@ -8,6 +8,7 @@ class SameLifeInfluencer extends AbstractInfluencer implements ILifeInfluencer
 
 	public function new(life:Float)
 	{
+		super();
 		_life = life;
 	}
 

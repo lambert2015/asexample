@@ -13,21 +13,22 @@ import org.angle3d.texture.Texture2D;
 
 class MovingParticleTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new MovingParticleTest());
+	}
+	
 	private var emit:ParticleEmitter;
 	private var angle:Float;
 
-	[Embed(source = "../../../../assets/embed/smoke.png")]
-	private static var EMBED_SMOKE:Class;
-
-
-	public function MovingParticleTest()
+	public function new()
 	{
 		super();
 
 		angle = 0;
 	}
 
-	override protected function initialize(width:Int, height:Int):Void
+	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 		
@@ -48,8 +49,7 @@ class MovingParticleTest extends SimpleApplication
 		emit.particleInfluencer.setInitialVelocity(new Vector3f(0, 2.5, 0));
 		//emit.setImagesX(15);
 		
-		var bitmap:Bitmap = new EMBED_SMOKE();
-		var bitmapData:BitmapData = bitmap.bitmapData;
+		var bitmapData:BitmapData = Type.createInstance(EMBED_SMOKE, [0, 0]);
 		var texture:Texture2D = new Texture2D(bitmapData, false);
 
 		var material:MaterialCPUParticle = new MaterialCPUParticle(texture);
@@ -67,3 +67,5 @@ class MovingParticleTest extends SimpleApplication
 		emit.setTranslationXYZ(fx, 0, fy);
 	}
 }
+
+@:bitmap("embed/particle/flare.png") class EMBED_SMOKE extends BitmapData { }

@@ -19,32 +19,16 @@ import org.angle3d.texture.Texture2D;
 
 class ExplosionEffectTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new ExplosionEffectTest());
+	}
+	
 	private static inline var COUNT_FACTOR:Int = 1;
 	private static inline var COUNT_FACTOR_F:Float = 1.0;
 
 	private var emit:ParticleEmitter;
 	private var angle:Float;
-
-	[Embed(source = "../../../../assets/embed/Explosion/Debris.png")]
-	private static var EMBED_DEBRIS:Class;
-
-	[Embed(source = "../../../../assets/embed/Explosion/flame.png")]
-	private static var EMBED_FLAME:Class;
-
-	[Embed(source = "../../../../assets/embed/Explosion/flash.png")]
-	private static var EMBED_FLASH:Class;
-
-	[Embed(source = "../../../../assets/embed/Explosion/roundspark.png")]
-	private static var EMBED_ROUNDSPARK:Class;
-
-	[Embed(source = "../../../../assets/embed/Explosion/shockwave.png")]
-	private static var EMBED_SHOCKWAVE:Class;
-
-	[Embed(source = "../../../../assets/embed/Explosion/smoketrail.png")]
-	private static var EMBED_SMOKETRAIL:Class;
-
-	[Embed(source = "../../../../assets/embed/Explosion/spark.png")]
-	private static var EMBED_SPARK:Class;
 
 	private var flame:ParticleEmitter;
 	private var flashPE:ParticleEmitter;
@@ -54,7 +38,7 @@ class ExplosionEffectTest extends SimpleApplication
 	private var debris:ParticleEmitter;
 	private var shockwave:ParticleEmitter;
 
-	private var explosionEffect:Node = new Node("explosionFX");
+	private var explosionEffect:Node;
 
 	public function new()
 	{
@@ -63,10 +47,9 @@ class ExplosionEffectTest extends SimpleApplication
 		angle = 0;
 	}
 
-	private function createMat(cls:Class):MaterialCPUParticle
+	private function createMat(cls:Class<Dynamic>):MaterialCPUParticle
 	{
-		var bitmap:Bitmap = new cls();
-		var bitmapData:BitmapData = bitmap.bitmapData;
+		var bitmapData:BitmapData = Type.createInstance(cls,[0,0]);
 		var texture:Texture2D = new Texture2D(bitmapData, false);
 
 		return new MaterialCPUParticle(texture);
@@ -197,7 +180,7 @@ class ExplosionEffectTest extends SimpleApplication
 	{
 		debris = new ParticleEmitter("Debris", 15 * COUNT_FACTOR);
 		debris.randomImage = true;
-		debris.setRandomAngle(true);
+		debris.randomAngle = true;
 		debris.setRotateSpeed(FastMath.TWO_PI * 4);
 		debris.setStartColor(new Color(1, 0.59, 0.28, (1.0 / COUNT_FACTOR_F)));
 		debris.setEndColor(new Color(.5, 0.5, 0.5, 0));
@@ -244,9 +227,11 @@ class ExplosionEffectTest extends SimpleApplication
 		explosionEffect.attachChild(shockwave);
 	}
 
-	override protected function initialize(width:Int, height:Int):Void
+	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
+		
+		explosionEffect = new Node("explosionFX");
 
 		flyCam.setDragToRotate(true);
 
@@ -314,3 +299,12 @@ class ExplosionEffectTest extends SimpleApplication
 //			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
+
+
+@:bitmap("embed/particle/explosion/Debris.png") class EMBED_DEBRIS extends BitmapData { }
+@:bitmap("embed/particle/explosion/flame.png") class EMBED_FLAME extends BitmapData { }
+@:bitmap("embed/particle/explosion/flash.png") class EMBED_FLASH extends BitmapData { }
+@:bitmap("embed/particle/explosion/roundspark.png") class EMBED_ROUNDSPARK extends BitmapData { }
+@:bitmap("embed/particle/explosion/shockwave.png") class EMBED_SHOCKWAVE extends BitmapData { }
+@:bitmap("embed/particle/explosion/smoketrail.png") class EMBED_SMOKETRAIL extends BitmapData {}
+@:bitmap("embed/particle/explosion/spark.png") class EMBED_SPARK extends BitmapData { }

@@ -20,6 +20,8 @@ class PlanePositionInfluencer extends AbstractInfluencer implements IPositionInf
 
 	public function new(center:Vector3f, width:Float, height:Float, type:String = "xz")
 	{
+		super();
+		
 		_center = center;
 		_width = width;
 		_height = height;

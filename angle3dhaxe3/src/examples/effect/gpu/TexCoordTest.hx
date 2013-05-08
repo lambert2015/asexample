@@ -1,6 +1,7 @@
 package examples.effect.gpu;
 
 import flash.display.Sprite;
+import flash.Lib;
 
 import org.angle3d.math.Vector2f;
 
@@ -9,6 +10,11 @@ import org.angle3d.math.Vector2f;
  */
 class TexCoordTest extends Sprite
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new TexCoordTest());
+	}
+	
 	public function new()
 	{
 		super();
@@ -23,17 +29,17 @@ class TexCoordTest extends Sprite
 		var index:Int = int(frame / totalFrame);
 
 		var real:Int = frame - index * totalFrame;
-		trace(frame);
-		trace(real);
+		Lib.trace(frame);
+		Lib.trace(real);
 
-		trace(getTexCoord(10, new Vector2f(1, 0), 4, 4));
-		trace(getTexCoord(10, new Vector2f(0, 0), 4, 4));
-		trace(getTexCoord(10, new Vector2f(1, 1), 4, 4));
-		trace(getTexCoord(10, new Vector2f(0, 1), 4, 4));
-		trace(getTexCoord(0, new Vector2f(1, 0), 4, 4));
-		trace(getTexCoord(1, new Vector2f(0, 0), 4, 4));
-		trace(getTexCoord(2, new Vector2f(1, 1), 4, 4));
-		trace(getTexCoord(3, new Vector2f(0, 1), 4, 4));
+		Lib.trace(getTexCoord(10, new Vector2f(1, 0), 4, 4));
+		Lib.trace(getTexCoord(10, new Vector2f(0, 0), 4, 4));
+		Lib.trace(getTexCoord(10, new Vector2f(1, 1), 4, 4));
+		Lib.trace(getTexCoord(10, new Vector2f(0, 1), 4, 4));
+		Lib.trace(getTexCoord(0, new Vector2f(1, 0), 4, 4));
+		Lib.trace(getTexCoord(1, new Vector2f(0, 0), 4, 4));
+		Lib.trace(getTexCoord(2, new Vector2f(1, 1), 4, 4));
+		Lib.trace(getTexCoord(3, new Vector2f(0, 1), 4, 4));
 	}
 
 	/**
@@ -52,7 +58,7 @@ class TexCoordTest extends Sprite
 		var invertX:Float = 1 / numRow;
 		var invertY:Float = 1 / numCol;
 
-		var currentRowIndex:Int = int(frame / numCol);
+		var currentRowIndex:Int = Std.int(frame / numCol);
 		var currentColIndex:Int = frame - currentRowIndex * numCol;
 
 		var result:Vector2f = new Vector2f();

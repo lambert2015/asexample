@@ -17,6 +17,6 @@ class PerSecondBirthInfluencer extends AbstractInfluencer implements IBirthInflu
 
 	public function getBirth(index:Int):Float
 	{
-		return int(index / _generator.perSecondParticleCount) * _scale;
+		return Std.int(index / _generator.perSecondParticleCount) * _scale;
 	}
 }

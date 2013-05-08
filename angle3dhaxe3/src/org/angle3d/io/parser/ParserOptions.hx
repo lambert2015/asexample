@@ -176,17 +176,17 @@ class ParserOptions
 		//_replaceNodeFunction = value;
 	//}
 //
-//		protected function load(request : URLRequest, options : ParserOptions = null) : LoaderGroup
+//		private function load(request : URLRequest, options : ParserOptions = null) : LoaderGroup
 //		{
 //			return LoaderGroup.load(request, options);
 //		}
 //
-	//protected function rewritePath(path:String):String
+	//private function rewritePath(path:String):String
 	//{
 		//return path;
 	//}
 
-//		protected function replaceNode(node : IScene) : IScene
+//		private function replaceNode(node : IScene) : IScene
 //		{
 //			return node;
 //		}

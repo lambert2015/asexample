@@ -18,23 +18,26 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
 
+@:bitmap("embed/particle/smoke.png") class EMBED_SMOKE extends BitmapData { }
+
+
 //TODO 是否添加可用多个颜色
 class FireTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new FireTest());
+	}
+	
 	private var particleSystem:ParticleSystem;
 	private var fireShape:ParticleShape;
-
-	[Embed(source = "../../../../assets/embed/smoke.png")]
-	private static var EMBED_SMOKE:Class;
 
 	public function new()
 	{
 		super();
-
-		this.addChild(new Stats());
 	}
 
-	override protected function initialize(width:Int, height:Int):Void
+	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
@@ -42,8 +45,7 @@ class FireTest extends SimpleApplication
 
 		flyCam.setDragToRotate(true);
 
-		var bitmap:Bitmap = new EMBED_SMOKE();
-		var bitmapData:BitmapData = bitmap.bitmapData;
+		var bitmapData:BitmapData = Type.createInstance(EMBED_SMOKE, [0, 0]);
 		var texture:Texture2D = new Texture2D(bitmapData, false);
 
 		var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(500, 2);
@@ -82,6 +84,8 @@ class FireTest extends SimpleApplication
 
 		this.stage.doubleClickEnabled = true;
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
+		
+		Stats.show(stage);
 	}
 
 	private function _doubleClickHandler(e:MouseEvent):Void
