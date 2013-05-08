@@ -1,0 +1,80 @@
+import com.buraks.utils.fastmem;
+
+var mem:ByteArray;
+
+var loader:Loader;
+var bounds:Rectangle;
+var bitmapData:BitmapData;
+var bw:int;
+var bh:int;
+var ofs:int;
+var outputText:TextField;
+	
+function main():void {
+	mem = new ByteArray();
+	mem.length=ApplicationDomain.MIN_DOMAIN_MEMORY_LENGTH;
+//	mem.endian = Endian.LITTLE_ENDIAN;
+//	fastmem.fastSelectMem(mem);	
+	loader = new Loader();
+	var ureq:URLRequest = new URLRequest("kitty.jpg");
+	loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
+	loader.load(ureq);
+}
+function completeHandler(event:Event):void {
+	var bitmap:Bitmap = Bitmap(loader.content);
+	bw = bitmap.bitmapData.width;
+	bh = bitmap.bitmapData.height;
+	ofs = bw*bh*4;
+    bounds = new Rectangle(0, 0, bw, bh);
+	var pixels:ByteArray = bitmap.bitmapData.getPixels(bounds);
+	mem.position=0;
+	pixels.position=0;
+	mem.writeBytes(pixels);
+	pixels.position=0;
+	mem.writeBytes(pixels);
+	bitmapData = new BitmapData(bw,bh,false);
+	var image:Bitmap = new Bitmap(bitmapData);
+	addChild(image);	
+	outputText = new TextField();
+	addChild(outputText);
+    var timer:Timer = new Timer(10, 0);
+    timer.addEventListener("timer", timerHandler);
+    timer.start();
+}
+
+var phase:Number=0;
+var lastUpdate:int=0;
+
+function timerHandler(event:TimerEvent):void {
+	var i:int;
+	var j:int;
+	var o1:int;
+	var o2:int;
+//	var px:int;
+	fastmem.fastSelectMem(mem);	
+	for (i=0;i<bw;i++){
+		var r=((Math.round(Math.sin(phase+2*Math.PI*(i/bw))*14))*bw)*4;
+		for (j=14;j<bh-14;j++){
+			o1=((j*bw)+i)<<2;
+			o2=o1+ofs+r;
+
+//			mem.position=o2;
+//			px=mem.readInt();
+//			mem.position=o1;
+//			mem.writeInt(px);
+
+			fastmem.fastSetI32(fastmem.fastGetI32(o2),o1);
+		}
+	}
+	fastmem.fastDeselectMem();	
+	mem.position=0;
+	bitmapData.setPixels(bounds,mem);
+	phase+=0.2;
+	outputText.text=Math.round((1000/(flash.utils.getTimer()-lastUpdate))).toString()+' fps';
+	lastUpdate=flash.utils.getTimer();	
+}
+main();
+
+stop();
+
+
