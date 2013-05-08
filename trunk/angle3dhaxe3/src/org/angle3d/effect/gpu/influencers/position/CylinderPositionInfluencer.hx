@@ -17,7 +17,7 @@ class CylinderPositionInfluencer extends AbstractInfluencer implements IPosition
 	private var _random:Bool;
 
 
-	private var _randomPoint:Vector2f = new Vector2f();
+	private var _randomPoint:Vector2f;
 
 	/**
 	 *
@@ -30,6 +30,8 @@ class CylinderPositionInfluencer extends AbstractInfluencer implements IPosition
 	 */
 	public function new(height:Float, center:Vector3f, radius:Float, edge:Bool = false, random:Bool = true)
 	{
+		super();
+		
 		_height = height;
 		_center = center;
 		_radius = radius;
@@ -37,6 +39,7 @@ class CylinderPositionInfluencer extends AbstractInfluencer implements IPosition
 		_edge = edge;
 		_random = random;
 
+		_randomPoint = new Vector2f();
 	}
 
 	public function getPosition(index:Int, store:Vector3f):Vector3f

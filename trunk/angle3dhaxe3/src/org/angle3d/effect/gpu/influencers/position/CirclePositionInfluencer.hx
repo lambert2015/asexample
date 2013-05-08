@@ -16,6 +16,8 @@ class CirclePositionInfluencer extends AbstractInfluencer implements IPositionIn
 
 	public function new(center:Vector3f, radius:Float, startAngle:Float)
 	{
+		super();
+		
 		_center = center;
 		_radius = radius;
 		_startAngle = startAngle;

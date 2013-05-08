@@ -21,8 +21,9 @@ class MaterialCPUParticle extends Material
 		this.texture = texture;
 	}
 
-	override private function set_influence(value:Float):Void
+	override private function set_influence(value:Float):Float
 	{
+		return value;
 	}
 
 	private function get_technique():TechniqueCPUParticle

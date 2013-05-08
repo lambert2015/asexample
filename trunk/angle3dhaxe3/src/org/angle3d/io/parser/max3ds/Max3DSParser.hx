@@ -129,7 +129,7 @@ class Max3DSParser extends AbstractMax3DSParser //implements IParser
 		}
 	}
 
-//		protected function getMaterialGroup(materialName : String) : Group
+//		private function getMaterialGroup(materialName : String) : Group
 //		{
 //			for (var i : int = 0; i < _data.length && _data[i].name != materialName; ++i)
 //				continue;

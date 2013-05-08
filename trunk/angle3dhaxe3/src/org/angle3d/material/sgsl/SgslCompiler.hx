@@ -640,13 +640,13 @@ class SgslCompiler
 		return bits;
 	}
 
-	private var _xyzw:String = "xyzw";
+	private static var _xyzw:String = "xyzw";
 
 	private function getTempRegSwizzle(tempReg:TempReg, swizzle:String):String
 	{
 		if (swizzle == null || swizzle.length == 0)
 		{
-			return _xyzw.substr(tempReg.offset, tempReg.offset+ tempReg.size);
+			return _xyzw.substr(tempReg.offset, tempReg.size);
 		}
 
 		var result:String = "";

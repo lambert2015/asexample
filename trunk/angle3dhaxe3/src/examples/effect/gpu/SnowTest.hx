@@ -1,5 +1,6 @@
 package examples.effect.gpu;
 
+import flash.display.BitmapData;
 import flash.events.MouseEvent;
 
 import org.angle3d.app.SimpleApplication;
@@ -18,26 +19,28 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
 
+@:bitmap("embed/particle/snow.png") class EMBED_SNOW extends BitmapData { }
+
 /**
  * 下雪测试
  */
 class SnowTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new SnowTest());
+	}
+	
 	private var particleSystem:ParticleSystem;
 	private var snowShape:ParticleShape;
 	private var angle:Float = 0;
 
-	[Embed(source = "../../../../assets/embed/snow.png")]
-	private static var EMBED_SNOW:Class;
-
 	public function new()
 	{
 		super();
-
-		this.addChild(new Stats());
 	}
 
-	override protected function initialize(width:Int, height:Int):Void
+	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
@@ -45,7 +48,8 @@ class SnowTest extends SimpleApplication
 
 		flyCam.setDragToRotate(true);
 
-		var texture:Texture2D = new Texture2D(new EMBED_SNOW().bitmapData, false);
+		var bitmapData:BitmapData = Type.createInstance(EMBED_SNOW, [0, 0]);
+		var texture:Texture2D = new Texture2D(bitmapData, false);
 
 		var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(1000, 8);
 		particleGenerator.setPositionInfluencer(new PlanePositionInfluencer(new Vector3f(0, 10, 0), 20, 20));
@@ -87,6 +91,8 @@ class SnowTest extends SimpleApplication
 
 		this.stage.doubleClickEnabled = true;
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
+		
+		Stats.show(stage);
 	}
 
 	private function _doubleClickHandler(e:MouseEvent):Void

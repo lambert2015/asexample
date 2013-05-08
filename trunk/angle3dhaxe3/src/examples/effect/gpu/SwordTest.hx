@@ -1,5 +1,9 @@
 package examples.effect.gpu;
 
+import flash.display.BitmapData;
+import flash.display3D.Context3DMipFilter;
+import flash.display3D.Context3DTextureFilter;
+import flash.display3D.Context3DWrapMode;
 import flash.events.MouseEvent;
 
 import org.angle3d.app.SimpleApplication;
@@ -16,32 +20,40 @@ import org.angle3d.math.Vector3f;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
 
+@:bitmap("embed/particle/sword.jpg") class EMBED_SWORD extends BitmapData { }
+
 /**
- * 下雪测试
+ * 飞剑雨
  */
 class SwordTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new SwordTest());
+	}
+	
 	private var particleSystem:ParticleSystem;
 	private var swordShape:ParticleShape;
-	private var angle:Float = 0;
-
-	[Embed(source = "../../../../assets/embed/sword.jpg")]
-	private static var EMBED_SWORD:Class;
+	private var angle:Float;
 
 	public function new()
 	{
 		super();
-
-		this.addChild(new Stats());
 	}
 
-	override protected function initialize(width:Int, height:Int):Void
+	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
+		
+		angle = 0;
 
 		flyCam.setDragToRotate(true);
 
-		var texture:Texture2D = new Texture2D(new EMBED_SWORD().bitmapData, false);
+		var bitmapData:BitmapData = Type.createInstance(EMBED_SWORD, [0, 0]);
+		var texture:Texture2D = new Texture2D(bitmapData, false);
+		texture.setWrapMode(Context3DWrapMode.CLAMP);
+		texture.setTextureFilter(Context3DTextureFilter.LINEAR);
+		texture.setMipFilter(Context3DMipFilter.MIPNONE);
 
 		var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(90, 3);
 		particleGenerator.setPositionInfluencer(new CirclePositionInfluencer(new Vector3f(0, 10, 0), 3, 0));
@@ -71,6 +83,8 @@ class SwordTest extends SimpleApplication
 
 		this.stage.doubleClickEnabled = true;
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
+		
+		Stats.show(stage);
 	}
 
 	private function _doubleClickHandler(e:MouseEvent):Void

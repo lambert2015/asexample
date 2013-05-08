@@ -648,7 +648,7 @@ package org.angle3d.material.sgsl
 		{
 			if (swizzle == null || swizzle.length == 0)
 			{
-				return _xyzw.slice(tempReg.offset, tempReg.offset + tempReg.size);
+				return _xyzw.substr(tempReg.offset, tempReg.size);
 			}
 
 			var result:String = "";

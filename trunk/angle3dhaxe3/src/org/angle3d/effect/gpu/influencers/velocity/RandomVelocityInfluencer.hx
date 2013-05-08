@@ -17,9 +17,11 @@ class RandomVelocityInfluencer extends AbstractInfluencer implements IVelocityIn
 
 	public function new(speed:Float, variation:Float = 0)
 	{
+		super();
+		
 		_speed = speed;
 
-		_variation = FastMath.fclamp(variation, 0.0, 1.0);
+		_variation = FastMath.clamp(variation, 0.0, 1.0);
 
 		_temp = new Vector3f();
 	}

@@ -25,27 +25,26 @@ import org.angle3d.texture.Texture2D;
  */
 class BulletTest extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new BulletTest());
+	}
+	
 	private var particleSystem:ParticleSystem;
 	private var bulletShape:ParticleShape;
-
-	[Embed(source = "../../../../assets/embed/bullet.png")]
-	private static var EMBED_DEBRIS:Class;
 
 	public function new()
 	{
 		super();
-
-		this.addChild(new Stats());
 	}
 
-	override protected function initialize(width:Int, height:Int):Void
+	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
 		flyCam.setDragToRotate(true);
 
-		var bitmap:Bitmap = new EMBED_DEBRIS();
-		var bitmapData:BitmapData = bitmap.bitmapData;
+		var bitmapData:BitmapData = Type.createInstance(EMBED_DEBRIS, [0, 0]);
 		var texture:Texture2D = new Texture2D(bitmapData, false);
 
 		var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(50, 5);
@@ -74,11 +73,13 @@ class BulletTest extends SimpleApplication
 
 		this.stage.doubleClickEnabled = true;
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
+		
+		Stats.show(stage);
 	}
 
 	private function _doubleClickHandler(e:MouseEvent):Void
 	{
-		particleSystem.playOrPause()
+		particleSystem.playOrPause();
 	}
 
 	private var angle:Float = 0;
@@ -92,3 +93,5 @@ class BulletTest extends SimpleApplication
 //			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
+
+@:bitmap("embed/particle/bullet.png") class EMBED_DEBRIS extends BitmapData { }

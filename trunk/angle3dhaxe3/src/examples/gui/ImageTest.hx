@@ -30,7 +30,7 @@ package examples.gui
 		private var material:MaterialTexture;
 		private var material2:MaterialTexture;
 
-		override protected function initialize(width:Int, height:Int):Void
+		override private function initialize(width:Int, height:Int):Void
 		{
 			super.initialize(width, height);
 

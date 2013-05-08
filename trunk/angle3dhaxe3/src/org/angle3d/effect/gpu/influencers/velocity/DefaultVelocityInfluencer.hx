@@ -13,10 +13,12 @@ class DefaultVelocityInfluencer extends AbstractInfluencer implements IVelocityI
 
 	public function new(velocity:Vector3f = null, variation:Float = 0.2)
 	{
+		super();
+		
 		_velocity = velocity == null ? new Vector3f(0, 0, 0) : velocity;
 		_velocityLength = _velocity.length;
 
-		_variation = FastMath.fclamp(variation, 0.0, 1.0);
+		_variation = FastMath.clamp(variation, 0.0, 1.0);
 
 		_temp = new Vector3f();
 	}

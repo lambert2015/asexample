@@ -12,6 +12,8 @@ class ConeVelocityInfluencer extends AbstractInfluencer implements IVelocityInfl
 
 	public function new(speed:Float)
 	{
+		super();
+		
 		_speed = speed;
 
 		_temp = new Vector3f();

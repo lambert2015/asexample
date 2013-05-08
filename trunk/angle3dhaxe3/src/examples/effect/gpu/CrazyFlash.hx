@@ -29,29 +29,26 @@ import org.angle3d.texture.Texture2D;
  */
 class CrazyFlash extends SimpleApplication
 {
+	static function main() 
+	{
+		flash.Lib.current.addChild(new CrazyFlash());
+	}
+	
 	private var particleSystem:ParticleSystem;
 	private var bulletShape:ParticleShape;
-	
-	[Embed(source = "../../../../assets/embed/spikey.png")]
-	private static var EMBED_DEBRIS:Class;
-	
-	[Embed(source = "../../../../assets/embed/glow.png")]
-	private static var EMBED_GLOW:Class;
+
 	public function new()
 	{
 		super();
-		
-		this.addChild(new Stats());
 	}
 	
-	override protected function initialize(width:Int, height:Int):Void
+	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 		
 		flyCam.setDragToRotate(true);
 		
-		var bitmap:Bitmap = new EMBED_DEBRIS();
-		var bitmapData:BitmapData = bitmap.bitmapData;
+		var bitmapData:BitmapData = Type.createInstance(EMBED_DEBRIS, [0, 0]);
 		var texture:Texture2D = new Texture2D(bitmapData, false);
 		
 		var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(150, 3);
@@ -75,8 +72,7 @@ class CrazyFlash extends SimpleApplication
 		particleGenerator2.setScaleInfluencer(new DefaultScaleInfluencer(0.5, 0.4));
 		particleGenerator2.setLifeInfluencer(new DefaultLifeInfluencer(0.1, 2));
 		
-		bitmap = new EMBED_GLOW();
-		bitmapData = bitmap.bitmapData;
+		bitmapData = Type.createInstance(EMBED_GLOW, [0, 0]);
 		var texture2:Texture2D = new Texture2D(bitmapData, false);
 		
 		
@@ -100,11 +96,13 @@ class CrazyFlash extends SimpleApplication
 		
 		this.stage.doubleClickEnabled = true;
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
+		
+		Stats.show(stage);
 	}
 	
 	private function _doubleClickHandler(e:MouseEvent):Void
 	{
-		particleSystem.playOrPause()
+		particleSystem.playOrPause();
 	}
 	
 	private var angle:Float = 0;
@@ -118,3 +116,6 @@ class CrazyFlash extends SimpleApplication
 		//			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
+
+@:bitmap("embed/particle/spikey.png") class EMBED_DEBRIS extends BitmapData { }
+@:bitmap("embed/particle/glow.png") class EMBED_GLOW extends BitmapData { }
