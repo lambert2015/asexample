@@ -58,10 +58,11 @@ class BulletTest extends SimpleApplication
 		particleGenerator.setLifeInfluencer(new DefaultLifeInfluencer(4, 5));
 		particleGenerator.setSpriteSheetInfluencer(new DefaultSpriteSheetInfluencer(16));
 
+		//混合模式用于这个不太对
 		bulletShape = particleGenerator.createParticleShape("bulletShape", texture);
-		bulletShape.blendMode = BlendMode.PremultAlpha;
+		bulletShape.blendMode = BlendMode.AlphaAdditive;
 		//bulletShape.setColor(0xffffff, 0xffffff);
-		bulletShape.setAlpha(1.0, 1.0);
+		bulletShape.setAlpha(1.0, 0.5);
 		bulletShape.setAcceleration(new Vector3f(0, -3, 0));
 		bulletShape.setSpriteSheet(0.05, 4, 4);
 		bulletShape.setSize(0.5, 0.5);
