@@ -49,6 +49,8 @@ class ImageTest extends SimpleApplication
 
 
 		material = cast image.getMaterial();
+		//material.technique.renderState.applyBlendMode = true;
+		//material.technique.renderState.blendMode = BlendMode.Additive;
 
 		image2 = new Picture("image2", false);
 		image2.move(new Vector3f(0, 0, 10));
@@ -56,12 +58,12 @@ class ImageTest extends SimpleApplication
 		image2.setSize(300, 300);
 		image2.setTexture(texture2,false);
 
-		gui.attachChild(image);
-		gui.attachChild(image2);
-
 		material2 = cast image2.getMaterial();
 		material2.technique.renderState.applyBlendMode = true;
-		material2.technique.renderState.blendMode = BlendMode.Color;
+		material2.technique.renderState.blendMode = BlendMode.Modulate;
+		
+		gui.attachChild(image);
+		gui.attachChild(image2);
 		
 		Stats.show(stage);
 	}
