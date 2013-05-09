@@ -72,7 +72,7 @@ class RenderState
 		cullMode = CullMode.FRONT;
 		applyCullMode = true;
 
-		compareMode = TestFunction.LESS_EQUAL;
+		compareMode = TestFunction.LESS;
 
 		depthTest = true;
 		applyDepthTest = true;

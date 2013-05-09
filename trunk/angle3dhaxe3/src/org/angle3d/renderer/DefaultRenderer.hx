@@ -113,7 +113,8 @@ class DefaultRenderer implements IRenderer
 	public function applyRenderState(state:RenderState):Void
 	{
 		//TODO 这里有问题，需要检查
-		if (state.depthTest != _renderContext.depthTest || state.compareMode != _renderContext.compareMode)
+		if (state.depthTest != _renderContext.depthTest || 
+			state.compareMode != _renderContext.compareMode)
 		{
 			_context3D.setDepthTest(state.depthTest, state.compareMode);
 			_renderContext.depthTest = state.depthTest;
@@ -146,7 +147,7 @@ class DefaultRenderer implements IRenderer
 				case BlendMode.Color:
 					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
 				case BlendMode.Alpha:
-					_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
+					_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 				case BlendMode.PremultAlpha:
 					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 				case BlendMode.Modulate:

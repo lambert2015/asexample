@@ -10,6 +10,14 @@ import org.angle3d.texture.TextureMapBase;
 
 class ParticleShape extends Geometry
 {
+	public var useLocalAcceleration(get, set):Bool;
+	public var useLocalColor(get, set):Bool;
+	public var blendMode(get, set):BlendMode;
+	public var useSpin(get, set):Bool;
+	public var loop(get, set):Bool;
+	public var startTime(get, set):Float;
+	public var isDead(get, null):Bool;
+	
 	//开始时间
 	private var _startTime:Float;
 
@@ -48,7 +56,7 @@ class ParticleShape extends Geometry
 	/**
 	 * 使用粒子单独加速度
 	 */
-	public var useLocalAcceleration(get, set):Bool;
+	
 	private function get_useLocalAcceleration():Bool
 	{
 		return _gpuMaterial.useLocalAcceleration;
@@ -58,7 +66,7 @@ class ParticleShape extends Geometry
 		return _gpuMaterial.useLocalAcceleration = value;
 	}
 
-	public var useLocalColor(get, set):Bool;
+	
 	private function get_useLocalColor():Bool
 	{
 		return _gpuMaterial.useLocalColor;
@@ -69,7 +77,7 @@ class ParticleShape extends Geometry
 	}
 
 	
-	public var blendMode(get, set):BlendMode;
+	
 	private function get_blendMode():BlendMode
 	{
 		return _gpuMaterial.blendMode;
@@ -82,7 +90,7 @@ class ParticleShape extends Geometry
 	/**
 	 * 使用自转
 	 */
-	public var useSpin(get, set):Bool;
+	
 	private function get_useSpin():Bool
 	{
 		return _gpuMaterial.useSpin;
@@ -127,7 +135,7 @@ class ParticleShape extends Geometry
 		_gpuMaterial.setSize(start, end);
 	}
 
-	public var loop(get, set):Bool;
+	
 	private function get_loop():Bool
 	{
 		return _gpuMaterial.loop;
@@ -144,7 +152,7 @@ class ParticleShape extends Geometry
 		visible = false;
 	}
 
-	public var startTime(get, set):Float;
+	
 	private function get_startTime():Float
 	{
 		return _startTime;
@@ -154,7 +162,7 @@ class ParticleShape extends Geometry
 		return _startTime = value;
 	}
 
-	public var isDead(get, null):Bool;
+	
 	private function get_isDead():Bool
 	{
 		return !loop && (_currentTime - _startTime) >= _totalLife * 2;

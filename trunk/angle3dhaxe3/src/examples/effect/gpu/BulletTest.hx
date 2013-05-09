@@ -1,8 +1,10 @@
 package examples.effect.gpu;
 
+import examples.skybox.DefaultSkyBox;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.events.MouseEvent;
+import org.angle3d.material.BlendMode;
 
 import org.angle3d.utils.Stats;
 
@@ -41,10 +43,12 @@ class BulletTest extends SimpleApplication
 	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
+		
+		mViewPort.setBackgroundColor(0x0);
 
 		flyCam.setDragToRotate(true);
 
-		var bitmapData:BitmapData = Type.createInstance(EMBED_DEBRIS, [0, 0]);
+		var bitmapData:BitmapData = new EMBED_DEBRIS(0, 0);
 		var texture:Texture2D = new Texture2D(bitmapData, false);
 
 		var particleGenerator:ParticleShapeGenerator = new ParticleShapeGenerator(50, 5);
@@ -55,6 +59,7 @@ class BulletTest extends SimpleApplication
 		particleGenerator.setSpriteSheetInfluencer(new DefaultSpriteSheetInfluencer(16));
 
 		bulletShape = particleGenerator.createParticleShape("bulletShape", texture);
+		bulletShape.blendMode = BlendMode.PremultAlpha;
 		//bulletShape.setColor(0xffffff, 0xffffff);
 		bulletShape.setAlpha(1.0, 1.0);
 		bulletShape.setAcceleration(new Vector3f(0, -3, 0));
@@ -65,8 +70,11 @@ class BulletTest extends SimpleApplication
 		particleSystem = new ParticleSystem("bulletShapeSystem");
 		particleSystem.addShape(bulletShape);
 		scene.attachChild(particleSystem);
+		
+		var sky:DefaultSkyBox = new DefaultSkyBox(50);
+		scene.attachChild(sky);
 
-		cam.location.setTo(0, 5, -3);
+		cam.location.setTo(0, 0, -3);
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 
 		particleSystem.play();

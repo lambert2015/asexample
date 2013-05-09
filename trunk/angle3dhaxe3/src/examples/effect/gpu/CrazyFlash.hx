@@ -77,7 +77,6 @@ class CrazyFlash extends SimpleApplication
 		
 		
 		var shape:ParticleShape = particleGenerator.createParticleShape("glowShape", texture2);
-		shape.blendMode = BlendMode.AlphaAdditive;
 		//shape.setColor(0xffffff, 0xffffff);
 		shape.setAlpha(1.0, 0);
 //			shape.setAcceleration(new Vector3f(0, 0, 0));
