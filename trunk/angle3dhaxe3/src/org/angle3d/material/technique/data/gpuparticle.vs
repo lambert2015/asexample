@@ -4,6 +4,7 @@
 attribute vec4 a_position;
 attribute vec4 a_texCoord;
 attribute vec4 a_velocity;
+//x-出生时间,y-生命时间,z-默认缩放,w-默认旋转角度
 attribute vec4 a_lifeScaleSpin;
 
 #ifdef(USE_LOCAL_COLOR){  
@@ -144,11 +145,9 @@ void function main(){
 	t_pos.xyz = add(t_pos.xyz,a_position.xyz);
 
 	//判断此时粒子是否已经发出，没有放出的话设置该点坐标为0，4个顶点皆为0，所以此粒子不可见
-	//float t_negate = negate(t_time);
-	//float t_lessThan = lessThan(t_negate,0.0);
-	//t_pos.xyz = mul(t_pos.xyz,t_lessThan);
-	
-	//11.6用不了分支语句
+	float t_active = notEqual(t_time,0.0);
+	t_pos.xyz = mul(t_pos.xyz,t_active);
+	//如果支持条件语句的话，可以使用下面的语句代替上面
 	//if(t_time == 0.0){
 	//	t_pos.xyz = mul(t_pos.xyz,t_time);
 	//}

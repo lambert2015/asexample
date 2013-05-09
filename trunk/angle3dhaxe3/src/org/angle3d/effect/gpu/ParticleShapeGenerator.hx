@@ -165,18 +165,18 @@ class ParticleShapeGenerator
 
 		var subMesh:SubMesh = new SubMesh();
 
-		var _vertices:Vector<Float> = new Vector<Float>(_numParticles*16);
-		var _indices:Vector<UInt> = new Vector<UInt>(_numParticles*6);
-		var _texCoords:Vector<Float> = new Vector<Float>(_numParticles*16);
+		var _vertices:Vector<Float> = new Vector<Float>(_numParticles * 16, true);
+		var _indices:Vector<UInt> = new Vector<UInt>(_numParticles*6, true);
+		var _texCoords:Vector<Float> = new Vector<Float>(_numParticles*16, true);
 
-		var _velocities:Vector<Float> = new Vector<Float>(_numParticles*16);
-		var _lifeScaleAngles:Vector<Float> = new Vector<Float>(_numParticles*16);
+		var _velocities:Vector<Float> = new Vector<Float>(_numParticles*16, true);
+		var _lifeScaleAngles:Vector<Float> = new Vector<Float>(_numParticles*16, true);
 
 		var _accelerationList:Vector<Float> = null;
 		var _acceleration:Vector3f = null;
 		if (shape.useLocalAcceleration)
 		{
-			_accelerationList = new Vector<Float>(_numParticles*12);
+			_accelerationList = new Vector<Float>(_numParticles*12, true);
 			_acceleration = new Vector3f();
 		}
 
@@ -184,7 +184,7 @@ class ParticleShapeGenerator
 		var _colorList:Vector<Float> = null;
 		if (shape.useLocalColor)
 		{
-			_colorList = new Vector<Float>(_numParticles*16);
+			_colorList = new Vector<Float>(_numParticles*16, true);
 			_color = new Color(0, 0, 0, 1);
 		}
 
