@@ -42,6 +42,30 @@ class Spatial implements Cloneable implements Collidable
 	public static inline var RF_BOUND:Int = 0x02;
 	public static inline var RF_LIGHTLIST:Int = 0x04;
 
+	public var scaleX(get, set):Float;
+	public var scaleY(get, set):Float;
+	public var scaleZ(get, set):Float;
+	
+	public var numControls(get, null):Int;
+	public var refreshFlags(get, null):Int;
+	public var parent(get, set):Node;
+	
+	public var visible(get, set):Bool;
+	public var truelyVisible(get, null):Bool;
+	
+	public var x(get, set):Float;
+	public var y(get, set):Float;
+	public var z(get, set):Float;
+	public var translation(get, set):Vector3f;
+	public var queueBucket(get, null):QueueBucket;
+	public var shadowMode(get, null):ShadowMode;
+	public var worldBound(get, null):BoundingVolume;
+	public var localCullHint(get, set):CullHint;
+	public var cullHint(get, null):CullHint;
+	public var localQueueBucket(get, set):QueueBucket;
+	public var localShadowMode(get, set):ShadowMode;
+	public var lastFrustumIntersection(get, set):FrustumIntersect;
+	
 	/**
 	 * This spatial's name.
 	 */
@@ -100,7 +124,7 @@ class Spatial implements Cloneable implements Collidable
 		_init();
 	}
 
-	public var visible(get, set):Bool;
+	
 	private function get_visible():Bool
 	{
 		return mVisible;
@@ -117,7 +141,6 @@ class Spatial implements Cloneable implements Collidable
 	 * 是否真正可见
 	 * 自身可能是可见的，但是parent是不可见，所以还是不可见的
 	 */
-	public var truelyVisible(get, null):Bool;
 	private function get_truelyVisible():Bool
 	{
 		if (mParent == null)
@@ -648,13 +671,12 @@ class Spatial implements Cloneable implements Collidable
 	/**
 	 * @return The number of controls attached to this Spatial.
 	 */
-	public var numControls(get, null):Int;
+	
 	private function get_numControls():Int
 	{
 		return mControls.length;
 	}
 
-	public var refreshFlags(get, null):Int;
 	private function get_refreshFlags():Int
 	{
 		return mRefreshFlags;
@@ -758,7 +780,6 @@ class Spatial implements Cloneable implements Collidable
 	 *
 	 * @return the parent of this node.
 	 */
-	public var parent(get, set):Node;
 	private function get_parent():Node
 	{
 		return mParent;
@@ -880,9 +901,6 @@ class Spatial implements Cloneable implements Collidable
 		setTransformRefresh();
 	}
 
-	public var scaleX(get, set):Float;
-	public var scaleY(get, set):Float;
-	public var scaleZ(get, set):Float;
 	
 	private function get_scaleX():Float
 	{
@@ -923,7 +941,7 @@ class Spatial implements Cloneable implements Collidable
 	/**
 	 * the local translation of this node.
 	 */
-	public var translation(get, set):Vector3f;
+	
 	private function get_translation():Vector3f
 	{
 		return mLocalTransform.translation;
@@ -941,10 +959,6 @@ class Spatial implements Cloneable implements Collidable
 		mLocalTransform.setTranslationXYZ(x, y, z);
 		setTransformRefresh();
 	}
-
-	public var x(get, set):Float;
-	public var y(get, set):Float;
-	public var z(get, set):Float;
 	
 	private function get_x():Float
 	{
@@ -1107,7 +1121,7 @@ class Spatial implements Cloneable implements Collidable
 	 *
 	 * @return The spatial's current renderqueue mode.
 	 */
-	public var queueBucket(get, null):QueueBucket;
+	
 	private function get_queueBucket():QueueBucket
 	{
 		if (mQueueBucket != QueueBucket.Inherit)
@@ -1131,7 +1145,7 @@ class Spatial implements Cloneable implements Collidable
 	 * @see Spatial#setShadowMode(org.angle3d.renderer.queue.RenderQueue.ShadowMode)
 	 * @see ShadowMode
 	 */
-	public var shadowMode(get, null):ShadowMode;
+	
 	private function get_shadowMode():ShadowMode
 	{
 		if (mShadowMode != ShadowMode.Inherit)
@@ -1218,7 +1232,7 @@ class Spatial implements Cloneable implements Collidable
 		return result;
 	}
 
-	public var worldBound(get, null):BoundingVolume;
+	
 	private function get_worldBound():BoundingVolume
 	{
 		checkDoBoundUpdate();
@@ -1234,7 +1248,7 @@ class Spatial implements Cloneable implements Collidable
 	 *            one of CullHint.Dynamic, CullHint.Always, CullHint.Inherit or
 	 *            CullHint.Never
 	 */
-	public var localCullHint(get, set):CullHint;
+	
 	private function set_localCullHint(hint:CullHint):CullHint
 	{
 		return mCullHint = hint;
@@ -1253,7 +1267,7 @@ class Spatial implements Cloneable implements Collidable
 	 * @return the cull mode of this spatial, or if set_to CullHint.Inherit,
 	 * the cullmode of it's parent.
 	 */
-	public var cullHint(get, null):CullHint;
+	
 	private function get_cullHint():CullHint
 	{
 		if (mCullHint != CullHint.Inherit)
@@ -1277,7 +1291,6 @@ class Spatial implements Cloneable implements Collidable
 	 * render queue buckets.
 	 *
 	 */
-	public var localQueueBucket(get, set):QueueBucket;
 	
 	/**
 	 * @return The locally set_queue bucket mode
@@ -1303,7 +1316,6 @@ class Spatial implements Cloneable implements Collidable
 	 * documentation for the class ShadowMode for more information.
 	 *
 	 */
-	public var localShadowMode(get, set):ShadowMode;
 	
 	/**
 	 * @return The locally set_shadow mode
@@ -1330,7 +1342,7 @@ class Spatial implements Cloneable implements Collidable
 	 *
 	 * @return The spatial's last frustum intersection result.
 	 */
-	public var lastFrustumIntersection(get, set):FrustumIntersect;
+	
 	private function get_lastFrustumIntersection():FrustumIntersect
 	{
 		return mFrustrumIntersects;

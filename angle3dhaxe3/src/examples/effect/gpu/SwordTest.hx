@@ -1,10 +1,14 @@
 package examples.effect.gpu;
 
+import examples.skybox.DefaultSkyBox;
 import flash.display.BitmapData;
 import flash.display3D.Context3DMipFilter;
 import flash.display3D.Context3DTextureFilter;
 import flash.display3D.Context3DWrapMode;
 import flash.events.MouseEvent;
+import org.angle3d.material.MaterialColorFill;
+import org.angle3d.scene.Geometry;
+import org.angle3d.scene.shape.Cube;
 
 import org.angle3d.app.SimpleApplication;
 import org.angle3d.effect.gpu.ParticleShape;
@@ -77,8 +81,19 @@ class SwordTest extends SimpleApplication
 		particleSystem.addShape(swordShape);
 		scene.attachChild(particleSystem);
 		particleSystem.play();
+		
+		var colorMat:MaterialColorFill = new MaterialColorFill(0x332200);
+		var gm:Geometry;
+		var cube:Cube = new Cube(3, 3, 1, 1, 1, 1);
+		gm = new Geometry("cube", cube);
+		gm.setMaterial(colorMat);
+		gm.setTranslationXYZ(0, 0, 0);
+		scene.attachChild(gm);
+		
+		var sky:DefaultSkyBox = new DefaultSkyBox(10);
+		scene.attachChild(sky);
 
-		cam.location.setTo(0, 0, 10);
+		cam.location.setTo(0, 3, 10);
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 
 		this.stage.doubleClickEnabled = true;

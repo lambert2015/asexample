@@ -5,6 +5,9 @@ using org.angle3d.utils.ArrayUtil;
 
 class ParticleSystem extends Node
 {
+	public var isPlay(get, set):Bool;
+	public var isPaused(get, set):Bool;
+	
 	private var _currentTime:Float = 0;
 
 	private var _isPlay:Bool = false;
@@ -97,8 +100,7 @@ class ParticleSystem extends Node
 		reset();
 		isPlay = false;
 	}
-
-	public var isPlay(get, set):Bool;
+	
 	private function get_isPlay():Bool
 	{
 		return _isPlay;
@@ -109,8 +111,7 @@ class ParticleSystem extends Node
 		_control.enabled = _isPlay && !_isPaused;
 		return _isPlay;
 	}
-
-	public var isPaused(get, set):Bool;
+	
 	private function get_isPaused():Bool
 	{
 		return _isPaused;

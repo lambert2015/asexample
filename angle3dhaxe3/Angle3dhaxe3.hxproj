@@ -21,17 +21,17 @@
   <build>
     <option directives="" />
     <option flashStrict="True" />
-    <option mainClass="examples.effect.gpu.ExplosionTest" />
+    <option mainClass="examples.effect.gpu.BulletTest" />
     <option enabledebug="True" />
     <option additional="-swf-version 11.7" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
-    <!-- example: <library name="..." /> -->
+    <library name="polygonal" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\examples\effect\gpu\ExplosionTest.hx" />
+    <compile path="src\examples\effect\gpu\BulletTest.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
