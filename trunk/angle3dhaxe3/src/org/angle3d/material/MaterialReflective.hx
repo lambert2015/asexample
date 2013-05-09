@@ -11,6 +11,8 @@ import org.angle3d.texture.TextureMapBase;
 
 class MaterialReflective extends Material
 {
+	public var technique(get, null):TechniqueReflective;
+	
 	private var _technique:TechniqueReflective;
 
 	public function new(decalMap:TextureMapBase, environmentMap:CubeTextureMap, reflectivity:Float = 0.8)
@@ -26,7 +28,7 @@ class MaterialReflective extends Material
 		return _technique.influence = value;
 	}
 
-	public var technique(get, null):TechniqueReflective;
+	
 	private function get_technique():TechniqueReflective
 	{
 		return _technique;

@@ -109,7 +109,7 @@ class CrazyFlash extends SimpleApplication
 	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.03;
-		angle %= FastMath.TWO_PI;
+		angle %= FastMath.TWO_PI();
 		
 		//			cam.location.setTo(Math.cos(angle) * 5, 10, Math.sin(angle) * 5);
 		//			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);

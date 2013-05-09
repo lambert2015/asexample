@@ -4,8 +4,8 @@ import org.angle3d.effect.gpu.influencers.AbstractInfluencer;
 import org.angle3d.math.Vector3f;
 
 /**
- * 粒子随机分配在一个球体内
- * edge为true时，粒子都在球体表面上
+ * 粒子随机分配在一个圆环平面内
+ * edge为true时，粒子都在圆环上
  * random为true时，随机分配位置,否则均匀分配--->如何均匀分配呢
  */
 class CirclePositionInfluencer extends AbstractInfluencer implements IPositionInfluencer

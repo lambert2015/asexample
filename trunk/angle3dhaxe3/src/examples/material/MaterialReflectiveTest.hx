@@ -74,7 +74,7 @@ class MaterialReflectiveTest extends SimpleApplication
 		super.simpleUpdate(tpf);
 		
 		angle += 0.02;
-		angle %= FastMath.TWO_PI;
+		angle %= FastMath.TWO_PI();
 
 
 		cam.location.setTo(Math.cos(angle) * 200, 0, Math.sin(angle) * 200);
