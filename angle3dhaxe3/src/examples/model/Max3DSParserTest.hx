@@ -77,7 +77,7 @@ class Max3DSParserTest extends SimpleApplication
 	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.02;
-		angle %= FastMath.TWO_PI;
+		angle %= FastMath.TWO_PI();
 
 
 		cam.location.setTo(Math.cos(angle) * 800, 200, Math.sin(angle) * 800);

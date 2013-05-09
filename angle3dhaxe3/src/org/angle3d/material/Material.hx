@@ -23,6 +23,12 @@ import org.angle3d.texture.TextureMapBase;
  */
 class Material
 {
+	public var skinningMatrices(null, set):Vector<Float>;
+	public var influence(null, set):Float;
+	public var cullMode(get, set):CullMode;
+	public var doubleSide(get, set):Bool;
+	public var alpha(get, set):Float;
+	
 	private var mCullMode:CullMode;
 
 	private var mEmissiveColor:Color;
@@ -34,11 +40,11 @@ class Material
 
 	private var sortingId:Int = -1;
 
-	private var _techniques:Array<Technique>;
+	private var mTechniques:Array<Technique>;
 
 	public function new()
 	{
-		_techniques = new Array<Technique>();
+		mTechniques = new Array<Technique>();
 
 		mEmissiveColor = new Color(0, 0, 0, 1);
 		mAmbientColor = new Color(1, 1, 1, 0);
@@ -50,19 +56,17 @@ class Material
 		mAlpha = 1.0;
 	}
 
-	public var skinningMatrices(null, set):Vector<Float>;
+	
 	private function set_skinningMatrices(data:Vector<Float>):Vector<Float>
 	{
 		return data;
 	}
 
-	public var influence(null, set):Float;
+	
 	private function set_influence(value:Float):Float
 	{
 		return value;
 	}
-
-	public var cullMode(get, set):CullMode;
 	
 	private function get_cullMode():CullMode
 	{
@@ -76,17 +80,15 @@ class Material
 
 		mCullMode = mode;
 
-		var size:Int = _techniques.length;
+		var size:Int = mTechniques.length;
 		for (i in 0...size)
 		{
-			_techniques[i].renderState.cullMode = mode;
+			mTechniques[i].renderState.cullMode = mode;
 		}
 		
 		return mCullMode;
 	}
 
-	public var doubleSide(get, set):Bool;
-	
 	private function get_doubleSide():Bool
 	{
 		return mCullMode == CullMode.NONE;
@@ -99,10 +101,10 @@ class Material
 			mCullMode = CullMode.NONE;
 		}
 
-		var size:Int = _techniques.length;
+		var size:Int = mTechniques.length;
 		for (i in 0...size)
 		{
-			_techniques[i].renderState.cullMode = mCullMode;
+			mTechniques[i].renderState.cullMode = mCullMode;
 		}
 		
 		return value;
@@ -110,25 +112,23 @@ class Material
 
 	public function getTechniques():Array<Technique>
 	{
-		return _techniques;
+		return mTechniques;
 	}
 
 	public function getTechniqueAt(i:Int):Technique
 	{
-		return _techniques[i];
+		return mTechniques[i];
 	}
 
 	public function addTechnique(t:Technique):Void
 	{
-		_techniques.push(t);
+		mTechniques.push(t);
 	}
 
-	public var alpha(get, set):Float;
 	private function set_alpha(alpha:Float):Float
 	{
 		return mAlpha = FastMath.clamp(alpha, 0.0, 1.0);
 	}
-
 	private function get_alpha():Float
 	{
 		return mAlpha;

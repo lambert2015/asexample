@@ -447,7 +447,7 @@ class ChaseCamera implements ActionListener implements AnalogListener implements
 
 						if (targetRotation - rotation > Math.PI || targetRotation - rotation < -Math.PI)
 						{
-							targetRotation -= FastMath.TWO_PI;
+							targetRotation -= FastMath.TWO_PI();
 						}
 
 						//if there is an important change in the direction while trailing reset_of the lerp factor to aVoid jumpy movements

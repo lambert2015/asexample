@@ -1,22 +1,24 @@
 package examples.material;
 
 import examples.skybox.DefaultSkyBox;
-import flash.display.StageAlign;
-import flash.display.StageScaleMode;
 import org.angle3d.app.SimpleApplication;
-import org.angle3d.material.MaterialRefraction;
+import org.angle3d.material.SinglePassMaterial;
+import org.angle3d.material.technique.TechniqueReflective;
 import org.angle3d.math.FastMath;
 import org.angle3d.math.Vector3f;
 import org.angle3d.scene.Geometry;
 import org.angle3d.scene.shape.Sphere;
+import org.angle3d.scene.shape.WireframeShape;
+import org.angle3d.scene.shape.WireframeUtil;
+import org.angle3d.scene.WireframeGeometry;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
 
-class MaterialRefractionTest extends SimpleApplication
+class SinglePassMaterialTest extends SimpleApplication
 {
 	static function main() 
 	{
-		flash.Lib.current.addChild(new MaterialRefractionTest());
+		flash.Lib.current.addChild(new SinglePassMaterialTest());
 	}
 	
 	private var reflectiveSphere : Geometry;
@@ -30,36 +32,24 @@ class MaterialRefractionTest extends SimpleApplication
 	{
 		super.initialize(width, height);
 
-		stage.align = StageAlign.TOP_LEFT;
-		stage.scaleMode = StageScaleMode.NO_SCALE;
-
-		flyCam.setDragToRotate(true);
+		flyCam.setDragToRotate(false);
 
 		var sky : DefaultSkyBox = new DefaultSkyBox(500);
-
 		scene.attachChild(sky);
 
 		var decalMap : Texture2D = new Texture2D(new DECALMAP_ASSET(0, 0));
+		var reflectiveTech:TechniqueReflective = new TechniqueReflective(decalMap, sky.cubeMap, 0.8);
+		var material : SinglePassMaterial = new SinglePassMaterial();
+		material.technique = reflectiveTech;
 
-		//Vacuum 1.0
-		//Air 1.0003
-		//Water 1.3333
-		//Glass 1.5
-		//Plastic 1.5
-		//Diamond	 2.417
-		var material : MaterialRefraction = new MaterialRefraction(decalMap, sky.cubeMap, 2.417, 0.6);
-
-		var sphere : Sphere = new Sphere(50, 30, 30);
+		var sphere : Sphere = new Sphere(50, 30, 30); //Sphere = new Sphere(50, 30, 30);
 		reflectiveSphere = new Geometry("sphere", sphere);
 		reflectiveSphere.setMaterial(material);
 		scene.attachChild(reflectiveSphere);
 
-
-		//var cube : Cone = new Cone(50, 50, 20);
-		//var cubeG : Geometry = new Geometry("cube", cube);
-		//cubeG.setMaterial(material);
-		//scene.attachChild(cubeG);
-		//cubeG.setTranslationTo(-100, 0, 0);
+		var wireShape : WireframeShape = WireframeUtil.generateNormalLineShape(sphere, 10);
+		var wireGeom : WireframeGeometry = new WireframeGeometry("wireShape", wireShape);
+		scene.attachChild(wireGeom);
 
 		cam.location.setTo(0, 0, -200);
 		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
@@ -73,13 +63,13 @@ class MaterialRefractionTest extends SimpleApplication
 	{
 		super.simpleUpdate(tpf);
 		
-		angle += 0.01;
+		angle += 0.02;
 		angle %= FastMath.TWO_PI();
 
 
-		cam.location.setTo(Math.cos(angle) * 200, 50, Math.sin(angle) * 200);
+		cam.location.setTo(Math.cos(angle) * 200, 0, Math.sin(angle) * 200);
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
 
-@:bitmap("embed/rock.jpg") class DECALMAP_ASSET extends flash.display.BitmapData { }
+@:bitmap("embed/water.png") class DECALMAP_ASSET extends flash.display.BitmapData { }

@@ -137,7 +137,7 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 	override public function simpleUpdate(tpf:Float):Void
 	{
 		angle += 0.01;
-		angle %= FastMath.TWO_PI;
+		angle %= FastMath.TWO_PI();
 
 		cam.location.setTo(Math.cos(angle) * 50, 20, Math.sin(angle) * 60);
 		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);

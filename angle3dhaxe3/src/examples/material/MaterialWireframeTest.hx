@@ -82,7 +82,7 @@ class MaterialWireframeTest extends SimpleApplication
 		super.simpleUpdate(tpf);
 		
 		angle += 0.03;
-		angle %= FastMath.TWO_PI;
+		angle %= FastMath.TWO_PI();
 
 
 		cam.location.setTo(Math.cos(angle) * 300, 0, Math.sin(angle) * 300);

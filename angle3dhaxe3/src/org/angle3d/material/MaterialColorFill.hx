@@ -9,6 +9,9 @@ import org.angle3d.material.technique.TechniqueColorFill;
  */
 class MaterialColorFill extends Material
 {
+	public var color(get, set):UInt;
+	public var technique(get, null):TechniqueColorFill;
+	
 	private var _technique:TechniqueColorFill;
 
 	public function new(color:UInt = 0xFFFFF, alpha:Float = 1.0)
@@ -16,7 +19,6 @@ class MaterialColorFill extends Material
 		super();
 
 		_technique = new TechniqueColorFill(color);
-
 		addTechnique(_technique);
 
 		this.alpha = alpha;
@@ -24,7 +26,6 @@ class MaterialColorFill extends Material
 		sortingId = 1;
 	}
 
-	public var technique(get, null):TechniqueColorFill;
 	private function get_technique():TechniqueColorFill
 	{
 		return _technique;
@@ -44,7 +45,7 @@ class MaterialColorFill extends Material
 		return _technique.alpha;
 	}
 
-	public var color(get, set):UInt;
+	
 	private function get_color():UInt
 	{
 		return _technique.color;

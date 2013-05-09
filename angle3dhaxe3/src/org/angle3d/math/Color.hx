@@ -43,10 +43,11 @@ class Color
 	
 	public inline function setRGBA(r:Float, g:Float, b:Float, a:Float = 255):Void
 	{
-		this.r = r * FastMath.INVERT_255;
-		this.g = g * FastMath.INVERT_255;
-		this.b = b * FastMath.INVERT_255;
-		this.a = a * FastMath.INVERT_255;
+		var invert:Float = FastMath.INVERT_255();
+		this.r = r * invert;
+		this.g = g * invert;
+		this.b = b * invert;
+		this.a = a * invert;
 	}
 
 //		
@@ -94,7 +95,7 @@ class Color
 
 	public function setColor(color:Int):Void
 	{
-		var invert:Float = FastMath.INVERT_255;
+		var invert:Float = FastMath.INVERT_255();
 		a = (color >> 24 & 0xFF) * invert;
 		r = (color >> 16 & 0xFF) * invert;
 		g = (color >> 8 & 0xFF) * invert;
@@ -103,7 +104,7 @@ class Color
 
 	public function setRGB(color:Int):Void
 	{
-		var invert:Float = FastMath.INVERT_255;
+		var invert:Float = FastMath.INVERT_255();
 		r = (color >> 16 & 0xFF) * invert;
 		g = (color >> 8 & 0xFF) * invert;
 		b = (color & 0xFF) * invert;
