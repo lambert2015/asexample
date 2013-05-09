@@ -992,21 +992,17 @@ class RenderManager
 	 */
 	public function render(tpf:Float):Void
 	{
-		var i:Int;
-		var size:Int = preViewPorts.length;
-		for (i in 0...size)
+		for (i in 0...preViewPorts.length)
 		{
 			renderViewPort(preViewPorts[i], tpf);
 		}
 
-		size = viewPorts.length;
-		for (i in 0...size)
+		for (i in 0...viewPorts.length)
 		{
 			renderViewPort(viewPorts[i], tpf);
 		}
 
-		size = postViewPorts.length;
-		for (i in 0...size)
+		for (i in 0...postViewPorts.length)
 		{
 			renderViewPort(postViewPorts[i], tpf);
 		}

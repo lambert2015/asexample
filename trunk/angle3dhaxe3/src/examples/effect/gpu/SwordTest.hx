@@ -7,6 +7,7 @@ import flash.display3D.Context3DTextureFilter;
 import flash.display3D.Context3DWrapMode;
 import flash.events.MouseEvent;
 import org.angle3d.material.MaterialColorFill;
+import org.angle3d.renderer.queue.QueueBucket;
 import org.angle3d.scene.Geometry;
 import org.angle3d.scene.shape.Cube;
 
