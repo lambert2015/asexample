@@ -13,6 +13,7 @@ import org.angle3d.scene.shape.WireframeUtil;
 import org.angle3d.scene.WireframeGeometry;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
+import org.angle3d.material.MaterialDef;
 
 class SinglePassMaterialTest extends SimpleApplication
 {
@@ -55,6 +56,8 @@ class SinglePassMaterialTest extends SimpleApplication
 		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 		
 		Stats.show(stage);
+
+        var def:MaterialDef = new MaterialDef();
 	}
 
 	private var angle : Float = 0;

@@ -946,7 +946,7 @@ class Matrix4f
 	 *
 	 * @return this
 	 */
-	public function invertLocal():Matrix4f
+	public inline function invertLocal():Matrix4f
 	{
 		return invert(this);
 	}
@@ -1140,7 +1140,7 @@ class Matrix4f
 	 * @param translation
 	 *            the new values for the translation.
 	 */
-	public function setTranslation(trans:Vector3f):Void
+	public inline function setTranslation(trans:Vector3f):Void
 	{
 		m03 = trans.x;
 		m13 = trans.y;
@@ -1189,7 +1189,7 @@ class Matrix4f
 	 * @throws NullPointerException
 	 *             if quat is null.
 	 */
-	public function setQuaternion(quat:Quaternion):Void
+	public inline function setQuaternion(quat:Quaternion):Void
 	{
 		quat.toMatrix4f(this);
 	}
@@ -1202,7 +1202,7 @@ class Matrix4f
 	 * @param data
 	 *            the Vector3f to be translated.
 	 */
-	public function translateVect(vec:Vector3f):Void
+	public inline function translateVect(vec:Vector3f):Void
 	{
 		vec.x += m03;
 		vec.y += m13;
