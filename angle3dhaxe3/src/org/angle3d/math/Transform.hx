@@ -12,7 +12,7 @@ class Transform
 	public var translation:Vector3f;
 	public var scale:Vector3f;
 
-	public function new(trans:Vector3f = null, rot:Quaternion = null, scale:Vector3f = null)
+	public function new(trans:Vector3f = null, quaternion:Quaternion = null, scale:Vector3f = null)
 	{
 		this.rotation = new Quaternion();
 		this.translation = new Vector3f();
@@ -23,9 +23,9 @@ class Transform
 			this.translation.copyFrom(trans);
 		}
 
-		if (rot != null)
+		if (quaternion != null)
 		{
-			this.rotation.copyFrom(rot);
+			this.rotation.copyFrom(quaternion);
 		}
 
 		if (scale != null)
@@ -39,12 +39,12 @@ class Transform
 	 * @param rot The new rotation for this matrix.
 	 * @return this
 	 */
-	public function setRotation(rot:Quaternion):Void
+	public inline function setRotation(rot:Quaternion):Void
 	{
 		this.rotation.copyFrom(rot);
 	}
 
-	public function setRotationXYZW(x:Float, y:Float, z:Float, w:Float):Void
+	public inline function setRotationXYZW(x:Float, y:Float, z:Float, w:Float):Void
 	{
 		this.rotation.setTo(x, y, z, w);
 	}
@@ -54,12 +54,12 @@ class Transform
 	 * @param trans The new translation for this matrix.
 	 * @return this
 	 */
-	public function setTranslation(trans:Vector3f):Void
+	public inline function setTranslation(trans:Vector3f):Void
 	{
 		this.translation.copyFrom(trans);
 	}
 
-	public function setTranslationXYZ(x:Float, y:Float, z:Float):Void
+	public inline function setTranslationXYZ(x:Float, y:Float, z:Float):Void
 	{
 		this.translation.setTo(x, y, z);
 	}
@@ -69,12 +69,12 @@ class Transform
 	 * @param scale The new scale for this matrix.
 	 * @return this
 	 */
-	public function setScale(scale:Vector3f):Void
+	public inline function setScale(scale:Vector3f):Void
 	{
 		this.scale.copyFrom(scale);
 	}
 
-	public function setScaleXYZ(x:Float, y:Float, z:Float):Void
+	public inline function setScaleXYZ(x:Float, y:Float, z:Float):Void
 	{
 		this.scale.setTo(x, y, z);
 	}
@@ -93,17 +93,19 @@ class Transform
 	}
 
 	/**
-	 * Changes the values of this matrix acording to it's parent.  Very similar to the concept of Node/Spatial transforms.
+	 * Changes the values of this matrix acording to it's parent.
+	 * Very similar to the concept of Node/Spatial transforms.
 	 * @param parent The parent matrix.
 	 * @return This matrix, after combining.
 	 */
 	public function combineWithParent(parent:Transform):Void
 	{
 		this.scale.multiplyLocal(parent.scale);
-		parent.rotation.multiply(this.rotation, this.rotation);
-
+		this.rotation.multiplyLocal(parent.rotation);
 		this.translation.multiplyLocal(parent.scale);
+
 		parent.rotation.multVecLocal(translation);
+
 		translation.addLocal(parent.translation);
 	}
 
@@ -112,14 +114,13 @@ class Transform
 		if (result == null)
 			result = new Vector3f();
 
-		// multiply with scale first, then rotate, inlinely translate
 		if (result != inVec)
 			result.copyFrom(inVec);
 
+        // multiply with scale first, then rotate, inlinely translate
 		result.multiplyLocal(scale);
 		rotation.multVecLocal(result);
 		result.addLocal(translation);
-
 		return result;
 	}
 
