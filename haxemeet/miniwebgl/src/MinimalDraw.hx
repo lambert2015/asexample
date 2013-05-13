@@ -4,6 +4,7 @@ import js.Browser;
 import js.html.CanvasElement;
 import js.html.Event;
 import js.html.Float32Array;
+import js.html.webgl.GL;
 import js.html.webgl.Program;
 import js.html.webgl.RenderingContext;
 import js.Lib;
