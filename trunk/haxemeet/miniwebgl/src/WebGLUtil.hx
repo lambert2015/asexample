@@ -1,4 +1,5 @@
 package;
+import js.html.webgl.GL;
 import js.html.webgl.Program;
 import js.html.webgl.RenderingContext;
 import js.html.webgl.Shader;

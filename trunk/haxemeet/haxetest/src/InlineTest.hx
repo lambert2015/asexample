@@ -15,7 +15,8 @@ class InlineTest
 	public function new() 
 	{
 		var v0:Float = abs(-3.45);
-		var v1:Float = abs(-v0);
+		var v1:Float = abs( -v0);
+		
 	}
 	
 	private inline function abs(value:Float):Float

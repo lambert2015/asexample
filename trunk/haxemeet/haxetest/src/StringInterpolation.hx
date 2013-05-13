@@ -3,6 +3,7 @@ import flash.display.Sprite;
 import flash.Lib;
 import flash.text.TextField;
 
+using StringUtil;
 /**
  * ...
  * @author 
@@ -17,6 +18,17 @@ class StringInterpolation extends Sprite
 	public function new() 
 	{
 		super();
+		
+		#if flash
+		var a:String = "dsfsdfsdf";
+		var b:String  = "sdsdfdf";
+		Lib.trace(a.connect(b, this));
+		#elseif js
+		#end
+		
+		#if debug 
+		#end
+		
 		
 		var tf = new TextField();
 		tf.width = 300;

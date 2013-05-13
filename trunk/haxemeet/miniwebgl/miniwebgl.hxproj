@@ -23,7 +23,7 @@
     <option flashStrict="False" />
     <option mainClass="MinimalDraw" />
     <option enabledebug="False" />
-    <option additional="--js-modern" />
+    <option additional="" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
