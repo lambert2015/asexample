@@ -139,7 +139,6 @@ class Color
 	public function toString():String
 	{
 		return 'Color($r,$g,$b,$a)';
-		//return "[Color(" + r + "," + g + "," + b + "," + a + ")]";
 	}
 }
 

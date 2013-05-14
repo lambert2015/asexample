@@ -25,8 +25,8 @@ class TexCoordTest extends Sprite
 		var currentTime:Int = 15;
 		var totalFrame:Int = 16;
 
-		var frame:Int = currentTime / duration + startFrame;
-		var index:Int = int(frame / totalFrame);
+		var frame:Int = Std.int(currentTime / duration) + startFrame;
+		var index:Int = Std.int(frame / totalFrame);
 
 		var real:Int = frame - index * totalFrame;
 		Lib.trace(frame);

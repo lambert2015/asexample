@@ -66,6 +66,7 @@ class ImageTest extends SimpleApplication
 		gui.attachChild(image2);
 		
 		Stats.show(stage);
+		start();
 	}
 
 	override public function simpleUpdate(tpf:Float):Void

@@ -25,7 +25,7 @@ class BoneTrack implements Track
 	public var times:Vector<Float>;
 	public var totalFrame:Int;
 
-	private var useScale:Bool = false;
+	private var mUseScale:Bool = false;
 
 	/**
 	 * Creates a bone track for the given bone index
@@ -51,7 +51,7 @@ class BoneTrack implements Track
 
 		var tmpScale:Vector3f = null;
 		var tmpScale2:Vector3f = null;
-		if (useScale)
+		if (mUseScale)
 		{
 			tmpScale = tempVars.vect3;
 			tmpScale2 = tempVars.vect4;
@@ -68,7 +68,7 @@ class BoneTrack implements Track
 
 			getRotation(frame, tmpQuat);
 			getTranslation(frame, tmpTranslation);
-			if (useScale)
+			if (mUseScale)
 			{
 				getScale(frame, tmpScale);
 			}
@@ -91,14 +91,14 @@ class BoneTrack implements Track
 
 			getRotation(startFrame, tmpQuat);
 			getTranslation(startFrame, tmpTranslation);
-			if (useScale)
+			if (mUseScale)
 			{
 				getScale(startFrame, tmpScale);
 			}
 
 			getRotation(endFrame, tmpQuat2);
 			getTranslation(endFrame, tmpTranslation2);
-			if (useScale)
+			if (mUseScale)
 			{
 				getScale(endFrame, tmpScale2);
 			}
@@ -106,7 +106,7 @@ class BoneTrack implements Track
 			tmpQuat.slerp(tmpQuat, tmpQuat2, blend);
 			tmpTranslation.lerp(tmpTranslation, tmpTranslation2, blend);
 
-			if (useScale)
+			if (mUseScale)
 			{
 				tmpScale.lerp(tmpScale, tmpScale2, blend);
 			}
@@ -115,11 +115,11 @@ class BoneTrack implements Track
 		var target:Bone = cast(control,SkeletonAnimControl).skeleton.getBoneAt(boneIndex);
 		if (weight < 1.0)
 		{
-			target.blendAnimTransforms(tmpTranslation, tmpQuat, useScale ? tmpScale : null, weight);
+			target.blendAnimTransforms(tmpTranslation, tmpQuat, mUseScale ? tmpScale : null, weight);
 		}
 		else
 		{
-			target.setAnimTransforms(tmpTranslation, tmpQuat, useScale ? tmpScale : null);
+			target.setAnimTransforms(tmpTranslation, tmpQuat, mUseScale ? tmpScale : null);
 		}
 	}
 
@@ -142,7 +142,7 @@ class BoneTrack implements Track
 		this.translations = translations;
 		this.rotations = rotations;
 		this.scales = scales;
-		this.useScale = this.scales != null;
+		this.mUseScale = this.scales != null;
 	}
 
 	/**

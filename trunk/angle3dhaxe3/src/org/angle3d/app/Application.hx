@@ -34,27 +34,31 @@ import org.angle3d.renderer.ViewPort;
  */
 class Application extends Sprite
 {
-	private var renderer:IRenderer;
-	private var renderManager:RenderManager;
+	public var guiViewPort(get, null):ViewPort;
+	public var viewPort(get, null):ViewPort;
+	public var camera(get, null):Camera3D;
+	
+	private var mRenderer:IRenderer;
+	private var mRenderManager:RenderManager;
 
 	private var mViewPort:ViewPort;
-	private var cam:Camera3D;
+	private var mCamera:Camera3D;
 
 	private var mGuiViewPort:ViewPort;
 	private var mGuiCam:Camera3D;
 
-	private var stage3D:Stage3D;
+	private var mStage3D:Stage3D;
 
-	private var contextWidth:Int;
-	private var contextHeight:Int;
+	private var mContextWidth:Int;
+	private var mContextHeight:Int;
 
-	private var inputEnabled:Bool;
-	private var inputManager:InputManager;
-	private var stateManager:AppStateManager;
+	private var mInputEnabled:Bool;
+	private var mInputManager:InputManager;
+	private var mStateManager:AppStateManager;
 
 	//time per frame(ms)
-	private var timePerFrame:Float;
-	private var oldTime:Int;
+	private var mTimePerFrame:Float;
+	private var mOldTime:Int;
 
 	private var mProfile:ShaderProfile;
 
@@ -62,22 +66,22 @@ class Application extends Sprite
 	{
 		super();
 
-		inputEnabled = true;
-		oldTime = -1;
+		mInputEnabled = true;
+		mOldTime = -1;
 
 		this.addEventListener(Event.ADDED_TO_STAGE, _addedToStageHandler);
 	}
 
 	public function setSize(w:Int, h:Int):Void
 	{
-		contextWidth = w;
-		contextHeight = h;
+		mContextWidth = w;
+		mContextHeight = h;
 
-		stage3D.x = 0;
-		stage3D.y = 0;
-		stage3D.context3D.configureBackBuffer(contextWidth, contextHeight, 0, true);
+		mStage3D.x = 0;
+		mStage3D.y = 0;
+		mStage3D.context3D.configureBackBuffer(mContextWidth, mContextHeight, 0, true);
 
-		reshape(contextWidth, contextHeight);
+		resize(mContextWidth, mContextHeight);
 	}
 
 	/**
@@ -88,11 +92,11 @@ class Application extends Sprite
 		stage.addEventListener(Event.ENTER_FRAME, _onEnterFrameHandler, false, 0, true);
 	}
 
-	public function reshape(w:Int, h:Int):Void
+	public function resize(w:Int, h:Int):Void
 	{
-		if (renderManager != null)
+		if (mRenderManager != null)
 		{
-			renderManager.reshape(w, h);
+			mRenderManager.resize(w, h);
 		}
 	}
 
@@ -103,30 +107,30 @@ class Application extends Sprite
 
 	public function update():Void
 	{
-		if (oldTime <= -1)
+		if (mOldTime <= -1)
 		{
-			timePerFrame = 0;
-			oldTime = flash.Lib.getTimer();
+			mTimePerFrame = 0;
+			mOldTime = flash.Lib.getTimer();
 			return;
 		}
 
 		var curTime:Int = flash.Lib.getTimer();
-		timePerFrame = (curTime - oldTime) * 0.001;
-		oldTime = curTime;
+		mTimePerFrame = (curTime - mOldTime) * 0.001;
+		mOldTime = curTime;
 
-		if (inputEnabled)
+		if (mInputEnabled)
 		{
-			inputManager.update(timePerFrame);
+			mInputManager.update(mTimePerFrame);
 		}
 	}
 
-	public var guiViewPort(get, null):ViewPort;
+	
 	private inline function get_guiViewPort():ViewPort
 	{
 		return mGuiViewPort;
 	}
 
-	public var viewPort(get, null):ViewPort;
+	
 	private inline function get_viewPort():ViewPort
 	{
 		return mViewPort;
@@ -145,18 +149,18 @@ class Application extends Sprite
 
 	private function initInput():Void
 	{
-		inputManager = new InputManager();
-		inputManager.initialize(stage);
+		mInputManager = new InputManager();
+		mInputManager.initialize(stage);
 	}
 
 	private function initStateManager():Void
 	{
-		stateManager = new AppStateManager(this);
+		mStateManager = new AppStateManager(this);
 	}
 
 	private function initShaderManager():Void
 	{
-		ShaderManager.init(stage3D.context3D, mProfile);
+		ShaderManager.init(mStage3D.context3D, mProfile);
 	}
 
 	/**
@@ -168,21 +172,27 @@ class Application extends Sprite
 	{
 		setSize(width, height);
 
-		cam = new Camera3D(width, height);
+		mCamera = new Camera3D(width, height);
 
-		cam.setFrustumPerspective(60, width / height, 1, 5000);
-		cam.location = new Vector3f(0, 0, 10);
-		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
+		mCamera.setFrustumPerspective(60, width / height, 1, 5000);
+		mCamera.location = new Vector3f(0, 0, 10);
+		mCamera.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 
-		renderer = new DefaultRenderer(stage3D);
-		renderManager = new RenderManager(renderer);
+		mRenderer = new DefaultRenderer(mStage3D);
+		//renderer.setAntiAlias(4);
+		mRenderManager = new RenderManager(mRenderer);
 
-		mViewPort = renderManager.createMainView("Default", cam);
+		mViewPort = mRenderManager.createMainView("Default", mCamera);
 		mViewPort.setClearFlags(true, true, true);
 
 		mGuiCam = new Camera3D(width, height);
-		mGuiViewPort = renderManager.createPostView("Gui Default", mGuiCam);
+		mGuiViewPort = mRenderManager.createPostView("Gui Default", mGuiCam);
 		mGuiViewPort.setClearFlags(false, false, false);
+	}
+	
+	private function get_camera():Camera3D
+	{
+		return mCamera;
 	}
 
 	private function _addedToStageHandler(e:Event):Void
@@ -199,24 +209,24 @@ class Application extends Sprite
 
 	private function initContext3D():Void
 	{
-		stage3D = stage.stage3Ds[0];
-		stage3D.addEventListener(Event.CONTEXT3D_CREATE, _context3DCreateHandler);
+		mStage3D = stage.stage3Ds[0];
+		mStage3D.addEventListener(Event.CONTEXT3D_CREATE, _context3DCreateHandler);
 
 		mProfile = ShaderProfile.BASELINE;
-		stage3D.requestContext3D("auto", ShaderProfile.BASELINE);
+		mStage3D.requestContext3D("auto", ShaderProfile.BASELINE);
 	}
 
 	private function _context3DCreateHandler(e:Event):Void
 	{
 		#if debug
-			Lib.trace(stage3D.context3D.driverInfo);
-			stage3D.context3D.enableErrorChecking = true;
+			Lib.trace(mStage3D.context3D.driverInfo);
+			mStage3D.context3D.enableErrorChecking = true;
 		#end
 
-		if (isSoftware(stage3D.context3D.driverInfo))
+		if (isSoftware(mStage3D.context3D.driverInfo))
 		{
 			mProfile = ShaderProfile.BASELINE_CONSTRAINED;
-			stage3D.requestContext3D("auto", ShaderProfile.BASELINE_CONSTRAINED);
+			mStage3D.requestContext3D("auto", ShaderProfile.BASELINE_CONSTRAINED);
 		}
 		else
 		{

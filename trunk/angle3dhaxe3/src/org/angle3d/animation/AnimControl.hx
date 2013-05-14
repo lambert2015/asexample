@@ -13,7 +13,8 @@ using org.angle3d.utils.ArrayUtil;
  */
 class AnimControl extends AbstractControl
 {
-
+	public var numChannels(get, null):Int;
+	
 	/**
 	 * List of animations
 	 */
@@ -24,7 +25,7 @@ class AnimControl extends AbstractControl
 	 */
 	private var mChannels:Array<AnimChannel>;
 
-	private var mNumchannels:Int;
+	private var mNumChannels:Int;
 
 	public function new()
 	{
@@ -33,7 +34,12 @@ class AnimControl extends AbstractControl
 		mAnimationMap = new StringMap<Animation>();
 
 		mChannels = new Array<AnimChannel>();
-		mNumchannels = 0;
+		mNumChannels = 0;
+	}
+	
+	private inline function get_numChannels():Int
+	{
+		return mNumChannels;
 	}
 
 	public function addAnimation(name:String, animation:Animation):Void
@@ -61,7 +67,7 @@ class AnimControl extends AbstractControl
 	{
 		if (mChannels.remove(channel))
 		{
-			mNumchannels--;
+			mNumChannels--;
 		}
 	}
 
@@ -75,7 +81,7 @@ class AnimControl extends AbstractControl
 	{
 		var channel:AnimChannel = new AnimChannel(this);
 		mChannels.push(channel);
-		mNumchannels++;
+		mNumChannels++;
 		return channel;
 	}
 
@@ -84,11 +90,11 @@ class AnimControl extends AbstractControl
 	 */
 	override private function controlUpdate(tpf:Float):Void
 	{
-		if (mNumchannels > 0)
+		if (mNumChannels > 0)
 		{
 			var tempVars:TempVars = TempVars.getTempVars();
 
-			for (i in 0...mNumchannels)
+			for (i in 0...mNumChannels)
 			{
 				mChannels[i].update(tpf, tempVars);
 			}

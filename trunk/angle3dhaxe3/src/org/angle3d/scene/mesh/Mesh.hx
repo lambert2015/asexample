@@ -1,15 +1,19 @@
 package org.angle3d.scene.mesh;
 
+import flash.Vector;
 import org.angle3d.bounding.BoundingBox;
 import org.angle3d.bounding.BoundingVolume;
 import org.angle3d.collision.Collidable;
 import org.angle3d.collision.CollisionResults;
 import org.angle3d.math.Matrix4f;
 import org.angle3d.math.Triangle;
-using org.angle3d.utils.ArrayUtil;
+
+using org.angle3d.utils.VectorUtil;
 
 class Mesh implements IMesh
 {
+	public var type(get, null):MeshType;
+	public var subMeshList(get, set):Vector<SubMesh>;
 	/**
 	 * The bounding volume that contains the mesh entirely.
 	 * By default a BoundingBox (AABB).
@@ -18,7 +22,7 @@ class Mesh implements IMesh
 
 	private var mBoundDirty:Bool;
 
-	private var mSubMeshList:Array<SubMesh>;
+	private var mSubMeshList:Vector<SubMesh>;
 
 	private var mType:MeshType;
 
@@ -28,31 +32,12 @@ class Mesh implements IMesh
 
 		mBound = new BoundingBox();
 
-		mSubMeshList = new Array<SubMesh>();
+		mSubMeshList = new Vector<SubMesh>();
 	}
 
 	public function getTriangle(index:Int, store:Triangle):Void
 	{
 
-	}
-
-	public var type(get, null):MeshType;
-	private function get_type():MeshType
-	{
-		return mType;
-	}
-
-	public var subMeshList(get, set):Array<SubMesh>;
-	private function get_subMeshList():Array<SubMesh>
-	{
-		return mSubMeshList;
-	}
-	private function set_subMeshList(subMeshs:Array<SubMesh>):Array<SubMesh>
-	{
-		mSubMeshList = subMeshs;
-		mBoundDirty = true;
-		
-		return mSubMeshList;
 	}
 
 	public function addSubMesh(subMesh:SubMesh):Void
@@ -124,12 +109,29 @@ class Mesh implements IMesh
 	public function collideWith(other:Collidable, worldMatrix:Matrix4f, worldBound:BoundingVolume, results:CollisionResults):Int
 	{
 		var size:Int = 0;
-		var count:Int = subMeshList.length;
-		for (i in 0...count)
+		for (i in 0...subMeshList.length)
 		{
 			size += subMeshList[i].collideWith(other, worldMatrix, worldBound, results);
 		}
 		return size;
+	}
+	
+	private function get_type():MeshType
+	{
+		return mType;
+	}
+
+	private function get_subMeshList():Vector<SubMesh>
+	{
+		return mSubMeshList;
+	}
+	
+	private function set_subMeshList(subMeshs:Vector<SubMesh>):Vector<SubMesh>
+	{
+		mSubMeshList = subMeshs;
+		mBoundDirty = true;
+		
+		return mSubMeshList;
 	}
 }
 

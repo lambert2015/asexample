@@ -24,6 +24,9 @@ class Skeleton
 
 	//
 	public var rootBones:Vector<Bone>;
+	
+	public var numBones(get, null):Int;
+	public var boneList(get,null):Vector<Bone>;
 
 	private var mBoneList:Vector<Bone>;
 	private var mBoneMap:StringMap<Bone>;
@@ -50,13 +53,12 @@ class Skeleton
 		buildBoneTree();
 	}
 
-	public var numBones(get,null):Int;
+	
 	private inline function get_numBones():Int
 	{
 		return mBoneList.length;
 	}
 
-	public var boneList(get,null):Vector<Bone>;
 	private inline function get_boneList():Vector<Bone>
 	{
 		return mBoneList;

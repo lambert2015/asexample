@@ -37,8 +37,8 @@ class RenderContext
 	public function reset():Void
 	{
 		cullMode = CullMode.FRONT;
-		depthTest = false;
-		compareMode = TestFunction.LESS_EQUAL;
+		depthTest = true;
+		compareMode = TestFunction.LESS;
 		colorWrite = false;
 		clipRectEnabled = false;
 		blendMode = BlendMode.Off;

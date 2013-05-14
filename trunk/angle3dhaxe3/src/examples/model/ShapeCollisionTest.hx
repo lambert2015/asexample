@@ -80,11 +80,13 @@ class ShapeCollisionTest extends SimpleApplication
 		gm.setTranslationXYZ(-100, 0, -100);
 		scene.attachChild(gm);
 
-		cam.location.setTo(0, 0, 300);
-		cam.location.setTo(Math.cos(angle) * 300, 100, Math.sin(angle) * 300);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(0, 0, 300);
+		camera.location.setTo(Math.cos(angle) * 300, 100, Math.sin(angle) * 300);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 		
 		Stats.show(stage);
+		
+		start();
 	}
 
 	override public function simpleUpdate(tpf:Float):Void
@@ -94,8 +96,8 @@ class ShapeCollisionTest extends SimpleApplication
 			scene.detachChild(selectedGeometry);
 		}
 
-		var origin:Vector3f = cam.getWorldCoordinates(inputManager.getCursorPosition(), 0.0);
-		var direction:Vector3f = cam.getWorldCoordinates(inputManager.getCursorPosition(), 0.3);
+		var origin:Vector3f = camera.getWorldCoordinates(mInputManager.getCursorPosition(), 0.0);
+		var direction:Vector3f = camera.getWorldCoordinates(mInputManager.getCursorPosition(), 0.3);
 		direction.subtractLocal(origin).normalizeLocal();
 
 		var ray:Ray = new Ray(origin, direction);

@@ -25,13 +25,13 @@ class SkeletonAnimControl extends AnimControl
 
 	override private function controlUpdate(tpf:Float):Void
 	{
-		if (mNumchannels > 0)
+		if (numChannels > 0)
 		{
 			skeleton.reset();
 
 			var tempVars:TempVars = TempVars.getTempVars();
 
-			for (i in 0...mNumchannels)
+			for (i in 0...numChannels)
 			{
 				mChannels[i].update(tpf, tempVars);
 			}
@@ -41,7 +41,5 @@ class SkeletonAnimControl extends AnimControl
 
 			skeleton.update();
 		}
-
-
 	}
 }

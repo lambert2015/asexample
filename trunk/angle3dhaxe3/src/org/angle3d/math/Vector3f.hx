@@ -478,7 +478,6 @@ class Vector3f
 	
 	public function toString():String
 	{
-		//return "Vector2f(" + x + "," + y + ")";
 		return 'Vector3f($x,$y,$z)';
 	}
 	

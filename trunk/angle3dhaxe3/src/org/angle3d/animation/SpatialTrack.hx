@@ -160,7 +160,7 @@ class SpatialTrack implements Track
 		return null;
 	}
 
-	private function getTranslation(index:Int, vec3:Vector3f):Void
+	private inline function getTranslation(index:Int, vec3:Vector3f):Void
 	{
 		var i3:Int = index * 3;
 		vec3.x = translations[i3];
@@ -176,7 +176,7 @@ class SpatialTrack implements Track
 		vec3.z = scales[i3 + 2];
 	}
 
-	private function getRotation(index:Int, quat:Quaternion):Void
+	private inline function getRotation(index:Int, quat:Quaternion):Void
 	{
 		var i4:Int = index * 4;
 		quat.x = rotations[i4];

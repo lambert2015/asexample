@@ -33,8 +33,11 @@ class SimpleApplication extends Application implements ActionListener
 	public static inline var INPUT_MAPPING_EXIT:String = "SIMPLEAPP_Exit";
 	public static inline var INPUT_MAPPING_CAMERA_POS:String = "SIMPLEAPP_CameraPos";
 
-	private var _scene:Node;
-	private var _gui:Node;
+	public var gui(get, null):Node;
+	public var scene(get, null):Node;
+	
+	private var mScene:Node;
+	private var mGui:Node;
 
 	private var flyCam:FlyByCamera;
 
@@ -56,15 +59,15 @@ class SimpleApplication extends Application implements ActionListener
 		}
 		else if (name == INPUT_MAPPING_CAMERA_POS)
 		{
-			if (cam != null)
+			if (camera != null)
 			{
-				var loc:Vector3f = cam.location;
-				var rot:Quaternion = cam.rotation;
+				var loc:Vector3f = camera.location;
+				var rot:Quaternion = camera.rotation;
 
 				#if debug
 				Logger.log("Camera Position: (" + loc.x + ", " + loc.y + ", " + loc.z + ")");
 				Logger.log("Camera Rotation: " + rot);
-				Logger.log("Camera Direction: " + cam.getDirection());
+				Logger.log("Camera Direction: " + camera.getDirection());
 				#end
 
 			}
@@ -81,56 +84,41 @@ class SimpleApplication extends Application implements ActionListener
 		return flyCam;
 	}
 
-	/**
-	 * Retrieves guiNode
-	 * @return guiNode Node object
-	 *
-	 */
-	public var gui(get, null):Node;
 	private inline function get_gui():Node
 	{
-		return _gui;
+		return mGui;
 	}
 
-	/**
-	 * Retrieves rootNode
-	 * @return rootNode Node object
-	 *
-	 */
-	public var scene(get, null):Node;
 	private inline function get_scene():Node
 	{
-		return _scene;
+		return mScene;
 	}
 
 	override private function initialize(width:Int, height:Int):Void
 	{
 		super.initialize(width, height);
 
-		_scene = new Node("Root Node");
-		mViewPort.attachScene(_scene);
+		mScene = new Node("Root Node");
+		mViewPort.attachScene(mScene);
 
-		_gui = new Node("Gui Node");
-		_gui.localQueueBucket = QueueBucket.Gui;
-		_gui.localCullHint = CullHint.Never;
-		mGuiViewPort.attachScene(_gui);
+		mGui = new Node("Gui Node");
+		mGui.localQueueBucket = QueueBucket.Gui;
+		mGui.localCullHint = CullHint.Never;
+		mGuiViewPort.attachScene(mGui);
 
-		if (inputManager != null)
+		if (mInputManager != null)
 		{
-			flyCam = new FlyByCamera(cam);
-			flyCam.setMoveSpeed(1.0);
+			flyCam = new FlyByCamera(camera);
+			flyCam.setMoveSpeed(10);
 			flyCam.setRotationSpeed(3.0);
-			flyCam.registerWithInput(inputManager);
+			flyCam.registerWithInput(mInputManager);
 
-			inputManager.addSingleMapping(INPUT_MAPPING_CAMERA_POS, new KeyTrigger(Keyboard.C));
+			mInputManager.addSingleMapping(INPUT_MAPPING_CAMERA_POS, new KeyTrigger(Keyboard.C));
 
 			var arr:Array<String> = [INPUT_MAPPING_CAMERA_POS];
 
-			inputManager.addListener(this, arr);
+			mInputManager.addListener(this, arr);
 		}
-
-		// call user code
-		simpleInitApp();
 	}
 
 	override public function update():Void
@@ -138,28 +126,23 @@ class SimpleApplication extends Application implements ActionListener
 		super.update();
 
 		//update states
-		stateManager.update(timePerFrame);
+		mStateManager.update(mTimePerFrame);
 
 		// simple update and root node
-		simpleUpdate(timePerFrame);
+		simpleUpdate(mTimePerFrame);
 
-		_scene.update(timePerFrame);
-		_gui.update(timePerFrame);
+		mScene.update(mTimePerFrame);
+		mGui.update(mTimePerFrame);
 
-//			_scene.updateLogicalState(timePerFrame);
-//			_scene.updateGeometricState();
-//
-//			_gui.updateLogicalState(timePerFrame);
-//			_gui.updateGeometricState();
 
 		// render states
-		stateManager.render(renderManager);
+		mStateManager.render(mRenderManager);
 
-		renderManager.render(timePerFrame);
+		mRenderManager.render(mTimePerFrame);
 
-		simpleRender(renderManager);
+		simpleRender(mRenderManager);
 
-		stateManager.postRender();
+		mStateManager.postRender();
 	}
 
 	public function simpleInitApp():Void

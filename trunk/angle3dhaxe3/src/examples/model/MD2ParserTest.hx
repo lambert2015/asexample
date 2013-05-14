@@ -123,10 +123,12 @@ class MD2ParserTest extends SimpleApplication
 		setAnimationSpeed(5);
 		playNextAnimation();
 
-		cam.location = new Vector3f(0, 0, 80);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location = new Vector3f(0, 0, 80);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 		
 		this.stage.addEventListener(KeyboardEvent.KEY_DOWN, _onKeyDownHandler);
+		
+		start();
 	}
 	
 	private function _onKeyDownHandler(e:KeyboardEvent):Void
@@ -154,8 +156,8 @@ class MD2ParserTest extends SimpleApplication
 		angle += 0.02;
 		angle %= FastMath.TWO_PI();
 
-//			cam.setLocation(new Vector3f(Math.cos(angle) * 80, 0, Math.sin(angle) * 80));
-//			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+//			camera.setLocation(new Vector3f(Math.cos(angle) * 80, 0, Math.sin(angle) * 80));
+//			camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
 

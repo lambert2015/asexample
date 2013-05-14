@@ -51,8 +51,8 @@ class MotionPathTest extends SimpleApplication
 
 		createScene();
 
-		cam.location.setTo(8.4399185, 11.189463, 14.267577);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(8.4399185, 11.189463, 14.267577);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 
 		path = new MotionPath();
 		path.setCycle(true);
@@ -75,7 +75,7 @@ class MotionPathTest extends SimpleApplication
 		motionControl = new MotionEvent(box, path, 10, LoopMode.Loop);
 		motionControl.directionType = DirectionType.PathAndRotation;
 		var rot : Quaternion = new Quaternion();
-		rot.fromAngleAxis(-FastMath.HALF_PI, Vector3f.Y_AXIS);
+		rot.fromAngleAxis(-FastMath.HALF_PI(), Vector3f.Y_AXIS);
 		motionControl.setRotation(rot);
 		motionControl.setInitialDuration(10);
 		motionControl.setSpeed(1);
@@ -85,11 +85,12 @@ class MotionPathTest extends SimpleApplication
 		flyCam.setMoveSpeed(2.0);
 		flyCam.setEnabled(false);
 
-		var cc : ChaseCamera = new ChaseCamera(this.cam, box, inputManager);
+		var cc : ChaseCamera = new ChaseCamera(this.camera, box, mInputManager);
 		cc.enabled = true;
 		cc.setDragToRotate(true);
 		
 		Stats.show(stage);
+		start();
 	}
 
 	private function createScene() : Void

@@ -67,7 +67,7 @@ class SgslOptimizer
 		}
 
 		//复制系统自定义函数到字典中
-		var systemMap:StringMap<FunctionNode> = ShaderManager.getInstance().getCustomFunctionMap();
+		var systemMap:StringMap<FunctionNode> = ShaderManager.instance.getCustomFunctionMap();
 		var keys = systemMap.keys();
 		for (key in keys)
 		{

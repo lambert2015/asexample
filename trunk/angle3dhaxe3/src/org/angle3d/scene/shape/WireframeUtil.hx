@@ -19,7 +19,7 @@ class WireframeUtil
 
 		var shape:WireframeShape = new WireframeShape();
 
-		var subMeshList:Array<SubMesh> = mesh.subMeshList;
+		var subMeshList:Vector<SubMesh> = mesh.subMeshList;
 		for (i in 0...subMeshList.length)
 		{
 			var subMesh:SubMesh = subMeshList[i];
@@ -75,7 +75,7 @@ class WireframeUtil
 
 		var shape:WireframeShape = new WireframeShape();
 
-		var subMeshList:Array<SubMesh> = mesh.subMeshList;
+		var subMeshList:Vector<SubMesh> = mesh.subMeshList;
 		for (i in 0...subMeshList.length)
 		{
 			var subMesh:SubMesh = subMeshList[i];

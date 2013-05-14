@@ -22,9 +22,10 @@ import org.angle3d.utils.Logger;
  */
 class ShaderManager
 {
+	public static var instance(get, null):ShaderManager;
+	
 	private static var _instance:ShaderManager;
-
-	public static inline function getInstance():ShaderManager
+	private static inline function get_instance():ShaderManager
 	{
 		return _instance;
 	}

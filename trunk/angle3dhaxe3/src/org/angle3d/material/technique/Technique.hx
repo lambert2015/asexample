@@ -83,7 +83,7 @@ class Technique
 
 			var option:Array<Array<String>> = _optionMap.get(key);
 
-			shader = ShaderManager.getInstance().registerShader(key, [vstr, fstr], option);
+			shader = ShaderManager.instance.registerShader(key, [vstr, fstr], option);
 
 			shader.setUniformBindings(getBindUniforms(lightType, meshType));
 			shader.setAttributeBindings(getBindAttributes(lightType, meshType));

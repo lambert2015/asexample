@@ -2,6 +2,13 @@ package org.angle3d.math;
 
 class Rect
 {
+	public var left(get, set):Float;
+	public var right(get, set):Float;
+	public var top(get, set):Float;
+	public var bottom(get, set):Float;
+	public var width(get, never):Float;
+	public var height(get, never):Float;
+	
 	private var mLeft:Float;
 	private var mRight:Float;
 	private var mTop:Float;
@@ -48,7 +55,7 @@ class Rect
 		return new Rect(mLeft, mRight, mTop, mRight);
 	}
 
-	public var left(get, set):Float;
+	
 	private inline function get_left():Float
 	{
 		return mLeft;
@@ -62,7 +69,7 @@ class Rect
 		return mLeft;
 	}
 
-	public var right(get, set):Float;
+	
 	private inline function get_right():Float
 	{
 		return mRight;
@@ -76,7 +83,7 @@ class Rect
 		return mRight;
 	}
 
-	public var top(get, set):Float;
+	
 	private inline function get_top():Float
 	{
 		return mTop;
@@ -90,7 +97,7 @@ class Rect
 		return mTop;
 	}
 
-	public var bottom(get, set):Float;
+	
 	private inline function get_bottom():Float
 	{
 		return mBottom;
@@ -104,23 +111,20 @@ class Rect
 		return mBottom;
 	}
 
-	private function _computeWidth():Void
+	private inline function _computeWidth():Void
 	{
 		mWidth = mRight - mLeft;
 	}
 
-	private function _computeHeight():Void
+	private inline function _computeHeight():Void
 	{
 		mHeight = mTop - mBottom;
 	}
-
-	public var width(get, null):Float;
+	
 	private inline function get_width():Float
 	{
 		return mWidth;
 	}
-	
-	public var height(get, null):Float;
 	private inline function get_height():Float
 	{
 		return mHeight;

@@ -181,7 +181,7 @@ class ExplosionEffectTest extends SimpleApplication
 		debris = new ParticleEmitter("Debris", 15 * COUNT_FACTOR);
 		debris.randomImage = true;
 		debris.randomAngle = true;
-		debris.setRotateSpeed(FastMath.TWO_PI * 4);
+		debris.setRotateSpeed(FastMath.TWO_PI() * 4);
 		debris.setStartColor(new Color(1, 0.59, 0.28, (1.0 / COUNT_FACTOR_F)));
 		debris.setEndColor(new Color(.5, 0.5, 0.5, 0));
 		debris.setStartSize(.2);
@@ -244,8 +244,8 @@ class ExplosionEffectTest extends SimpleApplication
 		createShockwave();
 		explosionEffect.setScaleXYZ(0.5, 0.5, 0.5);
 
-		cam.location = new Vector3f(0, 3.5135868, 10);
-		cam.rotation = new Quaternion(1.5714673E-4, 0.98696727, -0.16091813, 9.6381607E-4);
+		camera.location = new Vector3f(0, 3.5135868, 10);
+		camera.rotation = new Quaternion(1.5714673E-4, 0.98696727, -0.16091813, 9.6381607E-4);
 
 		scene.attachChild(explosionEffect);
 
@@ -253,6 +253,8 @@ class ExplosionEffectTest extends SimpleApplication
 		var gm:Geometry = new Geometry("cube", cube);
 		gm.setMaterial(new MaterialColorFill(0x668800));
 		scene.attachChild(gm);
+		
+		start();
 	}
 
 	private var time:Float = 0;

@@ -347,7 +347,6 @@ class Vector4f
 	public function toString():String
 	{
 		return 'Vector4f($x,$y,$z,$w)';
-		//return "Vector4f(" + x + ", " + y + ", " + z + ", " + w + ")";
 	}
 }
 

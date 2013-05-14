@@ -56,6 +56,7 @@ class MovingParticleTest extends SimpleApplication
 		emit.setMaterial(material);
 
 		scene.attachChild(emit);
+		start();
 	}
 
 	override public function simpleUpdate(tpf:Float):Void

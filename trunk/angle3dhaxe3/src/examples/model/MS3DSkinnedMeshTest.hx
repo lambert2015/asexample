@@ -14,13 +14,16 @@ import org.angle3d.app.SimpleApplication;
 import org.angle3d.cinematic.LoopMode;
 import org.angle3d.io.AssetManager;
 import org.angle3d.io.parser.ms3d.MS3DParser;
+import org.angle3d.material.MaterialColorFill;
 import org.angle3d.material.MaterialTexture;
 import org.angle3d.math.FastMath;
 import org.angle3d.math.Vector3f;
+import org.angle3d.renderer.queue.QueueBucket;
 import org.angle3d.scene.debug.SkeletonDebugger;
 import org.angle3d.scene.Geometry;
 import org.angle3d.scene.mesh.SkinnedMesh;
 import org.angle3d.scene.Node;
+import org.angle3d.scene.shape.Cube;
 import org.angle3d.texture.Texture2D;
 import org.angle3d.utils.Stats;
 import hu.vpmedia.assets.AssetLoader;
@@ -57,6 +60,7 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 	private var skinnedMesh:SkinnedMesh;
 	private var animation:Animation;
 	private var bones:Vector<Bone>;
+	private var _center:Vector3f;
 
 	private function _loadComplete(loader:AssetLoader):Void
 	{
@@ -76,18 +80,26 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		bones = boneAnimation.bones;
 		animation = boneAnimation.animation;
 
-		for (i in 0...5)
+		var hCount:Int = 20;
+		var vCount:Int = 20;
+		var halfHCount:Float = (hCount / 2);
+		var halfVCount:Float = (vCount / 2);
+		for (i in 0...hCount)
 		{
-			for (j in 0...5)
+			for (j in 0...vCount)
 			{
 				var node:Node = createNinja(i);
-				node.setTranslationXYZ((i - 3) * 15, 0, (j - 3) * 15);
+				node.setTranslationXYZ((i - halfHCount) * 15, 0, (j - halfVCount) * 15);
 				scene.attachChild(node);
 			}
 		}
+		
+		_center = new Vector3f(0, 0, 0);
 
-		cam.location.setTo(0, 15, -100);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(0, 15, 100);
+		camera.lookAt(_center, Vector3f.Y_AXIS);
+		
+		start();
 	}
 
 	private function createNinja(index:Int):Node
@@ -113,21 +125,20 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		ninjaNode.addControl(animationControl);
 
 		//attatchNode
-//			var boxNode:Node = new Node("box");
-//			var gm:Geometry = new Geometry("cube", new Cube(0.5, 0.5, 5, 1, 1, 1));
-//			gm.setMaterial(new MaterialFill(0xff0000, 1.0));
-//			gm.localQueueBucket = QueueBucket.Opaque;
-//			boxNode.attachChild(gm);
+		//var boxNode:Node = new Node("box");
+		//var gm:Geometry = new Geometry("cube", new Cube(0.5, 0.5, 5, 1, 1, 1));
+		//gm.setMaterial(new MaterialColorFill(0xff0000, 1.0));
+		//gm.localQueueBucket = QueueBucket.Opaque;
+		//boxNode.attachChild(gm);
+//
+		//var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");
+		//attachNode.attachChild(boxNode);
 
-//			var attachNode:Node = skeletonControl.getAttachmentsNode("Joint29");
-//			attachNode.attachChild(boxNode);
-
-		var animControl:SkeletonAnimControl = cast ninjaNode.getControlByClass(SkeletonAnimControl);
-		var channel:AnimChannel = animControl.createChannel();
+		var channel:AnimChannel = animationControl.createChannel();
 		channel.playAnimation("default", LoopMode.Cycle, 10);
 
-		var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
-		ninjaNode.attachChild(skeletonDebugger);
+		//var skeletonDebugger:SkeletonDebugger = new SkeletonDebugger("skeletonDebugger", skeletonControl.getSkeleton(), 0.1);
+		//ninjaNode.attachChild(skeletonDebugger);
 
 		return ninjaNode;
 	}
@@ -139,7 +150,7 @@ class MS3DSkinnedMeshTest extends SimpleApplication
 		angle += 0.01;
 		angle %= FastMath.TWO_PI();
 
-		cam.location.setTo(Math.cos(angle) * 50, 20, Math.sin(angle) * 60);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(Math.cos(angle) * 100, 20, Math.sin(angle) * 100);
+		camera.lookAt(_center, Vector3f.Y_AXIS);
 	}
 }

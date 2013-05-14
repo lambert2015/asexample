@@ -351,7 +351,7 @@ class ChaseCamera implements ActionListener implements AnalogListener implements
 			{
 				targetVRotation = minVerticalRotation;
 			}
-			else if (targetVRotation < -FastMath.DEGTORAD * 90)
+			else if (targetVRotation < -FastMath.DEGTORAD() * 90)
 			{
 				targetVRotation = lastGoodRot;
 			}
@@ -438,7 +438,7 @@ class ChaseCamera implements ActionListener implements AnalogListener implements
 						//computation of the rotation angle between the x axis and the trail
 						if (targetDir.z > 0)
 						{
-							targetRotation = FastMath.TWO_PI - Math.acos(a.dot(b));
+							targetRotation = FastMath.TWO_PI() - Math.acos(a.dot(b));
 						}
 						else
 						{
