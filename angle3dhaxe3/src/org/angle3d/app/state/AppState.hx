@@ -28,7 +28,7 @@ interface AppState
 	 * @return True if <code>initialize()</code> was called on the state,
 	 * false otherwise.
 	 */
-	function isInitialized():Bool;
+	var isInitialized(get,null):Bool;
 
 	/**
 	 * Enable or disable the functionality of the <code>AppState</code>.

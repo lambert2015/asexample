@@ -4,17 +4,16 @@ import org.angle3d.scene.Spatial;
 import flash.Vector;
 
 
-using org.angle3d.utils.ArrayUtil;
+using org.angle3d.utils.VectorUtil;
 
 /**
- * <code>LightList</code> is used internally by <code>Spatial</code> to manage
+ * LightList is used internally by <code>Spatial</code> to manage
  * lights that are attached to them.
  *
- * @author Kirill Vainer
  */
 class LightList
 {
-	private var mList:Array<Light>;
+	private var mList:Vector<Light>;
 	private var mOwner:Spatial;
 
 	/**
@@ -24,7 +23,7 @@ class LightList
 	 */
 	public function new(owner:Spatial = null)
 	{
-		mList = new Array<Light>();
+		mList = new Vector<Light>();
 
 		setOwner(owner);
 	}
@@ -68,22 +67,18 @@ class LightList
 	 */
 	public function removeLight(light:Light):Void
 	{
-		var index:Int = mList.indexOf(light);
-		if (index > -1)
-		{
-			removeLightAt(index);
-		}
+		mList.remove(light);
 	}
 
 	/**
 	 * @return The size of the list.
 	 */
-	public function getSize():Int
+	public inline function getSize():Int
 	{
 		return mList.length;
 	}
 
-	public function getList():Array<Light>
+	public inline function getList():Vector<Light>
 	{
 		return mList;
 	}
@@ -92,7 +87,7 @@ class LightList
 	 * @return the light at the given index.
 	 * @throws IndexOutOfBoundsException If the given index is outside bounds.
 	 */
-	public function getLightAt(index:Int):Light
+	public inline function getLightAt(index:Int):Light
 	{
 		return mList[index];
 	}
@@ -100,13 +95,9 @@ class LightList
 	/**
 	 * Resets list size to 0.
 	 */
-	public function clear():Void
+	public inline function clear():Void
 	{
-		#if flash
-			untyped mList.length = 0;
-		#else
-			mList = [];
-		#end
+		mList.clear();
 	}
 
 	/**
@@ -162,20 +153,27 @@ class LightList
 	 * @param local
 	 * @param parent
 	 */
-	//TODO 优化，创建对象太多，这里垃圾回收有一次用了4ms
 	public function update(local:LightList, parent:LightList):Void
 	{
 		// clear the list
 		clear();
 
 		//copy local LightList
-		mList = local.getList().slice(0);
-
+		var localList:Vector<Light> = local.getList();
+		for (i in 0...localList.length)
+		{
+			mList[i] = localList[i];
+		}
+		
 		// if the spatial has a parent node, add the lights
 		// from the parent list as well
 		if (parent != null)
 		{
-			mList = mList.concat(parent.getList());
+			var parentList:Vector<Light> = parent.getList();
+			for (i in 0...parentList.length)
+			{
+				mList.push(parentList[i]);
+			}
 		}
 	}
 

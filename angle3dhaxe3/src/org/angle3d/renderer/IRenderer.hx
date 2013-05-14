@@ -24,8 +24,12 @@ interface IRenderer
 {
 	var stage3D(get,null):Stage3D;
 
-	var context3D(get,null):Context3D;
-
+	var context3D(get, null):Context3D;
+	
+	var enableDepthAndStencil(default, default):Bool;
+	
+	function setAntiAlias(antiAlias:Int):Void;
+	
 	function setTextureAt(index:Int, map:TextureMapBase):Void;
 
 	/**
@@ -82,7 +86,7 @@ interface IRenderer
 	function onFrame():Void;
 
 	/**
-	 * set_the viewport location and resolution on the screen.
+	 * 设置视窗位置和大小
 	 *
 	 * @param x The x coordinate of the viewport
 	 * @param y The y coordinate of the viewport
@@ -92,9 +96,9 @@ interface IRenderer
 	function setViewPort(x:Int, y:Int, width:Int, height:Int):Void;
 
 	/**
-	 * Specifies a clipping rectangle.
-	 * For all future rendering commands, no pixels will be allowed
-	 * to be rendered outside of the clip rectangle.
+	 * 设置一个裁剪矩形，绘制遮罩的类型。
+	 * 渲染器仅绘制到裁剪矩形内部的区域。
+	 * 裁剪不影响清除操作。
 	 *
 	 * @param x The x coordinate of the clip rect
 	 * @param y The y coordinate of the clip rect

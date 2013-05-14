@@ -61,10 +61,12 @@ class MaterialReflectiveTest extends SimpleApplication
 		var wireGeom : WireframeGeometry = new WireframeGeometry("wireShape", wireShape);
 		scene.attachChild(wireGeom);
 
-		cam.location.setTo(0, 0, -200);
-		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
+		camera.location.setTo(0, 0, -200);
+		camera.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 		
 		Stats.show(stage);
+		
+		start();
 	}
 
 	private var angle : Float = 0;
@@ -77,8 +79,8 @@ class MaterialReflectiveTest extends SimpleApplication
 		angle %= FastMath.TWO_PI();
 
 
-		cam.location.setTo(Math.cos(angle) * 200, 0, Math.sin(angle) * 200);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(Math.cos(angle) * 200, 0, Math.sin(angle) * 200);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
 

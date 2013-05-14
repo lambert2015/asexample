@@ -1,12 +1,13 @@
 package org.angle3d.material.shader;
 
-import flash.display3D.Context3DProfile;
-
-typedef ShaderProfile = Context3DProfile;
+#if flash
+typedef ShaderProfile = flash.display3D.Context3DProfile;
+#else
 //class ShaderProfile
 //{
 	//public static inline var BASELINE:String = "baseline";
 	//public static inline var BASELINE_CONSTRAINED:String = "baselineConstrained";
 	//public static inline var BASELINE_EXTENDED:String = "baselineExtended";
 //}
+#end
 

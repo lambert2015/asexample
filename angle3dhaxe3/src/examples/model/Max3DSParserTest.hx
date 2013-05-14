@@ -72,6 +72,8 @@ class Max3DSParserTest extends SimpleApplication
 		geom.setMaterial(material);
 
 		scene.attachChild(geom);
+		
+		start();
 	}
 
 	override public function simpleUpdate(tpf:Float):Void
@@ -80,8 +82,8 @@ class Max3DSParserTest extends SimpleApplication
 		angle %= FastMath.TWO_PI();
 
 
-		cam.location.setTo(Math.cos(angle) * 800, 200, Math.sin(angle) * 800);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(Math.cos(angle) * 800, 200, Math.sin(angle) * 800);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
 

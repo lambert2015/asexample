@@ -355,7 +355,6 @@ class Vector2f
 	
 	public function toString():String
 	{
-		//return "Vector2f(" + x + "," + y + ")";
 		return 'Vector2f($x,$y)';
 	}
 	

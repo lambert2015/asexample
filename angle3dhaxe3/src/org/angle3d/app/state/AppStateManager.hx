@@ -29,13 +29,13 @@ using org.angle3d.utils.ArrayUtil;
  */
 class AppStateManager
 {
-	private var states:Array<AppState>;
-	private var app:Application;
+	private var mStates:Array<AppState>;
+	private var mApplication:Application;
 
 	public function new(app:Application)
 	{
-		states = new Array<AppState>();
-		this.app = app;
+		mStates = new Array<AppState>();
+		this.mApplication = app;
 	}
 
 	/**
@@ -48,12 +48,12 @@ class AppStateManager
 	 */
 	public function hasState(state:AppState):Bool
 	{
-		return states.indexOf(state) != -1;
+		return mStates.indexOf(state) != -1;
 	}
 
 	private function removeState(state:AppState):Bool
 	{
-		return states.remove(state);
+		return mStates.remove(state);
 	}
 
 	/**
@@ -69,7 +69,7 @@ class AppStateManager
 		if (!hasState(state))
 		{
 			state.stateAttached(this);
-			states.push(state);
+			mStates.push(state);
 			return true;
 		}
 		else
@@ -106,10 +106,10 @@ class AppStateManager
 	 */
 	public function getState(c:Class<AppState>):AppState
 	{
-		var length:Int = states.length;
+		var length:Int = mStates.length;
 		for (i in 0...length)
 		{
-			var state:AppState = states[i];
+			var state:AppState = mStates[i];
 			if (Std.is(state,c))
 			{
 				return state;
@@ -124,14 +124,14 @@ class AppStateManager
 	 */
 	public function update(tpf:Float):Void
 	{
-		var length:Int = states.length;
+		var length:Int = mStates.length;
 		for (i in 0...length)
 		{
-			var state:AppState = states[i];
+			var state:AppState = mStates[i];
 
-			if (!state.isInitialized())
+			if (!state.isInitialized)
 			{
-				state.initialize(this, app);
+				state.initialize(this, mApplication);
 			}
 
 			if (state.enabled)
@@ -147,14 +147,14 @@ class AppStateManager
 	 */
 	public function render(rm:RenderManager):Void
 	{
-		var length:Int = states.length;
+		var length:Int = mStates.length;
 		for (i in 0...length)
 		{
-			var state:AppState = states[i];
+			var state:AppState = mStates[i];
 
-			if (!state.isInitialized())
+			if (!state.isInitialized)
 			{
-				state.initialize(this, app);
+				state.initialize(this, mApplication);
 			}
 
 			if (state.enabled)
@@ -169,14 +169,14 @@ class AppStateManager
 	 */
 	public function postRender():Void
 	{
-		var length:Int = states.length;
+		var length:Int = mStates.length;
 		for (i in 0...length)
 		{
-			var state:AppState = states[i];
+			var state:AppState = mStates[i];
 
-			if (!state.isInitialized())
+			if (!state.isInitialized)
 			{
-				state.initialize(this, app);
+				state.initialize(this, mApplication);
 			}
 
 			if (state.enabled)
@@ -191,10 +191,10 @@ class AppStateManager
 	 */
 	public function cleanup():Void
 	{
-		var length:Int = states.length;
+		var length:Int = mStates.length;
 		for (i in 0...length)
 		{
-			var state:AppState = states[i];
+			var state:AppState = mStates[i];
 			state.postRender();
 		}
 	}

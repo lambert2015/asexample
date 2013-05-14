@@ -61,10 +61,11 @@ class MaterialRefractionTest extends SimpleApplication
 		//scene.attachChild(cubeG);
 		//cubeG.setTranslationTo(-100, 0, 0);
 
-		cam.location.setTo(0, 0, -200);
-		cam.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
+		camera.location.setTo(0, 0, -200);
+		camera.lookAt(new Vector3f(0, 0, 0), Vector3f.Y_AXIS);
 		
 		Stats.show(stage);
+		start();
 	}
 
 	private var angle : Float = 0;
@@ -77,8 +78,8 @@ class MaterialRefractionTest extends SimpleApplication
 		angle %= FastMath.TWO_PI();
 
 
-		cam.location.setTo(Math.cos(angle) * 200, 50, Math.sin(angle) * 200);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(Math.cos(angle) * 200, 50, Math.sin(angle) * 200);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
 

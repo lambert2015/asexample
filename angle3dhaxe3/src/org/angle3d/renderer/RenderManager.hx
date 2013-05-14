@@ -39,25 +39,23 @@ using org.angle3d.utils.ArrayUtil;
  */
 class RenderManager
 {
-	private var _renderer:IRenderer;
-	private var _uniformBindingManager:UniformBindingManager;
+	private var mRenderer:IRenderer;
+	private var mUniformBindingManager:UniformBindingManager;
 
-	private var preViewPorts:Array<ViewPort>;
-	private var viewPorts:Array<ViewPort>;
-	private var postViewPorts:Array<ViewPort>;
+	private var mPreViewPorts:Array<ViewPort>;
+	private var mViewPorts:Array<ViewPort>;
+	private var mPostViewPorts:Array<ViewPort>;
 
-	private var camera:Camera3D;
+	private var mCamera:Camera3D;
 
-	private var viewX:Int;
-	private var viewY:Int;
-	private var viewWidth:Int;
-	private var viewHeight:Int;
+	private var mViewX:Int;
+	private var mViewY:Int;
+	private var mViewWidth:Int;
+	private var mViewHeight:Int;
 
-	private var _orthoMatrix:Matrix4f;
+	private var mOrthoMatrix:Matrix4f;
 
-	private var _handleTranlucentBucket:Bool;
-
-	private var mLastProgram:Program3D;
+	private var mHandleTranlucentBucket:Bool;
 
 	private var mForcedMaterial:Material;
 
@@ -68,21 +66,21 @@ class RenderManager
 	 */
 	public function new(renderer:IRenderer)
 	{
-		_renderer = renderer;
+		mRenderer = renderer;
 		_init();
 	}
 
 	private function _init():Void
 	{
-		_uniformBindingManager = new UniformBindingManager();
+		mUniformBindingManager = new UniformBindingManager();
 
-		preViewPorts = new Array<ViewPort>();
-		viewPorts = new Array<ViewPort>();
-		postViewPorts = new Array<ViewPort>();
+		mPreViewPorts = new Array<ViewPort>();
+		mViewPorts = new Array<ViewPort>();
+		mPostViewPorts = new Array<ViewPort>();
 
-		_orthoMatrix = new Matrix4f();
+		mOrthoMatrix = new Matrix4f();
 
-		_handleTranlucentBucket = false;
+		mHandleTranlucentBucket = false;
 	}
 
 	public function setForcedMaterial(mat:Material):Void
@@ -105,12 +103,12 @@ class RenderManager
 	 */
 	public function getPreView(viewName:String):ViewPort
 	{
-		var length:Int = preViewPorts.length;
+		var length:Int = mPreViewPorts.length;
 		for (i in 0...length)
 		{
-			if (preViewPorts[i].name == viewName)
+			if (mPreViewPorts[i].name == viewName)
 			{
-				return preViewPorts[i];
+				return mPreViewPorts[i];
 			}
 		}
 		return null;
@@ -126,7 +124,7 @@ class RenderManager
 	 */
 	public function removePreView(view:ViewPort):Bool
 	{
-		return preViewPorts.remove(view);
+		return mPreViewPorts.remove(view);
 	}
 
 	/**
@@ -139,12 +137,12 @@ class RenderManager
 	 */
 	public function getMainView(viewName:String):ViewPort
 	{
-		var length:Int = viewPorts.length;
+		var length:Int = mViewPorts.length;
 		for (i in 0...length)
 		{
-			if (viewPorts[i].name == viewName)
+			if (mViewPorts[i].name == viewName)
 			{
-				return viewPorts[i];
+				return mViewPorts[i];
 			}
 		}
 		return null;
@@ -160,12 +158,12 @@ class RenderManager
 	 */
 	public function removeMainViewByName(viewName:String):Bool
 	{
-		var length:Int = viewPorts.length;
+		var length:Int = mViewPorts.length;
 		for (i in 0...length)
 		{
-			if (viewPorts[i].name == viewName)
+			if (mViewPorts[i].name == viewName)
 			{
-				viewPorts.splice(i, 1);
+				mViewPorts.splice(i, 1);
 				return true;
 			}
 		}
@@ -182,7 +180,7 @@ class RenderManager
 	 */
 	public function removeMainView(view:ViewPort):Bool
 	{
-		return viewPorts.remove(view);
+		return mViewPorts.remove(view);
 	}
 
 	/**
@@ -195,12 +193,12 @@ class RenderManager
 	 */
 	public function getPostView(viewName:String):ViewPort
 	{
-		var length:Int = postViewPorts.length;
+		var length:Int = mPostViewPorts.length;
 		for (i in 0...length)
 		{
-			if (postViewPorts[i].name == viewName)
+			if (mPostViewPorts[i].name == viewName)
 			{
-				return postViewPorts[i];
+				return mPostViewPorts[i];
 			}
 		}
 		return null;
@@ -216,12 +214,12 @@ class RenderManager
 	 */
 	public function removePostViewByName(viewName:String):Bool
 	{
-		var pLength:Int = postViewPorts.length;
+		var pLength:Int = mPostViewPorts.length;
 		for (i in 0...pLength)
 		{
-			if (postViewPorts[i].name == viewName)
+			if (mPostViewPorts[i].name == viewName)
 			{
-				postViewPorts.splice(i, 1);
+				mPostViewPorts.splice(i, 1);
 				return true;
 			}
 		}
@@ -238,7 +236,7 @@ class RenderManager
 	 */
 	public function removePostView(view:ViewPort):Bool
 	{
-		return postViewPorts.remove(view);
+		return mPostViewPorts.remove(view);
 	}
 
 	/**
@@ -248,7 +246,7 @@ class RenderManager
 	 */
 	public function getPreViews():Array<ViewPort>
 	{
-		return preViewPorts;
+		return mPreViewPorts;
 	}
 
 	/**
@@ -258,7 +256,7 @@ class RenderManager
 	 */
 	public function getMainViews():Array<ViewPort>
 	{
-		return viewPorts;
+		return mViewPorts;
 	}
 
 	/**
@@ -268,7 +266,7 @@ class RenderManager
 	 */
 	public function getPostViews():Array<ViewPort>
 	{
-		return postViewPorts;
+		return mPostViewPorts;
 	}
 
 	/**
@@ -279,7 +277,7 @@ class RenderManager
 	public function createPreView(viewName:String, cam:Camera3D):ViewPort
 	{
 		var vp:ViewPort = new ViewPort(viewName, cam);
-		preViewPorts.push(vp);
+		mPreViewPorts.push(vp);
 		return vp;
 	}
 
@@ -292,7 +290,7 @@ class RenderManager
 	public function createMainView(viewName:String, cam:Camera3D):ViewPort
 	{
 		var vp:ViewPort = new ViewPort(viewName, cam);
-		viewPorts.push(vp);
+		mViewPorts.push(vp);
 		return vp;
 	}
 
@@ -304,11 +302,11 @@ class RenderManager
 	public function createPostView(viewName:String, cam:Camera3D):ViewPort
 	{
 		var vp:ViewPort = new ViewPort(viewName, cam);
-		postViewPorts.push(vp);
+		mPostViewPorts.push(vp);
 		return vp;
 	}
 
-	private function reshapeViewPort(vp:ViewPort, w:Int, h:Int):Void
+	private function resizeViewPort(vp:ViewPort, w:Int, h:Int):Void
 	{
 		if (vp.frameBuffer == null)
 		{
@@ -337,28 +335,28 @@ class RenderManager
 	 * Updates the resolution of all on-screen cameras to match
 	 * the given width and height.
 	 */
-	public function reshape(w:Int, h:Int):Void
+	public function resize(w:Int, h:Int):Void
 	{
 		var vp:ViewPort;
-		var size:Int = preViewPorts.length;
+		var size:Int = mPreViewPorts.length;
 		for (i in 0...size)
 		{
-			vp = preViewPorts[i];
-			reshapeViewPort(vp, w, h);
+			vp = mPreViewPorts[i];
+			resizeViewPort(vp, w, h);
 		}
 
-		size = viewPorts.length;
+		size = mViewPorts.length;
 		for (i in 0...size)
 		{
-			vp = viewPorts[i];
-			reshapeViewPort(vp, w, h);
+			vp = mViewPorts[i];
+			resizeViewPort(vp, w, h);
 		}
 
-		size = postViewPorts.length;
+		size = mPostViewPorts.length;
 		for (i in 0...size)
 		{
-			vp = postViewPorts[i];
-			reshapeViewPort(vp, w, h);
+			vp = mPostViewPorts[i];
+			resizeViewPort(vp, w, h);
 		}
 	}
 
@@ -374,7 +372,7 @@ class RenderManager
 	 */
 	private function updateUniformBindings(params:Array<Uniform>):Void
 	{
-		_uniformBindingManager.updateUniformBindings(params);
+		mUniformBindingManager.updateUniformBindings(params);
 	}
 
 	/**
@@ -387,7 +385,7 @@ class RenderManager
 	 */
 	public function isHandleTranslucentBucket():Bool
 	{
-		return _handleTranlucentBucket;
+		return mHandleTranlucentBucket;
 	}
 
 	/**
@@ -400,7 +398,7 @@ class RenderManager
 	 */
 	public function setHandleTranslucentBucket(handleTranslucentBucket:Bool):Void
 	{
-		this._handleTranlucentBucket = handleTranslucentBucket;
+		this.mHandleTranlucentBucket = handleTranslucentBucket;
 	}
 
 	/**
@@ -414,7 +412,7 @@ class RenderManager
 	 */
 	public function setWorldMatrix(mat:Matrix4f):Void
 	{
-		_uniformBindingManager.setWorldMatrix(mat);
+		mUniformBindingManager.setWorldMatrix(mat);
 	}
 
 	/**
@@ -488,7 +486,7 @@ class RenderManager
 		{
 			technique = techniques[i];
 
-			_renderer.applyRenderState(technique.renderState);
+			mRenderer.applyRenderState(technique.renderState);
 
 			//如何使用灯光的话
 			if (technique.requiresLight && lightSize > 0)
@@ -503,8 +501,8 @@ class RenderManager
 					updateShaderBinding(shader);
 					technique.updateShader(shader);
 
-					_renderer.setShader(shader);
-					_renderer.renderMesh(mesh);
+					mRenderer.setShader(shader);
+					mRenderer.renderMesh(mesh);
 				}
 			}
 			else
@@ -516,10 +514,10 @@ class RenderManager
 				technique.updateShader(shader);
 
 				//设置Shader
-				_renderer.setShader(shader);
+				mRenderer.setShader(shader);
 
 				//渲染模型
-				_renderer.renderMesh(mesh);
+				mRenderer.renderMesh(mesh);
 			}
 		}
 
@@ -673,7 +671,7 @@ class RenderManager
 	 */
 	public function getCamera():Camera3D
 	{
-		return camera;
+		return mCamera;
 	}
 
 	/**
@@ -686,7 +684,7 @@ class RenderManager
 	 */
 	public function getRenderer():IRenderer
 	{
-		return _renderer;
+		return mRenderer;
 	}
 
 	/**
@@ -794,7 +792,7 @@ class RenderManager
 	public function renderTranslucentQueue(vp:ViewPort):Void
 	{
 		var rq:RenderQueue = vp.renderQueue;
-		if (!rq.isQueueEmpty(QueueBucket.Translucent) && _handleTranlucentBucket)
+		if (!rq.isQueueEmpty(QueueBucket.Translucent) && mHandleTranlucentBucket)
 		{
 			rq.renderQueue(QueueBucket.Translucent, this, vp.camera, true);
 		}
@@ -803,37 +801,37 @@ class RenderManager
 	private function setViewPort(cam:Camera3D):Void
 	{
 		// this will make sure to update viewport only if needed
-		if (cam != this.camera || cam.isViewportChanged())
+		if (cam != this.mCamera || cam.isViewportChanged())
 		{
 			var rect:Rect = cam.viewPortRect;
 
-			viewX = Std.int(rect.left * cam.width);
-			viewY = Std.int(rect.bottom * cam.height);
-			viewWidth = Std.int(rect.width * cam.width);
-			viewHeight = Std.int(rect.height * cam.height);
+			mViewX = Std.int(rect.left * cam.width);
+			mViewY = Std.int(rect.bottom * cam.height);
+			mViewWidth = Std.int(rect.width * cam.width);
+			mViewHeight = Std.int(rect.height * cam.height);
 
-			_uniformBindingManager.setViewPort(viewX, viewY, viewWidth, viewHeight);
-			_renderer.setViewPort(viewX, viewY, viewWidth, viewHeight);
-			_renderer.setClipRect(viewX, viewY, viewWidth, viewHeight);
+			mUniformBindingManager.setViewPort(mViewX, mViewY, mViewWidth, mViewHeight);
+			mRenderer.setViewPort(mViewX, mViewY, mViewWidth, mViewHeight);
+			//mRenderer.setClipRect(mViewX, mViewY, mViewWidth, mViewHeight);
 
 			cam.clearViewportChanged();
-			this.camera = cam;
+			this.mCamera = cam;
 		}
 
-		_orthoMatrix.makeIdentity();
-		_orthoMatrix.setTranslation(new Vector3f(-1, -1, 0));
-		_orthoMatrix.setScale(new Vector3f(2 / cam.width, 2 / cam.height, 0));
+		mOrthoMatrix.makeIdentity();
+		mOrthoMatrix.setTranslation(new Vector3f(-1, -1, 0));
+		mOrthoMatrix.setScale(new Vector3f(2 / cam.width, 2 / cam.height, 0));
 	}
 
 	private function setViewProjection(cam:Camera3D, ortho:Bool):Void
 	{
 		if (ortho)
 		{
-			_uniformBindingManager.setCamera(cam, Matrix4f.IDENTITY, _orthoMatrix, _orthoMatrix);
+			mUniformBindingManager.setCamera(cam, Matrix4f.IDENTITY, mOrthoMatrix, mOrthoMatrix);
 		}
 		else
 		{
-			_uniformBindingManager.setCamera(cam, cam.getViewMatrix(), cam.getProjectionMatrix(), cam.getViewProjectionMatrix());
+			mUniformBindingManager.setCamera(cam, cam.getViewMatrix(), cam.getProjectionMatrix(), cam.getViewProjectionMatrix());
 		}
 	}
 
@@ -941,7 +939,7 @@ class RenderManager
 			processor.preFrame(tpf);
 		}
 
-		_renderer.setFrameBuffer(vp.frameBuffer);
+		mRenderer.setFrameBuffer(vp.frameBuffer);
 
 		setCamera(vp.camera, false);
 
@@ -949,10 +947,10 @@ class RenderManager
 		{
 			if (vp.isClearColor())
 			{
-				_renderer.setBackgroundColor(vp.getBackgroundColor());
+				mRenderer.setBackgroundColor(vp.getBackgroundColor());
 			}
 
-			_renderer.clearBuffers(vp.isClearColor(), vp.isClearDepth(), vp.isClearStencil());
+			mRenderer.clearBuffers(vp.isClearColor(), vp.isClearDepth(), vp.isClearStencil());
 		}
 
 		var scenes:Array<Spatial> = vp.getScenes();
@@ -992,22 +990,22 @@ class RenderManager
 	 */
 	public function render(tpf:Float):Void
 	{
-		for (i in 0...preViewPorts.length)
+		for (i in 0...mPreViewPorts.length)
 		{
-			renderViewPort(preViewPorts[i], tpf);
+			renderViewPort(mPreViewPorts[i], tpf);
 		}
 
-		for (i in 0...viewPorts.length)
+		for (i in 0...mViewPorts.length)
 		{
-			renderViewPort(viewPorts[i], tpf);
+			renderViewPort(mViewPorts[i], tpf);
 		}
 
-		for (i in 0...postViewPorts.length)
+		for (i in 0...mPostViewPorts.length)
 		{
-			renderViewPort(postViewPorts[i], tpf);
+			renderViewPort(mPostViewPorts[i], tpf);
 		}
 
-		_renderer.present();
+		mRenderer.present();
 	}
 }
 

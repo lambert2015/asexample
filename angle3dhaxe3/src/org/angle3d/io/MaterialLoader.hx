@@ -1,5 +1,6 @@
 package org.angle3d.io;
 
+import flash.utils.JSON;
 import org.angle3d.material.MaterialDef;
 
 class MaterialLoader
@@ -10,7 +11,7 @@ class MaterialLoader
 
 	public function parse(json:String):MaterialDef
 	{
-		var jsonObj:Object = JSON.parse(json);
+		var jsonObj:Dynamic = JSON.parse(json);
 
 		var def:MaterialDef = new MaterialDef();
 
@@ -18,7 +19,7 @@ class MaterialLoader
 		{
 			for (var key:String in jsonObj.parameters)
 			{
-				var obj:Object = jsonObj.parameters[key];
+				var obj:Dynamic = jsonObj.parameters[key];
 				def.addMaterialParam(obj.type, key, obj.value);
 			}
 		}

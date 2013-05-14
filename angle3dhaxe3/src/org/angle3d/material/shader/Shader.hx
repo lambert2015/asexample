@@ -221,7 +221,7 @@ class Shader
 		_bindUniforms = null;
 		vertexData = null;
 		fragmentData = null;
-		ShaderManager.getInstance().unregisterShader(name);
+		ShaderManager.instance.unregisterShader(name);
 	}
 
 	/**

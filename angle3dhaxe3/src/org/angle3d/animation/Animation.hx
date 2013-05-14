@@ -36,7 +36,7 @@ class Animation
 		this.tracks = tracks;
 	}
 
-	public function addTrack(track:Track):Void
+	public inline function addTrack(track:Track):Void
 	{
 		tracks.push(track);
 	}

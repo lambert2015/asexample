@@ -20,6 +20,17 @@ class Bone
 	public var parent:Bone;
 
 	public var children:Vector<Bone>;
+	
+	/**
+	 * 本地坐标，相对于父骨骼
+	 * The local animated transform combined with the local bind transform and parent world transform
+	 */
+	//the local position of the bone, relative to the parent bone.
+	public var localPos:Vector3f;
+	//the local rotation of the bone, relative to the parent bone.
+	public var localRot:Quaternion;
+	//the local scale of the bone, relative to the parent bone.
+	public var localScale:Vector3f;
 
 	/**
 	 * The attachment node follow this bone's motions
@@ -42,16 +53,7 @@ class Bone
 	private var mWorldBindInverseRot:Quaternion;
 	private var mWorldBindInverseScale:Vector3f;
 
-	/**
-	 * 本地坐标，相对于父骨骼
-	 * The local animated transform combined with the local bind transform and parent world transform
-	 */
-	//the local position of the bone, relative to the parent bone.
-	public var localPos:Vector3f;
-	//the local rotation of the bone, relative to the parent bone.
-	public var localRot:Quaternion;
-	//the local scale of the bone, relative to the parent bone.
-	public var localScale:Vector3f;
+	
 
 	/**
 	 * 模型坐标
@@ -258,7 +260,6 @@ class Bone
 			//translation
 			//scale and rotation of parent affect bone position            
 			parent.mWorldRot.multiplyVector(localPos, mWorldPos);
-
 			mWorldPos.multiplyLocal(parent.mWorldScale);
 			mWorldPos.addLocal(parent.mWorldPos);
 		}

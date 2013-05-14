@@ -9,17 +9,14 @@ import org.angle3d.utils.Assert;
 
 
 /**
- * <code>Ray</code> defines a line segment which has an origin and a direction.
+ * Ray defines a line segment which has an origin and a direction.
  * That is, a point and an infinite ray is cast from this point. The ray is
  * defined by the following equation: R(t) = origin + t*direction for t >= 0.
  *
- * @author Mark Powell
- * @author Joshua Slack
  */
 
 class Ray implements Collidable
 {
-
 	/** The ray's begining point. */
 	public var origin:Vector3f;
 	/** The direction of the ray. */

@@ -30,52 +30,51 @@ import org.angle3d.utils.Assert;
 
 class DefaultRenderer implements IRenderer
 {
-	private var _context3D:Context3D;
+	public var stage3D(get, null):Stage3D;
+	public var context3D(get, null):Context3D;
+	
+	public var enableDepthAndStencil(default, default):Bool;
+	
+	private var mContext3D:Context3D;
 
-	private var _stage3D:Stage3D;
+	private var mStage3D:Stage3D;
+	
+	private var mAntiAlias:Int;
 
-	private var _renderContext:RenderContext;
+	private var mRenderContext:RenderContext;
 
-	private var _bgColor:Color;
+	private var mBgColor:Color;
 
-	private var _clipRect:Rectangle;
+	private var mClipRect:Rectangle;
 
-	private var _frameBuffer:FrameBuffer;
+	private var mFrameBuffer:FrameBuffer;
 
-	private var _shader:Shader;
+	private var mShader:Shader;
 
-	private var _lastProgram:Program3D;
+	private var mLastProgram:Program3D;
 
-	private var _registerTextureIndex:Int = 0;
-	private var _registerBufferIndex:Int = 0;
+	private var mRegisterTextureIndex:Int = 0;
+	private var mRegisterBufferIndex:Int = 0;
 
 	public function new(stage3D:Stage3D)
 	{
-		_stage3D = stage3D;
-		_context3D = _stage3D.context3D;
+		mStage3D = stage3D;
+		mContext3D = mStage3D.context3D;
 
-		_renderContext = new RenderContext();
+		mRenderContext = new RenderContext();
 
-		_bgColor = new Color();
+		mBgColor = new Color();
 
-		_clipRect = new Rectangle();
-	}
-
-	public var stage3D(get, null):Stage3D;
-	private inline function get_stage3D():Stage3D
-	{
-		return _stage3D;
-	}
-
-	public var context3D(get, null):Context3D;
-	private inline function get_context3D():Context3D
-	{
-		return _context3D;
+		mClipRect = new Rectangle();
+		
+		mAntiAlias = 0;
+		
+		enableDepthAndStencil = true;
 	}
 
 	public function invalidateState():Void
 	{
-		_renderContext.reset();
+		mRenderContext.reset();
 	}
 
 	public function clearBuffers(color:Bool, depth:Bool, stencil:Bool):Void
@@ -96,13 +95,13 @@ class DefaultRenderer implements IRenderer
 
 		if (bits != 0)
 		{
-			_context3D.clear(_bgColor.r, _bgColor.g, _bgColor.b, _bgColor.a, 1, 0, bits);
+			mContext3D.clear(mBgColor.r, mBgColor.g, mBgColor.b, mBgColor.a, 1, 0, bits);
 		}
 	}
 
 	public function setBackgroundColor(color:UInt):Void
 	{
-		_bgColor.setColor(color);
+		mBgColor.setColor(color);
 	}
 
 	/**
@@ -112,50 +111,50 @@ class DefaultRenderer implements IRenderer
 	 */
 	public function applyRenderState(state:RenderState):Void
 	{
-		//TODO 这里有问题，需要检查
-		if (state.depthTest != _renderContext.depthTest || 
-			state.compareMode != _renderContext.compareMode)
+		//TODO 这里有问题，有时候会出现一次也没执行的情况，导致渲染不出东西
+		if (state.depthTest != mRenderContext.depthTest || 
+			state.compareMode != mRenderContext.compareMode)
 		{
-			_context3D.setDepthTest(state.depthTest, state.compareMode);
-			_renderContext.depthTest = state.depthTest;
-			_renderContext.compareMode = state.compareMode;
+			mContext3D.setDepthTest(state.depthTest, state.compareMode);
+			mRenderContext.depthTest = state.depthTest;
+			mRenderContext.compareMode = state.compareMode;
 		}
 
-		if (state.colorWrite != _renderContext.colorWrite)
+		if (state.colorWrite != mRenderContext.colorWrite)
 		{
 			var colorWrite:Bool = state.colorWrite;
-			_context3D.setColorMask(colorWrite, colorWrite, colorWrite, colorWrite);
-			_renderContext.colorWrite = colorWrite;
+			mContext3D.setColorMask(colorWrite, colorWrite, colorWrite, colorWrite);
+			mRenderContext.colorWrite = colorWrite;
 		}
 
-		if (state.cullMode != _renderContext.cullMode)
+		if (state.cullMode != mRenderContext.cullMode)
 		{
-			_context3D.setCulling(state.cullMode);
-			_renderContext.cullMode = state.cullMode;
+			mContext3D.setCulling(state.cullMode);
+			mRenderContext.cullMode = state.cullMode;
 		}
 
-		if (state.blendMode != _renderContext.blendMode)
+		if (state.blendMode != mRenderContext.blendMode)
 		{
 			switch (state.blendMode)
 			{
 				case BlendMode.Off:
-					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO);
+					mContext3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO);
 				case BlendMode.Additive:
-					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE);
+					mContext3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE);
 				case BlendMode.AlphaAdditive:
-					_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE);
+					mContext3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE);
 				case BlendMode.Color:
-					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
+					mContext3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_COLOR);
 				case BlendMode.Alpha:
-					_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
+					mContext3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 				case BlendMode.PremultAlpha:
-					_context3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
+					mContext3D.setBlendFactors(Context3DBlendFactor.ONE, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 				case BlendMode.Modulate:
-					_context3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ZERO);
+					mContext3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.ZERO);
 				case BlendMode.ModulateX2:
-					_context3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.SOURCE_COLOR);
+					mContext3D.setBlendFactors(Context3DBlendFactor.DESTINATION_COLOR, Context3DBlendFactor.SOURCE_COLOR);
 			}
-			_renderContext.blendMode = state.blendMode;
+			mRenderContext.blendMode = state.blendMode;
 		}
 
 	}
@@ -164,66 +163,74 @@ class DefaultRenderer implements IRenderer
 	{
 
 	}
+	
+	
+	public function setAntiAlias(antiAlias:Int):Void
+	{
+		if (mAntiAlias != antiAlias)
+		{
+			mAntiAlias = antiAlias;
+		}
+	}
 
 	//TODO 这里不应该经常调用，应该只在舞台大小变动时才修改，这些API很费时
 	private var _oldContext3DWidth:Int;
 	private var _oldContext3DHeight:Int;
-
 	public function setViewPort(x:Int, y:Int, width:Int, height:Int):Void
 	{
-		if (_stage3D.x != x)
-			_stage3D.x = x;
-		if (_stage3D.y != y)
-			_stage3D.y = y;
+		if (mStage3D.x != x)
+			mStage3D.x = x;
+		if (mStage3D.y != y)
+			mStage3D.y = y;
 
 		if (_oldContext3DWidth != width || _oldContext3DHeight != height)
 		{
 			_oldContext3DWidth = width;
 			_oldContext3DHeight = height;
-			_context3D.configureBackBuffer(width, height, 0, true);
+			mContext3D.configureBackBuffer(width, height, mAntiAlias, enableDepthAndStencil);
 		}
 	}
 
 	public function setClipRect(x:Int, y:Int, width:Int, height:Int):Void
 	{
-		if (!_renderContext.clipRectEnabled)
+		if (!mRenderContext.clipRectEnabled)
 		{
-			_renderContext.clipRectEnabled = true;
+			mRenderContext.clipRectEnabled = true;
 		}
 
-		if (_clipRect.x != x || _clipRect.y != y ||
-			_clipRect.width != width || _clipRect.height != height)
+		if (mClipRect.x != x || mClipRect.y != y ||
+			mClipRect.width != width || mClipRect.height != height)
 		{
-			_clipRect.setTo(x, y, width, height);
-			_context3D.setScissorRectangle(_clipRect);
+			mClipRect.setTo(x, y, width, height);
+			mContext3D.setScissorRectangle(mClipRect);
 		}
 	}
 
 	public function clearClipRect():Void
 	{
-		if (_renderContext.clipRectEnabled)
+		if (mRenderContext.clipRectEnabled)
 		{
-			_renderContext.clipRectEnabled = false;
-			_context3D.setScissorRectangle(null);
+			mRenderContext.clipRectEnabled = false;
+			mContext3D.setScissorRectangle(null);
 
-			_clipRect.setEmpty();
+			mClipRect.setEmpty();
 		}
 	}
 
 	public function setFrameBuffer(fb:FrameBuffer):Void
 	{
-		if (_frameBuffer == fb)
+		if (mFrameBuffer == fb)
 			return;
 
-		_frameBuffer = fb;
+		mFrameBuffer = fb;
 
-		if (_frameBuffer == null)
+		if (mFrameBuffer == null)
 		{
-			_context3D.setRenderToBackBuffer();
+			mContext3D.setRenderToBackBuffer();
 		}
 		else
 		{
-			_context3D.setRenderToTexture(_frameBuffer.texture.getTexture(_context3D), _frameBuffer.enableDepthAndStencil, _frameBuffer.antiAlias, _frameBuffer.surfaceSelector);
+			mContext3D.setRenderToTexture(mFrameBuffer.texture.getTexture(mContext3D), mFrameBuffer.enableDepthAndStencil, mFrameBuffer.antiAlias, mFrameBuffer.surfaceSelector);
 		}
 	}
 
@@ -231,51 +238,51 @@ class DefaultRenderer implements IRenderer
 	{
 		Assert.assert(shader != null, "shader cannot be null");
 
-		if (_shader != shader)
+		if (mShader != shader)
 		{
 			clearTextures();
 
-			_shader = shader;
+			mShader = shader;
 
-			var program:Program3D = ShaderManager.getInstance().getProgram(_shader.name);
+			var program:Program3D = ShaderManager.instance.getProgram(mShader.name);
 
-			if (_lastProgram != program)
+			if (mLastProgram != program)
 			{
-				_context3D.setProgram(program);
-				_lastProgram = program;
+				mContext3D.setProgram(program);
+				mLastProgram = program;
 			}
 		}
 
 		//上传Shader数据
-		_shader.uploadTexture(this);
-		_shader.upload(this);
+		mShader.uploadTexture(this);
+		mShader.upload(this);
 	}
 
 	public function setTextureAt(index:Int, map:TextureMapBase):Void
 	{
-		if (index > _registerTextureIndex)
+		if (index > mRegisterTextureIndex)
 		{
-			_registerTextureIndex = index;
+			mRegisterTextureIndex = index;
 		}
-		_context3D.setTextureAt(index, map.getTexture(_context3D));
+		mContext3D.setTextureAt(index, map.getTexture(mContext3D));
 		//TODO 减少变化
-		_context3D.setSamplerStateAt(index, map.getWrapMode(), map.getTextureFilter(), map.getMipFilter());
+		mContext3D.setSamplerStateAt(index, map.getWrapMode(), map.getTextureFilter(), map.getMipFilter());
 	}
 
 	//耗时有点久
 	public function setShaderConstants(shaderType:Context3DProgramType, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void
 	{
-		_context3D.setProgramConstantsFromVector(shaderType, firstRegister, data, numRegisters);
+		mContext3D.setProgramConstantsFromVector(shaderType, firstRegister, data, numRegisters);
 	}
 
 	public function setDepthTest(depthMask:Bool, passCompareMode:TestFunction):Void
 	{
-		_context3D.setDepthTest(depthMask, passCompareMode);
+		mContext3D.setDepthTest(depthMask, passCompareMode);
 	}
 
 	public function setCulling(cullMode:CullMode):Void
 	{
-		_context3D.setCulling(cullMode);
+		mContext3D.setCulling(cullMode);
 	}
 
 	public function cleanup():Void
@@ -285,32 +292,40 @@ class DefaultRenderer implements IRenderer
 
 	public function renderMesh(mesh:Mesh):Void
 	{
-		var subMeshList:Array<SubMesh> = mesh.subMeshList;
+		var subMeshList:Vector<SubMesh> = mesh.subMeshList;
 		for (i in 0...subMeshList.length)
 		{
 			var subMesh:SubMesh = subMeshList[i];
 			setVertexBuffers(subMesh);
-			_context3D.drawTriangles(subMesh.getIndexBuffer3D(_context3D));
+			mContext3D.drawTriangles(subMesh.getIndexBuffer3D(mContext3D));
 		}
 	}
 
 	public function renderShadow(mesh:Mesh, light:Light, cam:Camera3D):Void
 	{
-
 	}
 
-	public function present():Void
+	public inline function present():Void
 	{
-		_context3D.present();
+		mContext3D.present();
+	}
+	
+	private inline function get_stage3D():Stage3D
+	{
+		return mStage3D;
+	}
+	private inline function get_context3D():Context3D
+	{
+		return mContext3D;
 	}
 
 	private function clearTextures():Void
 	{
-		for (i in 0..._registerTextureIndex+1)
+		for (i in 0...mRegisterTextureIndex+1)
 		{
-			_context3D.setTextureAt(i, null);
+			mContext3D.setTextureAt(i, null);
 		}
-		_registerTextureIndex = 0;
+		mRegisterTextureIndex = 0;
 	}
 
 	/**
@@ -318,14 +333,14 @@ class DefaultRenderer implements IRenderer
 	 */
 	private function clearVertexBuffers(maxRegisterIndex:Int):Void
 	{
-		if (_registerBufferIndex > maxRegisterIndex)
+		if (mRegisterBufferIndex > maxRegisterIndex)
 		{
-			for (i in maxRegisterIndex + 1..._registerBufferIndex + 1)
+			for (i in maxRegisterIndex + 1...mRegisterBufferIndex + 1)
 			{
-				_context3D.setVertexBufferAt(i, null);
+				mContext3D.setVertexBufferAt(i, null);
 			}
 		}
-		_registerBufferIndex = maxRegisterIndex;
+		mRegisterBufferIndex = maxRegisterIndex;
 	}
 
 	/**
@@ -337,7 +352,7 @@ class DefaultRenderer implements IRenderer
 		//属性寄存器使用的最大索引
 		var maxRegisterIndex:Int = 0;
 
-		var attributes:StringMap<ShaderVariable> = _shader.getAttributes();
+		var attributes:StringMap<ShaderVariable> = mShader.getAttributes();
 
 		var attribute:AttributeVar;
 		var location:Int;
@@ -346,7 +361,7 @@ class DefaultRenderer implements IRenderer
 		{
 			attribute = cast(attributes.get(bufferType), AttributeVar);
 			location = subMesh.merge ? attribute.location : 0;
-			_context3D.setVertexBufferAt(attribute.index, subMesh.getVertexBuffer3D(_context3D, bufferType), location, attribute.format);
+			mContext3D.setVertexBufferAt(attribute.index, subMesh.getVertexBuffer3D(mContext3D, bufferType), location, attribute.format);
 			if (attribute.index > maxRegisterIndex)
 			{
 				maxRegisterIndex = attribute.index;

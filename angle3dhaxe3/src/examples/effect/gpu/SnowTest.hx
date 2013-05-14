@@ -86,13 +86,14 @@ class SnowTest extends SimpleApplication
 
 		particleSystem.play();
 
-		cam.location.setTo(0, 8, 10);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(0, 8, 10);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 
 		this.stage.doubleClickEnabled = true;
 		this.stage.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
 		
 		Stats.show(stage);
+		start();
 	}
 
 	private function _doubleClickHandler(e:MouseEvent):Void
@@ -108,7 +109,7 @@ class SnowTest extends SimpleApplication
 		angle += 0.03;
 		angle %= FastMath.TWO_PI();
 
-//			cam.location.setTo(Math.cos(angle) * 10, 10, Math.sin(angle) * 10);
-//			cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+//			camera.location.setTo(Math.cos(angle) * 10, 10, Math.sin(angle) * 10);
+//			camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }

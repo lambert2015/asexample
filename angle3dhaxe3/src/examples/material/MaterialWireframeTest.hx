@@ -72,9 +72,10 @@ class MaterialWireframeTest extends SimpleApplication
 		movingNode = new Node("lightParentNode");
 		scene.attachChild(movingNode);
 
-		cam.location.setTo(0, 0, 300);
+		camera.location.setTo(0, 0, 300);
 		
 		Stats.show(stage);
+		start();
 	}
 
 	override public function simpleUpdate(tpf : Float) : Void
@@ -85,7 +86,7 @@ class MaterialWireframeTest extends SimpleApplication
 		angle %= FastMath.TWO_PI();
 
 
-		cam.location.setTo(Math.cos(angle) * 300, 0, Math.sin(angle) * 300);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(Math.cos(angle) * 300, 0, Math.sin(angle) * 300);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }

@@ -57,8 +57,10 @@ class MS3DStaticModelParserTest extends SimpleApplication
 
 		geomtry.setTranslationXYZ(0, -5, 0);
 
-		cam.location.setTo(0, 5, -20);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(0, 5, -20);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		
+		start();
 	}
 
 	private var angle:Float = 0;
@@ -69,7 +71,7 @@ class MS3DStaticModelParserTest extends SimpleApplication
 		angle %= FastMath.TWO_PI();
 
 
-		cam.location.setTo(Math.cos(angle) * 20, 0, Math.sin(angle) * 20);
-		cam.lookAt(new Vector3f(), Vector3f.Y_AXIS);
+		camera.location.setTo(Math.cos(angle) * 20, 0, Math.sin(angle) * 20);
+		camera.lookAt(new Vector3f(), Vector3f.Y_AXIS);
 	}
 }
