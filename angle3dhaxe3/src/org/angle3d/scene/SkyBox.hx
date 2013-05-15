@@ -7,7 +7,7 @@ import org.angle3d.scene.shape.Sphere;
 import org.angle3d.texture.CubeTextureMap;
 
 /**
- * ...
+ * 天空体
  * @author andy
  */
 class SkyBox extends Geometry
@@ -17,10 +17,13 @@ class SkyBox extends Geometry
 		super("SkyBox");
 
 		setMaterial(new MaterialSkyBox(cubeTexture));
+		
 		//TODO 添加参数用来选择使用Sphere还是Box
 		var sphereMesh:Sphere = new Sphere(size / 2, 10, 10);
 		//setMesh(new SkyBoxShape(size));
 		setMesh(sphereMesh);
+		
+		
 		localQueueBucket = QueueBucket.Sky;
 		localCullHint = CullHint.Never;
 		setBound(new BoundingSphere(Math.POSITIVE_INFINITY));

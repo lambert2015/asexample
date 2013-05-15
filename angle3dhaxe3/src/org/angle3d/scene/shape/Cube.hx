@@ -10,10 +10,10 @@ class Cube extends Mesh
 	public function new(width:Float = 10.0, height:Float = 10.0, depth:Float = 10.0, widthSegments:Int = 1, heightSegments:Int = 1, depthSegments:Int = 1)
 	{
 		super();
-		_createBox(width, height, depth, widthSegments, heightSegments, depthSegments);
+		createBox(width, height, depth, widthSegments, heightSegments, depthSegments);
 	}
 
-	private function _createBox(width:Float, height:Float, depth:Float, widthSegments:Int, heightSegments:Int, depthSegments:Int):Void
+	private function createBox(width:Float, height:Float, depth:Float, widthSegments:Int, heightSegments:Int, depthSegments:Int):Void
 	{
 		var widthSegments1:Int = widthSegments + 1;
 		var heightSegments1:Int = heightSegments + 1;
@@ -29,7 +29,7 @@ class Cube extends Mesh
 		var topLeft:Int, topRight:Int, bottomLeft:Int, bottomRight:Int;
 		var vertexIndex:Int = 0, indiceIndex:Int = 0;
 		var outerPosition:Float;
-		var i:Int, j:Int, increment:Int = 0;
+		var increment:Int = 0;
 
 		var deltaW:Float = width / widthSegments;
 		var deltaH:Float = height / heightSegments;
@@ -201,7 +201,7 @@ class Cube extends Mesh
 
 		//UVTs
 		var numUvs:Int = (widthSegments1 * heightSegments1 + widthSegments1 * depthSegments1 + heightSegments1 * depthSegments1) * 4;
-		var _uvt:Vector<Float> = new Vector<Float>(numUvs);
+		var _uvt:Vector<Float> = new Vector<Float>(numUvs, true);
 		var uvIndex:Int = 0;
 		for (i in 0...widthSegments1)
 		{

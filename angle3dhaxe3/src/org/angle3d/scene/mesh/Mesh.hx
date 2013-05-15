@@ -10,6 +10,7 @@ import org.angle3d.math.Triangle;
 
 using org.angle3d.utils.VectorUtil;
 
+
 class Mesh implements IMesh
 {
 	public var type(get, null):MeshType;

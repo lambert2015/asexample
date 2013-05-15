@@ -7,11 +7,13 @@ import flash.Vector;
  */
 class MorphSubMesh extends SubMesh
 {
+	public var totalFrame(get, set):Int;
+	
 	private var mTotalFrame:Int;
 
-	private var mVerticesList:Array<Vector<Float>>;
+	private var mVerticesList:Vector<Vector<Float>>;
 
-	private var mNormalList:Array<Vector<Float>>;
+	private var mNormalList:Vector<Vector<Float>>;
 
 	public function new()
 	{
@@ -19,8 +21,8 @@ class MorphSubMesh extends SubMesh
 
 		_merge = false;
 
-		mVerticesList = new Array<Vector<Float>>();
-		mNormalList = new Array<Vector<Float>>();
+		mVerticesList = new Vector<Vector<Float>>();
+		mNormalList = new Vector<Vector<Float>>();
 	}
 
 	override private function set_merge(value:Bool):Bool
@@ -36,7 +38,7 @@ class MorphSubMesh extends SubMesh
 		updateBound();
 	}
 
-	public var totalFrame(get, set):Int;
+	
 	private function get_totalFrame():Int
 	{
 		return mTotalFrame;

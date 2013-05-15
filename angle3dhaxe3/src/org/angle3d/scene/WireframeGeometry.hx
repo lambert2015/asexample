@@ -8,6 +8,7 @@ import org.angle3d.utils.Assert;
 
 class WireframeGeometry extends Geometry
 {
+	public var materialWireframe(get, null):MaterialWireframe;
 
 	public function new(name:String, mesh:WireframeShape)
 	{
@@ -22,8 +23,7 @@ class WireframeGeometry extends Geometry
 
 		super.setMaterial(material);
 	}
-
-	public var materialWireframe(get, null):MaterialWireframe;
+	
 	private function get_materialWireframe():MaterialWireframe
 	{
 		return cast(this.mMaterial, MaterialWireframe);

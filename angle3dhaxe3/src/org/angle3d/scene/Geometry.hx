@@ -123,6 +123,8 @@ class Geometry extends Spatial
 	 */
 	override public function updateModelBound():Void
 	{
+		super.updateModelBound();
+		
 		mMesh.updateBound();
 		setBoundRefresh();
 	}
@@ -143,17 +145,18 @@ class Geometry extends Spatial
 			return;
 		}
 
-		if (mMesh.getBound() != null)
+		var bound:BoundingVolume = mMesh.getBound();
+		if (bound != null)
 		{
 			if (mIgnoreTransform)
 			{
 				// we do not transform the model bound by the world transform,
 				// just use the model bound as-is
-				mWorldBound = mMesh.getBound().clone(mWorldBound);
+				bound.clone(mWorldBound);
 			}
 			else
 			{
-				mWorldBound = mMesh.getBound().transform(mWorldTransform, mWorldBound);
+				bound.transform(mWorldTransform, mWorldBound);
 			}
 		}
 	}
@@ -225,8 +228,7 @@ class Geometry extends Spatial
 		// Update transform, and compute cached world matrix
 		computeWorldMatrix();
 
-
-			Assert.assert((mRefreshFlags & (Spatial.RF_BOUND | Spatial.RF_TRANSFORM)) == 0, "");
+		Assert.assert((mRefreshFlags & (Spatial.RF_BOUND | Spatial.RF_TRANSFORM)) == 0, "");
 
 		if (mMesh != null)
 		{

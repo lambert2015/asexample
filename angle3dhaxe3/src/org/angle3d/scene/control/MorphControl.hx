@@ -15,6 +15,9 @@ import org.angle3d.scene.mesh.MorphData;
 //TODO 添加一个可以倒播的动画，比如一个人物行走倒播就是人物倒着走的动画
 class MorphControl extends AbstractControl
 {
+	public var material(get, null):Material;
+	public var mesh(get, null):MorphMesh;
+	
 	private var _morphData:MorphData;
 	private var _fps:Float;
 	private var _loop:Bool;
@@ -41,7 +44,7 @@ class MorphControl extends AbstractControl
 		_fps = value / 60;
 	}
 
-	public var material(get, null):Material;
+	
 	private function get_material():Material
 	{
 		if (_material == null)
@@ -51,7 +54,7 @@ class MorphControl extends AbstractControl
 		return _material;
 	}
 
-	public var mesh(get, null):MorphMesh;
+	
 	private function get_mesh():MorphMesh
 	{
 		if (_mesh == null)

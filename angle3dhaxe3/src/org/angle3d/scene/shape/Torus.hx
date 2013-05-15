@@ -12,14 +12,14 @@ class Torus extends Mesh
 	{
 		super();
 
-		_createTorus(radius, tubeRadius, segmentsR, segmentsT, yUp);
+		createTorus(radius, tubeRadius, segmentsR, segmentsT, yUp);
 	}
 
-	private function _createTorus(radius:Float, tubeRadius:Float, segmentsR:UInt, segmentsT:UInt, yUp:Bool):Void
+	private function createTorus(radius:Float, tubeRadius:Float, segmentsR:UInt, segmentsT:UInt, yUp:Bool):Void
 	{
 
-		var _vertices:Vector<Float> = new Vector<Float>(segmentsR*segmentsT*3);
-		var _indices:Vector<UInt> = new Vector<UInt>(segmentsR*segmentsT*6);
+		var _vertices:Vector<Float> = new Vector<Float>(segmentsR * segmentsT * 3, true);
+		var _indices:Vector<UInt> = new Vector<UInt>(segmentsR * segmentsT * 6, true);
 		var _verticesIndex:Int = 0;
 		var _indiceIndex:Int = 0;
 		var _grid:Vector<Vector<Int>> = new Vector<Vector<Int>>(segmentsR);

@@ -266,7 +266,7 @@ class DefaultRenderer implements IRenderer
 		}
 		mContext3D.setTextureAt(index, map.getTexture(mContext3D));
 		//TODO 减少变化
-		mContext3D.setSamplerStateAt(index, map.getWrapMode(), map.getTextureFilter(), map.getMipFilter());
+		mContext3D.setSamplerStateAt(index, map.wrapMode, map.textureFilter, map.mipFilter);
 	}
 
 	//耗时有点久
@@ -321,7 +321,7 @@ class DefaultRenderer implements IRenderer
 
 	private function clearTextures():Void
 	{
-		for (i in 0...mRegisterTextureIndex+1)
+		for (i in 0...mRegisterTextureIndex + 1)
 		{
 			mContext3D.setTextureAt(i, null);
 		}
@@ -335,7 +335,7 @@ class DefaultRenderer implements IRenderer
 	{
 		if (mRegisterBufferIndex > maxRegisterIndex)
 		{
-			for (i in maxRegisterIndex + 1...mRegisterBufferIndex + 1)
+			for (i in (maxRegisterIndex + 1)...mRegisterBufferIndex + 1)
 			{
 				mContext3D.setVertexBufferAt(i, null);
 			}
@@ -356,6 +356,7 @@ class DefaultRenderer implements IRenderer
 
 		var attribute:AttributeVar;
 		var location:Int;
+		//TODO 优化，不必每次都创建keys
 		var bufferTypes = attributes.keys();
 		for (bufferType in bufferTypes)
 		{

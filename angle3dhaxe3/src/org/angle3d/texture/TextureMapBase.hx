@@ -19,6 +19,14 @@ import flash.Vector;
  */
 class TextureMapBase
 {
+	public var shaderKeys(get, null):Vector<String>;
+	public var width(get, null):Int;
+	public var height(get, null):Int;
+	public var optimizeForRenderToTexture(get, set):Bool;
+	public var mipFilter(get, set):Context3DMipFilter;
+	public var textureFilter(get, set):Context3DTextureFilter;
+	public var wrapMode(get, set):Context3DWrapMode;
+	
 	private var mWidth:Int;
 	private var mHeight:Int;
 
@@ -37,7 +45,7 @@ class TextureMapBase
 	private var shadowCompareMode:Int;
 
 	private var mFormat:String;
-	private var type:Int;
+	private var type:TextureType;
 
 	public function new(mipmap:Bool = false)
 	{
@@ -56,21 +64,21 @@ class TextureMapBase
 		type = TextureType.TwoDimensional;
 	}
 
-	public var shaderKeys(get, null):Vector<String>;
+	
 	private function get_shaderKeys():Vector<String>
 	{
 		return Vector.ofArray([mFormat, mMipFilter.getName(), 
 		mTextureFilter.getName(), mWrapMode.getName()]);
 	}
 
-	public function getWrapMode():Context3DWrapMode
+	private function get_wrapMode():Context3DWrapMode
 	{
 		return mWrapMode;
 	}
 
-	public function setWrapMode(wrapMode:Context3DWrapMode):Void
+	private function set_wrapMode(wrapMode:Context3DWrapMode):Context3DWrapMode
 	{
-		this.mWrapMode = wrapMode;
+		return this.mWrapMode = wrapMode;
 	}
 
 	public function getFormat():String
@@ -83,20 +91,10 @@ class TextureMapBase
 		this.mFormat = format;
 	}
 
-	public function getType():Int
-	{
-		return type;
-	}
-
-	public function setType(type:Int):Void
-	{
-		this.type = type;
-	}
-
 	/**
 	 * @return the MinificationFilterMode of this texture.
 	 */
-	public function getMipFilter():Context3DMipFilter
+	private function get_mipFilter():Context3DMipFilter
 	{
 		return mMipFilter;
 	}
@@ -107,15 +105,15 @@ class TextureMapBase
 	 * @throws IllegalArgumentException
 	 *             if minificationFilter is null
 	 */
-	public function setMipFilter(minFilter:Context3DMipFilter):Void
+	private function set_mipFilter(minFilter:Context3DMipFilter):Context3DMipFilter
 	{
-		this.mMipFilter = minFilter;
+		return this.mMipFilter = minFilter;
 	}
 
 	/**
 	 * @return the MagnificationFilterMode of this texture.
 	 */
-	public function getTextureFilter():Context3DTextureFilter
+	private function get_textureFilter():Context3DTextureFilter
 	{
 		return mTextureFilter;
 	}
@@ -126,9 +124,9 @@ class TextureMapBase
 	 * @throws IllegalArgumentException
 	 *             if magnificationFilter is null
 	 */
-	public function setTextureFilter(magFilter:Context3DTextureFilter):Void
+	private function set_textureFilter(magFilter:Context3DTextureFilter):Context3DTextureFilter
 	{
-		this.mTextureFilter = magFilter;
+		return this.mTextureFilter = magFilter;
 	}
 
 	/**
@@ -181,19 +179,19 @@ class TextureMapBase
 		return mMipmap;
 	}
 
-	public var width(get, null):Int;
+	
 	private function get_width():Int
 	{
 		return mWidth;
 	}
 
-	public var height(get, null):Int;
+	
 	private function get_height():Int
 	{
 		return mHeight;
 	}
 
-	public var optimizeForRenderToTexture(get, set):Bool;
+	
 	/**
 	 *  如果纹理很可能用作呈现目标，则设置为 true。
 	 */

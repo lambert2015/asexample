@@ -5,6 +5,11 @@ import flash.Vector;
 
 class VertexBuffer
 {
+	public var components(get, null):Int;
+	public var count(get, null):Int;
+	public var type(get, null):String;
+	public var dirty(get, set):Bool;
+	
 	private var mCount:Int;
 
 	private var mDirty:Bool;
@@ -23,12 +28,6 @@ class VertexBuffer
 		mDirty = true;
 	}
 
-	public var components(get, null):Int;
-	private function get_components():Int
-	{
-		return mComponents;
-	}
-
 	/**
 	 *
 	 * @param	data
@@ -40,7 +39,7 @@ class VertexBuffer
 
 		mComponents = components;
 		
-		Assert.assert(mComponents >= 1 && mComponents <= 4, "_components长度应该在1～4之间");
+		Assert.assert(mComponents >= 1 && mComponents <= 4, "components长度应该在1～4之间");
 
 		mCount = Std.int(mData.length / mComponents);
 
@@ -75,19 +74,23 @@ class VertexBuffer
 		mData = null;
 	}
 
-	public var count(get, null):Int;
+	private function get_components():Int
+	{
+		return mComponents;
+	}
+	
 	private function get_count():Int
 	{
 		return mCount;
 	}
 
-	public var type(get, null):String;
+	
 	private function get_type():String
 	{
 		return mType;
 	}
 
-	public var dirty(get, set):Bool;
+	
 	private function get_dirty():Bool
 	{
 		return mDirty;
