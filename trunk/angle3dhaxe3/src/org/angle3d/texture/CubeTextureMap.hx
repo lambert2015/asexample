@@ -22,8 +22,10 @@ class CubeTextureMap extends TextureMapBase
 						posZ:BitmapData, negZ:BitmapData)
 	{
 		super(true);
+		
+		this.type = TextureType.CubeMap;
 
-		mBitmapDatas = new Vector<BitmapData>(6);
+		mBitmapDatas = new Vector<BitmapData>(6, true);
 		mBitmapDatas[0] = posX;
 		mBitmapDatas[1] = negX;
 		mBitmapDatas[2] = posY;

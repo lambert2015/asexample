@@ -8,6 +8,8 @@ import haxe.ds.StringMap;
  */
 class MorphMesh extends Mesh
 {
+	public var useNormal(get, set):Bool;
+	public var totalFrame(get, set):Int;
 	//当前帧
 	private var mCurrentFrame:Int = -1;
 	private var mNextFrame:Int;
@@ -29,7 +31,7 @@ class MorphMesh extends Mesh
 	/**
 	 * 不需要使用normal时设置为false，提高速度
 	 */
-	public var useNormal(get, set):Bool;
+	
 	private function get_useNormal():Bool
 	{
 		return mUseNormal;
@@ -40,7 +42,7 @@ class MorphMesh extends Mesh
 		return mUseNormal = value;
 	}
 
-	public var totalFrame(get, set):Int;
+	
 	private function set_totalFrame(value:Int):Int
 	{
 		return mTotalFrame = value;

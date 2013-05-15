@@ -36,24 +36,24 @@ class LightNode extends Node
 		return mLightControl.enabled;
 	}
 
+	public function setLight(light:Light):Void
+	{
+		mLightControl.setLight(light);
+	}
+	
+	public function getLight():Light
+	{
+		return mLightControl.getLight();
+	}
+	
 	public function setControlDir(dir:String):Void
 	{
 		mLightControl.setControlDir(dir);
 	}
 
-	public function setLight(light:Light):Void
-	{
-		mLightControl.setLight(light);
-	}
-
 	public function getControlDir():String
 	{
 		return mLightControl.getControlDir();
-	}
-
-	public function getLight():Light
-	{
-		return mLightControl.getLight();
 	}
 }
 

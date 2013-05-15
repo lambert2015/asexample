@@ -1,6 +1,7 @@
 package org.angle3d.texture;
 
 import flash.display.BitmapData;
+import flash.display.StageQuality;
 import flash.display3D.textures.CubeTexture;
 import flash.display3D.textures.Texture;
 import flash.geom.Matrix;
@@ -73,8 +74,14 @@ class MipmapGenerator
 		{
 			if (alpha)
 				mipmap.fillRect(_rect, 0);
+			#if flash11_3
+			mipmap.drawWithQuality(source, _matrix, null, null, null, true, StageQuality.BEST);
+			#else
 			mipmap.draw(source, _matrix, null, null, null, true);
+			#end
+
 			target.uploadFromBitmapData(mipmap, side, i++);
+			
 			w >>= 1;
 			h >>= 1;
 			_matrix.a *= .5;

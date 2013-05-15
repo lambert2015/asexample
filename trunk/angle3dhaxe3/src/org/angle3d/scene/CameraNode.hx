@@ -11,6 +11,8 @@ import org.angle3d.scene.control.CameraControl;
 
 class CameraNode extends Node
 {
+	public var controlDir(get, set):String;
+	
 	private var mCamControl:CameraControl;
 
 	public function new(name:String, camera:Camera3D)
@@ -27,9 +29,9 @@ class CameraNode extends Node
 		return mCamControl;
 	}
 
-	override private function _init():Void
+	override private function initialize():Void
 	{
-		super._init();
+		super.initialize();
 		mCamControl = new CameraControl();
 		addControl(mCamControl);
 	}
@@ -44,7 +46,7 @@ class CameraNode extends Node
 		return mCamControl.enabled;
 	}
 
-	public var controlDir(get, set):String;
+	
 	private function set_controlDir(controlDir:String):String
 	{
 		return mCamControl.controlDir = controlDir;

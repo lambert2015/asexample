@@ -1,74 +1,82 @@
 package org.angle3d.scene.shape;
 
 import flash.Vector;
+import flash.Vector;
 import org.angle3d.scene.mesh.BufferType;
 import org.angle3d.scene.mesh.Mesh;
 import org.angle3d.scene.mesh.SubMesh;
-using org.angle3d.utils.ArrayUtil;
+using org.angle3d.utils.VectorUtil;
 /**
  * 3角形顺序理的不太清楚
+ * 
  * @author andy
  */
-
+//TODO 可以实时修改线框
 class WireframeShape extends Mesh
 {
-	private var _indices:Vector<UInt>;
+	private var mIndices:Vector<UInt>;
 	
-	private var _posVector:Vector<Float>;
-	private var _pos1Vector:Vector<Float>;
+	private var mPosVector:Vector<Float>;
+	private var mPos1Vector:Vector<Float>;
 
-	private var _segments:Array<WireframeLineSet>;
+	private var mSegments:Vector<WireframeLineSet>;
 
-	private var _subMesh:SubMesh;
+	private var mSubMesh:SubMesh;
 
 	public function new()
 	{
 		super();
 
-		_subMesh = new SubMesh();
-		this.addSubMesh(_subMesh);
+		mSubMesh = new SubMesh();
+		this.addSubMesh(mSubMesh);
 
-		_segments = new Array<WireframeLineSet>();
+		mSegments = new Vector<WireframeLineSet>();
 	}
 
 	public function clearSegment():Void
 	{
-		_segments = _segments.clear();
+		mSegments.clear();
 	}
 
 	public function addSegment(segment:WireframeLineSet):Void
 	{
-		_segments.push(segment);
+		mSegments.push(segment);
+	}
+	
+	public function removeSegment(segment:WireframeLineSet):Bool
+	{
+		return mSegments.remove(segment);
 	}
 
 	/**
 	 * 生成线框模式需要的数据
+	 * 
 	 */
 	public function build(updateIndices:Bool = true):Void
 	{
-		var sLength:Int = _segments.length;
+		var sLength:Int = mSegments.length;
 		
-		_posVector = new Vector<Float>(sLength * 12);
-		_pos1Vector = new Vector<Float>(sLength * 16);
+		mPosVector = new Vector<Float>(sLength * 12, true);
+		mPos1Vector = new Vector<Float>(sLength * 16, true);
 		if (updateIndices)
 		{
-			_indices = new Vector<UInt>(sLength * 6);
+			mIndices = new Vector<UInt>(sLength * 6, true);
 		}
 
 		var indicesSize:Int = 0;
 		for (i in 0...sLength)
 		{
-			var segment:WireframeLineSet = _segments[i];
+			var segment:WireframeLineSet = mSegments[i];
 
 			var index:Int = i << 2;
 			if (updateIndices)
 			{
-				_indices[indicesSize] = index;
-				_indices[indicesSize + 1] = index + 1;
-				_indices[indicesSize + 2] = index + 2;
-				_indices[indicesSize + 3] = index + 3;
-				_indices[indicesSize + 4] = index + 2;
-				_indices[indicesSize + 5] = index + 1;
+				mIndices[indicesSize] = index;
+				mIndices[indicesSize + 1] = index + 1;
+				mIndices[indicesSize + 2] = index + 2;
+				mIndices[indicesSize + 3] = index + 3;
+				mIndices[indicesSize + 4] = index + 2;
+				mIndices[indicesSize + 5] = index + 1;
 				indicesSize += 6;
 			}
 
@@ -79,43 +87,43 @@ class WireframeShape extends Mesh
 			var ex:Float = segment.ex, ey:Float = segment.ey, ez:Float = segment.ez;
 
 			//pos
-			_posVector[i12 + 0] = sx;
-			_posVector[i12 + 1] = sy;
-			_posVector[i12 + 2] = sz;
+			mPosVector[i12 + 0] = sx;
+			mPosVector[i12 + 1] = sy;
+			mPosVector[i12 + 2] = sz;
 
-			_posVector[i12 + 3] = ex;
-			_posVector[i12 + 4] = ey;
-			_posVector[i12 + 5] = ez;
+			mPosVector[i12 + 3] = ex;
+			mPosVector[i12 + 4] = ey;
+			mPosVector[i12 + 5] = ez;
 
-			_posVector[i12 + 6] = sx;
-			_posVector[i12 + 7] = sy;
-			_posVector[i12 + 8] = sz;
+			mPosVector[i12 + 6] = sx;
+			mPosVector[i12 + 7] = sy;
+			mPosVector[i12 + 8] = sz;
 
-			_posVector[i12 + 9] = ex;
-			_posVector[i12 + 10] = ey;
-			_posVector[i12 + 11] = ez;
+			mPosVector[i12 + 9] = ex;
+			mPosVector[i12 + 10] = ey;
+			mPosVector[i12 + 11] = ez;
 
 			//pos1
-			_pos1Vector[i16 + 0] = ex;
-			_pos1Vector[i16 + 1] = ey;
-			_pos1Vector[i16 + 2] = ez;
+			mPos1Vector[i16 + 0] = ex;
+			mPos1Vector[i16 + 1] = ey;
+			mPos1Vector[i16 + 2] = ez;
 			//thickness
-			_pos1Vector[i16 + 3] = 1;
+			mPos1Vector[i16 + 3] = 1;
 
-			_pos1Vector[i16 + 4] = sx;
-			_pos1Vector[i16 + 5] = sy;
-			_pos1Vector[i16 + 6] = sz;
-			_pos1Vector[i16 + 7] = -1;
+			mPos1Vector[i16 + 4] = sx;
+			mPos1Vector[i16 + 5] = sy;
+			mPos1Vector[i16 + 6] = sz;
+			mPos1Vector[i16 + 7] = -1;
 
-			_pos1Vector[i16 + 8] = ex;
-			_pos1Vector[i16 + 9] = ey;
-			_pos1Vector[i16 + 10] = ez;
-			_pos1Vector[i16 + 11] = -1;
+			mPos1Vector[i16 + 8] = ex;
+			mPos1Vector[i16 + 9] = ey;
+			mPos1Vector[i16 + 10] = ez;
+			mPos1Vector[i16 + 11] = -1;
 
-			_pos1Vector[i16 + 12] = sx;
-			_pos1Vector[i16 + 13] = sy;
-			_pos1Vector[i16 + 14] = sz;
-			_pos1Vector[i16 + 15] = 1;
+			mPos1Vector[i16 + 12] = sx;
+			mPos1Vector[i16 + 13] = sy;
+			mPos1Vector[i16 + 14] = sz;
+			mPos1Vector[i16 + 15] = 1;
 		}
 
 		updateBuffer(updateIndices);
@@ -127,19 +135,14 @@ class WireframeShape extends Mesh
 	{
 		if (updateIndices)
 		{
-			_subMesh.setIndices(_indices);
+			mSubMesh.setIndices(mIndices);
 		}
 
-		_subMesh.setVertexBuffer(BufferType.POSITION, 3, _posVector);
-		_subMesh.setVertexBuffer(BufferType.POSITION1, 4, _pos1Vector);
-		_subMesh.validate();
+		mSubMesh.setVertexBuffer(BufferType.POSITION, 3, mPosVector);
+		mSubMesh.setVertexBuffer(BufferType.POSITION1, 4, mPos1Vector);
+		mSubMesh.validate();
 
 		this.validate();
-	}
-
-	public function removeSegment(segment:WireframeLineSet):Bool
-	{
-		return true;
 	}
 }
 

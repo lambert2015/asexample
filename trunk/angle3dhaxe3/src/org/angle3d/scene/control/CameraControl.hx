@@ -15,6 +15,9 @@ import org.angle3d.math.Vector3f;
  */
 class CameraControl extends AbstractControl
 {
+	public var controlDir(get, set):String;
+	public var camera(get, set):Camera3D;
+	
 	/**
 	 * Means, that the Camera's transform is "copied"
 	 * to the Transform of the Spatial.
@@ -45,7 +48,7 @@ class CameraControl extends AbstractControl
 		}
 	}
 
-	public var controlDir(get, set):String;
+	
 	private function set_controlDir(dir:String):String
 	{
 		return this.mControlDir = dir;
@@ -56,7 +59,7 @@ class CameraControl extends AbstractControl
 		return mControlDir;
 	}
 
-	public var camera(get, set):Camera3D;
+	
 	private function set_camera(camera:Camera3D):Camera3D
 	{
 		return this.mCamera = camera;

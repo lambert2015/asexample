@@ -1,12 +1,13 @@
 package org.angle3d.scene;
 
+import flash.Vector;
 import org.angle3d.bounding.BoundingVolume;
 import org.angle3d.collision.Collidable;
 import org.angle3d.collision.CollisionResults;
 import org.angle3d.material.Material;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Logger;
-using org.angle3d.utils.ArrayUtil;
+using org.angle3d.utils.VectorUtil;
 
 /**
  * <code>Node</code> defines an internal node of a scene graph. The internal
@@ -18,10 +19,10 @@ using org.angle3d.utils.ArrayUtil;
 
 class Node extends Spatial
 {
-	/**
-	 * This node's children.
-	 */
-	private var mChildren:Array<Spatial>;
+	public var children(get, null):Vector<Spatial>;
+	public var numChildren(get, null):Int;
+	
+	private var mChildren:Vector<Spatial>;
 
 	/**
 	 * Constructor instantiates a new <code>Node</code> with a default empty
@@ -36,10 +37,10 @@ class Node extends Spatial
 		super(name);
 	}
 
-	override private function _init():Void
+	override private function initialize():Void
 	{
-		super._init();
-		mChildren = new Array<Spatial>();
+		super.initialize();
+		mChildren = new Vector<Spatial>();
 	}
 
 	override public function setMaterial(material:Material):Void
@@ -49,19 +50,6 @@ class Node extends Spatial
 		{
 			mChildren[i].setMaterial(material);
 		}
-	}
-
-	/**
-	 *
-	 * <code>getNumChildren</code> returns the number of children this node
-	 * maintains.
-	 *
-	 * @return the number of children this node maintains.
-	 */
-	public var numChildren(get, null):Int;
-	private function get_numChildren():Int
-	{
-		return mChildren.length;
 	}
 
 	override public function setTransformRefresh():Void
@@ -236,7 +224,9 @@ class Node extends Spatial
 			child.setTransformRefresh();
 			child.setLightListRefresh();
 
+			#if debug
 			Logger.log(child.toString() + " attached to " + this.toString());
+			#end
 		}
 	}
 
@@ -345,7 +335,7 @@ class Node extends Spatial
 			}
 		}
 
-		mChildren = [];
+		mChildren.clear();
 
 		setBoundRefresh();
 
@@ -409,15 +399,15 @@ class Node extends Spatial
 			{
 				return child;
 			}
-			else if (Std.is(child,Node))
-			{
-				var node:Node = cast(child,Node);
-				var out:Spatial = node.getChildByName(name);
-				if (out != null)
-				{
-					return out;
-				}
-			}
+			//else if (Std.is(child,Node))
+			//{
+				//var node:Node = cast(child,Node);
+				//var out:Spatial = node.getChildByName(name);
+				//if (out != null)
+				//{
+					//return out;
+				//}
+			//}
 		}
 		return null;
 	}
@@ -452,18 +442,6 @@ class Node extends Spatial
 		}
 
 		return false;
-	}
-
-	/**
-	 * Returns all children to this node. Note that modifying that given
-	 * list is not allowed.
-	 *
-	 * @return a list containing all children to this node
-	 */
-	public var children(get, null):Array<Spatial>;
-	private inline function get_children():Array<Spatial>
-	{
-		return mChildren;
 	}
 
 	override public function collideWith(other:Collidable, results:CollisionResults):Int
@@ -541,6 +519,16 @@ class Node extends Spatial
 		}
 
 		return node;
+	}
+	
+	private inline function get_children():Vector<Spatial>
+	{
+		return mChildren;
+	}
+
+	private inline function get_numChildren():Int
+	{
+		return mChildren.length;
 	}
 }
 

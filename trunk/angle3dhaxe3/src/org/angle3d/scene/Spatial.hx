@@ -1,5 +1,6 @@
 package org.angle3d.scene;
 
+import flash.Vector;
 import org.angle3d.bounding.BoundingBox;
 import org.angle3d.bounding.BoundingVolume;
 import org.angle3d.collision.Collidable;
@@ -21,7 +22,7 @@ import org.angle3d.scene.control.Control;
 import org.angle3d.utils.Assert;
 import org.angle3d.utils.Cloneable;
 import org.angle3d.utils.TempVars;
-using org.angle3d.utils.ArrayUtil;
+using org.angle3d.utils.VectorUtil;
 
 //TODO API 优化
 //TODO 还需要添加更多常用属性
@@ -42,28 +43,47 @@ class Spatial implements Cloneable implements Collidable
 	public static inline var RF_BOUND:Int = 0x02;
 	public static inline var RF_LIGHTLIST:Int = 0x04;
 
+	public var x(get, set):Float;
+	public var y(get, set):Float;
+	public var z(get, set):Float;
+	
+	public var translation(get, set):Vector3f;
+	
 	public var scaleX(get, set):Float;
 	public var scaleY(get, set):Float;
 	public var scaleZ(get, set):Float;
 	
+	//TODO 添加修改旋转的属性
+	
+	/**
+	 * @return The number of controls attached to this Spatial.
+	 */
 	public var numControls(get, null):Int;
+	
+	/**
+	 * Refresh flags. Indicate what data of the spatial need to be
+	 * updated to reflect the correct state.
+	 */
 	public var refreshFlags(get, null):Int;
+	
+	/**
+	 * Spatial's parent, or null if it has none.
+	 */
 	public var parent(get, set):Node;
 	
 	public var visible(get, set):Bool;
 	public var truelyVisible(get, null):Bool;
 	
-	public var x(get, set):Float;
-	public var y(get, set):Float;
-	public var z(get, set):Float;
-	public var translation(get, set):Vector3f;
+	
 	public var queueBucket(get, null):QueueBucket;
 	public var shadowMode(get, null):ShadowMode;
 	public var worldBound(get, null):BoundingVolume;
+	
 	public var localCullHint(get, set):CullHint;
-	public var cullHint(get, null):CullHint;
 	public var localQueueBucket(get, set):QueueBucket;
 	public var localShadowMode(get, set):ShadowMode;
+	public var cullHint(get, null):CullHint;
+	
 	public var lastFrustumIntersection(get, set):FrustumIntersect;
 	
 	/**
@@ -94,19 +114,11 @@ class Spatial implements Cloneable implements Collidable
 	private var mLocalTransform:Transform;
 	private var mWorldTransform:Transform;
 
-	private var mControls:Array<Control>;
+	private var mControls:Vector<Control>;
 
-	/**
-	 * Spatial's parent, or null if it has none.
-	 */
+	
 	private var mParent:Node;
-
-	/**
-	 * Refresh flags. Indicate what data of the spatial need to be
-	 * updated to reflect the correct state.
-	 */
 	private var mRefreshFlags:Int;
-
 	private var mVisible:Bool;
 
 
@@ -121,7 +133,7 @@ class Spatial implements Cloneable implements Collidable
 	public function new(name:String = "")
 	{
 		this.name = name;
-		_init();
+		initialize();
 	}
 
 	
@@ -149,7 +161,7 @@ class Spatial implements Cloneable implements Collidable
 		return mVisible && mParent.visible;
 	}
 
-	private function _init():Void
+	private function initialize():Void
 	{
 		mLocalTransform = new Transform();
 		mWorldTransform = new Transform();
@@ -171,14 +183,14 @@ class Spatial implements Cloneable implements Collidable
 
 		queueDistance = Math.NEGATIVE_INFINITY;
 
-		mControls = new Array<Control>();
+		mControls = new Vector<Control>();
 	}
 
 	/**
 	 * 是否需要更新LightList
 	 * @return
 	 */
-	public function needLightListUpdate():Bool
+	public inline function needLightListUpdate():Bool
 	{
 		return (mRefreshFlags & RF_LIGHTLIST) != 0;
 	}
@@ -187,7 +199,7 @@ class Spatial implements Cloneable implements Collidable
 	 * 是否需要更新坐标
 	 * @return
 	 */
-	public function needTransformUpdate():Bool
+	public inline function needTransformUpdate():Bool
 	{
 		return (mRefreshFlags & RF_TRANSFORM) != 0;
 	}
@@ -196,7 +208,7 @@ class Spatial implements Cloneable implements Collidable
 	 * 是否需要更新包围体
 	 * @return
 	 */
-	public function needBoundUpdate():Bool
+	public inline function needBoundUpdate():Bool
 	{
 		return (mRefreshFlags & RF_BOUND) != 0;
 	}
@@ -211,7 +223,7 @@ class Spatial implements Cloneable implements Collidable
 		setBoundRefresh();
 	}
 
-	public function setTransformUpdated():Void
+	public inline function setTransformUpdated():Void
 	{
 		mRefreshFlags &= ~RF_TRANSFORM;
 	}
@@ -221,7 +233,7 @@ class Spatial implements Cloneable implements Collidable
 		mRefreshFlags |= RF_LIGHTLIST;
 	}
 
-	public function setLightListUpdated():Void
+	public inline function setLightListUpdated():Void
 	{
 		mRefreshFlags &= ~RF_LIGHTLIST;
 	}
@@ -247,7 +259,7 @@ class Spatial implements Cloneable implements Collidable
 		}
 	}
 
-	public function setBoundUpdated():Void
+	public inline function setBoundUpdated():Void
 	{
 		mRefreshFlags &= ~RF_BOUND;
 	}
@@ -668,10 +680,6 @@ class Spatial implements Cloneable implements Collidable
 		return null;
 	}
 
-	/**
-	 * @return The number of controls attached to this Spatial.
-	 */
-	
 	private function get_numControls():Int
 	{
 		return mControls.length;

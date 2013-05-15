@@ -24,8 +24,11 @@ import org.angle3d.utils.Assert;
 //TODO 目前有个问题，Shader中Attribute的顺序可能和这里的不同，这时候该根据那个作为标准呢
 //TODO 合并后对某些Shader可能会有问题，因为数据可能不搭配。
 //合并有许多问题，暂时不使用
+//合并应该用在那些不需要改变的物品上,提供速度
 class SubMesh implements ISubMesh
 {
+	public var merge(get, set):Bool;
+	
 	private var collisionTree:CollisionData;
 
 	public var mesh:Mesh;
@@ -88,7 +91,7 @@ class SubMesh implements ISubMesh
 	/**
 	 * 数据是否合并为一个VertexBuffer3D提交给GPU
 	 */
-	public var merge(get, set):Bool;
+	
 	private function get_merge():Bool
 	{
 		return _merge;

@@ -13,6 +13,9 @@ import org.angle3d.utils.Assert;
 
 class AbstractControl implements Control
 {
+	public var spatial(get, set):Spatial;
+	public var enabled(get,set):Bool;
+	
 	private var _enabled:Bool;
 	private var _spatial:Spatial;
 
@@ -21,7 +24,7 @@ class AbstractControl implements Control
 		_enabled = true;
 	}
 
-	public var spatial(get,set):Spatial;
+	
 	private function set_spatial(value:Spatial):Spatial
 	{
 		#if debug
@@ -39,7 +42,7 @@ class AbstractControl implements Control
 		return _spatial;
 	}
 
-	public var enabled(get,set):Bool;
+	
 	private function set_enabled(value:Bool):Bool
 	{
 		return _enabled = value;

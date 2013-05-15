@@ -25,6 +25,9 @@ class LightControl extends AbstractControl
 	 * to the Transform of the light.
 	 */
 	public static inline var SpatialToLight:String = "spatialToLight";
+	
+	public var controlDir(get, set):String;
+	public var light(get, set):Light;
 
 	private var mLight:Light;
 	private var mControlDir:String;
@@ -41,7 +44,7 @@ class LightControl extends AbstractControl
 		this.mControlDir = controlDir;
 	}
 
-	public var controlDir(get, set):String;
+	
 	private function set_controlDir(dir:String):String
 	{
 		return this.mControlDir = dir;
@@ -52,7 +55,6 @@ class LightControl extends AbstractControl
 		return mControlDir;
 	}
 
-	public var light(get, set):Light;
 	private function set_light(light:Light):Light
 	{
 		if (light == null)
@@ -67,8 +69,6 @@ class LightControl extends AbstractControl
 	{
 		return mLight;
 	}
-
-	
 
 	override private function controlUpdate(tpf:Float):Void
 	{
